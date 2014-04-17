@@ -44,7 +44,7 @@ public:
 		//! Переводит имя клавиши в код клавиши
 		//! @param  keyName - имя клавиши
 		//! @result код клавиши в операционной системе
-		KeyCode codeFromString(CREF(std::string) keyName) const;
+		KeyCode codeFromString(const std::string& keyName) const;
 
 	private:
 		typedef std::map<std::string, KeyCode> KeySet;
@@ -58,12 +58,12 @@ public:
 		//! Добавляет используемую в моделе клавишу
 		//! @param  keyCode - код клавиши
 		//! @result true, если код добавлен успешно
-		bool insert(CREF(KeyCode) keyCode);
+		bool insert(const KeyCode& keyCode);
 
 		//! Проверяет наличие клавиши
 		//! @param  keyCode - код клавиши
 		//! @result true, если код найден в списке
-		bool check(CREF(KeyCode) keyCode) const;
+		bool check(const KeyCode& keyCode) const;
 
 	private:
 		KeyList m_keyList;
@@ -79,18 +79,18 @@ public:
 		//! Фиксирует нажатие клавиши
 		//! @param  keyCode - код клавиши
 		//! @result true, если клавиша добавлена в список нажатых
-		bool down(CREF(KeyCode) keyCode);
+		bool down(const KeyCode& keyCode);
 
 		//! Фиксирует отжатие клавиши
 		//! @param  keyCode - код клавиши
-		void up(CREF(KeyCode) keyCode);
+		void up(const KeyCode& keyCode);
 
 		//! Проверяет, есть ли клавиша в списке нажатых
 		//! @param  keyCode - код клавиши
 		//! @param  shift   - признак нажатого Shift'а
 		//! @param  control - признак нажатого Ctrl'а
 		//! @result true, если клавиша есть в списке нажатых
-		bool isPressed(CREF(KeyCode) keyCode, bool shift, bool control);
+		bool isPressed(const KeyCode& keyCode, bool shift, bool control);
 
 		//! Результат других методов
 		//! @result true, если \ref down или \ref isPressed вернули true в момент совего вызова
@@ -110,12 +110,12 @@ public:
 	public:
 		//! Фиксирует нажатие на область
 		//! @param areaName - имя области
-		void  click(CREF(std::string) areaName);
+		void  click(const std::string& areaName);
 
 		//! Проверяет было ли нажатие на область
 		//! @param  areaName - имя области
 		//! @result true, если было нажатие
-		bool check(CREF(std::string) areaName);
+		bool check(const std::string& areaName);
 
 		//! Проверяет было ли нажатие хотя бы на одну область
 		//! @result true, если было нажатие
@@ -137,19 +137,19 @@ public:
 
 	//! Возвращает вспомогательный класс
 	//! @result вспомогательный класс
-	CREF(Toolkit) toolkit() const;
+	const Toolkit& toolkit() const;
 
 	//! Возвращает используемые в моделе клавиши
 	//! @result используемые в моделе клавиши
-	REF(KeyInModelList) keyInModel();
+	KeyInModelList& keyInModel();
 
 	//! Возвращает список текущих нажатых клавиш
 	//! @result список текущих нажатых клавиш
-	REF(KeyDownList) keyDown();
+	KeyDownList& keyDown();
 
 	//! Возвращает список текущий нажатых активных областей
 	//! @result список текущий нажатых активных областей
-	REF(AreaList) areaList();
+	AreaList& areaList();
 
 	//! Проверяет факт нажатия клавиши или выбора активной области
 	//! @result true, если была нажата клавиша или активная область

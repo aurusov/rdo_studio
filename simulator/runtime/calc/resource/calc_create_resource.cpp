@@ -40,7 +40,7 @@ RDOCalcCreateResource::RDOCalcCreateResource(
 	ASSERT(m_relResID == ~0 || (m_relResID != ~0 && !m_permanentFlag));
 }
 
-RDOValue RDOCalcCreateResource::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcCreateResource::doCalc(const LPRDORuntime& pRuntime)
 {
 	const LPRDOResourceTypeList& resourceType = pRuntime->getResType(m_resourceTypeID);
 	std::vector<RDOValue> paramValueList;

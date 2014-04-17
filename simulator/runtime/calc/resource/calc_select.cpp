@@ -23,13 +23,13 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelect
 // --------------------------------------------------------------------------------
-RDOFunCalcSelect::RDOFunCalcSelect(CREF(LPIResourceType) pResType, int nResType, CREF(LPRDOCalc) pCondition)
+RDOFunCalcSelect::RDOFunCalcSelect(const LPIResourceType& pResType, int nResType, const LPRDOCalc& pCondition)
 	: RDOFunCalcGroup(nResType, pCondition)
 {
 	m_pResType = pResType;
 }
 
-void RDOFunCalcSelect::prepare(CREF(LPRDORuntime) pRuntime)
+void RDOFunCalcSelect::prepare(const LPRDORuntime& pRuntime)
 {
 	res_list.clear();
 	RDORuntime::ResCIterator end = pRuntime->getResType(m_nResType)->res_end();
@@ -45,13 +45,13 @@ void RDOFunCalcSelect::prepare(CREF(LPRDORuntime) pRuntime)
 	}
 }
 
-RDOValue RDOFunCalcSelect::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcSelect::doCalc(const LPRDORuntime& pRuntime)
 {
 	prepare(pRuntime);
 	return RDOValue();
 }
 
-CREF(LPIResourceType) RDOFunCalcSelect::getResType()
+const LPIResourceType& RDOFunCalcSelect::getResType()
 {
 	return m_pResType;
 }
@@ -59,7 +59,7 @@ CREF(LPIResourceType) RDOFunCalcSelect::getResType()
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectBase
 // --------------------------------------------------------------------------------
-RDOFunCalcSelectBase::RDOFunCalcSelectBase(CREF(LPRDOFunCalcSelect) pSelect, CREF(LPRDOCalc) pCondition)
+RDOFunCalcSelectBase::RDOFunCalcSelectBase(const LPRDOFunCalcSelect& pSelect, const LPRDOCalc& pCondition)
 	: m_pSelect   (pSelect   )
 	, m_pCondition(pCondition)
 {}
@@ -67,7 +67,7 @@ RDOFunCalcSelectBase::RDOFunCalcSelectBase(CREF(LPRDOFunCalcSelect) pSelect, CRE
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectExist
 // --------------------------------------------------------------------------------
-RDOValue RDOFunCalcSelectExist::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcSelectExist::doCalc(const LPRDORuntime& pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	bool res = false;
@@ -87,7 +87,7 @@ RDOValue RDOFunCalcSelectExist::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectNotExist
 // --------------------------------------------------------------------------------
-RDOValue RDOFunCalcSelectNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcSelectNotExist::doCalc(const LPRDORuntime& pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	bool res = true;
@@ -107,7 +107,7 @@ RDOValue RDOFunCalcSelectNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectForAll
 // --------------------------------------------------------------------------------
-RDOValue RDOFunCalcSelectForAll::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcSelectForAll::doCalc(const LPRDORuntime& pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	if (m_pSelect->res_list.empty())
@@ -131,7 +131,7 @@ RDOValue RDOFunCalcSelectForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectNotForAll
 // --------------------------------------------------------------------------------
-RDOValue RDOFunCalcSelectNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcSelectNotForAll::doCalc(const LPRDORuntime& pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	bool res = false;
@@ -151,7 +151,7 @@ RDOValue RDOFunCalcSelectNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectSize
 // --------------------------------------------------------------------------------
-RDOValue RDOFunCalcSelectSize::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcSelectSize::doCalc(const LPRDORuntime& pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	return RDOValue(static_cast<std::size_t>(m_pSelect->res_list.size()));
@@ -160,7 +160,7 @@ RDOValue RDOFunCalcSelectSize::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectEmpty
 // --------------------------------------------------------------------------------
-RDOValue RDOFunCalcSelectEmpty::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcSelectEmpty::doCalc(const LPRDORuntime& pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	return m_pSelect->res_list.empty();
@@ -169,7 +169,7 @@ RDOValue RDOFunCalcSelectEmpty::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectArray
 // --------------------------------------------------------------------------------
-RDOValue RDOFunCalcSelectArray::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcSelectArray::doCalc(const LPRDORuntime& pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	std::list<LPRDOResource>::iterator it  = m_pSelect->res_list.begin();

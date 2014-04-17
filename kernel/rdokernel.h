@@ -108,7 +108,7 @@ class RDOKernelGUI: public RDOThread
 friend virtual bool RDOThreadGUI::processMessages();
 
 protected:
-	RDOKernelGUI( CREF(std::string) _thread_name ); // Создание и удаление через потомков
+	RDOKernelGUI(const std::string& _thread_name); // Создание и удаление через потомков
 	virtual ~RDOKernelGUI();
 
 	virtual void proc( RDOMessageInfo& msg );

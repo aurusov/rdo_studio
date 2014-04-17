@@ -27,7 +27,7 @@ DECLARE_FACTORY(RDOCalcAnd)
 private:
 	typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator&& >, OperatorType::OT_LOGIC> parent_type;
 
-	RDOCalcAnd(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
+	RDOCalcAnd(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
 
 	RDOValue m_value_true;
 	RDOValue m_value_false;
@@ -42,7 +42,7 @@ DECLARE_FACTORY(RDOCalcOr)
 private:
 	typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator|| >, OperatorType::OT_LOGIC> parent_type;
 
-	RDOCalcOr(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
+	RDOCalcOr(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
 
 	RDOValue m_value_true;
 	RDOValue m_value_false;

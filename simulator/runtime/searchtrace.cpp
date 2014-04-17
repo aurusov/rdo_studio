@@ -22,7 +22,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearchTrace
 // --------------------------------------------------------------------------------
-void RDODPTSearchTrace::onSearchBegin(CREF(LPRDORuntime) pRuntime)
+void RDODPTSearchTrace::onSearchBegin(const LPRDORuntime& pRuntime)
 {
 	if (traceFlag != DPT_no_trace)
 	{
@@ -35,7 +35,7 @@ void RDODPTSearchTrace::onSearchBegin(CREF(LPRDORuntime) pRuntime)
 	++calc_cnt;
 }
 
-void RDODPTSearchTrace::onSearchDecisionHeader(CREF(LPRDORuntime) pRuntime)
+void RDODPTSearchTrace::onSearchDecisionHeader(const LPRDORuntime& pRuntime)
 {
 	if (traceFlag != DPT_no_trace)
 	{
@@ -43,7 +43,7 @@ void RDODPTSearchTrace::onSearchDecisionHeader(CREF(LPRDORuntime) pRuntime)
 	}
 }
 
-void RDODPTSearchTrace::onSearchDecision(CREF(LPRDORuntime) pRuntime, TreeNode* node)
+void RDODPTSearchTrace::onSearchDecision(const LPRDORuntime& pRuntime, TreeNode* node)
 {
 	if (traceFlag != DPT_no_trace)
 	{
@@ -51,7 +51,7 @@ void RDODPTSearchTrace::onSearchDecision(CREF(LPRDORuntime) pRuntime, TreeNode* 
 	}
 }
 
-void RDODPTSearchTrace::onSearchResultSuccess(CREF(LPRDORuntime) pRuntime, TreeRoot* treeRoot)
+void RDODPTSearchTrace::onSearchResultSuccess(const LPRDORuntime& pRuntime, TreeRoot* treeRoot)
 {
 	if (traceFlag != DPT_no_trace)
 	{
@@ -62,7 +62,7 @@ void RDODPTSearchTrace::onSearchResultSuccess(CREF(LPRDORuntime) pRuntime, TreeR
 	pRuntime->memory_insert(treeRoot->m_sizeof_dpt);
 }
 
-void RDODPTSearchTrace::onSearchResultNotFound(CREF(LPRDORuntime) pRuntime, TreeRoot *treeRoot)
+void RDODPTSearchTrace::onSearchResultNotFound(const LPRDORuntime& pRuntime, TreeRoot *treeRoot)
 {
 	if (traceFlag != DPT_no_trace)
 	{
@@ -73,7 +73,7 @@ void RDODPTSearchTrace::onSearchResultNotFound(CREF(LPRDORuntime) pRuntime, Tree
 // --------------------------------------------------------------------------------
 // -------------------- TreeNodeTrace
 // --------------------------------------------------------------------------------
-void TreeNodeTrace::onSearchOpenNode(CREF(LPRDORuntime) pRuntime)
+void TreeNodeTrace::onSearchOpenNode(const LPRDORuntime& pRuntime)
 {
 	/// @todo использовать явный cast
 	RDODPTSearchTrace* dpTrace = (RDODPTSearchTrace *)m_root->m_dp;
@@ -86,17 +86,17 @@ void TreeNodeTrace::onSearchOpenNode(CREF(LPRDORuntime) pRuntime)
 	}
 }
 
-void TreeNodeTrace::onSearchNodeInfoDeleted(CREF(LPRDORuntime) pRuntime)
+void TreeNodeTrace::onSearchNodeInfoDeleted(const LPRDORuntime& pRuntime)
 {
 	pRuntime->getTracer()->writeSearchNodeInfo('D', this);
 }
 
-void TreeNodeTrace::onSearchNodeInfoReplaced(CREF(LPRDORuntime) pRuntime)
+void TreeNodeTrace::onSearchNodeInfoReplaced(const LPRDORuntime& pRuntime)
 {
    pRuntime->getTracer()->writeSearchNodeInfo('R', this);
 }
 
-void TreeNodeTrace::onSearchNodeInfoNew(CREF(LPRDORuntime) pRuntime)
+void TreeNodeTrace::onSearchNodeInfoNew(const LPRDORuntime& pRuntime)
 {
    pRuntime->getTracer()->writeSearchNodeInfo('N', this);
 }
@@ -110,7 +110,7 @@ TreeNode* TreeNodeTrace::createChildTreeNode()
 // --------------------------------------------------------------------------------
 // -------------------- TreeRootTrace
 // --------------------------------------------------------------------------------
-void TreeRootTrace::createRootTreeNode(CREF(LPRDORuntime) pRuntime)
+void TreeRootTrace::createRootTreeNode(const LPRDORuntime& pRuntime)
 {
 	m_rootNode = new TreeNodeTrace(pRuntime, NULL, this, NULL, 0, getNewNodeNumber());
 	m_rootNode->m_costRule = 0;
@@ -123,7 +123,7 @@ void TreeRootTrace::createRootTreeNode(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearchTrace
 // --------------------------------------------------------------------------------
-TreeRoot* RDODPTSearchTrace::createTreeRoot(CREF(LPRDORuntime) pRuntime)
+TreeRoot* RDODPTSearchTrace::createTreeRoot(const LPRDORuntime& pRuntime)
 {
 	TreeRootTrace* root = new TreeRootTrace(pRuntime, this);
 	root->m_sizeof_dpt = sizeof(TreeRootTrace) + pRuntime->getSizeofSim();
@@ -141,7 +141,7 @@ std::size_t RDODPTSearchTrace::getCalcResFoundCnt() const
 }
 
 template <typename T>
-void __getStats(CREF(std::list<T>) list, REF(T) min, REF(T) max, REF(double) med)
+void __getStats(const std::list<T>& list, T& min, T& max, double& med)
 {
 	T sum = 0;
 	std::size_t cnt = 0;
@@ -167,7 +167,7 @@ void __getStats(CREF(std::list<T>) list, REF(T) min, REF(T) max, REF(double) med
 	}
 }
 
-void RDODPTSearchTrace::getStatsDOUBLE(Type type, REF(double) min, REF(double) max, REF(double) med) const
+void RDODPTSearchTrace::getStatsDOUBLE(Type type, double& min, double& max, double& med) const
 {
 	switch (type)
 	{
@@ -181,7 +181,7 @@ void RDODPTSearchTrace::getStatsDOUBLE(Type type, REF(double) min, REF(double) m
 	NEVER_REACH_HERE;
 }
 
-void RDODPTSearchTrace::getStatsRUINT(Type type, REF(std::size_t) min, REF(std::size_t) max, REF(double) med) const
+void RDODPTSearchTrace::getStatsRUINT(Type type, std::size_t& min, std::size_t& max, double& med) const
 {
 	switch (type)
 	{

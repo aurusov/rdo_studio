@@ -24,7 +24,7 @@ private:
 	typedef char Small;
 	class        Big    { char dummy[2]; };
 
-	static Small Test (CREF(U));
+	static Small Test (const U&);
 	static Big   Test (...);
 	static T     MakeT();
 

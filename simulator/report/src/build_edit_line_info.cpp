@@ -24,15 +24,15 @@ namespace
 	const std::string ERROR_STRING("ошибка");
 }
 
-BuildEditLineInfo::BuildEditLineInfo(CREF(std::string) text, rdoModelObjects::RDOFileType file, std::size_t line, std::size_t pos, Type type)
+BuildEditLineInfo::BuildEditLineInfo(const std::string& text, rdoModelObjects::RDOFileType file, std::size_t line, std::size_t pos, Type type)
 	: LogEditLineInfo(text, file, line, pos, type)
 {}
 
-BuildEditLineInfo::BuildEditLineInfo(CREF(FileMessage) message)
+BuildEditLineInfo::BuildEditLineInfo(const FileMessage& message)
 	: LogEditLineInfo(message)
 {}
 
-BuildEditLineInfo::BuildEditLineInfo(CREF(std::string) message)
+BuildEditLineInfo::BuildEditLineInfo(const std::string& message)
 	: LogEditLineInfo(message)
 {}
 

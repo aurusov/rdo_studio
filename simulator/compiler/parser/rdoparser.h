@@ -56,13 +56,13 @@ public: \
 	typedef std::vector<TYPE> NAME##List; \
 	void                insert##NAME (TYPE value); \
 	TYPE                getLast##NAME()       { return !m_all##NAME.empty() ? m_all##NAME.back() : TYPE(NULL); } \
-	CREF(NAME##List)    get##NAME##s () const { return m_all##NAME; } \
+	const NAME##List&   get##NAME##s () const { return m_all##NAME; } \
 private: \
 	NAME##List m_all##NAME;
 
 #define DEFINE_OBJECT_CONTAINER_WITHNAME(TYPE, NAME) \
 public: \
-	const TYPE find##NAME  (CREF(std::string) name) const; \
+	const TYPE find##NAME  (const std::string& name) const; \
 	bool remove##NAME(const TYPE item);
 
 #define DEFINE_OBJECT_CONTAINER_NONAME(NAME) \
@@ -109,16 +109,16 @@ public:
 	virtual void init  ();
 	virtual void deinit();
 
-	CREF(rdo::runtime::LPRDORuntime) runtime() const { return m_pRuntime; }
+	const rdo::runtime::LPRDORuntime& runtime() const { return m_pRuntime; }
 
 	bool isPattern() const { return m_pattern; }
-	REF(FUNGroupList) getFUNGroupStack() { return m_allFUNGroup; }
+	FUNGroupList& getFUNGroupStack() { return m_allFUNGroup; }
 
-	void  checkFunctionName    (CREF(RDOParserSrcInfo) src_info);
-	void  checkActivityName    (CREF(RDOParserSrcInfo) src_info);
-	void  checkDPTName         (CREF(RDOParserSrcInfo) src_info);
+	void  checkFunctionName    (const RDOParserSrcInfo& src_info);
+	void  checkActivityName    (const RDOParserSrcInfo& src_info);
+	void  checkDPTName         (const RDOParserSrcInfo& src_info);
 
-	void insertChanges (CREF(std::string) name, CREF(std::string) value);
+	void insertChanges (const std::string& name, const std::string& value);
 
 	bool isCurrentDPTSearch();
 	bool isCurrentDPTPrior();
@@ -133,16 +133,16 @@ public:
 	std::string getChanges() const;
 
 	LPRDOSMR getSMR() const { return m_pSMR; }
-	void setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR; }
+	void setSMR(const LPRDOSMR& pSMR) { m_pSMR = pSMR; }
 	bool hasSMR() const { return m_pSMR ? true : false; }
 
 	void parse();
-	void parse(REF(std::istream) stream);
+	void parse(std::istream& stream);
 
 	void beforeRun();
 
-	CREF(Error) error() const { return m_error; }
-	 REF(Error) error()       { return m_error; }
+	const Error& error() const { return m_error; }
+	 Error& error() { return m_error; }
 
 	class Stack: private rdo::IndexedStack<rdo::LPISmartPtrWrapper>
 	{
@@ -151,7 +151,7 @@ public:
 		typedef rdo::IndexedStack<rdo::LPISmartPtrWrapper> IndexedStack;
 
 		template <class T>
-		IndexedStack::ID push(CREF(rdo::intrusive_ptr<T>) pObject)
+		IndexedStack::ID push(const rdo::intrusive_ptr<T>& pObject)
 		{
 			rdo::LPISmartPtrWrapper pWrapper = new rdo::smart_ptr_wrapper<T>(pObject);
 			return IndexedStack::push(pWrapper);
@@ -186,13 +186,13 @@ public:
 		}
 	};
 
-	REF(Stack) stack()
+	Stack& stack()
 	{
 		return m_movementObjectList;
 	}
 
 	typedef std::vector<LPTypeInfo> PreCastTypeList;
-	void insertPreCastType(CREF(LPTypeInfo) pType)
+	void insertPreCastType(const LPTypeInfo& pType)
 	{
 		m_preCastTypeList.push_back(pType);
 	}
@@ -255,7 +255,7 @@ private:
 	{
 		std::string m_name;
 		std::string m_value;
-		Changes(CREF(std::string) name, CREF(std::string) value)
+		Changes(const std::string& name, const std::string& value)
 			: m_name (name )
 			, m_value(value)
 		{}

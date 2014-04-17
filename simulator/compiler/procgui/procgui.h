@@ -34,7 +34,7 @@ public:
 	rdo::runtime::LPRDOCalc getCalc();
 
 protected:
-	ProcGUICalc(CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(LPRPShapeDataBlock) pParams);
+	ProcGUICalc(const rdo::runtime::LPRDORuntime& pRuntime, const LPRPShapeDataBlock& pParams);
 	virtual ~ProcGUICalc();
 
 private:
@@ -60,13 +60,13 @@ public:
 	static std::string s_nameSufix;
 
 	void clear();
-	void insertBlock(CREF(LPProcGUIBlock) pBlock );
-	void initResources(CREF(parser::LPRDOParser) pParser);
-	void addResNameToBlock(CREF(std::string) name);
-	CREF(LPILogic) getProcess () const { return m_pProcess; }
+	void insertBlock(const LPProcGUIBlock& pBlock );
+	void initResources(const parser::LPRDOParser& pParser);
+	void addResNameToBlock(const std::string& name);
+	const LPILogic& getProcess () const { return m_pProcess; }
 
 private:
-	ProcGUIProcess(CREF(rdo::runtime::LPRDORuntime) pRuntime);
+	ProcGUIProcess(const rdo::runtime::LPRDORuntime& pRuntime);
 	virtual ~ProcGUIProcess();
 
 	rdo::runtime::LPRDORuntime  m_pRuntime;
@@ -83,7 +83,7 @@ class ProcGUIBlock: public rdo::counter_reference
 {
 DECLARE_FACTORY(ProcGUIBlock);
 protected:
-	ProcGUIBlock(CREF(LPProcGUIProcess) pProcess, CREF(std::string) name);
+	ProcGUIBlock(const LPProcGUIProcess& pProcess, const std::string& name);
 	virtual ~ProcGUIBlock();
 
 private:
@@ -100,7 +100,7 @@ class ProcGUIBlockGenerate
 {
 DECLARE_FACTORY(ProcGUIBlockGenerate);
 private:
-	ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(parser::LPRDOParser) pParser, CREF(LPRPShapeDataBlockCreate) pParams);
+	ProcGUIBlockGenerate(const LPProcGUIProcess& pProcess, const rdo::runtime::LPRDORuntime& pRuntime, const parser::LPRDOParser& pParser, const LPRPShapeDataBlockCreate& pParams);
 	virtual ~ProcGUIBlockGenerate();
 
 	LPIPROCBlock             m_pBlock;
@@ -115,7 +115,7 @@ class ProcGUIBlockTerminate: public ProcGUIBlock
 {
 DECLARE_FACTORY(ProcGUIBlockTerminate);
 private:
-	ProcGUIBlockTerminate(CREF(LPProcGUIProcess) pProcess, CREF(LPRPShapeDataBlockTerminate) pParams);
+	ProcGUIBlockTerminate(const LPProcGUIProcess& pProcess, const LPRPShapeDataBlockTerminate& pParams);
 	virtual ~ProcGUIBlockTerminate();
 
 	LPIPROCBlock                m_pBlock;
@@ -130,7 +130,7 @@ class ProcGUIBlockProcess: public ProcGUIBlock
 {
 DECLARE_FACTORY(ProcGUIBlockProcess);
 private:
-	ProcGUIBlockProcess(CREF(LPProcGUIProcess) pProcess, CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(parser::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams);
+	ProcGUIBlockProcess(const LPProcGUIProcess& pProcess, const rdo::runtime::LPRDORuntime& pRuntime, const parser::LPRDOParser& pParser, const LPRPShapeDataBlockProcess& pParams);
 	virtual ~ProcGUIBlockProcess();
 
 	LPProcGUIBlock            m_pBlock;
@@ -147,7 +147,7 @@ class ProcGUIAdvance
 {
 DECLARE_FACTORY(ProcGUIAdvance);
 private:
-	ProcGUIAdvance(CREF(LPProcGUIProcess) pProcess, CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(LPRPShapeDataBlockProcess) pParams);
+	ProcGUIAdvance(const LPProcGUIProcess& pProcess, const rdo::runtime::LPRDORuntime& pRuntime, const LPRPShapeDataBlockProcess& pParams);
 	virtual ~ProcGUIAdvance();
 
 	LPIPROCBlock              m_pBlock;
@@ -162,11 +162,11 @@ class ProcGUISeize: public ProcGUIBlock
 {
 DECLARE_FACTORY(ProcGUISeize);
 public:
-	void createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser);
-	void addResourceName(CREF(std::string) name);
+	void createRuntime(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser);
+	void addResourceName(const std::string& name);
 
 private:
-	ProcGUISeize(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams);
+	ProcGUISeize(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser, const LPRPShapeDataBlockProcess& pParams);
 	virtual ~ProcGUISeize();
 
 	typedef std::list<std::string> ResNameList;
@@ -186,11 +186,11 @@ class ProcGUIRelease: public ProcGUIBlock
 {
 DECLARE_FACTORY(ProcGUIRelease);
 public:
-	void createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser);
-	void addResourceName(CREF(std::string) name);
+	void createRuntime(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser);
+	void addResourceName(const std::string& name);
 
 private:
-	ProcGUIRelease(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams);
+	ProcGUIRelease(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser, const LPRPShapeDataBlockProcess& pParams);
 	virtual ~ProcGUIRelease();
 
 	typedef std::list<std::string> ResNameList;
@@ -210,11 +210,11 @@ class ProcGUIQueue: public ProcGUIBlock
 {
 DECLARE_FACTORY(ProcGUIQueue);
 public:
-	void createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser);
-	void setResource(CREF(std::string) name);
+	void createRuntime(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser);
+	void setResource(const std::string& name);
 
 private:
-	ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser, CREF(std::string) name);
+	ProcGUIQueue(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser, const std::string& name);
 	virtual ~ProcGUIQueue();
 
 	std::string m_resourceName;
@@ -230,11 +230,11 @@ class ProcGUIDepart: public ProcGUIBlock
 {
 DECLARE_FACTORY(ProcGUIDepart);
 public:
-	void createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser);
-	void setResource(CREF(std::string) name);
+	void createRuntime(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser);
+	void setResource(const std::string& name);
 
 private:
-	ProcGUIDepart(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser, CREF(std::string) name);
+	ProcGUIDepart(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser, const std::string& name);
 	virtual ~ProcGUIDepart();
 
 	std::string m_resourceName;

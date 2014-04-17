@@ -31,7 +31,7 @@ class RDOParserRDOItem: public RDOParserItem
 {
 DECLARE_FACTORY(RDOParserRDOItem);
 public:
-	virtual void parse(Converter* pParser, REF(std::istream) streamIn);
+	virtual void parse(Converter* pParser, std::istream& streamIn);
 	virtual std::size_t lexer_loc_line();
 	virtual std::size_t lexer_loc_pos();
 
@@ -54,7 +54,7 @@ class RDOParserRSS: public RDOParserRDOItem
 DECLARE_FACTORY(RDOParserRSS);
 private:
 	RDOParserRSS();
-	virtual void parse(Converter* pParser, REF(std::istream) streamIn);
+	virtual void parse(Converter* pParser, std::istream& streamIn);
 };
 
 // --------------------------------------------------------------------------------

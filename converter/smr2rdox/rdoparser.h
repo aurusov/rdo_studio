@@ -54,13 +54,13 @@ public: \
 	typedef std::vector<TYPE> NAME##List; \
 	void                insert##NAME (TYPE value); \
 	TYPE                getLast##NAME()       { return !m_all##NAME.empty() ? m_all##NAME.back() : TYPE(NULL); } \
-	CREF(NAME##List)    get##NAME##s () const { return m_all##NAME; } \
+	const NAME##List&   get##NAME##s () const { return m_all##NAME; } \
 private: \
 	NAME##List m_all##NAME;
 
 #define DEFINE_OBJECT_CONTAINER_WITHNAME(TYPE, NAME) \
 public: \
-	const TYPE find##NAME  (CREF(std::string) name) const; \
+	const TYPE find##NAME  (const std::string& name) const; \
 	bool remove##NAME(const TYPE item);
 
 #define DEFINE_OBJECT_CONTAINER_NONAME(NAME) \
@@ -99,13 +99,13 @@ public:
 	rdo::runtime::LPRDORuntime runtime() { return m_pRuntime; }
 
 	bool isPattern() const { return m_pattern; }
-	REF(FUNGroupList) getFUNGroupStack() { return m_allFUNGroup; }
+	FUNGroupList& getFUNGroupStack() { return m_allFUNGroup; }
 
-	void  checkFunctionName    (CREF(RDOParserSrcInfo) src_info);
-	void  checkActivityName    (CREF(RDOParserSrcInfo) src_info);
-	void  checkDPTName         (CREF(RDOParserSrcInfo) src_info);
+	void  checkFunctionName    (const RDOParserSrcInfo& src_info);
+	void  checkActivityName    (const RDOParserSrcInfo& src_info);
+	void  checkDPTName         (const RDOParserSrcInfo& src_info);
 
-	void insertChanges(CREF(std::string) name, CREF(std::string) value);
+	void insertChanges(const std::string& name, const std::string& value);
 
 	bool isHaveKWResources() const { return m_have_kw_Resources; }
 	void setHaveKWResources(bool value) { m_have_kw_Resources = value; }
@@ -126,11 +126,11 @@ public:
 	std::string getChanges() const;
 
 	LPRDOSMR getSMR() const { return m_pSMR; }
-	void setSMR(CREF(LPRDOSMR) pSMR) { m_pSMR = pSMR; }
+	void setSMR(const LPRDOSMR& pSMR) { m_pSMR = pSMR; }
 	bool hasSMR() const { return m_pSMR ? true : false; }
 
-	CREF(Error) error() const { return m_error; }
-	 REF(Error) error()       { return m_error; }
+	const Error& error() const { return m_error; }
+	 Error& error() { return m_error; }
 
 	class Stack: private rdo::IndexedStack<rdo::LPISmartPtrWrapper>
 	{
@@ -139,7 +139,7 @@ public:
 		typedef rdo::IndexedStack<rdo::LPISmartPtrWrapper> IndexedStack;
 
 		template <class T>
-		IndexedStack::ID push(CREF(rdo::intrusive_ptr<T>) pObject)
+		IndexedStack::ID push(const rdo::intrusive_ptr<T>& pObject)
 		{
 			rdo::LPISmartPtrWrapper pWrapper = new rdo::smart_ptr_wrapper<T>(pObject);
 			return IndexedStack::push(pWrapper);
@@ -163,22 +163,22 @@ public:
 		}
 	};
 
-	REF(Stack) stack()
+	Stack& stack()
 	{
 		return m_movementObjectList;
 	}
 
 	typedef std::vector<LPRDOTypeParam> PreCastTypeList;
-	CREF(PreCastTypeList) getPreCastTypeList() const
+	const PreCastTypeList& getPreCastTypeList() const
 	{
 		return m_preCastTypeList;
 	}
-	void insertPreCastType(CREF(LPRDOTypeParam) type)
+	void insertPreCastType(const LPRDOTypeParam& type)
 	{
 		m_preCastTypeList.push_back(type);
 	}
 
-	void insertDocUpdate(CREF(LPDocUpdate) pDocUpdate);
+	void insertDocUpdate(const LPDocUpdate& pDocUpdate);
 
 	static rdo::converter::smr2rdox::RDOFileTypeIn getFileToParse();
 	static std::size_t lexer_loc_line();
@@ -189,7 +189,7 @@ protected:
 	LPRDOParserItem m_pParserItem;
 	LPDocument      m_pDocument;
 
-	virtual REF(LPRDOParserContainer) getContainer() = 0;
+	virtual LPRDOParserContainer& getContainer() = 0;
 
 	RDOParserContainer::Iterator begin()
 	{
@@ -226,7 +226,7 @@ private:
 		std::string m_name;
 		std::string m_value;
 
-		ChangesData(CREF(std::string) name, CREF(std::string) value)
+		ChangesData(const std::string& name, const std::string& value)
 			: m_name (name )
 			, m_value(value)
 		{}
@@ -263,7 +263,7 @@ public:
 private:
 	LPRDOParserContainer m_container;
 
-	virtual REF(LPRDOParserContainer) getContainer()
+	virtual LPRDOParserContainer& getContainer()
 	{
 		if (!m_container)
 		{
@@ -286,7 +286,7 @@ public:
 		CNV_OK,
 		CNV_ERROR
 	};
-	Result convert(CREF(boost::filesystem::path) smrFullFileName, REF(rdo::converter::smr2rdox::RDOSMRFileInfo) info);
+	Result convert(const boost::filesystem::path& smrFullFileName, rdo::converter::smr2rdox::RDOSMRFileInfo& info);
 };
 
 // --------------------------------------------------------------------------------
@@ -297,18 +297,18 @@ class RDOParserSMRInfo: public RDOParserTemplate<RDOParserContainerSMRInfo>
 public:
 	typedef std::map<rdo::converter::smr2rdox::RDOFileTypeIn, boost::filesystem::path> FileList;
 
-	bool parseSMR(CREF(boost::filesystem::path) smrFullFileName, REF(boost::filesystem::path) modelName);
-	CREF(FileList) getFileList() const;
+	bool parseSMR(const boost::filesystem::path& smrFullFileName, boost::filesystem::path& modelName);
+	const FileList& getFileList() const;
 
 private:
 	FileList m_fileList;
 
 	void insertFileName(rdo::converter::smr2rdox::RDOFileTypeIn type,
-	                    CREF(boost::filesystem::path)           modelPath,
-	                    CREF(boost::filesystem::path)           modelName,
-	                    CREF(boost::filesystem::path)           smrFileName,
-	                    CREF(boost::filesystem::path)           nameFromSMR,
-	                    CREF(boost::filesystem::path)           fileExt);
+	                    const boost::filesystem::path&          modelPath,
+	                    const boost::filesystem::path&          modelName,
+	                    const boost::filesystem::path&          smrFileName,
+	                    const boost::filesystem::path&          nameFromSMR,
+	                    const boost::filesystem::path&          fileExt);
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

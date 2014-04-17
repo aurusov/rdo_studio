@@ -37,7 +37,7 @@ public:
 	LogView(QAbstractScrollArea* pParent, LogStyle* pStyle);
 	virtual ~LogView();
 
-	void push_back(CREF(std::string) log);
+	void push_back(const std::string& log);
 	void setText(std::string text);
 	void clear();
 	void selectLine(int index);
@@ -45,7 +45,7 @@ public:
 	bool getFocusOnly() const;
 	void setFocusOnly(bool value);
 
-	CREF(LogStyle) getStyle() const;
+	const LogStyle& getStyle() const;
 	void setStyle(LogStyle* style, bool needRedraw = true);
 
 	bool getDrawLog() const;
@@ -63,7 +63,7 @@ private:
 
 		StringList();
 
-		void push_back(CREF(QString) value);
+		void push_back(const QString& value);
 
 		const_iterator begin() const;
 		const_iterator end  () const;
@@ -96,7 +96,7 @@ private:
 		LogColorPair m_parentColor;
 
 		SubitemColors();
-		SubitemColors(CREF(SubitemColors) subitemColors);
+		SubitemColors(const SubitemColors& subitemColors);
 	};
 
 	struct ScrollMetricVert: public ScrollMetric
@@ -127,7 +127,7 @@ private:
 	bool m_drawLog;
 	QFont m_font;
 
-	bool getItemColors(CREF(QString) item, LogColorPair &colors) const;
+	bool getItemColors(const QString& item, LogColorPair &colors) const;
 	bool getItemColors(int index, LogColorPair &colors) const;
 
 	int selectedLine() const;
@@ -154,7 +154,7 @@ private:
 	bool        canCopy             () const;
 
 	int find(bool searchDown);
-	void onFindDlgFind(CREF(FindDialog::Settings) settings);
+	void onFindDlgFind(const FindDialog::Settings& settings);
 	void onFindDlgClose();
 
 	virtual void resizeEvent     (QResizeEvent* pEvent);

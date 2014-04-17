@@ -18,7 +18,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTFree
 // --------------------------------------------------------------------------------
-inline RDODPTFree::RDODPTFree(CREF(LPRDORuntime) pRuntime)
+inline RDODPTFree::RDODPTFree(const LPRDORuntime& pRuntime)
 	: RDOLogicSimple(pRuntime, NULL)
 {}
 

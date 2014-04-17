@@ -40,9 +40,9 @@ public:
 	virtual ~Content();
 
 	void update(const rdo::animation::Frame* const pFrame,
-		CREF(rdo::gui::BitmapList) bitmapList,
-		REF(rdo::gui::BitmapList) bitmapGeneratedList,
-		REF(rdo::gui::animation::AreaList) areaList);
+		const rdo::gui::BitmapList& bitmapList,
+		rdo::gui::BitmapList& bitmapGeneratedList,
+		rdo::gui::animation::AreaList& areaList);
 	void updateFont();
 
 private:
@@ -53,12 +53,12 @@ private:
 	QFont              m_font;
 
 	bool  valid           () const;
-	void  init            (const rdo::animation::Frame* const pFrame, CREF(rdo::gui::BitmapList) bitmapList);
-	void  init            (CREF(QSize)   size );
-	void  setBGColor      (CREF(QColor)  color);
-	void  onDraw          (REF(QPainter) painter);
+	void  init            (const rdo::animation::Frame* const pFrame, const rdo::gui::BitmapList& bitmapList);
+	void  init            (const QSize& size);
+	void  setBGColor      (const QColor& color);
+	void  onDraw          (QPainter& painter);
 
-	void  drawBackground    (const rdo::animation::Frame* const pFrame, CREF(rdo::gui::BitmapList) bitmapList);
+	void  drawBackground    (const rdo::animation::Frame* const pFrame, const rdo::gui::BitmapList& bitmapList);
 	template <class F>
 	void  drawColoredElement(const rdo::animation::ColoredElement* pColor, F drawMethod);
 	void  setColors         (const rdo::animation::ColoredElement* pColor);
@@ -69,14 +69,14 @@ private:
 	void  elementTriang     (rdo::animation::TriangElement*    pElement);
 	void  elementCircle     (rdo::animation::CircleElement*    pElement);
 	void  elementEllipse    (rdo::animation::EllipseElement*   pElement);
-	void  elementBMP        (rdo::animation::BmpElement*       pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
-	void  elementSBMP       (rdo::animation::ScaledBmpElement* pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
-	void  elementActive     (rdo::animation::ActiveElement*    pElement, REF(rdo::gui::animation::AreaList) areaList);
+	void  elementBMP        (rdo::animation::BmpElement*       pElement, const rdo::gui::BitmapList& bitmapList, rdo::gui::BitmapList& bitmapGeneratedList);
+	void  elementSBMP       (rdo::animation::ScaledBmpElement* pElement, const rdo::gui::BitmapList& bitmapList, rdo::gui::BitmapList& bitmapGeneratedList);
+	void  elementActive     (rdo::animation::ActiveElement*    pElement, rdo::gui::animation::AreaList& areaList);
 
-	static QPixmap getBitmap(CREF(QString)              bitmapName,
-	                         CREF(QString)              maskName,
-	                         CREF(rdo::gui::BitmapList) bitmapList,
-	                          REF(rdo::gui::BitmapList) bitmapGeneratedList);
+	static QPixmap getBitmap(const QString& bitmapName,
+	                         const QString& maskName,
+	                         const rdo::gui::BitmapList& bitmapList,
+	                         rdo::gui::BitmapList& bitmapGeneratedList);
 
 private:
 	virtual void resizeEvent    (QResizeEvent* pEvent);
@@ -104,9 +104,9 @@ public:
 	void updateFont();
 
 	void update(const rdo::animation::Frame* const pFrame,
-		CREF(rdo::gui::BitmapList) bitmapList,
-		REF(rdo::gui::BitmapList) bitmapGeneratedList,
-		REF(rdo::gui::animation::AreaList) areaList);
+		const rdo::gui::BitmapList& bitmapList,
+		rdo::gui::BitmapList& bitmapGeneratedList,
+		rdo::gui::animation::AreaList& areaList);
 
 private:
 	QWidget* m_pContent;

@@ -12,7 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
 
@@ -33,7 +32,7 @@ public:
 	};
 
 	template <Type>
-	static REF(std::size_t) getCalcCounter();
+	static std::size_t& getCalcCounter();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

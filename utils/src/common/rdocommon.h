@@ -19,7 +19,6 @@
 #include <vector>
 #include <sstream>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "utils/src/common/model_objects.h"
 // --------------------------------------------------------------------------------
 
@@ -39,7 +38,7 @@ namespace rdo {
 	//! \param  str    - исходная строка, которая может содержать символы форматирования
 	//! \param  params - определенный по формату набор параметров (вытащенный по формату из стека)
 	//! \result Отформатированная строчка
-	std::string format(const char* str, REF(va_list) params);
+	std::string format(const char* str, va_list& params);
 
 	//! Переводит значение в строку
 	//! \tparam T     - тип значения
@@ -71,7 +70,7 @@ namespace rdo {
 
 		//! Создаёт пустой контейнер и помещает в него \ref item
 		//! \param item - Элемент контейнера
-		vector(CREF(T) item)
+		vector(const T& item)
 		{
 			std::vector<T>::push_back(item);
 		}
@@ -79,7 +78,7 @@ namespace rdo {
 		//! Добавляет в контейнер новый эелемент, более удобный аналог std::vector::push_back()
 		//! \param item - Элемент контейнера
 		//! \result Возвращает сам контейнер, чтобы эту же операцию можно было вызвать снова
-		REF(vector) operator() (CREF(T) item)
+		vector& operator() (const T& item)
 		{
 			std::vector<T>::push_back(item);
 			return *this;

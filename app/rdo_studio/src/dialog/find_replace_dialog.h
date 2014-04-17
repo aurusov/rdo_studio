@@ -32,7 +32,7 @@ public:
 		QString byWhat;
 
 		Settings();
-		Settings(CREF(Settings) settings);
+		Settings(const Settings& settings);
 	};
 
 	typedef  boost::function<void (const Settings&)>  OnFindCallback;
@@ -41,7 +41,7 @@ public:
 	FindReplaceDialog(QWidget* pParent, const OnFindCallback& onFindCallback, const OnFindCallback& onReplaceCallback, const OnFindCallback& onReplaceAllCallback, const OnCloseCallback& onCloseCallback);
 	virtual ~FindReplaceDialog();
 
-	void setSettings(CREF(Settings) settings);
+	void setSettings(const Settings& settings);
 
 private:
 	Settings         m_settings;

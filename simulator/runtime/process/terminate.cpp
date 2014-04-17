@@ -12,7 +12,6 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/process/terminate.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/calc/resource/calc_relevant.h"
@@ -23,13 +22,12 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCTerminate
 // --------------------------------------------------------------------------------
-bool RDOPROCTerminate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCTerminate::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return !m_transacts.empty() ? true : false;
 }
 
-IBaseOperation::BOResult RDOPROCTerminate::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCTerminate::onDoOperation(const LPRDORuntime& pRuntime)
 {
 	TRACE1("%7.1f TERMINATE\n", pRuntime->getCurrentTime());
 	LPRDOPROCTransact transact = m_transacts.front();
@@ -54,23 +52,18 @@ IBaseOperation::BOResult RDOPROCTerminate::onDoOperation(CREF(LPRDORuntime) pRun
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCTerminate::onStart(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPROCTerminate::onStart(const LPRDORuntime& /*pRuntime*/)
+{}
 
-void RDOPROCTerminate::onStop(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPROCTerminate::onStop(const LPRDORuntime& /*pRuntime*/)
+{}
 
-IBaseOperation::BOResult RDOPROCTerminate::onContinue(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCTerminate::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
-void RDOPROCTerminate::setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics)
+void RDOPROCTerminate::setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics)
 {
 	m_pStatistics = pStatistics;
 }

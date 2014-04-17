@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "utils/src/common/model_objects.h"
 // --------------------------------------------------------------------------------
 
@@ -37,7 +36,7 @@ public:
 	//! \param line    - номер строки с ошибкой
 	//! \param pos     - позиция ошибки в строке
 	//! \param type    - тип сообщения. Значение по умолчанию \b MT_ERROR
-	FileMessage(CREF(std::string) text, rdoModelObjects::RDOFileType file, std::size_t line, std::size_t pos, Type type = MT_ERROR);
+	FileMessage(const std::string& text, rdoModelObjects::RDOFileType file, std::size_t line, std::size_t pos, Type type = MT_ERROR);
 
 	std::string getText() const;
 	rdoModelObjects::RDOFileType getFileType() const;
@@ -45,7 +44,7 @@ public:
 	std::size_t getPosInLine() const;
 	Type getType () const;
 
-	void setText(CREF(std::string) text);
+	void setText(const std::string& text);
 
 private:
 	std::string m_text; //!< Текст сообщения

@@ -590,7 +590,7 @@ void MainWindow::updateAllStyles()
 	g_pTracer->updateChartsStyles();
 }
 
-CREF(LPStatusBar) MainWindow::statusBar() const
+const LPStatusBar& MainWindow::statusBar() const
 {
 	return m_pStatusBar;
 }
@@ -740,7 +740,7 @@ void MainWindow::onMenuFileReopen(QAction* pAction)
 	}
 }
 
-void MainWindow::insertMenuFileReopenItem(CREF(QString) item)
+void MainWindow::insertMenuFileReopenItem(const QString& item)
 {
 	if (!item.isEmpty())
 	{

@@ -35,7 +35,7 @@ void testException(F binder)
 	{
 		binder();
 	}
-	catch(CREF(RDOValueException))
+	catch(const RDOValueException&)
 	{
 		flag = true;
 	}
@@ -65,7 +65,7 @@ void compare(RDOValue value1, RDOValue value2)
 }
 
 template <class T1>
-void compareOne(CREF(T1) param1, CREF(T1) param2)
+void compareOne(const T1& param1, const T1& param2)
 {
 	const T1 val1 = param1;
 	const T1 val2 = param2;
@@ -83,7 +83,7 @@ void compareOne(CREF(T1) param1, CREF(T1) param2)
 }
 
 template <class T1, class T2>
-void compareValue(CREF(T1) param1, CREF(T2) param2, CREF(RDOType::TypeID) type1, CREF(RDOType::TypeID) type2)
+void compareValue(const T1& param1, const T2& param2, const RDOType::TypeID& type1, const RDOType::TypeID& type2)
 {
 	T1 val1 = param1;
 	T2 val2 = param2;
@@ -111,7 +111,7 @@ void compareValue(CREF(T1) param1, CREF(T2) param2, CREF(RDOType::TypeID) type1,
 }
 
 template <class T1, class T2>
-void compareStr(CREF(T1) param1, CREF(T2) param2)
+void compareStr(const T1& param1, const T2& param2)
 {
 	T1 val1 = param1;
 	T2 str1 = param2;
@@ -122,7 +122,7 @@ void compareStr(CREF(T1) param1, CREF(T2) param2)
 }
 
 template <class T1, class T2>
-void compareChr(CREF(T1) param1, CREF(T2) param2)
+void compareChr(const T1& param1, const T2& param2)
 {
 	T1  val1 = param1;
 	T2  ch1  = param2;
@@ -495,7 +495,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Identificator)
 }
 
 template <class T1>
-void testUndef(CREF(T1) param1)
+void testUndef(const T1& param1)
 {
 	T1 val = param1;
 	RDOValue value(val);

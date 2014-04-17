@@ -28,7 +28,7 @@ public:
 		middle
 	};
 
-	mouse_event(CREF(std::string) name, double time, buttons button, int x, int y);
+	mouse_event(const std::string& name, double time, buttons button, int x, int y);
 	virtual ~mouse_event();
 
 	void setButton(buttons button);

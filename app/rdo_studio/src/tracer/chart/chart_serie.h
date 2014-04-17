@@ -25,7 +25,7 @@ class ChartView;
 class ChartSerie
 {
 public:
-	ChartSerie(CREF(LPSerie) pSerie);
+	ChartSerie(const LPSerie& pSerie);
 	~ChartSerie();
 
 	struct Options
@@ -39,15 +39,15 @@ public:
 		bool           showInLegend;
 
 		Options();
-		bool operator== (CREF(Options) options) const;
+		bool operator== (const Options& options) const;
 	};
 
-	CREF(LPSerie) getSerie() const;
+	const LPSerie& getSerie() const;
 
-	CREF(Options) options   () const;
-	void          setOptions(CREF(Options) options);
+	const Options& options() const;
+	void setOptions(const Options& options);
 
-	bool  isTracerSerie(CREF(LPSerie) pSerie) const;
+	bool  isTracerSerie(const LPSerie& pSerie) const;
 	void  drawSerie    (ChartView* const pView, QPainter& painter, const QRect& rect) const;
 	void  getCaptions  (std::vector<std::string>& captions, const int valueCount) const;
 	QSize getLegendSize(const QFontMetrics& fm, const QRect& rect) const;

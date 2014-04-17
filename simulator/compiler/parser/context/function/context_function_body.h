@@ -51,7 +51,7 @@ class ContextFunctionBody: public ContextReturnable
 {
 DECLARE_FACTORY(ContextFunctionBody)
 public:
-	void setBody(CREF(rdo::runtime::LPRDOCalc) pBody);
+	void setBody(const rdo::runtime::LPRDOCalc& pBody);
 
 	void pushContext();
 	void popContext ();

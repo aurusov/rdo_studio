@@ -43,7 +43,7 @@ std::string format(const char* str, ...)
 	return res;
 }
 
-std::string format(const char* str, REF(va_list) params)
+std::string format(const char* str, va_list& params)
 {
 	std::vector<char> s;
 	s.resize(256);

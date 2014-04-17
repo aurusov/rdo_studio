@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetResourceHelper
 // --------------------------------------------------------------------------------
-bool RDOCalcGetResourceHelper::getResource(CREF(LPRDORuntime) pRuntime, std::size_t resourceID, REF(RDOValue) result)
+bool RDOCalcGetResourceHelper::getResource(const LPRDORuntime& pRuntime, std::size_t resourceID, RDOValue& result)
 {
 	LPRDOResource pResource = pRuntime->getResourceByID(resourceID);
 	if (!pResource)
@@ -39,11 +39,11 @@ bool RDOCalcGetResourceHelper::getResource(CREF(LPRDORuntime) pRuntime, std::siz
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetResourceByID
 // --------------------------------------------------------------------------------
-RDOCalcGetResourceByID::RDOCalcGetResourceByID(CREF(std::size_t) resourceID)
+RDOCalcGetResourceByID::RDOCalcGetResourceByID(const std::size_t& resourceID)
 	: m_resourceID(resourceID)
 {}
 
-RDOValue RDOCalcGetResourceByID::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcGetResourceByID::doCalc(const LPRDORuntime& pRuntime)
 {
 	RDOValue value;
 	if (!RDOCalcGetResourceHelper::getResource(pRuntime, m_resourceID, value))
@@ -56,14 +56,14 @@ RDOValue RDOCalcGetResourceByID::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetResourceParam
 // --------------------------------------------------------------------------------
-RDOCalcGetResourceParam::RDOCalcGetResourceParam(CREF(LPRDOCalc) pResource, std::size_t paramID)
+RDOCalcGetResourceParam::RDOCalcGetResourceParam(const LPRDOCalc& pResource, std::size_t paramID)
 	: m_pResource(pResource)
 	, m_paramID  (paramID  )
 {
 	ASSERT(m_pResource);
 }
 
-RDOValue RDOCalcGetResourceParam::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcGetResourceParam::doCalc(const LPRDORuntime& pRuntime)
 {
 	LPRDOResource pResource = m_pResource->calcValue(pRuntime).getPointerByInterface<IResourceType>();
 	ASSERT(pResource);
@@ -73,12 +73,12 @@ RDOValue RDOCalcGetResourceParam::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetUnknowResParam
 // --------------------------------------------------------------------------------
-RDOCalcGetUnknowResParam::RDOCalcGetUnknowResParam(CREF(std::string) resName, CREF(std::string) parName)
+RDOCalcGetUnknowResParam::RDOCalcGetUnknowResParam(const std::string& resName, const std::string& parName)
 	: m_resName(resName)
 	, m_parName(parName)
 {}
 
-RDOValue RDOCalcGetUnknowResParam::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcGetUnknowResParam::doCalc(const LPRDORuntime& pRuntime)
 {
 	pRuntime->error().push(rdo::format("Попытка использовать несуществующий ресурс: %s.%s", m_resName.c_str(), m_parName.c_str()), srcInfo());
 	return RDOValue();
@@ -87,7 +87,7 @@ RDOValue RDOCalcGetUnknowResParam::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOSetResourceParamCalc
 // --------------------------------------------------------------------------------
-RDOSetResourceParamCalc::RDOSetResourceParamCalc(std::size_t resourceID, std::size_t paramID, CREF(LPRDOCalc) pCalc)
+RDOSetResourceParamCalc::RDOSetResourceParamCalc(std::size_t resourceID, std::size_t paramID, const LPRDOCalc& pCalc)
 	: m_resourceID(resourceID)
 	, m_paramID   (paramID   )
 	, m_pCalc     (pCalc     )
@@ -98,7 +98,7 @@ RDOSetResourceParamCalc::RDOSetResourceParamCalc(std::size_t resourceID, std::si
 	}
 }
 
-RDOValue RDOSetResourceParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOSetResourceParamCalc::doCalc(const LPRDORuntime& pRuntime)
 {
 	pRuntime->setResParamVal(m_resourceID, m_paramID, m_pCalc->calcValue(pRuntime));
 	return RDOValue();
@@ -112,7 +112,7 @@ RDOCalcSetResourceTrace::RDOCalcSetResourceTrace(const LPRDOCalc& getResource, b
 	, m_traceValue(traceValue)
 {}
 
-RDOValue RDOCalcSetResourceTrace::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcSetResourceTrace::doCalc(const LPRDORuntime& pRuntime)
 {
 	RDOValue value = 0;
 	LPRDOResource pResource = m_getResource->calcValue(pRuntime).getPointerByInterface<IResourceType>();

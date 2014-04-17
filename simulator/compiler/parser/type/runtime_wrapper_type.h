@@ -21,14 +21,14 @@ class RuntimeWrapperType: public RDOType
 {
 DECLARE_FACTORY(RuntimeWrapperType)
 public:
-	virtual CREF(rdo::runtime::LPRDOType)    type() const;
-	virtual rdo::runtime::RDOType::TypeID  typeID() const;
+	virtual const rdo::runtime::LPRDOType& type() const;
+	virtual rdo::runtime::RDOType::TypeID typeID() const;
 
-	virtual rdo::runtime::LPRDOCalc calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const;
+	virtual rdo::runtime::LPRDOCalc calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const;
 
 protected:
 	RuntimeWrapperType();
-	RuntimeWrapperType(CREF(rdo::runtime::LPRDOType) pType);
+	RuntimeWrapperType(const rdo::runtime::LPRDOType& pType);
 	virtual ~RuntimeWrapperType();
 
 	rdo::runtime::LPRDOType m_pType;

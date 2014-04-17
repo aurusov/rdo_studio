@@ -63,7 +63,7 @@ RDOParserContainer::RDOParserContainer()
 RDOParserContainer::~RDOParserContainer()
 {}
 
-std::size_t RDOParserContainer::insert(rdo::converter::smr2rdox::RDOParseType type, CREF(LPRDOParserItem) pParser)
+std::size_t RDOParserContainer::insert(rdo::converter::smr2rdox::RDOParseType type, const LPRDOParserItem& pParser)
 {
 	ASSERT(pParser);
 
@@ -99,7 +99,7 @@ std::size_t RDOParserContainer::insert(rdo::converter::smr2rdox::RDOParseType ty
 	return 0;
 }
 
-void RDOParserContainer::getMinMax(rdo::converter::smr2rdox::RDOParseType type, REF(std::size_t) min, REF(std::size_t) max)
+void RDOParserContainer::getMinMax(rdo::converter::smr2rdox::RDOParseType type, std::size_t& min, std::size_t& max)
 {
 	switch (type)
 	{

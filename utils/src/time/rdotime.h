@@ -24,14 +24,14 @@ public:
 	typedef uint64_t Value;
 
 	Time();
-	Time(CREF(Value) value);
+	Time(const Value& value);
 
-	bool operator==(CREF(Time) time);
+	bool operator==(const Time& time);
 	operator Value() const;
 
 	std::string asString() const;
 
-	CREF(Value) value() const;
+	const Value& value() const;
 
 	static Time utc(); // total_nanoseconds
 	static Time local(); // total_nanoseconds

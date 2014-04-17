@@ -43,8 +43,8 @@ friend class RDODPTSearch;
 friend class TreeNode;
 
 private:
-	RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, bool trace, CREF(std::string) name);
-	RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, bool trace, CREF(LPRDOCalc) pCondition, CREF(std::string) name);
+	RDORule(const LPRDORuntime& pRuntime, const LPRDOPatternRule& pPattern, bool trace, const std::string& name);
+	RDORule(const LPRDORuntime& pRuntime, const LPRDOPatternRule& pPattern, bool trace, const LPRDOCalc& pCondition, const std::string& name);
 
 	virtual ~RDORule();
 

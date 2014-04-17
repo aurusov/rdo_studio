@@ -24,7 +24,7 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-Function::Function(CREF(LPTypeInfo) pReturnType, CREF(RDOParserSrcInfo) srcInfo)
+Function::Function(const LPTypeInfo& pReturnType, const RDOParserSrcInfo& srcInfo)
 	: RDOParserSrcInfo(srcInfo)
 	, m_pReturnType(pReturnType)
 {
@@ -73,7 +73,7 @@ void Function::popParamDefinitionContext()
 	ASSERT(m_pFunctionType);
 }
 
-void Function::onPushParam(CREF(LPRDOParam) pParam)
+void Function::onPushParam(const LPRDOParam& pParam)
 {
 	ASSERT(pParam);
 	LPRDOParam pParamPrev = findParam(pParam->name());
@@ -86,7 +86,7 @@ void Function::onPushParam(CREF(LPRDOParam) pParam)
 	m_paramList.push_back(pParam); 
 }
 
-LPRDOParam Function::findParam(CREF(std::string) paramName) const
+LPRDOParam Function::findParam(const std::string& paramName) const
 {
 	ParamList::const_iterator it = find(paramName);
 
@@ -95,7 +95,7 @@ LPRDOParam Function::findParam(CREF(std::string) paramName) const
 		: LPRDOParam(NULL);
 }
 
-Function::ParamID Function::findParamID(CREF(std::string) paramName) const
+Function::ParamID Function::findParamID(const std::string& paramName) const
 {
 	ParamList::const_iterator it = find(paramName);
 
@@ -104,12 +104,12 @@ Function::ParamID Function::findParamID(CREF(std::string) paramName) const
 		: ParamID();
 }
 
-Function::ParamList::const_iterator Function::find(CREF(std::string) paramName) const
+Function::ParamList::const_iterator Function::find(const std::string& paramName) const
 {
 	return boost::range::find_if(m_paramList, compareName<RDOParam>(paramName));
 }
 
-CREF(Function::ParamList) Function::getParams() const
+const Function::ParamList& Function::getParams() const
 {
 	return m_paramList;
 }
@@ -168,7 +168,7 @@ void Function::popFunctionBodyContext()
 	m_pContextFunctionBody = NULL;
 }
 
-void Function::setBody(CREF(rdo::runtime::LPRDOCalc) pBody)
+void Function::setBody(const rdo::runtime::LPRDOCalc& pBody)
 {
 	ASSERT(!m_pBody);
 	ASSERT(pBody);
@@ -214,7 +214,7 @@ void Function::setBody(CREF(rdo::runtime::LPRDOCalc) pBody)
 	m_pBody = pCalcReturnCatch;
 }
 
-void Function::setDefaultCalc(CREF(rdo::runtime::LPRDOCalc) pDefaultValue)
+void Function::setDefaultCalc(const rdo::runtime::LPRDOCalc& pDefaultValue)
 {
 	ASSERT(pDefaultValue);
 	ASSERT(!m_pDefaultValue);

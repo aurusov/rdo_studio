@@ -74,7 +74,7 @@ RDOThreadRepository::~RDOThreadRepository()
 	m_traceFile.close();
 }
 
-void RDOThreadRepository::proc(REF(RDOMessageInfo) msg)
+void RDOThreadRepository::proc(RDOMessageInfo& msg)
 {
 	switch (msg.message)
 	{
@@ -239,7 +239,7 @@ void RDOThreadRepository::newModel(const NewModel* const data)
 	}
 }
 
-bool RDOThreadRepository::openModel(CREF(boost::filesystem::path) modelFileName)
+bool RDOThreadRepository::openModel(const boost::filesystem::path& modelFileName)
 {
 	if (canCloseModel())
 	{
@@ -358,7 +358,7 @@ void RDOThreadRepository::closeModel()
 	}
 }
 
-void RDOThreadRepository::extractName(CREF(boost::filesystem::path) fullName)
+void RDOThreadRepository::extractName(const boost::filesystem::path& fullName)
 {
 	m_modelPath = rdo::File::extractFilePath(fullName);
 
@@ -366,7 +366,7 @@ void RDOThreadRepository::extractName(CREF(boost::filesystem::path) fullName)
 	setName(path.filename().stem());
 }
 
-void RDOThreadRepository::setName(CREF(boost::filesystem::path) name)
+void RDOThreadRepository::setName(const boost::filesystem::path& name)
 {
 	m_modelName = name;
 	if (m_modelName.empty())
@@ -376,7 +376,7 @@ void RDOThreadRepository::setName(CREF(boost::filesystem::path) name)
 	}
 }
 
-void RDOThreadRepository::loadFile(CREF(boost::filesystem::path) fileName, std::ostream& stream, bool described, bool mustExist, REF(bool) reanOnly) const
+void RDOThreadRepository::loadFile(const boost::filesystem::path& fileName, std::ostream& stream, bool described, bool mustExist, bool& reanOnly) const
 {
 	if (described)
 	{
@@ -409,7 +409,7 @@ void RDOThreadRepository::loadFile(CREF(boost::filesystem::path) fileName, std::
 	}
 }
 
-void RDOThreadRepository::saveFile(CREF(boost::filesystem::path) fileName, const std::stringstream& stream, bool deleteIfEmpty) const
+void RDOThreadRepository::saveFile(const boost::filesystem::path& fileName, const std::stringstream& stream, bool deleteIfEmpty) const
 {
 	if (!fileName.empty())
 	{
@@ -448,7 +448,7 @@ bool RDOThreadRepository::createRDOX(const boost::filesystem::path& fileName)
 
 void RDOThreadRepository::createRDOX()
 {
-	BOOST_AUTO(it, m_files.find(rdoModelObjects::RDOX));
+	const auto it = m_files.find(rdoModelObjects::RDOX);
 	ASSERT(it != m_files.end());
 	boost::filesystem::path rdoxFileName = (m_modelPath / m_modelName).replace_extension(it->second.m_extension);
 	if (!rdo::File::exist(rdoxFileName))
@@ -475,7 +475,7 @@ void RDOThreadRepository::save(rdoModelObjects::RDOFileType type, const std::str
 	}
 }
 
-void RDOThreadRepository::loadBMP(REF(boost::filesystem::path) name, std::ostream& stream) const
+void RDOThreadRepository::loadBMP(boost::filesystem::path& name, std::ostream& stream) const
 {
 	boost::filesystem::path fileName = (m_modelPath / name).replace_extension("bmp");
 	if (rdo::File::exist(fileName))
@@ -491,7 +491,7 @@ void RDOThreadRepository::loadBMP(REF(boost::filesystem::path) name, std::ostrea
 	}
 }
 
-void RDOThreadRepository::writeModelFilesInfo(REF(boost::filesystem::ofstream) stream) const
+void RDOThreadRepository::writeModelFilesInfo(boost::filesystem::ofstream& stream) const
 {
 	stream << "Results_file   = " << rdo::locale::convertFromWStr(getFileExtName(rdoModelObjects::PMV).wstring()) << "    " << rdo::Time::local().asString() << std::endl;
 	stream << "Run_file       = " << rdo::locale::convertFromWStr(getFileExtName(rdoModelObjects::SMR).wstring()) << std::endl;
@@ -499,7 +499,7 @@ void RDOThreadRepository::writeModelFilesInfo(REF(boost::filesystem::ofstream) s
 	stream << "Resource_file  = " << rdo::locale::convertFromWStr(getFileName(rdoModelObjects::RSS).replace_extension(getExtension(rdoModelObjects::RSS)).wstring()) << std::endl;
 }
 
-bool RDOThreadRepository::createFile(CREF(boost::filesystem::path) name, REF(boost::filesystem::ofstream) stream) const
+bool RDOThreadRepository::createFile(const boost::filesystem::path& name, boost::filesystem::ofstream& stream) const
 {
 	//! TODO: проверить name с русскими буквами
 	std::stringstream backupDirName;
@@ -566,7 +566,7 @@ void RDOThreadRepository::stopModel()
 	}
 }
 
-void RDOThreadRepository::trace(CREF(std::string) message)
+void RDOThreadRepository::trace(const std::string& message)
 {
 	if (m_traceFile.is_open())
 	{
@@ -578,7 +578,7 @@ void RDOThreadRepository::trace(CREF(std::string) message)
 
 boost::filesystem::path RDOThreadRepository::getFileName(rdoModelObjects::RDOFileType type) const
 {
-	BOOST_AUTO(it, m_files.find(type));
+	const auto it = m_files.find(type);
 	if (it == m_files.end())
 	{
 		NEVER_REACH_HERE;
@@ -589,7 +589,7 @@ boost::filesystem::path RDOThreadRepository::getFileName(rdoModelObjects::RDOFil
 
 boost::filesystem::path RDOThreadRepository::getExtension(rdoModelObjects::RDOFileType type) const
 {
-	BOOST_AUTO(it, m_files.find(type));
+	const auto it = m_files.find(type);
 	if (it == m_files.end())
 	{
 		NEVER_REACH_HERE;
@@ -600,7 +600,7 @@ boost::filesystem::path RDOThreadRepository::getExtension(rdoModelObjects::RDOFi
 
 boost::filesystem::path RDOThreadRepository::getFileExtName(rdoModelObjects::RDOFileType type) const
 {
-	BOOST_AUTO(it, m_files.find(type));
+	const auto it = m_files.find(type);
 	if (it == m_files.end())
 	{
 		NEVER_REACH_HERE;
@@ -616,7 +616,7 @@ boost::filesystem::path RDOThreadRepository::getFullFileName(rdoModelObjects::RD
 
 bool RDOThreadRepository::isReadOnly(rdoModelObjects::RDOFileType type) const
 {
-	BOOST_AUTO(it, m_files.find(type));
+	const auto it = m_files.find(type);
 	if (it == m_files.end())
 	{
 		NEVER_REACH_HERE;
@@ -627,7 +627,7 @@ bool RDOThreadRepository::isReadOnly(rdoModelObjects::RDOFileType type) const
 
 bool RDOThreadRepository::isDescribed(rdoModelObjects::RDOFileType type) const
 {
-	BOOST_AUTO(it, m_files.find(type));
+	const auto it = m_files.find(type);
 	if (it == m_files.end())
 	{
 		NEVER_REACH_HERE;
@@ -638,7 +638,7 @@ bool RDOThreadRepository::isDescribed(rdoModelObjects::RDOFileType type) const
 
 bool RDOThreadRepository::isMustExist(rdoModelObjects::RDOFileType type) const
 {
-	BOOST_AUTO(it, m_files.find(type));
+	const auto it = m_files.find(type);
 	if (it == m_files.end())
 	{
 		NEVER_REACH_HERE;
@@ -649,7 +649,7 @@ bool RDOThreadRepository::isMustExist(rdoModelObjects::RDOFileType type) const
 
 bool RDOThreadRepository::isDeleteIfEmpty(rdoModelObjects::RDOFileType type) const
 {
-	BOOST_AUTO(it, m_files.find(type));
+	const auto it = m_files.find(type);
 	if (it == m_files.end())
 	{
 		NEVER_REACH_HERE;

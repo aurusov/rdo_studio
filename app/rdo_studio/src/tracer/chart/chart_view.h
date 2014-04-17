@@ -63,13 +63,13 @@ public:
 
 	long double  timeScale       () const;
 	int          chartShift      () const;
-	CREF(Time)   drawFromX       () const;
-	CREF(Time)   drawToX         () const;
+	const Time&  drawFromX       () const;
+	const Time&  drawToX         () const;
 	int          drawFromEventID () const;
 	int          drawToEventCount() const;
 
-	CREF(ChartDoc::TimesList)            unwrapTimesList() const;
-	const ChartViewStyle* const style          () const;
+	const ChartDoc::TimesList& unwrapTimesList() const;
+	const ChartViewStyle* const style() const;
 
 	bool doUnwrapTime () const;
 

@@ -32,13 +32,13 @@ Document::~Document()
 	close();
 }
 
-void Document::create(CREF(boost::filesystem::path) filePath, CREF(boost::filesystem::path) modelName)
+void Document::create(const boost::filesystem::path& filePath, const boost::filesystem::path& modelName)
 {
 	m_filePath  = filePath;
 	m_modelName = modelName;
 }
 
-void Document::init(rdo::converter::smr2rdox::RDOFileTypeIn type, REF(std::ifstream) stream)
+void Document::init(rdo::converter::smr2rdox::RDOFileTypeIn type, std::ifstream& stream)
 {
 	Type typeOut;
 	switch (type)
@@ -59,7 +59,7 @@ void Document::init(rdo::converter::smr2rdox::RDOFileTypeIn type, REF(std::ifstr
 	streamOut->init(stream);
 }
 
-void Document::insertUpdate(CREF(LPDocUpdate) pUpdate)
+void Document::insertUpdate(const LPDocUpdate& pUpdate)
 {
 	ASSERT(pUpdate);
 
@@ -105,7 +105,7 @@ void Document::convert()
 	}
 }
 
-Document::TypeOut Document::typeToOut(CREF(Type) typeIn) const
+Document::TypeOut Document::typeToOut(const Type& typeIn) const
 {
 	switch (typeIn)
 	{
@@ -170,7 +170,7 @@ boost::filesystem::path Document::getName(TypeOut typeOut) const
 
 Document::LPMemoryStream Document::getMemoryStream(Type type)
 {
-	BOOST_AUTO(it, m_memoryFileList.find(type));
+	auto it = m_memoryFileList.find(type);
 	if (it == m_memoryFileList.end())
 	{
 		LPMemoryStream pMemoryStream = LPMemoryStream(new MemoryStream());
@@ -183,7 +183,7 @@ Document::LPMemoryStream Document::getMemoryStream(Type type)
 
 Document::LPFileStream Document::getFileStream(TypeOut type)
 {
-	BOOST_AUTO(it, m_streamFileList.find(type));
+	auto it = m_streamFileList.find(type);
 	if (it == m_streamFileList.end())
 	{
 		LPFileStream pFileStream = LPFileStream(new boost::filesystem::ofstream(getName(type), std::ios::trunc | std::ios::binary));
@@ -194,7 +194,7 @@ Document::LPFileStream Document::getFileStream(TypeOut type)
 	return it->second;
 }
 
-void Document::insert(Type type, std::size_t to, CREF(std::string) value)
+void Document::insert(Type type, std::size_t to, const std::string& value)
 {
 	LPMemoryStream streamOut = getMemoryStream(type);
 	streamOut->insert(to, value);
@@ -234,7 +234,7 @@ std::string Document::get(Type type, std::size_t from, std::size_t to)
 // --------------------------------------------------------------------------------
 // -------------------- MemoryStream
 // --------------------------------------------------------------------------------
-void Document::MemoryStream::init(REF(std::ifstream) stream)
+void Document::MemoryStream::init(std::ifstream& stream)
 {
 	if (!m_buffer.empty())
 	{
@@ -253,13 +253,13 @@ void Document::MemoryStream::init(REF(std::ifstream) stream)
 	}
 }
 
-void Document::MemoryStream::get(REF(std::ofstream) stream) const
+void Document::MemoryStream::get(std::ofstream& stream) const
 {
 	std::string result = rdo::locale::convertFromCLocale(std::string(&m_buffer[0], m_buffer.size()));
 	stream << result;
 }
 
-void Document::MemoryStream::insert(std::size_t to, CREF(std::string) value)
+void Document::MemoryStream::insert(std::size_t to, const std::string& value)
 {
 	Buffer::iterator itTo;
 	switch (to)

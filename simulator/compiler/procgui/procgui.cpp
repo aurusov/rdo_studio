@@ -21,7 +21,7 @@ OPEN_COMPILER_GUI_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUICalc
 // --------------------------------------------------------------------------------
-ProcGUICalc::ProcGUICalc(CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(LPRPShapeDataBlock) pParams)
+ProcGUICalc::ProcGUICalc(const rdo::runtime::LPRDORuntime& pRuntime, const LPRPShapeDataBlock& pParams)
 	: m_pRuntime(pRuntime)
 	, m_pParams (pParams )
 {
@@ -154,7 +154,7 @@ rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getTriangularCalc(std::size_t
 std::string ProcGUIProcess::s_namePrefix = "";
 std::string ProcGUIProcess::s_nameSufix  = "s";
 
-ProcGUIProcess::ProcGUIProcess(CREF(rdo::runtime::LPRDORuntime) pRuntime)
+ProcGUIProcess::ProcGUIProcess(const rdo::runtime::LPRDORuntime& pRuntime)
 	: m_pRuntime(pRuntime)
 {
 	ASSERT(m_pRuntime);
@@ -172,13 +172,13 @@ void ProcGUIProcess::clear()
 	m_blockList.clear();
 }
 
-void ProcGUIProcess::insertBlock(CREF(LPProcGUIBlock) pBlock)
+void ProcGUIProcess::insertBlock(const LPProcGUIBlock& pBlock)
 {
 	ASSERT(pBlock);
 	m_blockList.push_back(pBlock);
 }
 
-void ProcGUIProcess::initResources(CREF(parser::LPRDOParser) pParser)
+void ProcGUIProcess::initResources(const parser::LPRDOParser& pParser)
 {
 	for (const auto& name: m_resNameList)
 	{
@@ -190,7 +190,7 @@ void ProcGUIProcess::initResources(CREF(parser::LPRDOParser) pParser)
 	}
 }
 
-void ProcGUIProcess::addResNameToBlock(CREF(std::string) name)
+void ProcGUIProcess::addResNameToBlock(const std::string& name)
 {
 	ASSERT(!name.empty());
 
@@ -204,7 +204,7 @@ void ProcGUIProcess::addResNameToBlock(CREF(std::string) name)
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIBlock
 // --------------------------------------------------------------------------------
-ProcGUIBlock::ProcGUIBlock(CREF(LPProcGUIProcess) pProcess, CREF(std::string) name)
+ProcGUIBlock::ProcGUIBlock(const LPProcGUIProcess& pProcess, const std::string& name)
 	: m_name(name)
 {
 	ASSERT(pProcess);
@@ -217,7 +217,7 @@ ProcGUIBlock::~ProcGUIBlock()
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIBlockGenerate
 // --------------------------------------------------------------------------------
-ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(parser::LPRDOParser) pParser, CREF(LPRPShapeDataBlockCreate) pParams)
+ProcGUIBlockGenerate::ProcGUIBlockGenerate(const LPProcGUIProcess& pProcess, const rdo::runtime::LPRDORuntime& pRuntime, const parser::LPRDOParser& pParser, const LPRPShapeDataBlockCreate& pParams)
 	: ProcGUIBlock(pProcess, pParams->getName())
 	, ProcGUICalc (pRuntime, pParams           )
 	, m_pParams   (pParams                     )
@@ -285,7 +285,7 @@ ProcGUIBlockGenerate::~ProcGUIBlockGenerate()
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIBlockTerminate
 // --------------------------------------------------------------------------------
-ProcGUIBlockTerminate::ProcGUIBlockTerminate(CREF(LPProcGUIProcess) pProcess, CREF(LPRPShapeDataBlockTerminate) pParams)
+ProcGUIBlockTerminate::ProcGUIBlockTerminate(const LPProcGUIProcess& pProcess, const LPRPShapeDataBlockTerminate& pParams)
 	: ProcGUIBlock(pProcess, pParams->getName())
 	, m_pParams   (pParams                     )
 {
@@ -310,7 +310,7 @@ ProcGUIBlockTerminate::~ProcGUIBlockTerminate()
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIBlockProcess
 // --------------------------------------------------------------------------------
-ProcGUIBlockProcess::ProcGUIBlockProcess(CREF(LPProcGUIProcess) pProcess, CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(parser::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams)
+ProcGUIBlockProcess::ProcGUIBlockProcess(const LPProcGUIProcess& pProcess, const rdo::runtime::LPRDORuntime& pRuntime, const parser::LPRDOParser& pParser, const LPRPShapeDataBlockProcess& pParams)
 	: ProcGUIBlock(pProcess, pParams->getName())
 	, m_pParams   (pParams                     )
 {
@@ -319,7 +319,7 @@ ProcGUIBlockProcess::ProcGUIBlockProcess(CREF(LPProcGUIProcess) pProcess, CREF(r
 	ASSERT(pParser  );
 	ASSERT(m_pParams);
 
-	CREF(RPShapeDataBlockProcess::ActionList) actionList = m_pParams->getActionList();
+	const RPShapeDataBlockProcess::ActionList& actionList = m_pParams->getActionList();
 	for (const auto action: actionList)
 	{
 		switch (action)
@@ -364,7 +364,7 @@ ProcGUIBlockProcess::~ProcGUIBlockProcess()
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIAdvance
 // --------------------------------------------------------------------------------
-ProcGUIAdvance::ProcGUIAdvance(CREF(LPProcGUIProcess) pProcess, CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(LPRPShapeDataBlockProcess) pParams)
+ProcGUIAdvance::ProcGUIAdvance(const LPProcGUIProcess& pProcess, const rdo::runtime::LPRDORuntime& pRuntime, const LPRPShapeDataBlockProcess& pParams)
 	: ProcGUIBlock(pProcess, rdo::format("%s Advance", pParams->getName().c_str()))
 	, ProcGUICalc (pRuntime, pParams)
 	, m_pParams   (pParams)
@@ -388,7 +388,7 @@ ProcGUIAdvance::~ProcGUIAdvance()
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUISeize
 // --------------------------------------------------------------------------------
-ProcGUISeize::ProcGUISeize(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams)
+ProcGUISeize::ProcGUISeize(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser, const LPRPShapeDataBlockProcess& pParams)
 	: ProcGUIBlock(pProcess, rdo::format("%s Seize", pParams->getName().c_str()))
 	, m_pParams   (pParams)
 {
@@ -396,7 +396,7 @@ ProcGUISeize::ProcGUISeize(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOPa
 	ASSERT(pParser  );
 	ASSERT(m_pParams);
 
-	CREF(RPShapeDataBlockProcess::ResNameList) resNameList = m_pParams->getResNameList();
+	const RPShapeDataBlockProcess::ResNameList& resNameList = m_pParams->getResNameList();
 	for (const auto& name: resNameList)
 	{
 		addResourceName(name);
@@ -446,7 +446,7 @@ ProcGUISeize::ProcGUISeize(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOPa
 ProcGUISeize::~ProcGUISeize()
 {}
 
-void ProcGUISeize::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser)
+void ProcGUISeize::createRuntime(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser)
 {
 	ASSERT(pProcess);
 	ASSERT(pParser );
@@ -489,7 +489,7 @@ void ProcGUISeize::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::L
 	}
 }
 
-void ProcGUISeize::addResourceName(CREF(std::string) name)
+void ProcGUISeize::addResourceName(const std::string& name)
 {
 	ASSERT(!name.empty());
 	m_resNameList.push_back(name);
@@ -498,7 +498,7 @@ void ProcGUISeize::addResourceName(CREF(std::string) name)
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIRelease
 // --------------------------------------------------------------------------------
-ProcGUIRelease::ProcGUIRelease(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams)
+ProcGUIRelease::ProcGUIRelease(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser, const LPRPShapeDataBlockProcess& pParams)
 	: ProcGUIBlock(pProcess, rdo::format("%s Release", pParams->getName().c_str()))
 	, m_pParams   (pParams)
 {
@@ -506,7 +506,7 @@ ProcGUIRelease::ProcGUIRelease(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPR
 	ASSERT(pParser  );
 	ASSERT(m_pParams);
 
-	CREF(RPShapeDataBlockProcess::ResNameList) resNameList = m_pParams->getResNameList();
+	const RPShapeDataBlockProcess::ResNameList& resNameList = m_pParams->getResNameList();
 	for (const auto& name: resNameList)
 	{
 		addResourceName(name);
@@ -556,7 +556,7 @@ ProcGUIRelease::ProcGUIRelease(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPR
 ProcGUIRelease::~ProcGUIRelease()
 {}
 
-void ProcGUIRelease::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser)
+void ProcGUIRelease::createRuntime(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser)
 {
 	ASSERT(pProcess);
 	ASSERT(pParser );
@@ -599,7 +599,7 @@ void ProcGUIRelease::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser:
 	}
 }
 
-void ProcGUIRelease::addResourceName(CREF(std::string) name)
+void ProcGUIRelease::addResourceName(const std::string& name)
 {
 	ASSERT(!name.empty());
 	m_resNameList.push_back(name);
@@ -608,7 +608,7 @@ void ProcGUIRelease::addResourceName(CREF(std::string) name)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCQueue
 // --------------------------------------------------------------------------------
-ProcGUIQueue::ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser, CREF(std::string) name)
+ProcGUIQueue::ProcGUIQueue(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser, const std::string& name)
 	: ProcGUIBlock  (pProcess, rdo::format("%s Queue", name.c_str()))
 	, m_resourceName(name)
 {
@@ -663,7 +663,7 @@ ProcGUIQueue::ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOPa
 ProcGUIQueue::~ProcGUIQueue()
 {}
 
-void ProcGUIQueue::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser)
+void ProcGUIQueue::createRuntime(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser)
 {
 	ASSERT(pProcess);
 	ASSERT(pParser );
@@ -693,7 +693,7 @@ void ProcGUIQueue::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::L
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIDepart
 // --------------------------------------------------------------------------------
-ProcGUIDepart::ProcGUIDepart(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser, CREF(std::string) name)
+ProcGUIDepart::ProcGUIDepart(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser, const std::string& name)
 	: ProcGUIBlock  (pProcess, rdo::format("%s Depart", name.c_str()))
 	, m_resourceName(name)
 {
@@ -737,7 +737,7 @@ ProcGUIDepart::ProcGUIDepart(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDO
 ProcGUIDepart::~ProcGUIDepart()
 {}
 
-void ProcGUIDepart::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser)
+void ProcGUIDepart::createRuntime(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser)
 {
 	ASSERT(pProcess);
 	ASSERT(pParser );

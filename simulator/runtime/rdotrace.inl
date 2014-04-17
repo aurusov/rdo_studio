@@ -70,7 +70,7 @@ inline std::ostream& RDOTrace::getOStream()
 	return m_emptyOut;
 }
 
-inline REF(RDOEndL) RDOTrace::getEOL()
+inline RDOEndL& RDOTrace::getEOL()
 {
 	return m_emptyEndL;
 }
@@ -113,7 +113,7 @@ inline void RDOTraceableObject::setTraceID(std::size_t id, std::size_t str_id)
 	m_str_id = rdo::toString(str_id);
 }
 
-inline REF(std::string) RDOTraceableObject::traceId() const
+inline std::string& RDOTraceableObject::traceId() const
 {
 	if (m_str_id.empty())
 	{

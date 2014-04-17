@@ -16,6 +16,7 @@
 #include <QProgressBar>
 #include <QMainWindow>
 #include <QLabel>
+#include <boost/mpl/integral_c.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
@@ -38,7 +39,7 @@ public:
 	};
 
 	template <Type N>
-	void update(CREF(QString) message)
+	void update(const QString& message)
 	{
 		update(StatusBarType<N>(), message);
 	}
@@ -67,7 +68,7 @@ private:
 	{};
 
 	template <Type N>
-	void update(StatusBarType<N> statusBar, CREF(QString) message)
+	void update(StatusBarType<N> statusBar, const QString& message)
 	{
 		QLabel* pLabel = getLabel(statusBar);
 		ASSERT(pLabel);

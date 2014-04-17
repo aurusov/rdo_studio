@@ -31,7 +31,7 @@ DockDebug::DockDebug(QWidget* pParent)
 DockDebug::~DockDebug()
 {}
 
-void DockDebug::appendString(CREF(QString) str)
+void DockDebug::appendString(const QString& str)
 {
 	getContext().appendLine(str);
 }
@@ -41,7 +41,7 @@ void DockDebug::clear()
 	getContext().clearAll();
 }
 
-REF(DockDebug::context_type) DockDebug::getContext()
+DockDebug::context_type& DockDebug::getContext()
 {
 	return *static_cast<context_type*>(widget());
 }

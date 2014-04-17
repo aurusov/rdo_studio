@@ -48,15 +48,10 @@ public:
 	t_bison_error_fun m_error_fun;
 	t_flex_lexer_fun  m_lexer_fun;
 
-	virtual void parse(Converter* pParser)
-	{
-		UNUSED(pParser);
-	}
-	virtual void parse(Converter* pParser, REF(std::istream) streamIn)
-	{
-		UNUSED(pParser );
-		UNUSED(streamIn);
-	}
+	virtual void parse(Converter* /*pParser*/)
+	{}
+	virtual void parse(Converter* /*pParser*/, std::istream& /*streamIn*/)
+	{}
 
 	virtual std::size_t lexer_loc_line() { return std::size_t(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE); };
 	virtual std::size_t lexer_loc_pos() { return 0; };
@@ -94,13 +89,13 @@ public:
 	Iterator end() { return m_list.end(); }
 	Iterator find(std::size_t index) { return m_list.find(index); }
 
-	static void getMinMax(rdo::converter::smr2rdox::RDOParseType type, REF(std::size_t) min, REF(std::size_t) max);
+	static void getMinMax(rdo::converter::smr2rdox::RDOParseType type, std::size_t& min, std::size_t& max);
 
 protected:
 	RDOParserContainer();
 	virtual ~RDOParserContainer();
 
-	std::size_t insert(rdo::converter::smr2rdox::RDOParseType type, CREF(LPRDOParserItem) pParser);
+	std::size_t insert(rdo::converter::smr2rdox::RDOParseType type, const LPRDOParserItem& pParser);
 
 private:
 	List m_list;

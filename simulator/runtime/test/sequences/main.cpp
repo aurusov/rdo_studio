@@ -256,9 +256,8 @@ public:
 		, m_max(max)
 	{}
 
-	double get(double x) const
+	double get(double /*x*/) const
 	{
-		UNUSED(x);
 		return 1 / (m_max-m_min);
 	}
 

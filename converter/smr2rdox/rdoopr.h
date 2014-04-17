@@ -33,7 +33,7 @@ class RDOOPROperation: public RDODPTActivityHotKey
 {
 DECLARE_FACTORY(RDOOPROperation);
 private:
-	RDOOPROperation(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
+	RDOOPROperation(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info);
 };
 DECLARE_POINTER(RDOOPROperation);
 
@@ -47,7 +47,7 @@ class RDOOperations
 {
 DECLARE_FACTORY(RDOOperations);
 private:
-	RDOOperations(CREF(RDOParserSrcInfo) src_info);
+	RDOOperations(const RDOParserSrcInfo& src_info);
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

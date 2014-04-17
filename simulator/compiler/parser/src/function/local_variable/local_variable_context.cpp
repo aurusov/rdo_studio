@@ -39,7 +39,7 @@ void ContextLocalVariable::pushLocalVariable(const LPLocalVariable& pLocalVariab
 	m_onPushLocalVariable(pLocalVariable);
 }
 
-CREF(rdo::runtime::LPRDOCalcLocalVariableList) ContextLocalVariable::calc() const
+const rdo::runtime::LPRDOCalcLocalVariableList& ContextLocalVariable::calc() const
 {
 	return m_pCalcLocalVariableList;
 }

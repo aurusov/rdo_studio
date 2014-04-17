@@ -27,8 +27,8 @@ class Param: public Serie
 {
 DECLARE_FACTORY(Param)
 public:
-	CREF(LPResource) getResource () const;
-	ParamInfo*       getParamInfo() const;
+	const LPResource& getResource () const;
+	ParamInfo*        getParamInfo() const;
 
 	virtual void getCaptions(std::vector<std::string>& captions, const int valueCount) const;
 
@@ -37,7 +37,7 @@ protected:
 	LPResource  m_pResource;
 
 private:
-	Param(CREF(LPResource) pResource);
+	Param(const LPResource& pResource);
 	virtual ~Param();
 };
 
@@ -52,22 +52,22 @@ class Resource: public ChartTreeItem
 {
 DECLARE_FACTORY(Resource)
 public:
-	CREF(QString) getName() const;
-	void          setName(CREF(QString) name);
+	const QString& getName() const;
+	void           setName(const QString& name);
 
 	int getID() const;
 
-	CREF(LPResourceType) getType() const;
+	const LPResourceType& getType() const;
 
-	void addParam(CREF(LPParam) pParam);
+	void addParam(const LPParam& pParam);
 	LPParam getParam(unsigned int index) const;
-	int getParamIndex(CREF(LPParam) pParam) const;
+	int getParamIndex(const LPParam& pParam) const;
 	void setParams(std::string& line, Time* const time, const int eventIndex, const bool erasing = false);
 	void setErased(const bool value);
 	bool isErased() const;
 
 private:
-	Resource(CREF(LPResourceType) pResType, CREF(QString) name, int id);
+	Resource(const LPResourceType& pResType, const QString& name, int id);
 	virtual ~Resource();
 
 	typedef  std::vector<LPParam>  ResourceParamList;

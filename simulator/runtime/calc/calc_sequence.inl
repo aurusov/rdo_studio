@@ -9,7 +9,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
 
@@ -30,7 +29,7 @@ inline RDOCalcRandomDistribution<T>::~RDOCalcRandomDistribution()
 }
 
 template<class T>
-inline RDOValue RDOCalcRandomDistribution<T>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline RDOValue RDOCalcRandomDistribution<T>::doCalc(const LPRDORuntime& pRuntime)
 {
 	RDOValue res = getNextValue(pRuntime);
 	if (m_range)

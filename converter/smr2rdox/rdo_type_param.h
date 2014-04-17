@@ -32,13 +32,13 @@ class RDOTypeParam
 {
 DECLARE_FACTORY(RDOTypeParam);
 public:
-	LPRDOType   type      ()                        const;
-	LPRDOValue  value_cast(CREF(LPRDOValue) pValue) const;
+	LPRDOType   type      ()                         const;
+	LPRDOValue  value_cast(const LPRDOValue& pValue) const;
 
 	DECLARE_IModelStructure;
 
 protected:
-	RDOTypeParam(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info);
+	RDOTypeParam(const LPRDOType& pType, const RDOParserSrcInfo& src_info);
 	virtual ~RDOTypeParam();
 
 private:

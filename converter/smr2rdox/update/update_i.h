@@ -36,7 +36,7 @@ public:
 		};
 
 		Position(std::size_t pos);
-		Position(CREF(Position) pos);
+		Position(const Position& pos);
 
 		std::size_t get() const;
 
@@ -44,31 +44,31 @@ public:
 		bool end() const;
 		bool real() const;
 
-		void operator+=(CREF(Position) pos);
-		void operator-=(CREF(Position) pos);
-		Position operator+(CREF(Position) pos) const;
-		Position operator-(CREF(Position) pos) const;
-		bool operator<=(CREF(Position) pos) const;
-		bool operator>=(CREF(Position) pos) const;
-		bool operator<(CREF(Position) pos) const;
-		bool operator>(CREF(Position) pos) const;
-		bool operator==(CREF(Position) pos) const;
-		bool operator!=(CREF(Position) pos) const;
+		void operator+=(const Position& pos);
+		void operator-=(const Position& pos);
+		Position operator+(const Position& pos) const;
+		Position operator-(const Position& pos) const;
+		bool operator<=(const Position& pos) const;
+		bool operator>=(const Position& pos) const;
+		bool operator<(const Position& pos) const;
+		bool operator>(const Position& pos) const;
+		bool operator==(const Position& pos) const;
+		bool operator!=(const Position& pos) const;
 
 	private:
 		std::size_t m_position;
 	};
 
-	virtual void apply(REF(LPIDocument) pDocument) const                              = 0;
-	virtual void insert(IDocument::Type type, CREF(Position) to,   std::size_t size)  = 0;
-	virtual void remove(IDocument::Type type, CREF(Position) from, CREF(Position) to) = 0;
-	virtual void dump(REF(LPIDocument) pDocument) const                               = 0;
+	virtual void apply(LPIDocument& pDocument) const = 0;
+	virtual void insert(IDocument::Type type, const Position& to, std::size_t size) = 0;
+	virtual void remove(IDocument::Type type, const Position& from, const Position& to) = 0;
+	virtual void dump(LPIDocument& pDocument) const = 0;
 };
-#define DECLARE_IDocUpdate                                                     \
-	void apply(REF(LPIDocument) pDocument) const;                              \
-	void insert(IDocument::Type type, CREF(Position) to, std::size_t size);    \
-	void remove(IDocument::Type type, CREF(Position) from, CREF(Position) to); \
-	void dump(REF(LPIDocument) pDocument) const;
+#define DECLARE_IDocUpdate                                                       \
+	void apply(LPIDocument& pDocument) const;                                    \
+	void insert(IDocument::Type type, const Position& to, std::size_t size);     \
+	void remove(IDocument::Type type, const Position& from, const Position& to); \
+	void dump(LPIDocument& pDocument) const;
 
 PREDECLARE_POINTER(DocUpdate);
 class DocUpdate

@@ -41,20 +41,20 @@ public:
 	virtual ResCIterator res_begin() const;
 	virtual ResCIterator res_end  () const;
 
-	virtual void          eraseRes(CREF(LPRDOResource) pResource);
-	LPRDOResourceTypeList clone   (CREF(LPRDORuntime) pRuntime) const;
+	virtual void          eraseRes(const LPRDOResource& pResource);
+	LPRDOResourceTypeList clone   (const LPRDORuntime& pRuntime) const;
 
 private:
-	RDOResourceTypeList(std::size_t number, CREF(LPRDORuntime) pRuntime);
+	RDOResourceTypeList(std::size_t number, const LPRDORuntime& pRuntime);
 	virtual ~RDOResourceTypeList();
 
-	void insertNewResource(CREF(LPRDORuntime) pRuntime, CREF(LPRDOResource) pResource);
+	void insertNewResource(const LPRDORuntime& pRuntime, const LPRDOResource& pResource);
 
 	typedef  std::list<LPRDOResource> ResourceList;
 	ResourceList m_resourceList;
 	Create       m_create;
 
-	virtual LPRDOResource createRes(CREF(LPRDORuntime) pRuntime, std::size_t resID, CREF(std::vector<RDOValue>) paramsCalcs, bool traceFlag, bool permanentFlag);
+	virtual LPRDOResource createRes(const LPRDORuntime& pRuntime, std::size_t resID, const std::vector<RDOValue>& paramsCalcs, bool traceFlag, bool permanentFlag);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

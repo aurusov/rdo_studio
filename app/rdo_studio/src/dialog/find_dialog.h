@@ -17,7 +17,6 @@
 #include "ui_find_dialog.h"
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 // --------------------------------------------------------------------------------
 
 class FindDialog
@@ -35,7 +34,7 @@ public:
 		bool    searchDown;
 
 		Settings();
-		Settings(CREF(Settings) settings);
+		Settings(const Settings& settings);
 	};
 
 	typedef  boost::function<void (const Settings&)>  OnFindCallback;
@@ -44,7 +43,7 @@ public:
 	FindDialog(QWidget* pParent, const OnFindCallback& onFindCallback, const OnCloseCallback& onCloseCallback);
 	virtual ~FindDialog();
 
-	void setSettings(CREF(Settings) settings);
+	void setSettings(const Settings& settings);
 
 private:
 	Settings         m_settings;

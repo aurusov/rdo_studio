@@ -17,7 +17,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- TypeInfo
 // --------------------------------------------------------------------------------
 template <class T>
-inline LPTypeInfo TypeInfo::create(CREF(RDOParserSrcInfo) srcInfo)
+inline LPTypeInfo TypeInfo::create(const RDOParserSrcInfo& srcInfo)
 {
 	LPRDOType pType = rdo::Factory<T>::create();
 	ASSERT(pType);
@@ -31,7 +31,7 @@ inline LPTypeInfo TypeInfo::create(CREF(RDOParserSrcInfo) srcInfo)
 inline TypeInfo::~TypeInfo()
 {}
 
-inline CREF(LPRDOType) TypeInfo::type() const
+inline const LPRDOType& TypeInfo::type() const
 {
 	return m_pType;
 }
@@ -41,7 +41,7 @@ inline RDOParserSrcInfo TypeInfo::src_info() const
 	return m_srcInfo ? m_srcInfo.get() : RDOParserSrcInfo();
 }
 
-inline CREF(RDOParserSrcInfo) TypeInfo::src_info(CREF(RDOParserSrcInfo) srcInfo) const
+inline const RDOParserSrcInfo& TypeInfo::src_info(const RDOParserSrcInfo& srcInfo) const
 {
 	return m_srcInfo ? m_srcInfo.get() : srcInfo;
 }

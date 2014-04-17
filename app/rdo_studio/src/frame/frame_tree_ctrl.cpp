@@ -35,7 +35,7 @@ TreeCtrl::TreeCtrl(QWidget* pParent)
 TreeCtrl::~TreeCtrl()
 {}
 
-QTreeWidgetItem* TreeCtrl::insertFrame(CREF(QString) name)
+QTreeWidgetItem* TreeCtrl::insertFrame(const QString& name)
 {
 	QTreeWidgetItem* pItem = new QTreeWidgetItem(m_pRootItem);
 	ASSERT(pItem);

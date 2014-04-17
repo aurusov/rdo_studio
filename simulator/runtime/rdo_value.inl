@@ -15,7 +15,7 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 template <class T>
-inline RDOValue::RDOValue(CREF(LPRDOType) pType, CREF(rdo::intrusive_ptr<T>) pObject)
+inline RDOValue::RDOValue(const LPRDOType& pType, const rdo::intrusive_ptr<T>& pObject)
 	: m_pType(pType)
 {
 	STATIC_ASSERT(sizeof(rdo::intrusive_ptr_interface_wrapper<T>) >= sizeof(double));
@@ -30,7 +30,7 @@ inline RDOValue::RDOValue(CREF(LPRDOType) pType, CREF(rdo::intrusive_ptr<T>) pOb
 	setUndefined(false);
 }
 
-inline CREF(LPRDOType) RDOValue::type() const
+inline const LPRDOType& RDOValue::type() const
 {
 	return m_pType;
 }
@@ -40,32 +40,32 @@ inline RDOType::TypeID RDOValue::typeID() const
 	return m_pType->typeID();
 }
 
-inline std::ostream& operator<< (std::ostream& stream, CREF(RDOValue) rdovalue)
+inline std::ostream& operator<< (std::ostream& stream, const RDOValue& rdovalue)
 {
 	stream << rdovalue.getAsStringForTrace();
 	return stream;
 }
 
 template <class T>
-inline REF(rdo::intrusive_ptr<T>) RDOValue::getPointer()
+inline rdo::intrusive_ptr<T>& RDOValue::getPointer()
 {
 	return __get<rdo::intrusive_ptr_interface_wrapper<T> >();
 }
 
 template <class T>
-inline CREF(rdo::intrusive_ptr<T>) RDOValue::getPointer() const
+inline const rdo::intrusive_ptr<T>& RDOValue::getPointer() const
 {
 	return __get<rdo::intrusive_ptr_interface_wrapper<T> >();
 }
 
 template <class T>
-inline CREF(rdo::intrusive_ptr<typename T::value_type>) RDOValue::getPointerByType() const
+inline const rdo::intrusive_ptr<typename T::value_type>& RDOValue::getPointerByType() const
 {
 	return getPointerByType<typename T::value_type, T>();
 }
 
 template <class V, class T>
-inline CREF(rdo::intrusive_ptr<V>) RDOValue::getPointerByType() const
+inline const rdo::intrusive_ptr<V>& RDOValue::getPointerByType() const
 {
 #ifdef _DEBUG
 	rdo::intrusive_ptr<T> pType = type().object_dynamic_cast<T>();
@@ -76,7 +76,7 @@ inline CREF(rdo::intrusive_ptr<V>) RDOValue::getPointerByType() const
 }
 
 template <class T>
-inline CREF(rdo::intrusive_ptr<typename T::value_type>) RDOValue::getPointerByInterface() const
+inline const rdo::intrusive_ptr<typename T::value_type>& RDOValue::getPointerByInterface() const
 {
 #ifdef _DEBUG
 	rdo::interface_ptr<T> pType = type().interface_dynamic_cast<T>();
@@ -93,13 +93,13 @@ inline bool RDOValue::isType() const
 }
 
 template <class T>
-inline REF(T) RDOValue::__get()
+inline T& RDOValue::__get()
 {
 	return *reinterpret_cast<T*>(&m_value);
 }
 
 template <class T>
-inline CREF(T) RDOValue::__get() const
+inline const T& RDOValue::__get() const
 {
 	return *reinterpret_cast<const T*>(&m_value);
 }

@@ -34,25 +34,17 @@ inline int TreeRoot::getNewNodeNumber()
 // --------------------------------------------------------------------------------
 // -------------------- TreeRoot
 // --------------------------------------------------------------------------------
-inline void TreeNode::onSearchOpenNode(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+inline void TreeNode::onSearchOpenNode(const LPRDORuntime& /*pRuntime*/)
+{}
 
-inline void TreeNode::onSearchNodeInfoDeleted(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+inline void TreeNode::onSearchNodeInfoDeleted(const LPRDORuntime& /*pRuntime*/)
+{}
 
-inline void TreeNode::onSearchNodeInfoReplaced(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+inline void TreeNode::onSearchNodeInfoReplaced(const LPRDORuntime& /*pRuntime*/)
+{}
 
-inline void TreeNode::onSearchNodeInfoNew(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+inline void TreeNode::onSearchNodeInfoNew(const LPRDORuntime& /*pRuntime*/)
+{}
 
 /*!
   \fn      bool compareNodes(const TreeNode* tn1, const TreeNode* tn2)

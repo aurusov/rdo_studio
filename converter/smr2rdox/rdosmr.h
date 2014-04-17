@@ -45,15 +45,15 @@ DECLARE_FACTORY(RDOSMR);
 public:
 	typedef std::map<std::string, std::string> StringTable;
 
-	void setFile(CREF(std::string) file_type, CREF(std::string) file_name)
+	void setFile(const std::string& file_type, const std::string& file_name)
 	{
 		m_files[file_type] = file_name;
 	}
-	bool hasFile(CREF(std::string) file_type) const
+	bool hasFile(const std::string& file_type) const
 	{
 		return m_files.find(file_type) != m_files.end();
 	}
-	std::string getFile(CREF(std::string) file_type) const
+	std::string getFile(const std::string& file_type) const
 	{
 		StringTable::const_iterator it = m_files.find(file_type);
 		return it != m_files.end() ? it->second : "";
@@ -63,16 +63,16 @@ public:
 		return getFile("Model_name");
 	}
 #ifdef CORBA_ENABLE
-	void setExternalModelName(CREF(std::string) alias, CREF(std::string) modelID)
+	void setExternalModelName(const std::string& alias, const std::string& modelID)
 	{
 		m_extModelList[alias] = modelID;
 	}
-	std::string getExternalModelName(CREF(std::string) alias) const
+	std::string getExternalModelName(const std::string& alias) const
 	{
 		StringTable::const_iterator it = m_extModelList.find(alias);
 		return it != m_extModelList.end() ? it->second : "";
 	}
-	CREF(StringTable) getExternalModelList() const
+	const StringTable& getExternalModelList() const
 	{
 		return m_extModelList;
 	}
@@ -86,20 +86,20 @@ public:
 	double                             getTraceEndTime  () const { return m_traceEndTime;   }
 
 	void setShowMode      (rdo::service::simulation::ShowMode showMode);
-	void setFrameNumber   (int value,    CREF(YYLTYPE) pos);
-	void setShowRate      (double value, CREF(YYLTYPE) pos);
-	void setRunStartTime  (double value, CREF(YYLTYPE) pos);
-	void setTraceStartTime(double value, CREF(YYLTYPE) pos);
-	void setTraceEndTime  (double value, CREF(YYLTYPE) pos);
+	void setFrameNumber   (int value,    const YYLTYPE& pos);
+	void setShowRate      (double value, const YYLTYPE& pos);
+	void setRunStartTime  (double value, const YYLTYPE& pos);
+	void setTraceStartTime(double value, const YYLTYPE& pos);
+	void setTraceEndTime  (double value, const YYLTYPE& pos);
 
-	void setTerminateIf  (REF(LPRDOFUNLogic) pLogic);
-	void setConstValue   (CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm)    pArithm);
-	void setResParValue  (CREF(RDOParserSrcInfo) res_info,   CREF(RDOParserSrcInfo) par_info, REF(LPRDOFUNArithm) pArithm);
-	void setSeed         (CREF(RDOParserSrcInfo) seq_info,   int base);
-	void insertBreakPoint(CREF(RDOParserSrcInfo) src_info,   REF(LPRDOFUNLogic) pLogic);
+	void setTerminateIf  (LPRDOFUNLogic& pLogic);
+	void setConstValue   (const RDOParserSrcInfo& const_info, LPRDOFUNArithm& pArithm);
+	void setResParValue  (const RDOParserSrcInfo& res_info, const RDOParserSrcInfo& par_info, LPRDOFUNArithm& pArithm);
+	void setSeed         (const RDOParserSrcInfo& seq_info, int base);
+	void insertBreakPoint(const RDOParserSrcInfo& src_info, LPRDOFUNLogic& pLogic);
 
 private:
-	RDOSMR(CREF(std::string) modelName);
+	RDOSMR(const std::string& modelName);
 
 	PREDECLARE_POINTER(BreakPoint);
 	class BreakPoint
@@ -108,7 +108,7 @@ private:
 	{
 	DECLARE_FACTORY(BreakPoint);
 	private:
-		BreakPoint(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic);
+		BreakPoint(const RDOParserSrcInfo& src_info, LPRDOFUNLogic pLogic);
 	};
 	typedef std::vector<LPBreakPoint> BreakPointList;
 

@@ -9,7 +9,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
 
@@ -66,7 +65,7 @@ inline std::size_t RDOSimulatorBase::get_cnt_choice_from()
 	return m_cnt_choice_from;
 }
 
-inline std::size_t RDOSimulatorBase::getMSec(CREF(boost::posix_time::ptime) ptime)
+inline std::size_t RDOSimulatorBase::getMSec(const boost::posix_time::ptime& ptime)
 {
 	boost::posix_time::ptime startTime = boost::posix_time::time_from_string("1970-01-01 00:00:00.000");
 	return (std::size_t)( ptime - startTime ).total_milliseconds();

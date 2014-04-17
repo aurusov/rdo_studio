@@ -22,7 +22,7 @@ OPEN_RDO_PARSER_NAMESPACE
  //----------------------------------------------------------------------------
  //---------- RDOArrayType
  //----------------------------------------------------------------------------
-RDOArrayType::RDOArrayType(CREF(LPTypeInfo) pItemType, CREF(RDOParserSrcInfo) src_info)
+RDOArrayType::RDOArrayType(const LPTypeInfo& pItemType, const RDOParserSrcInfo& src_info)
 	: RuntimeWrapperType(rdo::Factory<rdo::runtime::RDOArrayType>::create(pItemType->type()->type()))
 	, RDOParserSrcInfo  (src_info )
 	, m_pItemType       (pItemType)
@@ -40,10 +40,8 @@ std::string RDOArrayType::name() const
 	return rdo::format("array<%s>", m_pItemType->type()->name().c_str());
 }
 
-LPRDOType RDOArrayType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOType RDOArrayType::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
-	UNUSED(from_src_info);
-
 	ASSERT(pFrom);
 
 	LPRDOArrayType pFromArrayType = pFrom.object_dynamic_cast<RDOArrayType>();
@@ -69,7 +67,7 @@ LPRDOType RDOArrayType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) 
 	return NULL;
 }
 
-LPRDOValue RDOArrayType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOValue RDOArrayType::value_cast(const LPRDOValue& pFrom, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	ASSERT(pFrom);
 
@@ -99,7 +97,7 @@ LPRDOValue RDOArrayType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInf
 	return NULL;
 }
 
-rdo::runtime::LPRDOCalc RDOArrayType::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdo::runtime::LPRDOCalc RDOArrayType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
 {
 	return RuntimeWrapperType::calc_cast(pCalc, pType);
 }
@@ -115,7 +113,7 @@ void RDOArrayType::writeModelStructure(std::ostream& stream) const
 	m_pItemType->type()->writeModelStructure(stream);
 }
 
-CREF(LPTypeInfo) RDOArrayType::getItemType() const
+const LPTypeInfo& RDOArrayType::getItemType() const
 {
 	return m_pItemType;
 }

@@ -34,7 +34,7 @@ using namespace rdo::gui::tracer;
 // --------------------------------------------------------------------------------
 // -------------------- TracerBase
 // --------------------------------------------------------------------------------
-TracerBase::TracerBase(CREF(std::string) _thread_name, RDOKernelGUI* _kernel_gui)
+TracerBase::TracerBase(const std::string& _thread_name, RDOKernelGUI* _kernel_gui)
 	: RDOThreadGUI(_thread_name, _kernel_gui)
 	, m_pLog(NULL)
 	, m_pChartTree(NULL)
@@ -103,7 +103,7 @@ ParamInfo* TracerBase::getParamType(std::istream& stream)
 	else if (parType == ParamInfo::PT_ARRAY)
 	{
 		ParamInfo* pArrayItem = getParamType(stream);
-		UNUSED(pArrayItem);
+		(void)pArrayItem;
 	}
 	return pParam;
 }
@@ -119,7 +119,7 @@ ParamInfo* TracerBase::getParam(std::istream& stream)
 	return pParam;
 }
 
-void TracerBase::addResourceType(REF(std::string), std::istream& stream)
+void TracerBase::addResourceType(std::string&, std::istream& stream)
 {
 	LPResourceType pResourceType = rdo::Factory<ResourceType>::create(ResourceType::RDOTK_PERMANENT);
 	std::string resourceTypeName;
@@ -135,7 +135,7 @@ void TracerBase::addResourceType(REF(std::string), std::istream& stream)
 	m_pChartTree->addResourceType(pResourceType);
 }
 
-void TracerBase::addResource(REF(std::string) s, std::istream& stream)
+void TracerBase::addResource(std::string& s, std::istream& stream)
 {
 	int resourceTypeID;
 	std::string resourceName;
@@ -151,7 +151,7 @@ void TracerBase::addResource(REF(std::string) s, std::istream& stream)
 	m_pChartTree->addResource(pResource);
 }
 
-void TracerBase::addPattern(REF(std::string), std::istream& stream)
+void TracerBase::addPattern(std::string&, std::istream& stream)
 {
 	std::string patternName;
 	stream >> patternName;
@@ -193,7 +193,7 @@ void TracerBase::addPattern(REF(std::string), std::istream& stream)
 	}
 }
 
-void TracerBase::addOperation(REF(std::string), std::istream& stream)
+void TracerBase::addOperation(std::string&, std::istream& stream)
 {
 	std::string operationName;
 	stream >> operationName;
@@ -227,7 +227,7 @@ void TracerBase::addOperation(REF(std::string), std::istream& stream)
 	m_pChartTree->addOperation(pOperationBase);
 }
 
-void TracerBase::addResult(REF(std::string) s, std::istream& stream)
+void TracerBase::addResult(std::string& s, std::istream& stream)
 {
 	int resultID;
 	stream >> resultID;
@@ -261,7 +261,7 @@ void TracerBase::addResult(REF(std::string) s, std::istream& stream)
 	m_pChartTree->addResult(pResult);
 }
 
-void TracerBase::dispatchNextString(REF(std::string) line)
+void TracerBase::dispatchNextString(std::string& line)
 {
 	if (line.empty())
 		return;
@@ -350,7 +350,7 @@ void TracerBase::dispatchNextString(REF(std::string) line)
 	}
 }
 
-std::string TracerBase::getNextValue(REF(std::string) line)
+std::string TracerBase::getNextValue(std::string& line)
 {
 	int posStart = line.find_first_not_of(' ');
 	int posEnd;
@@ -371,7 +371,7 @@ std::string TracerBase::getNextValue(REF(std::string) line)
 	return result;
 }
 
-Time* TracerBase::addTime(CREF(std::string) time)
+Time* TracerBase::addTime(const std::string& time)
 {
 	double val = boost::lexical_cast<double>(time);
 	bool empty = m_timeList.empty();
@@ -406,27 +406,27 @@ Time* TracerBase::addTime(CREF(std::string) time)
 	return m_timeList.back();
 }
 
-LPOperationBase TracerBase::getOperation(REF(std::string) line)
+LPOperationBase TracerBase::getOperation(std::string& line)
 {
 	getNextValue(line);
 	return m_operationList.at(boost::lexical_cast<int>(getNextValue(line)) - 1);
 }
 
-void TracerBase::startAction(REF(std::string) line, Time* const pTime)
+void TracerBase::startAction(std::string& line, Time* const pTime)
 {
 	LPOperation pOperation = getOperation(line).object_dynamic_cast<Operation>();
 	ASSERT(pOperation);
 	pOperation->start(pTime, m_eventIndex);
 }
 
-void TracerBase::accomplishAction(REF(std::string) line, Time* const pTime)
+void TracerBase::accomplishAction(std::string& line, Time* const pTime)
 {
 	LPOperation pOperation = getOperation(line).object_dynamic_cast<Operation>();
 	ASSERT(pOperation);
 	pOperation->accomplish(pTime, m_eventIndex);
 }
 
-void TracerBase::irregularEvent(REF(std::string) line, Time* const pTime)
+void TracerBase::irregularEvent(std::string& line, Time* const pTime)
 {
 #ifdef RDOSIM_COMPATIBLE
 	m_eventList.at(boost::lexical_cast<int>(getNextValue(line)) - 1)->occurs(pTime, m_eventIndex);
@@ -435,14 +435,14 @@ void TracerBase::irregularEvent(REF(std::string) line, Time* const pTime)
 #endif
 }
 
-void TracerBase::productionRule(REF(std::string) line, Time* const pTime)
+void TracerBase::productionRule(std::string& line, Time* const pTime)
 {
 	LPEvent pEvent = getOperation(line).object_dynamic_cast<Event>();
 	ASSERT(pEvent);
 	pEvent->occurs(pTime, m_eventIndex);
 }
 
-LPResource TracerBase::getResource(REF(std::string) line)
+LPResource TracerBase::getResource(std::string& line)
 {
 	getNextValue(line);
 	LPResource pResult;
@@ -460,7 +460,7 @@ LPResource TracerBase::getResource(REF(std::string) line)
 	return pResult;
 }
 
-LPResource TracerBase::resourceCreation(REF(std::string) line, Time* const pTime)
+LPResource TracerBase::resourceCreation(std::string& line, Time* const pTime)
 {
 	std::size_t typeID = boost::lexical_cast<int>(getNextValue(line)) - 1;
 	ASSERT(typeID < m_resourceTypeList.size());
@@ -473,7 +473,7 @@ LPResource TracerBase::resourceCreation(REF(std::string) line, Time* const pTime
 	return pResource;
 }
 
-LPResource TracerBase::resourceElimination(REF(std::string) line, Time* const pTime)
+LPResource TracerBase::resourceElimination(std::string& line, Time* const pTime)
 {
 	LPResource pResource = getResource(line);
 	if (!pResource)
@@ -487,7 +487,7 @@ LPResource TracerBase::resourceElimination(REF(std::string) line, Time* const pT
 	return pResource;
 }
 
-LPResource TracerBase::resourceChanging(REF(std::string) line, Time* const pTime)
+LPResource TracerBase::resourceChanging(std::string& line, Time* const pTime)
 {
 	LPResource pResource = getResource(line);
 	if (pResource)
@@ -497,7 +497,7 @@ LPResource TracerBase::resourceChanging(REF(std::string) line, Time* const pTime
 	return pResource;
 }
 
-LPResult TracerBase::getResult(REF(std::string) line)
+LPResult TracerBase::getResult(std::string& line)
 {
 	LPResult pResult;
 	int findid = boost::lexical_cast<int>(getNextValue(line));
@@ -512,7 +512,7 @@ LPResult TracerBase::getResult(REF(std::string) line)
 	return pResult;
 }
 
-void TracerBase::resultChanging(REF(std::string) line, Time* const pTime)
+void TracerBase::resultChanging(std::string& line, Time* const pTime)
 {
 	getResult(line)->setValue(line, pTime, m_eventIndex);
 }
@@ -688,7 +688,7 @@ ChartDoc* TracerBase::createNewChart()
 	return pDoc;
 }
 
-ChartDoc* TracerBase::addSerieToChart(CREF(LPSerie) pSerie, ChartDoc* pDocument)
+ChartDoc* TracerBase::addSerieToChart(const LPSerie& pSerie, ChartDoc* pDocument)
 {
 	if (!pDocument)
 	{
@@ -724,7 +724,7 @@ void TracerBase::updateChartsStyles() const
 	}
 }
 
-void TracerBase::setModelName(CREF(QString) name) const
+void TracerBase::setModelName(const QString& name) const
 {
 	if (m_pChartTree)
 	{

@@ -22,7 +22,7 @@ class mouse_event_xml_reader: public event_xml_reader
 public:
 	virtual ~mouse_event_xml_reader();
 
-	virtual event* read(CREF(boost::property_tree::ptree) pt) const;
+	virtual event* read(const boost::property_tree::ptree& pt) const;
 };
 
 } // namespace rdo

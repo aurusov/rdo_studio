@@ -38,14 +38,14 @@ public:
 	};
 	virtual std::size_t getCalcCnt() const = 0;
 	virtual std::size_t getCalcResFoundCnt() const = 0;
-	virtual void getStatsDOUBLE(Type type, REF(double) min, REF(double) max, REF(double) med) const = 0;
-	virtual void getStatsRUINT(Type type, REF(std::size_t)  min, REF(std::size_t)  max, REF(double) med) const = 0;
+	virtual void getStatsDOUBLE(Type type, double& min, double& max, double& med) const = 0;
+	virtual void getStatsRUINT(Type type, std::size_t&  min, std::size_t&  max, double& med) const = 0;
 };
 
-#define DECLARE_IDPTSearchTraceStatistics                                                            \
-	virtual std::size_t getCalcCnt() const;                                                          \
-	virtual std::size_t getCalcResFoundCnt() const;                                                  \
-	virtual void getStatsDOUBLE(Type type, REF(double) min, REF(double) max, REF(double) med) const; \
-	virtual void getStatsRUINT(Type type, REF(std::size_t)  min, REF(std::size_t)  max, REF(double) med) const;
+#define DECLARE_IDPTSearchTraceStatistics                                                \
+	virtual std::size_t getCalcCnt() const;                                              \
+	virtual std::size_t getCalcResFoundCnt() const;                                      \
+	virtual void getStatsDOUBLE(Type type, double& min, double& max, double& med) const; \
+	virtual void getStatsRUINT(Type type, std::size_t&  min, std::size_t&  max, double& med) const;
 
 #endif // _LIB_RUNTIME_SEARCH_TRACE_I_H_

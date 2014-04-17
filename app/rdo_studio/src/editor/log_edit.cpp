@@ -120,7 +120,7 @@ void Log::gotoPrev()
 	}
 }
 
-void Log::getLines(REF(LogEditLineInfoList) lines) const
+void Log::getLines(LogEditLineInfoList& lines) const
 {
 	lines = m_lines;
 }

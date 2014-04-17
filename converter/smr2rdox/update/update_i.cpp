@@ -23,7 +23,7 @@ IDocUpdate::Position::Position(std::size_t pos)
 	: m_position(pos)
 {}
 
-IDocUpdate::Position::Position(CREF(Position) pos)
+IDocUpdate::Position::Position(const Position& pos)
 	: m_position(pos.m_position)
 {}
 
@@ -47,7 +47,7 @@ bool IDocUpdate::Position::real() const
 	return m_position != std::size_t(POSITION_BEGIN) && m_position != std::size_t(POSITION_END);
 }
 
-void IDocUpdate::Position::operator+= (CREF(Position) pos)
+void IDocUpdate::Position::operator+= (const Position& pos)
 {
 	if (real() && pos.real())
 	{
@@ -55,7 +55,7 @@ void IDocUpdate::Position::operator+= (CREF(Position) pos)
 	}
 }
 
-void IDocUpdate::Position::operator-= (CREF(Position) pos)
+void IDocUpdate::Position::operator-= (const Position& pos)
 {
 	if (real() && pos.real())
 	{
@@ -63,7 +63,7 @@ void IDocUpdate::Position::operator-= (CREF(Position) pos)
 	}
 }
 
-IDocUpdate::Position IDocUpdate::Position::operator+ (CREF(Position) pos) const
+IDocUpdate::Position IDocUpdate::Position::operator+ (const Position& pos) const
 {
 	if (real() && pos.real())
 	{
@@ -74,7 +74,7 @@ IDocUpdate::Position IDocUpdate::Position::operator+ (CREF(Position) pos) const
 	return Position(0);
 }
 
-IDocUpdate::Position IDocUpdate::Position::operator- (CREF(Position) pos) const
+IDocUpdate::Position IDocUpdate::Position::operator- (const Position& pos) const
 {
 	if (real() && pos.real())
 	{
@@ -85,7 +85,7 @@ IDocUpdate::Position IDocUpdate::Position::operator- (CREF(Position) pos) const
 	return Position(0);
 }
 
-bool IDocUpdate::Position::operator<= (CREF(Position) pos) const
+bool IDocUpdate::Position::operator<= (const Position& pos) const
 {
 	switch(get())
 	{
@@ -105,7 +105,7 @@ bool IDocUpdate::Position::operator<= (CREF(Position) pos) const
 	}
 }
 
-bool IDocUpdate::Position::operator>= (CREF(Position) pos) const
+bool IDocUpdate::Position::operator>= (const Position& pos) const
 {
 	switch(get())
 	{
@@ -125,7 +125,7 @@ bool IDocUpdate::Position::operator>= (CREF(Position) pos) const
 	}
 }
 
-bool IDocUpdate::Position::operator< (CREF(Position) pos) const
+bool IDocUpdate::Position::operator< (const Position& pos) const
 {
 	switch(get())
 	{
@@ -150,7 +150,7 @@ bool IDocUpdate::Position::operator< (CREF(Position) pos) const
 	}
 }
 
-bool IDocUpdate::Position::operator> (CREF(Position) pos) const
+bool IDocUpdate::Position::operator> (const Position& pos) const
 {
 	switch(get())
 	{
@@ -175,12 +175,12 @@ bool IDocUpdate::Position::operator> (CREF(Position) pos) const
 	}
 }
 
-bool IDocUpdate::Position::operator== (CREF(Position) pos) const
+bool IDocUpdate::Position::operator== (const Position& pos) const
 {
 	return m_position == pos.m_position;
 }
 
-bool IDocUpdate::Position::operator!= (CREF(Position) pos) const
+bool IDocUpdate::Position::operator!= (const Position& pos) const
 {
 	return !operator==(pos);
 }

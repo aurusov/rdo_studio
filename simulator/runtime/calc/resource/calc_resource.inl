@@ -34,17 +34,16 @@ inline RDOSetResourceParam<setOperationType>::~RDOSetResourceParam()
 {}
 
 template <>
-inline RDOValue RDOSetResourceParam<SetOperationType::NOCHANGE>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline RDOValue RDOSetResourceParam<SetOperationType::NOCHANGE>::doCalc(const LPRDORuntime& pRuntime)
 {
 	LPRDOResource pResource = m_getResource->calcValue(pRuntime).getPointerByInterface<IResourceType>();
 	ASSERT(pResource);
-	UNUSED(pRuntime);
 	RDOValue value(true);
 	return value;
 }
 
 template <>
-inline RDOValue RDOSetResourceParam<SetOperationType::SET>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline RDOValue RDOSetResourceParam<SetOperationType::SET>::doCalc(const LPRDORuntime& pRuntime)
 {
 	LPRDOResource pResource = m_getResource->calcValue(pRuntime).getPointerByInterface<IResourceType>();
 	ASSERT(pResource);

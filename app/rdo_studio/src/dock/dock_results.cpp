@@ -31,7 +31,7 @@ DockResults::DockResults(QWidget* pParent)
 DockResults::~DockResults()
 {}
 
-void DockResults::appendString(CREF(QString) str)
+void DockResults::appendString(const QString& str)
 {
 	int pos = getContext().getCurrentPos();
 	getContext().setCurrentPos(getContext().getLength());
@@ -46,7 +46,7 @@ void DockResults::clear()
 	getContext().clearAll();
 }
 
-REF(DockResults::context_type) DockResults::getContext()
+DockResults::context_type& DockResults::getContext()
 {
 	return *static_cast<context_type*>(widget());
 }

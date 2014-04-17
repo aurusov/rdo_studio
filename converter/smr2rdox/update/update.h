@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/smart_ptr/factory/factory.h"
-#include "utils/src/common/rdomacros.h"
 
 #include "converter/smr2rdox/update/update_i.h"
 // --------------------------------------------------------------------------------
@@ -27,7 +26,7 @@ class UpdateInsert: public DocUpdate
 {
 DECLARE_FACTORY(UpdateInsert)
 private:
-	UpdateInsert(CREF(Position) pos, CREF(std::string) value, IDocument::Type file = IDocument::UNDEFINED);
+	UpdateInsert(const Position& pos, const std::string& value, IDocument::Type file = IDocument::UNDEFINED);
 
 	Position m_pos;
 	std::string m_value;
@@ -42,7 +41,7 @@ class UpdateDelete: public DocUpdate
 {
 DECLARE_FACTORY(UpdateDelete)
 private:
-	UpdateDelete(CREF(Position) posFrom, CREF(Position) posTo);
+	UpdateDelete(const Position& posFrom, const Position& posTo);
 
 	Position m_posFrom;
 	Position m_posTo;
@@ -57,7 +56,7 @@ class UpdateReplace: public DocUpdate
 {
 DECLARE_FACTORY(UpdateReplace)
 private:
-	UpdateReplace(CREF(Position) posFrom, CREF(Position) posTo, CREF(std::string) value, IDocument::Type file = IDocument::UNDEFINED);
+	UpdateReplace(const Position& posFrom, const Position& posTo, const std::string& value, IDocument::Type file = IDocument::UNDEFINED);
 
 	LPDocUpdate pDelete;
 	LPDocUpdate pInsert;
@@ -72,9 +71,9 @@ class UpdateMove: public DocUpdate
 {
 DECLARE_FACTORY(UpdateMove)
 private:
-	UpdateMove(CREF(Position)  posFromBegin,
-	           CREF(Position)  posFromEnd,
-	           CREF(Position)  posTo,
+	UpdateMove(const Position& posFromBegin,
+	           const Position& posFromEnd,
+	           const Position& posTo,
 	           IDocument::Type fileTo   = IDocument::UNDEFINED,
 	           IDocument::Type fileFrom = IDocument::UNDEFINED);
 
@@ -93,10 +92,10 @@ class UpdateSwap: public DocUpdate
 {
 DECLARE_FACTORY(UpdateSwap)
 private:
-	UpdateSwap(CREF(Position)  pos1Begin,
-	           CREF(Position)  pos1End,
-	           CREF(Position)  pos2Begin,
-	           CREF(Position)  pos2End,
+	UpdateSwap(const Position& pos1Begin,
+	           const Position& pos1End,
+	           const Position& pos2Begin,
+	           const Position& pos2End,
 	           IDocument::Type file = IDocument::UNDEFINED);
 
 	Position m_pos1Begin;
@@ -104,8 +103,8 @@ private:
 	Position m_pos2Begin;
 	Position m_pos2End;
 
-	void insert(CREF(Position) from, CREF(std::size_t) size, REF(Position) posBegin, REF(Position) posEnd);
-	void remove(CREF(Position) from, CREF(Position) to, REF(Position) posBegin, REF(Position) posEnd);
+	void insert(const Position& from, const std::size_t& size, Position& posBegin, Position& posEnd);
+	void remove(const Position& from, const Position& to, Position& posBegin, Position& posEnd);
 
 	DECLARE_IDocUpdate;
 };

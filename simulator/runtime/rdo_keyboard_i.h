@@ -39,11 +39,11 @@ public:
 		addhk_dont	    //!< клавиша не нажата
 	};
 	virtual bool hasHotKey() const = 0;
-	virtual AddHotKeyResult addHotKey(CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(std::string) hotKey) = 0;
+	virtual AddHotKeyResult addHotKey(const rdo::runtime::LPRDORuntime& pRuntime, const std::string& hotKey) = 0;
 };
 
 #define DECLARE_IKeyboard \
 	virtual bool hasHotKey() const; \
-	virtual AddHotKeyResult addHotKey(CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(std::string) hotKey);
+	virtual AddHotKeyResult addHotKey(const rdo::runtime::LPRDORuntime& pRuntime, const std::string& hotKey);
 
 #endif // _LIB_RUNTIME_KEYBOARD_I_H_

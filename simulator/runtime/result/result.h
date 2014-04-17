@@ -60,10 +60,10 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace);
+	RDOPMDResult(const LPRDORuntime& pRuntime, const std::string& name, bool trace);
 	virtual ~RDOPMDResult();
 
-	static void printLeft(std::ostream& stream, CREF(std::string) txt);
+	static void printLeft(std::ostream& stream, const std::string& txt);
 
 	DECLARE_IName;
 
@@ -100,7 +100,7 @@ private:
 		double
 	> acc_type;
 
-	RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(std::string) resName, CREF(std::string) parName, std::size_t resourceID, std::size_t paramID);
+	RDOPMDWatchPar(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& resName, const std::string& parName, std::size_t resourceID, std::size_t paramID);
 	virtual ~RDOPMDWatchPar();
 
 	struct CurrentValue
@@ -114,7 +114,7 @@ private:
 			, weight     (0.0)
 		{}
 
-		CurrentValue(CREF(RDOValue) rdoValue)
+		CurrentValue(const RDOValue& rdoValue)
 			: rdoValue   (rdoValue)
 			, doubleValue(rdoValue.getDouble())
 			, weight     (0.0)
@@ -162,7 +162,7 @@ private:
 		>
 	> acc_type;
 
-	RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(LPRDOCalc) pLogic);
+	RDOPMDWatchState(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const LPRDOCalc& pLogic);
 	virtual ~RDOPMDWatchState();
 
 	struct CurrentValue
@@ -222,7 +222,7 @@ private:
 		double
 	> acc_type;
 
-	RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(std::string) resTypeName, int rtpID);
+	RDOPMDWatchQuant(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& resTypeName, int rtpID);
 	virtual ~RDOPMDWatchQuant();
 
 	struct CurrentValue
@@ -249,7 +249,7 @@ private:
 	bool m_wasFinalCalc;
 	acc_type m_acc;
 
-	std::size_t calcCurrentQuant(CREF(LPRDORuntime) pRuntime) const;
+	std::size_t calcCurrentQuant(const LPRDORuntime& pRuntime) const;
 
 	DECLARE_IResult;
 	DECLARE_IResultTraceValue;
@@ -285,7 +285,7 @@ private:
 		>
 	> acc_type;
 
-	RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(std::string) resTypeName, int rtpID);
+	RDOPMDWatchValue(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& resTypeName, int rtpID);
 	virtual ~RDOPMDWatchValue();
 
 	LPRDOCalc m_pLogicCalc;
@@ -316,7 +316,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPMDGetValue(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, CREF(LPRDOCalc) pArithm);
+	RDOPMDGetValue(const LPRDORuntime& pRuntime, const std::string& name, const LPRDOCalc& pArithm);
 	virtual ~RDOPMDGetValue();
 
 	LPRDOCalc m_pArithmCalc;

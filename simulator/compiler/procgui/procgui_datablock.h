@@ -44,14 +44,14 @@ public:
 	void setMax(double max);
 
 	zakonRaspr getZakon() const { return m_zakon; }
-	CREF(std::string) getName () const { return m_name; }
+	const std::string& getName () const { return m_name; }
 	int getBase() const { return m_base; }
 	double getDisp() const { return m_disp; }
 	double getExp() const { return m_exp; }
 	double getMax() const { return m_max; }
 
 protected:
-	RPShapeDataBlock(zakonRaspr zakon, CREF(std::string) name);
+	RPShapeDataBlock(zakonRaspr zakon, const std::string& name);
 	virtual ~RPShapeDataBlock() {}
 
 	zakonRaspr m_zakon;
@@ -72,11 +72,11 @@ public:
 	boost::optional<std::size_t> getAmount() const { return m_amount; }
 	void setAmount(boost::optional<std::size_t> amount);
 
-	CREF(rdo::runtime::LPIInternalStatistics) getStatistics() const      { return m_pStatistics; }
-	void setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics);
+	const rdo::runtime::LPIInternalStatistics& getStatistics() const { return m_pStatistics; }
+	void setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics);
 
 private:
-	RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, CREF(std::string) name);
+	RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, const std::string& name);
 	virtual ~RPShapeDataBlockCreate();
 
 	boost::optional<std::size_t> m_amount;
@@ -96,11 +96,11 @@ public:
 	int getTermInc() const { return m_term_inc; }
 	std::string getName() const { return m_name; }
 
-	CREF(rdo::runtime::LPIInternalStatistics) getStatistics() const { return m_pStatistics; }
-	void setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics);
+	const rdo::runtime::LPIInternalStatistics& getStatistics() const { return m_pStatistics; }
+	void setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics);
 
 private:
-	RPShapeDataBlockTerminate(CREF(std::string) name);
+	RPShapeDataBlockTerminate(const std::string& name);
 	virtual ~RPShapeDataBlockTerminate();
 
 	int m_term_inc;
@@ -126,16 +126,16 @@ public:
 	typedef std::list<std::string> ResNameList;
 
 	void addAction(Action action);
-	void addRes(CREF(std::string) res);
+	void addRes(const std::string& res);
 	
-	CREF(ActionList) getActionList () const;
-	CREF(ResNameList) getResNameList() const;
+	const ActionList& getActionList () const;
+	const ResNameList& getResNameList() const;
 
-	CREF(rdo::runtime::LPIInternalStatistics) getStatistics() const      { return m_pStatistics; }
-	void setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics);
+	const rdo::runtime::LPIInternalStatistics& getStatistics() const { return m_pStatistics; }
+	void setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics);
 
 private:
-	RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, CREF(std::string) name);
+	RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, const std::string& name);
 	virtual ~RPShapeDataBlockProcess();
 
 	ActionList  m_actionList;

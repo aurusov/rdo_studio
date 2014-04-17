@@ -33,7 +33,7 @@ public:
 
 	void setModel(Model* pModel);
 
-	REF(TabCtrl) getTab();
+	TabCtrl& getTab();
 
 private:
 	typedef  QWidget  parent_type;
@@ -45,7 +45,7 @@ private:
 
 	void closeEvent(QCloseEvent* event);
 
-	void onFindDlgFind(CREF(FindDialog::Settings) settings);
+	void onFindDlgFind(const FindDialog::Settings& settings);
 	void onFindDlgClose();
 
 	void onSearchFindAll();

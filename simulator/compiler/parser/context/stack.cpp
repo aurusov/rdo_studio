@@ -52,7 +52,7 @@ LPContext ContextStack::global() const
 	return m_container.front();
 }
 
-LPContext ContextStack::prev(CREF(LPContext) pContext) const
+LPContext ContextStack::prev(const LPContext& pContext) const
 {
 	Container::const_iterator it = std::find(m_container.begin(), m_container.end(), pContext);
 	if (it == m_container.end() || it == m_container.begin())

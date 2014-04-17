@@ -27,7 +27,7 @@ RDOEnumType::RDOEnumType()
 	ASSERT(m_pType);
 }
 
-RDOEnumType::RDOEnumType(CREF(rdo::runtime::LPRDOEnumType) pEnumType)
+RDOEnumType::RDOEnumType(const rdo::runtime::LPRDOEnumType& pEnumType)
 	: RuntimeWrapperType(rdo::runtime::g_unknow)
 {
 	rdo::runtime::LPRDOEnumType pType = rdo::Factory<rdo::runtime::RDOEnumType>::create();
@@ -61,7 +61,7 @@ std::string RDOEnumType::name() const
 	return str;
 }
 
-LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOType RDOEnumType::type_cast(const LPRDOType& from, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	switch (from->type()->typeID())
 	{
@@ -111,7 +111,7 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) fr
 	return NULL;
 }
 
-LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOValue RDOEnumType::value_cast(const LPRDOValue& pFrom, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	ASSERT(pFrom);
 
@@ -160,7 +160,7 @@ LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo
 			break;
 		}
 	}
-	catch (CREF(rdo::runtime::RDOValueException))
+	catch (const rdo::runtime::RDOValueException&)
 	{}
 
 	if (!pToValue || pToValue->typeID() == rdo::runtime::RDOType::t_unknow)
@@ -172,7 +172,7 @@ LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo
 	return pToValue;
 }
 
-rdo::runtime::LPRDOCalc RDOEnumType::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdo::runtime::LPRDOCalc RDOEnumType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
 {
 	return RuntimeWrapperType::calc_cast(pCalc, pType);
 }
@@ -191,7 +191,7 @@ void RDOEnumType::writeModelStructure(std::ostream& stream) const
 	}
 }
 
-void RDOEnumType::add(CREF(LPRDOValue) pNext)
+void RDOEnumType::add(const LPRDOValue& pNext)
 {
 	ASSERT(pNext);
 

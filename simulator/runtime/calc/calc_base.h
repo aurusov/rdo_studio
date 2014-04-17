@@ -45,18 +45,18 @@ public:
 	//! \param pRuntime - указатель на объект runtime'а.
 	//!                   Используется для доступа к БД модели, системному времени, генерации ошибок и др.
 	//! \result Вычесленное калком значение
-	RDOValue calcValue(CREF(LPRDORuntime) pRuntime);
+	RDOValue calcValue(const LPRDORuntime& pRuntime);
 
 	//! Сравнение двух калков как объектов (результаты калков в сравнении не используются).
 	//! Реализовывать этот метод в новых калках необязательно.
 	//! \param pCalc - калк, с которым проводит сравнение текущий
 	//! \result true, если калки одинаковые. Значение по умолчанию false
-	virtual bool compare(CREF(LPRDOCalc) pCalc) const;
+	virtual bool compare(const LPRDOCalc& pCalc) const;
 
 	//! Узнать привязку калка к исходникам
-	CREF(RDOSrcInfo) srcInfo   () const;
+	const RDOSrcInfo& srcInfo   () const;
 	//! Привязать калк к исходникам
-	void             setSrcInfo(CREF(RDOSrcInfo) srcInfo);
+	void setSrcInfo(const RDOSrcInfo& srcInfo);
 
 	typedef std::vector<LPRDOCalc> RDOCalcList;
 
@@ -70,7 +70,7 @@ protected:
 	//!                   Используется для доступа к БД модели, системному времени, генерации ошибок и др.
 	//! \exception RDORuntimeException
 	//! \result Вычесленное калком значение
-	virtual RDOValue doCalc(CREF(LPRDORuntime) pRuntime) = 0;
+	virtual RDOValue doCalc(const LPRDORuntime& pRuntime) = 0;
 
 private:
 	//! Привязка калка к исходникам
@@ -79,7 +79,7 @@ private:
 
 #define DECLARE_ICalc \
 private:              \
-	RDOValue doCalc(CREF(LPRDORuntime) pRuntime);
+	RDOValue doCalc(const LPRDORuntime& pRuntime);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

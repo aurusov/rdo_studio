@@ -24,7 +24,7 @@ class RDOCalcArraySize: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcArraySize)
 private:
-	RDOCalcArraySize(CREF(LPRDOCalc) pCalc);
+	RDOCalcArraySize(const LPRDOCalc& pCalc);
 
 	LPRDOCalc m_pCalc;
 
@@ -37,7 +37,7 @@ class RDOCalcArrayItem: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcArrayItem)
 private:
-	RDOCalcArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArrayInd);
+	RDOCalcArrayItem(const LPRDOCalc& pArray, const LPRDOCalc& pArrayInd);
 
 	LPRDOCalc m_pArray;
 	LPRDOCalc m_pArrayInd;
@@ -51,7 +51,7 @@ class RDOCalcSetArrayItem: public RDOCalc
 {
 	DECLARE_FACTORY(RDOCalcSetArrayItem)
 private:
-	RDOCalcSetArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArrayInd, CREF(LPRDOCalc) pSetItem);
+	RDOCalcSetArrayItem(const LPRDOCalc& pArray, const LPRDOCalc& pArrayInd, const LPRDOCalc& pSetItem);
 
 	LPRDOCalc m_pArray;
 	LPRDOCalc m_pArrayInd;

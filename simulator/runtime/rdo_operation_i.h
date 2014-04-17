@@ -32,27 +32,27 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IOperation
 {
 public:
-	virtual void   onBeforeChoiceFrom    (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual bool   choiceFrom            (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual void   onBeforeOperationBegin(CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual void   convertBegin          (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual void   onAfterOperationBegin (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual void   onBeforeOperationEnd  (CREF(rdo::runtime::LPRDORuntime) pRuntime, const std::vector<rdo::runtime::RDOValue>& params) = 0;
-	virtual void   convertEnd            (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual void   onAfterOperationEnd   (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual double getNextTimeInterval   (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
+	virtual void   onBeforeChoiceFrom    (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+	virtual bool   choiceFrom            (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+	virtual void   onBeforeOperationBegin(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+	virtual void   convertBegin          (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+	virtual void   onAfterOperationBegin (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+	virtual void   onBeforeOperationEnd  (const rdo::runtime::LPRDORuntime& pRuntime, const std::vector<rdo::runtime::RDOValue>& params) = 0;
+	virtual void   convertEnd            (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+	virtual void   onAfterOperationEnd   (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+	virtual double getNextTimeInterval   (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
 };
 
 #define DECLARE_IOperation \
-	virtual void   onBeforeChoiceFrom    (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual bool   choiceFrom            (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual void   onBeforeOperationBegin(CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual void   convertBegin          (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual void   onAfterOperationBegin (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual void   onBeforeOperationEnd  (CREF(rdo::runtime::LPRDORuntime) pRuntime, const std::vector<rdo::runtime::RDOValue>& params); \
-	virtual void   convertEnd            (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual void   onAfterOperationEnd   (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual double getNextTimeInterval   (CREF(rdo::runtime::LPRDORuntime) pRuntime)
+	virtual void   onBeforeChoiceFrom    (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual bool   choiceFrom            (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual void   onBeforeOperationBegin(const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual void   convertBegin          (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual void   onAfterOperationBegin (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual void   onBeforeOperationEnd  (const rdo::runtime::LPRDORuntime& pRuntime, const std::vector<rdo::runtime::RDOValue>& params); \
+	virtual void   convertEnd            (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual void   onAfterOperationEnd   (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual double getNextTimeInterval   (const rdo::runtime::LPRDORuntime& pRuntime)
 
 /*!
   \interface IOperationTrace

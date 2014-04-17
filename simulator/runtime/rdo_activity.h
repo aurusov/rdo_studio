@@ -34,7 +34,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	RDOActivity(bool trace, CREF(std::string) name);
+	RDOActivity(bool trace, const std::string& name);
 	virtual ~RDOActivity();
 
 	std::string m_oprName;
@@ -42,11 +42,11 @@ protected:
 	std::vector<std::size_t> m_relResID; // Содержит список id ресурсов, которые стали релевантными образцу
 	std::vector<LPRDOCalc> m_paramsCalcs;
 
-	void setPatternParameters(CREF(LPRDORuntime) pRuntime, const std::vector<LPRDOCalc>& params);
-	void setPatternParameters(CREF(LPRDORuntime) pRuntime, const std::vector<RDOValue>& params);
-	void getRelevantResources(CREF(LPRDORuntime) pRuntime, REF(std::list<LPRDOResource>) rel_res_list);
-	void updateRelRes        (CREF(LPRDORuntime) pRuntime);
-	void updateConvertStatus (CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOResource::ConvertStatus>) status_list);
+	void setPatternParameters(const LPRDORuntime& pRuntime, const std::vector<LPRDOCalc>& params);
+	void setPatternParameters(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& params);
+	void getRelevantResources(const LPRDORuntime& pRuntime, std::list<LPRDOResource>& rel_res_list);
+	void updateRelRes        (const LPRDORuntime& pRuntime);
+	void updateConvertStatus (const LPRDORuntime& pRuntime, const std::vector<RDOResource::ConvertStatus>& status_list);
 
 private:
 	DECLARE_IActivity;
@@ -67,14 +67,14 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	RDOActivityPattern(CREF(rdo::intrusive_ptr<T>) pPattern, bool trace, CREF(std::string) name);
+	RDOActivityPattern(const rdo::intrusive_ptr<T>& pPattern, bool trace, const std::string& name);
 	virtual ~RDOActivityPattern();
 
 	rdo::intrusive_ptr<T> m_pPattern;
 
 private:
 	void writeModelStructure(std::ostream& stream) const;
-	CREF(std::string) tracePatternId() const;
+	const std::string& tracePatternId() const;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

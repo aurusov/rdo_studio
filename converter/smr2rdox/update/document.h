@@ -18,7 +18,6 @@
 #include <boost/filesystem/path.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/smart_ptr/factory/factory.h"
-#include "utils/src/common/rdomacros.h"
 
 #include "converter/smr2rdox/namespace.h"
 #include "converter/smr2rdox/rdo_common/model_objects_convertor.h"
@@ -40,9 +39,9 @@ DECLARE_FACTORY(Document)
 public:
 	typedef rdo::converter::smr2rdox::RDOFileTypeOut TypeOut;
 
-	void  create      (CREF(boost::filesystem::path) filePath, CREF(boost::filesystem::path) modelName);
-	void  init        (rdo::converter::smr2rdox::RDOFileTypeIn type, REF(std::ifstream) stream);
-	void  insertUpdate(CREF(LPDocUpdate) pUpdate);
+	void  create      (const boost::filesystem::path& filePath, const boost::filesystem::path& modelName);
+	void  init        (rdo::converter::smr2rdox::RDOFileTypeIn type, std::ifstream& stream);
+	void  insertUpdate(const LPDocUpdate& pUpdate);
 	void  convert     ();
 	void  close       ();
 	boost::filesystem::path getName(TypeOut typeOut) const;
@@ -56,10 +55,10 @@ private:
 	public:
 		typedef std::vector<char> Buffer;
 
-		void init(REF(std::ifstream) stream);
-		void get(REF(std::ofstream) stream) const;
+		void init(std::ifstream& stream);
+		void get(std::ofstream& stream) const;
 
-		void insert(std::size_t to, CREF(std::string) value);
+		void insert(std::size_t to, const std::string& value);
 		void remove(std::size_t from, std::size_t to);
 
 		std::string get(std::size_t from, std::size_t to);
@@ -85,7 +84,7 @@ private:
 	LPMemoryStream getMemoryStream(Type    type);
 	LPFileStream   getFileStream  (TypeOut type);
 
-	TypeOut typeToOut(CREF(Type) typeIn) const;
+	TypeOut typeToOut(const Type& typeIn) const;
 
 	DECLARE_IDocument;
 };

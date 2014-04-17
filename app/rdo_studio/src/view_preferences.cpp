@@ -213,10 +213,8 @@ void ViewPreferences::onApplyButton()
 	buttonApply->setEnabled(false);
 }
 
-void ViewPreferences::onCheckInput(const QString& text)
+void ViewPreferences::onCheckInput(const QString& /*text*/)
 {
-	UNUSED(text);
-
 	bool check = tabSizeLineEdit->text().toInt() >= 1 &&
 		indentSizeLineEdit->text().toInt() >= 1 &&
 		horzIndentLineEdit->text().toInt() >= 1 &&
@@ -245,10 +243,8 @@ void ViewPreferences::onCodeCompUse(int state)
 	checkAllData();
 }
 
-void ViewPreferences::onCodeCompShowFullList(bool state)
+void ViewPreferences::onCodeCompShowFullList(bool /*state*/)
 {
-	UNUSED(state);
-
 	if(radioButtonFullList->isChecked())
 		style_editor.autoComplete.showFullList = true;
 	if(radioButtonNearestWords->isChecked())
@@ -292,10 +288,8 @@ void ViewPreferences::onAutoIndent(int state)
 	checkAllData();
 }
 
-void ViewPreferences::onEraseWithTab(bool state)
+void ViewPreferences::onEraseWithTab(bool /*state*/)
 {
-	UNUSED(state);
-
 	if(eraseWithTabRadioButton->isChecked())
 		style_editor.tab.backspaceUntabs = true;
 	if(eraseWithIndentRadioButton->isChecked())
@@ -377,9 +371,8 @@ void ViewPreferences::onSwitchPreviewComboBox(int index)
 	previewStackedWidget->setCurrentIndex(switchPreviewComboBox->itemData(index, Qt::UserRole).toInt() - 1);
 }
 
-void ViewPreferences::onFontSize(int index)
+void ViewPreferences::onFontSize(int /*index*/)
 {
-	UNUSED(index);
 	int size = fontSizeComboBox->currentText().toInt();
 	switch(getStyleItem()->type)
 	{
@@ -425,10 +418,8 @@ void ViewPreferences::onFontSize(int index)
 	updatePreview();
 }
 
-void ViewPreferences::onFontType(int index)
+void ViewPreferences::onFontType(int /*index*/)
 {
-	UNUSED(index);
-
 	std::string name = fontComboBox->currentFont().family().toStdString();
 
 	switch(getStyleItem()->type)
@@ -711,16 +702,14 @@ void ViewPreferences::onBgColorSelected(const QColor& color)
 	onBgColor(bgColorComboBox->findData(color, Qt::UserRole));
 }
 
-void ViewPreferences::onTitleSize(int index)
+void ViewPreferences::onTitleSize(int /*index*/)
 {
-	UNUSED(index);
 	style_chart.pFontsTicks.titleFontSize = titleComboBox->currentText().toInt();
 	updatePreview();
 }
 
-void ViewPreferences::onLegendSize(int index)
+void ViewPreferences::onLegendSize(int /*index*/)
 {
-	UNUSED(index);
 	style_chart.pFontsTicks.legendFontSize = legendComboBox->currentText().toInt();
 	updatePreview();
 }
@@ -1571,7 +1560,7 @@ void ViewPreferences::createTree()
 	treeWidget->setCurrentItem(m_pRoot);
 }
 
-QTreeWidgetItem* ViewPreferences::createTreeItem(QTreeWidgetItem* parent, CREF(QString) name, ItemType itemType)
+QTreeWidgetItem* ViewPreferences::createTreeItem(QTreeWidgetItem* parent, const QString& name, ItemType itemType)
 {
 	QTreeWidgetItem* item = new QTreeWidgetItem(parent);
 	item->setText(0, name);

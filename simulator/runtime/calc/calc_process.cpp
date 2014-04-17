@@ -27,7 +27,7 @@ RDOCalcProcessControl::RDOCalcProcessControl(LPIPROCBlock pBlock, int relResNum)
 	, m_relResNum(relResNum)
 {}
 
-RDOValue RDOCalcProcessControl::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcProcessControl::doCalc(const LPRDORuntime& pRuntime)
 {
 	//по m_relResNum нужно найти ресурс (m_Transact) и передать его в процесс
 	const std::size_t resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResNum);
@@ -47,7 +47,7 @@ RDOValue RDOCalcProcessControl::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcProcAssign
 // --------------------------------------------------------------------------------
-RDOCalcProcAssign::RDOCalcProcAssign(CREF(LPRDOCalc) pCalc, std::size_t res, std::size_t param)
+RDOCalcProcAssign::RDOCalcProcAssign(const LPRDOCalc& pCalc, std::size_t res, std::size_t param)
 	: m_pCalc(pCalc)
 	, m_res  (res  )
 	, m_param(param)
@@ -57,7 +57,7 @@ RDOCalcProcAssign::RDOCalcProcAssign(CREF(LPRDOCalc) pCalc, std::size_t res, std
 	ASSERT(m_param != ~0);
 }
 
-RDOValue RDOCalcProcAssign::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcProcAssign::doCalc(const LPRDORuntime& pRuntime)
 {
 	LPRDOResource pRes = pRuntime->getResourceByID(m_res);
 	ASSERT(pRes);
@@ -72,7 +72,7 @@ RDOValue RDOCalcProcAssign::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetTermNow
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcGetTermNow::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcGetTermNow::doCalc(const LPRDORuntime& pRuntime)
 {
 	return pRuntime->getCurrentTerm();
 }

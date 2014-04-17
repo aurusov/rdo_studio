@@ -13,7 +13,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/grammar/rdobison.h"
@@ -29,22 +28,22 @@ class RDOParserSrcInfo: public rdo::runtime::RDOSrcInfo
 {
 public:
 	RDOParserSrcInfo();
-	RDOParserSrcInfo(CREF(YYLTYPE) pos);
-	RDOParserSrcInfo(CREF(rdo::runtime::RDOSrcInfo) info);
-	RDOParserSrcInfo(CREF(rdo::runtime::RDOSrcInfo::Position) pos);
-	explicit RDOParserSrcInfo(CREF(std::string) text);
-	RDOParserSrcInfo(CREF(YYLTYPE) pos, CREF(std::string) text);
-	RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, bool first_align = false);
-	RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, CREF(std::string) text);
+	RDOParserSrcInfo(const YYLTYPE& pos);
+	RDOParserSrcInfo(const rdo::runtime::RDOSrcInfo& info);
+	RDOParserSrcInfo(const rdo::runtime::RDOSrcInfo::Position& pos);
+	explicit RDOParserSrcInfo(const std::string& text);
+	RDOParserSrcInfo(const YYLTYPE& pos, const std::string& text);
+	RDOParserSrcInfo(const YYLTYPE& pos_begin, const YYLTYPE& pos_end, bool first_align = false);
+	RDOParserSrcInfo(const YYLTYPE& pos_begin, const YYLTYPE& pos_end, const std::string& text);
 	virtual ~RDOParserSrcInfo();
 
-	virtual void setSrcInfo(CREF(RDOParserSrcInfo) info)
+	virtual void setSrcInfo(const RDOParserSrcInfo& info)
 	{
 		setSrcPos     (info.src_pos()     );
 		setSrcText    (info.src_text()    );
 		setSrcFileType(info.src_filetype());
 	}
-	void setSrcInfo(CREF(RDOParserSrcInfo) begin, CREF(std::string) delim, CREF(RDOParserSrcInfo) end)
+	void setSrcInfo(const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end)
 	{
 		RDOParserSrcInfo src_info;
 		src_info.setSrcPos     (begin.src_pos().m_first_line, begin.src_pos().m_first_pos, end.src_pos().m_last_line, end.src_pos().m_last_pos);
@@ -52,15 +51,15 @@ public:
 		src_info.setSrcFileType(begin.src_filetype());
 		setSrcInfo(src_info);
 	}
-	virtual void setSrcPos(CREF(RDOSrcInfo::Position) pos)
+	virtual void setSrcPos(const RDOSrcInfo::Position& pos)
 	{
 		RDOSrcInfo::setSrcPos(pos);
 	}
-	void setSrcPos(CREF(YYLTYPE) pos)
+	void setSrcPos(const YYLTYPE& pos)
 	{
 		setSrcPos(Position(pos.m_first_line, pos.m_first_pos, pos.m_last_line, pos.m_last_pos));
 	}
-	void setSrcPos(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end)
+	void setSrcPos(const YYLTYPE& pos_begin, const YYLTYPE& pos_end)
 	{
 		setSrcPos(Position(pos_begin.m_first_line, pos_begin.m_first_pos, pos_end.m_last_line, pos_end.m_last_pos));
 	}
@@ -80,7 +79,7 @@ public:
 		pos1.m_last_seek  = std::size_t(Position::UNDEFINE_POS);
 		return pos1;
 	}
-	static std::size_t getPosByLength(std::size_t pos, CREF(std::string) text)
+	static std::size_t getPosByLength(std::size_t pos, const std::string& text)
 	{
 		return pos + text.length();
 	}
@@ -93,13 +92,13 @@ template <class T>
 class compareName
 {
 public:
-	compareName(CREF(compareName<T>) obj)
+	compareName(const compareName<T>& obj)
 		: m_name(obj.m_name)
 	{}
-	compareName(CREF(std::string) name)
+	compareName(const std::string& name)
 		: m_name(name)
 	{}
-	REF(compareName<T>) operator= (CREF(compareName<T>) obj)
+	compareName<T>& operator= (const compareName<T>& obj)
 	{
 		m_name = obj.m_name;
 		return *this;
@@ -108,37 +107,37 @@ public:
 	{
 		return pObj->name() == m_name;
 	}
-	bool operator() (CREF(rdo::intrusive_ptr<T>) pObj)
+	bool operator() (const rdo::intrusive_ptr<T>& pObj)
 	{
 		return pObj->name() == m_name;
 	}
 
 private:
-	CREF(std::string) m_name;
+	const std::string& m_name;
 };
 
 template <class T>
 class compareNameRef
 {
 public:
-	compareNameRef(CREF(compareNameRef<T>) obj)
+	compareNameRef(const compareNameRef<T>& obj)
 		: m_name(obj.m_name)
 	{}
-	compareNameRef(CREF(std::string) name)
+	compareNameRef(const std::string& name)
 		: m_name(name)
 	{}
-	REF(compareNameRef<T>) operator= (CREF(compareNameRef<T>) obj)
+	compareNameRef<T>& operator= (const compareNameRef<T>& obj)
 	{
 		m_name = obj.m_name;
 		return *this;
 	}
-	bool operator() (CREF(T) obj)
+	bool operator() (const T& obj)
 	{
 		return obj.name() == m_name;
 	}
 
 private:
-	CREF(std::string) m_name;
+	const std::string& m_name;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

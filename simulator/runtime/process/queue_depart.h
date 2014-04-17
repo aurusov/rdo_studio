@@ -55,7 +55,7 @@ protected:
 
 	parser_for_Queue  fromParser;
 	runtime_for_Queue forRes;
-	void _onStart(CREF(LPRDORuntime) pRuntime);
+	void _onStart(const LPRDORuntime& pRuntime);
 };
 
 /*!

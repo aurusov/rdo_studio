@@ -29,7 +29,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 const std::string RDORSSResource::GET_RESOURCE = "resource_expression";
 
-RDORSSResource::RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, std::size_t id)
+RDORSSResource::RDORSSResource(const LPRDOParser& pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, std::size_t id)
 	: RDOParserSrcInfo(src_info                                      )
 	, m_pResType      (pResType                                      )
 	, m_id            (id == UNDEFINED_ID ? pParser->getRSS_id() : id)
@@ -109,7 +109,7 @@ void RDORSSResource::writeModelStructure(std::ostream& stream) const
 	stream << (getID() + 1) << " " << name() << " " << getType()->getNumber() << std::endl;
 }
 
-void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
+void RDORSSResource::addParam(const LPRDOValue& pParam)
 {
 	ASSERT(pParam);
 

@@ -29,12 +29,12 @@ class RDOFunCalcSelect: public RDOFunCalcGroup
 DECLARE_FACTORY(RDOFunCalcSelect)
 public:
 	mutable std::list<LPRDOResource> res_list;
-	void prepare(CREF(LPRDORuntime) pRuntime);
+	void prepare(const LPRDORuntime& pRuntime);
 
-	CREF(LPIResourceType) getResType();
+	const LPIResourceType& getResType();
 
 private:
-	RDOFunCalcSelect(CREF(LPIResourceType) pResType, int nResType, CREF(LPRDOCalc) pCondition);
+	RDOFunCalcSelect(const LPIResourceType& pResType, int nResType, const LPRDOCalc& pCondition);
 
 	LPIResourceType m_pResType;
 
@@ -46,7 +46,7 @@ PREDECLARE_POINTER(RDOFunCalcSelectBase);
 class RDOFunCalcSelectBase: public RDOFunCalc
 {
 protected:
-	RDOFunCalcSelectBase(CREF(LPRDOFunCalcSelect) pSelect, CREF(LPRDOCalc) pCondition);
+	RDOFunCalcSelectBase(const LPRDOFunCalcSelect& pSelect, const LPRDOCalc& pCondition);
 
 	LPRDOFunCalcSelect m_pSelect;
 	LPRDOCalc          m_pCondition;
@@ -62,7 +62,7 @@ class RDOFunCalcSelect##CalcName: public RDOFunCalcSelectBase \
 {                                                             \
 DECLARE_FACTORY(RDOFunCalcSelect##CalcName)                   \
 private:                                                      \
-	RDOFunCalcSelect##CalcName(CREF(LPRDOFunCalcSelect) pSelect, CREF(LPRDOCalc) pCondition) \
+	RDOFunCalcSelect##CalcName(const LPRDOFunCalcSelect& pSelect, const LPRDOCalc& pCondition) \
 		: RDOFunCalcSelectBase(pSelect, pCondition)           \
 	{}                                                        \
 	DECLARE_ICalc;                                            \
@@ -78,7 +78,7 @@ class RDOFunCalcSelect##CalcName: public RDOFunCalcSelectBase    \
 {                                                                \
 DECLARE_FACTORY(RDOFunCalcSelect##CalcName)                      \
 private:                                                         \
-	RDOFunCalcSelect##CalcName(CREF(LPRDOFunCalcSelect) pSelect) \
+	RDOFunCalcSelect##CalcName(const LPRDOFunCalcSelect& pSelect) \
 		: RDOFunCalcSelectBase(pSelect, NULL)                    \
 	{}                                                           \
 	DECLARE_ICalc;                                               \

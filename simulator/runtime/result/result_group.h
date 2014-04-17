@@ -31,7 +31,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPMDResultGroup(CREF(std::string) name);
+	RDOPMDResultGroup(const std::string& name);
 	virtual ~RDOPMDResultGroup();
 
 	/*!

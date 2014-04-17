@@ -23,7 +23,7 @@ PREDECLARE_POINTER(RDOFunCalc);
 class RDOFunCalc: public RDOCalc
 {
 public:
-	virtual void addRetCalc(CREF(LPRDOCalc) pCalc);
+	virtual void addRetCalc(const LPRDOCalc& pCalc);
 
 protected:
 	RDOFunCalc();
@@ -35,10 +35,10 @@ class RDOFuncTableCalc: public RDOFunCalc
 {
 DECLARE_FACTORY(RDOFuncTableCalc)
 public:
-	void addResultCalc(CREF(LPRDOCalcConst) pResult);
+	void addResultCalc(const LPRDOCalcConst& pResult);
 
 private:
-	RDOFuncTableCalc(CREF(LPRDOCalc) pArgument);
+	RDOFuncTableCalc(const LPRDOCalc& pArgument);
 
 	typedef  std::vector<LPRDOCalcConst>  ResultList;
 
@@ -54,10 +54,10 @@ class RDOFunListCalc: public RDOFunCalc
 {
 DECLARE_FACTORY(RDOFunListCalc)
 public:
-	void addCase(CREF(LPRDOCalc) pCase, CREF(LPRDOCalcConst) pResult);
+	void addCase(const LPRDOCalc& pCase, const LPRDOCalcConst& pResult);
 
 private:
-	RDOFunListCalc(CREF(LPRDOCalcConst) pDefaultValue);
+	RDOFunListCalc(const LPRDOCalcConst& pDefaultValue);
 
 	typedef  std::vector<LPRDOCalcConst>  ResultList;
 
@@ -74,7 +74,7 @@ class RDOFunAlgorithmicCalc: public RDOFunCalc
 {
 DECLARE_FACTORY(RDOFunAlgorithmicCalc)
 public:
-	void addCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pAction);
+	void addCalcIf(const LPRDOCalc& pCondition, const LPRDOCalc& pAction);
 
 protected:
 	RDOFunAlgorithmicCalc();
@@ -91,7 +91,7 @@ class RDOCalcFuncParam: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFuncParam)
 private:
-	RDOCalcFuncParam(std::size_t paramID, CREF(RDOSrcInfo) src_info);
+	RDOCalcFuncParam(std::size_t paramID, const RDOSrcInfo& src_info);
 
 	std::size_t m_paramID;
 
@@ -117,7 +117,7 @@ class RDOCalcSetConst: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcSetConst)
 private:
-	RDOCalcSetConst(std::size_t constantID, CREF(LPRDOCalc) pCalc);
+	RDOCalcSetConst(std::size_t constantID, const LPRDOCalc& pCalc);
 
 	std::size_t m_constantID;
 	LPRDOCalc m_pCalc;
@@ -131,13 +131,13 @@ class RDOCalcFunctionCaller: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFunctionCaller)
 public:
-	void addParameter   (CREF(LPRDOCalc) pParam   );
-	void setFunctionCalc(CREF(LPRDOCalc) pFunction);
+	void addParameter   (const LPRDOCalc& pParam   );
+	void setFunctionCalc(const LPRDOCalc& pFunction);
 
-	CREF(LPRDOCalc) function() const;
+	const LPRDOCalc& function() const;
 
 private:
-	RDOCalcFunctionCaller(CREF(LPRDOCalc) pFunction);
+	RDOCalcFunctionCaller(const LPRDOCalc& pFunction);
 
 	RDOCalcList  m_paramList;
 	LPRDOCalc    m_pFunction;

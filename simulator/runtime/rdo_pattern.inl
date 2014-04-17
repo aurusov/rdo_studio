@@ -20,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPattern
 // --------------------------------------------------------------------------------
-inline void RDOPattern::addPreSelectRelRes(CREF(LPRDOCalc) pCalc)
+inline void RDOPattern::addPreSelectRelRes(const LPRDOCalc& pCalc)
 {
 	CalcList::iterator it = m_preSelectRelRes.begin();
 	while (it != m_preSelectRelRes.end())
@@ -37,12 +37,12 @@ inline void RDOPattern::addPreSelectRelRes(CREF(LPRDOCalc) pCalc)
 inline RDOPattern::~RDOPattern()
 {}
 
-inline void RDOPattern::preSelectRelRes(CREF(LPRDORuntime) pRuntime)
+inline void RDOPattern::preSelectRelRes(const LPRDORuntime& pRuntime)
 {
 	runCalcs(m_preSelectRelRes, pRuntime);
 }
 
-inline void RDOPattern::runCalcs(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime)
+inline void RDOPattern::runCalcs(CalcList& calcList, const LPRDORuntime& pRuntime)
 {
 	LPRDOMemory pLocalMemory = rdo::Factory<RDOMemory>::create();
 	pRuntime->getMemoryStack()->push(pLocalMemory);
@@ -51,7 +51,7 @@ inline void RDOPattern::runCalcs(REF(CalcList) calcList, CREF(LPRDORuntime) pRun
 	pRuntime->getMemoryStack()->pop();
 }
 
-inline bool RDOPattern::runCalcsBool(REF(CalcList) calcList, CREF(LPRDORuntime) pRuntime)
+inline bool RDOPattern::runCalcsBool(CalcList& calcList, const LPRDORuntime& pRuntime)
 {
 	for (const auto& calc: calcList)
 	{
@@ -66,7 +66,7 @@ inline bool RDOPattern::runCalcsBool(REF(CalcList) calcList, CREF(LPRDORuntime) 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternEvent
 // --------------------------------------------------------------------------------
-inline void RDOPatternEvent::addConvertorCalc(CREF(LPRDOCalc) pCalc)
+inline void RDOPatternEvent::addConvertorCalc(const LPRDOCalc& pCalc)
 {
 	m_convertor.push_back(pCalc);
 }
@@ -76,18 +76,18 @@ inline void RDOPatternEvent::addConvertorStatus(RDOResource::ConvertStatus statu
 	m_convertorStatus.push_back(status);
 }
 
-inline void RDOPatternEvent::addEraseCalc(CREF(LPRDOCalc) pCalc)
+inline void RDOPatternEvent::addEraseCalc(const LPRDOCalc& pCalc)
 {
 	m_erase.push_back(pCalc);
 }
 
-inline void RDOPatternEvent::convertEvent(CREF(LPRDORuntime) pRuntime)
+inline void RDOPatternEvent::convertEvent(const LPRDORuntime& pRuntime)
 {
 	preSelectRelRes(pRuntime);
 	runCalcs(m_convertor, pRuntime);
 }
 
-inline void RDOPatternEvent::convertErase(CREF(LPRDORuntime) pRuntime)
+inline void RDOPatternEvent::convertErase(const LPRDORuntime& pRuntime)
 {
 	runCalcs(m_erase, pRuntime);
 }
@@ -95,12 +95,12 @@ inline void RDOPatternEvent::convertErase(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternRule
 // --------------------------------------------------------------------------------
-inline void RDOPatternRule::addChoiceFromCalc(CREF(LPRDOCalc) pCalc)
+inline void RDOPatternRule::addChoiceFromCalc(const LPRDOCalc& pCalc)
 {
 	m_choiceFrom.push_back(pCalc);
 }
 
-inline void RDOPatternRule::addConvertorCalc(CREF(LPRDOCalc) pCalc)
+inline void RDOPatternRule::addConvertorCalc(const LPRDOCalc& pCalc)
 {
 	m_convertor.push_back(pCalc);
 }
@@ -110,23 +110,23 @@ inline void RDOPatternRule::addConvertorStatus(RDOResource::ConvertStatus status
 	m_convertorStatus.push_back(status);
 }
 
-inline void RDOPatternRule::addEraseCalc(CREF(LPRDOCalc) pCalc)
+inline void RDOPatternRule::addEraseCalc(const LPRDOCalc& pCalc)
 {
 	m_erase.push_back(pCalc);
 }
 
-inline bool RDOPatternRule::choiceFrom(CREF(LPRDORuntime) pRuntime)
+inline bool RDOPatternRule::choiceFrom(const LPRDORuntime& pRuntime)
 {
 	preSelectRelRes(pRuntime);
 	return runCalcsBool(m_choiceFrom, pRuntime);
 }
 
-inline void RDOPatternRule::convertRule(CREF(LPRDORuntime) pRuntime)
+inline void RDOPatternRule::convertRule(const LPRDORuntime& pRuntime)
 {
 	runCalcs(m_convertor, pRuntime);
 }
 
-inline void RDOPatternRule::convertErase(CREF(LPRDORuntime) pRuntime)
+inline void RDOPatternRule::convertErase(const LPRDORuntime& pRuntime)
 {
 	runCalcs(m_erase, pRuntime);
 }
@@ -134,12 +134,12 @@ inline void RDOPatternRule::convertErase(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternOperation
 // --------------------------------------------------------------------------------
-inline void RDOPatternOperation::addChoiceFromCalc(CREF(LPRDOCalc) pCalc)
+inline void RDOPatternOperation::addChoiceFromCalc(const LPRDOCalc& pCalc)
 {
 	m_choiceFrom.push_back(pCalc);
 }
 
-inline void RDOPatternOperation::addConvertorBeginCalc(CREF(LPRDOCalc) pCalc)
+inline void RDOPatternOperation::addConvertorBeginCalc(const LPRDOCalc& pCalc)
 {
 	m_convertorBegin.push_back(pCalc);
 }
@@ -149,12 +149,12 @@ inline void RDOPatternOperation::addConvertorBeginStatus(RDOResource::ConvertSta
 	m_convertorBeginStatus.push_back(status);
 }
 
-inline void RDOPatternOperation::addEraseBeginCalc(CREF(LPRDOCalc) pCalc)
+inline void RDOPatternOperation::addEraseBeginCalc(const LPRDOCalc& pCalc)
 {
 	m_eraseBegin.push_back(pCalc);
 }
 
-inline void RDOPatternOperation::addConvertorEndCalc(CREF(LPRDOCalc) pCalc)
+inline void RDOPatternOperation::addConvertorEndCalc(const LPRDOCalc& pCalc)
 {
 	m_convertorEnd.push_back(pCalc);
 }
@@ -164,38 +164,38 @@ inline void RDOPatternOperation::addConvertorEndStatus(RDOResource::ConvertStatu
 	m_convertorEndStatus.push_back(status);
 }
 
-inline void RDOPatternOperation::addEraseEndCalc(CREF(LPRDOCalc) pCalc)
+inline void RDOPatternOperation::addEraseEndCalc(const LPRDOCalc& pCalc)
 {
 	m_eraseEnd.push_back(pCalc);
 }
 
-inline void RDOPatternOperation::setTime(CREF(LPRDOCalc) pCalc)
+inline void RDOPatternOperation::setTime(const LPRDOCalc& pCalc)
 {
 	m_timeCalc = pCalc;
 }
 
-inline bool RDOPatternOperation::choiceFrom(CREF(LPRDORuntime) pRuntime)
+inline bool RDOPatternOperation::choiceFrom(const LPRDORuntime& pRuntime)
 {
 	preSelectRelRes(pRuntime);
 	return runCalcsBool(m_choiceFrom, pRuntime);
 }
 
-inline void RDOPatternOperation::convertBegin(CREF(LPRDORuntime) pRuntime)
+inline void RDOPatternOperation::convertBegin(const LPRDORuntime& pRuntime)
 {
 	runCalcs(m_convertorBegin, pRuntime);
 }
 
-inline void RDOPatternOperation::convertBeginErase(CREF(LPRDORuntime) pRuntime)
+inline void RDOPatternOperation::convertBeginErase(const LPRDORuntime& pRuntime)
 {
 	runCalcs(m_eraseBegin, pRuntime);
 }
 
-inline void RDOPatternOperation::convertEnd(CREF(LPRDORuntime) pRuntime)
+inline void RDOPatternOperation::convertEnd(const LPRDORuntime& pRuntime)
 {
 	runCalcs(m_convertorEnd, pRuntime);
 }
 
-inline void RDOPatternOperation::convertEndErase(CREF(LPRDORuntime) pRuntime)
+inline void RDOPatternOperation::convertEndErase(const LPRDORuntime& pRuntime)
 {
 	runCalcs(m_eraseEnd, pRuntime);
 }

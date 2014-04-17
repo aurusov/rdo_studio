@@ -93,7 +93,7 @@ void console_controller::getBuildLogList(StringList& list) const
 	list = m_buildLogList;
 }
 
-void console_controller::proc(REF(RDOThread::RDOMessageInfo) msg)
+void console_controller::proc(RDOThread::RDOMessageInfo& msg)
 {
 	switch (msg.message)
 	{
@@ -159,7 +159,7 @@ void console_controller::proc(REF(RDOThread::RDOMessageInfo) msg)
 	}
 }
 
-void console_controller::fillBuildLogList(REF(std::vector<FileMessage>) errors)
+void console_controller::fillBuildLogList(std::vector<FileMessage>& errors)
 {
 	BOOST_FOREACH(const FileMessage& error, errors)
 	{

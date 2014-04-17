@@ -29,18 +29,18 @@ class RDOEnumType: public RDOType
 {
 DECLARE_FACTORY(RDOEnumType);
 public:
-	void add(CREF(LPRDOValue) pNext);
+	void add(const LPRDOValue& pNext);
 
 	rdo::runtime::LPRDOEnumType getEnums() const
 	{
 		return m_pType.object_static_cast<rdo::runtime::RDOEnumType>();
 	}
 
-	bool operator== (CREF(RDOEnumType) pEnumType) const
+	bool operator== (const RDOEnumType& pEnumType) const
 	{
 		return getEnums()->getValues() == pEnumType.getEnums()->getValues();
 	}
-	bool operator!= (CREF(RDOEnumType) pEnumType) const
+	bool operator!= (const RDOEnumType& pEnumType) const
 	{
 		return !operator==(pEnumType);
 	}
@@ -50,7 +50,7 @@ public:
 
 private:
 	RDOEnumType         ();
-	RDOEnumType         (CREF(rdo::runtime::LPRDOEnumType) pEnumType);
+	RDOEnumType         (const rdo::runtime::LPRDOEnumType& pEnumType);
 	virtual ~RDOEnumType();
 };
 

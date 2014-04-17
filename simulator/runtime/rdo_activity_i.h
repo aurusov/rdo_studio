@@ -23,14 +23,14 @@
 class IActivity
 {
 public:
-	virtual void addParamCalc(CREF(rdo::runtime::LPRDOCalc) pCalc) = 0;
+	virtual void addParamCalc(const rdo::runtime::LPRDOCalc& pCalc) = 0;
 	virtual int getResByRelRes(std::size_t rel_res_id) const = 0;
 	virtual void setRelRes(std::size_t rel_res_id, std::size_t res_id) = 0;
 };
 
-#define DECLARE_IActivity                                           \
-	virtual void addParamCalc(CREF(rdo::runtime::LPRDOCalc) pCalc); \
-	virtual int getResByRelRes(std::size_t rel_res_id) const;       \
+#define DECLARE_IActivity                                            \
+	virtual void addParamCalc(const rdo::runtime::LPRDOCalc& pCalc); \
+	virtual int getResByRelRes(std::size_t rel_res_id) const;        \
 	virtual void setRelRes(std::size_t rel_res_id, std::size_t res_id);
 
 /*!
@@ -40,13 +40,13 @@ public:
 class IActivityTrace
 {
 public:
-	virtual std::string traceResourcesList(char prefix, CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual std::string traceResourcesListNumbers(CREF(rdo::runtime::LPRDORuntime) pRuntime, bool show_create_index) = 0;
+	virtual std::string traceResourcesList(char prefix, const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+	virtual std::string traceResourcesListNumbers(const rdo::runtime::LPRDORuntime& pRuntime, bool show_create_index) = 0;
 };
 
 #define DECLARE_IActivityTrace                                                                      \
-	virtual std::string traceResourcesList(char prefix, CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual std::string traceResourcesListNumbers(CREF(rdo::runtime::LPRDORuntime) pRuntime, bool show_create_index);
+	virtual std::string traceResourcesList(char prefix, const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual std::string traceResourcesListNumbers(const rdo::runtime::LPRDORuntime& pRuntime, bool show_create_index);
 
 /*!
   \interface IActivityPatternTrace
@@ -55,10 +55,10 @@ public:
 class IActivityPatternTrace
 {
 public:
-	virtual CREF(std::string) tracePatternId() const = 0;
+	virtual const std::string& tracePatternId() const = 0;
 };
 
 #define DECLARE_IActivityPatternTrace \
-	virtual CREF(std::string) tracePatternId() const;
+	virtual const std::string& tracePatternId() const;
 
 #endif // _LIB_RUNTIME_ACTIVITY_I_H_

@@ -29,10 +29,8 @@ int cnv_smr_file_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void cnv_smr_file_error(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_smr_file_error(const char* /*message*/)
+{}
 
 int cnv_smr_sim_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
@@ -41,15 +39,13 @@ int cnv_smr_sim_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void cnv_smr_sim_error(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_smr_sim_error(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOSMR
 // --------------------------------------------------------------------------------
-RDOSMR::RDOSMR(CREF(std::string) modelName)
+RDOSMR::RDOSMR(const std::string& modelName)
 	: m_showMode      (rdo::service::simulation::SM_NoShow)
 	, m_frameNumber   (1 )
 	, m_showRate      (60)
@@ -66,7 +62,7 @@ void RDOSMR::setShowMode(rdo::service::simulation::ShowMode showMode)
 	m_showMode = showMode;
 }
 
-void RDOSMR::setFrameNumber(int value, CREF(YYLTYPE) pos)
+void RDOSMR::setFrameNumber(int value, const YYLTYPE& pos)
 {
 	if (value <= 0)
 	{
@@ -79,7 +75,7 @@ void RDOSMR::setFrameNumber(int value, CREF(YYLTYPE) pos)
 	m_frameNumber = value;
 }
 
-void RDOSMR::setShowRate(double value, CREF(YYLTYPE) pos)
+void RDOSMR::setShowRate(double value, const YYLTYPE& pos)
 {
 	if (value < 0)
 	{
@@ -88,7 +84,7 @@ void RDOSMR::setShowRate(double value, CREF(YYLTYPE) pos)
 	m_showRate = value;
 }
 
-void RDOSMR::setRunStartTime(double value, CREF(YYLTYPE) pos)
+void RDOSMR::setRunStartTime(double value, const YYLTYPE& pos)
 {
 	if (value < 0)
 	{
@@ -97,7 +93,7 @@ void RDOSMR::setRunStartTime(double value, CREF(YYLTYPE) pos)
 	m_runStartTime = value;
 }
 
-void RDOSMR::setTraceStartTime(double value, CREF(YYLTYPE) pos)
+void RDOSMR::setTraceStartTime(double value, const YYLTYPE& pos)
 {
 	if (value < 0)
 	{
@@ -113,7 +109,7 @@ void RDOSMR::setTraceStartTime(double value, CREF(YYLTYPE) pos)
 	m_traceStartTime_pos = pos;
 }
 
-void RDOSMR::setTraceEndTime(double value, CREF(YYLTYPE) pos)
+void RDOSMR::setTraceEndTime(double value, const YYLTYPE& pos)
 {
 	if (value < 0)
 	{
@@ -129,7 +125,7 @@ void RDOSMR::setTraceEndTime(double value, CREF(YYLTYPE) pos)
 	m_traceEndTime_pos = pos;
 }
 
-void RDOSMR::setTerminateIf(REF(LPRDOFUNLogic) pLogic)
+void RDOSMR::setTerminateIf(LPRDOFUNLogic& pLogic)
 {
 	if (m_pTerminateIf)
 	{
@@ -141,7 +137,7 @@ void RDOSMR::setTerminateIf(REF(LPRDOFUNLogic) pLogic)
 	Converter::s_converter()->runtime()->setTerminateIf(pLogic->getCalc());
 }
 
-void RDOSMR::setConstValue(CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm) pArithm)
+void RDOSMR::setConstValue(const RDOParserSrcInfo& const_info, LPRDOFUNArithm& pArithm)
 {
 	LPRDOFUNConstant pConstant = Converter::s_converter()->findFUNConstant(const_info.src_text());
 	if (!pConstant)
@@ -155,7 +151,7 @@ void RDOSMR::setConstValue(CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm
 	Converter::s_converter()->insertChanges(pConstant->src_text(), pArithm->src_text());
 }
 
-void RDOSMR::setResParValue(CREF(RDOParserSrcInfo) res_info, CREF(RDOParserSrcInfo) par_info, REF(LPRDOFUNArithm) pArithm)
+void RDOSMR::setResParValue(const RDOParserSrcInfo& res_info, const RDOParserSrcInfo& par_info, LPRDOFUNArithm& pArithm)
 {
 	LPRDORSSResource pResource = Converter::s_converter()->findRSSResource(res_info.src_text());
 	if (!pResource)
@@ -178,7 +174,7 @@ void RDOSMR::setResParValue(CREF(RDOParserSrcInfo) res_info, CREF(RDOParserSrcIn
 	Converter::s_converter()->insertChanges(res_info.src_text() + "." + par_info.src_text(), pArithm->src_text());
 }
 
-void RDOSMR::setSeed(CREF(RDOParserSrcInfo) seq_info, int base)
+void RDOSMR::setSeed(const RDOParserSrcInfo& seq_info, int base)
 {
 	LPRDOFUNSequence pSequence = Converter::s_converter()->findFUNSequence(seq_info.src_text());
 	if (!pSequence)
@@ -189,7 +185,7 @@ void RDOSMR::setSeed(CREF(RDOParserSrcInfo) seq_info, int base)
 	Converter::s_converter()->insertChanges(pSequence->src_text() + ".Seed", rdo::format("%d", base));
 }
 
-void RDOSMR::insertBreakPoint(CREF(RDOParserSrcInfo) src_info, REF(LPRDOFUNLogic) pLogic)
+void RDOSMR::insertBreakPoint(const RDOParserSrcInfo& src_info, LPRDOFUNLogic& pLogic)
 {
 	for (const auto& breakPoint: m_breakPointList)
 	{
@@ -205,7 +201,7 @@ void RDOSMR::insertBreakPoint(CREF(RDOParserSrcInfo) src_info, REF(LPRDOFUNLogic
 	m_breakPointList.push_back(pBreakPoint);
 }
 
-RDOSMR::BreakPoint::BreakPoint(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic)
+RDOSMR::BreakPoint::BreakPoint(const RDOParserSrcInfo& src_info, LPRDOFUNLogic pLogic)
 	: RDOParserSrcInfo(src_info)
 {
 	ASSERT(pLogic);

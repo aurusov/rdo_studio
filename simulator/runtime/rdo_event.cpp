@@ -21,28 +21,26 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOEvent
 // --------------------------------------------------------------------------------
-RDOEvent::RDOEvent(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternEvent) pPattern, bool trace, CREF(std::string) name)
+RDOEvent::RDOEvent(const LPRDORuntime& pRuntime, const LPRDOPatternEvent& pPattern, bool trace, const std::string& name)
 	: RDOActivityPattern<RDOPatternEvent>(pPattern, trace, name)
 {
 	setTrace  (trace);
 	setTraceID(pRuntime->getFreeEventId());
 }
 
-void RDOEvent::onStart(CREF(LPRDORuntime) /*pRuntime*/)
+void RDOEvent::onStart(const LPRDORuntime& /*pRuntime*/)
 {}
 
-void RDOEvent::onStop(CREF(LPRDORuntime) /*pRuntime*/)
+void RDOEvent::onStop(const LPRDORuntime& /*pRuntime*/)
 {}
 
-bool RDOEvent::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOEvent::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return false;
 }
 
-IBaseOperation::BOResult RDOEvent::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOEvent::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
@@ -73,9 +71,8 @@ void RDOEvent::onAfterEvent(const LPRDORuntime& pRuntime)
 	updateRelRes(pRuntime);
 }
 
-IBaseOperation::BOResult RDOEvent::onContinue(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOEvent::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 

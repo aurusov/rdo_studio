@@ -17,7 +17,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-RDOResourceTypeList::RDOResourceTypeList(std::size_t number, CREF(LPRDORuntime) pRuntime)
+RDOResourceTypeList::RDOResourceTypeList(std::size_t number, const LPRDORuntime& pRuntime)
 	: RDOType           (t_pointer)
 	, RDOTraceableObject(false, number, rdo::toString(number + 1))
 {
@@ -36,7 +36,7 @@ void RDOResourceTypeList::setFactoryMethod(const Create& create)
 	m_create = create;
 }
 
-LPRDOResource RDOResourceTypeList::createRes(CREF(LPRDORuntime) pRuntime, std::size_t resID, CREF(std::vector<RDOValue>) paramsCalcs, bool traceFlag, bool permanentFlag)
+LPRDOResource RDOResourceTypeList::createRes(const LPRDORuntime& pRuntime, std::size_t resID, const std::vector<RDOValue>& paramsCalcs, bool traceFlag, bool permanentFlag)
 {
 	ASSERT(m_create);
 
@@ -51,7 +51,7 @@ LPRDOResource RDOResourceTypeList::createRes(CREF(LPRDORuntime) pRuntime, std::s
 	return resource;
 }
 
-void RDOResourceTypeList::insertNewResource(CREF(LPRDORuntime) pRuntime, CREF(LPRDOResource) pResource)
+void RDOResourceTypeList::insertNewResource(const LPRDORuntime& pRuntime, const LPRDOResource& pResource)
 {
 	ASSERT(pRuntime);
 	ASSERT(pResource);
@@ -67,7 +67,7 @@ void RDOResourceTypeList::insertNewResource(CREF(LPRDORuntime) pRuntime, CREF(LP
 	pRuntime->insertNewResource(pResource);
 }
 
-void RDOResourceTypeList::eraseRes(CREF(LPRDOResource) pResource)
+void RDOResourceTypeList::eraseRes(const LPRDOResource& pResource)
 {
 	m_resourceList.remove(pResource);
 }
@@ -82,7 +82,7 @@ IResourceType::ResCIterator RDOResourceTypeList::res_end() const
 	return m_resourceList.end();
 }
 
-LPRDOResourceTypeList RDOResourceTypeList::clone(CREF(LPRDORuntime) pRuntime) const
+LPRDOResourceTypeList RDOResourceTypeList::clone(const LPRDORuntime& pRuntime) const
 {
 	LPRDOResourceTypeList type = rdo::Factory<RDOResourceTypeList>::create(getTraceID(), pRuntime);
 	ASSERT(type);

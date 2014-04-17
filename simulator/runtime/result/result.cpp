@@ -89,7 +89,7 @@ inline std::ostream& operator<< (std::ostream& stream, const ResultStreamItem<do
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDResult
 // --------------------------------------------------------------------------------
-RDOPMDResult::RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace)
+RDOPMDResult::RDOPMDResult(const LPRDORuntime& pRuntime, const std::string& name, bool trace)
 	: RDOResultTrace(pRuntime, trace)
 	, m_name        (name           )
 {
@@ -99,12 +99,12 @@ RDOPMDResult::RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, 
 RDOPMDResult::~RDOPMDResult()
 {}
 
-CREF(std::string) RDOPMDResult::name() const
+const std::string& RDOPMDResult::name() const
 {
 	return m_name;
 }
 
-void RDOPMDResult::printLeft(std::ostream& stream, CREF(std::string) txt)
+void RDOPMDResult::printLeft(std::ostream& stream, const std::string& txt)
 {
 	stream << txt;
 
@@ -119,24 +119,20 @@ void RDOPMDResult::printLeft(std::ostream& stream, CREF(std::string) txt)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchPar
 // --------------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(std::string) resName, CREF(std::string) parName, std::size_t resourceID, std::size_t paramID)
+RDOPMDWatchPar::RDOPMDWatchPar(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& /*resName*/, const std::string& /*parName*/, std::size_t resourceID, std::size_t paramID)
 	: RDOPMDResult  (pRuntime, name, trace)
 	, m_resourceID  (resourceID           )
 	, m_paramID     (paramID              )
 	, m_wasFinalCalc(false                )
 {
-	UNUSED(resName);
-	UNUSED(parName);
 	pRuntime->notify().connect(this, Notify::RO_BEFOREDELETE);
 }
 
 RDOPMDWatchPar::~RDOPMDWatchPar()
 {}
 
-void RDOPMDWatchPar::notify(std::size_t message, void* pParam)
+void RDOPMDWatchPar::notify(std::size_t /*message*/, void* pParam)
 {
-	UNUSED(message);
-
 	if ((ruint_type)pParam == m_resourceID)
 	{
 		m_resourceID = std::size_t(~0);
@@ -149,7 +145,7 @@ std::string RDOPMDWatchPar::traceValue() const
 	return rdo::toString(m_currentValue.rdoValue);
 }
 
-void RDOPMDWatchPar::resetResult(CREF(LPRDORuntime) pRuntime)
+void RDOPMDWatchPar::resetResult(const LPRDORuntime& pRuntime)
 {
 	ASSERT(pRuntime);
 
@@ -161,7 +157,7 @@ void RDOPMDWatchPar::resetResult(CREF(LPRDORuntime) pRuntime)
 	m_wasFinalCalc = false;
 }
 
-void RDOPMDWatchPar::checkResult(CREF(LPRDORuntime) pRuntime)
+void RDOPMDWatchPar::checkResult(const LPRDORuntime& pRuntime)
 {
 	if (!m_pResource)
 		return;
@@ -184,7 +180,7 @@ void RDOPMDWatchPar::checkResult(CREF(LPRDORuntime) pRuntime)
 	m_timePrev = currTime;
 }
 
-void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
+void RDOPMDWatchPar::calcStat(const LPRDORuntime& pRuntime, std::ostream& stream)
 {
 	if (!m_wasFinalCalc)
 	{
@@ -234,7 +230,7 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchState
 // --------------------------------------------------------------------------------
-RDOPMDWatchState::RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(LPRDOCalc) pLogic)
+RDOPMDWatchState::RDOPMDWatchState(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const LPRDOCalc& pLogic)
 	: RDOPMDResult  (pRuntime, name, trace)
 	, m_pLogicCalc  (pLogic               )
 	, m_wasFinalCalc(false                )
@@ -248,13 +244,13 @@ std::string RDOPMDWatchState::traceValue() const
 	return m_currentValue.state ? "TRUE" : "FALSE";
 }
 
-void RDOPMDWatchState::resetResult(CREF(LPRDORuntime) pRuntime)
+void RDOPMDWatchState::resetResult(const LPRDORuntime& pRuntime)
 {
 	try
 	{
 		m_currentValue = fabs(m_pLogicCalc->calcValue(pRuntime).getDouble()) > DBL_EPSILON;
 	}
-	catch (CREF(RDOUndefinedException))
+	catch (const RDOUndefinedException&)
 	{
 		m_currentValue = false;
 	}
@@ -262,14 +258,14 @@ void RDOPMDWatchState::resetResult(CREF(LPRDORuntime) pRuntime)
 	m_wasFinalCalc = false;
 }
 
-void RDOPMDWatchState::checkResult(CREF(LPRDORuntime) pRuntime)
+void RDOPMDWatchState::checkResult(const LPRDORuntime& pRuntime)
 {
 	bool newValue;
 	try
 	{
 		newValue = fabs(m_pLogicCalc->calcValue(pRuntime).getDouble()) > DBL_EPSILON;
 	}
-	catch(CREF(RDOUndefinedException))
+	catch(const RDOUndefinedException&)
 	{
 		newValue = false;
 	}
@@ -292,7 +288,7 @@ void RDOPMDWatchState::checkResult(CREF(LPRDORuntime) pRuntime)
 	m_timePrev = currTime;
 }
 
-void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
+void RDOPMDWatchState::calcStat(const LPRDORuntime& pRuntime, std::ostream& stream)
 {
 	if (!m_wasFinalCalc)
 	{
@@ -324,14 +320,12 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& strea
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchQuant
 // --------------------------------------------------------------------------------
-RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(std::string) resTypeName, int rtpID)
+RDOPMDWatchQuant::RDOPMDWatchQuant(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& /*resTypeName*/, int rtpID)
 	: RDOPMDResult  (pRuntime, name, trace)
 	, m_pLogicCalc  (NULL                 )
 	, m_rtpID       (rtpID                )
 	, m_wasFinalCalc(false                )
-{
-	UNUSED(resTypeName);
-}
+{}
 
 RDOPMDWatchQuant::~RDOPMDWatchQuant()
 {}
@@ -341,14 +335,14 @@ std::string RDOPMDWatchQuant::traceValue() const
 	return rdo::toString(m_currentValue.quant);
 }
 
-void RDOPMDWatchQuant::resetResult(CREF(LPRDORuntime) pRuntime)
+void RDOPMDWatchQuant::resetResult(const LPRDORuntime& pRuntime)
 {
 	m_currentValue = 0;
 	m_timePrev     = m_timeBegin = pRuntime->getCurrentTime();
 	m_wasFinalCalc = false;
 }
 
-std::size_t RDOPMDWatchQuant::calcCurrentQuant(CREF(LPRDORuntime) pRuntime) const
+std::size_t RDOPMDWatchQuant::calcCurrentQuant(const LPRDORuntime& pRuntime) const
 {
 	std::size_t newQuant = 0;
 	RDORuntime::ResCIterator end = pRuntime->getResType(m_rtpID)->res_end();
@@ -368,7 +362,7 @@ std::size_t RDOPMDWatchQuant::calcCurrentQuant(CREF(LPRDORuntime) pRuntime) cons
 	return newQuant;
 }
 
-void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
+void RDOPMDWatchQuant::checkResult(const LPRDORuntime& pRuntime)
 {
 	std::size_t newQuant = calcCurrentQuant(pRuntime);
 
@@ -385,7 +379,7 @@ void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
 	m_timePrev = currTime;
 }
 
-void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
+void RDOPMDWatchQuant::calcStat(const LPRDORuntime& pRuntime, std::ostream& stream)
 {
 	if (!m_wasFinalCalc)
 	{
@@ -438,7 +432,7 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& strea
 		<< '\n';
 }
 
-void RDOPMDWatchQuant::setLogicCalc(CREF(LPRDOCalc) pLogicCalc)
+void RDOPMDWatchQuant::setLogicCalc(const LPRDOCalc& pLogicCalc)
 {
 	m_pLogicCalc = pLogicCalc;
 }
@@ -446,13 +440,12 @@ void RDOPMDWatchQuant::setLogicCalc(CREF(LPRDOCalc) pLogicCalc)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchValue
 // --------------------------------------------------------------------------------
-RDOPMDWatchValue::RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, bool trace, CREF(std::string) resTypeName, int rtpID)
+RDOPMDWatchValue::RDOPMDWatchValue(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& /*resTypeName*/, int rtpID)
 	: RDOPMDResult  (pRuntime, name, trace)
 	, m_pLogicCalc  (NULL                 )
 	, m_pArithmCalc (NULL                 )
 	, m_rtpID       (rtpID                )
 {
-	UNUSED(resTypeName);
 	m_wasChanged = false;
 }
 
@@ -464,22 +457,16 @@ std::string RDOPMDWatchValue::traceValue() const
 	return rdo::toString(m_currValue);
 }
 
-void RDOPMDWatchValue::resetResult(CREF(LPRDORuntime) pRuntime)
+void RDOPMDWatchValue::resetResult(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
-
 	m_currValue = 0;
 }
 
-void RDOPMDWatchValue::checkResult(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPMDWatchValue::checkResult(const LPRDORuntime& /*pRuntime*/)
+{}
 
-void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
+void RDOPMDWatchValue::calcStat(const LPRDORuntime& /*pRuntime*/, std::ostream& stream)
 {
-	UNUSED(pRuntime);
-
 	double average = boost::accumulators::mean(m_acc);
 	std::size_t count = boost::accumulators::count(m_acc);
 	double variance = boost::accumulators::variance(m_acc);
@@ -515,7 +502,7 @@ void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& strea
 		<< '\n';
 }
 
-void RDOPMDWatchValue::checkResourceErased(CREF(LPRDOResource) pResource)
+void RDOPMDWatchValue::checkResourceErased(const LPRDOResource& pResource)
 {
 	if (!pResource->checkType(m_rtpID))
 	{
@@ -535,12 +522,12 @@ void RDOPMDWatchValue::checkResourceErased(CREF(LPRDOResource) pResource)
 	return;
 }
 
-void RDOPMDWatchValue::setLogicCalc(CREF(LPRDOCalc) pLogicCalc)
+void RDOPMDWatchValue::setLogicCalc(const LPRDOCalc& pLogicCalc)
 {
 	m_pLogicCalc = pLogicCalc;
 }
 
-void RDOPMDWatchValue::setArithmCalc(CREF(LPRDOCalc) pArithmCalc)
+void RDOPMDWatchValue::setArithmCalc(const LPRDOCalc& pArithmCalc)
 {
 	m_pArithmCalc = pArithmCalc;
 }
@@ -548,7 +535,7 @@ void RDOPMDWatchValue::setArithmCalc(CREF(LPRDOCalc) pArithmCalc)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDGetValue
 // --------------------------------------------------------------------------------
-RDOPMDGetValue::RDOPMDGetValue(CREF(LPRDORuntime) pRuntime, CREF(std::string) name, CREF(LPRDOCalc) pArithm)
+RDOPMDGetValue::RDOPMDGetValue(const LPRDORuntime& pRuntime, const std::string& name, const LPRDOCalc& pArithm)
 	: RDOPMDResult  (pRuntime, name, false)
 	, m_pArithmCalc (pArithm              )
 	, m_wasFinalCalc(false                )
@@ -562,19 +549,15 @@ std::string RDOPMDGetValue::traceValue() const
 	return "ERROR";
 }
 
-void RDOPMDGetValue::resetResult(CREF(LPRDORuntime) pRuntime)
+void RDOPMDGetValue::resetResult(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
-
 	m_wasFinalCalc = false;
 }
 
-void RDOPMDGetValue::checkResult(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPMDGetValue::checkResult(const LPRDORuntime& /*pRuntime*/)
+{}
 
-void RDOPMDGetValue::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
+void RDOPMDGetValue::calcStat(const LPRDORuntime& pRuntime, std::ostream& stream)
 {
 	if (!m_wasFinalCalc)
 	{
@@ -589,7 +572,7 @@ void RDOPMDGetValue::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
 		<< '\n';
 }
 
-CREF(RDOValue) RDOPMDGetValue::getValue() const
+const RDOValue& RDOPMDGetValue::getValue() const
 {
 	return m_value;
 }

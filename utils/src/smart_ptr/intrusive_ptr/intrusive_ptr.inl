@@ -9,7 +9,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "utils/src/smart_ptr/factory/factory.h"
 #include "utils/src/smart_ptr/factory/factory.inl"
 #include "utils/src/smart_ptr/ref_counter/ref_counter.h"
@@ -32,7 +31,7 @@ inline intrusive_ptr<T>::intrusive_ptr(T* object)
 }
 
 template<class T>
-inline intrusive_ptr<T>::intrusive_ptr(CREF(this_type) sptr)
+inline intrusive_ptr<T>::intrusive_ptr(const this_type& sptr)
 	: m_object(sptr.m_object)
 {
 	if (m_object)
@@ -41,7 +40,7 @@ inline intrusive_ptr<T>::intrusive_ptr(CREF(this_type) sptr)
 
 template <class T>
 template <class P>
-inline intrusive_ptr<T>::intrusive_ptr(CREF(interface_ptr<P>) pInterface)
+inline intrusive_ptr<T>::intrusive_ptr(const interface_ptr<P>& pInterface)
 {
 	m_object = dynamic_cast<T*>(pInterface.m_pInterface);
 	if (m_object)
@@ -56,7 +55,7 @@ inline intrusive_ptr<T>::~intrusive_ptr()
 }
 
 template<class T>
-inline REF(typename intrusive_ptr<T>::this_type) intrusive_ptr<T>::operator= (CREF(this_type) sptr)
+inline intrusive_ptr<T>& intrusive_ptr<T>::operator=(const this_type& sptr)
 {
 	if (m_object)
 		release();
@@ -71,21 +70,21 @@ inline REF(typename intrusive_ptr<T>::this_type) intrusive_ptr<T>::operator= (CR
 
 template<class T>
 template<class P>
-inline bool intrusive_ptr<T>::operator== (CREF(intrusive_ptr<P>) sptr) const
+inline bool intrusive_ptr<T>::operator== (const intrusive_ptr<P>& sptr) const
 {
 	return &m_object->m_intrusive_counter == &sptr.m_object->m_intrusive_counter;
 }
 
 template<class T>
 template<class P>
-inline bool intrusive_ptr<T>::operator!= (CREF(intrusive_ptr<P>) sptr) const
+inline bool intrusive_ptr<T>::operator!= (const intrusive_ptr<P>& sptr) const
 {
 	return !operator==(sptr);
 }
 
 template<class T>
 template<class P>
-inline bool intrusive_ptr<T>::compare(CREF(intrusive_ptr<P>) sptr) const
+inline bool intrusive_ptr<T>::compare(const intrusive_ptr<P>& sptr) const
 {
 	return *m_object == *sptr.m_object;
 }
@@ -109,13 +108,13 @@ inline T* intrusive_ptr<T>::operator->()
 }
 
 template<class T>
-inline CREF(T) intrusive_ptr<T>::operator* () const
+inline const T& intrusive_ptr<T>::operator* () const
 {
 	return *m_object;
 }
 
 template<class T>
-inline REF(T) intrusive_ptr<T>::operator* ()
+inline T& intrusive_ptr<T>::operator* ()
 {
 	return *m_object;
 }
@@ -202,7 +201,7 @@ inline bool intrusive_ptr<T>::owner() const
 }
 
 template<class T>
-inline REF(std::size_t) intrusive_ptr<T>::counter()
+inline std::size_t& intrusive_ptr<T>::counter()
 {
 	return m_object->m_intrusive_counter;
 }

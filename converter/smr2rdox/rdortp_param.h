@@ -36,7 +36,7 @@ public:
 	DECLARE_IName;
 
 private:
-	RDORTPParam(CREF(LPRDOTypeParam) pParamType, CREF(LPRDOValue) pDefault, CREF(RDOParserSrcInfo) src_info);
+	RDORTPParam(const LPRDOTypeParam& pParamType, const LPRDOValue& pDefault, const RDOParserSrcInfo& src_info);
 	virtual ~RDORTPParam();
 };
 DECLARE_POINTER(RDORTPParam);

@@ -77,13 +77,8 @@ Model::Model(QWidget* pParent, QWidget* pView)
 Model::~Model()
 {}
 
-void Model::catchModified(int modificationType, int position, int length, int linesAdded, const QByteArray& bytes, int line, int foldLevelNow, int foldLevelPrev)
+void Model::catchModified(int modificationType, int /*position*/, int /*length*/, int /*linesAdded*/, const QByteArray& /*bytes*/, int line, int foldLevelNow, int foldLevelPrev)
 {
-	UNUSED(linesAdded);
-	UNUSED(length    );
-	UNUSED(position  );
-	UNUSED(bytes     );
-
 	if (modificationType & SC_MOD_CHANGEFOLD)
 	{
 		foldChanged(line, foldLevelNow, foldLevelPrev);
@@ -575,7 +570,7 @@ const Log* Model::getLog() const
 	return m_pLog;
 }
 
-void Model::setLog(REF(Log) pLog)
+void Model::setLog(Log& pLog)
 {
 	m_pLog = &pLog;
 }

@@ -44,11 +44,11 @@ public:
 	class Param
 	{
 	public:
-		explicit Param(CREF(LPRDOValue) pValue)
+		explicit Param(const LPRDOValue& pValue)
 			: m_pValue(pValue)
 		{}
 
-		CREF(LPRDOValue) param() const
+		const LPRDOValue& param() const
 		{
 			return m_pValue;
 		}
@@ -61,22 +61,22 @@ public:
 
 	virtual rdo::runtime::LPRDOCalc createCalc() const;
 
-	CREF(std::string) name() const { return src_info().src_text(); }
+	const std::string& name() const { return src_info().src_text(); }
 	LPRDORTPResType getType() const { return m_pResType; }
 
 	int getID() const { return m_id; }
 
-	CREF(ParamList) params() const { return m_paramList; }
+	const ParamList& params() const { return m_paramList; }
 
-	void addParam(CREF(LPRDOValue) pParam);
+	void addParam(const LPRDOValue& pParam);
 	bool getTrace() const { return trace; }
 	void setTrace(bool value) { trace = value; }
 	bool defined () const;
 
-	void writeModelStructure(REF(std::ostream) stream) const;
+	void writeModelStructure(std::ostream& stream) const;
 
 protected:
-	RDORSSResource(Converter* pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
+	RDORSSResource(Converter* pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, int id = UNDEFINED_ID);
 
 	LPRDORTPResType m_pResType;
 	const int m_id; //! in system
@@ -94,7 +94,7 @@ class RDOPROCResource: public RDORSSResource
 {
 DECLARE_FACTORY(RDOPROCResource);
 private:
-	RDOPROCResource(Converter* pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
+	RDOPROCResource(Converter* pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, int id = UNDEFINED_ID);
 	virtual rdo::runtime::LPRDOCalc createCalc() const;
 };
 DECLARE_POINTER(RDOPROCResource);

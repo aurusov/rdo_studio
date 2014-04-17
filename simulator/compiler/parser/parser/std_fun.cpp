@@ -102,7 +102,7 @@ int roundLocal(double value)
 class MaxCalc: public rdo::runtime::RDOFunCalc
 {
 private:
-	REF(rdo::runtime::RDOValue) doCalc(rdo::runtime::RDORuntime* pRuntime)
+	rdo::runtime::RDOValue& doCalc(rdo::runtime::RDORuntime* pRuntime)
 	{
 		m_value = max(pRuntime->getFuncArgument(0).getDouble(), pRuntime->getFuncArgument(1).getDouble());
 		return m_value;
@@ -112,7 +112,7 @@ private:
 class Test: public rdo::runtime::RDOFunCalc
 {
 public:
-	REF(rdo::runtime::RDOValue) doCalc(rdo::runtime::RDORuntime* runtime)
+	rdo::runtime::RDOValue& doCalc(rdo::runtime::RDORuntime* runtime)
 	{
 		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<MaxCalc>::create();
 		ASSERT(pCalc);
@@ -137,14 +137,14 @@ public:
 };
 #endif
 
-void RDOParserSTDFUN::generate(CREF(std::string) name, CREF(rdo::runtime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const
+void RDOParserSTDFUN::generate(const std::string& name, const rdo::runtime::LPRDOFunCalc& pCalc, const LPRDOParam& pReturnType, const ParamList& paramList) const
 {
 	const std::string nameLower = boost::algorithm::to_lower_copy(name);
 	generateReal(name,      pCalc, pReturnType, paramList);
 	generateReal(nameLower, pCalc, pReturnType, paramList);
 }
 
-void RDOParserSTDFUN::generateReal(CREF(std::string) name, CREF(rdo::runtime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const
+void RDOParserSTDFUN::generateReal(const std::string& name, const rdo::runtime::LPRDOFunCalc& pCalc, const LPRDOParam& pReturnType, const ParamList& paramList) const
 {
 	ASSERT(pCalc);
 
@@ -175,10 +175,8 @@ void RDOParserSTDFUN::generateReal(CREF(std::string) name, CREF(rdo::runtime::LP
 	pFunction->end();
 }
 
-void RDOParserSTDFUN::parse(CREF(LPRDOParser) pParser)
+void RDOParserSTDFUN::parse(const LPRDOParser& /*pParser*/)
 {
-	UNUSED(pParser);
-
 	typedef rdo::runtime::std_fun1<double, double>         StdFun_D_D;
 	typedef rdo::runtime::std_fun2<double, double, double> StdFun_D_DD;
 	typedef rdo::runtime::std_fun2<double, double, int>    StdFun_D_DI;

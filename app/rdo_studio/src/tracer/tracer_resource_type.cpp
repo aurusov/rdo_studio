@@ -37,12 +37,12 @@ ParamInfo::~ParamInfo()
 	}
 }
 
-CREF(QString) ParamInfo::getName() const
+const QString& ParamInfo::getName() const
 {
 	return m_name;
 }
 
-void ParamInfo::setName(CREF(QString) name)
+void ParamInfo::setName(const QString& name)
 {
 	m_name = name;
 }
@@ -52,7 +52,7 @@ ParamInfo::ParamType ParamInfo::getParamType() const
 	return m_paramType;
 }
 
-int ParamInfo::addEnumValue(CREF(std::string) value)
+int ParamInfo::addEnumValue(const std::string& value)
 {
 	if (!m_enumValueList)
 		return -1;
@@ -60,7 +60,7 @@ int ParamInfo::addEnumValue(CREF(std::string) value)
 	return m_enumValueList->size() - 1;
 }
 
-int ParamInfo::addStringValue(CREF(std::string) value)
+int ParamInfo::addStringValue(const std::string& value)
 {
 	if (!m_enumValueList)
 		return -1;
@@ -108,12 +108,12 @@ ResourceType::~ResourceType()
 	}
 }
 
-CREF(QString) ResourceType::getName() const
+const QString& ResourceType::getName() const
 {
 	return m_name;
 }
 
-void ResourceType::setName(CREF(QString) name)
+void ResourceType::setName(const QString& name)
 {
 	m_name = name;
 }

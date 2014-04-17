@@ -47,9 +47,9 @@ private:
 	bool m_help;
 	bool m_convert;
 
-	void createGeneralOptions(REF(po::options_description) options);
-	void createConvertorOptions(REF(po::options_description) options);
-	void createAdditionalOptions(REF(po::options_description) options);
+	void createGeneralOptions(po::options_description& options);
+	void createConvertorOptions(po::options_description& options);
+	void createAdditionalOptions(po::options_description& options);
 };
 
 } // namespace rdo

@@ -12,7 +12,6 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/process/queue_depart.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/calc/resource/calc_relevant.h"
@@ -28,7 +27,7 @@ RDOPROCBlockForQueue::RDOPROCBlockForQueue(LPIPROCProcess process, parser_for_Qu
 	, fromParser  (From_Par)
 {}
 
-void RDOPROCBlockForQueue::_onStart(CREF(LPRDORuntime) pRuntime)
+void RDOPROCBlockForQueue::_onStart(const LPRDORuntime& pRuntime)
 {
 	int Id_res = fromParser.Id_res;
 	int Id_param = fromParser.Id_param;
@@ -41,14 +40,13 @@ void RDOPROCBlockForQueue::_onStart(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCQueue
 // --------------------------------------------------------------------------------
-void RDOPROCQueue::onStart(CREF(LPRDORuntime) pRuntime)
+void RDOPROCQueue::onStart(const LPRDORuntime& pRuntime)
 {
 	_onStart(pRuntime);
 }
 
-bool RDOPROCQueue::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCQueue::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	if (!m_transacts.empty())
 	{
 		RDOValue i = forRes.rss->getParam(forRes.Id_param);
@@ -62,37 +60,30 @@ bool RDOPROCQueue::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 	}
 }
 
-IBaseOperation::BOResult RDOPROCQueue::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCQueue::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
-
-	TRACE1("%7.1f QUEUE\n", pRuntime->getCurrentTime());
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCQueue::onStop (CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPROCQueue::onStop (const LPRDORuntime& /*pRuntime*/)
+{}
 
-IBaseOperation::BOResult RDOPROCQueue::onContinue(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCQueue::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCDepart
 // --------------------------------------------------------------------------------
-void RDOPROCDepart::onStart(CREF(LPRDORuntime) pRuntime)
+void RDOPROCDepart::onStart(const LPRDORuntime& pRuntime)
 {
 	_onStart(pRuntime);
 }
 
-bool RDOPROCDepart::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCDepart::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	if (!m_transacts.empty())
 	{
 		RDOValue i = forRes.rss->getParam(forRes.Id_param);
@@ -106,23 +97,17 @@ bool RDOPROCDepart::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 	}
 }
 
-IBaseOperation::BOResult RDOPROCDepart::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCDepart::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
-
-	TRACE1("%7.1f DEPART\n", pRuntime->getCurrentTime());
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCDepart::onStop(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPROCDepart::onStop(const LPRDORuntime& /*pRuntime*/)
+{}
 
-IBaseOperation::BOResult RDOPROCDepart::onContinue(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCDepart::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 

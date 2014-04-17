@@ -41,7 +41,7 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IInternalStatisticsManager
 {
 public:
-	virtual void setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics) = 0;
+	virtual void setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics) = 0;
 
 protected:
 	IInternalStatisticsManager()
@@ -51,7 +51,7 @@ protected:
 };
 
 #define DECLARE_IInternalStatisticsManager \
-	virtual void setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics);
+	virtual void setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics);
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -69,10 +69,10 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 public:
-	void calcNextTimeInterval(CREF(LPRDORuntime) pRuntime);
+	void calcNextTimeInterval(const LPRDORuntime& pRuntime);
 
 private:
-	RDOPROCGenerate(LPIPROCProcess process, CREF(LPRDOCalc) pTime, CREF(LPRDOCalc) pCreateAndGoOnTransactCalc, boost::optional<std::size_t> maxCreateTransactCount = boost::optional<std::size_t>());
+	RDOPROCGenerate(LPIPROCProcess process, const LPRDOCalc& pTime, const LPRDOCalc& pCreateAndGoOnTransactCalc, boost::optional<std::size_t> maxCreateTransactCount = boost::optional<std::size_t>());
 
 	double timeNext;
 	LPRDOCalc m_pTimeCalc;
@@ -81,7 +81,7 @@ private:
 	std::size_t m_createdTransactCount;
 	LPIInternalStatistics m_pStatistics;
 
-	void onMakePlaned(CREF(LPRDORuntime) pRuntime);
+	void onMakePlaned(const LPRDORuntime& pRuntime);
 
 	DECLARE_IBaseOperation;
 	DECLARE_IInternalStatisticsManager;

@@ -39,7 +39,7 @@ public:
 		return m_object;
 	}
 	template <typename P1>
-	T* instance(CREF(P1) p1)
+	T* instance(const P1& p1)
 	{
 		if (!m_object)
 			m_object = new T(p1);

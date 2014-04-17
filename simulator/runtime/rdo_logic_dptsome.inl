@@ -17,7 +17,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSome
 // --------------------------------------------------------------------------------
-inline RDODPTSome::RDODPTSome(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent)
+inline RDODPTSome::RDODPTSome(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent)
 	: RDOLogicSimple(pRuntime, parent)
 {
 	pRuntime->getFreeDPTId();

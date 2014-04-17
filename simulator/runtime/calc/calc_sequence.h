@@ -49,7 +49,7 @@ public:
 		double  m_max;
 
 		Range();
-		Range(CREF(double) min, CREF(double) max);
+		Range(const double& min, const double& max);
 	};
 
 	bool m_res_real;
@@ -58,7 +58,7 @@ public:
 protected:
 	RDOCalcSeqNext();
 
-	virtual RDOValue getNextValue(CREF(LPRDORuntime) pRuntime) = 0;
+	virtual RDOValue getNextValue(const LPRDORuntime& pRuntime) = 0;
 };
 
 //! Псевдослучайное распределение
@@ -87,8 +87,8 @@ private:                                                                       \
 	RDOCalcSeqNext##CalcName(Distribution* gen)                                \
 		: RDOCalcRandomDistribution<Distribution>(gen)                         \
 	{}                                                                         \
-                                                                               \
-	virtual RDOValue getNextValue(CREF(LPRDORuntime) pRuntime);                \
+	                                                                           \
+	virtual RDOValue getNextValue(const LPRDORuntime& pRuntime);               \
 };
 
 /*!

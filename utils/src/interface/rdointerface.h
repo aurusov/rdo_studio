@@ -76,14 +76,14 @@ class UnknownPointer
 {
 public:
 	UnknownPointer ();
-	UnknownPointer (REF(IUnknown) unknown    );
+	UnknownPointer (IUnknown& unknown);
 	UnknownPointer (LPIGetUnknown pGetUnknown);
 	UnknownPointer (void* pInterface, LPIUnknown pUnknown);
-	UnknownPointer (CREF(UnknownPointer) pointer);
+	UnknownPointer (const UnknownPointer& pointer);
 	~UnknownPointer();
 
-	bool operator==(CREF(UnknownPointer) pointer) const;
-	REF(UnknownPointer) operator=(CREF(UnknownPointer) pointer);
+	bool operator==(const UnknownPointer& pointer) const;
+	UnknownPointer& operator=(const UnknownPointer& pointer);
 
 	operator bool() const;
 
@@ -112,9 +112,9 @@ public:
 	Interface();
 	Interface(LPIGetUnknown pGetUnknown);
 	Interface(void* pInterface, LPIUnknown pUnknown);
-	Interface(CREF(this_type) aInterface);
+	Interface(const this_type& aInterface);
 
-	REF(this_type) operator=(CREF(this_type) aInterface);
+	this_type& operator=(const this_type& aInterface);
 	operator bool() const;
 
 	I* get();
@@ -170,49 +170,49 @@ public:
 		Object();
 
 		template <typename P1>
-		Object(CREF(P1) p1)
+		Object(const P1& p1)
 			: T(p1)
 		{
 			create();
 		}
 
 		template <typename P1, typename P2>
-		Object(CREF(P1) p1, CREF(P2) p2)
+		Object(const P1& p1, const P2& p2)
 			: T(p1, p2)
 		{
 			create();
 		}
 
 		template <typename P1, typename P2, typename P3>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3)
+		Object(const P1& p1, const P2& p2, const P3& p3)
 			: T(p1, p2, p3)
 		{
 			create();
 		}
 
 		template <typename P1, typename P2, typename P3, typename P4>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4)
+		Object(const P1& p1, const P2& p2, const P3& p3, const P4& p4)
 			: T(p1, p2, p3, p4)
 		{
 			create();
 		}
 
 		template <typename P1, typename P2, typename P3, typename P4, typename P5>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5)
+		Object(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5)
 			: T(p1, p2, p3, p4, p5)
 		{
 			create();
 		}
 
 		template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6)
+		Object(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5, const P6& p6)
 			: T(p1, p2, p3, p4, p5, p6)
 		{
 			create();
 		}
 
 		template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7)
+		Object(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5, const P6& p6, const P7& p7)
 			: T(p1, p2, p3, p4, p5, p6, p7)
 		{
 			create();
@@ -231,25 +231,25 @@ public:
 	static UnknownPointer create();
 
 	template <typename P1>
-	static UnknownPointer create(CREF(P1) p1);
+	static UnknownPointer create(const P1& p1);
 
 	template <typename P1, typename P2>
-	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2);
+	static UnknownPointer create(const P1& p1, const P2& p2);
 
 	template <typename P1, typename P2, typename P3>
-	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3);
+	static UnknownPointer create(const P1& p1, const P2& p2, const P3& p3);
 
 	template <typename P1, typename P2, typename P3, typename P4>
-	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4);
+	static UnknownPointer create(const P1& p1, const P2& p2, const P3& p3, const P4& p4);
 
 	template <typename P1, typename P2, typename P3, typename P4, typename P5>
-	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5);
+	static UnknownPointer create(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5);
 
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
-	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6);
+	static UnknownPointer create(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5, const P6& p6);
 
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
-	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7);
+	static UnknownPointer create(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5, const P6& p6, const P7& p7);
 
 	static void destroy(T* pObject);
 

@@ -30,7 +30,7 @@ public:
 	TreeCtrl(QWidget* pParent);
 	virtual ~TreeCtrl();
 
-	QTreeWidgetItem* insertFrame(CREF(QString) name);
+	QTreeWidgetItem* insertFrame(const QString& name);
 
 	void clear();
 

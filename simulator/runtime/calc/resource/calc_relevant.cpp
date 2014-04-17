@@ -28,7 +28,7 @@ RDOGetResourceByRelevantResourceID::RDOGetResourceByRelevantResourceID(std::size
 	: m_relevantResourceID(relevantResourceID)
 {}
 
-RDOValue RDOGetResourceByRelevantResourceID::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOGetResourceByRelevantResourceID::doCalc(const LPRDORuntime& pRuntime)
 {
 	RDOValue value;
 	if (!RDOCalcGetResourceHelper::getResource(pRuntime, pRuntime->getCurrentActivity()->getResByRelRes(m_relevantResourceID), value))
@@ -41,18 +41,18 @@ RDOValue RDOGetResourceByRelevantResourceID::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOEraseResRelCalc
 // --------------------------------------------------------------------------------
-RDOEraseResRelCalc::RDOEraseResRelCalc(std::size_t relResID, CREF(std::string) relResName)
+RDOEraseResRelCalc::RDOEraseResRelCalc(std::size_t relResID, const std::string& relResName)
 	: m_relResID  (relResID  )
 	, m_relResName(relResName)
 {}
 
-RDOValue RDOEraseResRelCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOEraseResRelCalc::doCalc(const LPRDORuntime& pRuntime)
 {
 	pRuntime->onEraseRes(pRuntime->getCurrentActivity()->getResByRelRes(m_relResID), this);
 	return RDOValue();
 }
 
-CREF(std::string) RDOEraseResRelCalc::getName() const
+const std::string& RDOEraseResRelCalc::getName() const
 {
 	return m_relResName;
 }
@@ -63,7 +63,7 @@ CREF(std::string) RDOEraseResRelCalc::getName() const
 RDOCalcGetGroupFunctionResource::RDOCalcGetGroupFunctionResource()
 {}
 
-RDOValue RDOCalcGetGroupFunctionResource::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcGetGroupFunctionResource::doCalc(const LPRDORuntime& pRuntime)
 {
 	LPRDOResource pResource = pRuntime->getGroupFuncRes();
 	ASSERT(pResource);

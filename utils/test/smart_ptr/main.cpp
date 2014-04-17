@@ -77,7 +77,7 @@ public:
 
 	enum { DAFAUL_VALUE = 2 };
 
-	bool operator==(CREF(MyClass2) obj) const
+	bool operator==(const MyClass2& obj) const
 	{
 		return m_b == obj.m_b;
 	}
@@ -91,10 +91,7 @@ protected:
 DECLARE_POINTER(MyClass2)
 
 void MyClass2::ifun21()
-{
-	int i = 1;
-	UNUSED(i);
-}
+{}
 
 PREDECLARE_POINTER(MyClass3);
 class MyClass3: public rdo::counter_reference

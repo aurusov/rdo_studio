@@ -19,7 +19,7 @@ namespace rdo {
 // -------------------- RefCounter<T>
 // --------------------------------------------------------------------------------
 template <class T>
-inline intrusive_ptr_interface_wrapper<T>::intrusive_ptr_interface_wrapper(CREF(rdo::intrusive_ptr<T>) pPointer)
+inline intrusive_ptr_interface_wrapper<T>::intrusive_ptr_interface_wrapper(const rdo::intrusive_ptr<T>& pPointer)
 	: parent_type(pPointer)
 {}
 

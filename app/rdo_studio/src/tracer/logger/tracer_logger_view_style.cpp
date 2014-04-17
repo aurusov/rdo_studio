@@ -221,13 +221,12 @@ LogStyle::~LogStyle()
 {
 }
 
-bool LogStyle::getItemColors( int index, LogColorPair &colors ) const
+bool LogStyle::getItemColors(int /*index*/, LogColorPair &colors) const
 {
-	UNUSED(index);
 	return getDefaultColor(colors);
 }
 
-bool LogStyle::getItemColors( CREF(std::string) item, LogColorPair &colors ) const
+bool LogStyle::getItemColors(const std::string& item, LogColorPair &colors) const
 {
 	if ( item.empty() )
 		return LogStyle::getDefaultColor(colors);

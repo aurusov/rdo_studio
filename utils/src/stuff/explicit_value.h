@@ -21,7 +21,7 @@ template <class T>
 class explicit_value
 {
 public:
-	explicit explicit_value(CREF(T) value)
+	explicit explicit_value(const T& value)
 		: m_value(value)
 	{}
 

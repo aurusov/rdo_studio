@@ -25,7 +25,7 @@ class OperationBase: public Serie
 {
 DECLARE_FACTORY(OperationBase)
 public:
-	CREF(QString) getName() const;
+	const QString& getName() const;
 
 	LPPattern getPattern() const;
 
@@ -33,7 +33,7 @@ public:
 	virtual void monitorTime(Time* const pTime, const int eventIndex);
 
 protected:
-	OperationBase(CREF(LPPattern) pPattern, CREF(QString) name);
+	OperationBase(const LPPattern& pPattern, const QString& name);
 	virtual ~OperationBase();
 
 	void incOperationsCount(Time* const pTime, const int eventIndex);
@@ -56,7 +56,7 @@ public:
 	void accomplish(Time* const pTime, const int eventIndex);
 
 private:
-	Operation(CREF(LPPattern) pPattern, CREF(QString) name);
+	Operation(const LPPattern& pPattern, const QString& name);
 	virtual ~Operation();
 };
 
@@ -73,7 +73,7 @@ public:
 	virtual void monitorTime(Time* const pTime, const int eventIndex);
 
 private:
-	Event(CREF(LPPattern) pPattern, CREF(QString) name);
+	Event(const LPPattern& pPattern, const QString& name);
 	virtual ~Event();
 };
 

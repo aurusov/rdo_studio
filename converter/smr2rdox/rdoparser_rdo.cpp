@@ -46,7 +46,7 @@ RDOParserRDOItem::~RDOParserRDOItem()
 	}
 }
 
-void RDOParserRDOItem::parse(Converter* pParser, REF(std::istream) streamIn)
+void RDOParserRDOItem::parse(Converter* pParser, std::istream& streamIn)
 {
 	ASSERT(pParser);
 
@@ -93,7 +93,7 @@ RDOParserRSS::RDOParserRSS()
 	: RDOParserRDOItem(rdo::converter::smr2rdox::RSS_IN, cnv_rssparse, cnv_rsserror, cnv_rsslex)
 {}
 
-void RDOParserRSS::parse(Converter* pParser, REF(std::istream) streamIn)
+void RDOParserRSS::parse(Converter* pParser, std::istream& streamIn)
 {
 	ASSERT(pParser);
 	pParser->setHaveKWResources   (false);
@@ -188,10 +188,8 @@ int roundLocal(double value)
 	return (int)floor(value + 0.5);
 }
 
-void RDOParserSTDFUN::parse(Converter* pParser)
+void RDOParserSTDFUN::parse(Converter* /*pParser*/)
 {
-	UNUSED(pParser);
-
 	typedef rdo::runtime::std_fun1<double, double>         StdFun_D_D;
 	typedef rdo::runtime::std_fun2<double, double, double> StdFun_D_DD;
 	typedef rdo::runtime::std_fun2<double, double, int>    StdFun_D_DI;

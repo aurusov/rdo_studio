@@ -34,14 +34,14 @@ PREDECLARE_POINTER(RDOParser);
 class RDOLexer: public yyFlexLexer
 {
 public:
-	RDOLexer(CREF(LPRDOParser) pParser, std::istream* yyin, std::ostream* yyout);
+	RDOLexer(const LPRDOParser& pParser, std::istream* yyin, std::ostream* yyout);
 
 	void loc_init();
 	void loc_action();
 	void loc_delta_pos(int value);
 	void setvalue(int value);
 
-	CREF(LPRDOParser) parser() const;
+	const LPRDOParser& parser() const;
 
 	void enumBegin();
 	void enumReset();

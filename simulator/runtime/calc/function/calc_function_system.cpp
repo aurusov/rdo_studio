@@ -20,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetTimeNow
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcGetTimeNow::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcGetTimeNow::doCalc(const LPRDORuntime& pRuntime)
 {
 	return pRuntime->getTimeNow();
 }
@@ -28,7 +28,7 @@ RDOValue RDOCalcGetTimeNow::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetSeconds
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcGetSeconds::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcGetSeconds::doCalc(const LPRDORuntime& pRuntime)
 {
 	return pRuntime->getSeconds();
 }

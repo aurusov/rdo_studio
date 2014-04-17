@@ -12,7 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
 
@@ -25,10 +24,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOException
 {
 public:
-	RDOException(CREF(std::string) message);
+	RDOException(const std::string& message);
 	virtual std::string getType() const = 0;
 	
-	CREF(std::string) message() const;
+	const std::string& message() const;
 
 private:
 	std::string m_message;
@@ -41,7 +40,7 @@ private:
 class RDORuntimeException: public RDOException
 {
 public:
-	RDORuntimeException(CREF(std::string) message);
+	RDORuntimeException(const std::string& message);
 	virtual std::string getType() const;
 };
 
@@ -52,7 +51,7 @@ public:
 class RDOTypeException: public RDORuntimeException
 {
 public:
-	RDOTypeException(CREF(std::string) message = "");
+	RDOTypeException(const std::string& message = "");
 	virtual std::string getType() const;
 };
 
@@ -63,7 +62,7 @@ public:
 class RDOValueException: public RDORuntimeException
 {
 public:
-	RDOValueException(CREF(std::string) message = "");
+	RDOValueException(const std::string& message = "");
 	virtual std::string getType() const;
 };
 
@@ -85,7 +84,7 @@ public:
 class RDOInternalException: public RDORuntimeException
 {
 public:
-	RDOInternalException(CREF(std::string) message);
+	RDOInternalException(const std::string& message);
 	virtual std::string getType() const;
 };
 

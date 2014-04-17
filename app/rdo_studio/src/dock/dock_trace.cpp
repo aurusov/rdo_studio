@@ -34,7 +34,7 @@ DockTrace::DockTrace(QWidget* pParent)
 DockTrace::~DockTrace()
 {}
 
-REF(DockTrace::context_type) DockTrace::getContext()
+DockTrace::context_type& DockTrace::getContext()
 {
 	return *static_cast<context_type*>(widget());
 }

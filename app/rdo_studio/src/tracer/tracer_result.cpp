@@ -19,7 +19,7 @@
 
 using namespace rdo::gui::tracer;
 
-Result::Result(CREF(QString) name, Kind kind, int id)
+Result::Result(const QString& name, Kind kind, int id)
 	: Serie(SK_RESULT)
 	, m_name(name)
 	, m_kind(kind)
@@ -31,7 +31,7 @@ Result::Result(CREF(QString) name, Kind kind, int id)
 Result::~Result()
 {}
 
-CREF(QString) Result::getName() const
+const QString& Result::getName() const
 {
 	return m_name;
 }

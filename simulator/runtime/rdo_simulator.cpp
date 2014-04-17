@@ -39,7 +39,7 @@ RDOSimulator::RDOSimulator()
 RDOSimulator::~RDOSimulator()
 {}
 
-void RDOSimulator::appendLogic(CREF(LPIBaseOperation) pLogic, LPIBaseOperationContainer pParent)
+void RDOSimulator::appendLogic(const LPIBaseOperation& pLogic, LPIBaseOperationContainer pParent)
 {
 	ASSERT(pParent);
 	pParent->append(pLogic);
@@ -110,7 +110,7 @@ bool RDOSimulator::doOperation()
 			{
 				res = pMetaLogic->onCheckCondition(pRuntime);
 			}
-			catch (CREF(RDOUndefinedException))
+			catch (const RDOUndefinedException&)
 			{
 				res = false;
 			}
@@ -136,7 +136,7 @@ void RDOSimulator::preProcess()
 	onResetResult();
 }
 
-std::string writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, REF(std::size_t) counter)
+std::string writeActivitiesStructureRecurse(const LPIBaseOperationContainer& pLogic, std::size_t& counter)
 {
 	std::stringstream stream;
 	IBaseOperationContainer::CIterator it = pLogic->begin();
@@ -183,7 +183,7 @@ std::string writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLog
 	return stream.str();
 }
 
-std::string RDOSimulator::writeActivitiesStructure(REF(std::size_t) counter)
+std::string RDOSimulator::writeActivitiesStructure(std::size_t& counter)
 {
 	return writeActivitiesStructureRecurse(m_pMetaLogic, counter);
 }

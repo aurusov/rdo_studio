@@ -20,11 +20,11 @@ inline Time::Time()
 	: m_value(Time::invalid().value())
 {}
 
-inline Time::Time(CREF(Value) value)
+inline Time::Time(const Value& value)
 	: m_value(value)
 {}
 
-inline bool Time::operator==(CREF(Time) time)
+inline bool Time::operator==(const Time& time)
 {
 	return m_value == time.m_value;
 }
@@ -46,7 +46,7 @@ inline std::string Time::asString() const
 	}
 }
 
-inline CREF(Time::Value) Time::value() const
+inline const Time::Value& Time::value() const
 {
 	return m_value;
 }

@@ -12,7 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo {
@@ -39,21 +38,21 @@ public:
 	//! \param p1 - параметр конструктора
 	//! \result Умный указатель на объект
 	template <typename P1>
-	static intrusive_ptr<T> create(CREF(P1) p1);
+	static intrusive_ptr<T> create(const P1& p1);
 
 	//! Создает объект класса Т через шаблонный статический метод create класса создаваемого объекта
 	//! \tparam T1 - тип, передаваемый в шаблонный конструтор
 	//! \param  p1 - параметр конструктора
 	//! \result Умный указатель на объект
 	template <typename T1, typename P1>
-	static intrusive_ptr<T> delegate(CREF(P1) p1);
+	static intrusive_ptr<T> delegate(const P1& p1);
 
 	//! Создает объект класса Т
 	//! \param p1 - параметр конструктора
 	//! \param p2 - параметр конструктора
 	//! \result Умный указатель на объект
 	template <typename P1, typename P2>
-	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2);
+	static intrusive_ptr<T> create(const P1& p1, const P2& p2);
 
 	//! Создает объект класса Т
 	//! \param p1 - параметр конструктора
@@ -61,7 +60,7 @@ public:
 	//! \param p3 - параметр конструктора
 	//! \result Умный указатель на объект
 	template <typename P1, typename P2, typename P3>
-	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3);
+	static intrusive_ptr<T> create(const P1& p1, const P2& p2, const P3& p3);
 
 	//! Создает объект класса Т
 	//! \param p1 - параметр конструктора
@@ -70,7 +69,7 @@ public:
 	//! \param p4 - параметр конструктора
 	//! \result Умный указатель на объект
 	template <typename P1, typename P2, typename P3, typename P4>
-	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4);
+	static intrusive_ptr<T> create(const P1& p1, const P2& p2, const P3& p3, const P4& p4);
 
 	//! Создает объект класса Т
 	//! \param p1 - параметр конструктора
@@ -80,7 +79,7 @@ public:
 	//! \param p5 - параметр конструктора
 	//! \result Умный указатель на объект
 	template <typename P1, typename P2, typename P3, typename P4, typename P5>
-	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5);
+	static intrusive_ptr<T> create(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5);
 
 	//! Создает объект класса Т
 	//! \param p1 - параметр конструктора
@@ -91,7 +90,7 @@ public:
 	//! \param p6 - параметр конструктора
 	//! \result Умный указатель на объект
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
-	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6);
+	static intrusive_ptr<T> create(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5, const P6& p6);
 
 	//! Создает объект класса Т
 	//! \param p1 - параметр конструктора
@@ -103,7 +102,7 @@ public:
 	//! \param p7 - параметр конструктора
 	//! \result Умный указатель на объект
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
-	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7);
+	static intrusive_ptr<T> create(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5, const P6& p6, const P7& p7);
 
 	//! Создает объект класса Т
 	//! \param p1 - параметр конструктора
@@ -116,7 +115,7 @@ public:
 	//! \param p8 - параметр конструктора
 	//! \result Умный указатель на объект
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7, typename P8>
-	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7, CREF(P8) p8);
+	static intrusive_ptr<T> create(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5, const P6& p6, const P7& p7, const P8& p8);
 
 	//! Создает объект класса Т
 	//! \param p1 - параметр конструктора
@@ -130,7 +129,7 @@ public:
 	//! \param p9 - параметр конструктора
 	//! \result Умный указатель на объект
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7, typename P8, typename P9>
-	static intrusive_ptr<T> create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7, CREF(P8) p8, CREF(P9) p9);
+	static intrusive_ptr<T> create(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5, const P6& p6, const P7& p7, const P8& p8, const P9& p9);
 
 private:
 	static void destroy(T* object);

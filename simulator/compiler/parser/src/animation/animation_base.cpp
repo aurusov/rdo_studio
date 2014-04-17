@@ -19,7 +19,7 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-RDOFRMCommandList::RDOFRMCommandList(CREF(RDOParserSrcInfo) srcInfo)
+RDOFRMCommandList::RDOFRMCommandList(const RDOParserSrcInfo& srcInfo)
 {
 	m_pFunction = rdo::Factory<Function>::create(
 		rdo::Factory<TypeInfo>::delegate<RDOType__void>(srcInfo),
@@ -35,7 +35,7 @@ RDOFRMCommandList::RDOFRMCommandList(CREF(RDOParserSrcInfo) srcInfo)
 RDOFRMCommandList::~RDOFRMCommandList()
 {}
 
-CREF(std::string) RDOFRMCommandList::name() const
+const std::string& RDOFRMCommandList::name() const
 {
 	return m_pFunction->src_text();
 }
@@ -45,7 +45,7 @@ LPExpression RDOFRMCommandList::expression() const
 	return m_pFunction->expression();
 }
 
-CREF(LPFunction) RDOFRMCommandList::function() const
+const LPFunction& RDOFRMCommandList::function() const
 {
 	return m_pFunction;
 }
@@ -60,10 +60,8 @@ LPExpression sprite(const LPRDOFRMSprite& sprite)
 
 }
 
-Context::FindResult RDOFRMCommandList::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::FindResult RDOFRMCommandList::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& /*srcInfo*/) const
 {
-	UNUSED(srcInfo);
-
 	if (method == Context::METHOD_GET)
 	{
 		LPRDOFRMSprite pSprite = RDOParser::s_parser()->findFRMSprite(params.identifier());
@@ -82,7 +80,7 @@ void RDOFRMCommandList::end()
 	list()->setSpriteCalc(expression()->calc());
 }
 
-LPExpression RDOFRMCommandList::generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo)
+LPExpression RDOFRMCommandList::generateExpression(const rdo::runtime::LPRDOCalc& pCalc, const RDOParserSrcInfo& srcInfo)
 {
 	ASSERT(pCalc);
 

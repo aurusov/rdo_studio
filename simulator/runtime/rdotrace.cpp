@@ -66,7 +66,7 @@ void RDOTrace::writeSearchDecisionHeader()
 	getOStream() << "SD" << std::endl << getEOL();
 }
 
-void RDOTrace::writeSearchDecision(CREF(LPRDORuntime) pRuntime, TreeNode* node)
+void RDOTrace::writeSearchDecision(const LPRDORuntime& pRuntime, TreeNode* node)
 {
 	if (!canTrace())
 		return;
@@ -112,7 +112,7 @@ void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace* node)
 	RDODPTSearchTrace* dpTrace = static_cast<RDODPTSearchTrace*>(node->m_root->m_dp);
 	if (dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_tops || dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all)
 	{
-		CREF(LPRDORuntime)      pRuntime             = node->m_pRuntime;
+		const LPRDORuntime&     pRuntime             = node->m_pRuntime;
 		LPIActivityTrace        activityTrace        = node->m_currAct->rule();
 		LPIActivityPatternTrace activityPatternTrace = node->m_currAct->rule();
 		LPITrace                trace                = node->m_currAct;
@@ -140,7 +140,7 @@ void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace* node)
 	}
 }
 
-void RDOTrace::writeSearchResult(char letter, CREF(LPRDORuntime) simTr, TreeRoot* treeRoot)
+void RDOTrace::writeSearchResult(char letter, const LPRDORuntime& simTr, TreeRoot* treeRoot)
 {
 	if (!canTrace())
 		return;
@@ -177,7 +177,7 @@ void RDOTrace::writeSearchResult(char letter, CREF(LPRDORuntime) simTr, TreeRoot
 	}
 }
 
-void RDOTrace::writePermanentResources(CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) res_perm)
+void RDOTrace::writePermanentResources(const LPRDORuntime& pRuntime, const std::list<LPRDOResource>& res_perm)
 {
 	if (!canTrace())
 		return;
@@ -185,7 +185,7 @@ void RDOTrace::writePermanentResources(CREF(LPRDORuntime) pRuntime, CREF(std::li
 	getOStream() << traceResourcesList('\0', pRuntime, res_perm) << getEOL();
 }
 
-std::string RDOTrace::traceResourcesList(char prefix, CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) rel_res_list)
+std::string RDOTrace::traceResourcesList(char prefix, const LPRDORuntime& pRuntime, const std::list<LPRDOResource>& rel_res_list)
 {
 	std::string res;
 	for (std::list<LPRDOResource>::const_iterator i = rel_res_list.begin(); i != rel_res_list.end(); ++i)
@@ -198,7 +198,7 @@ std::string RDOTrace::traceResourcesList(char prefix, CREF(LPRDORuntime) pRuntim
 	return res;
 }
 
-void RDOTrace::writeEvent(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime)
+void RDOTrace::writeEvent(const LPIBaseOperation& opr, const LPRDORuntime& pRuntime)
 {
 	if (!canTrace())
 		return;
@@ -230,7 +230,7 @@ void RDOTrace::writeEvent(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntim
 #endif
 }
 
-void RDOTrace::writeRule(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime)
+void RDOTrace::writeRule(const LPIBaseOperation& opr, const LPRDORuntime& pRuntime)
 {
 	if (!canTrace())
 		return;
@@ -256,7 +256,7 @@ void RDOTrace::writeRule(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime
 	getOStream() << activityTrace->traceResourcesList('\0', pRuntime) << getEOL();
 }
 
-void RDOTrace::writeAfterOperationBegin(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime)
+void RDOTrace::writeAfterOperationBegin(const LPIBaseOperation& opr, const LPRDORuntime& pRuntime)
 {
 	if (!canTrace())
 		return;
@@ -282,7 +282,7 @@ void RDOTrace::writeAfterOperationBegin(CREF(LPIBaseOperation) opr, CREF(LPRDORu
 	getOStream() << activityTrace->traceResourcesList('\0', pRuntime) << getEOL();
 }
 
-void RDOTrace::writeAfterOperationEnd(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime)
+void RDOTrace::writeAfterOperationEnd(const LPIBaseOperation& opr, const LPRDORuntime& pRuntime)
 {
 	if (!canTrace())
 		return;
@@ -308,7 +308,7 @@ void RDOTrace::writeAfterOperationEnd(CREF(LPIBaseOperation) opr, CREF(LPRDORunt
 	getOStream() << activityTrace->traceResourcesList('\0', pRuntime) << getEOL();
 }
 
-void RDOTrace::writeTraceBegin(CREF(LPRDORuntime) pRuntime)
+void RDOTrace::writeTraceBegin(const LPRDORuntime& pRuntime)
 {
 	if (isNull()) return;
 
@@ -316,7 +316,7 @@ void RDOTrace::writeTraceBegin(CREF(LPRDORuntime) pRuntime)
       << " 1" << std::endl << getEOL();
 }
 
-void RDOTrace::writeModelBegin(CREF(LPRDORuntime) pRuntime)
+void RDOTrace::writeModelBegin(const LPRDORuntime& pRuntime)
 {
 	if (isNull()) return;
 
@@ -324,7 +324,7 @@ void RDOTrace::writeModelBegin(CREF(LPRDORuntime) pRuntime)
       << " 3" << std::endl << getEOL();
 }
 
-void RDOTrace::writeTraceEnd(CREF(LPRDORuntime) pRuntime)
+void RDOTrace::writeTraceEnd(const LPRDORuntime& pRuntime)
 {
 	if (isNull()) return;
 
@@ -332,7 +332,7 @@ void RDOTrace::writeTraceEnd(CREF(LPRDORuntime) pRuntime)
       << " 2" << std::endl << getEOL();
 }
 
-void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(std::string) status)
+void RDOTrace::writeStatus(const LPRDORuntime& pRuntime, const std::string& status)
 {
 	if (isNull()) return;
 
@@ -403,7 +403,7 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(std::string) status
 	getOStream() << "DPS_MM " << pRuntime->memory_get() << std::endl << getEOL();
 }
 
-void RDOTrace::writeResult(CREF(LPRDORuntime) pRuntime, RDOResultTrace* pok)
+void RDOTrace::writeResult(const LPRDORuntime& pRuntime, RDOResultTrace* pok)
 {
 	if (!canTrace())
 		return;
@@ -416,7 +416,7 @@ void RDOTrace::writeResult(CREF(LPRDORuntime) pRuntime, RDOResultTrace* pok)
 // --------------------------------------------------------------------------------
 // -------------------- RDOResultTrace
 // --------------------------------------------------------------------------------
-RDOResultTrace::RDOResultTrace(CREF(LPRDORuntime) pRuntime, bool trace)
+RDOResultTrace::RDOResultTrace(const LPRDORuntime& pRuntime, bool trace)
 	: RDOTraceableObject(trace   )
 	, m_pRuntime        (pRuntime)
 	, m_wasChanged      (true    )

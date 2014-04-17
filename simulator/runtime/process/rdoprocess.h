@@ -73,7 +73,7 @@ protected:
 	std::list<LPIPROCProcess> m_child;
 
 private:
-	RDOPROCProcess(CREF(std::string) _name, CREF(LPRDORuntime) pRuntime);
+	RDOPROCProcess(const std::string& _name, const LPRDORuntime& pRuntime);
 	LPIResourceType m_pTransactType;
 };
 
@@ -88,15 +88,15 @@ class RDOPROCTransact: public RDOResource
 DECLARE_FACTORY(RDOPROCTransact);
 public:
 	LPRDOPROCResource getRes();
-	void setRes(CREF(LPRDOPROCResource) pResource);
-	REF(LPIPROCBlock) getBlock();
-	void setBlock(CREF(LPIPROCBlock) block);
+	void setRes(const LPRDOPROCResource& pResource);
+	LPIPROCBlock& getBlock();
+	void setBlock(const LPIPROCBlock& block);
 
 	void next();
-	virtual LPRDOResource clone(CREF(LPRDORuntime) pRuntime) const;
+	virtual LPRDOResource clone(const LPRDORuntime& pRuntime) const;
 
 private:
-	RDOPROCTransact(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool permanentFlag);
+	RDOPROCTransact(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& paramsCalcs, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool permanentFlag);
 	virtual ~RDOPROCTransact();
 
 	LPIPROCBlock       m_block;
@@ -115,13 +115,13 @@ friend class RDOPROCRelease;
 
 public:
 	std::string whoAreYou();
-	virtual LPRDOResource clone(CREF(LPRDORuntime) pRuntime) const;
+	virtual LPRDOResource clone(const LPRDORuntime& pRuntime) const;
 
 protected:
 	std::list<LPRDOPROCTransact> transacts;
 
 private:
-	RDOPROCResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool permanentFlag);
+	RDOPROCResource(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& paramsCalcs, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool permanentFlag);
 	virtual ~RDOPROCResource();
 };
 

@@ -27,15 +27,13 @@ int frmlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void frmerror(const char* message)
-{
-	UNUSED(message);
-}
+void frmerror(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMFrame
 // --------------------------------------------------------------------------------
-RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
+RDOFRMFrame::RDOFRMFrame(const RDOParserSrcInfo& srcInfo)
 	: RDOFRMCommandList(srcInfo)
 {
 	m_pFrame = rdo::Factory<rdo::runtime::RDOFRMFrame>::create(function()->src_info());
@@ -48,7 +46,7 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
 RDOFRMFrame::~RDOFRMFrame()
 {}
 
-CREF(rdo::runtime::LPRDOFRMFrame) RDOFRMFrame::frame() const
+const rdo::runtime::LPRDOFRMFrame& RDOFRMFrame::frame() const
 {
 	return m_pFrame;
 }

@@ -25,7 +25,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDResult
 // --------------------------------------------------------------------------------
-RDOPMDResultGroup::RDOPMDResultGroup(CREF(std::string) name)
+RDOPMDResultGroup::RDOPMDResultGroup(const std::string& name)
 	: m_name (name                               )
 	, m_state(name.empty() ? RGS_START : RGS_STOP)
 {}
@@ -33,7 +33,7 @@ RDOPMDResultGroup::RDOPMDResultGroup(CREF(std::string) name)
 RDOPMDResultGroup::~RDOPMDResultGroup()
 {}
 
-void RDOPMDResultGroup::resetResult(CREF(LPRDORuntime) pRuntime)
+void RDOPMDResultGroup::resetResult(const LPRDORuntime& pRuntime)
 {
 	if (m_state == RGS_STOP)
 		return;
@@ -86,7 +86,7 @@ void RDOPMDResultGroup::resetResult(CREF(LPRDORuntime) pRuntime)
 	}
 }
 
-void RDOPMDResultGroup::checkResult(CREF(LPRDORuntime) pRuntime)
+void RDOPMDResultGroup::checkResult(const LPRDORuntime& pRuntime)
 {
 	if (m_state == RGS_STOP)
 		return;
@@ -97,7 +97,7 @@ void RDOPMDResultGroup::checkResult(CREF(LPRDORuntime) pRuntime)
 	}
 }
 
-void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stream)
+void RDOPMDResultGroup::calcStat(const LPRDORuntime& pRuntime, std::ostream& stream)
 {
 	if (m_state == RGS_STOP)
 		return;
@@ -166,19 +166,19 @@ void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, std::ostream& stre
 	pRuntime->getResults().flush();
 }
 
-void RDOPMDResultGroup::onStart(CREF(LPRDORuntime) pRuntime)
+void RDOPMDResultGroup::onStart(const LPRDORuntime& pRuntime)
 {
 	m_state = RGS_START;
 	resetResult(pRuntime);
 }
 
-void RDOPMDResultGroup::onStop(CREF(LPRDORuntime) pRuntime)
+void RDOPMDResultGroup::onStop(const LPRDORuntime& pRuntime)
 {
 	calcStat(pRuntime, pRuntime->getResults().getOStream());
 	m_state = RGS_STOP;
 }
 
-void RDOPMDResultGroup::onAppend(CREF(LPIResult) pResult)
+void RDOPMDResultGroup::onAppend(const LPIResult& pResult)
 {
 	ASSERT(pResult);
 

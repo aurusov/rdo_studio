@@ -28,35 +28,35 @@ RDOParserSrcInfo::RDOParserSrcInfo()
 	init();
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos)
+RDOParserSrcInfo::RDOParserSrcInfo(const YYLTYPE& pos)
 	: RDOSrcInfo()
 {
 	init();
 	setSrcPos(pos);
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo(CREF(rdo::runtime::RDOSrcInfo) info)
+RDOParserSrcInfo::RDOParserSrcInfo(const rdo::runtime::RDOSrcInfo& info)
 	: RDOSrcInfo()
 {
 	init();
 	RDOSrcInfo::setSrcInfo(info);
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo(CREF(rdo::runtime::RDOSrcInfo::Position) pos)
+RDOParserSrcInfo::RDOParserSrcInfo(const rdo::runtime::RDOSrcInfo::Position& pos)
 	: RDOSrcInfo()
 {
 	init();
 	RDOSrcInfo::setSrcPos(pos);
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo(CREF(std::string) text)
+RDOParserSrcInfo::RDOParserSrcInfo(const std::string& text)
 	: RDOSrcInfo()
 {
 	init();
 	setSrcText(text);
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos, CREF(std::string) text)
+RDOParserSrcInfo::RDOParserSrcInfo(const YYLTYPE& pos, const std::string& text)
 	: RDOSrcInfo()
 {
 	init();
@@ -64,7 +64,7 @@ RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos, CREF(std::string) text)
 	setSrcText(text);
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, bool first_align)
+RDOParserSrcInfo::RDOParserSrcInfo(const YYLTYPE& pos_begin, const YYLTYPE& pos_end, bool first_align)
 	: RDOSrcInfo()
 {
 	init();
@@ -88,7 +88,7 @@ RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_en
 	}
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, CREF(std::string) text)
+RDOParserSrcInfo::RDOParserSrcInfo(const YYLTYPE& pos_begin, const YYLTYPE& pos_end, const std::string& text)
 	: RDOSrcInfo()
 {
 	init();

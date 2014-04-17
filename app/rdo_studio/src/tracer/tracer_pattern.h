@@ -30,8 +30,8 @@ public:
 		PK_KEYBOARD
 	};
 
-	CREF(QString) getName() const;
-	void          setName(CREF(QString) name);
+	const QString& getName() const;
+	void           setName(const QString& name);
 
 	Kind getKind() const;
 

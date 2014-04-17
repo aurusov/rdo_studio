@@ -38,7 +38,7 @@ public:
 
 	LPContext top   () const;
 	LPContext global() const;
-	LPContext prev  (CREF(LPContext) pContext) const;
+	LPContext prev  (const LPContext& pContext) const;
 
 	void pop_not_safed();
 

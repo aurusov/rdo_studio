@@ -13,7 +13,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "simulator/compiler/parser/rdofun.h"
 // --------------------------------------------------------------------------------
 
@@ -26,17 +25,17 @@ class RDOLogicBase
 {
 DECLARE_FACTORY(RDOLogicBase);
 public:
-	CREF(std::string) name () const;
-	bool setPrior(REF(LPRDOFUNArithm) pPrior);
+	const std::string& name () const;
+	bool setPrior(LPRDOFUNArithm& pPrior);
 	bool getMultithreading() const;
 	void setMultithreading(bool multithreading = false);
-	void setCondition(CREF(LPRDOFUNLogic) pConditon = NULL);
+	void setCondition(const LPRDOFUNLogic& pConditon = NULL);
 	LPRDOFUNLogic getConditon() const;
 	LPILogic getLogic() const;
 	virtual void end();
 
 protected:
-	RDOLogicBase(CREF(RDOParserSrcInfo) src_info);
+	RDOLogicBase(const RDOParserSrcInfo& src_info);
 	virtual ~RDOLogicBase();
 
 	LPRDOFUNLogic m_pConditon;

@@ -75,12 +75,12 @@ Serie::~Serie()
 	m_documentList.clear();
 }
 
-CREF(QString) Serie::getTitle() const
+const QString& Serie::getTitle() const
 {
 	return m_title;
 }
 
-void Serie::setTitle(CREF(QString) value)
+void Serie::setTitle(const QString& value)
 {
 	m_title = value;
 }

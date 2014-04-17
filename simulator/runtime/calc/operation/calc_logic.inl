@@ -9,7 +9,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
 
@@ -18,7 +17,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcAnd
 // --------------------------------------------------------------------------------
-inline RDOCalcAnd::RDOCalcAnd(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+inline RDOCalcAnd::RDOCalcAnd(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
 	: parent_type(pLeft, pRight)
 {
 	m_value_true  = 1;
@@ -28,7 +27,7 @@ inline RDOCalcAnd::RDOCalcAnd(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcOr
 // --------------------------------------------------------------------------------
-inline RDOCalcOr::RDOCalcOr(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+inline RDOCalcOr::RDOCalcOr(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
 	: parent_type(pLeft, pRight)
 {
 	m_value_true  = 1;

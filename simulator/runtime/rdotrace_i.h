@@ -29,7 +29,7 @@ public:
 	virtual void setTraceID(std::size_t id) = 0;
 	virtual void setTraceID(std::size_t id, std::size_t str_id) = 0;
 
-	virtual REF(std::string) traceId() const = 0;
+	virtual std::string& traceId() const = 0;
 };
 
 #define DECLARE_ITrace                                           \
@@ -38,7 +38,7 @@ public:
 	virtual std::size_t getTraceID() const;                      \
 	virtual void setTraceID(std::size_t id);                     \
 	virtual void setTraceID(std::size_t id, std::size_t str_id); \
-	virtual REF(std::string) traceId() const ;
+	virtual std::string& traceId() const ;
 
 /*!
   \interface IResultTraceValue

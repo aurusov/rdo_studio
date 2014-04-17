@@ -48,16 +48,16 @@ using namespace rdo::simulation::report;
 Model::ModelTemplateItem::ModelTemplateItem()
 {}
 
-Model::ModelTemplateItem::ModelTemplateItem(CREF(ModelTemplateItem) copy)
+Model::ModelTemplateItem::ModelTemplateItem(const ModelTemplateItem& copy)
 	: resName (copy.resName )
 	, position(copy.position)
 {}
 
-Model::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName)
+Model::ModelTemplateItem::ModelTemplateItem(const QString& resName)
 	: resName(resName)
 {}
 
-Model::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName, std::size_t position)
+Model::ModelTemplateItem::ModelTemplateItem(const QString& resName, std::size_t position)
 	: resName (resName )
 	, position(position)
 {}
@@ -242,7 +242,7 @@ bool Model::init()
 	return true;
 }
 
-void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
+void Model::proc(RDOThread::RDOMessageInfo& msg)
 {
 	switch (msg.message)
 	{
@@ -509,7 +509,7 @@ void Model::show_result()
 	}
 }
 
-bool Model::newModel(CREF(QString) modelName, CREF(QString) modelPath, std::size_t templateIndex)
+bool Model::newModel(const QString& modelName, const QString& modelPath, std::size_t templateIndex)
 {
 	m_templateIndex = templateIndex;
 	g_pApp->getIMainWnd()->getDockBuild  ().clear();
@@ -523,7 +523,7 @@ bool Model::newModel(CREF(QString) modelName, CREF(QString) modelPath, std::size
 	return true;
 }
 
-bool Model::openModel(CREF(QString) modelName)
+bool Model::openModel(const QString& modelName)
 {
 	if (isRunning())
 	{
@@ -932,12 +932,12 @@ void Model::closeModelFromRepository()
 	setName("");
 }
 
-CREF(QString) Model::getName() const
+const QString& Model::getName() const
 {
 	return m_name;
 }
 
-void Model::setName(CREF(QString) name)
+void Model::setName(const QString& name)
 {
 	QString newName = name.trimmed();
 
@@ -1105,7 +1105,7 @@ int Model::getFrameCount() const
 	return m_frameManager.count();
 }
 
-CREF(QString) Model::getFrameName(int index) const
+const QString& Model::getFrameName(int index) const
 {
 	return m_frameManager.getFrameName(index);
 }
@@ -1267,7 +1267,7 @@ void Model::update()
 					sendMessage(kernel->runtime(), RT_RUNTIME_GET_FRAME, &getFrame);
 					m_frameManager.showFrame(&frame, i);
 				}
-				catch (REF(rdo::runtime::RDORuntimeException))
+				catch (const rdo::runtime::RDORuntimeException&)
 				{
 					sendMessage(kernel->runtime(), RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY);
 					return;
@@ -1368,7 +1368,7 @@ rdo::runtime::RunTimeMode Model::getRuntimeMode() const
 	return m_runtimeMode;
 }
 
-REF(rdo::gui::frame::Manager) Model::getFrameManager()
+rdo::gui::frame::Manager& Model::getFrameManager()
 {
 	return m_frameManager;
 }

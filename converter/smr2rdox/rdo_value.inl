@@ -13,31 +13,31 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-inline RDOValue::RDOValue(CREF(int) value, CREF(RDOParserSrcInfo) src_info)
+inline RDOValue::RDOValue(const int& value, const RDOParserSrcInfo& src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value(value)
 	, m_type (rdo::Factory<RDOType__int>::create())
 {}
 
-inline RDOValue::RDOValue(CREF(std::size_t) value, CREF(RDOParserSrcInfo) src_info)
+inline RDOValue::RDOValue(const std::size_t& value, const RDOParserSrcInfo& src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value(value)
 	, m_type (rdo::Factory<RDOType__int>::create())
 {}
 
-inline RDOValue::RDOValue(CREF(double) value, CREF(RDOParserSrcInfo) src_info)
+inline RDOValue::RDOValue(const double& value, const RDOParserSrcInfo& src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value(value )
 	, m_type (rdo::Factory<RDOType__real>::create())
 {}
 
-inline RDOValue::RDOValue(CREF(std::string) value, CREF(RDOParserSrcInfo) src_info)
+inline RDOValue::RDOValue(const std::string& value, const RDOParserSrcInfo& src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 	, m_type          (rdo::Factory<RDOType__string>::create())
 {}
 
-inline RDOValue::RDOValue(CREF(LPRDOValue) pValue)
+inline RDOValue::RDOValue(const LPRDOValue& pValue)
 	: RDOParserSrcInfo(pValue->src_info())
 	, m_value         (pValue->m_value   )
 	, m_type          (pValue->m_type    )

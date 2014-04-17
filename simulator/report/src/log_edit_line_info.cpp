@@ -17,19 +17,19 @@ namespace rdo {
 namespace simulation {
 namespace report {
 
-LogEditLineInfo::LogEditLineInfo(CREF(std::string) text, rdoModelObjects::RDOFileType file, std::size_t line, std::size_t pos, Type type)
+LogEditLineInfo::LogEditLineInfo(const std::string& text, rdoModelObjects::RDOFileType file, std::size_t line, std::size_t pos, Type type)
 	: FileMessage(text, file, line, pos, type)
 	, m_posInLog(0)
 	, m_simpleTextMessage(false)
 {}
 
-LogEditLineInfo::LogEditLineInfo(CREF(FileMessage) message)
+LogEditLineInfo::LogEditLineInfo(const FileMessage& message)
 	: FileMessage(message)
 	, m_posInLog(0)
 	, m_simpleTextMessage(false)
 {}
 
-LogEditLineInfo::LogEditLineInfo(CREF(std::string) message)
+LogEditLineInfo::LogEditLineInfo(const std::string& message)
 	: FileMessage(message, rdoModelObjects::PAT, 0, 0)
 	, m_posInLog(0)
 	, m_simpleTextMessage(true)

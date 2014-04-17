@@ -31,10 +31,10 @@ DECLARE_FACTORY(RDOMemory);
 public:
 	typedef std::map<std::string, RDOValue> LocalMemory;
 
-	void createVariable(CREF(std::string) name, CREF(RDOValue) variable);
-	RDOValue getVariable(CREF(std::string) name) const;
-	void setVariable(CREF(std::string) name, CREF(RDOValue) variable);
-	bool findVariable(CREF(std::string) name) const;
+	void createVariable(const std::string& name, const RDOValue& variable);
+	RDOValue getVariable(const std::string& name) const;
+	void setVariable(const std::string& name, const RDOValue& variable);
+	bool findVariable(const std::string& name) const;
 
 private:
 	RDOMemory();
@@ -53,12 +53,12 @@ DECLARE_FACTORY(RDOMemoryStack);
 public:
 	typedef std::list<LPRDOMemory> MemoryStack;
 
-	void     push  (LPRDOMemory pMemory);
-	void     pop   ();
+	void push(LPRDOMemory pMemory);
+	void pop();
 
-	void create(CREF(std::string) name, CREF(RDOValue) variable);
-	RDOValue get(CREF(std::string) name) const;
-	void set(CREF(std::string) name, CREF(RDOValue) variable);
+	void create(const std::string& name, const RDOValue& variable);
+	RDOValue get(const std::string& name) const;
+	void set(const std::string& name, const RDOValue& variable);
 
 private:
 	RDOMemoryStack();
