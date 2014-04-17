@@ -16,7 +16,6 @@
 #include "converter/smr2rdox/namespace.h"
 #include "converter/smr2rdox/grammar/rdobison.h"
 #include "simulator/runtime/rdo_object.h"
-#include "utils/src/common/rdomacros.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 

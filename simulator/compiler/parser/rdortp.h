@@ -15,7 +15,6 @@
 #include <boost/noncopyable.hpp>
 #include <boost/optional.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/type/runtime_wrapper_type.h"

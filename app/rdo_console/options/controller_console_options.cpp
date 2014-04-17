@@ -12,7 +12,6 @@
 #include <iostream>
 #include <boost/format.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "utils/src/locale/rdolocale.h"
 #include "app/rdo_console/terminate_codes.h"
 #include "app/rdo_console/options/controller_console_options.h"

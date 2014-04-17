@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 template <typename opr_type>
 inline std::string OperatorName<opr_type>::name(const opr_type& pOperator)
 {
-	BOOST_AUTO(it, std::find(getList().begin(), getList().end(), pOperator));
+	const auto it = std::find(getList().begin(), getList().end(), pOperator);
 	ASSERT(it != getList().end());
 	return it->m_name;
 }

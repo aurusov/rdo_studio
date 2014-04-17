@@ -17,7 +17,6 @@
 #include <QString>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo

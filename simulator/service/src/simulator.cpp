@@ -1249,7 +1249,7 @@ void RDOThreadSimulator::parseSMRFileInfo(rdo::converter::smr2rdox::RDOSMRFileIn
 				std::string mess("Ошибка конвертора\n");
 				broadcastMessage(RT_DEBUG_STRING, &mess);
 				const rdo::converter::smr2rdox::Error::ErrorList& errorList = converter.error().getList();
-				BOOST_AUTO(it, errorList.begin());
+				auto it = errorList.begin();
 				while (it != errorList.end())
 				{
 					std::string text = it->getText();

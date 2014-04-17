@@ -19,7 +19,6 @@
 #include <vector>
 #include <sstream>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "utils/src/common/model_objects.h"
 // --------------------------------------------------------------------------------
 

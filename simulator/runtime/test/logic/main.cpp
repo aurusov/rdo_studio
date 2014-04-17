@@ -18,7 +18,6 @@
 #include <boost/test/included/unit_test.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "utils/src/debug/rdodebug.h"
 // --------------------------------------------------------------------------------
 

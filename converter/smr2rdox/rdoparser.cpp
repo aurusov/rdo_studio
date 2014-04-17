@@ -368,7 +368,7 @@ RDOParserModel::Result RDOParserModel::convert(const boost::filesystem::path& sm
 			m_pParserItem = it->second;
 			if (m_pParserItem->needStream())
 			{
-				BOOST_AUTO(it, fileList.find(m_pParserItem->m_type));
+				const auto it = fileList.find(m_pParserItem->m_type);
 				if (it != fileList.end())
 				{
 					boost::filesystem::ifstream stream(it->second, std::ios::binary);
@@ -429,7 +429,7 @@ RDOParserModel::Result RDOParserModel::convert(const boost::filesystem::path& sm
 			std::string message = ex.message();
 			if (message.find("boost") == 0)
 			{
-				BOOST_AUTO(pos, message.find(' '));
+				const auto pos = message.find(' ');
 				if (pos != std::string::npos)
 				{
 					message = message.substr(pos + 1);
@@ -470,7 +470,7 @@ RDOParserModel::Result RDOParserModel::convert(const boost::filesystem::path& sm
 		ASSERT(pParserItem);
 		if (pParserItem->needStream())
 		{
-			BOOST_AUTO(fileIt, fileList.find(pParserItem->m_type));
+			const auto fileIt = fileList.find(pParserItem->m_type);
 			if (fileIt != fileList.end())
 			{
 				boost::filesystem::ifstream streamIn(fileIt->second, std::ios::binary);

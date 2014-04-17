@@ -16,6 +16,7 @@
 #include <QProgressBar>
 #include <QMainWindow>
 #include <QLabel>
+#include <boost/mpl/integral_c.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"

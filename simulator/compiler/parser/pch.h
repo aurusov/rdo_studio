@@ -36,7 +36,6 @@
 #include <time.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
-#include "utils/src/common/rdomacros.h"
 #include "utils/src/debug/rdodebug.h"
 // --------------------------------------------------------------------------------
 

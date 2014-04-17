@@ -13,7 +13,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/calc/function/calc_function.h"
 #include "simulator/runtime/rdo_runtime.h"

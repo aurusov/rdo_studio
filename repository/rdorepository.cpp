@@ -448,7 +448,7 @@ bool RDOThreadRepository::createRDOX(const boost::filesystem::path& fileName)
 
 void RDOThreadRepository::createRDOX()
 {
-	BOOST_AUTO(it, m_files.find(rdoModelObjects::RDOX));
+	const auto it = m_files.find(rdoModelObjects::RDOX);
 	ASSERT(it != m_files.end());
 	boost::filesystem::path rdoxFileName = (m_modelPath / m_modelName).replace_extension(it->second.m_extension);
 	if (!rdo::File::exist(rdoxFileName))
@@ -578,7 +578,7 @@ void RDOThreadRepository::trace(const std::string& message)
 
 boost::filesystem::path RDOThreadRepository::getFileName(rdoModelObjects::RDOFileType type) const
 {
-	BOOST_AUTO(it, m_files.find(type));
+	const auto it = m_files.find(type);
 	if (it == m_files.end())
 	{
 		NEVER_REACH_HERE;
@@ -589,7 +589,7 @@ boost::filesystem::path RDOThreadRepository::getFileName(rdoModelObjects::RDOFil
 
 boost::filesystem::path RDOThreadRepository::getExtension(rdoModelObjects::RDOFileType type) const
 {
-	BOOST_AUTO(it, m_files.find(type));
+	const auto it = m_files.find(type);
 	if (it == m_files.end())
 	{
 		NEVER_REACH_HERE;
@@ -600,7 +600,7 @@ boost::filesystem::path RDOThreadRepository::getExtension(rdoModelObjects::RDOFi
 
 boost::filesystem::path RDOThreadRepository::getFileExtName(rdoModelObjects::RDOFileType type) const
 {
-	BOOST_AUTO(it, m_files.find(type));
+	const auto it = m_files.find(type);
 	if (it == m_files.end())
 	{
 		NEVER_REACH_HERE;
@@ -616,7 +616,7 @@ boost::filesystem::path RDOThreadRepository::getFullFileName(rdoModelObjects::RD
 
 bool RDOThreadRepository::isReadOnly(rdoModelObjects::RDOFileType type) const
 {
-	BOOST_AUTO(it, m_files.find(type));
+	const auto it = m_files.find(type);
 	if (it == m_files.end())
 	{
 		NEVER_REACH_HERE;
@@ -627,7 +627,7 @@ bool RDOThreadRepository::isReadOnly(rdoModelObjects::RDOFileType type) const
 
 bool RDOThreadRepository::isDescribed(rdoModelObjects::RDOFileType type) const
 {
-	BOOST_AUTO(it, m_files.find(type));
+	const auto it = m_files.find(type);
 	if (it == m_files.end())
 	{
 		NEVER_REACH_HERE;
@@ -638,7 +638,7 @@ bool RDOThreadRepository::isDescribed(rdoModelObjects::RDOFileType type) const
 
 bool RDOThreadRepository::isMustExist(rdoModelObjects::RDOFileType type) const
 {
-	BOOST_AUTO(it, m_files.find(type));
+	const auto it = m_files.find(type);
 	if (it == m_files.end())
 	{
 		NEVER_REACH_HERE;
@@ -649,7 +649,7 @@ bool RDOThreadRepository::isMustExist(rdoModelObjects::RDOFileType type) const
 
 bool RDOThreadRepository::isDeleteIfEmpty(rdoModelObjects::RDOFileType type) const
 {
-	BOOST_AUTO(it, m_files.find(type));
+	const auto it = m_files.find(type);
 	if (it == m_files.end())
 	{
 		NEVER_REACH_HERE;

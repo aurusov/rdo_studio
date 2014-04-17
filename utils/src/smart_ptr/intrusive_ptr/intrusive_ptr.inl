@@ -9,7 +9,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "utils/src/smart_ptr/factory/factory.h"
 #include "utils/src/smart_ptr/factory/factory.inl"
 #include "utils/src/smart_ptr/ref_counter/ref_counter.h"

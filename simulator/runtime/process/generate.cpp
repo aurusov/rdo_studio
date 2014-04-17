@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/process/generate.h"
 #include "simulator/runtime/calc/calc_base.h"
 // --------------------------------------------------------------------------------

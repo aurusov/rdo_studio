@@ -12,7 +12,6 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/process/rdoprocess.h"
 #include "simulator/runtime/process/assign.h"
 #include "simulator/runtime/calc/calc_base.h"

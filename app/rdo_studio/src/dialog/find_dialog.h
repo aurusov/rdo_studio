@@ -17,7 +17,6 @@
 #include "ui_find_dialog.h"
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 // --------------------------------------------------------------------------------
 
 class FindDialog

@@ -170,7 +170,7 @@ boost::filesystem::path Document::getName(TypeOut typeOut) const
 
 Document::LPMemoryStream Document::getMemoryStream(Type type)
 {
-	BOOST_AUTO(it, m_memoryFileList.find(type));
+	auto it = m_memoryFileList.find(type);
 	if (it == m_memoryFileList.end())
 	{
 		LPMemoryStream pMemoryStream = LPMemoryStream(new MemoryStream());
@@ -183,7 +183,7 @@ Document::LPMemoryStream Document::getMemoryStream(Type type)
 
 Document::LPFileStream Document::getFileStream(TypeOut type)
 {
-	BOOST_AUTO(it, m_streamFileList.find(type));
+	auto it = m_streamFileList.find(type);
 	if (it == m_streamFileList.end())
 	{
 		LPFileStream pFileStream = LPFileStream(new boost::filesystem::ofstream(getName(type), std::ios::trunc | std::ios::binary));

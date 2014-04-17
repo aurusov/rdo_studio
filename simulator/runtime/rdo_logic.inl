@@ -15,7 +15,6 @@
 	#pragma warning(disable : 4786)
 #endif // COMPILER_VISUAL_STUDIO
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/rdo_simulator.h"
 #include "simulator/runtime/rdo_priority.h"
