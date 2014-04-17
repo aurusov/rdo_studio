@@ -206,9 +206,6 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_generators.hpp>
-#include <boost/uuid/uuid_io.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
@@ -1087,7 +1084,6 @@ rss_value
 		{
 			LPRDORSSResource pResource = PARSER->stack().pop<RDORSSResource>($1);
 			pResource->setIsNested(true);
-			pResource->setSrcInfo(RDOParserSrcInfo( to_string(boost::uuids::random_generator()()) ));
 			rdo::runtime::RDOValue runtimeValue(
 				pResource->getType()->type(),
 				pResource
