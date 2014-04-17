@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcGroup
 // --------------------------------------------------------------------------------
-RDOFunCalcGroup::RDOFunCalcGroup(int nResType, CREF(LPRDOCalc) pCondition)
+RDOFunCalcGroup::RDOFunCalcGroup(int nResType, const LPRDOCalc& pCondition)
 	: m_nResType  (nResType  )
 	, m_pCondition(pCondition)
 {}
@@ -31,7 +31,7 @@ RDOFunCalcGroup::RDOFunCalcGroup(int nResType, CREF(LPRDOCalc) pCondition)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcExist
 // --------------------------------------------------------------------------------
-RDOValue RDOFunCalcExist::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcExist::doCalc(const LPRDORuntime& pRuntime)
 {
 	bool res = false;
 	RDORuntime::ResCIterator end = pRuntime->getResType(m_nResType)->res_end();
@@ -51,7 +51,7 @@ RDOValue RDOFunCalcExist::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcNotExist
 // --------------------------------------------------------------------------------
-RDOValue RDOFunCalcNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcNotExist::doCalc(const LPRDORuntime& pRuntime)
 {
 	bool res = true;
 	RDORuntime::ResCIterator end = pRuntime->getResType(m_nResType)->res_end();
@@ -71,7 +71,7 @@ RDOValue RDOFunCalcNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcForAll
 // --------------------------------------------------------------------------------
-RDOValue RDOFunCalcForAll::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcForAll::doCalc(const LPRDORuntime& pRuntime)
 {
 	bool first_found = false;
 	bool res = true;
@@ -98,7 +98,7 @@ RDOValue RDOFunCalcForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcNotForAll
 // --------------------------------------------------------------------------------
-RDOValue RDOFunCalcNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcNotForAll::doCalc(const LPRDORuntime& pRuntime)
 {
 	bool res = false;
 	RDORuntime::ResCIterator end = pRuntime->getResType(m_nResType)->res_end();

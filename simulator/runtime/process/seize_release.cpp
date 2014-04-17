@@ -29,7 +29,7 @@ RDOPROCBlockForSeize::RDOPROCBlockForSeize(LPIPROCProcess process, std::vector <
 	, fromParser  (From_Par)
 {}
 
-void RDOPROCBlockForSeize::_onStart(CREF(LPRDORuntime) pRuntime)
+void RDOPROCBlockForSeize::_onStart(const LPRDORuntime& pRuntime)
 {
 	/// @todo: если потребуется стоить деревья, вершинами которых будут полные снимки БД,
 	// как при DPT search, то инициализацию атрибутов надо будет делать в checkOperation
@@ -52,12 +52,12 @@ void RDOPROCBlockForSeize::_onStart(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCSeize
 // --------------------------------------------------------------------------------
-void RDOPROCSeize::onStart(CREF(LPRDORuntime) pRuntime)
+void RDOPROCSeize::onStart(const LPRDORuntime& pRuntime)
 {
 	_onStart(pRuntime);
 }
 
-bool RDOPROCSeize::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCSeize::onCheckCondition(const LPRDORuntime& pRuntime)
 {
 	if (m_transacts.empty())
 		return false;
@@ -86,14 +86,14 @@ bool RDOPROCSeize::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 	return false;
 }
 
-IBaseOperation::BOResult RDOPROCSeize::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCSeize::onDoOperation(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCSeize::transactGoIn(CREF(LPTransact) pTransact)
+void RDOPROCSeize::transactGoIn(const LPTransact& pTransact)
 {
 	int sizeSeizes = forRes.size();
 	for(int i = 0; i < sizeSeizes; ++i)
@@ -103,7 +103,7 @@ void RDOPROCSeize::transactGoIn(CREF(LPTransact) pTransact)
 	RDOPROCBlockForSeize::transactGoIn(pTransact);
 }
 
-void RDOPROCSeize::transactGoOut(CREF(LPTransact) pTransact)
+void RDOPROCSeize::transactGoOut(const LPTransact& pTransact)
 {
 	int Size_Seizes = forRes.size();
 	for(int i = 0; i < Size_Seizes; ++i)
@@ -113,12 +113,12 @@ void RDOPROCSeize::transactGoOut(CREF(LPTransact) pTransact)
 	RDOPROCBlockForSeize::transactGoOut(pTransact);
 }
 
-void RDOPROCSeize::onStop(CREF(LPRDORuntime) pRuntime)
+void RDOPROCSeize::onStop(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 }
 
-IBaseOperation::BOResult RDOPROCSeize::onContinue(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCSeize::onContinue(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
@@ -127,12 +127,12 @@ IBaseOperation::BOResult RDOPROCSeize::onContinue(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCRelease
 // --------------------------------------------------------------------------------
-void RDOPROCRelease::onStart(CREF(LPRDORuntime) pRuntime)
+void RDOPROCRelease::onStart(const LPRDORuntime& pRuntime)
 {
 	_onStart(pRuntime);
 }
 
-bool RDOPROCRelease::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCRelease::onCheckCondition(const LPRDORuntime& pRuntime)
 {
 	if (!m_transacts.empty())
 	{
@@ -177,19 +177,19 @@ bool RDOPROCRelease::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 	return false;
 }
 
-IBaseOperation::BOResult RDOPROCRelease::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCRelease::onDoOperation(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCRelease::onStop(CREF(LPRDORuntime) pRuntime)
+void RDOPROCRelease::onStop(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 }
 
-IBaseOperation::BOResult RDOPROCRelease::onContinue(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCRelease::onContinue(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;

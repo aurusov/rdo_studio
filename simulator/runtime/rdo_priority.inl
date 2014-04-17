@@ -30,7 +30,7 @@ inline LPRDOCalc RDOPatternPrior::getPrior()
 	return m_pPrior; 
 }
 
-inline bool RDOPatternPrior::setPrior(CREF(LPRDOCalc) pPrior)
+inline bool RDOPatternPrior::setPrior(const LPRDOCalc& pPrior)
 {
 	m_pPrior = pPrior;
 	return true;
@@ -39,11 +39,11 @@ inline bool RDOPatternPrior::setPrior(CREF(LPRDOCalc) pPrior)
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTActivityCompare
 // --------------------------------------------------------------------------------
-inline RDODPTActivityCompare::RDODPTActivityCompare(CREF(LPRDORuntime) pRuntime)
+inline RDODPTActivityCompare::RDODPTActivityCompare(const LPRDORuntime& pRuntime)
 	: m_pRuntime(pRuntime)
 {}
 
-inline bool RDODPTActivityCompare::operator() (CREF(LPIBaseOperation) pOpr1, CREF(LPIBaseOperation) pOpr2)
+inline bool RDODPTActivityCompare::operator()(const LPIBaseOperation& pOpr1, const LPIBaseOperation& pOpr2)
 {
 	LPIPriority pPattern1 = pOpr1;
 	LPIPriority pPattern2 = pOpr2;

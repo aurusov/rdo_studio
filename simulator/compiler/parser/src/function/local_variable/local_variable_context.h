@@ -25,7 +25,7 @@ class ContextLocalVariable: public Context
 DECLARE_FACTORY(ContextLocalVariable)
 public:
 	void pushLocalVariable(const LPLocalVariable& pLocalVariable);
-	CREF(rdo::runtime::LPRDOCalcLocalVariableList) calc() const;
+	const rdo::runtime::LPRDOCalcLocalVariableList& calc() const;
 
 private:
 	typedef  boost::function<void (const LPLocalVariable&)>  OnPushLocalVariable;

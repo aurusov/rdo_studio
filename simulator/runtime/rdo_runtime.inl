@@ -31,7 +31,7 @@ inline void RDOResults::width(std::size_t w)
 }
 
 template<class T> 
-inline RDOResults& RDOResults::operator<< (CREF(T) value)
+inline RDOResults& RDOResults::operator<< (const T& value)
 {
 	getOStream() << value;
 	return *this;
@@ -92,17 +92,17 @@ inline LPIActivity& RDORuntime::getCurrentActivity()
 	return m_currActivity;
 }
 
-inline void RDORuntime::setCurrentActivity(CREF(LPIActivity) activity)
+inline void RDORuntime::setCurrentActivity(const LPIActivity& activity)
 {
 	m_currActivity = activity;
 }
 
-inline CREF(RDORuntime::LPIResultList) RDORuntime::getResult() const
+inline const RDORuntime::LPIResultList& RDORuntime::getResult() const
 {
 	return m_resultAllList;
 }
 
-inline void RDORuntime::addInitCalc(CREF(LPRDOCalc) initCalc)
+inline void RDORuntime::addInitCalc(const LPRDOCalc& initCalc)
 {
 	m_initCalcList.push_back(initCalc);
 }
@@ -114,7 +114,7 @@ inline RDOValue& RDORuntime::getResParamValRaw(std::size_t resID, std::size_t pa
 	return pResource->getParamRaw(paramID);
 }
 
-inline void RDORuntime::setResParamVal(std::size_t resID, std::size_t paramID, CREF(RDOValue) value)
+inline void RDORuntime::setResParamVal(std::size_t resID, std::size_t paramID, const RDOValue& value)
 {
 	LPRDOResource pResource = getResourceByID(resID);
 	ASSERT(pResource);
@@ -131,7 +131,7 @@ inline void RDORuntime::pushFuncArgument(RDOValue arg)
 	m_funcStack.push_back(arg);
 }
 
-inline void RDORuntime::pushGroupFunc(CREF(LPRDOResource) pResource)
+inline void RDORuntime::pushGroupFunc(const LPRDOResource& pResource)
 {
 	m_groupFuncStack.push_back(pResource);
 }
@@ -169,7 +169,7 @@ inline LPRDOResource RDORuntime::getResourceByID(std::size_t resourceID) const
 		: LPRDOResource(NULL);
 }
 
-inline void RDORuntime::setPatternParameter(std::size_t paramID, CREF(RDOValue) paramValue)
+inline void RDORuntime::setPatternParameter(std::size_t paramID, const RDOValue& paramValue)
 {
 	if (m_patternParameterList.size() <= paramID)
 	{
@@ -204,21 +204,21 @@ inline void RDORuntime::onUserBreak()
 	m_whyStop = rdo::simulation::report::EC_UserBreak;
 }
 
-inline void RDORuntime::addResType(CREF(LPRDOResourceTypeList) pResType)
+inline void RDORuntime::addResType(const LPRDOResourceTypeList& pResType)
 {
 	ASSERT(pResType);
 	ASSERT(m_resourceTypeList.size() == pResType->getTraceID() - 1);
 	m_resourceTypeList.push_back(pResType);
 }
 
-inline CREF(LPRDOResourceTypeList) RDORuntime::getResType(std::size_t number) const
+inline const LPRDOResourceTypeList& RDORuntime::getResType(std::size_t number) const
 {
 	ASSERT(number > 0);
 	ASSERT(number - 1 < m_resourceTypeList.size());
 	return m_resourceTypeList[number - 1];
 }
 
-inline CREF(LPIThreadProxy) RDORuntime::getThreadProxy() const
+inline const LPIThreadProxy& RDORuntime::getThreadProxy() const
 {
 	return m_pThreadProxy;
 }
@@ -249,17 +249,17 @@ inline void RDORuntime::preProcess()
 // --------------------------------------------------------------------------------
 // -------------------- RDORuntime::BreakPoint
 // --------------------------------------------------------------------------------
-inline RDORuntime::BreakPoint::BreakPoint(CREF(std::string) name, CREF(LPRDOCalc) pCalc)
+inline RDORuntime::BreakPoint::BreakPoint(const std::string& name, const LPRDOCalc& pCalc)
 	: m_name (name )
 	, m_pCalc(pCalc)
 {}
 
-inline CREF(std::string) RDORuntime::BreakPoint::getName() const
+inline const std::string& RDORuntime::BreakPoint::getName() const
 {
 	return m_name;
 }
 
-inline CREF(LPRDOCalc) RDORuntime::BreakPoint::getCalc() const
+inline const LPRDOCalc& RDORuntime::BreakPoint::getCalc() const
 {
 	return m_pCalc;
 }

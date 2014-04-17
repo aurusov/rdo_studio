@@ -50,7 +50,7 @@ public:
 
 	virtual void setVisible(bool visible);
 
-	CREF(LPStatusBar) statusBar() const;
+	const LPStatusBar& statusBar() const;
 
 	void update_start();
 	void update_stop ();
@@ -60,7 +60,7 @@ public:
 
 	QSlider* m_pModelSpeedSlider;
 
-	void insertMenuFileReopenItem(CREF(QString) item);
+	void insertMenuFileReopenItem(const QString& item);
 
 	template <typename SlotFun>
 	void updateInsertMenu(bool enabled, const typename QtPrivate::FunctionPointer<SlotFun>::Object* pObject, SlotFun pSlot)

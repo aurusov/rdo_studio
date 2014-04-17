@@ -97,7 +97,7 @@ void View::onSearchFindInModel()
 	m_pFindDialog->activateWindow();
 }
 
-void View::onFindDlgFind(CREF(FindDialog::Settings) settings)
+void View::onFindDlgFind(const FindDialog::Settings& settings)
 {
 	m_findSettings = settings;
 	onSearchFindAll();

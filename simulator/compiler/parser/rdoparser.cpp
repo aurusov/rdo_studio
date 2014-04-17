@@ -47,7 +47,7 @@ void RDOParser::insert##NAME(LPRDO##NAME value) \
 
 #define DECLARE_PARSER_OBJECT_CONTAINER(NAME) \
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(NAME) \
-const LPRDO##NAME RDOParser::find##NAME(CREF(std::string) name) const \
+const LPRDO##NAME RDOParser::find##NAME(const std::string& name) const \
 { \
 	NAME##List::const_iterator it = std::find_if(m_all##NAME.begin(), m_all##NAME.end(), compareName<RDO##NAME>(name)); \
 	return it != m_all##NAME.end() ? *it : LPRDO##NAME(NULL); \
@@ -385,7 +385,7 @@ bool RDOParser::isCurrentDPTPrior()
 	return getLastDPTPrior() ? true : false;
 }
 
-void RDOParser::insertChanges(CREF(std::string) name, CREF(std::string) value)
+void RDOParser::insertChanges(const std::string& name, const std::string& value)
 {
 	m_changes.push_back(Changes(name, value));
 }
@@ -574,7 +574,7 @@ void RDOParser::runRTPPost()
 	}
 }
 
-void RDOParser::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
+void RDOParser::checkFunctionName(const RDOParserSrcInfo& src_info)
 {
 	LPRDOFUNConstant pConstant = findFUNConstant(src_info.src_text());
 	if (pConstant)
@@ -600,7 +600,7 @@ void RDOParser::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
 	}
 }
 
-void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
+void RDOParser::checkActivityName(const RDOParserSrcInfo& src_info)
 {
 	for (const auto& search: getDPTSearchs())
 	{
@@ -635,7 +635,7 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 	}
 }
 
-void RDOParser::checkDPTName(CREF(RDOParserSrcInfo) src_info)
+void RDOParser::checkDPTName(const RDOParserSrcInfo& src_info)
 {
 	if (src_info.src_text().empty())
 	{

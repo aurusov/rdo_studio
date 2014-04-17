@@ -27,10 +27,10 @@ public:
 
 	interface_ptr ();
 	interface_ptr (T* pInterface, LPIRefCounter pCounter);
-	interface_ptr (CREF(this_type) sptr);
+	interface_ptr (const this_type& sptr);
 	~interface_ptr();
 
-	this_type& operator= (CREF(this_type) sptr);
+	this_type& operator= (const this_type& sptr);
 
 	operator bool() const;
 	const T* operator->() const;

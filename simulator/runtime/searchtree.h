@@ -31,7 +31,7 @@ class TreeRoot
 public:
 	virtual ~TreeRoot();
 
-	virtual void createRootTreeNode(CREF(LPRDORuntime) pRuntime) = 0;
+	virtual void createRootTreeNode(const LPRDORuntime& pRuntime) = 0;
 
 	std::vector<TreeNode*> m_OPEN;
 	RDODPTSearch* m_dp;
@@ -48,7 +48,7 @@ public:
 	int getNewNodeNumber();
 
 protected:
-	TreeRoot(CREF(LPRDORuntime) pRuntime, RDODPTSearch* pDP);
+	TreeRoot(const LPRDORuntime& pRuntime, RDODPTSearch* pDP);
 
 private:
 	int m_nodesCount;
@@ -88,11 +88,11 @@ public:
 
 	/// @todo задокументировать функцию
 	// return 0 - no such simulator, 1 - exist better, 2 - exist not better
-	NodeFoundInfo CheckIfExistBetter(CREF(LPRDORuntime) pChildRuntime, double useCost, TreeNode** better );
+	NodeFoundInfo CheckIfExistBetter(const LPRDORuntime& pChildRuntime, double useCost, TreeNode** better );
 	void ReCostSubTree(double cost);
 
 protected:
-	TreeNode(CREF(LPRDORuntime) pRuntime, TreeNode* pParent, TreeRoot* pRoot, LPIDPTSearchActivity pActivity, double cost, int cnt);
+	TreeNode(const LPRDORuntime& pRuntime, TreeNode* pParent, TreeRoot* pRoot, LPIDPTSearchActivity pActivity, double cost, int cnt);
 
 	LPIDPTSearchActivity  m_currAct; // вершина пытается применять различные активности
 	LPRDORuntime          m_pChildRuntime;
@@ -101,10 +101,10 @@ protected:
 	double m_newCostRest;
 	double m_newCostRule;
 
-	virtual void      onSearchOpenNode        (CREF(LPRDORuntime) pRuntime);
-	virtual void      onSearchNodeInfoDeleted (CREF(LPRDORuntime) pRuntime);
-	virtual void      onSearchNodeInfoReplaced(CREF(LPRDORuntime) pRuntime);
-	virtual void      onSearchNodeInfoNew     (CREF(LPRDORuntime) pRuntime);
+	virtual void      onSearchOpenNode        (const LPRDORuntime& pRuntime);
+	virtual void      onSearchNodeInfoDeleted (const LPRDORuntime& pRuntime);
+	virtual void      onSearchNodeInfoReplaced(const LPRDORuntime& pRuntime);
+	virtual void      onSearchNodeInfoNew     (const LPRDORuntime& pRuntime);
 	virtual TreeNode* createChildTreeNode     ();
 };
 

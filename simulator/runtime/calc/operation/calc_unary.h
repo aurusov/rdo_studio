@@ -24,10 +24,10 @@ class RDOCalcUnaryBase: public RDOCalc
 {
 public:
 	template <class T>
-	static LPRDOCalc generateCalc(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pUnaryCalc);
+	static LPRDOCalc generateCalc(const RDOSrcInfo::Position& position, const LPRDOCalc& pUnaryCalc);
 
 protected:
-	RDOCalcUnaryBase(CREF(LPRDOCalc) pOperation);
+	RDOCalcUnaryBase(const LPRDOCalc& pOperation);
 
 	LPRDOCalc m_pOperation;
 };
@@ -47,11 +47,11 @@ public:
 	enum { calc_type = CalcType };
 	typedef ret_type (RDOValue::*value_operator)() const;
 
-	static RDOSrcInfo     getStaticSrcInfo(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pUnaryCalc);
+	static RDOSrcInfo     getStaticSrcInfo(const RDOSrcInfo::Position& position, const LPRDOCalc& pUnaryCalc);
 	static value_operator getOperation    ();
 
 protected:
-	RDOCalcUnary(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pOperation);
+	RDOCalcUnary(const RDOSrcInfo::Position& position, const LPRDOCalc& pOperation);
 
 private:
 	DECLARE_ICalc;
@@ -72,7 +72,7 @@ public:
 	void needRound();
 
 private:
-	RDOCalcDoubleToIntByResult(CREF(LPRDOCalc) pOper);
+	RDOCalcDoubleToIntByResult(const LPRDOCalc& pOper);
 
 	bool m_round;
 	LPRDOCalc m_pOperation;
@@ -86,7 +86,7 @@ class RDOCalcInt: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcInt)
 private:
-	RDOCalcInt(CREF(LPRDOCalc) pOperation);
+	RDOCalcInt(const LPRDOCalc& pOperation);
 
 	LPRDOCalc m_pOperation;
 

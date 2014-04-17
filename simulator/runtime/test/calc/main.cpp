@@ -35,7 +35,7 @@ static const double const2 = 11.4;
 typedef  boost::tuple<LPRDORuntime, LPRDOCalc, LPRDOCalc>  CalcTriple;
 
 template <class T>
-RDOValue calc(CREF(CalcTriple) calcTriple)
+RDOValue calc(const CalcTriple& calcTriple)
 {
 	BOOST_CHECK(calcTriple.get<0>());
 	BOOST_CHECK(calcTriple.get<1>());
@@ -249,7 +249,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 
 	private:
 		//! ручная набивка вызова функции int fun(5)
-		static LPRDOCalc externalCaller(CREF(LPRDOCalc) pBody)
+		static LPRDOCalc externalCaller(const LPRDOCalc& pBody)
 		{
 			LPRDOCalc pParam = rdo::Factory<RDOCalcConst>::create(RDOValue(int(5)));
 			BOOST_CHECK(pParam);
@@ -257,7 +257,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 			return caller(pBody, pParam);
 		}
 
-		static LPRDOCalc caller(CREF(LPRDOCalc) pBody, CREF(LPRDOCalc) pParam)
+		static LPRDOCalc caller(const LPRDOCalc& pBody, const LPRDOCalc& pParam)
 		{
 			BOOST_CHECK(pBody );
 			BOOST_CHECK(pParam);

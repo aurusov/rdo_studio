@@ -25,7 +25,7 @@ public:
 	virtual ~DockFind();
 
 	void appendString(
-		CREF(QString)                str,
+		const QString& str,
 		rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT,
 		int lineNumber = -1, int posInLine = 0);
 	void clear();

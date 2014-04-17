@@ -35,7 +35,7 @@ void cnv_frmerror(const char* message)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMFrame
 // --------------------------------------------------------------------------------
-RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
+RDOFRMFrame::RDOFRMFrame(const RDOParserSrcInfo& srcInfo)
 	: RDOParserSrcInfo(srcInfo)
 	, m_itemCount     (0)
 {
@@ -43,7 +43,7 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
 	Converter::s_converter()->insertFRMFrame(this);
 }
 
-void RDOFRMFrame::setShowIfBlock(CREF(Seek) firstSeek)
+void RDOFRMFrame::setShowIfBlock(const Seek& firstSeek)
 {
 	if (m_firstSeek.is_initialized() && m_lastSeek.is_initialized() && m_itemCount > 1)
 	{
@@ -67,7 +67,7 @@ void RDOFRMFrame::setShowIfBlock(CREF(Seek) firstSeek)
 	m_lastSeek.reset();
 }
 
-void RDOFRMFrame::addItem(CREF(rdo::runtime::LPRDOCalc), std::size_t lastSeek)
+void RDOFRMFrame::addItem(const rdo::runtime::LPRDOCalc&, std::size_t lastSeek)
 {
 	++m_itemCount;
 	m_lastSeek = lastSeek;

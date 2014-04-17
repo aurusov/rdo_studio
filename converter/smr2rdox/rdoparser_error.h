@@ -28,7 +28,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 class RDOSyntaxException: public rdo::runtime::RDOException
 {
 public:
-   RDOSyntaxException(CREF(std::string) message)
+   RDOSyntaxException(const std::string& message)
 	   : RDOException(message)
    {}
    virtual std::string getType() const { return "RDO Syntax Error"; }
@@ -45,18 +45,18 @@ public:
 	Error();
 
 	//! 1
-	void error(CREF(RDOParserSrcInfo) src_info, CREF(std::string) message);
-	void warning(CREF(RDOParserSrcInfo) src_info, CREF(std::string) message);
-	void push_only(CREF(RDOParserSrcInfo) src_info, CREF(std::string) message);
+	void error(const RDOParserSrcInfo& src_info, const std::string& message);
+	void warning(const RDOParserSrcInfo& src_info, const std::string& message);
+	void push_only(const RDOParserSrcInfo& src_info, const std::string& message);
 
 	//! 2
-	void error (CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_info2, CREF(std::string) message);
+	void error (const RDOParserSrcInfo& src_info1, const RDOParserSrcInfo& src_info2, const std::string& message);
 
 	//! misc
 	void push_done();
-	void modify(CREF(std::string) message);
+	void modify(const std::string& message);
 	void clear();
-	CREF(ErrorList) getList() const;
+	const ErrorList& getList() const;
 	void block();
 	void unblock();
 	bool blocked() const;

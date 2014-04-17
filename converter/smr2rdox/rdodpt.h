@@ -75,16 +75,16 @@ class RDODPTActivity
 {
 DECLARE_FACTORY(RDODPTActivity);
 public:
-	CREF(std::string) name() const { return src_info().src_text(); }
+	const std::string& name() const { return src_info().src_text(); }
 	LPRDOPATPattern pattern() const { return m_pPattern; }
 
-	void addParam(CREF(LPRDOValue) pParam   );
-	void endParam(CREF(YYLTYPE)    param_pos);
+	void addParam(const LPRDOValue& pParam   );
+	void endParam(const YYLTYPE&    param_pos);
 
 	bool setPrior(LPRDOFUNArithm& pPrior);
 
 protected:
-	RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
+	RDODPTActivity(const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info);
 	virtual ~RDODPTActivity();
 
 private:
@@ -101,14 +101,14 @@ private:
 class RDODPTActivityHotKey: public RDODPTActivity
 {
 public:
-	void addHotKey(CREF(std::string) hotKey, CREF(YYLTYPE) hotkey_pos);
+	void addHotKey(const std::string& hotKey, const YYLTYPE& hotkey_pos);
 	bool hasHotKey() const;
 
 protected:
-	RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
+	RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info);
 
 private:
-	IKeyboard::AddHotKeyResult addHotKey(CREF(std::string) hotKey);
+	IKeyboard::AddHotKeyResult addHotKey(const std::string& hotKey);
 
 	typedef std::vector<std::size_t> ScanCodeList;
 	ScanCodeList m_scanCodeList;
@@ -122,7 +122,7 @@ class RDODPTFreeActivity: public RDODPTActivityHotKey
 {
 DECLARE_FACTORY(RDODPTFreeActivity);
 private:
-	RDODPTFreeActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
+	RDODPTFreeActivity(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info);
 };
 DECLARE_POINTER(RDODPTFreeActivity);
 
@@ -136,7 +136,7 @@ class RDODPTFree
 {
 DECLARE_FACTORY(RDODPTFree);
 private:
-	RDODPTFree(CREF(RDOParserSrcInfo) src_info);
+	RDODPTFree(const RDOParserSrcInfo& src_info);
 };
 
 // --------------------------------------------------------------------------------
@@ -146,7 +146,7 @@ class RDODPTSomeActivity: public RDODPTActivityHotKey
 {
 DECLARE_FACTORY(RDODPTSomeActivity);
 private:
-	RDODPTSomeActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
+	RDODPTSomeActivity(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info);
 };
 
 // --------------------------------------------------------------------------------
@@ -156,7 +156,7 @@ class RDODPTPriorActivity: public RDODPTActivityHotKey
 {
 DECLARE_FACTORY(RDODPTPriorActivity);
 private:
-	RDODPTPriorActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
+	RDODPTPriorActivity(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info);
 };
 
 // --------------------------------------------------------------------------------
@@ -169,14 +169,14 @@ class RDODPTSome
 {
 DECLARE_FACTORY(RDODPTSome);
 public:
-	LPILogic      getLogic    () const                               { return m_pRuntimeLogic;  }
-	LPRDOFUNLogic getConditon () const                               { return m_pConditon;      }
-	void          setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
+	LPILogic      getLogic    () const                                { return m_pRuntimeLogic;  }
+	LPRDOFUNLogic getConditon () const                                { return m_pConditon;      }
+	void          setCondition(const LPRDOFUNLogic& pConditon = NULL) { m_pConditon = pConditon; }
 
 	void end();
 
 private:
-	RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent = NULL);
+	RDODPTSome(const RDOParserSrcInfo& src_info, LPILogic pParent = NULL);
 
 	LPRDOFUNLogic m_pConditon;
 };
@@ -191,14 +191,14 @@ class RDODPTPrior
 {
 DECLARE_FACTORY(RDODPTPrior);
 public:
-	LPILogic      getLogic    () const                               { return m_pRuntimeLogic;  }
-	LPRDOFUNLogic getConditon () const                               { return m_pConditon;      }
-	void          setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
+	LPILogic      getLogic    () const                                { return m_pRuntimeLogic;  }
+	LPRDOFUNLogic getConditon () const                                { return m_pConditon;      }
+	void          setCondition(const LPRDOFUNLogic& pConditon = NULL) { m_pConditon = pConditon; }
 
 	void end();
 
 private:
-	RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent = NULL);
+	RDODPTPrior(const RDOParserSrcInfo& src_info, LPILogic pParent = NULL);
 
 	LPRDOFUNLogic m_pConditon;
 };
@@ -212,13 +212,13 @@ DECLARE_FACTORY(RDODPTSearchActivity);
 public:
 	IDPTSearchActivity::ValueTime getValue() const { return m_value; }
 	void                          setValue(IDPTSearchActivity::ValueTime value,
-	                                       CREF(LPRDOFUNArithm)          pRuleCost,
-	                                       CREF(YYLTYPE)                 param_pos);
+	                                       const LPRDOFUNArithm&         pRuleCost,
+	                                       const YYLTYPE&                param_pos);
 
 	LPRDOFUNArithm getRuleCost() const { return m_pRuleCost; }
 
 private:
-	RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
+	RDODPTSearchActivity(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info);
 
 	IDPTSearchActivity::ValueTime  m_value;
 	LPRDOFUNArithm                 m_pRuleCost;
@@ -235,16 +235,16 @@ class RDODPTSearch
 {
 DECLARE_FACTORY(RDODPTSearch);
 public:
-	void setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
-	void setTermCondition(CREF(LPRDOFUNLogic) pTermConditon = NULL) { m_pTermConditon = pTermConditon; }
-	void setEvaluateBy(CREF(LPRDOFUNArithm) pEvalBy) { m_pEvalBy = pEvalBy; }
+	void setCondition(const LPRDOFUNLogic& pConditon = NULL) { m_pConditon = pConditon; }
+	void setTermCondition(const LPRDOFUNLogic& pTermConditon = NULL) { m_pTermConditon = pTermConditon; }
+	void setEvaluateBy(const LPRDOFUNArithm& pEvalBy) { m_pEvalBy = pEvalBy; }
 	void setCompareTops(bool compTops ) { m_compTops = compTops; }
 
 	void end();
 	bool closed() const { return m_closed; }
 
 private:
-	RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace = rdo::runtime::RDODPTSearchTrace::DPT_no_trace, LPILogic pParent = NULL);
+	RDODPTSearch(const RDOParserSrcInfo& src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace = rdo::runtime::RDODPTSearchTrace::DPT_no_trace, LPILogic pParent = NULL);
 
 	LPRDOFUNLogic m_pConditon;
 	LPRDOFUNLogic m_pTermConditon;
@@ -273,11 +273,11 @@ public:
 	void end();
 	bool closed() const { return m_closed; }
 
-	void          setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
-	LPRDOFUNLogic getConditon () const                               { return m_pConditon;      }
+	void          setCondition(const LPRDOFUNLogic& pConditon = NULL) { m_pConditon = pConditon; }
+	LPRDOFUNLogic getConditon () const                                { return m_pConditon;      }
 
 	bool setPrior(LPRDOFUNArithm& pPrior);
-	void insertBlock(CREF(LPRDOPROCOperator) pBlock);
+	void insertBlock(const LPRDOPROCOperator& pBlock);
 	void insertChild(LPRDOPROCProcess& pProcess);
 
 	LPILogic getRunTime () const { return m_pRuntime; }
@@ -293,7 +293,7 @@ protected:
 	LPILogic m_pRuntime;
 
 private:
-	RDOPROCProcess(CREF(RDOParserSrcInfo) info);
+	RDOPROCProcess(const RDOParserSrcInfo& info);
 
 	LPRDOFUNLogic m_pConditon;
 };
@@ -309,7 +309,7 @@ protected:
 	std::string m_name;
 	LPRDOPROCProcess m_pProcess;
 
-	RDOPROCOperator(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name);
+	RDOPROCOperator(const LPRDOPROCProcess& pProcess, const std::string& name);
 	virtual ~RDOPROCOperator();
 };
 
@@ -323,7 +323,7 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name, CREF(rdo::runtime::LPRDOCalc) pTimeCalc);
+	RDOPROCGenerate(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pTimeCalc);
 };
 
 // --------------------------------------------------------------------------------
@@ -332,7 +332,7 @@ private:
 class RDOPROCBlockForQueue: public RDOPROCOperator
 {
 protected:
-	RDOPROCBlockForQueue(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name);
+	RDOPROCBlockForQueue(const LPRDOPROCProcess& pProcess, const std::string& name);
 
 	//! m_parserForRuntime служит для передачи информации о параметре "Состояние" ресурса
 	rdo::runtime::parser_for_Queue m_parserForRuntime;
@@ -346,14 +346,14 @@ class RDOPROCQueue: public RDOPROCBlockForQueue
 DECLARE_FACTORY(RDOPROCQueue);
 public:
 	void createRuntime();
-	void setResource(CREF(std::string) name);
+	void setResource(const std::string& name);
 
 protected:
 	std::string m_resourceName;
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCQueue(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name);
+	RDOPROCQueue(const LPRDOPROCProcess& pProcess, const std::string& name);
 };
 DECLARE_POINTER(RDOPROCQueue);
 
@@ -365,14 +365,14 @@ class RDOPROCDepart: public RDOPROCBlockForQueue
 DECLARE_FACTORY(RDOPROCDepart);
 public:
 	void createRuntime();
-	void setResource(CREF(std::string) name);
+	void setResource(const std::string& name);
 
 protected:
 	std::string m_resourceName;
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCDepart(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name);
+	RDOPROCDepart(const LPRDOPROCProcess& pProcess, const std::string& name);
 };
 DECLARE_POINTER(RDOPROCDepart);
 
@@ -382,7 +382,7 @@ DECLARE_POINTER(RDOPROCDepart);
 class RDOPROCBlockForSeize: public RDOPROCOperator
 {
 protected:
-	RDOPROCBlockForSeize(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name);
+	RDOPROCBlockForSeize(const LPRDOPROCProcess& pProcess, const std::string& name);
 
 	//! m_parserForRuntime служит для передачи информации о параметре "Состояние" ресурса
 	rdo::runtime::parser_for_Seize m_parserForRuntime;
@@ -396,7 +396,7 @@ class RDOPROCSeize: public RDOPROCBlockForSeize
 DECLARE_FACTORY(RDOPROCSeize);
 public:
 	void createRuntime();
-	void addResource(CREF(std::string) name);
+	void addResource(const std::string& name);
 
 protected:
 	typedef std::list<std::string> ResourceList;
@@ -407,7 +407,7 @@ protected:
 	LPIPROCBlock     m_pRuntime;
 
 private:
-	RDOPROCSeize(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name);
+	RDOPROCSeize(const LPRDOPROCProcess& pProcess, const std::string& name);
 };
 DECLARE_POINTER(RDOPROCSeize);
 
@@ -419,7 +419,7 @@ class RDOPROCRelease: public RDOPROCBlockForSeize
 DECLARE_FACTORY(RDOPROCRelease);
 public:
 	void createRuntime();
-	void addResource(CREF(std::string) name);
+	void addResource(const std::string& name);
 
 protected:
 	typedef std::list<std::string> ResourceList;
@@ -430,7 +430,7 @@ protected:
 	LPIPROCBlock     m_pRuntime;
 
 private:
-	RDOPROCRelease(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name);
+	RDOPROCRelease(const LPRDOPROCProcess& pProcess, const std::string& name);
 };
 DECLARE_POINTER(RDOPROCRelease);
 
@@ -444,7 +444,7 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name, CREF(rdo::runtime::LPRDOCalc) pTimeCalc);
+	RDOPROCAdvance(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pTimeCalc);
 };
 
 // --------------------------------------------------------------------------------
@@ -458,7 +458,7 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name, CREF(rdo::runtime::LPRDOCalc) pCalc);
+	RDOPROCTerminate(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pCalc);
 };
 
 // --------------------------------------------------------------------------------
@@ -471,7 +471,7 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name, CREF(rdo::runtime::LPRDOCalc) pValue);
+	RDOPROCAssign(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pValue);
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

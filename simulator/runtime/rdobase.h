@@ -70,7 +70,7 @@ public:
 	std::size_t get_cnt_calc_arithm() const;
 	std::size_t get_cnt_calc_logic() const;
 
-	static std::size_t getMSec(CREF(boost::posix_time::ptime) ptime);
+	static std::size_t getMSec(const boost::posix_time::ptime& ptime);
 
 protected:
 	RDOSimulatorBase();

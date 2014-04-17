@@ -29,29 +29,29 @@ public:
 	typedef T                object_type;
 	typedef intrusive_ptr<T> this_type;
 
-	 intrusive_ptr();
-	 intrusive_ptr(T* object);
-	 intrusive_ptr(CREF(this_type) sptr  );
-	 template <class P>
-	 intrusive_ptr(CREF(interface_ptr<P>) pInterface);
+	intrusive_ptr();
+	intrusive_ptr(T* object);
+	intrusive_ptr(const this_type& sptr);
+	template <class P>
+	intrusive_ptr(const interface_ptr<P>& pInterface);
 	~intrusive_ptr();
 
-	this_type& operator=(CREF(this_type) sptr);
+	this_type& operator=(const this_type& sptr);
 
 	//! Сравнивает по указателям
 	template <class P>
-	bool operator==(CREF(intrusive_ptr<P>) sptr) const;
+	bool operator==(const intrusive_ptr<P>& sptr) const;
 	template <class P>
-	bool operator!=(CREF(intrusive_ptr<P>) sptr) const;
+	bool operator!=(const intrusive_ptr<P>& sptr) const;
 
 	//! Сравнивает по значениям
 	template<class P>
-	bool compare(CREF(intrusive_ptr<P>) sptr) const;
+	bool compare(const intrusive_ptr<P>& sptr) const;
 
 	operator bool() const;
 	T* operator->() const;
 	T* operator->();
-	CREF(T) operator*() const;
+	const T& operator*() const;
 	T& operator*();
 
 	template <class P>

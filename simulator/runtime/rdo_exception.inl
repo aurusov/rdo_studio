@@ -18,11 +18,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOException
 // --------------------------------------------------------------------------------
-inline RDOException::RDOException(CREF(std::string) message)
+inline RDOException::RDOException(const std::string& message)
 	: m_message(message)
 {}
 
-inline CREF(std::string) RDOException::message() const
+inline const std::string& RDOException::message() const
 {
 	return m_message;
 }
@@ -30,7 +30,7 @@ inline CREF(std::string) RDOException::message() const
 // --------------------------------------------------------------------------------
 // -------------------- RDORuntimeException
 // --------------------------------------------------------------------------------
-inline RDORuntimeException::RDORuntimeException(CREF(std::string) message)
+inline RDORuntimeException::RDORuntimeException(const std::string& message)
 	: RDOException(message)
 {}
 
@@ -42,7 +42,7 @@ inline std::string RDORuntimeException::getType() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeException
 // --------------------------------------------------------------------------------
-inline RDOTypeException::RDOTypeException(CREF(std::string) message)
+inline RDOTypeException::RDOTypeException(const std::string& message)
 	: RDORuntimeException(message)
 {}
 
@@ -54,7 +54,7 @@ inline std::string RDOTypeException::getType() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOValueException
 // --------------------------------------------------------------------------------
-inline RDOValueException::RDOValueException(CREF(std::string) message)
+inline RDOValueException::RDOValueException(const std::string& message)
 	: RDORuntimeException(message)
 {}
 
@@ -78,7 +78,7 @@ inline std::string RDOUndefinedException::getType() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOInternalException
 // --------------------------------------------------------------------------------
-inline RDOInternalException::RDOInternalException(CREF(std::string) message)
+inline RDOInternalException::RDOInternalException(const std::string& message)
 	: RDORuntimeException(message)
 {}
 

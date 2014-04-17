@@ -31,7 +31,7 @@ inline interface_ptr<T>::interface_ptr(T* pInterface, LPIRefCounter pCounter)
 }
 
 template<class T>
-inline interface_ptr<T>::interface_ptr(CREF(this_type) sptr)
+inline interface_ptr<T>::interface_ptr(const this_type& sptr)
 	: m_pInterface(sptr.m_pInterface)
 	, m_pCounter  (sptr.m_pCounter  )
 {
@@ -47,7 +47,7 @@ inline interface_ptr<T>::~interface_ptr()
 }
 
 template<class T>
-inline typename interface_ptr<T>::this_type& interface_ptr<T>::operator= (CREF(this_type) sptr)
+inline typename interface_ptr<T>::this_type& interface_ptr<T>::operator= (const this_type& sptr)
 {
 	if (m_pInterface)
 		m_pCounter->release();

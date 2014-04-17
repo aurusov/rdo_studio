@@ -47,23 +47,23 @@ public:
 
 	static const std::size_t UNDEFINED_PARAM = std::size_t(~0);
 
-	CREF(std::string) name() const { return src_text(); };
+	const std::string& name() const { return src_text(); };
 	int getNumber() const { return m_number; };
 	bool isPermanent() const { return m_permanent; };
 	bool isTemporary() const { return !m_permanent; };
 
-	void addParam(CREF(LPRDORTPParam) param);
-	void addParam(CREF(std::string) param_name, rdo::runtime::RDOType::TypeID param_typeID);
-	LPRDORTPParam findRTPParam(CREF(std::string) paramName) const;
+	void addParam(const LPRDORTPParam& param);
+	void addParam(const std::string& param_name, rdo::runtime::RDOType::TypeID param_typeID);
+	LPRDORTPParam findRTPParam(const std::string& paramName) const;
 	void finish();
 
-	std::size_t getRTPParamNumber(CREF(std::string) paramName) const;
-	CREF(ParamList) getParams() const { return m_params; }
+	std::size_t getRTPParamNumber(const std::string& paramName) const;
+	const ParamList& getParams() const { return m_params; }
 
 	void writeModelStructure(std::ostream& stream) const;
 
 private:
-	RDORTPResType(Converter* pParser, CREF(RDOParserSrcInfo) src_info, bool permanent);
+	RDORTPResType(Converter* pParser, const RDOParserSrcInfo& src_info, bool permanent);
 	virtual ~RDORTPResType();
 
 	const int m_number;
@@ -82,7 +82,7 @@ DECLARE_POINTER(RDORTPResType);
 //class RDORTPFuzzyMembershiftPoint: public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
-//	RDORTPFuzzyMembershiftPoint(Converter* pParser, CREF(RDOParserSrcInfo) src_info, double x_value, double y_value):
+//	RDORTPFuzzyMembershiftPoint(Converter* pParser, const RDOParserSrcInfo& src_info, double x_value, double y_value):
 //		RDOParserObject(pParser),
 //		RDOParserSrcInfo(src_info),
 //		m_x_value(x_value),
@@ -133,7 +133,7 @@ DECLARE_POINTER(RDORTPResType);
 //class RDORTPFuzzyTerm: public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
-//	RDORTPFuzzyTerm(Converter* pParser, CREF(RDOParserSrcInfo) src_info, RDORTPFuzzyMembershiftFun* pMembersfift_fun):
+//	RDORTPFuzzyTerm(Converter* pParser, const RDOParserSrcInfo& src_info, RDORTPFuzzyMembershiftFun* pMembersfift_fun):
 //		RDOParserObject(pParser),
 //		RDOParserSrcInfo(src_info),
 //		m_fun (pMembersfift_fun)
@@ -141,7 +141,7 @@ DECLARE_POINTER(RDORTPResType);
 //		}
 //	virtual ~RDORTPFuzzyTerm() {}
 //
-//	CREF(std::string) name() const { return src_info().src_text(); }
+//	const std::string& name() const { return src_info().src_text(); }
 //	double MemberShift() const { return m_fun->getVal(); }
 //
 //private:
@@ -181,7 +181,7 @@ DECLARE_POINTER(RDORTPResType);
 //class RDORTPFuzzyParam : public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
-//	RDORTPFuzzyParam(Converter* pParser, CREF(RDOParserSrcInfo) src_info, RDORTPFuzzyTermsSet* terms_set):
+//	RDORTPFuzzyParam(Converter* pParser, const RDOParserSrcInfo& src_info, RDORTPFuzzyTermsSet* terms_set):
 //		RDOParserObject(pParser),
 //		RDOParserSrcInfo(src_info),
 //		m_set (terms_set)
@@ -189,7 +189,7 @@ DECLARE_POINTER(RDORTPResType);
 //		}
 //	virtual ~RDORTPFuzzyParam() {}
 //
-//	CREF(std::string) name() const { return src_info().src_text(); }
+//	const std::string& name() const { return src_info().src_text(); }
 //
 //private:
 //	RDORTPFuzzyTermsSet* m_set; // набор терминов параметра

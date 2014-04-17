@@ -21,13 +21,13 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- Error
 // --------------------------------------------------------------------------------
-void Error::push(CREF(RDOSyntaxMessage) message)
+void Error::push(const RDOSyntaxMessage& message)
 {
 	m_errorList.push_back(message);
 	throw RDORuntimeException("");
 }
 
-void Error::push(CREF(std::string) message, CREF(RDOSrcInfo) srcInfo)
+void Error::push(const std::string& message, const RDOSrcInfo& srcInfo)
 {
 	ASSERT(!message.empty());
 
@@ -40,7 +40,7 @@ void Error::push(CREF(std::string) message, CREF(RDOSrcInfo) srcInfo)
 	push(error);
 }
 
-CREF(Error::ErrorList) Error::list() const
+const Error::ErrorList& Error::list() const
 {
 	return m_errorList;
 }

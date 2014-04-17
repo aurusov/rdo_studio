@@ -102,7 +102,7 @@ Context::Context()
 Context::~Context()
 {}
 
-void Context::setContextStack(CREF(LPContextStack) pContextStack)
+void Context::setContextStack(const LPContextStack& pContextStack)
 {
 	ASSERT(pContextStack   );
 	ASSERT(!m_pContextStack);

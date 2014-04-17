@@ -30,17 +30,17 @@ DECLARE_FACTORY(RDOArrayValue);
 public:
 	typedef std::vector<LPRDOValue> Container;
 
-	void insertItem(CREF(LPRDOValue) pValue);
+	void insertItem(const LPRDOValue& pValue);
 
-	CREF(LPRDOArrayType) getArrayType() const;
+	const LPRDOArrayType& getArrayType() const;
 	 LPRDOArrayType& getArrayType();
 	rdo::runtime::RDOValue getRArray() const;
 	rdo::runtime::LPRDOArrayValue createRuntimeValue() const;
 	std::string getAsString() const;
-	CREF(Container) getContainer() const;
+	const Container& getContainer() const;
 
 private:
-	RDOArrayValue(CREF(LPRDOArrayType) pArrayType);
+	RDOArrayValue(const LPRDOArrayType& pArrayType);
 	virtual ~RDOArrayValue();
 
 	Container      m_container;

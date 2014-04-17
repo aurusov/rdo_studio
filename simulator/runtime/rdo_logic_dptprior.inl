@@ -18,7 +18,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOOrderDPTPrior
 // --------------------------------------------------------------------------------
-inline LPIBaseOperation RDOOrderDPTPrior::sort(CREF(LPRDORuntime) pRuntime, BaseOperationList& container)
+inline LPIBaseOperation RDOOrderDPTPrior::sort(const LPRDORuntime& pRuntime, BaseOperationList& container)
 {
 	BaseOperationList priorContainer;
 	for (const auto& operation: container)
@@ -55,7 +55,7 @@ inline LPIBaseOperation RDOOrderDPTPrior::sort(CREF(LPRDORuntime) pRuntime, Base
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTPrior
 // --------------------------------------------------------------------------------
-inline RDODPTPrior::RDODPTPrior(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent)
+inline RDODPTPrior::RDODPTPrior(const LPRDORuntime& pRuntime, LPIBaseOperationContainer pParent)
 	: RDOLogicDPTPrior(pRuntime, pParent)
 {
 	pRuntime->getFreeDPTId();

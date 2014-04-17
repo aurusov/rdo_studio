@@ -18,7 +18,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcBinaryBase
 // --------------------------------------------------------------------------------
-inline RDOCalcBinaryBase::RDOCalcBinaryBase(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+inline RDOCalcBinaryBase::RDOCalcBinaryBase(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
 	: m_pLeft (pLeft )
 	, m_pRight(pRight)
 {
@@ -27,7 +27,7 @@ inline RDOCalcBinaryBase::RDOCalcBinaryBase(CREF(LPRDOCalc) pLeft, CREF(LPRDOCal
 }
 
 template <class T>
-inline LPRDOCalc RDOCalcBinaryBase::generateCalc(CREF(LPRDOCalc) pFirst, CREF(LPRDOCalc) pSecond)
+inline LPRDOCalc RDOCalcBinaryBase::generateCalc(const LPRDOCalc& pFirst, const LPRDOCalc& pSecond)
 {
 	ASSERT(pFirst );
 	ASSERT(pSecond);
@@ -51,7 +51,7 @@ inline LPRDOCalc RDOCalcBinaryBase::generateCalc(CREF(LPRDOCalc) pFirst, CREF(LP
 // --------------------------------------------------------------------------------
 // -------------------- BinaryOperatorConstP1
 // --------------------------------------------------------------------------------
-template <typename ret_type, ret_type (RDOValue::*pMethod)(CREF(RDOValue)) const>
+template <typename ret_type, ret_type (RDOValue::*pMethod)(const RDOValue&) const>
 inline typename BinaryOperatorConstP1<ret_type, pMethod>::method_type BinaryOperatorConstP1<ret_type, pMethod>::method()
 {
 	return pMethod;
@@ -60,7 +60,7 @@ inline typename BinaryOperatorConstP1<ret_type, pMethod>::method_type BinaryOper
 // --------------------------------------------------------------------------------
 // -------------------- BinaryOperatorNonConstP1
 // --------------------------------------------------------------------------------
-template <typename ret_type, ret_type (RDOValue::*pMethod)(CREF(RDOValue))>
+template <typename ret_type, ret_type (RDOValue::*pMethod)(const RDOValue&)>
 inline typename BinaryOperatorNonConstP1<ret_type, pMethod>::method_type BinaryOperatorNonConstP1<ret_type, pMethod>::method()
 {
 	return pMethod;
@@ -70,7 +70,7 @@ inline typename BinaryOperatorNonConstP1<ret_type, pMethod>::method_type BinaryO
 // -------------------- RDOCalcBinary
 // --------------------------------------------------------------------------------
 template <class F, typename OperatorType::Type CalcType>
-inline RDOCalcBinary<F, CalcType>::RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+inline RDOCalcBinary<F, CalcType>::RDOCalcBinary(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
 	: RDOCalcBinaryBase(pLeft, pRight)
 {
 	setSrcInfo(getStaticSrcInfo(m_pLeft, m_pRight));
@@ -89,13 +89,13 @@ inline LPRDOCalcConst RDOCalcBinary<F, CalcType>::getRightAsConst() const
 }
 
 template <class F, typename OperatorType::Type CalcType>
-inline void RDOCalcBinary<F, CalcType>::setRight(CREF(LPRDOCalc) pRight)
+inline void RDOCalcBinary<F, CalcType>::setRight(const LPRDOCalc& pRight)
 {
 	m_pRight = pRight;
 }
 
 template <class F, typename OperatorType::Type CalcType>
-inline RDOSrcInfo RDOCalcBinary<F, CalcType>::getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+inline RDOSrcInfo RDOCalcBinary<F, CalcType>::getStaticSrcInfo(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
 {
 	RDOSrcInfo srcInfo;
 	srcInfo.setSrcInfo(pLeft->srcInfo(), rdo::format(" %s ", OperatorName<typename F::method_type>::name(F::method()).c_str()), pRight->srcInfo());
@@ -103,7 +103,7 @@ inline RDOSrcInfo RDOCalcBinary<F, CalcType>::getStaticSrcInfo(CREF(LPRDOCalc) p
 }
 
 template <class F, typename OperatorType::Type CalcType>
-inline RDOValue RDOCalcBinary<F, CalcType>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline RDOValue RDOCalcBinary<F, CalcType>::doCalc(const LPRDORuntime& pRuntime)
 {
 	++OperatorType::getCalcCounter<CalcType>();
 	return (m_pLeft->calcValue(pRuntime).*F::method())(m_pRight->calcValue(pRuntime));

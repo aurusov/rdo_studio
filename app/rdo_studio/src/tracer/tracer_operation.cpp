@@ -20,7 +20,7 @@ using namespace rdo::gui::tracer;
 // --------------------------------------------------------------------------------
 // -------------------- OperationBase
 // --------------------------------------------------------------------------------
-OperationBase::OperationBase(CREF(LPPattern) pPattern, CREF(QString) name)
+OperationBase::OperationBase(const LPPattern& pPattern, const QString& name)
 	: Serie(SK_OPERATION)
 	, m_pPattern(pPattern)
 	, m_name(name)
@@ -31,7 +31,7 @@ OperationBase::OperationBase(CREF(LPPattern) pPattern, CREF(QString) name)
 OperationBase::~OperationBase()
 {}
 
-CREF(QString) OperationBase::getName() const
+const QString& OperationBase::getName() const
 {
 	return m_name;
 }
@@ -61,7 +61,7 @@ void OperationBase::monitorTime(Time* const, const int)
 // --------------------------------------------------------------------------------
 // -------------------- Operation
 // --------------------------------------------------------------------------------
-Operation::Operation(CREF(LPPattern) pPattern, CREF(QString) name)
+Operation::Operation(const LPPattern& pPattern, const QString& name)
 	: OperationBase(pPattern, name)
 {}
 
@@ -87,7 +87,7 @@ void Operation::accomplish(Time* const pTime, const int eventIndex)
 // --------------------------------------------------------------------------------
 // -------------------- Event
 // --------------------------------------------------------------------------------
-Event::Event(CREF(LPPattern) pPattern, CREF(QString) name)
+Event::Event(const LPPattern& pPattern, const QString& name)
 	: OperationBase(pPattern, name)
 {}
 

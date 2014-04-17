@@ -29,7 +29,7 @@ RDOCalc::RDOCalc()
 RDOCalc::~RDOCalc()
 {}
 
-RDOValue RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalc::calcValue(const LPRDORuntime& pRuntime)
 {
 	try
 	{
@@ -57,11 +57,11 @@ RDOValue RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 #endif
 		return doCalc(pRuntime);
 	}
-	catch (CREF(RDOUndefinedException) ex)
+	catch (const RDOUndefinedException& ex)
 	{
 		throw ex;
 	}
-	catch (CREF(RDORuntimeException) ex)
+	catch (const RDORuntimeException& ex)
 	{
 		std::string message = rdo::format("<Модельное время: %f>, '%s'", pRuntime->getTimeNow(), m_srcInfo.src_text().c_str());
 		if (!ex.message().empty())
@@ -79,12 +79,12 @@ RDOValue RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 	return RDOValue();
 }
 
-CREF(RDOSrcInfo) RDOCalc::srcInfo() const
+const RDOSrcInfo& RDOCalc::srcInfo() const
 {
 	return m_srcInfo;
 }
 
-void RDOCalc::setSrcInfo(CREF(RDOSrcInfo) srcInfo)
+void RDOCalc::setSrcInfo(const RDOSrcInfo& srcInfo)
 {
 	m_srcInfo = srcInfo;
 }

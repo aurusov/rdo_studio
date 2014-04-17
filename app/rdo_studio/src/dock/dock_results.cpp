@@ -31,7 +31,7 @@ DockResults::DockResults(QWidget* pParent)
 DockResults::~DockResults()
 {}
 
-void DockResults::appendString(CREF(QString) str)
+void DockResults::appendString(const QString& str)
 {
 	int pos = getContext().getCurrentPos();
 	getContext().setCurrentPos(getContext().getLength());

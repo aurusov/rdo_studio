@@ -389,7 +389,7 @@ private:
 	void insertColor (const QColor& color, const QString& colorName, QComboBox* colorBox);
 	StyleProperty* getStyleProperty();
 	StyleItem* getStyleItem();
-	QTreeWidgetItem* createTreeItem (QTreeWidgetItem* parent, CREF(QString) name, ItemType itemType);
+	QTreeWidgetItem* createTreeItem (QTreeWidgetItem* parent, const QString& name, ItemType itemType);
 	
 	void apply();
 	void checkAllData();

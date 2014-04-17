@@ -31,8 +31,8 @@ public:
 	RDOValue();
 	~RDOValue();
 
-	RDOValue(CREF(RDOValue) rdovalue);
-	RDOValue(CREF(LPRDOType) pType);
+	RDOValue(const RDOValue& rdovalue);
+	RDOValue(const LPRDOType& pType);
 	RDOValue(int value);
 	RDOValue(uint32_t value);
 #ifdef ARCHITECTURE_AMD64
@@ -40,17 +40,17 @@ public:
 #endif // ARCHITECTURES_AMD64
 	RDOValue(double value);
 	RDOValue(bool value);
-	RDOValue(CREF(LPRDOEnumType) pEnum);
-	RDOValue(CREF(LPRDOEnumType) pEnum, CREF(std::string) value);
-	RDOValue(CREF(LPRDOEnumType) pEnum, std::size_t index);
-	RDOValue(CREF(std::string) value);
+	RDOValue(const LPRDOEnumType& pEnum);
+	RDOValue(const LPRDOEnumType& pEnum, const std::string& value);
+	RDOValue(const LPRDOEnumType& pEnum, std::size_t index);
+	RDOValue(const std::string& value);
 	RDOValue(const char* value);
-	RDOValue(CREF(std::string) value, CREF(LPRDOType) pType);
+	RDOValue(const std::string& value, const LPRDOType& pType);
 
 	template <class T>
-	RDOValue(CREF(LPRDOType) pType, CREF(rdo::intrusive_ptr<T>) pObject);
+	RDOValue(const LPRDOType& pType, const rdo::intrusive_ptr<T>& pObject);
 
-	static RDOValue fromDouble(CREF(LPRDOType) pType, double value);
+	static RDOValue fromDouble(const LPRDOType& pType, double value);
 
 	int getInt() const;
 	uint32_t getUInt() const;
@@ -58,17 +58,17 @@ public:
 	LPRDOEnumType getEnum() const;
 	double getDouble() const;
 	bool getBool() const;
-	CREF(std::string) getString() const;
-	CREF(std::string) getIdentificator() const;
+	const std::string& getString() const;
+	const std::string& getIdentificator() const;
 
 	template <class T>
-	CREF(rdo::intrusive_ptr<typename T::value_type>) getPointerByType() const;
+	const rdo::intrusive_ptr<typename T::value_type>& getPointerByType() const;
 
 	template <class V, class T>
-	CREF(rdo::intrusive_ptr<V>) getPointerByType() const;
+	const rdo::intrusive_ptr<V>& getPointerByType() const;
 
 	template <class T>
-	CREF(rdo::intrusive_ptr<typename T::value_type>) getPointerByInterface() const;
+	const rdo::intrusive_ptr<typename T::value_type>& getPointerByInterface() const;
 
 	template <class T>
 	bool isType() const;
@@ -77,44 +77,44 @@ public:
 	std::string getAsString() const;
 	std::string getAsStringForTrace() const;
 
-	RDOValue& operator=(CREF(RDOValue) rdovalue);
-	bool operator==(CREF(RDOValue) rdovalue) const;
-	bool operator!=(CREF(RDOValue) rdovalue) const;
-	bool operator<(CREF(RDOValue) rdovalue) const;
-	bool operator>(CREF(RDOValue) rdovalue) const;
-	bool operator<=(CREF(RDOValue) rdovalue) const;
-	bool operator>=(CREF(RDOValue) rdovalue) const;
-	RDOValue operator&&(CREF(RDOValue) rdovalue) const;
-	RDOValue operator||(CREF(RDOValue) rdovalue) const;
+	RDOValue& operator=(const RDOValue& rdovalue);
+	bool operator==(const RDOValue& rdovalue) const;
+	bool operator!=(const RDOValue& rdovalue) const;
+	bool operator<(const RDOValue& rdovalue) const;
+	bool operator>(const RDOValue& rdovalue) const;
+	bool operator<=(const RDOValue& rdovalue) const;
+	bool operator>=(const RDOValue& rdovalue) const;
+	RDOValue operator&&(const RDOValue& rdovalue) const;
+	RDOValue operator||(const RDOValue& rdovalue) const;
 	RDOValue operator-() const;
 	bool operator!() const;
-	CREF(RDOValue) operator++();
+	const RDOValue& operator++();
 	RDOValue operator++(int inc);
-	CREF(RDOValue) operator--();
+	const RDOValue& operator--();
 	RDOValue operator--(int inc);
-	RDOValue& operator+=(CREF(RDOValue) rdovalue);
-	RDOValue& operator-=(CREF(RDOValue) rdovalue);
-	RDOValue& operator*=(CREF(RDOValue) rdovalue);
-	RDOValue& operator/=(CREF(RDOValue) rdovalue);
-	RDOValue operator+(CREF(RDOValue) rdovalue) const;
-	RDOValue operator-(CREF(RDOValue) rdovalue) const;
-	RDOValue operator*(CREF(RDOValue) rdovalue) const;
-	RDOValue operator/(CREF(RDOValue) rdovalue) const;
+	RDOValue& operator+=(const RDOValue& rdovalue);
+	RDOValue& operator-=(const RDOValue& rdovalue);
+	RDOValue& operator*=(const RDOValue& rdovalue);
+	RDOValue& operator/=(const RDOValue& rdovalue);
+	RDOValue operator+(const RDOValue& rdovalue) const;
+	RDOValue operator-(const RDOValue& rdovalue) const;
+	RDOValue operator*(const RDOValue& rdovalue) const;
+	RDOValue operator/(const RDOValue& rdovalue) const;
 
 	void  setUndefined(bool undefined);
 	bool isUndefined () const;
 
-	CREF(LPRDOType) type  () const;
+	const LPRDOType& type() const;
 	RDOType::TypeID typeID() const;
 
 	RDOValue clone() const;
 
 	//RDOValue  begin ();
 	//RDOValue  end   ();
-	//void      insert(CREF(RDOValue) itr,    CREF(RDOValue) itrFst, CREF(RDOValue) itrLst);
-	//void      erase (CREF(RDOValue) itrFst, CREF(RDOValue) itrLst                       );
+	//void      insert(const RDOValue& itr,    const RDOValue& itrFst, const RDOValue& itrLst);
+	//void      erase (const RDOValue& itrFst, const RDOValue& itrLst                       );
 
-	//void setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item);
+	//void setArrayItem(const RDOValue& ind, const RDOValue& item);
 
 private:
 	//! Строковый тип данных
@@ -124,7 +124,7 @@ private:
 		, public std::string
 	{
 	public:
-		string_class(CREF(std::string) string);
+		string_class(const std::string& string);
 		rdo::intrusive_ptr<string_class> clone() const;
 	};
 
@@ -135,34 +135,34 @@ private:
 	LPRDOType m_pType; //!< тип значения
 	bool m_undefined; //!< неопределенность значения
 
-	void set        (CREF(RDOValue) rdovalue);
+	void set        (const RDOValue& rdovalue);
 	void deleteValue();
 
 	template <class T>
 	T& __get();
 
 	template <class T>
-	CREF(T) __get() const;
+	const T& __get() const;
 
 	void*& __voidPtrV();
-	CREF(void*) __voidPtrV() const;
+	const void*& __voidPtrV() const;
 	LPRDOEnumType __enumT() const;
 	std::string& __stringV();
-	CREF(std::string) __stringV() const;
+	const std::string& __stringV() const;
 
-	template <class T>  rdo::intrusive_ptr<T>& getPointer();
-	template <class T> CREF(rdo::intrusive_ptr<T>) getPointer() const;
+	template <class T> rdo::intrusive_ptr<T>& getPointer();
+	template <class T> const rdo::intrusive_ptr<T>& getPointer() const;
 
 	std::string onPointerAsString() const;
-	bool onPointerEqual(CREF(RDOValue) rdovalue) const;
-	RDOValue& onPointerPlus(CREF(RDOValue) rdovalue);
-	RDOValue& onPointerMinus(CREF(RDOValue) rdovalue);
-	RDOValue& onPointerMult(CREF(RDOValue) rdovalue);
-	RDOValue& onPointerDiv(CREF(RDOValue) rdovalue);
+	bool onPointerEqual(const RDOValue& rdovalue) const;
+	RDOValue& onPointerPlus(const RDOValue& rdovalue);
+	RDOValue& onPointerMinus(const RDOValue& rdovalue);
+	RDOValue& onPointerMult(const RDOValue& rdovalue);
+	RDOValue& onPointerDiv(const RDOValue& rdovalue);
 	int onPointerGetInt() const;
 	uint32_t onPointerGetUInt() const;
-	bool onPointerAnd(CREF(RDOValue) rdovalue) const;
-	bool onPointerOr(CREF(RDOValue) rdovalue) const;
+	bool onPointerAnd(const RDOValue& rdovalue) const;
+	bool onPointerOr(const RDOValue& rdovalue) const;
 	RDOValue onPointerUMinus() const;
 };
 

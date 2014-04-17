@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearchTrace
 // --------------------------------------------------------------------------------
-inline RDODPTSearchTrace::RDODPTSearchTrace(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent)
+inline RDODPTSearchTrace::RDODPTSearchTrace(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent)
 	: RDODPTSearch      (pRuntime, parent)
 	, RDOTraceableObject(false           )
 	, calc_cnt          (0               )
@@ -33,14 +33,14 @@ inline RDODPTSearchTrace::RDODPTSearchTrace(CREF(LPRDORuntime) pRuntime, LPIBase
 // --------------------------------------------------------------------------------
 // -------------------- TreeRootTrace
 // --------------------------------------------------------------------------------
-inline TreeRootTrace::TreeRootTrace(CREF(LPRDORuntime) pRuntime, RDODPTSearch* pDP)
+inline TreeRootTrace::TreeRootTrace(const LPRDORuntime& pRuntime, RDODPTSearch* pDP)
 	: TreeRoot(pRuntime, pDP)
 {}
 
 // --------------------------------------------------------------------------------
 // -------------------- TreeNodeTrace
 // --------------------------------------------------------------------------------
-inline TreeNodeTrace::TreeNodeTrace(CREF(LPRDORuntime) pRuntime, TreeNode* i_parent, TreeRoot* i_root, LPIDPTSearchActivity i_activity, double cost, int cnt)
+inline TreeNodeTrace::TreeNodeTrace(const LPRDORuntime& pRuntime, TreeNode* i_parent, TreeRoot* i_root, LPIDPTSearchActivity i_activity, double cost, int cnt)
 	: TreeNode(pRuntime, i_parent, i_root, i_activity, cost, cnt)
 {}
 

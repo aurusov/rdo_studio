@@ -31,7 +31,7 @@ QUERY_INTERFACE_PARENT(RDOPatternPrior)
 QUERY_INTERFACE_END
 
 private:
-	RDODPTSome (CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent = NULL);
+	RDODPTSome(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent = NULL);
 	virtual ~RDODPTSome();
 };
 

@@ -29,7 +29,7 @@ public:
 		: m_dummy(dummy)
 	{}
 
-	bool operator< (CREF(MyOperation) opr) const
+	bool operator< (const MyOperation& opr) const
 	{
 		return m_dummy < opr.m_dummy;
 	}
@@ -58,7 +58,7 @@ public:
 	CIterator end() const { return m_list.end(); }
 	bool empty() const { return m_list.empty(); }
 
-	Container& operator() (CREF(Item) item)
+	Container& operator() (const Item& item)
 	{
 		m_list.push_back(item);
 		return *this;

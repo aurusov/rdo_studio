@@ -38,19 +38,19 @@ public:
 	void pushContext();
 	void popContext ();
 
-	LPRDOParam findParam(CREF(std::string) paramName) const;
-	ParamID findParamID(CREF(std::string) paramName) const;
+	LPRDOParam findParam(const std::string& paramName) const;
+	ParamID findParamID(const std::string& paramName) const;
 
-	CREF(ParamList) getParams() const;
+	const ParamList& getParams() const;
 
 	LPExpression expression() const;
 
 protected:
-	Function(CREF(LPTypeInfo) pReturnType, CREF(RDOParserSrcInfo) srcInfo);
+	Function(const LPTypeInfo& pReturnType, const RDOParserSrcInfo& srcInfo);
 	virtual ~Function();
 
 	//! @todo Для передачи значения по умолчанию алгоритмической функции. В идеале, это надо переложить на конвертор.
-	void setDefaultCalc(CREF(rdo::runtime::LPRDOCalc) pDefaultValue);
+	void setDefaultCalc(const rdo::runtime::LPRDOCalc& pDefaultValue);
 
 	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 
@@ -62,10 +62,10 @@ private:
 	rdo::runtime::LPRDOCalc  m_pBody;
 	rdo::runtime::LPRDOCalc  m_pDefaultValue;
 
-	void onPushParam(CREF(LPRDOParam) pParam);
-	void setBody    (CREF(rdo::runtime::LPRDOCalc) pBody);
+	void onPushParam(const LPRDOParam& pParam);
+	void setBody    (const rdo::runtime::LPRDOCalc& pBody);
 
-	ParamList::const_iterator find(CREF(std::string) paramName) const;
+	ParamList::const_iterator find(const std::string& paramName) const;
 	LPFunctionType generateType() const;
 
 	DECLARE_IContextParamDefinitionManager;

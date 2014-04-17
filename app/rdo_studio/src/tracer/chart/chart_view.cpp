@@ -152,12 +152,12 @@ int ChartView::chartShift() const
 	return m_chartShift;
 }
 
-CREF(Time) ChartView::drawFromX() const
+const Time& ChartView::drawFromX() const
 {
 	return m_drawFromX;
 }
 
-CREF(Time) ChartView::drawToX() const
+const Time& ChartView::drawToX() const
 {
 	return m_drawToX;
 }
@@ -172,7 +172,7 @@ int ChartView::drawToEventCount() const
 	return m_drawToEventCount;
 }
 
-CREF(ChartDoc::TimesList) ChartView::unwrapTimesList() const
+const ChartDoc::TimesList& ChartView::unwrapTimesList() const
 {
 	return m_unwrapTimesList;
 }

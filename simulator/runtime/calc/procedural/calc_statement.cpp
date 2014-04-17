@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 RDOCalcNoChange::RDOCalcNoChange()
 {}
 
-RDOValue RDOCalcNoChange::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcNoChange::doCalc(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	return RDOValue();
@@ -32,19 +32,19 @@ RDOValue RDOCalcNoChange::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcIf
 // --------------------------------------------------------------------------------
-RDOCalcIf::RDOCalcIf(CREF(LPRDOCalc) pCondition)
+RDOCalcIf::RDOCalcIf(const LPRDOCalc& pCondition)
 	: m_pCondition(pCondition)
 {
 	ASSERT(m_pCondition);
 }
 
-void RDOCalcIf::setThenStatement(CREF(LPRDOCalc) pStatement)
+void RDOCalcIf::setThenStatement(const LPRDOCalc& pStatement)
 {
 	ASSERT(pStatement);
 	m_statements.first = pStatement;
 }
 
-void RDOCalcIf::setElseStatement(CREF(LPRDOCalc) pStatement)
+void RDOCalcIf::setElseStatement(const LPRDOCalc& pStatement)
 {
 	ASSERT(pStatement);
 	m_statements.second = pStatement;
@@ -55,7 +55,7 @@ bool RDOCalcIf::hasElse() const
 	return m_statements.second;
 }
 
-RDOValue RDOCalcIf::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcIf::doCalc(const LPRDORuntime& pRuntime)
 {
 	return m_pCondition->calcValue(pRuntime).getAsBool()
 		? m_statements.first->calcValue(pRuntime)
@@ -67,7 +67,7 @@ RDOValue RDOCalcIf::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcFor
 // --------------------------------------------------------------------------------
-RDOCalcFor::RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression)
+RDOCalcFor::RDOCalcFor(const LPRDOCalc& pDeclaration, const LPRDOCalc& pCondition, const LPRDOCalc& pExpression)
 	: m_pDeclaration(pDeclaration)
 	, m_pCondition  (pCondition  )
 	, m_pExpression (pExpression )
@@ -77,13 +77,13 @@ RDOCalcFor::RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition,
 	ASSERT(m_pExpression );
 }
 
-void RDOCalcFor::setStatement(CREF(LPRDOCalc) pStatement)
+void RDOCalcFor::setStatement(const LPRDOCalc& pStatement)
 {
 	ASSERT(pStatement);
 	m_pStatement = pStatement;
 }
 
-RDOValue RDOCalcFor::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcFor::doCalc(const LPRDORuntime& pRuntime)
 {
 	RDOValue value = RDOValue(0);
 
@@ -104,11 +104,11 @@ RDOValue RDOCalcFor::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcFunReturn
 // --------------------------------------------------------------------------------
-RDOCalcFunReturn::RDOCalcFunReturn(CREF(LPRDOCalc) pReturn)
+RDOCalcFunReturn::RDOCalcFunReturn(const LPRDOCalc& pReturn)
 	: m_pReturn(pReturn)
 {}
 
-RDOValue RDOCalcFunReturn::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcFunReturn::doCalc(const LPRDORuntime& pRuntime)
 {
 	ASSERT(m_pReturn);
 
@@ -123,7 +123,7 @@ RDOValue RDOCalcFunReturn::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOCalcFunBreak::RDOCalcFunBreak()
 {}
 
-RDOValue RDOCalcFunBreak::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcFunBreak::doCalc(const LPRDORuntime& pRuntime)
 {
 	pRuntime->setFunBreakFlag(RDORuntime::FBF_BREAK);
 	return RDOValue();
@@ -135,7 +135,7 @@ RDOValue RDOCalcFunBreak::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOCalcBaseStatementList::RDOCalcBaseStatementList()
 {}
 
-void RDOCalcBaseStatementList::addCalcStatement(CREF(LPRDOCalc) pStatement)
+void RDOCalcBaseStatementList::addCalcStatement(const LPRDOCalc& pStatement)
 {
 	ASSERT(pStatement);
 	m_calcStatementList.push_back(pStatement);
@@ -146,7 +146,7 @@ RDOCalc::RDOCalcList RDOCalcBaseStatementList::statementList()
 	return m_calcStatementList;
 }
 
-RDOValue RDOCalcBaseStatementList::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcBaseStatementList::doCalc(const LPRDORuntime& pRuntime)
 {
 	RDOValue value;
 	for (const auto& calc: m_calcStatementList)
@@ -166,7 +166,7 @@ RDOValue RDOCalcBaseStatementList::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOCalcStatementList::RDOCalcStatementList()
 {}
 
-RDOValue RDOCalcStatementList::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcStatementList::doCalc(const LPRDORuntime& pRuntime)
 {
 	RDOValue value;
 	for (const auto& calc: m_calcStatementList)
@@ -187,13 +187,13 @@ RDOValue RDOCalcStatementList::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOCalcBreakCatch::RDOCalcBreakCatch()
 {}
 
-void RDOCalcBreakCatch::addStatementList(CREF(LPRDOCalc) pStatementList)
+void RDOCalcBreakCatch::addStatementList(const LPRDOCalc& pStatementList)
 {
 	ASSERT(pStatementList);
 	m_pStatementList = pStatementList;
 }
 
-RDOValue RDOCalcBreakCatch::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcBreakCatch::doCalc(const LPRDORuntime& pRuntime)
 {
 	ASSERT(m_pStatementList);
 
@@ -213,13 +213,13 @@ RDOValue RDOCalcBreakCatch::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOCalcReturnCatch::RDOCalcReturnCatch()
 {}
 
-void RDOCalcReturnCatch::setTryCalc(CREF(LPRDOCalc) pTryCalc)
+void RDOCalcReturnCatch::setTryCalc(const LPRDOCalc& pTryCalc)
 {
 	ASSERT(pTryCalc);
 	m_pTryCalc = pTryCalc;
 }
 
-RDOValue RDOCalcReturnCatch::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcReturnCatch::doCalc(const LPRDORuntime& pRuntime)
 {
 	ASSERT(m_pTryCalc);
 

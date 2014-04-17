@@ -19,14 +19,14 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcUnaryBase
 // --------------------------------------------------------------------------------
-inline RDOCalcUnaryBase::RDOCalcUnaryBase(CREF(LPRDOCalc) pOperation)
+inline RDOCalcUnaryBase::RDOCalcUnaryBase(const LPRDOCalc& pOperation)
 	: m_pOperation(pOperation)
 {
 	ASSERT(m_pOperation);
 }
 
 template <class T>
-LPRDOCalc RDOCalcUnaryBase::generateCalc(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pUnaryCalc)
+LPRDOCalc RDOCalcUnaryBase::generateCalc(const RDOSrcInfo::Position& position, const LPRDOCalc& pUnaryCalc)
 {
 	ASSERT(pUnaryCalc);
 
@@ -50,14 +50,14 @@ LPRDOCalc RDOCalcUnaryBase::generateCalc(CREF(RDOSrcInfo::Position) position, CR
 // -------------------- RDOCalcUnary
 // --------------------------------------------------------------------------------
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
-inline RDOCalcUnary<ret_type, pOperator, CalcType>::RDOCalcUnary(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pOperation)
+inline RDOCalcUnary<ret_type, pOperator, CalcType>::RDOCalcUnary(const RDOSrcInfo::Position& position, const LPRDOCalc& pOperation)
 	: RDOCalcUnaryBase(pOperation)
 {
 	setSrcInfo(getStaticSrcInfo(position, m_pOperation));
 }
 
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
-inline RDOSrcInfo RDOCalcUnary<ret_type, pOperator, CalcType>::getStaticSrcInfo(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pUnaryCalc)
+inline RDOSrcInfo RDOCalcUnary<ret_type, pOperator, CalcType>::getStaticSrcInfo(const RDOSrcInfo::Position& position, const LPRDOCalc& pUnaryCalc)
 {
 	RDOSrcInfo srcInfo(pUnaryCalc->srcInfo());
 	srcInfo.setSrcPos (position);
@@ -72,7 +72,7 @@ inline typename RDOCalcUnary<ret_type, pOperator, CalcType>::value_operator RDOC
 }
 
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
-inline RDOValue RDOCalcUnary<ret_type, pOperator, CalcType>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline RDOValue RDOCalcUnary<ret_type, pOperator, CalcType>::doCalc(const LPRDORuntime& pRuntime)
 {
 	++OperatorType::getCalcCounter<CalcType>();
 	return (m_pOperation->calcValue(pRuntime).*pOperator)();
@@ -86,7 +86,7 @@ inline void RDOCalcDoubleToIntByResult::needRound()
 	m_round = true;
 }
 
-inline RDOCalcDoubleToIntByResult::RDOCalcDoubleToIntByResult(CREF(LPRDOCalc) pOper)
+inline RDOCalcDoubleToIntByResult::RDOCalcDoubleToIntByResult(const LPRDOCalc& pOper)
 	: m_round     (false)
 	, m_pOperation(pOper)
 {}
@@ -94,7 +94,7 @@ inline RDOCalcDoubleToIntByResult::RDOCalcDoubleToIntByResult(CREF(LPRDOCalc) pO
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcInt
 // --------------------------------------------------------------------------------
-inline RDOCalcInt::RDOCalcInt(CREF(LPRDOCalc) pOperation)
+inline RDOCalcInt::RDOCalcInt(const LPRDOCalc& pOperation)
 	: m_pOperation(pOperation)
 {}
 

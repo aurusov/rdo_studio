@@ -77,7 +77,7 @@ void rtperror(const char* message)
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPResType
 // --------------------------------------------------------------------------------
-RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, bool permanent)
+RDORTPResType::RDORTPResType(const LPRDOParser& pParser, const RDOParserSrcInfo& src_info, bool permanent)
 	: RDOParserSrcInfo(src_info            )
 	, m_number        (pParser->getRTP_id())
 	, m_permanent     (permanent           )
@@ -107,12 +107,12 @@ bool RDORTPResType::isTemporary() const
 	return !m_permanent;
 }
 
-CREF(RDORTPResType::ParamList) RDORTPResType::getParams() const
+const RDORTPResType::ParamList& RDORTPResType::getParams() const
 {
 	return m_params;
 }
 
-CREF(rdo::runtime::LPIResourceType) RDORTPResType::getRuntimeResType() const
+const rdo::runtime::LPIResourceType& RDORTPResType::getRuntimeResType() const
 {
 	ASSERT(m_pRuntimeResType);
 	return m_pRuntimeResType;
@@ -123,12 +123,12 @@ runtime::RDOType::TypeID RDORTPResType::typeID() const
 	return runtime::RDOType::t_pointer;
 }
 
-LPRDORSSResource RDORTPResType::createRes(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info)
+LPRDORSSResource RDORTPResType::createRes(const LPRDOParser& pParser, const RDOParserSrcInfo& src_info)
 {
 	return rdo::Factory<RDORSSResource>::create(pParser, src_info, this);
 }
 
-void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
+void RDORTPResType::addParam(const LPRDORTPParam& param)
 {
 	if (findRTPParam(param->name()))
 	{
@@ -137,19 +137,19 @@ void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
 	m_params.push_back(param);
 }
 
-void RDORTPResType::addParam(CREF(std::string) param_name, rdo::runtime::RDOType::TypeID param_typeID)
+void RDORTPResType::addParam(const std::string& param_name, rdo::runtime::RDOType::TypeID param_typeID)
 {
 	UNUSED(param_name  );
 	UNUSED(param_typeID);
 }
 
-LPRDORTPParam RDORTPResType::findRTPParam(CREF(std::string) paramName) const
+LPRDORTPParam RDORTPResType::findRTPParam(const std::string& paramName) const
 {
 	ParamList::const_iterator it = std::find_if(m_params.begin(), m_params.end(), compareName<RDORTPParam>(paramName));
 	return it != m_params.end() ? *it : LPRDORTPParam();
 }
 
-std::size_t RDORTPResType::getRTPParamNumber(CREF(std::string) paramName) const
+std::size_t RDORTPResType::getRTPParamNumber(const std::string& paramName) const
 {
 	ParamList::const_iterator it = std::find_if(m_params.begin(), m_params.end(), compareName<RDORTPParam>(paramName));
 	return it != m_params.end() ? it - m_params.begin() : UNDEFINED_PARAM;
@@ -172,7 +172,7 @@ std::string RDORTPResType::name() const
 	return s_name;
 }
 
-LPRDOType RDORTPResType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOType RDORTPResType::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	UNUSED(from_src_info);
 
@@ -204,7 +204,7 @@ LPRDOType RDORTPResType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo)
 	return LPRDOType(NULL);
 }
 
-LPRDOValue RDORTPResType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOValue RDORTPResType::value_cast(const LPRDOValue& pFrom, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	ASSERT(pFrom);
 
@@ -231,7 +231,7 @@ LPRDOValue RDORTPResType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcIn
 	return LPRDOValue(NULL);
 }
 
-rdo::runtime::LPRDOCalc RDORTPResType::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdo::runtime::LPRDOCalc RDORTPResType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
 {
 	return RuntimeWrapperType::calc_cast(pCalc, pType);
 }
@@ -323,7 +323,7 @@ void RDORTPResType::setupRuntimeFactory()
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности нечеткого терма
 // --------------------------------------------------------------------------------
-RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(CREF(LPRDOParser) pParser):
+RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(const LPRDOParser& pParser):
 	RDOParserObject(pParser)
 {
 	for (std::size_t i = 0; i < m_points.size(); i++)
@@ -341,7 +341,7 @@ RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(CREF(LPRDOParser) pParser):
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPFuzzyTerm - нечеткий термин
 // --------------------------------------------------------------------------------
-RDORTPFuzzyTerm::RDORTPFuzzyTerm(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, RDORTPFuzzyMembershiftFun* pMembersfift_fun):
+RDORTPFuzzyTerm::RDORTPFuzzyTerm(const LPRDOParser& pParser, const RDOParserSrcInfo& src_info, RDORTPFuzzyMembershiftFun* pMembersfift_fun):
 	RDOParserObject(pParser)
 {
 

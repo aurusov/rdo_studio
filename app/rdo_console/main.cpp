@@ -38,7 +38,7 @@ typedef rdo::event_xml_parser::event_container event_container;
 const boost::filesystem::path LOG_FILE_NAME = "log.txt";
 
 void read_events(std::istream& stream, event_container& container);
-void write_build_log(std::ostream& stream, CREF(string_list) list);
+void write_build_log(std::ostream& stream, const string_list& list);
 bool run(rdo::console_controller* pAppController, event_container& container);
 void process_event(rdo::console_controller* pAppController, event_container& container);
 
@@ -169,7 +169,7 @@ void read_events(std::istream& stream, event_container& container)
 	}
 }
 
-void write_build_log(std::ostream& stream, CREF(string_list) list)
+void write_build_log(std::ostream& stream, const string_list& list)
 {
 	if (stream.fail())
 	{

@@ -48,15 +48,15 @@ public:
 	ChartDoc* createNewChart();
 	void addChart(ChartDoc* const pDocument);
 	void removeChart(ChartDoc* pDocument);
-	ChartDoc* addSerieToChart(CREF(LPSerie) pSerie, ChartDoc* pDocument = NULL);
+	ChartDoc* addSerieToChart(const LPSerie& pSerie, ChartDoc* pDocument = NULL);
 	void updateChartsStyles() const;
 	void clear();
-	void setModelName(CREF(QString) name) const;
+	void setModelName(const QString& name) const;
 	void setDrawTrace(const bool value);
 	bool getDrawTrace() const;
 
 protected:
-	TracerBase(CREF(std::string) _thread_name, RDOKernelGUI* _kernel_gui);
+	TracerBase(const std::string& _thread_name, RDOKernelGUI* _kernel_gui);
 	virtual ~TracerBase();
 
 private:
@@ -90,7 +90,7 @@ private:
 
 	void dispatchNextString(std::string& line);
 
-	Time* addTime(CREF(std::string) time);
+	Time* addTime(const std::string& time);
 	int m_eventIndex;
 
 	LPOperationBase getOperation(std::string& line);void startAction(std::string& line, Time* const pTime);

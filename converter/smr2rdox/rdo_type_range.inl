@@ -16,7 +16,7 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-inline RDOTypeRangeRange::RDOTypeRangeRange(CREF(LPRDOValue) pMinValue, CREF(LPRDOValue) pMaxValue, CREF(RDOParserSrcInfo) src_info)
+inline RDOTypeRangeRange::RDOTypeRangeRange(const LPRDOValue& pMinValue, const LPRDOValue& pMaxValue, const RDOParserSrcInfo& src_info)
 	: RDOParserSrcInfo(src_info )
 	, m_pMinValue     (pMinValue)
 	, m_pMaxValue     (pMaxValue)
@@ -41,7 +41,7 @@ inline void RDOTypeRangeRange::checkRange() const
 	}
 }
 
-inline void RDOTypeRangeRange::checkValue(CREF(LPRDOValue) pValue) const
+inline void RDOTypeRangeRange::checkValue(const LPRDOValue& pValue) const
 {
 	if (pValue->value() < m_pMinValue->value() || pValue->value() > m_pMaxValue->value())
 	{
@@ -58,12 +58,12 @@ inline void RDOTypeRangeRange::checkValue(CREF(LPRDOValue) pValue) const
 	}
 }
 
-inline CREF(LPRDOValue) RDOTypeRangeRange::getMin() const
+inline const LPRDOValue& RDOTypeRangeRange::getMin() const
 {
 	return m_pMinValue;
 }
 
-inline CREF(LPRDOValue) RDOTypeRangeRange::getMax() const
+inline const LPRDOValue& RDOTypeRangeRange::getMax() const
 {
 	return m_pMaxValue;
 }
@@ -72,7 +72,7 @@ inline CREF(LPRDOValue) RDOTypeRangeRange::getMax() const
 // -------------------- RDOTypeRange
 // --------------------------------------------------------------------------------
 template<class T>
-inline RDOTypeRange<T>::RDOTypeRange(CREF(LPRDOTypeRangeRange) range)
+inline RDOTypeRange<T>::RDOTypeRange(const LPRDOTypeRangeRange& range)
 	: T      (     )
 	, m_pRange(range)
 {
@@ -90,13 +90,13 @@ inline std::string RDOTypeRange<T>::name() const
 }
 
 template<class T>
-inline LPRDOType RDOTypeRange<T>::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+inline LPRDOType RDOTypeRange<T>::type_cast(const LPRDOType& from, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	return parent_type::type_cast(from, from_src_info, to_src_info, src_info);
 }
 
 template<class T>
-inline LPRDOValue RDOTypeRange<T>::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+inline LPRDOValue RDOTypeRange<T>::value_cast(const LPRDOValue& pFrom, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	LPRDOValue pToValue = T::value_cast(pFrom, to_src_info, src_info);
 	m_pRange->checkValue(pToValue);
@@ -104,13 +104,13 @@ inline LPRDOValue RDOTypeRange<T>::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOPa
 }
 
 template<class T>
-inline rdo::runtime::LPRDOCalc RDOTypeRange<T>::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+inline rdo::runtime::LPRDOCalc RDOTypeRange<T>::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
 {
 	return rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(range()->getMin()->value(), range()->getMax()->value(), T::calc_cast(pCalc, pType));
 }
 
 template<class T>
-inline CREF(LPRDOTypeRangeRange) RDOTypeRange<T>::range() const
+inline const LPRDOTypeRangeRange& RDOTypeRange<T>::range() const
 {
 	return m_pRange;
 }

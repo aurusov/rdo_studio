@@ -50,7 +50,7 @@ bool Content::valid() const
 	return m_memDC.valid();
 }
 
-void Content::init(const rdo::animation::Frame* const pFrame, CREF(rdo::gui::BitmapList) bitmapList)
+void Content::init(const rdo::animation::Frame* const pFrame, const rdo::gui::BitmapList& bitmapList)
 {
 	ASSERT(pFrame);
 
@@ -86,7 +86,7 @@ void Content::init(const rdo::animation::Frame* const pFrame, CREF(rdo::gui::Bit
 	init(size);
 }
 
-void Content::init(CREF(QSize) size)
+void Content::init(const QSize& size)
 {
 	m_memDC.resize(size.width(), size.height());
 	setMinimumSize(size);
@@ -104,7 +104,7 @@ void Content::updateFont()
 	m_font.setPointSize(pStyle->font.size);
 }
 
-void Content::setBGColor(CREF(QColor) color)
+void Content::setBGColor(const QColor& color)
 {
 	m_bgColor = color;
 }
@@ -163,7 +163,7 @@ void Content::onDraw(QPainter& painter)
 
 void Content::update(
 	const rdo::animation::Frame* const pFrame,
-	CREF(rdo::gui::BitmapList) bitmapList,
+	const rdo::gui::BitmapList& bitmapList,
 	rdo::gui::BitmapList& bitmapGeneratedList,
 	rdo::gui::animation::AreaList& areaList
 )
@@ -205,7 +205,7 @@ void Content::update(
 	parent_type::update();
 }
 
-void Content::drawBackground(const rdo::animation::Frame* const pFrame, CREF(rdo::gui::BitmapList) bitmapList)
+void Content::drawBackground(const rdo::animation::Frame* const pFrame, const rdo::gui::BitmapList& bitmapList)
 {
 	ASSERT(pFrame);
 
@@ -405,7 +405,7 @@ void Content::elementCircle(rdo::animation::CircleElement* pElement)
 		(int)(pElement->m_radius.m_radius * 2)
 	);
 
-	void (QPainter::*pMethod)(CREF(QRect)) = &QPainter::drawEllipse;
+	void (QPainter::*pMethod)(const QRect&) = &QPainter::drawEllipse;
 
 	drawColoredElement(
 		pElement,
@@ -427,7 +427,7 @@ void Content::elementEllipse(rdo::animation::EllipseElement* pElement)
 		(int)(pElement->m_size.m_height)
 	);
 
-	void (QPainter::*pMethod)(CREF(QRect)) = &QPainter::drawEllipse;
+	void (QPainter::*pMethod)(const QRect&) = &QPainter::drawEllipse;
 
 	drawColoredElement(
 		pElement,
@@ -440,7 +440,7 @@ void Content::elementEllipse(rdo::animation::EllipseElement* pElement)
 
 void Content::elementBMP(
 	rdo::animation::BmpElement* pElement,
-	CREF(rdo::gui::BitmapList) bitmapList,
+	const rdo::gui::BitmapList& bitmapList,
 	rdo::gui::BitmapList& bitmapGeneratedList)
 {
 	ASSERT(pElement);
@@ -460,7 +460,7 @@ void Content::elementBMP(
 
 void Content::elementSBMP(
 	rdo::animation::ScaledBmpElement* pElement,
-	CREF(rdo::gui::BitmapList) bitmapList,
+	const rdo::gui::BitmapList& bitmapList,
 	rdo::gui::BitmapList& bitmapGeneratedList)
 {
 	ASSERT(pElement);
@@ -479,10 +479,10 @@ void Content::elementSBMP(
 }
 
 QPixmap Content::getBitmap(
-	CREF(QString) bitmapName,
-	CREF(QString) maskName,
-	CREF(rdo::gui::BitmapList) bitmapList,
-	 rdo::gui::BitmapList& bitmapGeneratedList)
+	const QString& bitmapName,
+	const QString& maskName,
+	const rdo::gui::BitmapList& bitmapList,
+	rdo::gui::BitmapList& bitmapGeneratedList)
 {
 	rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(bitmapName);
 	if (bmpIt == bitmapList.end())
@@ -583,7 +583,7 @@ Content* View::getContent()
 
 void View::update(
 	const rdo::animation::Frame* const pFrame,
-	CREF(rdo::gui::BitmapList) bitmapList,
+	const rdo::gui::BitmapList& bitmapList,
 	rdo::gui::BitmapList& bitmapGeneratedList,
 	rdo::gui::animation::AreaList& areaList
 )

@@ -32,7 +32,7 @@ class RDOParserRDOItem: public RDOParserItem
 {
 DECLARE_FACTORY(RDOParserRDOItem);
 public:
-	virtual void parse(CREF(LPRDOParser) pParser);
+	virtual void parse(const LPRDOParser& pParser);
 	virtual std::size_t lexer_loc_line();
 	virtual std::size_t lexer_loc_pos();
 
@@ -46,8 +46,8 @@ protected:
 	YYLTYPE m_loc;
 
 private:
-	void parse(CREF(LPRDOParser) pParser, std::istream& in_stream);
-	RDOLexer* getLexer(CREF(LPRDOParser) pParser, std::istream* in_stream, std::ostream* out_stream);
+	void parse(const LPRDOParser& pParser, std::istream& in_stream);
+	RDOLexer* getLexer(const LPRDOParser& pParser, std::istream* in_stream, std::ostream* out_stream);
 };
 DECLARE_POINTER(RDOParserRDOItem);
 

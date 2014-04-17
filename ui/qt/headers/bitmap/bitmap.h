@@ -27,8 +27,8 @@ namespace rdo
 		class Bitmap
 		{
 		public:
-			static QPixmap transparent(CREF(QPixmap) bitmap, CREF(QPixmap) mask);
-			static QImage  transparent(CREF(QImage)  bitmap, CREF(QImage)  mask);
+			static QPixmap transparent(const QPixmap& bitmap, const QPixmap& mask);
+			static QImage  transparent(const QImage&  bitmap, const QImage&  mask);
 		};
 
 		typedef  std::map<QString, QPixmap>  BitmapList;

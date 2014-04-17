@@ -26,7 +26,7 @@ RDOPatternIrregEvent::RDOPatternIrregEvent(bool trace)
 	, m_timeCalc(NULL )
 {}
 
-double RDOPatternIrregEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
+double RDOPatternIrregEvent::getNextTimeInterval(const LPRDORuntime& pRuntime)
 {
 	double time_next = m_timeCalc->calcValue(pRuntime).getDouble();
 	if (time_next >= 0)
@@ -40,60 +40,60 @@ double RDOPatternIrregEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOIrregEvent
 // --------------------------------------------------------------------------------
-RDOIrregEvent::RDOIrregEvent(RDOPatternIrregEvent* pPattern, bool trace, CREF(std::string) name)
+RDOIrregEvent::RDOIrregEvent(RDOPatternIrregEvent* pPattern, bool trace, const std::string& name)
 	: RDOActivityPattern<RDOPatternIrregEvent>(pPattern, trace, name)
 {
 	setTrace(trace);
 	setTraceID(std::size_t(~0));
 }
 
-void RDOIrregEvent::onStart(CREF(LPRDORuntime) pRuntime)
+void RDOIrregEvent::onStart(const LPRDORuntime& pRuntime)
 {
 	onBeforeIrregularEvent(pRuntime);
 }
 
-void RDOIrregEvent::onStop(CREF(LPRDORuntime) pRuntime)
+void RDOIrregEvent::onStop(const LPRDORuntime& pRuntime)
 {
 	pRuntime->removeTimePoint(this);
 }
 
-bool RDOIrregEvent::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOIrregEvent::onCheckCondition(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	return false;
 }
 
-IBaseOperation::BOResult RDOIrregEvent::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOIrregEvent::onDoOperation(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
-void RDOIrregEvent::convertEvent(CREF(LPRDORuntime) pRuntime) 
+void RDOIrregEvent::convertEvent(const LPRDORuntime& pRuntime) 
 { 
 	UNUSED(pRuntime);
 	NEVER_REACH_HERE;
 }
 
-void RDOIrregEvent::onBeforeIrregularEvent(CREF(LPRDORuntime) pRuntime)
+void RDOIrregEvent::onBeforeIrregularEvent(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	NEVER_REACH_HERE;
 }
 
-void RDOIrregEvent::onAfterIrregularEvent(CREF(LPRDORuntime) pRuntime)
+void RDOIrregEvent::onAfterIrregularEvent(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	NEVER_REACH_HERE;
 }
 
-double RDOIrregEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime) 
+double RDOIrregEvent::getNextTimeInterval(const LPRDORuntime& pRuntime) 
 { 
 	pRuntime->setCurrentActivity(this);
 	return m_pPattern->getNextTimeInterval(pRuntime); 
 }
 
-IBaseOperation::BOResult RDOIrregEvent::onContinue(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOIrregEvent::onContinue(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;

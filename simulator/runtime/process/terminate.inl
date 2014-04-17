@@ -20,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCTerminate
 // --------------------------------------------------------------------------------
-inline RDOPROCTerminate::RDOPROCTerminate(CREF(LPIPROCProcess) pProcess, CREF(LPRDOCalc) pCalc)
+inline RDOPROCTerminate::RDOPROCTerminate(const LPIPROCProcess& pProcess, const LPRDOCalc& pCalc)
 	: RDOPROCBlock             (pProcess)
 	, m_terminatedTransactCount(0       )
 	, m_pTermCalc              (pCalc   )

@@ -63,7 +63,7 @@ RDOParserContainer::RDOParserContainer()
 RDOParserContainer::~RDOParserContainer()
 {}
 
-std::size_t RDOParserContainer::insert(rdo::converter::smr2rdox::RDOParseType type, CREF(LPRDOParserItem) pParser)
+std::size_t RDOParserContainer::insert(rdo::converter::smr2rdox::RDOParseType type, const LPRDOParserItem& pParser)
 {
 	ASSERT(pParser);
 

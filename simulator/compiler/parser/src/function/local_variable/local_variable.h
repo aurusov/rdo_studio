@@ -30,14 +30,14 @@ class LocalVariable: public rdo::counter_reference
 {
 DECLARE_FACTORY(LocalVariable);
 public:
-	CREF(std::string) getName() const;
-	CREF(RDOParserSrcInfo) getSrcInfo() const;
-	CREF(LPExpression) getExpression() const;
-	CREF(LPTypeInfo) getTypeInfo() const;
+	const std::string& getName() const;
+	const RDOParserSrcInfo& getSrcInfo() const;
+	const LPExpression& getExpression() const;
+	const LPTypeInfo& getTypeInfo() const;
 	rdo::runtime::RDOValue getDefaultValue() const;
 
 private:
-	LocalVariable(CREF(LPRDOValue) pName, CREF(LPExpression) pExpression);
+	LocalVariable(const LPRDOValue& pName, const LPExpression& pExpression);
 	virtual ~LocalVariable();
 
 	LPRDOValue    m_pName;
@@ -54,8 +54,8 @@ DECLARE_FACTORY(LocalVariableList);
 public:
 	typedef  std::map<std::string, LPLocalVariable>  VariableList;
 
-	void append(CREF(LPLocalVariable) pVariable);
-	LPLocalVariable findLocalVariable(CREF(std::string) name) const;
+	void append(const LPLocalVariable& pVariable);
+	LPLocalVariable findLocalVariable(const std::string& name) const;
 
 private:
 	LocalVariableList();
@@ -74,11 +74,11 @@ DECLARE_FACTORY(LocalVariableListStack);
 public:
 	typedef std::list<LPLocalVariableList> VariableListStack;
 
-	void push(CREF(LPLocalVariableList) pVariableList);
+	void push(const LPLocalVariableList& pVariableList);
 	void pop ();
 	LPLocalVariableList top() const;
 
-	LPLocalVariable findLocalVariable(CREF(std::string) name) const;
+	LPLocalVariable findLocalVariable(const std::string& name) const;
 
 private:
 	LocalVariableListStack();

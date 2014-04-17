@@ -37,15 +37,15 @@ class RDOCalcIf: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcIf)
 public:
-	void setThenStatement(CREF(LPRDOCalc) pStatement);
-	void setElseStatement(CREF(LPRDOCalc) pStatement);
+	void setThenStatement(const LPRDOCalc& pStatement);
+	void setElseStatement(const LPRDOCalc& pStatement);
 
 	bool hasElse() const;
 
 private:
 	typedef  std::pair<LPRDOCalc, LPRDOCalc>  Statements;
 
-	RDOCalcIf(CREF(LPRDOCalc) pCondition);
+	RDOCalcIf(const LPRDOCalc& pCondition);
 
 	LPRDOCalc   m_pCondition;
 	Statements  m_statements;
@@ -59,10 +59,10 @@ class RDOCalcFor: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFor)
 public:
-	void setStatement(CREF(LPRDOCalc) pStatement);
+	void setStatement(const LPRDOCalc& pStatement);
 
 private:
-	RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression);
+	RDOCalcFor(const LPRDOCalc& pDeclaration, const LPRDOCalc& pCondition, const LPRDOCalc& pExpression);
 
 	LPRDOCalc m_pDeclaration;
 	LPRDOCalc m_pCondition;
@@ -78,7 +78,7 @@ class RDOCalcFunReturn: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFunReturn)
 private:
-	RDOCalcFunReturn(CREF(LPRDOCalc) pReturn);
+	RDOCalcFunReturn(const LPRDOCalc& pReturn);
 
 	LPRDOCalc m_pReturn;
 	DECLARE_ICalc;
@@ -101,7 +101,7 @@ class RDOCalcBaseStatementList: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcBaseStatementList)
 public:
-	void        addCalcStatement(CREF(LPRDOCalc) pStatement);
+	void        addCalcStatement(const LPRDOCalc& pStatement);
 	RDOCalcList statementList();
 
 protected:
@@ -129,7 +129,7 @@ class RDOCalcBreakCatch: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcBreakCatch)
 public:
-	void addStatementList(CREF(LPRDOCalc) pStatementList);
+	void addStatementList(const LPRDOCalc& pStatementList);
 
 private:
 	RDOCalcBreakCatch();
@@ -145,7 +145,7 @@ class RDOCalcReturnCatch: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcReturnCatch)
 public:
-	void setTryCalc(CREF(LPRDOCalc) pTryCalc);
+	void setTryCalc(const LPRDOCalc& pTryCalc);
 
 private:
 	RDOCalcReturnCatch();

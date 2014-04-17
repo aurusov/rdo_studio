@@ -36,13 +36,13 @@ public:
 	ParamInfo(const ParamType type);
 	virtual ~ParamInfo();
 
-	CREF(QString) getName() const;
-	void          setName(CREF(QString) name);
+	const QString& getName() const;
+	void           setName(const QString& name);
 
 	ParamType getParamType() const;
 
-	int addEnumValue(CREF(std::string) value);
-	int addStringValue(CREF(std::string) value);
+	int addEnumValue(const std::string& value);
+	int addStringValue(const std::string& value);
 	std::string getEnumValue (unsigned int index) const;
 	int getEnumCount() const;
 
@@ -66,8 +66,8 @@ public:
 		RDOTK_PERMANENT = 0, RDOTK_TEMPORARY
 	};
 
-	CREF(QString) getName() const;
-	void          setName(CREF(QString) name);
+	const QString& getName() const;
+	void           setName(const QString& name);
 
 	Kind getKind() const;
 

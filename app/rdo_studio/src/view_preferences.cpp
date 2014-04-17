@@ -1571,7 +1571,7 @@ void ViewPreferences::createTree()
 	treeWidget->setCurrentItem(m_pRoot);
 }
 
-QTreeWidgetItem* ViewPreferences::createTreeItem(QTreeWidgetItem* parent, CREF(QString) name, ItemType itemType)
+QTreeWidgetItem* ViewPreferences::createTreeItem(QTreeWidgetItem* parent, const QString& name, ItemType itemType)
 {
 	QTreeWidgetItem* item = new QTreeWidgetItem(parent);
 	item->setText(0, name);

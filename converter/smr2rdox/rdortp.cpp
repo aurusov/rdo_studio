@@ -36,7 +36,7 @@ void cnv_rtperror(const char* message)
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPResType
 // --------------------------------------------------------------------------------
-RDORTPResType::RDORTPResType(Converter* pParser, CREF(RDOParserSrcInfo) src_info, bool permanent)
+RDORTPResType::RDORTPResType(Converter* pParser, const RDOParserSrcInfo& src_info, bool permanent)
 	: RDOParserSrcInfo(src_info            )
 	, m_number        (pParser->getRTP_id())
 	, m_permanent     (permanent           )
@@ -47,7 +47,7 @@ RDORTPResType::RDORTPResType(Converter* pParser, CREF(RDOParserSrcInfo) src_info
 RDORTPResType::~RDORTPResType()
 {}
 
-void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
+void RDORTPResType::addParam(const LPRDORTPParam& param)
 {
 	if (findRTPParam(param->name()))
 	{
@@ -56,14 +56,14 @@ void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
 	m_params.push_back(param);
 }
 
-void RDORTPResType::addParam(CREF(std::string) param_name, rdo::runtime::RDOType::TypeID param_typeID)
+void RDORTPResType::addParam(const std::string& param_name, rdo::runtime::RDOType::TypeID param_typeID)
 {
 	UNUSED(param_name  );
 	UNUSED(param_typeID);
 	NEVER_REACH_HERE;
 }
 
-LPRDORTPParam RDORTPResType::findRTPParam(CREF(std::string) paramName) const
+LPRDORTPParam RDORTPResType::findRTPParam(const std::string& paramName) const
 {
 	ParamList::const_iterator it = std::find_if(m_params.begin(), m_params.end(), compareName<RDORTPParam>(paramName));
 	return it != m_params.end() ? *it : LPRDORTPParam();
@@ -72,7 +72,7 @@ LPRDORTPParam RDORTPResType::findRTPParam(CREF(std::string) paramName) const
 void RDORTPResType::finish()
 {}
 
-std::size_t RDORTPResType::getRTPParamNumber(CREF(std::string) paramName) const
+std::size_t RDORTPResType::getRTPParamNumber(const std::string& paramName) const
 {
 	ParamList::const_iterator it = std::find_if(m_params.begin(), m_params.end(), compareName<RDORTPParam>(paramName));
 	return it != m_params.end() ? it - m_params.begin() : UNDEFINED_PARAM;
@@ -110,7 +110,7 @@ RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(Converter* pParser):
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPFuzzyTerm - нечеткий термин
 // --------------------------------------------------------------------------------
-RDORTPFuzzyTerm::RDORTPFuzzyTerm(Converter* pParser, CREF(RDOParserSrcInfo) src_info, RDORTPFuzzyMembershiftFun* pMembersfift_fun):
+RDORTPFuzzyTerm::RDORTPFuzzyTerm(Converter* pParser, const RDOParserSrcInfo& src_info, RDORTPFuzzyMembershiftFun* pMembersfift_fun):
 	RDOParserObject(pParser)
 {
 

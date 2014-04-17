@@ -56,7 +56,7 @@ Edit::Group::List::const_iterator Edit::Group::end() const
 	return m_list.end();
 }
 
-Edit::Group::List::const_iterator Edit::Group::next(CREF(List::const_iterator) it) const
+Edit::Group::List::const_iterator Edit::Group::next(const List::const_iterator& it) const
 {
 	Edit::Group::List::const_iterator result(it);
 	++result;
@@ -67,7 +67,7 @@ Edit::Group::List::const_iterator Edit::Group::next(CREF(List::const_iterator) i
 	return result;
 }
 
-Edit::Group::List::const_iterator Edit::Group::prev(CREF(List::const_iterator) it) const
+Edit::Group::List::const_iterator Edit::Group::prev(const List::const_iterator& it) const
 {
 	Edit::Group::List::const_iterator result(it);
 	if (result == m_list.begin())
@@ -78,12 +78,12 @@ Edit::Group::List::const_iterator Edit::Group::prev(CREF(List::const_iterator) i
 	return result;
 }
 
-void Edit::Group::for_each(CREF(this_method) fun) const
+void Edit::Group::for_each(const this_method& fun) const
 {
 	boost::range::for_each(m_list, fun);
 }
 
-Edit::Group::List::const_iterator Edit::Group::find_if(CREF(this_predicate) fun) const
+Edit::Group::List::const_iterator Edit::Group::find_if(const this_predicate& fun) const
 {
 	return boost::range::find_if(m_list, fun);
 }
@@ -169,7 +169,7 @@ void Edit::catchCharAdded(int ch)
 	}
 }
 
-long Edit::sendEditorString(std::size_t msg, CREF(std::string) str) const
+long Edit::sendEditorString(std::size_t msg, const std::string& str) const
 {
 	return super::sends(msg, str.length(), str.c_str());
 }
@@ -408,7 +408,7 @@ void Edit::onSearchFind()
 	m_pFindDialog->activateWindow();
 }
 
-void Edit::onFindDlgFind(CREF(FindDialog::Settings) settings)
+void Edit::onFindDlgFind(const FindDialog::Settings& settings)
 {
 	m_findSettings = settings;
 	if (m_pGroup)
@@ -468,7 +468,7 @@ void Edit::onSearchFindPreviousCurrent()
 	}
 }
 
-void Edit::findNext(CREF(QString) findWhat, bool searchDown, bool matchCase, bool matchWholeWord)
+void Edit::findNext(const QString& findWhat, bool searchDown, bool matchCase, bool matchWholeWord)
 {
 	if (findWhat.isEmpty())
 		return;
@@ -592,7 +592,7 @@ void Edit::onSearchReplace()
 	m_pFindReplaceDialog->activateWindow();
 }
 
-void Edit::onFindReplaceDlgFind(CREF(FindReplaceDialog::Settings) settings)
+void Edit::onFindReplaceDlgFind(const FindReplaceDialog::Settings& settings)
 {
 	m_findReplaceSettings = settings;
 	if (m_pGroup)
@@ -603,7 +603,7 @@ void Edit::onFindReplaceDlgFind(CREF(FindReplaceDialog::Settings) settings)
 	updateActionFind(isActivated());
 }
 
-void Edit::onFindReplaceDlgReplace(CREF(FindReplaceDialog::Settings) settings)
+void Edit::onFindReplaceDlgReplace(const FindReplaceDialog::Settings& settings)
 {
 	m_findReplaceSettings = settings;
 	if (m_pGroup)
@@ -619,7 +619,7 @@ void Edit::onFindReplaceDlgReplace(CREF(FindReplaceDialog::Settings) settings)
 	updateActionFind(isActivated());
 }
 
-void Edit::onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings)
+void Edit::onFindReplaceDlgReplaceAll(const FindReplaceDialog::Settings& settings)
 {
 	m_findReplaceSettings = settings;
 	if (m_pGroup)
@@ -636,12 +636,12 @@ void Edit::onFindReplaceDlgClose()
 	m_pFindReplaceDialog = NULL;
 }
 
-void Edit::showFindWarning(CREF(QString) findWhat)
+void Edit::showFindWarning(const QString& findWhat)
 {
 	QMessageBox::warning(this, "Результаты поиска", QString("Невозможно найти строчку '%1'.").arg(findWhat));
 }
 
-void Edit::replace(CREF(QString) findWhat, CREF(QString) replaceWhat, bool searchDown, bool matchCase, bool matchWholeWord)
+void Edit::replace(const QString& findWhat, const QString& replaceWhat, bool searchDown, bool matchCase, bool matchWholeWord)
 {
 	if (m_haveFound)
 	{
@@ -661,7 +661,7 @@ void Edit::replace(CREF(QString) findWhat, CREF(QString) replaceWhat, bool searc
 	findNext(findWhat, searchDown, matchCase, matchWholeWord);
 }
 
-void Edit::replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, bool matchCase, bool matchWholeWord)
+void Edit::replaceAll(const QString& findWhat, const QString& replaceWhat, bool matchCase, bool matchWholeWord)
 {
 	if (findWhat.isEmpty())
 		return;
@@ -1161,7 +1161,7 @@ bool Edit::isLineVisible(const int line) const
 	return line >= first_line && line <= last_line;
 }
 
-void Edit::appendText(CREF(QString) str) const
+void Edit::appendText(const QString& str) const
 {
 	std::string text = str.toStdString();
 	sendEditorString(SCI_ADDTEXT, text.length(), text.c_str());
@@ -1390,7 +1390,7 @@ void Edit::onViewZoomReset()
 	onUpdateActions(isActivated());
 }
 
-int Edit::findPos(CREF(QString) findWhat, const int startFromLine, const bool matchCase, const bool matchWholeWord) const
+int Edit::findPos(const QString& findWhat, const int startFromLine, const bool matchCase, const bool matchWholeWord) const
 {
 	if (findWhat.isEmpty())
 		return -1;
@@ -1647,21 +1647,21 @@ void Edit::setViewEndOfLine(bool value)
 	sendEditor(SCI_SETVIEWEOL, value);
 }
 
-void Edit::methodOfGroup(CREF(this_method) fun)
+void Edit::methodOfGroup(const this_method& fun)
 {
 	m_pGroup
 		? m_pGroup->for_each(fun)
 		: fun(this);
 }
 
-bool Edit::predicateOfGroup(CREF(this_predicate) fun) const
+bool Edit::predicateOfGroup(const this_predicate& fun) const
 {
 	return m_pGroup
 		? m_pGroup->find_if(fun) != m_pGroup->end()
 		: fun(this);
 }
 
-std::size_t Edit::convertColor(CREF(QColor) color)
+std::size_t Edit::convertColor(const QColor& color)
 {
 	return color.red() | color.green() << 8 | color.blue() << 16;
 }

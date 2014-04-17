@@ -93,7 +93,7 @@ bool RDORuntime::endCondition()
 	return fabs(m_pTerminateIfCalc->calcValue(this).getDouble()) > DBL_EPSILON;
 }
 
-void RDORuntime::setTerminateIf(CREF(LPRDOCalc) pTerminateIfCalc)
+void RDORuntime::setTerminateIf(const LPRDOCalc& pTerminateIfCalc)
 {
 	ASSERT(pTerminateIfCalc);
 	m_pTerminateIfCalc = pTerminateIfCalc;
@@ -112,13 +112,13 @@ bool RDORuntime::breakPoints()
 	return false;
 }
 
-void RDORuntime::insertBreakPoint(CREF(std::string) name, CREF(LPRDOCalc) pCalc)
+void RDORuntime::insertBreakPoint(const std::string& name, const LPRDOCalc& pCalc)
 {
 	ASSERT(pCalc);
 	m_breakPointList.push_back(rdo::Factory<BreakPoint>::create(name, pCalc));
 }
 
-LPRDOCalc RDORuntime::findBreakPoint(CREF(std::string) name)
+LPRDOCalc RDORuntime::findBreakPoint(const std::string& name)
 {
 	for (const auto& breakPoint: m_breakPointList)
 	{
@@ -135,7 +135,7 @@ std::string RDORuntime::getLastBreakPointName() const
 	return m_pLastActiveBreakPoint ? m_pLastActiveBreakPoint->getName() + ": " + m_pLastActiveBreakPoint->getCalc()->srcInfo().src_text() : "";
 }
 
-void RDORuntime::setConstValue(std::size_t constID, CREF(RDOValue) constValue)
+void RDORuntime::setConstValue(std::size_t constID, const RDOValue& constValue)
 {
 	if (m_constantList.size() <= constID)
 	{
@@ -213,7 +213,7 @@ void RDORuntime::showResources(int node) const
 }
 #endif
 
-void RDORuntime::onEraseRes(std::size_t resourceID, CREF(LPRDOEraseResRelCalc) pCalc)
+void RDORuntime::onEraseRes(std::size_t resourceID, const LPRDOEraseResRelCalc& pCalc)
 {
 	LPRDOResource res = m_resourceListByID.at(resourceID);
 	if (!res)
@@ -242,7 +242,7 @@ void RDORuntime::onEraseRes(std::size_t resourceID, CREF(LPRDOEraseResRelCalc) p
 	}
 }
 
-void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
+void RDORuntime::insertNewResource(const LPRDOResource& pResource)
 {
 	ASSERT(pResource);
 	if (pResource->getTraceID() >= m_resourceListByID.size())
@@ -279,28 +279,28 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 #endif
 }
 
-void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer pLogic, CREF(LPIEvent) pEvent)
+void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer pLogic, const LPIEvent& pEvent)
 {
 	ASSERT(pLogic);
 	ASSERT(pEvent);
 	appendBaseOperation(pLogic, pEvent);
 }
 
-void RDORuntime::addRuntimeRule(LPIBaseOperationContainer pLogic, CREF(LPIRule) pRule)
+void RDORuntime::addRuntimeRule(LPIBaseOperationContainer pLogic, const LPIRule& pRule)
 {
 	ASSERT(pLogic);
 	ASSERT(pRule );
 	appendBaseOperation(pLogic, pRule);
 }
 
-void RDORuntime::addRuntimeOperation(LPIBaseOperationContainer pLogic, CREF(LPIOperation) pOperation)
+void RDORuntime::addRuntimeOperation(LPIBaseOperationContainer pLogic, const LPIOperation& pOperation)
 {
 	ASSERT(pLogic    );
 	ASSERT(pOperation);
 	appendBaseOperation(pLogic, pOperation);
 }
 
-void RDORuntime::addRuntimeResult(CREF(LPIResult) pResult)
+void RDORuntime::addRuntimeResult(const LPIResult& pResult)
 {
 	m_resultAllList.push_back(pResult);
 	LPIResultTrace resultTrace = pResult;
@@ -315,7 +315,7 @@ void RDORuntime::addRuntimeResult(CREF(LPIResult) pResult)
 	}
 }
 
-void RDORuntime::addRuntimeFrame(CREF(LPRDOFRMFrame) pFrame)
+void RDORuntime::addRuntimeFrame(const LPRDOFRMFrame& pFrame)
 { 
 	m_frameList.push_back(pFrame);
 }
@@ -330,7 +330,7 @@ bool RDORuntime::isKeyDown() const
 	return m_hotKey.isKeyDown();
 }
 
-void RDORuntime::rdoInit(RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo, CREF(LPIThreadProxy) pThreadProxy)
+void RDORuntime::rdoInit(RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo, const LPIThreadProxy& pThreadProxy)
 {
 	ASSERT(pThreadProxy);
 
@@ -384,7 +384,7 @@ LPRDORuntime RDORuntime::clone() const
 	return pRuntime;
 }
 
-void RDORuntime::copyFrom(CREF(LPRDORuntime) pOther)
+void RDORuntime::copyFrom(const LPRDORuntime& pOther)
 {
 	ASSERT(pOther);
 	ASSERT(m_resourceTypeList.empty());
@@ -405,7 +405,7 @@ void RDORuntime::copyFrom(CREF(LPRDORuntime) pOther)
 	parent_type::copyFrom(pOther.object_parent_cast<parent_type>());
 }
 
-bool RDORuntime::equal(CREF(LPRDORuntime) pOther) const
+bool RDORuntime::equal(const LPRDORuntime& pOther) const
 {
 	if (pOther->m_resourceListByID.size() != m_resourceListByID.size()) return false;
 
@@ -513,12 +513,12 @@ LPRDOMemoryStack RDORuntime::getMemoryStack()
 	return m_pMemoryStack;
 }
 
-void RDORuntime::setFunBreakFlag(CREF(FunBreakFlag) flag)
+void RDORuntime::setFunBreakFlag(const FunBreakFlag& flag)
 {
 	m_funBreakFlag = flag;
 }
 
-CREF(RDORuntime::FunBreakFlag) RDORuntime::getFunBreakFlag() const
+const RDORuntime::FunBreakFlag& RDORuntime::getFunBreakFlag() const
 {
 	return m_funBreakFlag;
 }

@@ -142,7 +142,7 @@ public:
 		std::size_t m_number;
 		std::string m_name;
 
-		FrameAreaDown(std::size_t number, CREF(std::string) name)
+		FrameAreaDown(std::size_t number, const std::string& name)
 			: m_number(number)
 			, m_name  (name  )
 		{}

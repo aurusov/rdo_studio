@@ -47,8 +47,8 @@ public:
 
 	typedef std::list<Value*> ValuesList;
 
-	CREF(QString) getTitle() const;
-	void          setTitle(CREF(QString) value);
+	const QString& getTitle() const;
+	void           setTitle(const QString& value);
 
 	Kind getKind() const;
 

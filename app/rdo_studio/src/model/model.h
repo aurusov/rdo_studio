@@ -42,16 +42,16 @@ public:
 	Model();
 	virtual ~Model();
 
-	bool  openModel (CREF(QString) modelName = QString());
+	bool  openModel (const QString& modelName = QString());
 	bool  runModel  ();
 	bool  closeModel();
 	void  update    ();
 
 	void resetView();
 
-	CREF(QString) getName    () const;
-	void          setName    (CREF(QString) str);
-	QString       getFullName() const;
+	const QString& getName    () const;
+	void           setName    (const QString& str);
+	QString        getFullName() const;
 
 	bool   isRunning     () const;
 	bool   isFrmDescribed() const;
@@ -64,13 +64,13 @@ public:
 	double  getShowRate          () const;
 	void    setShowRate          (double value);
 
-	int           getFrameCount   () const;
-	CREF(QString) getFrameName    (int index) const;
-	void          showFrame       (int index);
-	void          closeAllFrame   ();
-	bool          hasModel        () const;
-	bool          isModify        () const;
-	bool          isEmpty         () const;
+	int            getFrameCount   () const;
+	const QString& getFrameName    (int index) const;
+	void           showFrame       (int index);
+	void           closeAllFrame   ();
+	bool           hasModel        () const;
+	bool           isModify        () const;
+	bool           isEmpty         () const;
 
 	 TabCtrl* getTab();
 	const TabCtrl* getTab() const;
@@ -127,7 +127,7 @@ private:
 	View*                                   m_pView;
 	QString                                 m_name;
 
-	bool newModel  (CREF(QString) modelName, CREF(QString) modelPath, std::size_t templateIndex);
+	bool newModel  (const QString& modelName, const QString& modelPath, std::size_t templateIndex);
 	bool saveModel () const;
 	bool buildModel();
 	bool stopModel () const;
@@ -151,9 +151,9 @@ private:
 		boost::optional<std::size_t> position;
 
 		ModelTemplateItem();
-		ModelTemplateItem(CREF(ModelTemplateItem) copy);
-		ModelTemplateItem(CREF(QString) resName);
-		ModelTemplateItem(CREF(QString) resName, std::size_t position);
+		ModelTemplateItem(const ModelTemplateItem& copy);
+		ModelTemplateItem(const QString& resName);
+		ModelTemplateItem(const QString& resName, std::size_t position);
 	};
 	typedef  std::map<rdoModelObjects::RDOFileType, ModelTemplateItem>  ModelTemplate;
 	typedef  std::map<int, ModelTemplate>                               ModelTemplateList;

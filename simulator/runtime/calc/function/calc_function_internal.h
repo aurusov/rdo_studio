@@ -48,13 +48,13 @@ public:
 };
 
 template <class T>
-struct GetParam         { static T      getParam(CREF(LPRDORuntime) pRuntime, std::size_t paramNumber); };
+struct GetParam         { static T      getParam(const LPRDORuntime& pRuntime, std::size_t paramNumber); };
 
 template <>
-struct GetParam<double> { static double getParam(CREF(LPRDORuntime) pRuntime, std::size_t paramNumber); };
+struct GetParam<double> { static double getParam(const LPRDORuntime& pRuntime, std::size_t paramNumber); };
 
 template <>
-struct GetParam<int>    { static int    getParam(CREF(LPRDORuntime) pRuntime, std::size_t paramNumber); };
+struct GetParam<int>    { static int    getParam(const LPRDORuntime& pRuntime, std::size_t paramNumber); };
 
 //! Функции из пространства имен std C++
 template <class F>
@@ -68,8 +68,8 @@ public:
 private:
 	function_type m_pFunction;
 
-	RDOValue calc(CREF(LPRDORuntime) pRuntime, std_fun_one_param);
-	RDOValue calc(CREF(LPRDORuntime) pRuntime, std_fun_two_param);
+	RDOValue calc(const LPRDORuntime& pRuntime, std_fun_one_param);
+	RDOValue calc(const LPRDORuntime& pRuntime, std_fun_two_param);
 
 	DECLARE_ICalc;
 };

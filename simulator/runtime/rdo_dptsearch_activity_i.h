@@ -38,13 +38,13 @@ public:
 	};
 
 	virtual LPIRule& rule() = 0;
-	virtual double cost(CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
+	virtual double cost(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
 	virtual ValueTime valueTime() const = 0;
 };
 
-#define DECLARE_IDPTSearchActivity                                  \
-	virtual LPIRule& rule();                                        \
-	virtual double cost(CREF(rdo::runtime::LPRDORuntime) pRuntime); \
+#define DECLARE_IDPTSearchActivity                                   \
+	virtual LPIRule& rule();                                         \
+	virtual double cost(const rdo::runtime::LPRDORuntime& pRuntime); \
 	virtual ValueTime valueTime() const;
 
 #endif // _LIB_RUNTIME_DPTSEARCH_ACTIVITY_I_H_

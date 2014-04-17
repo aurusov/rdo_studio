@@ -25,7 +25,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 RDOCalcCreateResource::RDOCalcCreateResource(
 	std::size_t resourceTypeID,
-	CREF(std::vector<RDOValue>) rParamsCalcs,
+	const std::vector<RDOValue>& rParamsCalcs,
 	bool traceFlag,
 	bool permanentFlag,
 	std::size_t relResID
@@ -40,7 +40,7 @@ RDOCalcCreateResource::RDOCalcCreateResource(
 	ASSERT(m_relResID == ~0 || (m_relResID != ~0 && !m_permanentFlag));
 }
 
-RDOValue RDOCalcCreateResource::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcCreateResource::doCalc(const LPRDORuntime& pRuntime)
 {
 	const LPRDOResourceTypeList& resourceType = pRuntime->getResType(m_resourceTypeID);
 

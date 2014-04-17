@@ -26,7 +26,7 @@ public:
 
 	void setEditorStyle(ParserStyle* pStyle);
 
-	void replaceCurrent(CREF(QString) str, int changePosValue = -1) const;
+	void replaceCurrent(const QString& str, int changePosValue = -1) const;
 
 protected:
 	std::string kw0;
@@ -35,7 +35,7 @@ protected:
 	std::string kw3;
 	std::string getAllKW() const;
 
-	static std::string convertToLexer(CREF(std::string) kw);
+	static std::string convertToLexer(const std::string& kw);
 
 private:
 	typedef  Edit  super;

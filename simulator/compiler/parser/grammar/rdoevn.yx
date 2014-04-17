@@ -8303,7 +8303,7 @@ process_begin
 			else
 			{
 				// Проверим тип на временность
-				CREF(rdo::compiler::mbuilder::RDOResType) rtp = rtpList[transactName];
+				const rdo::compiler::mbuilder::RDOResType& rtp = rtpList[transactName];
 				if (rtp.getType() != rdo::compiler::mbuilder::RDOResType::rt_temporary)
 				{
 					PARSER->error().push_only(transact->src_info(), rdo::format("Типа транзакта '%s' должен быть временным", rtp.name().c_str()));
@@ -8736,7 +8736,7 @@ queue_param
 		{
 			//! Имя ресурса
 			const std::string res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info = @1;
+			const RDOParserSrcInfo& info = @1;
 			// Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			//! Получили список всех типов ресурсов
@@ -8802,7 +8802,7 @@ depart_param
 		{
 			//! Имя ресурса
 			const std::string res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info = @1;
+			const RDOParserSrcInfo& info = @1;
 			//! Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			//! Получили список всех типов ресурсов
@@ -8896,7 +8896,7 @@ seize_param
 		{
 			//! Имя ресурса
 			const std::string res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info = @1;
+			const RDOParserSrcInfo& info = @1;
 			//! Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
@@ -8948,7 +8948,7 @@ seize_param
 		{
 			//! Имя ресурса
 			const std::string res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info = @3;
+			const RDOParserSrcInfo& info = @3;
 			//! Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
@@ -9009,7 +9009,7 @@ release_param
 		{
 			//! Имя ресурса
 			const std::string res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info = @1;
+			const RDOParserSrcInfo& info = @1;
 			//! Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
@@ -9059,7 +9059,7 @@ release_param
 		{
 			//! Имя ресурса
 			const std::string res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info = @3;
+			const RDOParserSrcInfo& info = @3;
 			//! Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;

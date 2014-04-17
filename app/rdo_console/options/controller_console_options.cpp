@@ -49,7 +49,7 @@ ControllerConsoleOptions::ControllerConsoleOptions(int argc, char *argv[])
 		po::store(po::parse_command_line(argc, argv, m_options), m_variables);
 		po::notify(m_variables);
 	}
-	catch (CREF(std::exception) e)
+	catch (const std::exception& e)
 	{
 		const std::string error = boost::str(boost::format("command line error: %1%") % e.what());
 		rdo::locale::cout(error);

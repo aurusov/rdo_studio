@@ -39,7 +39,7 @@ RDOSimulatorTrace::~RDOSimulatorTrace()
 	}
 }
 
-void RDOSimulatorTrace::copyFrom(CREF(LPRDOSimulatorTrace) pOther)
+void RDOSimulatorTrace::copyFrom(const LPRDOSimulatorTrace& pOther)
 {
 	ASSERT(pOther);
 
@@ -118,7 +118,7 @@ void RDOSimulatorTrace::freeOperationId(int id)
 	freeOperationsIds.push_front(id);
 }
 
-void RDOSimulatorTrace::onResourceErase(CREF(LPRDOResource) pResource)
+void RDOSimulatorTrace::onResourceErase(const LPRDOResource& pResource)
 {
 	eraseFreeResourceId(pResource->getTraceID());
 }

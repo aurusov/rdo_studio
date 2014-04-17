@@ -33,7 +33,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearch
 // --------------------------------------------------------------------------------
-RDODPTSearch::RDODPTSearch(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent)
+RDODPTSearch::RDODPTSearch(const LPRDORuntime& pRuntime, LPIBaseOperationContainer pParent)
 	: RDOLogicSimple(pRuntime, pParent)
 	, treeRoot      (NULL)
 {}
@@ -41,7 +41,7 @@ RDODPTSearch::RDODPTSearch(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContaine
 RDODPTSearch::~RDODPTSearch()
 {}
 
-IBaseOperation::BOResult RDODPTSearch::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDODPTSearch::onDoOperation(const LPRDORuntime& pRuntime)
 {
 	// Начало поиска: вывели трасировку, обновили статистику
 	onSearchBegin(pRuntime);
@@ -51,7 +51,7 @@ IBaseOperation::BOResult RDODPTSearch::onDoOperation(CREF(LPRDORuntime) pRuntime
 	return onContinue(pRuntime);
 }
 
-IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDODPTSearch::onContinue(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	uint32_t time_begin = ::GetTickCount();

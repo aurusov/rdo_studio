@@ -33,7 +33,7 @@ DockFind::~DockFind()
 {}
 
 void DockFind::appendString(
-	CREF(QString)                str,
+	const QString& str,
 	rdoModelObjects::RDOFileType fileType,
 	int lineNumber, int posInLine)
 {

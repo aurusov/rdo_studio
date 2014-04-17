@@ -248,7 +248,7 @@ public:
 			, send_event(NULL    )
 			, param_lock(NULL    )
 		{}
-		RDOMessageInfo(CREF(RDOMessageInfo) copy)
+		RDOMessageInfo(const RDOMessageInfo& copy)
 			: type      (copy.type      )
 			, send_event(copy.send_event)
 			, from      (copy.from      )
@@ -264,7 +264,7 @@ public:
 			, message(_message)
 			, param  (_param  )
 		{}
-		RDOMessageInfo(CREF(RDOMessageInfo) copy)
+		RDOMessageInfo(const RDOMessageInfo& copy)
 			: from   (copy.from   )
 			, message(copy.message)
 			, param  (copy.param  )
@@ -331,7 +331,7 @@ public:
 	void broadcastMessage(RDOTreadMessage message, void* pParam = NULL, bool lock = false);
 
 #ifdef TR_TRACE
-	static void trace(CREF(std::string) str);
+	static void trace(const std::string& str);
 #endif
 
 protected:
@@ -389,7 +389,7 @@ protected:
 				events.push_back(new CEvent());
 			handles = new HANDLE[cnt];
 		}
-		BroadcastData(CREF(BroadcastData) copy)
+		BroadcastData(const BroadcastData& copy)
 			: cnt    (copy.cnt    )
 			, handles(copy.handles)
 		{
@@ -443,9 +443,9 @@ protected:
 
 	// Создавать можно только через потомков
 #ifdef RDO_MT
-	RDOThread(CREF(std::string) _thread_name, RDOThreadFun _thread_fun = NULL);
+	RDOThread(const std::string& _thread_name, RDOThreadFun _thread_fun = NULL);
 #else
-	RDOThread(CREF(std::string) _thread_name);
+	RDOThread(const std::string& _thread_name);
 #endif
 	// Удаляет объкты функция треды. kernel удаляется через статический метод
 	virtual ~RDOThread();                                                                          
@@ -492,11 +492,11 @@ class RDOThreadMT: public RDOThread
 {
 protected:
 #ifdef RDO_MT
-	RDOThreadMT(CREF(std::string) _thread_name, RDOThreadFun _thread_fun = RDOThread::threadFun)
+	RDOThreadMT(const std::string& _thread_name, RDOThreadFun _thread_fun = RDOThread::threadFun)
 		: RDOThread(_thread_name, _thread_fun)
 	{}
 #else
-	RDOThreadMT(CREF(std::string) _thread_name)
+	RDOThreadMT(const std::string& _thread_name)
 		: RDOThread(_thread_name)
 	{}
 #endif
@@ -516,7 +516,7 @@ private:
 	RDOThread* kernel_gui;
 
 protected:
-	RDOThreadGUI(CREF(std::string) _thread_name, RDOThread* _kernel_gui)
+	RDOThreadGUI(const std::string& _thread_name, RDOThread* _kernel_gui)
 		: RDOThread (_thread_name)
 		, kernel_gui(_kernel_gui )
 	{}
@@ -527,7 +527,7 @@ protected:
 class RDOThreadGUI: public RDOThread
 {
 protected:
-	RDOThreadGUI(CREF(std::string) _thread_name, RDOThread*)
+	RDOThreadGUI(const std::string& _thread_name, RDOThread*)
 		: RDOThread(_thread_name)
 	{}
 };

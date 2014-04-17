@@ -45,7 +45,7 @@ private:
 
 	void closeEvent(QCloseEvent* event);
 
-	void onFindDlgFind(CREF(FindDialog::Settings) settings);
+	void onFindDlgFind(const FindDialog::Settings& settings);
 	void onFindDlgClose();
 
 	void onSearchFindAll();

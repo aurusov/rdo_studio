@@ -27,7 +27,7 @@ class RDOCalcCreateResource: public RDOCalc
 DECLARE_FACTORY(RDOCalcCreateResource)
 private:
 	//! relResID == ~0 для ресурсов, создаваемых при инициализации модели
-	RDOCalcCreateResource(std::size_t resourceTypeID, CREF(std::vector<RDOValue>) rParamsCalcs, bool traceFlag, bool permanentFlag, std::size_t relResID = ~0);
+	RDOCalcCreateResource(std::size_t resourceTypeID, const std::vector<RDOValue>& rParamsCalcs, bool traceFlag, bool permanentFlag, std::size_t relResID = ~0);
 
 	std::size_t m_resourceTypeID;
 	//! \todo m_paramsCalcs должен стать контейнером RDOCalc

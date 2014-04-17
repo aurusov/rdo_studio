@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- Унарные операции
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcDoubleToIntByResult::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcDoubleToIntByResult::doCalc(const LPRDORuntime& pRuntime)
 {
 	RDOValue value = m_pOperation->calcValue(pRuntime);
 	return m_round
@@ -32,7 +32,7 @@ RDOValue RDOCalcDoubleToIntByResult::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcInt (приведение к целому)
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcInt::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcInt::doCalc(const LPRDORuntime& pRuntime)
 {
 	RDOValue res = m_pOperation->calcValue(pRuntime);
 	return res > 0

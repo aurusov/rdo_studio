@@ -55,29 +55,29 @@ public:
 	typedef  std::vector<RDOValue>      ParamList;
 	typedef  ParamList::const_iterator  ParamCIt;
 
-	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool temporary);
-	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy);
+	RDOResource(const LPRDORuntime& pRuntime, const ParamList& paramList, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool temporary);
+	RDOResource(const LPRDORuntime& pRuntime, const RDOResource& copy);
 	virtual ~RDOResource();
 
 	bool operator== (const RDOResource& other) const;
 
 	ConvertStatus getState() const;
-	CREF(RDOValue) getParam(std::size_t index) const;
+	const RDOValue& getParam(std::size_t index) const;
 	bool checkType(std::size_t type) const;
 	bool canFree() const;
-	CREF(LPIResourceType) getResType() const;
+	const LPIResourceType& getResType() const;
 	std::size_t getType() const;
 	virtual std::size_t paramsCount() const;
-	LPRDOResource clone(CREF(LPRDORuntime) pRuntime) const;
-	CREF(ParamList) getParamList() const;
+	LPRDOResource clone(const LPRDORuntime& pRuntime) const;
+	const ParamList& getParamList() const;
 
-	virtual void appendParams(CREF(ParamCIt) from_begin, CREF(ParamCIt) from_end);
-	void setRuntime(CREF(LPRDORuntime) pRuntime);
+	virtual void appendParams(const ParamCIt& from_begin, const ParamCIt& from_end);
+	void setRuntime(const LPRDORuntime& pRuntime);
 	void makeTemporary(bool value);
 	void setState(ConvertStatus value);
-	std::string traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime);
+	std::string traceResourceState(char prefix, const LPRDORuntime& pRuntime);
 	RDOValue& getParamRaw(std::size_t index);
-	void setParam(std::size_t index, CREF(RDOValue) value);
+	void setParam(std::size_t index, const RDOValue& value);
 	std::string getTypeId();
 	std::string traceParametersValue();
 	virtual std::string whoAreYou();

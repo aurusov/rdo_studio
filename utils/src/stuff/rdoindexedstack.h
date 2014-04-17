@@ -29,7 +29,7 @@ public:
 	IndexedStack()
 	{}
 
-	ID push(CREF(T) object)
+	ID push(const T& object)
 	{
 		std::pair<typename Stack::iterator, bool> result = m_stack.insert(
 			std::pair<typename Stack::key_type, typename Stack::mapped_type>(m_generator.get(), object)

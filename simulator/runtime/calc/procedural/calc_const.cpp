@@ -19,18 +19,18 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcConst
 // --------------------------------------------------------------------------------
-RDOCalcConst::RDOCalcConst(CREF(RDOValue) value)
+RDOCalcConst::RDOCalcConst(const RDOValue& value)
 	: m_value(value)
 {
 	ASSERT(m_value.typeID() != RDOType::t_unknow);
 }
 
-CREF(RDOValue) RDOCalcConst::getValue() const
+const RDOValue& RDOCalcConst::getValue() const
 {
 	return m_value;
 }
 
-RDOValue RDOCalcConst::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcConst::doCalc(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 

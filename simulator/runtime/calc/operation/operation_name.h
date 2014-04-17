@@ -28,7 +28,7 @@ template <typename opr_type>
 class OperatorName
 {
 public:
-	static std::string name(CREF(opr_type) pOperator);
+	static std::string name(const opr_type& pOperator);
 
 private:
 	struct OprItem
@@ -36,13 +36,13 @@ private:
 		opr_type m_pOperator;
 		std::string m_name;
 
-		OprItem(CREF(opr_type) pOperator, CREF(std::string) name);
+		OprItem(const opr_type& pOperator, const std::string& name);
 
-		bool operator== (CREF(opr_type) pOperator) const;
+		bool operator== (const opr_type& pOperator) const;
 	};
 	typedef std::list<OprItem> NameList;
 
-	static CREF(NameList) getList();
+	static const NameList& getList();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

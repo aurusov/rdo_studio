@@ -373,7 +373,7 @@ public:
 
 	void onEndl()
 	{
-		CREF(std::string) trace_str = m_stream.str();
+		const std::string& trace_str = m_stream.str();
 		if (trace_str.empty()        ) return;
 		if (!m_pSimulator->m_canTrace) return;
 		std::string::size_type pos = 0;
@@ -429,7 +429,7 @@ private:
 
 	void flush()
 	{
-		CREF(std::string) bufferStr = m_buffer.str();
+		const std::string& bufferStr = m_buffer.str();
 		if (bufferStr.empty())
 		{
 			return;
@@ -1253,7 +1253,7 @@ void RDOThreadSimulator::parseSMRFileInfo(rdo::converter::smr2rdox::RDOSMRFileIn
 
 				std::string mess("Ошибка конвертора\n");
 				broadcastMessage(RT_DEBUG_STRING, &mess);
-				CREF(rdo::converter::smr2rdox::Error::ErrorList) errorList = converter.error().getList();
+				const rdo::converter::smr2rdox::Error::ErrorList& errorList = converter.error().getList();
 				BOOST_AUTO(it, errorList.begin());
 				while (it != errorList.end())
 				{
@@ -1627,10 +1627,10 @@ void RDOThreadCodeComp::proc(RDOMessageInfo& msg)
 //			std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
 //			sendMessage(kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdo::repository::RDOThreadRepository::FileData(data->file, stream));
 //			data->result = stream.data();
-			CREF(rdo::compiler::parser::RDOParser::RTPResTypeList) rtp_list = m_pParser->getRTPResTypes();
+			const rdo::compiler::parser::RDOParser::RTPResTypeList& rtp_list = m_pParser->getRTPResTypes();
 			for (const auto& rtp: rtp_list)
 			{
-				CREF(rdo::compiler::parser::RDORTPResType::ParamList) param_list = rtp->getParams();
+				const rdo::compiler::parser::RDORTPResType::ParamList& param_list = rtp->getParams();
 				rdo::compiler::parser::RDORTPResType::ParamList::const_iterator param_it = param_list.begin();
 				while (param_it != param_list.end())
 				{

@@ -21,7 +21,7 @@ OPEN_COMPILER_MBUILDER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- BlockForQueue
 // --------------------------------------------------------------------------------
-void BlockForQueue::createRes(RDOResType rtp, CREF(std::string) res_name)
+void BlockForQueue::createRes(RDOResType rtp, const std::string& res_name)
 {
 	// Получили список всех ресурсов
 	RDOResourceList rssList(parser::RDOParser::s_parser());
@@ -31,7 +31,7 @@ void BlockForQueue::createRes(RDOResType rtp, CREF(std::string) res_name)
 	rssList.append<parser::RDORSSResource>(rss);
 }
 
-bool BlockForQueue::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) info)
+bool BlockForQueue::checkType(RDOResType rtp, const parser::RDOParserSrcInfo& info)
 {
 	UNUSED(info);
 
@@ -41,7 +41,7 @@ bool BlockForQueue::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) inf
 	if (!rtp.m_params[rtp_param_name].exist())
 		parser::RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format("У типа ресурса '%s' нет параметра integer '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
 
-	CREF(RDOResType::Param) param = rtp.m_params[rtp_param_name];
+	const RDOResType::Param& param = rtp.m_params[rtp_param_name];
 	if (param.typeID() != rdo::runtime::RDOType::t_int)
 		parser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format("У типа ресурса '%s' параметр '%s' не является параметром int", rtp.name().c_str(), rtp_param_name.c_str()));
 
@@ -52,7 +52,7 @@ bool BlockForQueue::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) inf
 	return true;
 }
 
-RDOResType BlockForQueue::createType(CREF(std::string) rtp_name, CREF(parser::RDOParserSrcInfo) info)
+RDOResType BlockForQueue::createType(const std::string& rtp_name, const parser::RDOParserSrcInfo& info)
 {
 	// "длина_очереди"
 	const std::string rtp_param_name = rdo::runtime::RDOPROCQueue::getQueueParamName();
@@ -86,7 +86,7 @@ RDOResType BlockForQueue::createType(CREF(std::string) rtp_name, CREF(parser::RD
 // --------------------------------------------------------------------------------
 // -------------------- BlockForSeize
 // --------------------------------------------------------------------------------
-bool BlockForSeize::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) info)
+bool BlockForSeize::checkType(RDOResType rtp, const parser::RDOParserSrcInfo& info)
 {
 	// "Состояние"
 	const std::string rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
@@ -98,7 +98,7 @@ bool BlockForSeize::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) inf
 	if (!rtp.m_params[rtp_param_name].exist())
 		parser::RDOParser::s_parser()->error().error(info, rdo::format("У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
 
-	CREF(RDOResType::Param) param = rtp.m_params[rtp_param_name];
+	const RDOResType::Param& param = rtp.m_params[rtp_param_name];
 	// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
 	// Для начала проверим тип параметра
 	if (param.typeID() != rdo::runtime::RDOType::t_enum)
@@ -115,7 +115,7 @@ bool BlockForSeize::checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) inf
 	return true;
 }
 
-void BlockForSeize::createRes(RDOResType rtp, CREF(std::string) res_name)
+void BlockForSeize::createRes(RDOResType rtp, const std::string& res_name)
 {
 	// Получили список всех ресурсов
 	RDOResourceList rssList(parser::RDOParser::s_parser());
@@ -125,7 +125,7 @@ void BlockForSeize::createRes(RDOResType rtp, CREF(std::string) res_name)
 	rssList.append<parser::RDORSSResource>(rss);
 }
 
-void BlockForSeize::reobjectRes(RDOResType rtp, CREF(std::string) res_name)
+void BlockForSeize::reobjectRes(RDOResType rtp, const std::string& res_name)
 {
 	// Получили список всех ресурсов
 	RDOResourceList rssList(parser::RDOParser::s_parser());
@@ -135,7 +135,7 @@ void BlockForSeize::reobjectRes(RDOResType rtp, CREF(std::string) res_name)
 	rssList.replace<parser::RDORSSResource>(rssNew);
 }
 
-RDOResType BlockForSeize::createType(CREF(std::string) rtp_name, CREF(parser::RDOParserSrcInfo) info)
+RDOResType BlockForSeize::createType(const std::string& rtp_name, const parser::RDOParserSrcInfo& info)
 {
 	// "Состояние"
 	const std::string rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();

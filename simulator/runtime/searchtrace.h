@@ -47,12 +47,12 @@ public:
 	   DPT_trace_all
 	};
 
-	void onSearchBegin         (CREF(LPRDORuntime) pRuntime);
-	void onSearchDecisionHeader(CREF(LPRDORuntime) pRuntime);
-	void onSearchDecision      (CREF(LPRDORuntime) pRuntime, TreeNode* node);
-	void onSearchResultSuccess (CREF(LPRDORuntime) pRuntime, TreeRoot* treeRoot);
-	void onSearchResultNotFound(CREF(LPRDORuntime) pRuntime, TreeRoot* treeRoot);
-	TreeRoot* createTreeRoot   (CREF(LPRDORuntime) pRuntime);
+	void onSearchBegin         (const LPRDORuntime& pRuntime);
+	void onSearchDecisionHeader(const LPRDORuntime& pRuntime);
+	void onSearchDecision      (const LPRDORuntime& pRuntime, TreeNode* node);
+	void onSearchResultSuccess (const LPRDORuntime& pRuntime, TreeRoot* treeRoot);
+	void onSearchResultNotFound(const LPRDORuntime& pRuntime, TreeRoot* treeRoot);
+	TreeRoot* createTreeRoot   (const LPRDORuntime& pRuntime);
 
 	std::size_t calc_cnt; // Количество запусков
 	std::size_t calc_res_found_cnt;
@@ -67,7 +67,7 @@ public:
 	DPT_TraceFlag traceFlag;
 
 protected:
-	RDODPTSearchTrace(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent);
+	RDODPTSearchTrace(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent);
 
 private:
 	DECLARE_IDPTSearchTraceStatistics;
@@ -80,10 +80,10 @@ private:
 class TreeRootTrace: public TreeRoot
 {
 private:
-	virtual void createRootTreeNode(CREF(LPRDORuntime) pRuntime);
+	virtual void createRootTreeNode(const LPRDORuntime& pRuntime);
 
 public:
-	TreeRootTrace(CREF(LPRDORuntime) pRuntime, RDODPTSearch* pDP);
+	TreeRootTrace(const LPRDORuntime& pRuntime, RDODPTSearch* pDP);
 };
 
 /*!
@@ -95,14 +95,14 @@ class TreeNodeTrace: public TreeNode
 friend class RDOTrace;
 
 private:
-	void      onSearchOpenNode        (CREF(LPRDORuntime) pRuntime);
-	void      onSearchNodeInfoDeleted (CREF(LPRDORuntime) pRuntime);
-	void      onSearchNodeInfoReplaced(CREF(LPRDORuntime) pRuntime);
-	void      onSearchNodeInfoNew     (CREF(LPRDORuntime) pRuntime);
+	void      onSearchOpenNode        (const LPRDORuntime& pRuntime);
+	void      onSearchNodeInfoDeleted (const LPRDORuntime& pRuntime);
+	void      onSearchNodeInfoReplaced(const LPRDORuntime& pRuntime);
+	void      onSearchNodeInfoNew     (const LPRDORuntime& pRuntime);
 	TreeNode* createChildTreeNode     ();
 
 public:
-	TreeNodeTrace(CREF(LPRDORuntime) pRuntime, TreeNode* i_parent, TreeRoot* i_root, LPIDPTSearchActivity i_activity, double cost, int cnt);
+	TreeNodeTrace(const LPRDORuntime& pRuntime, TreeNode* i_parent, TreeRoot* i_root, LPIDPTSearchActivity i_activity, double cost, int cnt);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

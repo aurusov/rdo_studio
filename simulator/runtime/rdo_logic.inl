@@ -29,7 +29,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOOrderSimple
 // --------------------------------------------------------------------------------
-inline LPIBaseOperation RDOOrderSimple::sort(CREF(LPRDORuntime) pRuntime, BaseOperationList& container)
+inline LPIBaseOperation RDOOrderSimple::sort(const LPRDORuntime& pRuntime, BaseOperationList& container)
 {
 	for (auto& operation: container)
 	{
@@ -44,7 +44,7 @@ inline LPIBaseOperation RDOOrderSimple::sort(CREF(LPRDORuntime) pRuntime, BaseOp
 // --------------------------------------------------------------------------------
 // -------------------- RDOOrderMeta
 // --------------------------------------------------------------------------------
-inline LPIBaseOperation RDOOrderMeta::sort(CREF(LPRDORuntime) pRuntime, BaseOperationList& container)
+inline LPIBaseOperation RDOOrderMeta::sort(const LPRDORuntime& pRuntime, BaseOperationList& container)
 {
 	if (container.empty())
 		return NULL;
@@ -80,7 +80,7 @@ inline LPIBaseOperation RDOOrderMeta::sort(CREF(LPRDORuntime) pRuntime, BaseOper
 // -------------------- RDOLogic
 // --------------------------------------------------------------------------------
 template <class Order>
-inline RDOLogic<Order>::RDOLogic(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent)
+inline RDOLogic<Order>::RDOLogic(const LPRDORuntime& pRuntime, LPIBaseOperationContainer pParent)
 	: m_pCondition    (NULL )
 	, m_lastCondition (false)
 	, m_pFirst        (NULL )
@@ -93,7 +93,7 @@ inline RDOLogic<Order>::~RDOLogic()
 {}
 
 template <class Order>
-inline void RDOLogic<Order>::init(CREF(LPRDORuntime) pRuntime)
+inline void RDOLogic<Order>::init(const LPRDORuntime& pRuntime)
 {
 	if (pRuntime)
 	{
@@ -102,7 +102,7 @@ inline void RDOLogic<Order>::init(CREF(LPRDORuntime) pRuntime)
 }
 
 template <class Order>
-inline void RDOLogic<Order>::setCondition(CREF(LPRDOCalc) pCondition)
+inline void RDOLogic<Order>::setCondition(const LPRDOCalc& pCondition)
 {
 	m_pCondition = pCondition;
 }
@@ -114,7 +114,7 @@ inline void RDOLogic<Order>::setMultithreading(bool multithreading)
 }
 
 template <class Order>
-inline void RDOLogic<Order>::onStart(CREF(LPRDORuntime) pRuntime)
+inline void RDOLogic<Order>::onStart(const LPRDORuntime& pRuntime)
 {
 	m_lastCondition = checkSelfCondition(pRuntime);
 	if (m_lastCondition)
@@ -124,14 +124,14 @@ inline void RDOLogic<Order>::onStart(CREF(LPRDORuntime) pRuntime)
 }
 
 template <class Order>
-inline void RDOLogic<Order>::onStop(CREF(LPRDORuntime) pRuntime)
+inline void RDOLogic<Order>::onStop(const LPRDORuntime& pRuntime)
 {
 	m_lastCondition = false;
 	stop(pRuntime);
 }
 
 template <class Order>
-inline bool RDOLogic<Order>::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+inline bool RDOLogic<Order>::onCheckCondition(const LPRDORuntime& pRuntime)
 {
 	bool condition = checkSelfCondition(pRuntime);
 	if (condition != m_lastCondition)
@@ -155,7 +155,7 @@ inline bool RDOLogic<Order>::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 }
 
 template <class Order>
-inline IBaseOperation::BOResult RDOLogic<Order>::onDoOperation(CREF(LPRDORuntime) pRuntime)
+inline IBaseOperation::BOResult RDOLogic<Order>::onDoOperation(const LPRDORuntime& pRuntime)
 {
 	if (m_lastCondition)
 	{
@@ -175,7 +175,7 @@ inline IBaseOperation::BOResult RDOLogic<Order>::onDoOperation(CREF(LPRDORuntime
 }
 
 template <class Order>
-inline IBaseOperation::BOResult RDOLogic<Order>::onContinue(CREF(LPRDORuntime) pRuntime)
+inline IBaseOperation::BOResult RDOLogic<Order>::onContinue(const LPRDORuntime& pRuntime)
 {
 	for(ChildList::iterator it = m_childList.begin(); it != m_childList.end(); ++it)
 	{
@@ -186,7 +186,7 @@ inline IBaseOperation::BOResult RDOLogic<Order>::onContinue(CREF(LPRDORuntime) p
 }
 
 template <class Order>
-inline bool RDOLogic<Order>::checkSelfCondition(CREF(LPRDORuntime) pRuntime)
+inline bool RDOLogic<Order>::checkSelfCondition(const LPRDORuntime& pRuntime)
 {
 	return m_pCondition
 		? m_pCondition->calcValue(pRuntime).getAsBool()
@@ -194,7 +194,7 @@ inline bool RDOLogic<Order>::checkSelfCondition(CREF(LPRDORuntime) pRuntime)
 }
 
 template <class Order>
-inline void RDOLogic<Order>::start(CREF(LPRDORuntime) pRuntime)
+inline void RDOLogic<Order>::start(const LPRDORuntime& pRuntime)
 {
 	for(ChildList::iterator it = m_childList.begin(); it != m_childList.end(); ++it)
 	{
@@ -203,7 +203,7 @@ inline void RDOLogic<Order>::start(CREF(LPRDORuntime) pRuntime)
 }
 
 template <class Order>
-inline void RDOLogic<Order>::stop(CREF(LPRDORuntime) pRuntime)
+inline void RDOLogic<Order>::stop(const LPRDORuntime& pRuntime)
 {
 	for(ChildList::iterator it = m_childList.begin(); it != m_childList.end(); ++it)
 	{
@@ -248,7 +248,7 @@ inline LPIBaseOperation& RDOLogic<Order>::back()
 }
 
 template <class Order>
-inline void RDOLogic<Order>::append(CREF(Item) item)
+inline void RDOLogic<Order>::append(const Item& item)
 {
 	m_childList.push_back(item);
 }

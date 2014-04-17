@@ -17,7 +17,7 @@
 
 namespace rdo {
 
-bool event_xml_parser::register_parser(CREF(std::string) name, boost::shared_ptr<event_xml_reader> reader)
+bool event_xml_parser::register_parser(const std::string& name, boost::shared_ptr<event_xml_reader> reader)
 {
 	if (m_parsers.find(name) == m_parsers.end())
 	{

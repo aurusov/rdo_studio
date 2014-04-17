@@ -36,7 +36,7 @@ template<class T>
 class smart_ptr_wrapper: public ISmartPtrWrapper
 {
 public:
-	smart_ptr_wrapper(CREF(intrusive_ptr<T>) intrusive_ptr)
+	smart_ptr_wrapper(const intrusive_ptr<T>& intrusive_ptr)
 		: m_intrusive_ptr(intrusive_ptr)
 	{}
 	virtual ~smart_ptr_wrapper()
@@ -53,7 +53,7 @@ public:
 	{
 		return m_intrusive_ptr.m_object;
 	}
-	CREF(intrusive_ptr<T>) get() const
+	const intrusive_ptr<T>& get() const
 	{
 		return m_intrusive_ptr;
 	}
@@ -65,7 +65,7 @@ private:
 class smart_ptr_wrapper_caster
 {
 public:
-	smart_ptr_wrapper_caster(CREF(LPISmartPtrWrapper) pISmartPtrWrapper)
+	smart_ptr_wrapper_caster(const LPISmartPtrWrapper& pISmartPtrWrapper)
 		: m_pISmartPtrWrapper(pISmartPtrWrapper)
 	{
 		ASSERT(m_pISmartPtrWrapper);

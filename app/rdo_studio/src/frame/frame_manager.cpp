@@ -49,7 +49,7 @@ void Manager::Frame::clear()
 // --------------------------------------------------------------------------------
 // -------------------- Manager
 // --------------------------------------------------------------------------------
-Manager::Manager(CREF(OnChangeFrame) onChangeFrame)
+Manager::Manager(const OnChangeFrame& onChangeFrame)
 	: m_lastShowedFrame(std::size_t(~0))
 	, m_currentShowingFrame(std::size_t(~0))
 	, m_changed(false)
@@ -80,7 +80,7 @@ bool Manager::init()
 	return true;
 }
 
-void Manager::insertFrame(CREF(QString) frameName)
+void Manager::insertFrame(const QString& frameName)
 {
 	Frame* item = new Frame();
 	item->m_pTreeWidgetItem = g_pApp->getIMainWnd()->getDockFrame().getContext().insertFrame(frameName);
@@ -130,7 +130,7 @@ std::size_t Manager::findFrameIndex(const Content* pContent) const
 	return std::size_t(~0);
 }
 
-CREF(QString) Manager::getFrameName(std::size_t index) const
+const QString& Manager::getFrameName(std::size_t index) const
 {
 	ASSERT(index < m_frameList.size());
 	return m_frameList[index]->m_name;
@@ -162,11 +162,11 @@ bool Manager::isChanged()
 	return res;
 }
 
-void Manager::areaDown(std::size_t frameIndex, CREF(QPoint) point) const
+void Manager::areaDown(std::size_t frameIndex, const QPoint& point) const
 {
 	ASSERT(frameIndex != std::size_t(~0) && frameIndex < m_frameList.size());
 
-	CREF(rdo::gui::animation::AreaList) areaList = m_frameList[frameIndex]->m_areaList;
+	const rdo::gui::animation::AreaList& areaList = m_frameList[frameIndex]->m_areaList;
 	BOOST_FOREACH(const rdo::gui::animation::AreaList::value_type& area, areaList)
 	{
 		if (area.second.m_rect.contains(point))
@@ -293,7 +293,7 @@ void Manager::resetCurrentShowingFrame(std::size_t index)
 	}
 }
 
-void Manager::insertBitmap(CREF(QString) bitmapName)
+void Manager::insertBitmap(const QString& bitmapName)
 {
 	if (m_bitmapList.find(bitmapName) != m_bitmapList.end())
 		return;

@@ -34,7 +34,7 @@ using namespace rdo::gui::tracer;
 // --------------------------------------------------------------------------------
 // -------------------- TracerBase
 // --------------------------------------------------------------------------------
-TracerBase::TracerBase(CREF(std::string) _thread_name, RDOKernelGUI* _kernel_gui)
+TracerBase::TracerBase(const std::string& _thread_name, RDOKernelGUI* _kernel_gui)
 	: RDOThreadGUI(_thread_name, _kernel_gui)
 	, m_pLog(NULL)
 	, m_pChartTree(NULL)
@@ -371,7 +371,7 @@ std::string TracerBase::getNextValue(std::string& line)
 	return result;
 }
 
-Time* TracerBase::addTime(CREF(std::string) time)
+Time* TracerBase::addTime(const std::string& time)
 {
 	double val = boost::lexical_cast<double>(time);
 	bool empty = m_timeList.empty();
@@ -688,7 +688,7 @@ ChartDoc* TracerBase::createNewChart()
 	return pDoc;
 }
 
-ChartDoc* TracerBase::addSerieToChart(CREF(LPSerie) pSerie, ChartDoc* pDocument)
+ChartDoc* TracerBase::addSerieToChart(const LPSerie& pSerie, ChartDoc* pDocument)
 {
 	if (!pDocument)
 	{
@@ -724,7 +724,7 @@ void TracerBase::updateChartsStyles() const
 	}
 }
 
-void TracerBase::setModelName(CREF(QString) name) const
+void TracerBase::setModelName(const QString& name) const
 {
 	if (m_pChartTree)
 	{

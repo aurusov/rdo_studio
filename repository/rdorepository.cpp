@@ -239,7 +239,7 @@ void RDOThreadRepository::newModel(const NewModel* const data)
 	}
 }
 
-bool RDOThreadRepository::openModel(CREF(boost::filesystem::path) modelFileName)
+bool RDOThreadRepository::openModel(const boost::filesystem::path& modelFileName)
 {
 	if (canCloseModel())
 	{
@@ -358,7 +358,7 @@ void RDOThreadRepository::closeModel()
 	}
 }
 
-void RDOThreadRepository::extractName(CREF(boost::filesystem::path) fullName)
+void RDOThreadRepository::extractName(const boost::filesystem::path& fullName)
 {
 	m_modelPath = rdo::File::extractFilePath(fullName);
 
@@ -366,7 +366,7 @@ void RDOThreadRepository::extractName(CREF(boost::filesystem::path) fullName)
 	setName(path.filename().stem());
 }
 
-void RDOThreadRepository::setName(CREF(boost::filesystem::path) name)
+void RDOThreadRepository::setName(const boost::filesystem::path& name)
 {
 	m_modelName = name;
 	if (m_modelName.empty())
@@ -376,7 +376,7 @@ void RDOThreadRepository::setName(CREF(boost::filesystem::path) name)
 	}
 }
 
-void RDOThreadRepository::loadFile(CREF(boost::filesystem::path) fileName, std::ostream& stream, bool described, bool mustExist, bool& reanOnly) const
+void RDOThreadRepository::loadFile(const boost::filesystem::path& fileName, std::ostream& stream, bool described, bool mustExist, bool& reanOnly) const
 {
 	if (described)
 	{
@@ -409,7 +409,7 @@ void RDOThreadRepository::loadFile(CREF(boost::filesystem::path) fileName, std::
 	}
 }
 
-void RDOThreadRepository::saveFile(CREF(boost::filesystem::path) fileName, const std::stringstream& stream, bool deleteIfEmpty) const
+void RDOThreadRepository::saveFile(const boost::filesystem::path& fileName, const std::stringstream& stream, bool deleteIfEmpty) const
 {
 	if (!fileName.empty())
 	{
@@ -499,7 +499,7 @@ void RDOThreadRepository::writeModelFilesInfo(boost::filesystem::ofstream& strea
 	stream << "Resource_file  = " << rdo::locale::convertFromWStr(getFileName(rdoModelObjects::RSS).replace_extension(getExtension(rdoModelObjects::RSS)).wstring()) << std::endl;
 }
 
-bool RDOThreadRepository::createFile(CREF(boost::filesystem::path) name, boost::filesystem::ofstream& stream) const
+bool RDOThreadRepository::createFile(const boost::filesystem::path& name, boost::filesystem::ofstream& stream) const
 {
 	//! TODO: проверить name с русскими буквами
 	std::stringstream backupDirName;
@@ -566,7 +566,7 @@ void RDOThreadRepository::stopModel()
 	}
 }
 
-void RDOThreadRepository::trace(CREF(std::string) message)
+void RDOThreadRepository::trace(const std::string& message)
 {
 	if (m_traceFile.is_open())
 	{

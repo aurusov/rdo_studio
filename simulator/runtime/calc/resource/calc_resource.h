@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalcGetResourceHelper
 {
 public:
-	static bool getResource(CREF(LPRDORuntime) pRuntime, std::size_t resourceID, RDOValue& result);
+	static bool getResource(const LPRDORuntime& pRuntime, std::size_t resourceID, RDOValue& result);
 };
 
 //! Получение ресурса по ID
@@ -32,7 +32,7 @@ class RDOCalcGetResourceByID: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetResourceByID)
 private:
-	RDOCalcGetResourceByID(CREF(std::size_t) resourceID);
+	RDOCalcGetResourceByID(const std::size_t& resourceID);
 
 	std::size_t m_resourceID;
 
@@ -45,7 +45,7 @@ class RDOCalcGetResourceParam: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetResourceParam)
 private:
-	RDOCalcGetResourceParam(CREF(LPRDOCalc) pResource, std::size_t paramID);
+	RDOCalcGetResourceParam(const LPRDOCalc& pResource, std::size_t paramID);
 
 	LPRDOCalc m_pResource;
 	int m_paramID;
@@ -59,7 +59,7 @@ class RDOCalcGetUnknowResParam: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetUnknowResParam)
 private:
-	RDOCalcGetUnknowResParam(CREF(std::string) resName, CREF(std::string) parName);
+	RDOCalcGetUnknowResParam(const std::string& resName, const std::string& parName);
 
 	std::string m_resName;
 	std::string m_parName;
@@ -73,7 +73,7 @@ class RDOSetResourceParamCalc: public RDOCalc
 {
 DECLARE_FACTORY(RDOSetResourceParamCalc)
 private:
-	RDOSetResourceParamCalc(std::size_t resourceID, std::size_t paramID, CREF(LPRDOCalc) pCalc);
+	RDOSetResourceParamCalc(std::size_t resourceID, std::size_t paramID, const LPRDOCalc& pCalc);
 
 	std::size_t m_resourceID;
 	std::size_t m_paramID;

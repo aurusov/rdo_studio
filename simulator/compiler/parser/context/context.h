@@ -112,7 +112,7 @@ protected:
 private:
 	LPContextStack  m_pContextStack;
 
-	void setContextStack  (CREF(LPContextStack) pContextStack);
+	void setContextStack  (const LPContextStack& pContextStack);
 	void resetContextStack();
 };
 

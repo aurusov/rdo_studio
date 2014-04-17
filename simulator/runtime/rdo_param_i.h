@@ -31,12 +31,12 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IParam
 {
 public:
-	virtual bool setParam(CREF(rdo::runtime::LPRDOCalc) pParam) = 0;
+	virtual bool setParam(const rdo::runtime::LPRDOCalc& pParam) = 0;
 	virtual bool endParam() = 0;
 };
 
 #define DECLARE_IParam \
-	virtual bool setParam(CREF(rdo::runtime::LPRDOCalc) pParam); \
+	virtual bool setParam(const rdo::runtime::LPRDOCalc& pParam); \
 	virtual bool endParam();
 
 #endif // _LIB_RUNTIME_PARAM_I_H_

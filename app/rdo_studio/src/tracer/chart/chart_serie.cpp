@@ -28,7 +28,7 @@ ChartSerie::Options::Options()
 	, showInLegend     (true)
 {}
 
-bool ChartSerie::Options::operator== (CREF(Options) options) const
+bool ChartSerie::Options::operator== (const Options& options) const
 {
 	return title             == options.title
 		&& color             == options.color
@@ -42,7 +42,7 @@ bool ChartSerie::Options::operator== (CREF(Options) options) const
 // --------------------------------------------------------------------------------
 // -------------------- ChartSerie
 // --------------------------------------------------------------------------------
-ChartSerie::ChartSerie(CREF(LPSerie) pSerie)
+ChartSerie::ChartSerie(const LPSerie& pSerie)
 	: m_pSerie(pSerie)
 {
 	if (m_pSerie)
@@ -54,22 +54,22 @@ ChartSerie::ChartSerie(CREF(LPSerie) pSerie)
 ChartSerie::~ChartSerie()
 {}
 
-CREF(LPSerie) ChartSerie::getSerie() const
+const LPSerie& ChartSerie::getSerie() const
 {
 	return m_pSerie;
 }
 
-CREF(ChartSerie::Options) ChartSerie::options() const
+const ChartSerie::Options& ChartSerie::options() const
 {
 	return m_options;
 }
 
-void ChartSerie::setOptions(CREF(Options) options)
+void ChartSerie::setOptions(const Options& options)
 {
 	m_options = options;
 }
 
-bool ChartSerie::isTracerSerie(CREF(LPSerie) pSerie) const
+bool ChartSerie::isTracerSerie(const LPSerie& pSerie) const
 {
 	return m_pSerie == pSerie;
 }

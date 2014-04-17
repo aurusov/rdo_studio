@@ -32,10 +32,10 @@ public:
 	typedef double etime;
 
 public:
-	event(CREF(std::string) name, etime time, types type = none);
+	event(const std::string& name, etime time, types type = none);
 	virtual ~event();
 
-	void setName(CREF(std::string) name);
+	void setName(const std::string& name);
 	void setTime(etime time);
 
 	std::string getName() const;

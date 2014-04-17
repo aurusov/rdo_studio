@@ -72,22 +72,22 @@ public:
 	bool           getOpenLastProject() const;
 	void           setOpenLastProject(bool value);
 
-	CREF(QString)  getLastProjectName() const;
-	void           setLastProjectName(CREF(QString) projectName);
+	const QString& getLastProjectName() const;
+	void           setLastProjectName(const QString& projectName);
 
 	bool           getShowCaptionFullName() const;
 	void           setShowCaptionFullName(bool value);
 
 	void           autoCloseByModel ();
 
-	QString        getFullHelpFileName (CREF(QString) helpFileName = "RAO-help.qhc") const;
-	QString        chkHelpExist        (CREF(QString) helpFileName) const;
+	QString        getFullHelpFileName (const QString& helpFileName = "RAO-help.qhc") const;
+	QString        chkHelpExist        (const QString& helpFileName) const;
 	void           chkAndRunQtAssistant();
 	QProcess*      runQtAssistant      () const;
-	void           callQtAssistant     (CREF(QByteArray) ba);
+	void           callQtAssistant     (const QByteArray& ba);
 
-	CREF(rdo::gui::editor::LPModelStyle) getModelStyle() const;
-	rdo::plugin::Loader&                 getPluginLoader();
+	const rdo::gui::editor::LPModelStyle& getModelStyle() const;
+	rdo::plugin::Loader&                  getPluginLoader();
 
 private:
 #ifdef RDO_MT

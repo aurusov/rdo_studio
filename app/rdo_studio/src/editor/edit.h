@@ -59,11 +59,11 @@ public:
 
 		List::const_iterator begin() const;
 		List::const_iterator end  () const;
-		List::const_iterator next (CREF(List::const_iterator) it) const;
-		List::const_iterator prev (CREF(List::const_iterator) it) const;
+		List::const_iterator next (const List::const_iterator& it) const;
+		List::const_iterator prev (const List::const_iterator& it) const;
 
-		void                 for_each(CREF(this_method)    fun) const;
-		List::const_iterator find_if (CREF(this_predicate) fun) const;
+		void                 for_each(const this_method& fun) const;
+		List::const_iterator find_if (const this_predicate& fun) const;
 
 	private:
 		List m_list;
@@ -86,7 +86,7 @@ public:
 	bool  isReadOnly() const                               { return sendEditor(SCI_GETREADONLY) ? true : false; }
 	void  setReadOnly(const bool value)                    { sendEditor(SCI_SETREADONLY, value); }
 
-	void appendText(CREF(QString) str) const;
+	void appendText(const QString& str) const;
 
 	int getZoom() const                                    { return sendEditor(SCI_GETZOOM); }
 	void setZoom(const int value) const                    { sendEditor(SCI_SETZOOM, value); }
@@ -119,7 +119,7 @@ public:
 	std::string getCurrentOrSelectedWord() const;
 	QString getWordForFind() const;
 
-	int findPos(CREF(QString) findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false) const;
+	int findPos(const QString& findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false) const;
 	std::string getLine(const int line) const;
 
 	void load(const std::stringstream& stream);
@@ -131,7 +131,7 @@ protected:
 
 	long sendEditor(std::size_t msg, unsigned long wParam = 0, long lParam = 0) const { return super::send (msg, wParam, lParam); }
 	long sendEditorString(std::size_t msg, unsigned long wParam, const char* str)     const { return super::sends(msg, wParam, str); }
-	long sendEditorString(std::size_t msg, CREF(std::string) str) const;
+	long sendEditorString(std::size_t msg, const std::string& str) const;
 
 	int  getNewMarker();
 	void defineMarker(int marker, int markerType, QColor fore, QColor back) const;
@@ -144,7 +144,7 @@ protected:
 
 	virtual void onUpdateActions(bool activated);
 
-	static std::size_t convertColor(CREF(QColor) color);
+	static std::size_t convertColor(const QColor& color);
 
 protected slots:
 	        void onUpdateEditGUI();
@@ -161,9 +161,9 @@ private:
 	void gotoLineEnsureVisible(int line) const;
 	void ensureRangeVisible(int posStart, int posEnd, bool enforcePolicy = true) const;
 
-	void findNext  (CREF(QString) findWhat, bool searchDown, bool matchCase, bool matchWholeWord);
-	void replace   (CREF(QString) findWhat, CREF(QString) replaceWhat, bool searchDown, bool matchCase, bool matchWholeWord);
-	void replaceAll(CREF(QString) findWhat, CREF(QString) replaceWhat, bool matchCase, bool matchWholeWord);
+	void findNext  (const QString& findWhat, bool searchDown, bool matchCase, bool matchWholeWord);
+	void replace   (const QString& findWhat, const QString& replaceWhat, bool searchDown, bool matchCase, bool matchWholeWord);
+	void replaceAll(const QString& findWhat, const QString& replaceWhat, bool matchCase, bool matchWholeWord);
 
 	int  indentOfBlock     (int line) const;
 	void setLineIndentation(int line, int indent) const;
@@ -188,19 +188,19 @@ private:
 	FindReplaceDialog*          m_pFindReplaceDialog;
 	FindReplaceDialog::Settings m_findReplaceSettings;
 
-	void onFindDlgFind(CREF(FindDialog::Settings) settings);
+	void onFindDlgFind(const FindDialog::Settings& settings);
 	void onFindDlgClose();
 
-	void onFindReplaceDlgFind      (CREF(FindReplaceDialog::Settings) settings);
-	void onFindReplaceDlgReplace   (CREF(FindReplaceDialog::Settings) settings);
-	void onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings);
+	void onFindReplaceDlgFind      (const FindReplaceDialog::Settings& settings);
+	void onFindReplaceDlgReplace   (const FindReplaceDialog::Settings& settings);
+	void onFindReplaceDlgReplaceAll(const FindReplaceDialog::Settings& settings);
 	void onFindReplaceDlgClose     ();
-	void showFindWarning           (CREF(QString) findWhat);
+	void showFindWarning           (const QString& findWhat);
 
 	void updateActionFind(bool activated);
 
-	void  methodOfGroup   (CREF(this_method)    fun);
-	bool  predicateOfGroup(CREF(this_predicate) fun) const;
+	void  methodOfGroup   (const this_method& fun);
+	bool  predicateOfGroup(const this_predicate& fun) const;
 
 	virtual void focusInEvent (QFocusEvent* pEvent);
 	virtual void focusOutEvent(QFocusEvent* pEvent);

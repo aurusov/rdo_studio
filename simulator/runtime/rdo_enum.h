@@ -34,18 +34,18 @@ public:
 
 	static const std::size_t END = std::size_t(~0);
 
-	void add(CREF(std::string) next);
-	std::size_t findEnum(CREF(std::string) val) const;
-	bool exist(CREF(std::string) val) const;
+	void add(const std::string& next);
+	std::size_t findEnum(const std::string& val) const;
+	bool exist(const std::string& val) const;
 
 	bool empty() const;
 	const CIterator begin() const;
 	const CIterator end() const;
-	CREF(Enums) getValues() const;
+	const Enums& getValues() const;
 
 private:
 	RDOEnumType();
-	RDOEnumType(CREF(Enums) enums);
+	RDOEnumType(const Enums& enums);
 
 	Enums m_enum;
 };

@@ -35,13 +35,13 @@ DockBuild::DockBuild(QWidget* pParent)
 DockBuild::~DockBuild()
 {}
 
-void DockBuild::appendString(CREF(QString) str)
+void DockBuild::appendString(const QString& str)
 {
 	rdo::simulation::report::BuildEditLineInfo* pLine = new rdo::simulation::report::BuildEditLineInfo(str.toStdString());
 	getContext().appendLine(pLine);
 }
 
-void DockBuild::appendString(CREF(rdo::simulation::report::FileMessage) message)
+void DockBuild::appendString(const rdo::simulation::report::FileMessage& message)
 {
 	QString qMessage = QString::fromStdString(message.getText());
 	if (qMessage.contains("Сработало лицензионное ограничение"))

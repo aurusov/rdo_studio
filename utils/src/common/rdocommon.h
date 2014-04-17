@@ -71,7 +71,7 @@ namespace rdo {
 
 		//! Создаёт пустой контейнер и помещает в него \ref item
 		//! \param item - Элемент контейнера
-		vector(CREF(T) item)
+		vector(const T& item)
 		{
 			std::vector<T>::push_back(item);
 		}
@@ -79,7 +79,7 @@ namespace rdo {
 		//! Добавляет в контейнер новый эелемент, более удобный аналог std::vector::push_back()
 		//! \param item - Элемент контейнера
 		//! \result Возвращает сам контейнер, чтобы эту же операцию можно было вызвать снова
-		vector& operator() (CREF(T) item)
+		vector& operator() (const T& item)
 		{
 			std::vector<T>::push_back(item);
 			return *this;

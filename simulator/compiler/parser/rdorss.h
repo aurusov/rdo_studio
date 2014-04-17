@@ -45,11 +45,11 @@ public:
 	class Param
 	{
 	public:
-		explicit Param(CREF(LPRDOValue) pValue)
+		explicit Param(const LPRDOValue& pValue)
 			: m_pValue(pValue)
 		{}
 
-		CREF(LPRDOValue) param() const
+		const LPRDOValue& param() const
 		{
 			return m_pValue;
 		}
@@ -68,14 +68,14 @@ public:
 
 	virtual std::vector<rdo::runtime::LPRDOCalc> createCalc() const;
 
-	CREF(std::string) name() const { return src_info().src_text(); }
+	const std::string& name() const { return src_info().src_text(); }
 	LPRDORTPResType getType() const { return m_pResType; }
 
 	std::size_t getID() const { return m_id; }
 
-	CREF(ParamList) params () const { return m_paramList; }
+	const ParamList& params () const { return m_paramList; }
 
-	void addParam(CREF(LPRDOValue) pParam);
+	void addParam(const LPRDOValue& pParam);
 	bool getTrace() const { return trace; }
 	void setTrace(bool value) { trace = value; }
 	bool defined() const;
@@ -91,7 +91,7 @@ public:
 	}
 
 protected:
-	RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, std::size_t id = UNDEFINED_ID);
+	RDORSSResource(const LPRDOParser& pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, std::size_t id = UNDEFINED_ID);
 	virtual ~RDORSSResource();
 
 	LPRDORTPResType m_pResType;

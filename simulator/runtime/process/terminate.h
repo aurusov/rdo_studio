@@ -38,7 +38,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPROCTerminate(CREF(LPIPROCProcess) pProcess, CREF(LPRDOCalc) pCalc);
+	RDOPROCTerminate(const LPIPROCProcess& pProcess, const LPRDOCalc& pCalc);
 
 	std::size_t m_terminatedTransactCount;
 	LPRDOCalc m_pTermCalc;

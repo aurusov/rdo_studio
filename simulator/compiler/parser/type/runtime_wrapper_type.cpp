@@ -19,7 +19,7 @@ OPEN_RDO_PARSER_NAMESPACE
 RuntimeWrapperType::RuntimeWrapperType()
 {}
 
-RuntimeWrapperType::RuntimeWrapperType(CREF(rdo::runtime::LPRDOType) pType)
+RuntimeWrapperType::RuntimeWrapperType(const rdo::runtime::LPRDOType& pType)
 	: m_pType(pType)
 {
 	ASSERT(m_pType);
@@ -33,7 +33,7 @@ RuntimeWrapperType::RuntimeWrapperType(CREF(rdo::runtime::LPRDOType) pType)
 RuntimeWrapperType::~RuntimeWrapperType()
 {}
 
-CREF(rdo::runtime::LPRDOType) RuntimeWrapperType::type() const
+const rdo::runtime::LPRDOType& RuntimeWrapperType::type() const
 {
 	return m_pType;
 }
@@ -43,7 +43,7 @@ rdo::runtime::RDOType::TypeID RuntimeWrapperType::typeID() const
 	return m_pType->typeID();
 }
 
-rdo::runtime::LPRDOCalc RuntimeWrapperType::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdo::runtime::LPRDOCalc RuntimeWrapperType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
 {
 	UNUSED(pType);
 	return pCalc;

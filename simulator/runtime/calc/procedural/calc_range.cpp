@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcCheckRange
 // --------------------------------------------------------------------------------
-RDOCalcCheckRange::RDOCalcCheckRange(CREF(RDOValue) minValue, CREF(RDOValue) maxValue, CREF(LPRDOCalc) pCalc)
+RDOCalcCheckRange::RDOCalcCheckRange(const RDOValue& minValue, const RDOValue& maxValue, const LPRDOCalc& pCalc)
 	: m_minValue(minValue)
 	, m_maxValue(maxValue)
 	, m_pCalc   (pCalc   )
@@ -32,7 +32,7 @@ RDOCalcCheckRange::RDOCalcCheckRange(CREF(RDOValue) minValue, CREF(RDOValue) max
 	}
 }
 
-RDOValue RDOCalcCheckRange::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcCheckRange::doCalc(const LPRDORuntime& pRuntime)
 {
 	RDOValue value = m_pCalc->calcValue(pRuntime);
 	if (value < m_minValue || value > m_maxValue)

@@ -30,7 +30,7 @@ public:
 	typedef std::map< event::etime, boost::shared_ptr<event> > event_container;
 
 public:
-	bool register_parser(CREF(std::string) name, boost::shared_ptr<event_xml_reader> reader);
+	bool register_parser(const std::string& name, boost::shared_ptr<event_xml_reader> reader);
 
 	void parse(std::istream& stream, event_container& list) const;
 

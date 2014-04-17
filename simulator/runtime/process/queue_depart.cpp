@@ -28,7 +28,7 @@ RDOPROCBlockForQueue::RDOPROCBlockForQueue(LPIPROCProcess process, parser_for_Qu
 	, fromParser  (From_Par)
 {}
 
-void RDOPROCBlockForQueue::_onStart(CREF(LPRDORuntime) pRuntime)
+void RDOPROCBlockForQueue::_onStart(const LPRDORuntime& pRuntime)
 {
 	int Id_res = fromParser.Id_res;
 	int Id_param = fromParser.Id_param;
@@ -41,12 +41,12 @@ void RDOPROCBlockForQueue::_onStart(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCQueue
 // --------------------------------------------------------------------------------
-void RDOPROCQueue::onStart(CREF(LPRDORuntime) pRuntime)
+void RDOPROCQueue::onStart(const LPRDORuntime& pRuntime)
 {
 	_onStart(pRuntime);
 }
 
-bool RDOPROCQueue::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCQueue::onCheckCondition(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	if (!m_transacts.empty())
@@ -62,7 +62,7 @@ bool RDOPROCQueue::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 	}
 }
 
-IBaseOperation::BOResult RDOPROCQueue::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCQueue::onDoOperation(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 
@@ -71,12 +71,12 @@ IBaseOperation::BOResult RDOPROCQueue::onDoOperation(CREF(LPRDORuntime) pRuntime
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCQueue::onStop (CREF(LPRDORuntime) pRuntime)
+void RDOPROCQueue::onStop (const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 }
 
-IBaseOperation::BOResult RDOPROCQueue::onContinue(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCQueue::onContinue(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
@@ -85,12 +85,12 @@ IBaseOperation::BOResult RDOPROCQueue::onContinue(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCDepart
 // --------------------------------------------------------------------------------
-void RDOPROCDepart::onStart(CREF(LPRDORuntime) pRuntime)
+void RDOPROCDepart::onStart(const LPRDORuntime& pRuntime)
 {
 	_onStart(pRuntime);
 }
 
-bool RDOPROCDepart::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCDepart::onCheckCondition(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	if (!m_transacts.empty())
@@ -106,7 +106,7 @@ bool RDOPROCDepart::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 	}
 }
 
-IBaseOperation::BOResult RDOPROCDepart::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCDepart::onDoOperation(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 
@@ -115,12 +115,12 @@ IBaseOperation::BOResult RDOPROCDepart::onDoOperation(CREF(LPRDORuntime) pRuntim
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCDepart::onStop(CREF(LPRDORuntime) pRuntime)
+void RDOPROCDepart::onStop(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 }
 
-IBaseOperation::BOResult RDOPROCDepart::onContinue(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCDepart::onContinue(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;

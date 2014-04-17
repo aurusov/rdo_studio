@@ -47,7 +47,7 @@ public:
 		boost::filesystem::path  m_name;
 		std::stringstream&       m_stream;
 
-		BinaryFile(CREF(boost::filesystem::path) name, std::stringstream& stream)
+		BinaryFile(const boost::filesystem::path& name, std::stringstream& stream)
 			: m_name  (name  )
 			, m_stream(stream)
 		{}
@@ -57,7 +57,7 @@ public:
 		boost::filesystem::path m_name;
 		boost::filesystem::ofstream& m_stream;
 
-		CreateFileInfo(CREF(boost::filesystem::path) name, boost::filesystem::ofstream& stream)
+		CreateFileInfo(const boost::filesystem::path& name, boost::filesystem::ofstream& stream)
 			: m_name  (name  )
 			, m_stream(stream)
 		{}
@@ -68,7 +68,7 @@ public:
 		bool m_readOnly;
 		bool m_result;
 
-		OpenFile(CREF(boost::filesystem::path) name = boost::filesystem::path(), bool readOnly = false)
+		OpenFile(const boost::filesystem::path& name = boost::filesystem::path(), bool readOnly = false)
 			: m_name    (name    )
 			, m_readOnly(readOnly)
 			, m_result  (false   )
@@ -79,7 +79,7 @@ public:
 		boost::filesystem::path  m_name;
 		boost::filesystem::path  m_path;
 
-		NewModel(CREF(boost::filesystem::path) name = boost::filesystem::path(), CREF(boost::filesystem::path) path = boost::filesystem::path())
+		NewModel(const boost::filesystem::path& name = boost::filesystem::path(), const boost::filesystem::path& path = boost::filesystem::path())
 			: m_name(name)
 			, m_path(path)
 		{}
@@ -94,9 +94,9 @@ public:
 		bool m_described;
 
 		FileInfo(rdoModelObjects::RDOFileType type = rdoModelObjects::SMR
-		       , CREF(boost::filesystem::path) name = boost::filesystem::path()
-		       , CREF(boost::filesystem::path) fullName = boost::filesystem::path()
-		       , CREF(boost::filesystem::path) extension = "smr"
+		       , const boost::filesystem::path& name = boost::filesystem::path()
+		       , const boost::filesystem::path& fullName = boost::filesystem::path()
+		       , const boost::filesystem::path& extension = "smr"
 		       , bool readOnly  = false
 		       , bool described = false
 		)
@@ -169,18 +169,18 @@ private:
 	FindModel updateModelNames();
 	bool canCloseModel();
 	void realCloseModel();
-	void extractName(CREF(boost::filesystem::path) fullName);
-	void setName(CREF(boost::filesystem::path) name);
+	void extractName(const boost::filesystem::path& fullName);
+	void setName(const boost::filesystem::path& name);
 	void createRDOX();
 
-	void loadFile(CREF(boost::filesystem::path) fileName, std::ostream& stream, bool described, bool mustExist, bool& reanOnly) const;
-	void saveFile(CREF(boost::filesystem::path) fileName, const std::stringstream& stream, bool deleteIfEmpty = false) const;
+	void loadFile(const boost::filesystem::path& fileName, std::ostream& stream, bool described, bool mustExist, bool& reanOnly) const;
+	void saveFile(const boost::filesystem::path& fileName, const std::stringstream& stream, bool deleteIfEmpty = false) const;
 
-	bool createFile(CREF(boost::filesystem::path) name, boost::filesystem::ofstream& stream) const;
+	bool createFile(const boost::filesystem::path& name, boost::filesystem::ofstream& stream) const;
 
 	void beforeModelStart();
 	void stopModel();
-	void trace(CREF(std::string) message);
+	void trace(const std::string& message);
 	void writeModelFilesInfo(boost::filesystem::ofstream& stream) const;
 
 protected:
@@ -188,7 +188,7 @@ protected:
 	virtual void proc(RDOMessageInfo& msg);
 
 	void newModel(const NewModel* const data);
-	bool openModel(CREF(boost::filesystem::path) modelFileName);
+	bool openModel(const boost::filesystem::path& modelFileName);
 	void closeModel();
 	bool saveModel();
 

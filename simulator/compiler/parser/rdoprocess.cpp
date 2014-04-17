@@ -68,7 +68,7 @@ void proc_opr_error(const char* message)
 std::string RDOPROCProcess::s_name_prefix = "";
 std::string RDOPROCProcess::s_name_sufix  = "s";
 
-RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info, CREF(std::string) name, LPRDORTPResType transactType)
+RDOPROCProcess::RDOPROCProcess(const RDOParserSrcInfo& info, const std::string& name, LPRDORTPResType transactType)
 	: RDOParserSrcInfo(info        )
 	, m_closed        (false       )
 	, m_name          (name        )
@@ -100,7 +100,7 @@ void RDOPROCProcess::end()
 	}
 }
 
-void RDOPROCProcess::insertBlock(CREF(LPRDOPROCOperator) pBlock)
+void RDOPROCProcess::insertBlock(const LPRDOPROCOperator& pBlock)
 {
 	ASSERT(pBlock);
 	m_blockList.push_back(pBlock);
@@ -113,7 +113,7 @@ void RDOPROCProcess::insertChild(LPRDOPROCProcess& pProcess)
 	pProcess->m_pParentProcess = this;
 }
 
-bool RDOPROCProcess::checkTransactType(CREF(std::string) name) const
+bool RDOPROCProcess::checkTransactType(const std::string& name) const
 {
 	return (name == m_transactType->name());
 }
@@ -121,7 +121,7 @@ bool RDOPROCProcess::checkTransactType(CREF(std::string) name) const
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCOperator
 // --------------------------------------------------------------------------------
-RDOPROCOperator::RDOPROCOperator(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name)
+RDOPROCOperator::RDOPROCOperator(const LPRDOPROCProcess& pProcess, const std::string& name)
 	: m_name    (name    )
 	, m_pProcess(pProcess)
 {
@@ -135,7 +135,7 @@ RDOPROCOperator::~RDOPROCOperator()
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCGenerate
 // --------------------------------------------------------------------------------
-RDOPROCGenerate::RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name, CREF(rdo::runtime::LPRDOCalc) pTimeCalc, CREF(rdo::runtime::LPRDOCalc) pCreateAndGoOnTransactCalc)
+RDOPROCGenerate::RDOPROCGenerate(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pTimeCalc, const rdo::runtime::LPRDOCalc& pCreateAndGoOnTransactCalc)
 	: RDOPROCOperator(pProcess, name)
 {
 	m_pRuntime = RF(rdo::runtime::RDOPROCGenerate)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pTimeCalc, pCreateAndGoOnTransactCalc);
@@ -145,14 +145,14 @@ RDOPROCGenerate::RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(std::stri
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCBlockForQueue
 // --------------------------------------------------------------------------------
-RDOPROCBlockForQueue::RDOPROCBlockForQueue(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name)
+RDOPROCBlockForQueue::RDOPROCBlockForQueue(const LPRDOPROCProcess& pProcess, const std::string& name)
 	: RDOPROCOperator(pProcess, name)
 {}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCQueue
 // --------------------------------------------------------------------------------
-RDOPROCQueue::RDOPROCQueue(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name)
+RDOPROCQueue::RDOPROCQueue(const LPRDOPROCProcess& pProcess, const std::string& name)
 	: RDOPROCBlockForQueue(pProcess, name)
 {}
 
@@ -179,7 +179,7 @@ void RDOPROCQueue::createRuntime()
 	ASSERT(m_pRuntime);
 }
 
-void RDOPROCQueue::setResource(CREF(std::string) name)
+void RDOPROCQueue::setResource(const std::string& name)
 {
 	ASSERT(!name.empty());
 	ASSERT(m_resourceName.empty());
@@ -190,7 +190,7 @@ void RDOPROCQueue::setResource(CREF(std::string) name)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCDepart
 // --------------------------------------------------------------------------------
-RDOPROCDepart::RDOPROCDepart(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name)
+RDOPROCDepart::RDOPROCDepart(const LPRDOPROCProcess& pProcess, const std::string& name)
 	: RDOPROCBlockForQueue(pProcess, name)
 {}
 
@@ -217,7 +217,7 @@ void RDOPROCDepart::createRuntime()
 	ASSERT(m_pRuntime);
 }
 
-void RDOPROCDepart::setResource(CREF(std::string) name)
+void RDOPROCDepart::setResource(const std::string& name)
 {
 	ASSERT(!name.empty());
 	ASSERT(m_resourceName.empty());
@@ -228,14 +228,14 @@ void RDOPROCDepart::setResource(CREF(std::string) name)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCBlockForSeize
 // --------------------------------------------------------------------------------
-RDOPROCBlockForSeize::RDOPROCBlockForSeize(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name)
+RDOPROCBlockForSeize::RDOPROCBlockForSeize(const LPRDOPROCProcess& pProcess, const std::string& name)
 	: RDOPROCOperator(pProcess, name)
 {}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCSeize
 // --------------------------------------------------------------------------------
-RDOPROCSeize::RDOPROCSeize(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name)
+RDOPROCSeize::RDOPROCSeize(const LPRDOPROCProcess& pProcess, const std::string& name)
 	: RDOPROCBlockForSeize(pProcess, name)
 {}
 
@@ -280,7 +280,7 @@ void RDOPROCSeize::createRuntime()
 	}
 }
 
-void RDOPROCSeize::addResource(CREF(std::string) name)
+void RDOPROCSeize::addResource(const std::string& name)
 {
 	ASSERT(!name.empty());
 	m_resourceList.push_back(name);
@@ -289,7 +289,7 @@ void RDOPROCSeize::addResource(CREF(std::string) name)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCRelease
 // --------------------------------------------------------------------------------
-RDOPROCRelease::RDOPROCRelease(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name)
+RDOPROCRelease::RDOPROCRelease(const LPRDOPROCProcess& pProcess, const std::string& name)
 	: RDOPROCBlockForSeize(pProcess, name)
 {}
 
@@ -334,7 +334,7 @@ void RDOPROCRelease::createRuntime()
 	}
 }
 
-void RDOPROCRelease::addResource(CREF(std::string) name)
+void RDOPROCRelease::addResource(const std::string& name)
 {
 	ASSERT(!name.empty());
 	m_resourceList.push_back(name);
@@ -343,7 +343,7 @@ void RDOPROCRelease::addResource(CREF(std::string) name)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAdvance
 // --------------------------------------------------------------------------------
-RDOPROCAdvance::RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name, CREF(rdo::runtime::LPRDOCalc) pTimeCalc)
+RDOPROCAdvance::RDOPROCAdvance(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pTimeCalc)
 	: RDOPROCOperator(pProcess, name)
 {
 	m_pRuntime = RF(rdo::runtime::RDOPROCAdvance)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pTimeCalc);
@@ -353,7 +353,7 @@ RDOPROCAdvance::RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(std::string
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCTerminate
 // --------------------------------------------------------------------------------
-RDOPROCTerminate::RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name, CREF(rdo::runtime::LPRDOCalc) pCalc)
+RDOPROCTerminate::RDOPROCTerminate(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pCalc)
 	: RDOPROCOperator(pProcess, name)
 {
 	m_pRuntime = RF(rdo::runtime::RDOPROCTerminate)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pCalc);
@@ -363,7 +363,7 @@ RDOPROCTerminate::RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(std::st
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAssign
 // --------------------------------------------------------------------------------
-RDOPROCAssign::RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(std::string) name, CREF(rdo::runtime::LPRDOCalc) pCalc)
+RDOPROCAssign::RDOPROCAssign(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pCalc)
 	: RDOPROCOperator(pProcess, name)
 {
 	m_pRuntime = RF(rdo::runtime::RDOPROCAssign)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pCalc);

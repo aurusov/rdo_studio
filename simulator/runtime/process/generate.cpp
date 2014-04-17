@@ -23,12 +23,12 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCGenerate
 // --------------------------------------------------------------------------------
-void RDOPROCGenerate::onStart(CREF(LPRDORuntime) pRuntime)
+void RDOPROCGenerate::onStart(const LPRDORuntime& pRuntime)
 {
 	calcNextTimeInterval(pRuntime);
 }
 
-bool RDOPROCGenerate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCGenerate::onCheckCondition(const LPRDORuntime& pRuntime)
 {
 	if (m_maxCreateTransactCount && m_createdTransactCount >= m_maxCreateTransactCount.get())
 	{
@@ -38,13 +38,13 @@ bool RDOPROCGenerate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 	return pRuntime->getCurrentTime() >= timeNext ? true : false;
 }
 
-IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCGenerate::calcNextTimeInterval(CREF(LPRDORuntime) pRuntime)
+void RDOPROCGenerate::calcNextTimeInterval(const LPRDORuntime& pRuntime)
 {
 	timeNext = m_pTimeCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime();
 	pRuntime->addTimePoint(
@@ -54,12 +54,12 @@ void RDOPROCGenerate::calcNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 	);
 }
 
-void RDOPROCGenerate::onStop(CREF(LPRDORuntime) pRuntime)
+void RDOPROCGenerate::onStop(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 }
 
-void RDOPROCGenerate::onMakePlaned(CREF(LPRDORuntime) pRuntime)
+void RDOPROCGenerate::onMakePlaned(const LPRDORuntime& pRuntime)
 {
 	++m_createdTransactCount;
 
@@ -82,13 +82,13 @@ void RDOPROCGenerate::onMakePlaned(CREF(LPRDORuntime) pRuntime)
 	calcNextTimeInterval(pRuntime);
 }
 
-IBaseOperation::BOResult RDOPROCGenerate::onContinue(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCGenerate::onContinue(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
-void RDOPROCGenerate::setStatistics(CREF(LPIInternalStatistics) pStatistics)
+void RDOPROCGenerate::setStatistics(const LPIInternalStatistics& pStatistics)
 {
 	m_pStatistics = pStatistics;
 }

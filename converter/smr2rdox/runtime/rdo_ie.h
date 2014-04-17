@@ -30,22 +30,22 @@ friend class RDOIrregEvent;
 public:
 	RDOPatternIrregEvent(bool trace);
 
-	void addConvertorCalc  (CREF(LPRDOCalc) pCalc            ) { m_convertor.push_back(pCalc);        }
+	void addConvertorCalc  (const LPRDOCalc& pCalc           ) { m_convertor.push_back(pCalc);        }
 	void addConvertorStatus(RDOResource::ConvertStatus status) { m_convertorStatus.push_back(status); }
-	void addEraseCalc      (CREF(LPRDOCalc) pCalc            ) { m_erase.push_back(pCalc);            }
-	void setTime           (CREF(LPRDOCalc) timeCalc         ) { m_timeCalc = timeCalc;	              }
+	void addEraseCalc      (const LPRDOCalc& pCalc           ) { m_erase.push_back(pCalc);            }
+	void setTime           (const LPRDOCalc& timeCalc        ) { m_timeCalc = timeCalc;	              }
 
-	void convertEvent(CREF(LPRDORuntime) pRuntime)
+	void convertEvent(const LPRDORuntime& pRuntime)
 	{
 		preSelectRelRes(pRuntime);
 		runCalcs(m_convertor, pRuntime);
 	}
-	void convertErase(CREF(LPRDORuntime) pRuntime)
+	void convertErase(const LPRDORuntime& pRuntime)
 	{
 		runCalcs(m_erase, pRuntime);
 	}
 
-	double getNextTimeInterval(CREF(LPRDORuntime) pRuntime);
+	double getNextTimeInterval(const LPRDORuntime& pRuntime);
 
 private:
 	LPRDOCalc         m_timeCalc;
@@ -69,15 +69,15 @@ QUERY_INTERFACE_END
 friend class RDOTrace;
 
 private:
-	RDOIrregEvent(RDOPatternIrregEvent* pPattern, bool trace, CREF(std::string) name);
+	RDOIrregEvent(RDOPatternIrregEvent* pPattern, bool trace, const std::string& name);
 
 	double  m_time;
 
-	void   convertEvent       (CREF(LPRDORuntime) pRuntime);
-	double getNextTimeInterval(CREF(LPRDORuntime) pRuntime);
+	void   convertEvent       (const LPRDORuntime& pRuntime);
+	double getNextTimeInterval(const LPRDORuntime& pRuntime);
 
-	virtual void onBeforeIrregularEvent(CREF(LPRDORuntime) pRuntime);
-	virtual void onAfterIrregularEvent (CREF(LPRDORuntime) pRuntime);
+	virtual void onBeforeIrregularEvent(const LPRDORuntime& pRuntime);
+	virtual void onAfterIrregularEvent (const LPRDORuntime& pRuntime);
 
 	DECLARE_IBaseOperation;
 };

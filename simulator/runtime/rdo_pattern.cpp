@@ -40,7 +40,7 @@ RDOPatternEvent::RDOPatternEvent(bool trace)
 RDOPatternEvent::~RDOPatternEvent()
 {}
 
-double RDOPatternEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
+double RDOPatternEvent::getNextTimeInterval(const LPRDORuntime& pRuntime)
 {
 	double time_next = m_timeCalc->calcValue(pRuntime).getDouble();
 	if (time_next >= 0)
@@ -52,7 +52,7 @@ double RDOPatternEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 	return 0;
 }
 
-LPIEvent RDOPatternEvent::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(std::string) oprName)
+LPIEvent RDOPatternEvent::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const std::string& oprName)
 {
 	LPIEvent pEvent = RF(RDOEvent)::create(pRuntime, this, traceable(), oprName);
 	ASSERT(pEvent);
@@ -70,7 +70,7 @@ RDOPatternRule::RDOPatternRule(bool trace)
 RDOPatternRule::~RDOPatternRule()
 {}
 
-LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(std::string) _oprName)
+LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const std::string& _oprName)
 {
 	LPIRule pRule = RF(RDORule)::create(pRuntime, this, traceable(), _oprName);
 	ASSERT(pRule);
@@ -78,7 +78,7 @@ LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer pLogic, CREF(LP
 	return pRule;
 }
 
-LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) pCondition, CREF(std::string) _oprName)
+LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const LPRDOCalc& pCondition, const std::string& _oprName)
 {
 	LPIRule pRule = RF(RDORule)::create(pRuntime, this, traceable(), pCondition, _oprName);
 	ASSERT(pRule);
@@ -97,7 +97,7 @@ RDOPatternOperation::RDOPatternOperation(bool trace)
 RDOPatternOperation::~RDOPatternOperation()
 {}
 
-double RDOPatternOperation::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
+double RDOPatternOperation::getNextTimeInterval(const LPRDORuntime& pRuntime)
 {
 	double time_next = m_timeCalc->calcValue(pRuntime).getDouble();
 	if (time_next >= 0)
@@ -108,7 +108,7 @@ double RDOPatternOperation::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 	return 0;
 }
 
-LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(std::string) _oprName)
+LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const std::string& _oprName)
 {
 	LPIOperation pOperation = RF(RDOOperation)::create(pRuntime, this, traceable(), _oprName);
 	ASSERT(pOperation);
@@ -116,7 +116,7 @@ LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer pLogi
 	return pOperation;
 }
 
-LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) pCondition, CREF(std::string) _oprName)
+LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const LPRDOCalc& pCondition, const std::string& _oprName)
 {
 	LPIOperation pOperation = RF(RDOOperation)::create(pRuntime, this, traceable(), pCondition, _oprName);
 	ASSERT(pOperation);
@@ -134,7 +134,7 @@ RDOPatternKeyboard::RDOPatternKeyboard(bool trace)
 RDOPatternKeyboard::~RDOPatternKeyboard()
 {}
 
-LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(std::string) _oprName)
+LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const std::string& _oprName)
 {
 	LPIKeyboard pKeyboard = RF(RDOKeyboard)::create(pRuntime, this, traceable(), _oprName);
 	ASSERT(pKeyboard);
@@ -142,7 +142,7 @@ LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer pLogic,
 	return pKeyboard;
 }
 
-LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) pCondition, CREF(std::string) _oprName)
+LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const LPRDOCalc& pCondition, const std::string& _oprName)
 {
 	LPIKeyboard pKeyboard = RF(RDOKeyboard)::create(pRuntime, this, traceable(), pCondition, _oprName);
 	ASSERT(pKeyboard);

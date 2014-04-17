@@ -21,7 +21,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOLexer
 // --------------------------------------------------------------------------------
-RDOLexer::RDOLexer(CREF(LPRDOParser) pParser, std::istream* yyin, std::ostream* yyout)
+RDOLexer::RDOLexer(const LPRDOParser& pParser, std::istream* yyin, std::ostream* yyout)
 	: yyFlexLexer(yyin, yyout)
 	, m_lpval    (NULL       )
 	, m_lploc    (NULL       )
@@ -32,7 +32,7 @@ RDOLexer::RDOLexer(CREF(LPRDOParser) pParser, std::istream* yyin, std::ostream* 
 	, m_array_param_cnt(0    )
 {}
 
-CREF(LPRDOParser) RDOLexer::parser() const
+const LPRDOParser& RDOLexer::parser() const
 {
 	return m_pParser;
 }

@@ -16,7 +16,7 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 template<class RTLogic, class Activity>
-inline RDOLogic<RTLogic, Activity>::RDOLogic(CREF(RDOParserSrcInfo) src_info)
+inline RDOLogic<RTLogic, Activity>::RDOLogic(const RDOParserSrcInfo& src_info)
 	: RDOLogicBase(src_info)
 {}
 
@@ -25,7 +25,7 @@ inline RDOLogic<RTLogic, Activity>::~RDOLogic()
 {}
 
 template<class RTLogic, class Activity>
-inline typename RDOLogic<RTLogic, Activity>::LPActivity RDOLogic<RTLogic,Activity>::addNewActivity(CREF(RDOParserSrcInfo) activity_src_info, CREF(RDOParserSrcInfo) pattern_src_info)
+inline typename RDOLogic<RTLogic, Activity>::LPActivity RDOLogic<RTLogic,Activity>::addNewActivity(const RDOParserSrcInfo& activity_src_info, const RDOParserSrcInfo& pattern_src_info)
 {
 	LPActivity pAactivity = rdo::Factory<Activity>::create(m_pRuntimeLogic, activity_src_info, pattern_src_info);
 	ASSERT(pAactivity);

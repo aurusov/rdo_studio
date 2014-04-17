@@ -30,27 +30,27 @@ class RDOValue
 {
 DECLARE_FACTORY(RDOValue);
 public:
-	CREF(LPRDOType) type() const;
+	const LPRDOType& type() const;
 	rdo::runtime::RDOType::TypeID typeID() const;
-	CREF(rdo::runtime::RDOValue) value() const;
+	const rdo::runtime::RDOValue& value() const;
 	const rdo::runtime::RDOValue* operator->() const;
 
 	bool defined() const;
 	bool constant() const;
 
-	static LPRDOValue getIdentificator(CREF(std::string) identificator);
+	static LPRDOValue getIdentificator(const std::string& identificator);
 
 private:
-	explicit RDOValue(CREF(int) value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(std::size_t) value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(double) value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(std::string) value, CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(const int& value, const RDOParserSrcInfo& src_info);
+	explicit RDOValue(const std::size_t& value, const RDOParserSrcInfo& src_info);
+	explicit RDOValue(const double& value, const RDOParserSrcInfo& src_info);
+	explicit RDOValue(const std::string& value, const RDOParserSrcInfo& src_info);
 
-	explicit RDOValue(CREF(rdo::runtime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
-	         RDOValue(CREF(LPRDOValue) pValue);
-	         RDOValue(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info = RDOParserSrcInfo());
+	explicit RDOValue(const rdo::runtime::RDOValue& value, const LPRDOType& type, const RDOParserSrcInfo& src_info);
+	         RDOValue(const LPRDOValue& pValue);
+	         RDOValue(const LPRDOType& type, const RDOParserSrcInfo& src_info = RDOParserSrcInfo());
 	// Для t_identificator известно только имя, но не тип
-	explicit RDOValue(CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(const RDOParserSrcInfo& src_info);
 	// Неопределенный тип
 	         RDOValue();
 

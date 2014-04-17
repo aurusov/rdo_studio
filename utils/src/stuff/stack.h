@@ -22,13 +22,13 @@ template<class T>
 class stack
 {
 public:
-	void push(CREF(T) item);
+	void push(const T& item);
 	void pop();
 
 	bool empty() const;
 	std::size_t size() const;
 
-	CREF(T) top() const;
+	const T& top() const;
 	 T& top();
 
 private:

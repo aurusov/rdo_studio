@@ -75,7 +75,7 @@ std::string Parser::getAllKW() const
 	return rdo::format("%s %s %s %s", kw0.c_str(), kw1.c_str(), kw2.c_str(), kw3.c_str());
 }
 
-std::string Parser::convertToLexer(CREF(std::string) kw)
+std::string Parser::convertToLexer(const std::string& kw)
 {
 	std::string s = kw;
 	while (s.find('?') != std::string::npos)
@@ -184,7 +184,7 @@ void Parser::setEditorStyle(ParserStyle* pStyle)
 	sendEditor(SCI_STYLESETSIZE, SCE_RDO_OPERATOR, m_pStyle->font.size);
 }
 
-void Parser::replaceCurrent(CREF(QString) str, int changePosValue) const
+void Parser::replaceCurrent(const QString& str, int changePosValue) const
 {
 	int pos = changePosValue != -1
 		? getCurrentPos()

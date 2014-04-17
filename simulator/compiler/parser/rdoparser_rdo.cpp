@@ -48,7 +48,7 @@ RDOParserRDOItem::~RDOParserRDOItem()
 	}
 }
 
-void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser)
+void RDOParserRDOItem::parse(const LPRDOParser& pParser)
 {
 	ASSERT(pParser);
 
@@ -74,7 +74,7 @@ void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser)
 	}
 }
 
-void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser, std::istream& in_stream)
+void RDOParserRDOItem::parse(const LPRDOParser& pParser, std::istream& in_stream)
 {
 	ASSERT(pParser  );
 	ASSERT(!m_pLexer);
@@ -93,7 +93,7 @@ void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser, std::istream& in_stream)
 	}
 }
 
-RDOLexer* RDOParserRDOItem::getLexer(CREF(LPRDOParser) pParser, std::istream* in_stream, std::ostream* out_stream)
+RDOLexer* RDOParserRDOItem::getLexer(const LPRDOParser& pParser, std::istream* in_stream, std::ostream* out_stream)
 {
 	ASSERT(pParser);
 	return new RDOLexer(pParser, in_stream, out_stream);

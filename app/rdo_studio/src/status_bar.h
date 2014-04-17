@@ -38,7 +38,7 @@ public:
 	};
 
 	template <Type N>
-	void update(CREF(QString) message)
+	void update(const QString& message)
 	{
 		update(StatusBarType<N>(), message);
 	}
@@ -67,7 +67,7 @@ private:
 	{};
 
 	template <Type N>
-	void update(StatusBarType<N> statusBar, CREF(QString) message)
+	void update(StatusBarType<N> statusBar, const QString& message)
 	{
 		QLabel* pLabel = getLabel(statusBar);
 		ASSERT(pLabel);

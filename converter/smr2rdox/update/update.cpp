@@ -53,7 +53,7 @@ IDocument::Type DocUpdate::getCurrentType() const
 // --------------------------------------------------------------------------------
 // -------------------- UpdateInsert
 // --------------------------------------------------------------------------------
-UpdateInsert::UpdateInsert(CREF(Position) pos, CREF(std::string) value, IDocument::Type file)
+UpdateInsert::UpdateInsert(const Position& pos, const std::string& value, IDocument::Type file)
 	: DocUpdate(file )
 	, m_pos    (pos  )
 	, m_value  (value)
@@ -75,7 +75,7 @@ void UpdateInsert::apply(LPIDocument& pDocument) const
 	pDocument->insert(m_file, m_pos.get(), m_value);
 }
 
-void UpdateInsert::insert(IDocument::Type type, CREF(Position) to, std::size_t size)
+void UpdateInsert::insert(IDocument::Type type, const Position& to, std::size_t size)
 {
 	if (m_file != type)
 		return;
@@ -88,7 +88,7 @@ void UpdateInsert::insert(IDocument::Type type, CREF(Position) to, std::size_t s
 	}
 }
 
-void UpdateInsert::remove(IDocument::Type type, CREF(Position) from, CREF(Position) to)
+void UpdateInsert::remove(IDocument::Type type, const Position& from, const Position& to)
 {
 	if (m_file != type)
 		return;
@@ -104,7 +104,7 @@ void UpdateInsert::remove(IDocument::Type type, CREF(Position) from, CREF(Positi
 // --------------------------------------------------------------------------------
 // -------------------- UpdateDelete
 // --------------------------------------------------------------------------------
-UpdateDelete::UpdateDelete(CREF(Position) posFrom, CREF(Position) posTo)
+UpdateDelete::UpdateDelete(const Position& posFrom, const Position& posTo)
 	: m_posFrom(posFrom)
 	, m_posTo  (posTo  )
 {
@@ -127,7 +127,7 @@ void UpdateDelete::apply(LPIDocument& pDocument) const
 	pDocument->remove(m_file, m_posFrom.get(), m_posTo.get());
 }
 
-void UpdateDelete::insert(IDocument::Type type, CREF(Position) to, std::size_t size)
+void UpdateDelete::insert(IDocument::Type type, const Position& to, std::size_t size)
 {
 	if (m_file != type)
 		return;
@@ -141,7 +141,7 @@ void UpdateDelete::insert(IDocument::Type type, CREF(Position) to, std::size_t s
 	}
 }
 
-void UpdateDelete::remove(IDocument::Type type, CREF(Position) from, CREF(Position) to)
+void UpdateDelete::remove(IDocument::Type type, const Position& from, const Position& to)
 {
 	if (m_file != type)
 		return;
@@ -158,7 +158,7 @@ void UpdateDelete::remove(IDocument::Type type, CREF(Position) from, CREF(Positi
 // --------------------------------------------------------------------------------
 // -------------------- UpdateReplace
 // --------------------------------------------------------------------------------
-UpdateReplace::UpdateReplace(CREF(Position) posFrom, CREF(Position) posTo, CREF(std::string) value, IDocument::Type file)
+UpdateReplace::UpdateReplace(const Position& posFrom, const Position& posTo, const std::string& value, IDocument::Type file)
 	: DocUpdate(file)
 {
 	pDelete = rdo::Factory<UpdateDelete>::create(posFrom, posTo);
@@ -182,13 +182,13 @@ void UpdateReplace::apply(LPIDocument& pDocument) const
 	pInsert->apply(pDocument);
 }
 
-void UpdateReplace::insert(IDocument::Type type, CREF(Position) to, std::size_t size)
+void UpdateReplace::insert(IDocument::Type type, const Position& to, std::size_t size)
 {
 	pDelete->insert(type, to, size);
 	pInsert->insert(type, to, size);
 }
 
-void UpdateReplace::remove(IDocument::Type type, CREF(Position) from, CREF(Position) to)
+void UpdateReplace::remove(IDocument::Type type, const Position& from, const Position& to)
 {
 	pDelete->remove(type, from, to);
 	pInsert->remove(type, from, to);
@@ -197,7 +197,7 @@ void UpdateReplace::remove(IDocument::Type type, CREF(Position) from, CREF(Posit
 // --------------------------------------------------------------------------------
 // -------------------- UpdateMove
 // --------------------------------------------------------------------------------
-UpdateMove::UpdateMove(CREF(Position) posFromBegin, CREF(Position) posFromEnd, CREF(Position) posTo, IDocument::Type fileTo, IDocument::Type fileFrom)
+UpdateMove::UpdateMove(const Position& posFromBegin, const Position& posFromEnd, const Position& posTo, IDocument::Type fileTo, IDocument::Type fileFrom)
 	: DocUpdate     (fileTo      )
 	, m_posFromBegin(posFromBegin)
 	, m_posFromEnd  (posFromEnd  )
@@ -240,7 +240,7 @@ void UpdateMove::apply(LPIDocument& pDocument) const
 	pDocument->insert(m_file, pos.get(), cut);
 }
 
-void UpdateMove::insert(IDocument::Type type, CREF(Position) to, std::size_t size)
+void UpdateMove::insert(IDocument::Type type, const Position& to, std::size_t size)
 {
 	if (to.end())
 		return;
@@ -292,7 +292,7 @@ void UpdateMove::insert(IDocument::Type type, CREF(Position) to, std::size_t siz
 	}
 }
 
-void UpdateMove::remove(IDocument::Type type, CREF(Position) from, CREF(Position) to)
+void UpdateMove::remove(IDocument::Type type, const Position& from, const Position& to)
 {
 	if (m_fileFrom == type)
 	{
@@ -325,7 +325,7 @@ void UpdateMove::remove(IDocument::Type type, CREF(Position) from, CREF(Position
 // --------------------------------------------------------------------------------
 // -------------------- UpdateSwap
 // --------------------------------------------------------------------------------
-UpdateSwap::UpdateSwap(CREF(Position) pos1Begin, CREF(Position) pos1End, CREF(Position) pos2Begin, CREF(Position) pos2End, IDocument::Type file)
+UpdateSwap::UpdateSwap(const Position& pos1Begin, const Position& pos1End, const Position& pos2Begin, const Position& pos2End, IDocument::Type file)
 	: DocUpdate  (file     )
 	, m_pos1Begin(pos1Begin)
 	, m_pos1End  (pos1End  )
@@ -391,7 +391,7 @@ void UpdateSwap::apply(LPIDocument& pDocument) const
 	pDocument->insert(m_file, pos1Begin.get(), cut2);
 }
 
-void UpdateSwap::insert(IDocument::Type type, CREF(Position) to, std::size_t size)
+void UpdateSwap::insert(IDocument::Type type, const Position& to, std::size_t size)
 {
 	if (m_file != type)
 		return;
@@ -400,7 +400,7 @@ void UpdateSwap::insert(IDocument::Type type, CREF(Position) to, std::size_t siz
 	insert(to, size, m_pos2Begin, m_pos2End);
 }
 
-void UpdateSwap::remove(IDocument::Type type, CREF(Position) from, CREF(Position) to)
+void UpdateSwap::remove(IDocument::Type type, const Position& from, const Position& to)
 {
 	if (m_file != type)
 		return;
@@ -409,7 +409,7 @@ void UpdateSwap::remove(IDocument::Type type, CREF(Position) from, CREF(Position
 	remove(from, to, m_pos2Begin, m_pos2End);
 }
 
-void UpdateSwap::insert(CREF(Position) from, CREF(std::size_t) size, Position& posBegin, Position& posEnd)
+void UpdateSwap::insert(const Position& from, const std::size_t& size, Position& posBegin, Position& posEnd)
 {
 	if (from < posBegin)
 	{
@@ -429,7 +429,7 @@ void UpdateSwap::insert(CREF(Position) from, CREF(std::size_t) size, Position& p
 	}
 }
 
-void UpdateSwap::remove(CREF(Position) from, CREF(Position) to, Position& posBegin, Position& posEnd)
+void UpdateSwap::remove(const Position& from, const Position& to, Position& posBegin, Position& posEnd)
 {
 	if (to <= posBegin)
 	{

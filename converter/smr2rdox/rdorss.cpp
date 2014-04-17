@@ -36,7 +36,7 @@ void cnv_rsserror(const char* message)
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource
 // --------------------------------------------------------------------------------
-RDORSSResource::RDORSSResource(Converter* pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
+RDORSSResource::RDORSSResource(Converter* pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, int id)
 	: RDOParserSrcInfo(src_info                                      )
 	, m_pResType      (pResType                                      )
 	, m_id            (id == UNDEFINED_ID ? pParser->getRSS_id() : id)
@@ -52,7 +52,7 @@ void RDORSSResource::writeModelStructure(std::ostream& stream) const
 	stream << (getID() + 1) << " " << name() << " " << getType()->getNumber() << std::endl;
 }
 
-void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
+void RDORSSResource::addParam(const LPRDOValue& pParam)
 {
 	ASSERT(pParam);
 
@@ -111,7 +111,7 @@ rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCResource
 // --------------------------------------------------------------------------------
-RDOPROCResource::RDOPROCResource(Converter* pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
+RDOPROCResource::RDOPROCResource(Converter* pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, int id)
 	: RDORSSResource(pParser, src_info, pResType, id)
 {}
 

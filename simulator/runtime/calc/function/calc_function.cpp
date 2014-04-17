@@ -24,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 RDOFunCalc::RDOFunCalc()
 {}
 
-void RDOFunCalc::addRetCalc(CREF(LPRDOCalc) pCalc)
+void RDOFunCalc::addRetCalc(const LPRDOCalc& pCalc)
 {
 	UNUSED(pCalc);
 }
@@ -34,18 +34,18 @@ void RDOFunCalc::addRetCalc(CREF(LPRDOCalc) pCalc)
 // --------------------------------------------------------------------------------
 // Функция типа таблица
 // --------------------------------------------------------------------------------
-RDOFuncTableCalc::RDOFuncTableCalc(CREF(LPRDOCalc) pArgument)
+RDOFuncTableCalc::RDOFuncTableCalc(const LPRDOCalc& pArgument)
 	: m_pArgument(pArgument)
 {
 	ASSERT(m_pArgument);
 }
 
-void RDOFuncTableCalc::addResultCalc(CREF(LPRDOCalcConst) pResult)
+void RDOFuncTableCalc::addResultCalc(const LPRDOCalcConst& pResult)
 {
 	m_pResultList.push_back(pResult);
 }
 
-RDOValue RDOFuncTableCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFuncTableCalc::doCalc(const LPRDORuntime& pRuntime)
 {
 	const std::size_t index = m_pArgument->calcValue(pRuntime).getUInt();
 	return m_pResultList[index]->calcValue(pRuntime);
@@ -56,11 +56,11 @@ RDOValue RDOFuncTableCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // Функция типа список
 // --------------------------------------------------------------------------------
-RDOFunListCalc::RDOFunListCalc(CREF(LPRDOCalcConst) pDefaultValue)
+RDOFunListCalc::RDOFunListCalc(const LPRDOCalcConst& pDefaultValue)
 	: m_pDefaultValue(pDefaultValue)
 {}
 
-void RDOFunListCalc::addCase(CREF(LPRDOCalc) pCase, CREF(LPRDOCalcConst) pResult)
+void RDOFunListCalc::addCase(const LPRDOCalc& pCase, const LPRDOCalcConst& pResult)
 {
 	ASSERT(pCase  );
 	ASSERT(pResult);
@@ -69,7 +69,7 @@ void RDOFunListCalc::addCase(CREF(LPRDOCalc) pCase, CREF(LPRDOCalcConst) pResult
 	m_resultList.push_back(pResult);
 }
 
-RDOValue RDOFunListCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunListCalc::doCalc(const LPRDORuntime& pRuntime)
 {
 	ResultList::const_iterator resultIt = m_resultList.begin();
 	for (const auto& calc: m_caseList)
@@ -89,7 +89,7 @@ RDOValue RDOFunListCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOFunAlgorithmicCalc::RDOFunAlgorithmicCalc()
 {}
 
-void RDOFunAlgorithmicCalc::addCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pAction)
+void RDOFunAlgorithmicCalc::addCalcIf(const LPRDOCalc& pCondition, const LPRDOCalc& pAction)
 {
 	ASSERT(pCondition);
 	ASSERT(pAction   );
@@ -98,7 +98,7 @@ void RDOFunAlgorithmicCalc::addCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc
 	m_actionList   .push_back(pAction   );
 }
 
-RDOValue RDOFunAlgorithmicCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunAlgorithmicCalc::doCalc(const LPRDORuntime& pRuntime)
 {
 	RDOCalcList::const_iterator actionIt = m_actionList.begin();
 	for (const auto& condition: m_conditionList)
@@ -118,13 +118,13 @@ RDOValue RDOFunAlgorithmicCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcFuncParam
 // --------------------------------------------------------------------------------
-RDOCalcFuncParam::RDOCalcFuncParam(std::size_t paramID, CREF(RDOSrcInfo) src_info)
+RDOCalcFuncParam::RDOCalcFuncParam(std::size_t paramID, const RDOSrcInfo& src_info)
 	: m_paramID(paramID)
 {
 	setSrcInfo(src_info);
 }
 
-RDOValue RDOCalcFuncParam::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcFuncParam::doCalc(const LPRDORuntime& pRuntime)
 {
 	return pRuntime->getFuncArgument(m_paramID);
 }
@@ -136,7 +136,7 @@ RDOCalcGetConst::RDOCalcGetConst(std::size_t constantID)
 	: m_constantID(constantID)
 {}
 
-RDOValue RDOCalcGetConst::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcGetConst::doCalc(const LPRDORuntime& pRuntime)
 {
 	return pRuntime->getConstValue(m_constantID);
 }
@@ -144,7 +144,7 @@ RDOValue RDOCalcGetConst::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcSetConst
 // --------------------------------------------------------------------------------
-RDOCalcSetConst::RDOCalcSetConst(std::size_t constantID, CREF(LPRDOCalc) pCalc)
+RDOCalcSetConst::RDOCalcSetConst(std::size_t constantID, const LPRDOCalc& pCalc)
 	: m_constantID(constantID)
 	, m_pCalc     (pCalc     )
 {
@@ -154,7 +154,7 @@ RDOCalcSetConst::RDOCalcSetConst(std::size_t constantID, CREF(LPRDOCalc) pCalc)
 	}
 }
 
-RDOValue RDOCalcSetConst::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcSetConst::doCalc(const LPRDORuntime& pRuntime)
 {
 	pRuntime->setConstValue(m_constantID, m_pCalc->calcValue(pRuntime));
 	return RDOValue();
@@ -163,26 +163,26 @@ RDOValue RDOCalcSetConst::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcFunctionCaller
 // --------------------------------------------------------------------------------
-RDOCalcFunctionCaller::RDOCalcFunctionCaller(CREF(LPRDOCalc) pFunction)
+RDOCalcFunctionCaller::RDOCalcFunctionCaller(const LPRDOCalc& pFunction)
 	: m_pFunction(pFunction)
 {}
 
-void RDOCalcFunctionCaller::addParameter(CREF(LPRDOCalc) pParam)
+void RDOCalcFunctionCaller::addParameter(const LPRDOCalc& pParam)
 {
 	m_paramList.push_back(pParam);
 }
 
-void RDOCalcFunctionCaller::setFunctionCalc(CREF(LPRDOCalc) pFunction)
+void RDOCalcFunctionCaller::setFunctionCalc(const LPRDOCalc& pFunction)
 {
 	m_pFunction = pFunction;
 }
 
-CREF(LPRDOCalc) RDOCalcFunctionCaller::function() const
+const LPRDOCalc& RDOCalcFunctionCaller::function() const
 {
 	return m_pFunction;
 }
 
-RDOValue RDOCalcFunctionCaller::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcFunctionCaller::doCalc(const LPRDORuntime& pRuntime)
 {
 	pRuntime->pushFuncTop();
 	for (const auto& param: m_paramList)

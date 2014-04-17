@@ -22,7 +22,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogicBase
 // --------------------------------------------------------------------------------
-RDOLogicBase::RDOLogicBase(CREF(RDOParserSrcInfo) src_info)
+RDOLogicBase::RDOLogicBase(const RDOParserSrcInfo& src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_multithreading(false   )
 {}
@@ -30,7 +30,7 @@ RDOLogicBase::RDOLogicBase(CREF(RDOParserSrcInfo) src_info)
 RDOLogicBase::~RDOLogicBase()
 {}
 
-CREF(std::string) RDOLogicBase::name() const
+const std::string& RDOLogicBase::name() const
 {
 	return src_info().src_text();
 }
@@ -55,7 +55,7 @@ void RDOLogicBase::setMultithreading(bool multithreading)
 	m_multithreading = multithreading;
 }
 
-void RDOLogicBase::setCondition(CREF(LPRDOFUNLogic) pConditon)
+void RDOLogicBase::setCondition(const LPRDOFUNLogic& pConditon)
 {
 	m_pConditon = pConditon;
 }

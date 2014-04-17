@@ -36,10 +36,10 @@ namespace rdo { namespace gui { namespace tracer {
 class LogCtrlFindInList
 {
 public:
-	LogCtrlFindInList(int& checkCounter, CREF(QString) strToFind, bool matchCase, bool matchWholeWord);
-	bool operator() (CREF(QString) nextStr);
+	LogCtrlFindInList(int& checkCounter, const QString& strToFind, bool matchCase, bool matchWholeWord);
+	bool operator() (const QString& nextStr);
 
-	LogCtrlFindInList& operator= (CREF(LogCtrlFindInList))
+	LogCtrlFindInList& operator= (const LogCtrlFindInList&)
 	{
 		NEVER_REACH_HERE;
 		return *this;
@@ -52,7 +52,7 @@ private:
 
 }}} // namespace rdo::gui::tracer
 
-LogCtrlFindInList::LogCtrlFindInList(int& checkCounter, CREF(QString) strToFind, bool matchCase, bool matchWholeWord)
+LogCtrlFindInList::LogCtrlFindInList(int& checkCounter, const QString& strToFind, bool matchCase, bool matchWholeWord)
 	: m_checkCounter(checkCounter)
 {
 	QString what = matchWholeWord
@@ -74,7 +74,7 @@ LogCtrlFindInList::LogCtrlFindInList(int& checkCounter, CREF(QString) strToFind,
 	{}
 }
 
-bool LogCtrlFindInList::operator()(CREF(QString) nextStr)
+bool LogCtrlFindInList::operator()(const QString& nextStr)
 {
 	++m_checkCounter;
 
@@ -105,7 +105,7 @@ LogView::StringList::StringList()
 	, m_maxLegth(0)
 {}
 
-void LogView::StringList::push_back(CREF(QString) value)
+void LogView::StringList::push_back(const QString& value)
 {
 	m_list.push_back(value);
 	++m_count;
@@ -248,7 +248,7 @@ LogView::SubitemColors::SubitemColors()
 	, m_parentColor   ()
 {}
 
-LogView::SubitemColors::SubitemColors(CREF(SubitemColors) subitemColors)
+LogView::SubitemColors::SubitemColors(const SubitemColors& subitemColors)
 	: m_colorList     (subitemColors.m_colorList     )
 	, m_addingSubitems(subitemColors.m_addingSubitems)
 	, m_parentColor   (subitemColors.m_parentColor   )
@@ -326,7 +326,7 @@ LogView::~LogView()
 	clear();
 }
 
-void LogView::push_back(CREF(std::string) log)
+void LogView::push_back(const std::string& log)
 {
 	if (!log.empty())
 	{
@@ -462,7 +462,7 @@ void LogView::setFocusOnly(bool value)
 	m_focusOnly = value;
 }
 
-CREF(LogStyle) LogView::getStyle() const
+const LogStyle& LogView::getStyle() const
 {
 	return *m_logStyle;
 }
@@ -512,7 +512,7 @@ bool LogView::getItemColors(int index, LogColorPair &colors) const
 	return res;
 }
 
-bool LogView::getItemColors(CREF(QString) item, LogColorPair &colors) const
+bool LogView::getItemColors(const QString& item, LogColorPair &colors) const
 {
 	return m_logStyle->getItemColors(item.toStdString(), colors);
 }
@@ -784,7 +784,7 @@ int LogView::find(bool searchDown)
 	return result;
 }
 
-void LogView::onFindDlgFind(CREF(FindDialog::Settings) settings)
+void LogView::onFindDlgFind(const FindDialog::Settings& settings)
 {
 	m_findSettings = settings;
 	updateActionFind(isActivated());

@@ -42,8 +42,8 @@ public:
 	void attachView(ChartView* pView);
 	ChartView* getFirstView();
 
-	CREF(QString) getTitle () const;
-	void          setTitle (CREF(QString) title);
+	const QString& getTitle () const;
+	void           setTitle (const QString& title);
 	void          autoTitle();
 	static void   resetTitleIndex();
 
@@ -51,8 +51,8 @@ public:
 
 	void updateAllViews();
 
-	void addSerie(CREF(LPSerie) pSerie);
-	bool serieExists(CREF(LPSerie) pSerie) const;
+	void addSerie(const LPSerie& pSerie);
+	bool serieExists(const LPSerie& pSerie) const;
 
 	void incTimeEventsCount(Time* time);
 	bool newValueToSerieAdded(Value* val);
@@ -60,8 +60,8 @@ public:
 	void addToViews     (ChartView* pWidget);
 	void removeFromViews(ChartView* pWidget);
 
-	CREF(TimesList) getTimes    () const;
-	CREF(SerieList) getSerieList() const;
+	const TimesList& getTimes    () const;
+	const SerieList& getSerieList() const;
 
 	int    getMaxMarkerSize() const;
 	int    getTicksCount   () const;

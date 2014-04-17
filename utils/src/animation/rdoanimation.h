@@ -46,7 +46,7 @@ struct FrameItem
 	//! \details Возвращает тип элемента
 	Type getType() const;
 
-	bool operator== (CREF(FrameItem) item) const
+	bool operator== (const FrameItem& item) const
 	{
 		return m_type == item.m_type;
 	}
@@ -69,7 +69,7 @@ struct Color
 
 	//! Конструктор копии
 	//! \param color - цвет, на основе которого создаётся новый
-	Color(CREF(Color) color);
+	Color(const Color& color);
 
 	//! Создаёт цвет
 	//! \param r           - красная составляющая цвета
@@ -78,7 +78,7 @@ struct Color
 	//! \param transparent - признак прозрачности
 	Color(unsigned char r, unsigned char g, unsigned char b, bool transparent = false);
 
-	bool operator== (CREF(Color) color) const
+	bool operator== (const Color& color) const
 	{
 		return m_r == color.m_r && m_g == color.m_g && m_b == color.m_b && m_transparent == color.m_transparent;
 	}
@@ -93,14 +93,14 @@ struct ColoredElement
 
 	//! Конструктор копии
 	//! \param color - цвет, на основе которого создаётся новый
-	ColoredElement(CREF(ColoredElement) color);
+	ColoredElement(const ColoredElement& color);
 
 	//! Создаёт цвет элемента
 	//! \param background - цвет фона
 	//! \param foreground - цвет переднего плана
-	ColoredElement(CREF(Color) background, CREF(Color) foreground);
+	ColoredElement(const Color& background, const Color& foreground);
 
-	bool operator== (CREF(ColoredElement) element) const
+	bool operator== (const ColoredElement& element) const
 	{
 		return m_background == element.m_background && m_foreground == element.m_foreground;
 	}
@@ -115,14 +115,14 @@ struct Point
 
 	//! Конструктор копии
 	//! \param point - точка, на основе которой создаётся новый
-	Point(CREF(Point) point);
+	Point(const Point& point);
 
 	//! Создаёт точку
 	//! \param x - координата x
 	//! \param y - координата y
 	Point(double x, double y);
 
-	bool operator== (CREF(Point) point) const
+	bool operator== (const Point& point) const
 	{
 		return m_x == point.m_x && m_y == point.m_y;
 	}
@@ -139,14 +139,14 @@ struct Size
 
 	//! Конструктор копии
 	//! \param size - размер, на основе которой создаётся новый
-	Size(CREF(Size) size);
+	Size(const Size& size);
 
 	//! Создаёт размер
 	//! \param width  - ширина
 	//! \param height - высота
 	Size(double width, double height);
 
-	bool operator== (CREF(Size) size) const
+	bool operator== (const Size& size) const
 	{
 		return m_width == size.m_width && m_height == size.m_height;
 	}
@@ -160,14 +160,14 @@ struct BoundedElement
 
 	//! Конструктор копии
 	//! \param rect - прямоуголник, на основе которой создаётся новый
-	BoundedElement(CREF(BoundedElement) rect);
+	BoundedElement(const BoundedElement& rect);
 
 	//! Создаёт вписанный в прямоуголник элемент
 	//! \param point - координата элемента
 	//! \param size  - размер элемента
-	BoundedElement(CREF(Point) point, CREF(Size) size);
+	BoundedElement(const Point& point, const Size& size);
 
-	bool operator== (CREF(BoundedElement) element) const
+	bool operator== (const BoundedElement& element) const
 	{
 		return m_point == element.m_point && m_size == element.m_size;
 	}
@@ -180,13 +180,13 @@ struct Radius
 
 	//! Конструктор копии
 	//! \param radius - радиус, на основе которой создаётся новый
-	Radius(CREF(Radius) radius);
+	Radius(const Radius& radius);
 
 	//! Создаёт радиус
 	//! \param radius - значение радиуса
 	Radius(double radius);
 
-	bool operator== (CREF(Radius) radius) const
+	bool operator== (const Radius& radius) const
 	{
 		return m_radius == radius.m_radius;
 	}
@@ -215,7 +215,7 @@ struct TextElement
 	//! \param color - цвет текста
 	//! \param text  - строка
 	//! \param align - выравнивание
-	TextElement(CREF(BoundedElement) rect, CREF(ColoredElement) color, CREF(std::string) text, TextAlign align);
+	TextElement(const BoundedElement& rect, const ColoredElement& color, const std::string& text, TextAlign align);
 };
 
 //! \brief   Отрезок
@@ -230,9 +230,9 @@ struct LineElement: public FrameItem
 	//! \param point1 - начальная точка
 	//! \param point2 - конечная точка
 	//! \param color  - цвет отрезка
-	LineElement(CREF(Point) point1, CREF(Point) point2, CREF(Color) color);
+	LineElement(const Point& point1, const Point& point2, const Color& color);
 
-	bool operator== (CREF(LineElement) element) const
+	bool operator== (const LineElement& element) const
 	{
 		return m_point1 == element.m_point1 && m_point2 == element.m_point2 && m_color == element.m_color;
 	}
@@ -253,7 +253,7 @@ struct TriangElement
 	//! \param point2 - вторая точка треугольника
 	//! \param point3 - третья точка треугольника
 	//! \param color  - цвет треугольника
-	TriangElement(CREF(Point) point1, CREF(Point) point2, CREF(Point) point3, CREF(ColoredElement) color);
+	TriangElement(const Point& point1, const Point& point2, const Point& point3, const ColoredElement& color);
 };
 
 //! \brief   Прямоугольник
@@ -266,7 +266,7 @@ struct RectElement
 	//! Создаёт прямоугольник
 	//! \param rect  - координаты и размер фигуры
 	//! \param color - цвет фигуры
-	RectElement(CREF(BoundedElement) rect, CREF(ColoredElement) color);
+	RectElement(const BoundedElement& rect, const ColoredElement& color);
 };
 
 //! \brief   Прямоугольник со скруглёнными углами
@@ -279,7 +279,7 @@ struct RoundRectElement
 	//! Создаёт прямоугольник
 	//! \param rect  - координаты и размер фигуры
 	//! \param color - цвет фигуры
-	RoundRectElement(CREF(BoundedElement) rect, CREF(ColoredElement) color);
+	RoundRectElement(const BoundedElement& rect, const ColoredElement& color);
 };
 
 //! \brief   Окружность
@@ -295,7 +295,7 @@ struct CircleElement
 	//! \param center - центр окружности
 	//! \param radius - радиус окружности
 	//! \param color  - цвет окружности
-	CircleElement(CREF(Point) center, CREF(Radius) radius, CREF(ColoredElement) color);
+	CircleElement(const Point& center, const Radius& radius, const ColoredElement& color);
 };
 
 //! \brief   Эллипс
@@ -308,7 +308,7 @@ struct EllipseElement
 	//! Создаёт эллипс
 	//! \param rect  - координаты и размер фигуры
 	//! \param color - цвет фигуры
-	EllipseElement(CREF(BoundedElement) rect, CREF(ColoredElement) color);
+	EllipseElement(const BoundedElement& rect, const ColoredElement& color);
 };
 
 //! \brief   Картинка
@@ -323,7 +323,7 @@ struct BmpElement: public FrameItem
 	//! \param point     - координата левого верхнего угла картинки
 	//! \param bmp_name  - имя файла картинки
 	//! \param mask_name - имя файла маски картинки, может отсутствовать
-	BmpElement(CREF(Point) point, CREF(std::string) bmp_name, CREF(std::string) mask_name = "");
+	BmpElement(const Point& point, const std::string& bmp_name, const std::string& mask_name = "");
 
 	//! \details Возвращает \b true, если маска указана
 	bool hasMask() const;
@@ -342,7 +342,7 @@ struct ScaledBmpElement
 	//! \param rect      - координаты и размер фигуры
 	//! \param bmp_name  - имя файла картинки
 	//! \param mask_name - имя файла маски картинки, может отсутствовать
-	ScaledBmpElement(CREF(BoundedElement) rect, CREF(std::string) bmp_name, CREF(std::string) mask_name = "");
+	ScaledBmpElement(const BoundedElement& rect, const std::string& bmp_name, const std::string& mask_name = "");
 
 	//! \details Возвращает \b true, если маска указана
 	bool hasMask() const;
@@ -359,7 +359,7 @@ struct ActiveElement
 	//! Создаёт активную область
 	//! \param rect      - координаты и размер области
 	//! \param opr_name  - имя клавиатурной операции
-	ActiveElement(CREF(BoundedElement) rect, CREF(std::string) opr_name);
+	ActiveElement(const BoundedElement& rect, const std::string& opr_name);
 };
 
 //! \brief   Пустой элемент

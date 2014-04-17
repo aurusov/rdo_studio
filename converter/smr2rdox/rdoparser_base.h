@@ -100,7 +100,7 @@ protected:
 	RDOParserContainer();
 	virtual ~RDOParserContainer();
 
-	std::size_t insert(rdo::converter::smr2rdox::RDOParseType type, CREF(LPRDOParserItem) pParser);
+	std::size_t insert(rdo::converter::smr2rdox::RDOParseType type, const LPRDOParserItem& pParser);
 
 private:
 	List m_list;

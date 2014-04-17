@@ -32,7 +32,7 @@ Document::~Document()
 	close();
 }
 
-void Document::create(CREF(boost::filesystem::path) filePath, CREF(boost::filesystem::path) modelName)
+void Document::create(const boost::filesystem::path& filePath, const boost::filesystem::path& modelName)
 {
 	m_filePath  = filePath;
 	m_modelName = modelName;
@@ -59,7 +59,7 @@ void Document::init(rdo::converter::smr2rdox::RDOFileTypeIn type, std::ifstream&
 	streamOut->init(stream);
 }
 
-void Document::insertUpdate(CREF(LPDocUpdate) pUpdate)
+void Document::insertUpdate(const LPDocUpdate& pUpdate)
 {
 	ASSERT(pUpdate);
 
@@ -105,7 +105,7 @@ void Document::convert()
 	}
 }
 
-Document::TypeOut Document::typeToOut(CREF(Type) typeIn) const
+Document::TypeOut Document::typeToOut(const Type& typeIn) const
 {
 	switch (typeIn)
 	{
@@ -194,7 +194,7 @@ Document::LPFileStream Document::getFileStream(TypeOut type)
 	return it->second;
 }
 
-void Document::insert(Type type, std::size_t to, CREF(std::string) value)
+void Document::insert(Type type, std::size_t to, const std::string& value)
 {
 	LPMemoryStream streamOut = getMemoryStream(type);
 	streamOut->insert(to, value);
@@ -259,7 +259,7 @@ void Document::MemoryStream::get(std::ofstream& stream) const
 	stream << result;
 }
 
-void Document::MemoryStream::insert(std::size_t to, CREF(std::string) value)
+void Document::MemoryStream::insert(std::size_t to, const std::string& value)
 {
 	Buffer::iterator itTo;
 	switch (to)

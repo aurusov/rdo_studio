@@ -58,7 +58,7 @@ public:
 
 	void freeOperationId(int id);
 	int getFreeOperationId(); 
-	void onResourceErase(CREF(LPRDOResource) pResource);
+	void onResourceErase(const LPRDOResource& pResource);
 
 	int getFreeEventId();
 	int getFreeActivityId();
@@ -69,7 +69,7 @@ protected:
 	RDOSimulatorTrace();
 	virtual ~RDOSimulatorTrace();
 
-	void copyFrom(CREF(LPRDOSimulatorTrace) pOther);
+	void copyFrom(const LPRDOSimulatorTrace& pOther);
 
 	RDOTrace* m_tracer;
 

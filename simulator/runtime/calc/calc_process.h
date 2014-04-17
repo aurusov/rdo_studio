@@ -42,7 +42,7 @@ class RDOCalcProcAssign: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcProcAssign)
 protected:
-	RDOCalcProcAssign(CREF(LPRDOCalc) pCalc, std::size_t res, std::size_t param);
+	RDOCalcProcAssign(const LPRDOCalc& pCalc, std::size_t res, std::size_t param);
 	DECLARE_ICalc;
 private:
 	LPRDOCalc m_pCalc;

@@ -24,8 +24,8 @@ public:
 	DockBuild(QWidget* pParent);
 	virtual ~DockBuild();
 
-	void appendString(CREF(QString) str);
-	void appendString(CREF(rdo::simulation::report::FileMessage) message);
+	void appendString(const QString& str);
+	void appendString(const rdo::simulation::report::FileMessage& message);
 	void clear();
 
 	context_type& getContext();

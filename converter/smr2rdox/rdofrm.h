@@ -35,18 +35,18 @@ class RDOFRMFrame
 {
 DECLARE_FACTORY(RDOFRMFrame);
 public:
-	CREF(std::string) name() const { return src_info().src_text(); }
-	CREF(rdo::runtime::LPRDOFRMFrame) frame() const  { return m_pFrame; }
+	const std::string& name() const { return src_info().src_text(); }
+	const rdo::runtime::LPRDOFRMFrame& frame() const { return m_pFrame; }
 
 	typedef boost::optional<std::size_t> Seek;
 
-	void setShowIfBlock(CREF(Seek) firstSeek);
-	void addItem(CREF(rdo::runtime::LPRDOCalc) pItem, std::size_t lastSeek);
+	void setShowIfBlock(const Seek& firstSeek);
+	void addItem(const rdo::runtime::LPRDOCalc& pItem, std::size_t lastSeek);
 	void setFrameConditionPos(std::size_t firstSeek, std::size_t lastSeek);
 	void onAfterBackPicture(std::size_t lastSeek);
 
 private:
-	RDOFRMFrame(CREF(RDOParserSrcInfo) src_info);
+	RDOFRMFrame(const RDOParserSrcInfo& src_info);
 
 	typedef  boost::optional<std::pair<std::size_t, std::size_t>> PosPair;
 

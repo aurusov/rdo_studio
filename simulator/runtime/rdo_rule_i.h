@@ -30,18 +30,18 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IRule
 {
 public:
-	virtual void  onBeforeChoiceFrom(CREF(rdo::runtime::LPRDORuntime) pRuntime)                 = 0;
-	virtual bool  choiceFrom        (CREF(rdo::runtime::LPRDORuntime) pRuntime)                 = 0;
-	virtual void  onBeforeRule      (CREF(rdo::runtime::LPRDORuntime) pRuntime)                 = 0;
-	virtual void  convertRule       (CREF(rdo::runtime::LPRDORuntime) pRuntime)                 = 0;
-	virtual void  onAfterRule       (CREF(rdo::runtime::LPRDORuntime) pRuntime, bool inSearch) = 0;
+	virtual void  onBeforeChoiceFrom(const rdo::runtime::LPRDORuntime& pRuntime)                = 0;
+	virtual bool  choiceFrom        (const rdo::runtime::LPRDORuntime& pRuntime)                = 0;
+	virtual void  onBeforeRule      (const rdo::runtime::LPRDORuntime& pRuntime)                = 0;
+	virtual void  convertRule       (const rdo::runtime::LPRDORuntime& pRuntime)                = 0;
+	virtual void  onAfterRule       (const rdo::runtime::LPRDORuntime& pRuntime, bool inSearch) = 0;
 };
 
 #define DECLARE_IRule \
-	virtual void  onBeforeChoiceFrom(CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual bool  choiceFrom        (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual void  onBeforeRule      (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual void  convertRule       (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual void  onAfterRule       (CREF(rdo::runtime::LPRDORuntime) pRuntime, bool inSearch);
+	virtual void  onBeforeChoiceFrom(const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual bool  choiceFrom        (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual void  onBeforeRule      (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual void  convertRule       (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual void  onAfterRule       (const rdo::runtime::LPRDORuntime& pRuntime, bool inSearch);
 
 #endif // _LIB_RUNTIME_RULE_I_H_

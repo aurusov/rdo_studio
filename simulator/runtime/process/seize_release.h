@@ -64,7 +64,7 @@ protected:
 	std::vector<runtime_for_Seize> forRes;
 	std::vector<parser_for_Seize>  fromParser;
 
-	void _onStart(CREF(LPRDORuntime) pRuntime);
+	void _onStart(const LPRDORuntime& pRuntime);
 };
 
 /*!
@@ -84,8 +84,8 @@ private:
 
 	std::size_t index;
 
-	virtual void transactGoIn (CREF(LPTransact) pTransact);
-	virtual void transactGoOut(CREF(LPTransact) pTransact);
+	virtual void transactGoIn (const LPTransact& pTransact);
+	virtual void transactGoOut(const LPTransact& pTransact);
 
 	DECLARE_IBaseOperation;
 };

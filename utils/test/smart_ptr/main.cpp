@@ -77,7 +77,7 @@ public:
 
 	enum { DAFAUL_VALUE = 2 };
 
-	bool operator==(CREF(MyClass2) obj) const
+	bool operator==(const MyClass2& obj) const
 	{
 		return m_b == obj.m_b;
 	}

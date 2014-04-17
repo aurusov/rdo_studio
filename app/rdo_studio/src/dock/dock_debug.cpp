@@ -31,7 +31,7 @@ DockDebug::DockDebug(QWidget* pParent)
 DockDebug::~DockDebug()
 {}
 
-void DockDebug::appendString(CREF(QString) str)
+void DockDebug::appendString(const QString& str)
 {
 	getContext().appendLine(str);
 }

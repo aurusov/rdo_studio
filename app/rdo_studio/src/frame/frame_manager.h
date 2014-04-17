@@ -42,24 +42,24 @@ Q_OBJECT
 public:
 	typedef boost::function<void (std::size_t)> OnChangeFrame;
 
-	Manager(CREF(OnChangeFrame) onChangeFrame);
+	Manager(const OnChangeFrame& onChangeFrame);
 	virtual ~Manager();
 
-	void insertFrame (CREF(QString) frameName );
-	void insertBitmap(CREF(QString) bitmapName);
+	void insertFrame (const QString& frameName );
+	void insertBitmap(const QString& bitmapName);
 
 	std::size_t findFrameIndex(const QTreeWidgetItem* pTreeWidgetItem) const;
 	std::size_t findFrameIndex(const View* pView) const;
 	std::size_t findFrameIndex(const Content* pContent) const;
 
 	bool isShowing() const;
-	CREF(QString) getFrameName(std::size_t index) const;
+	const QString& getFrameName(std::size_t index) const;
 	View* getFrameView(std::size_t index) const;
 	View* getFrameViewFirst() const;
 	std::size_t count() const;
 	bool isChanged();
 
-	void areaDown(std::size_t frameIndex, CREF(QPoint) point) const;
+	void areaDown(std::size_t frameIndex, const QPoint& point) const;
 
 	View* createView(std::size_t index);
 	void disconnectView(const View* pView);

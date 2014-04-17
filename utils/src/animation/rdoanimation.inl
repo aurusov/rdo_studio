@@ -30,7 +30,7 @@ inline Color::Color()
 	: m_transparent(true)
 {}
 
-inline Color::Color(CREF(Color) color)
+inline Color::Color(const Color& color)
 	: m_r          (color.m_r          )
 	, m_g          (color.m_g          )
 	, m_b          (color.m_b          )
@@ -44,17 +44,17 @@ inline Color::Color(unsigned char r, unsigned char g, unsigned char b, bool tran
 	, m_transparent(transparent)
 {}
 
-inline ColoredElement::ColoredElement(CREF(ColoredElement) color)
+inline ColoredElement::ColoredElement(const ColoredElement& color)
 	: m_background(color.m_background)
 	, m_foreground(color.m_foreground)
 {}
 
-inline ColoredElement::ColoredElement(CREF(Color) background, CREF(Color) foreground)
+inline ColoredElement::ColoredElement(const Color& background, const Color& foreground)
 	: m_background(background)
 	, m_foreground(foreground)
 {}
 
-inline Point::Point(CREF(Point) point)
+inline Point::Point(const Point& point)
 	: m_x(point.m_x)
 	, m_y(point.m_y)
 {}
@@ -69,7 +69,7 @@ inline Size::Size()
 	, m_height(0)
 {}
 
-inline Size::Size(CREF(Size) size)
+inline Size::Size(const Size& size)
 	: m_width (size.m_width )
 	, m_height(size.m_height)
 {}
@@ -79,17 +79,17 @@ inline Size::Size(double width, double height)
 	, m_height(height)
 {}
 
-inline BoundedElement::BoundedElement(CREF(BoundedElement) rect)
+inline BoundedElement::BoundedElement(const BoundedElement& rect)
 	: m_point(rect.m_point)
 	, m_size (rect.m_size )
 {}
 
-inline BoundedElement::BoundedElement(CREF(Point) point, CREF(Size) size)
+inline BoundedElement::BoundedElement(const Point& point, const Size& size)
 	: m_point(point)
 	, m_size (size )
 {}
 
-inline Radius::Radius(CREF(Radius) radius)
+inline Radius::Radius(const Radius& radius)
 	: m_radius(radius.m_radius)
 {}
 
@@ -97,7 +97,7 @@ inline Radius::Radius(double radius)
 	: m_radius(radius)
 {}
 
-inline TextElement::TextElement(CREF(BoundedElement) rect, CREF(ColoredElement) color, CREF(std::string) text, TextAlign align)
+inline TextElement::TextElement(const BoundedElement& rect, const ColoredElement& color, const std::string& text, TextAlign align)
 	: FrameItem     (FIT_TEXT)
 	, BoundedElement(rect    )
 	, ColoredElement(color   )
@@ -105,14 +105,14 @@ inline TextElement::TextElement(CREF(BoundedElement) rect, CREF(ColoredElement) 
 	, m_align       (align   )
 {}
 
-inline LineElement::LineElement(CREF(Point) point1, CREF(Point) point2, CREF(Color) color)
+inline LineElement::LineElement(const Point& point1, const Point& point2, const Color& color)
 	: FrameItem(FIT_LINE)
 	, m_point1 (point1  )
 	, m_point2 (point2  )
 	, m_color  (color   )
 {}
 
-inline TriangElement::TriangElement(CREF(Point) point1, CREF(Point) point2, CREF(Point) point3, CREF(ColoredElement) color)
+inline TriangElement::TriangElement(const Point& point1, const Point& point2, const Point& point3, const ColoredElement& color)
 	: FrameItem     (FIT_TRIANG)
 	, ColoredElement(color     )
 	, m_point1      (point1    )
@@ -120,32 +120,32 @@ inline TriangElement::TriangElement(CREF(Point) point1, CREF(Point) point2, CREF
 	, m_point3      (point3    )
 {}
 
-inline RectElement::RectElement(CREF(BoundedElement) rect, CREF(ColoredElement) color)
+inline RectElement::RectElement(const BoundedElement& rect, const ColoredElement& color)
 	: FrameItem     (FIT_RECT)
 	, BoundedElement(rect    )
 	, ColoredElement(color   )
 {}
 
-inline RoundRectElement::RoundRectElement(CREF(BoundedElement) rect, CREF(ColoredElement) color)
+inline RoundRectElement::RoundRectElement(const BoundedElement& rect, const ColoredElement& color)
 	: FrameItem     (FIT_R_RECT)
 	, BoundedElement(rect      )
 	, ColoredElement(color     )
 {}
 
-inline CircleElement::CircleElement(CREF(Point) center, CREF(Radius) radius, CREF(ColoredElement) color)
+inline CircleElement::CircleElement(const Point& center, const Radius& radius, const ColoredElement& color)
 	: FrameItem     (FIT_CIRCLE)
 	, ColoredElement(color     )
 	, m_center      (center    )
 	, m_radius      (radius    )
 {}
 
-inline EllipseElement::EllipseElement(CREF(BoundedElement) rect, CREF(ColoredElement) color)
+inline EllipseElement::EllipseElement(const BoundedElement& rect, const ColoredElement& color)
 	: FrameItem     (FIT_ELLIPSE)
 	, BoundedElement(rect       )
 	, ColoredElement(color      )
 {}
 
-inline BmpElement::BmpElement(CREF(Point) point, CREF(std::string) bmp_name, CREF(std::string) mask_name)
+inline BmpElement::BmpElement(const Point& point, const std::string& bmp_name, const std::string& mask_name)
 	: FrameItem  (FIT_BMP  )
 	, m_point    (point    )
 	, m_bmp_name (bmp_name )
@@ -157,7 +157,7 @@ inline bool BmpElement::hasMask() const
 	return !m_mask_name.empty();
 }
 
-inline ScaledBmpElement::ScaledBmpElement(CREF(BoundedElement) rect, CREF(std::string) bmp_name, CREF(std::string) mask_name)
+inline ScaledBmpElement::ScaledBmpElement(const BoundedElement& rect, const std::string& bmp_name, const std::string& mask_name)
 	: FrameItem     (FIT_S_BMP)
 	, BoundedElement(rect     )
 	, m_bmp_name    (bmp_name )
@@ -169,7 +169,7 @@ inline bool ScaledBmpElement::hasMask() const
 	return !m_mask_name.empty();
 }
 
-inline ActiveElement::ActiveElement(CREF(BoundedElement) rect, CREF(std::string) opr_name)
+inline ActiveElement::ActiveElement(const BoundedElement& rect, const std::string& opr_name)
 	: FrameItem     (FIT_ACTIVE)
 	, BoundedElement(rect      )
 	, m_opr_name    (opr_name  )

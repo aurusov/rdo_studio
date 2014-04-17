@@ -24,7 +24,7 @@ public:
 	DockResults(QWidget* pParent);
 	virtual ~DockResults();
 
-	void appendString(CREF(QString) str);
+	void appendString(const QString& str);
 	void clear();
 
 	context_type& getContext();

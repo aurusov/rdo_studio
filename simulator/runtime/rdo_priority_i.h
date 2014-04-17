@@ -30,12 +30,12 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IPriority
 {
 public:
-	virtual rdo::runtime::LPRDOCalc getPrior()                                   = 0;
-	virtual bool setPrior(CREF(rdo::runtime::LPRDOCalc) pPrior) = 0;
+	virtual rdo::runtime::LPRDOCalc getPrior()                   = 0;
+	virtual bool setPrior(const rdo::runtime::LPRDOCalc& pPrior) = 0;
 };
 
 #define DECLARE_IPriority                       \
 	virtual rdo::runtime::LPRDOCalc getPrior(); \
-	virtual bool setPrior(CREF(rdo::runtime::LPRDOCalc) pPrior);
+	virtual bool setPrior(const rdo::runtime::LPRDOCalc& pPrior);
 
 #endif // _LIB_RUNTIME_PRIORITY_I_H_

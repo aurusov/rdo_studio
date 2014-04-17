@@ -331,7 +331,7 @@ std::ofstream& Application::log()
 	return m_log;
 }
 
-QString Application::getFullHelpFileName(CREF(QString) helpFileName) const
+QString Application::getFullHelpFileName(const QString& helpFileName) const
 {
 	QString result = chkHelpExist(helpFileName);
 	if (result.size() < 3)
@@ -345,7 +345,7 @@ QString Application::getFullHelpFileName(CREF(QString) helpFileName) const
 	return result;
 }
 
-QString Application::chkHelpExist(CREF(QString) helpFileName) const
+QString Application::chkHelpExist(const QString& helpFileName) const
 {
 	QString fullHelpFileName = QString("%1%2")
 		.arg(QString::fromStdWString(rdo::File::extractFilePath(qApp->applicationFilePath().toStdWString()).wstring()))
@@ -384,7 +384,7 @@ QProcess* Application::runQtAssistant() const
 	return pProcess;
 }
 
-void Application::callQtAssistant(CREF(QByteArray) ba)
+void Application::callQtAssistant(const QByteArray& ba)
 {
 	chkAndRunQtAssistant();
 	if (m_pAssistant->state() != m_pAssistant->Running)
@@ -439,12 +439,12 @@ void Application::setOpenLastProject(bool value)
 	}
 }
 
-CREF(QString) Application::getLastProjectName() const
+const QString& Application::getLastProjectName() const
 {
 	return m_lastProjectName;
 }
 
-void Application::setLastProjectName(CREF(QString) projectName)
+void Application::setLastProjectName(const QString& projectName)
 {
 	m_pMainFrame->insertMenuFileReopenItem(projectName);
 	if (m_lastProjectName != projectName)
@@ -564,7 +564,7 @@ void Application::onIdle()
 #endif
 }
 
-CREF(rdo::gui::editor::LPModelStyle) Application::getModelStyle() const
+const rdo::gui::editor::LPModelStyle& Application::getModelStyle() const
 {
 	ASSERT(m_pModelStyle);
 	return m_pModelStyle;

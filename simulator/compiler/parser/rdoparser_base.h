@@ -49,8 +49,8 @@ public:
 	t_bison_error_fun m_error_fun;
 	t_flex_lexer_fun  m_lexer_fun;
 
-	virtual void parse(CREF(LPRDOParser) pParser) = 0;
-	virtual void parse(CREF(LPRDOParser) pParser, std::istream& in_stream);
+	virtual void parse(const LPRDOParser& pParser) = 0;
+	virtual void parse(const LPRDOParser& pParser, std::istream& in_stream);
 
 	virtual std::size_t lexer_loc_line();
 	virtual std::size_t lexer_loc_pos();

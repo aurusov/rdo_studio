@@ -27,19 +27,19 @@ class RDOFRMCommandList
 {
 DECLARE_FACTORY(RDOFRMCommandList);
 public:
-	CREF(std::string) name() const;
+	const std::string& name() const;
 	LPExpression expression() const;
 	void end();
 
 	virtual rdo::runtime::LPRDOFRMSprite list() const = 0;
 
-	static LPExpression generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo);
+	static LPExpression generateExpression(const rdo::runtime::LPRDOCalc& pCalc, const RDOParserSrcInfo& srcInfo);
 
 protected:
-	RDOFRMCommandList(CREF(RDOParserSrcInfo) srcInfo);
+	RDOFRMCommandList(const RDOParserSrcInfo& srcInfo);
 	virtual ~RDOFRMCommandList();
 
-	CREF(LPFunction) function() const;
+	const LPFunction& function() const;
 
 private:
 	LPFunction m_pFunction;

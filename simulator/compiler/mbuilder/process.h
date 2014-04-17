@@ -24,9 +24,9 @@ OPEN_COMPILER_MBUILDER_NAMESPACE
 class BlockForQueue
 {
 public:
-	static bool checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) info);
-	static void createRes(RDOResType rtp, CREF(std::string) res_name);
-	static RDOResType createType(CREF(std::string) rtp_name, CREF(parser::RDOParserSrcInfo) info);
+	static bool checkType(RDOResType rtp, const parser::RDOParserSrcInfo& info);
+	static void createRes(RDOResType rtp, const std::string& res_name);
+	static RDOResType createType(const std::string& rtp_name, const parser::RDOParserSrcInfo& info);
 };
 
 // --------------------------------------------------------------------------------
@@ -35,10 +35,10 @@ public:
 class BlockForSeize
 {
 public:
-	static bool checkType(RDOResType rtp, CREF(parser::RDOParserSrcInfo) info);
-	static void createRes(RDOResType rtp, CREF(std::string) res_name);
-	static void reobjectRes(RDOResType rtp, CREF(std::string) res_name);
-	static RDOResType createType (CREF(std::string) rtp_name, CREF(parser::RDOParserSrcInfo) info);
+	static bool checkType(RDOResType rtp, const parser::RDOParserSrcInfo& info);
+	static void createRes(RDOResType rtp, const std::string& res_name);
+	static void reobjectRes(RDOResType rtp, const std::string& res_name);
+	static RDOResType createType (const std::string& rtp_name, const parser::RDOParserSrcInfo& info);
 };
 
 CLOSE_COMPILER_MBUILDER_NAMESPACE

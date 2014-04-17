@@ -24,13 +24,13 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAssign
 // --------------------------------------------------------------------------------
-bool RDOPROCAssign::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCAssign::onCheckCondition(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	return !m_transacts.empty();
 }
 
-IBaseOperation::BOResult RDOPROCAssign::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCAssign::onDoOperation(const LPRDORuntime& pRuntime)
 {
 	pAssignCalc->calcValue(pRuntime);
 	TRACE1("%7.1f ASSIGN\n", pRuntime->getCurrentTime());
@@ -38,17 +38,17 @@ IBaseOperation::BOResult RDOPROCAssign::onDoOperation(CREF(LPRDORuntime) pRuntim
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCAssign::onStart(CREF(LPRDORuntime) pRuntime)
+void RDOPROCAssign::onStart(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 }
 
-void RDOPROCAssign::onStop(CREF(LPRDORuntime) pRuntime)
+void RDOPROCAssign::onStop(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 }
 
-IBaseOperation::BOResult RDOPROCAssign::onContinue(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCAssign::onContinue(const LPRDORuntime& pRuntime)
 {
 	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;

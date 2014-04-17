@@ -46,7 +46,7 @@ void Converter::insert##NAME(LPRDO##NAME value) \
 
 #define DECLARE_PARSER_OBJECT_CONTAINER(NAME) \
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(NAME) \
-const LPRDO##NAME Converter::find##NAME(CREF(std::string) name) const \
+const LPRDO##NAME Converter::find##NAME(const std::string& name) const \
 { \
 	NAME##List::const_iterator it = std::find_if(m_all##NAME.begin(), m_all##NAME.end(), compareName<RDO##NAME>(name)); \
 	return it != m_all##NAME.end() ? *it : LPRDO##NAME(NULL); \
@@ -125,7 +125,7 @@ Converter::~Converter()
 	s_parserStack.remove(this);
 }
 
-void Converter::insertDocUpdate(CREF(LPDocUpdate) pDocUpdate)
+void Converter::insertDocUpdate(const LPDocUpdate& pDocUpdate)
 {
 	ASSERT(m_pParserItem);
 	if (m_pParserItem->m_parser_fun != cnv_smr_file_parse)
@@ -144,7 +144,7 @@ bool Converter::isCurrentDPTPrior()
 	return getLastDPTPrior() ? true : false;
 }
 
-void Converter::insertChanges(CREF(std::string) name, CREF(std::string) value)
+void Converter::insertChanges(const std::string& name, const std::string& value)
 {
 	m_changes.push_back(ChangesData(name, value));
 }
@@ -248,20 +248,20 @@ std::string Converter::getModelStructure()
 	return modelStructure.str();
 }
 
-CREF(RDOParserSMRInfo::FileList) RDOParserSMRInfo::getFileList() const
+const RDOParserSMRInfo::FileList& RDOParserSMRInfo::getFileList() const
 {
 	return m_fileList;
 }
 
 void RDOParserSMRInfo::insertFileName(rdo::converter::smr2rdox::RDOFileTypeIn type,
-                                      CREF(boost::filesystem::path)           modelPath,
-                                      CREF(boost::filesystem::path)           modelName,
-                                      CREF(boost::filesystem::path)           smrFileName,
-                                      CREF(boost::filesystem::path)           nameFromSMR,
-                                      CREF(boost::filesystem::path)           fileExt
+                                      const boost::filesystem::path&          modelPath,
+                                      const boost::filesystem::path&          modelName,
+                                      const boost::filesystem::path&          smrFileName,
+                                      const boost::filesystem::path&          nameFromSMR,
+                                      const boost::filesystem::path&          fileExt
 )
 {
-	CREF(boost::filesystem::path) fileName = !nameFromSMR.empty() ? nameFromSMR : (!modelName.empty() ? modelName : smrFileName);
+	const boost::filesystem::path& fileName = !nameFromSMR.empty() ? nameFromSMR : (!modelName.empty() ? modelName : smrFileName);
 	if (fileName.empty())
 		return;
 
@@ -274,7 +274,7 @@ void RDOParserSMRInfo::insertFileName(rdo::converter::smr2rdox::RDOFileTypeIn ty
 	}
 }
 
-bool RDOParserSMRInfo::parseSMR(CREF(boost::filesystem::path) smrFullFileName, boost::filesystem::path& modelName)
+bool RDOParserSMRInfo::parseSMR(const boost::filesystem::path& smrFullFileName, boost::filesystem::path& modelName)
 {
 	boost::filesystem::ifstream stream(smrFullFileName);
 	if (!stream.is_open())
@@ -323,7 +323,7 @@ bool RDOParserSMRInfo::parseSMR(CREF(boost::filesystem::path) smrFullFileName, b
 	return true;
 }
 
-RDOParserModel::Result RDOParserModel::convert(CREF(boost::filesystem::path) smrFullFileName, rdo::converter::smr2rdox::RDOSMRFileInfo& info)
+RDOParserModel::Result RDOParserModel::convert(const boost::filesystem::path& smrFullFileName, rdo::converter::smr2rdox::RDOSMRFileInfo& info)
 {
 	info.m_error = true;
 
@@ -424,7 +424,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(boost::filesystem::path) smr
 				error().error(RDOParserSrcInfo(pos), rdo::format("Ошибка создания backup-директории '%s': уже существует\n", backupPath.string().c_str()));
 			}
 		}
-		catch (CREF(boost::system::error_code) ex)
+		catch (const boost::system::error_code& ex)
 		{
 			std::string message = ex.message();
 			if (message.find("boost") == 0)
@@ -499,7 +499,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(boost::filesystem::path) smr
 	return CNV_OK;
 }
 
-void Converter::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
+void Converter::checkFunctionName(const RDOParserSrcInfo& src_info)
 {
 	LPRDOFUNConstant pConstant = findFUNConstant(src_info.src_text());
 	if (pConstant)
@@ -525,7 +525,7 @@ void Converter::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
 	}
 }
 
-void Converter::checkActivityName(CREF(RDOParserSrcInfo) src_info)
+void Converter::checkActivityName(const RDOParserSrcInfo& src_info)
 {
 	for (const auto& search: getDPTSearchs())
 	{
@@ -574,7 +574,7 @@ void Converter::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 	}
 }
 
-void Converter::checkDPTName(CREF(RDOParserSrcInfo) src_info)
+void Converter::checkDPTName(const RDOParserSrcInfo& src_info)
 {
 	if (src_info.src_text().empty())
 	{
