@@ -23,7 +23,10 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- Expression
 // --------------------------------------------------------------------------------
 class ExpressionStatement;
-OBJECT(Expression) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(Expression);
+class Expression
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(Expression);
 friend class ExpressionStatement;
@@ -31,16 +34,16 @@ public:
 	static const std::string CONTEXT_PARAM_SET_EXPRESSION;
 	static const std::string CONTEXT_PARAM_SET_OPERATION_TYPE;
 
-	CREF(LPTypeInfo)               typeInfo  () const;
-	CREF(rdo::runtime::LPRDOCalc)  calc      () const;
-	virtual void                   setSrcInfo(CREF(RDOParserSrcInfo) src_info);
+	const LPTypeInfo&               typeInfo  () const;
+	const rdo::runtime::LPRDOCalc&  calc      () const;
+	virtual void                    setSrcInfo(const RDOParserSrcInfo& src_info);
 
 	LPRDOValue                     constant  () const;
 
 protected:
-	Expression(CREF(LPTypeInfo) pType, CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) src_info);
-	Expression(CREF(LPRDOValue) pValue);
-	Expression(CREF(LPExpression) pExpression);
+	Expression(const LPTypeInfo& pType, const rdo::runtime::LPRDOCalc& pCalc, const RDOParserSrcInfo& src_info);
+	Expression(const LPRDOValue& pValue);
+	Expression(const LPExpression& pExpression);
 	virtual ~Expression();
 
 private:
@@ -52,7 +55,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- ExpressionEmpty
 // --------------------------------------------------------------------------------
-CLASS(ExpressionEmpty): INSTANCE_OF(Expression)
+class ExpressionEmpty: public Expression
 {
 DECLARE_FACTORY(ExpressionEmpty);
 private:

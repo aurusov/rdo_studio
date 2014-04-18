@@ -17,8 +17,8 @@
 
 #ifndef COMPILER_VISUAL_STUDIO
 	//! @todo А что на самом деле делать под линухами ?
-	const ruint VK_SHIFT   = 0x10;
-	const ruint VK_CONTROL = 0x11;
+	const std::size_t VK_SHIFT = 0x10;
+	const std::size_t VK_CONTROL = 0x11;
 #endif
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -26,14 +26,14 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOKeyboard
 // --------------------------------------------------------------------------------
-RDOKeyboard::RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(tstring) name)
+RDOKeyboard::RDOKeyboard(const LPRDORuntime& pRuntime, RDOPatternKeyboard* pattern, bool trace, const std::string& name)
 	: RDOOperation(pRuntime, pattern, trace, name)
 	, m_shift     (false                         )
 	, m_control   (false                         )
 	, m_scan_code (RDOHotKey::UNDEFINED_KEY      )
 {}
 
-RDOKeyboard::RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name)
+RDOKeyboard::RDOKeyboard(const LPRDORuntime& pRuntime, RDOPatternKeyboard* pattern, bool trace, const LPRDOCalc& pCondition, const std::string& name)
 	: RDOOperation(pRuntime, pattern, trace, pCondition, name)
 	, m_shift     (false                                     )
 	, m_control   (false                                     )
@@ -43,12 +43,12 @@ RDOKeyboard::RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* patter
 RDOKeyboard::~RDOKeyboard()
 {}
 
-rbool RDOKeyboard::hasHotKey() const
+bool RDOKeyboard::hasHotKey() const
 {
-	return m_scan_code != ruint(-1) ? true : false;
+	return m_scan_code != std::size_t(-1) ? true : false;
 }
 
-IKeyboard::AddHotKeyResult RDOKeyboard::addHotKey(CREF(LPRDORuntime) pRuntime, CREF(tstring) hotKey)
+IKeyboard::AddHotKeyResult RDOKeyboard::addHotKey(const LPRDORuntime& pRuntime, const std::string& hotKey)
 {
 	RDOHotKey::KeyCode scanCode = pRuntime->hotkey().toolkit().codeFromString(hotKey);
 	if (scanCode   == RDOHotKey::UNDEFINED_KEY)
@@ -76,7 +76,7 @@ IKeyboard::AddHotKeyResult RDOKeyboard::addHotKey(CREF(LPRDORuntime) pRuntime, C
 	return IKeyboard::addhk_ok;
 }
 
-rbool RDOKeyboard::choiceFrom(CREF(LPRDORuntime) pRuntime)
+bool RDOKeyboard::choiceFrom(const LPRDORuntime& pRuntime)
 {
 	pRuntime->setCurrentActivity(this);
 

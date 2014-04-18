@@ -102,7 +102,7 @@ Context::Context()
 Context::~Context()
 {}
 
-void Context::setContextStack(CREF(LPContextStack) pContextStack)
+void Context::setContextStack(const LPContextStack& pContextStack)
 {
 	ASSERT(pContextStack   );
 	ASSERT(!m_pContextStack);
@@ -118,7 +118,7 @@ void Context::resetContextStack()
 Context::FindResult Context::find(const std::string& method, const Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	Context::FindResult result;
-	LPContext pThis(const_cast<PTR(Context)>(this));
+	LPContext pThis(const_cast<Context*>(this));
 	LPIContextFind pThisContextFind = pThis.interface_dynamic_cast<IContextFind>();
 	if (pThisContextFind)
 	{

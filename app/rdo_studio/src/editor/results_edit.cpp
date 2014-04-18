@@ -33,17 +33,17 @@ Results::Results(QWidget* pParent)
 Results::~Results()
 {}
 
-void Results::setEditorStyle(PTR(ResultsStyle) pStyle)
+void Results::setEditorStyle(ResultsStyle* pStyle)
 {
 	super::setEditorStyle(pStyle);
 }
 
 void Results::onHelpContext()
 {
-	tstring keyword = getCurrentOrSelectedWord();
-	tstring s = getAllKW();
+	std::string keyword = getCurrentOrSelectedWord();
+	std::string s = getAllKW();
 
-	if (s.find_first_of(keyword) == tstring::npos || keyword.empty())
+	if (s.find_first_of(keyword) == std::string::npos || keyword.empty())
 	{
 		keyword = "pmv";
 	}

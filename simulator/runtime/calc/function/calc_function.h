@@ -19,24 +19,26 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Базовый файл функций с закладки FUN
-CALC(RDOFunCalc)
+PREDECLARE_POINTER(RDOFunCalc);
+class RDOFunCalc: public RDOCalc
 {
 public:
-	virtual void addRetCalc(CREF(LPRDOCalc) pCalc);
+	virtual void addRetCalc(const LPRDOCalc& pCalc);
 
 protected:
 	RDOFunCalc();
 };
 
 //! Табличная функция
-CALC_SUB(RDOFuncTableCalc, RDOFunCalc)
+PREDECLARE_POINTER(RDOFuncTableCalc);
+class RDOFuncTableCalc: public RDOFunCalc
 {
 DECLARE_FACTORY(RDOFuncTableCalc)
 public:
-	void addResultCalc(CREF(LPRDOCalcConst) pResult);
+	void addResultCalc(const LPRDOCalcConst& pResult);
 
 private:
-	RDOFuncTableCalc(CREF(LPRDOCalc) pArgument);
+	RDOFuncTableCalc(const LPRDOCalc& pArgument);
 
 	typedef  std::vector<LPRDOCalcConst>  ResultList;
 
@@ -47,14 +49,15 @@ private:
 };
 
 //! Функция типа список
-CALC_SUB(RDOFunListCalc, RDOFunCalc)
+PREDECLARE_POINTER(RDOFunListCalc);
+class RDOFunListCalc: public RDOFunCalc
 {
 DECLARE_FACTORY(RDOFunListCalc)
 public:
-	void addCase(CREF(LPRDOCalc) pCase, CREF(LPRDOCalcConst) pResult);
+	void addCase(const LPRDOCalc& pCase, const LPRDOCalcConst& pResult);
 
 private:
-	RDOFunListCalc(CREF(LPRDOCalcConst) pDefaultValue);
+	RDOFunListCalc(const LPRDOCalcConst& pDefaultValue);
 
 	typedef  std::vector<LPRDOCalcConst>  ResultList;
 
@@ -66,11 +69,12 @@ private:
 };
 
 //! Алгоритмическая функция
-CALC_SUB(RDOFunAlgorithmicCalc, RDOFunCalc)
+PREDECLARE_POINTER(RDOFunAlgorithmicCalc);
+class RDOFunAlgorithmicCalc: public RDOFunCalc
 {
 DECLARE_FACTORY(RDOFunAlgorithmicCalc)
 public:
-	void addCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pAction);
+	void addCalcIf(const LPRDOCalc& pCondition, const LPRDOCalc& pAction);
 
 protected:
 	RDOFunAlgorithmicCalc();
@@ -82,54 +86,58 @@ protected:
 };
 
 //! Параметр функции
-CALC(RDOCalcFuncParam)
+PREDECLARE_POINTER(RDOCalcFuncParam);
+class RDOCalcFuncParam: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFuncParam)
 private:
-	RDOCalcFuncParam(ruint paramID, CREF(RDOSrcInfo) src_info);
+	RDOCalcFuncParam(std::size_t paramID, const RDOSrcInfo& src_info);
 
-	ruint m_paramID;
+	std::size_t m_paramID;
 
 	DECLARE_ICalc;
 };
 
 //! Получение константы с закладки FUN
-CALC(RDOCalcGetConst)
+PREDECLARE_POINTER(RDOCalcGetConst);
+class RDOCalcGetConst: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetConst)
 private:
-	RDOCalcGetConst(ruint constantID);
+	RDOCalcGetConst(std::size_t constantID);
 
-	ruint m_constantID;
+	std::size_t m_constantID;
 
 	DECLARE_ICalc;
 };
 
 //! Инициализация константы
-CALC(RDOCalcSetConst)
+PREDECLARE_POINTER(RDOCalcSetConst);
+class RDOCalcSetConst: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcSetConst)
 private:
-	RDOCalcSetConst(ruint constantID, CREF(LPRDOCalc) pCalc);
+	RDOCalcSetConst(std::size_t constantID, const LPRDOCalc& pCalc);
 
-	ruint      m_constantID;
-	LPRDOCalc  m_pCalc;
+	std::size_t m_constantID;
+	LPRDOCalc m_pCalc;
 
 	DECLARE_ICalc;
 };
 
 //! Вызов функции (function-caller)
-CALC(RDOCalcFunctionCaller)
+PREDECLARE_POINTER(RDOCalcFunctionCaller);
+class RDOCalcFunctionCaller: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFunctionCaller)
 public:
-	void addParameter   (CREF(LPRDOCalc) pParam   );
-	void setFunctionCalc(CREF(LPRDOCalc) pFunction);
+	void addParameter   (const LPRDOCalc& pParam   );
+	void setFunctionCalc(const LPRDOCalc& pFunction);
 
-	CREF(LPRDOCalc) function() const;
+	const LPRDOCalc& function() const;
 
 private:
-	RDOCalcFunctionCaller(CREF(LPRDOCalc) pFunction);
+	RDOCalcFunctionCaller(const LPRDOCalc& pFunction);
 
 	RDOCalcList  m_paramList;
 	LPRDOCalc    m_pFunction;

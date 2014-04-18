@@ -36,7 +36,7 @@ protected:
 
 private:
 	virtual LPRDOCalc getPrior();
-	virtual rbool setPrior(CREF(LPRDOCalc) pPrior);
+	virtual bool setPrior(const LPRDOCalc& pPrior);
 
 	LPRDOCalc m_pPrior;
 };
@@ -48,8 +48,8 @@ private:
 class RDODPTActivityCompare
 {
 public:
-	RDODPTActivityCompare(CREF(LPRDORuntime) pRuntime);
-	rbool operator() (CREF(LPIBaseOperation) pOpr1, CREF(LPIBaseOperation) pOpr2);
+	RDODPTActivityCompare(const LPRDORuntime& pRuntime);
+	bool operator()(const LPIBaseOperation& pOpr1, const LPIBaseOperation& pOpr2);
 
 private:
 	LPRDORuntime m_pRuntime;

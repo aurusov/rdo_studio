@@ -29,8 +29,8 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int  cnv_funparse(PTR(void) lexer);
-int  cnv_funlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+int  cnv_funparse(void* lexer);
+int  cnv_funlex  (YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
 void cnv_funerror(const char* message);
 
 // --------------------------------------------------------------------------------
@@ -40,15 +40,15 @@ class RDOFUNDoubleToIntByResult
 {
 public:
 	void roundCalc();
-	void push_back(CREF(rdo::runtime::LPRDOCalcDoubleToIntByResult) pCalc)
+	void push_back(const rdo::runtime::LPRDOCalcDoubleToIntByResult& pCalc)
 	{
 		m_intOrDouble.push_back(pCalc);
 	}
-	void insert(CREF(RDOFUNDoubleToIntByResult) first)
+	void insert(const RDOFUNDoubleToIntByResult& first)
 	{
 		m_intOrDouble.insert(m_intOrDouble.end(), first.m_intOrDouble.begin(), first.m_intOrDouble.end());
 	}
-	void insert(CREF(RDOFUNDoubleToIntByResult) first, CREF(RDOFUNDoubleToIntByResult) pSecond)
+	void insert(const RDOFUNDoubleToIntByResult& first, const RDOFUNDoubleToIntByResult& pSecond)
 	{
 		m_intOrDouble.insert(m_intOrDouble.end(), first.m_intOrDouble.begin(), first.m_intOrDouble.end());
 		m_intOrDouble.insert(m_intOrDouble.end(), pSecond.m_intOrDouble.begin(), pSecond.m_intOrDouble.end());
@@ -65,26 +65,29 @@ private:
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOFUNArithm);
 
-OBJECT(RDOFUNLogic) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOFUNLogic);
+class RDOFUNLogic
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOFUNLogic);
 friend class RDOFUNArithm;
 public:
 	rdo::runtime::LPRDOCalc getCalc(rdo::runtime::RDOType::TypeID id = rdo::runtime::RDOType::t_real);
 
-	LPRDOFUNLogic operator && (CREF(LPRDOFUNLogic) pSecond);
-	LPRDOFUNLogic operator || (CREF(LPRDOFUNLogic) pSecond);
+	LPRDOFUNLogic operator && (const LPRDOFUNLogic& pSecond);
+	LPRDOFUNLogic operator || (const LPRDOFUNLogic& pSecond);
 	LPRDOFUNLogic operator_not();
 
-	virtual void setSrcInfo(CREF(RDOParserSrcInfo)     src_info);
-	virtual void setSrcPos (CREF(RDOSrcInfo::Position) position);
-	virtual void setSrcText(CREF(tstring)              value   );
-	        void setSrcPos (CREF(YYLTYPE) error_pos);
-	        void setSrcPos (CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end);
+	virtual void setSrcInfo(const RDOParserSrcInfo& src_info);
+	virtual void setSrcPos (const RDOSrcInfo::Position& position);
+	virtual void setSrcText(const std::string& value);
+	        void setSrcPos (const YYLTYPE& error_pos);
+	        void setSrcPos (const YYLTYPE& pos_begin, const YYLTYPE& pos_end);
 
 private:
-	RDOFUNLogic(CREF(LPRDOFUNArithm) pArithm);
-	RDOFUNLogic(CREF(rdo::runtime::LPRDOCalc) pCalc, rbool hideWarning);
+	RDOFUNLogic(const LPRDOFUNArithm& pArithm);
+	RDOFUNLogic(const rdo::runtime::LPRDOCalc& pCalc, bool hideWarning);
 	virtual ~RDOFUNLogic();
 
 	rdo::runtime::LPRDOCalc    m_pCalc;
@@ -94,71 +97,74 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNArithm
 // --------------------------------------------------------------------------------
-OBJECT(RDOFUNArithm) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOFUNArithm);
+class RDOFUNArithm
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOFUNArithm);
 public:
-	LPRDOFUNArithm operator +(CREF(LPRDOFUNArithm) pSecond);
-	LPRDOFUNArithm operator -(CREF(LPRDOFUNArithm) pSecond);
-	LPRDOFUNArithm operator *(CREF(LPRDOFUNArithm) pSecond);
-	LPRDOFUNArithm operator /(CREF(LPRDOFUNArithm) pSecond);
+	LPRDOFUNArithm operator +(const LPRDOFUNArithm& pSecond);
+	LPRDOFUNArithm operator -(const LPRDOFUNArithm& pSecond);
+	LPRDOFUNArithm operator *(const LPRDOFUNArithm& pSecond);
+	LPRDOFUNArithm operator /(const LPRDOFUNArithm& pSecond);
 
-	LPRDOFUNLogic operator ==(CREF(LPRDOFUNArithm) pSecond);
-	LPRDOFUNLogic operator !=(CREF(LPRDOFUNArithm) pSecond);
-	LPRDOFUNLogic operator < (CREF(LPRDOFUNArithm) pSecond);
-	LPRDOFUNLogic operator > (CREF(LPRDOFUNArithm) pSecond);
-	LPRDOFUNLogic operator <=(CREF(LPRDOFUNArithm) pSecond);
-	LPRDOFUNLogic operator >=(CREF(LPRDOFUNArithm) pSecond);
+	LPRDOFUNLogic operator ==(const LPRDOFUNArithm& pSecond);
+	LPRDOFUNLogic operator !=(const LPRDOFUNArithm& pSecond);
+	LPRDOFUNLogic operator < (const LPRDOFUNArithm& pSecond);
+	LPRDOFUNLogic operator > (const LPRDOFUNArithm& pSecond);
+	LPRDOFUNLogic operator <=(const LPRDOFUNArithm& pSecond);
+	LPRDOFUNLogic operator >=(const LPRDOFUNArithm& pSecond);
 
-	rdo::runtime::LPRDOCalc       createCalc(CREF(LPRDOTypeParam) pForType = NULL);
+	rdo::runtime::LPRDOCalc       createCalc(const LPRDOTypeParam& pForType = NULL);
 	rdo::runtime::LPRDOCalc       calc      () const { return m_pCalc;                    }
-	CREF(LPRDOValue)              value     () const { return m_pValue;                   }
+	const LPRDOValue&             value     () const { return m_pValue;                   }
 	LPRDOType                     type      () const { return m_pValue->type();           }
 	LPRDOEnumType                 enumType  () const { return type().object_static_cast<RDOEnumType>(); }
 	rdo::runtime::RDOType::TypeID typeID    () const { return type()->type()->typeID();   }
 
-	virtual void setSrcInfo(CREF(RDOParserSrcInfo) src_info);
-	virtual void setSrcPos (CREF(RDOSrcInfo::Position) position);
-	virtual void setSrcText(CREF(tstring) value);
-	        void setSrcInfo(CREF(RDOParserSrcInfo) begin, CREF(tstring) delim, CREF(RDOParserSrcInfo) end);
-	        void setSrcPos (CREF(YYLTYPE) error_pos);
-	        void setSrcPos (CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end);
+	virtual void setSrcInfo(const RDOParserSrcInfo& src_info);
+	virtual void setSrcPos (const RDOSrcInfo::Position& position);
+	virtual void setSrcText(const std::string& value);
+	        void setSrcInfo(const RDOParserSrcInfo& begin, const std::string& delim, const RDOParserSrcInfo& end);
+	        void setSrcPos (const YYLTYPE& error_pos);
+	        void setSrcPos (const YYLTYPE& pos_begin, const YYLTYPE& pos_end);
 
-	void checkParamType(CREF(LPRDOTypeParam) pType);
+	void checkParamType(const LPRDOTypeParam& pType);
 
 private:
-	RDOFUNArithm(CREF(LPRDOValue) pValue);
-	RDOFUNArithm(CREF(LPRDOValue) pValue, CREF(rdo::runtime::LPRDOCalc) pCalc);
-	RDOFUNArithm(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName);
+	RDOFUNArithm(const LPRDOValue& pValue);
+	RDOFUNArithm(const LPRDOValue& pValue, const rdo::runtime::LPRDOCalc& pCalc);
+	RDOFUNArithm(const LPRDOValue& pResName, const LPRDOValue& pParName);
 	virtual ~RDOFUNArithm();
 
 	LPRDOValue                 m_pValue;
 	rdo::runtime::LPRDOCalc    m_pCalc;
 	RDOFUNDoubleToIntByResult  m_intOrDouble;
 
-	void init(CREF(LPRDOValue) pValue);
-	void init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName);
+	void init(const LPRDOValue& pValue);
+	void init(const LPRDOValue& pResName, const LPRDOValue& pParName);
 
 	enum CastResult
 	{
 		CR_DONE,
 		CR_CONTINUE
 	};
-	CastResult beforeCastValue(LPRDOFUNArithm       pSecond);
-	LPRDOType  getPreType     (CREF(LPRDOFUNArithm) pSecond);
+	CastResult beforeCastValue(LPRDOFUNArithm        pSecond);
+	LPRDOType  getPreType     (const LPRDOFUNArithm& pSecond);
 };
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNConstant
 // --------------------------------------------------------------------------------
-CLASS(RDOFUNConstant): INSTANCE_OF(RDOParam)
+class RDOFUNConstant: public RDOParam
 {
 DECLARE_FACTORY(RDOFUNConstant);
 public:
 	int getNumber() const { return m_number; }
 
 private:
-	RDOFUNConstant(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) pType, CREF(LPRDOValue) pDefault);
+	RDOFUNConstant(const RDOParserSrcInfo& src_info, const LPRDOTypeParam& pType, const LPRDOValue& pDefault);
 	virtual ~RDOFUNConstant();
 
 	int m_number;
@@ -170,19 +176,22 @@ DECLARE_POINTER(RDOFUNConstant);
 // --------------------------------------------------------------------------------
 // Параметры, с которыми функция вызывается
 // --------------------------------------------------------------------------------
-OBJECT(RDOFUNParams) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOFUNParams);
+class RDOFUNParams
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOFUNParams);
 public:
 	typedef std::vector<LPRDOFUNArithm> ParamList;
 
-	REF(RDOParserSrcInfo)   getFunseqName()       { return m_funseqName; }
-	CREF(ParamList)         getParamList () const { return m_paramList ; }
-	rdo::runtime::LPRDOCalc getCalc      (ruint paramID, CREF(LPRDOTypeParam) pType);
+	RDOParserSrcInfo& getFunseqName() { return m_funseqName; }
+	const ParamList& getParamList() const { return m_paramList ; }
+	rdo::runtime::LPRDOCalc getCalc(std::size_t paramID, const LPRDOTypeParam& pType);
 
-	void           addParameter (CREF(LPRDOFUNArithm) pParam );
-	LPRDOFUNArithm createCall   (CREF(tstring)        funName);
-	LPRDOFUNArithm createSeqCall(CREF(tstring)        seqName);
+	void addParameter(const LPRDOFUNArithm& pParam);
+	LPRDOFUNArithm createCall(const std::string& funName);
+	LPRDOFUNArithm createSeqCall(const std::string& seqName);
 
 private:
 	RDOFUNParams();
@@ -197,18 +206,24 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNSequence
 // --------------------------------------------------------------------------------
-OBJECT(RDOFUNSequence) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOFUNSequence);
+class RDOFUNSequence
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOFUNSequence);
 public:
-	OBJECT(RDOFUNSequenceHeader) IS INSTANCE_OF(RDOParserSrcInfo)
+	PREDECLARE_POINTER(RDOFUNSequenceHeader);
+	class RDOFUNSequenceHeader
+		: public rdo::counter_reference
+		, public RDOParserSrcInfo
 	{
 	DECLARE_FACTORY(RDOFUNSequenceHeader);
 	public:
-		CREF(LPRDOTypeParam) getType() const { return m_pType; }
+		const LPRDOTypeParam& getType() const { return m_pType; }
 
 	private:
-		RDOFUNSequenceHeader(CREF(LPRDOTypeParam) pType, CREF(RDOParserSrcInfo) src_info)
+		RDOFUNSequenceHeader(const LPRDOTypeParam& pType, const RDOParserSrcInfo& src_info)
 			: RDOParserSrcInfo(src_info)
 			, m_pType         (pType   )
 		{}
@@ -216,16 +231,16 @@ public:
 		LPRDOTypeParam m_pType;
 	};
 
-	CREF(tstring)                        name       () const { return m_pHeader->src_text(); }
-	CREF(LPRDOFUNSequenceHeader)         getHeader  () const { return m_pHeader;             }
-	 REF(rdo::runtime::LPRDOCalcSeqInit) getInitCalc()       { return m_pInitCalc;           }
-	 REF(rdo::runtime::LPRDOCalcSeqNext) getNextCalc()       { return m_pNextCalc;           }
+	const std::string& name() const { return m_pHeader->src_text(); }
+	const LPRDOFUNSequenceHeader& getHeader() const { return m_pHeader; }
+	 rdo::runtime::LPRDOCalcSeqInit& getInitCalc() { return m_pInitCalc; }
+	 rdo::runtime::LPRDOCalcSeqNext& getNextCalc() { return m_pNextCalc; }
 
 	virtual void           createCalcs   () = 0;
-	virtual LPRDOFUNArithm createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) src_info) const = 0;
+	virtual LPRDOFUNArithm createCallCalc(LPRDOFUNParams& pParamList, const RDOParserSrcInfo& src_info) const = 0;
 
 protected:
-	RDOFUNSequence(CREF(LPRDOFUNSequenceHeader) pHeader, int seed);
+	RDOFUNSequence(const LPRDOFUNSequenceHeader& pHeader, int seed);
 	virtual ~RDOFUNSequence();
 
 	LPRDOFUNSequenceHeader         m_pHeader;
@@ -246,10 +261,10 @@ class RDOFUNSequenceUniform: public RDOFUNSequence
 {
 DECLARE_FACTORY(RDOFUNSequenceUniform);
 private:
-	RDOFUNSequenceUniform(CREF(LPRDOFUNSequenceHeader) pHeader, int seed = 123456789);
+	RDOFUNSequenceUniform(const LPRDOFUNSequenceHeader& pHeader, int seed = 123456789);
 
 	virtual void           createCalcs   ();
-	virtual LPRDOFUNArithm createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seq_src_info) const;
+	virtual LPRDOFUNArithm createCallCalc(LPRDOFUNParams& pParamList, const RDOParserSrcInfo& seq_src_info) const;
 };
 
 // --------------------------------------------------------------------------------
@@ -259,10 +274,10 @@ class RDOFUNSequenceExponential: public RDOFUNSequence
 {
 DECLARE_FACTORY(RDOFUNSequenceExponential);
 private:
-	RDOFUNSequenceExponential(CREF(LPRDOFUNSequenceHeader) pHeader, int seed = 123456789);
+	RDOFUNSequenceExponential(const LPRDOFUNSequenceHeader& pHeader, int seed = 123456789);
 
 	virtual void           createCalcs   ();
-	virtual LPRDOFUNArithm createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seq_src_info) const;
+	virtual LPRDOFUNArithm createCallCalc(LPRDOFUNParams& pParamList, const RDOParserSrcInfo& seq_src_info) const;
 };
 
 // --------------------------------------------------------------------------------
@@ -272,10 +287,10 @@ class RDOFUNSequenceNormal: public RDOFUNSequence
 {
 DECLARE_FACTORY(RDOFUNSequenceNormal);
 private:
-	RDOFUNSequenceNormal(CREF(LPRDOFUNSequenceHeader) pHeader, int seed = 123456789);
+	RDOFUNSequenceNormal(const LPRDOFUNSequenceHeader& pHeader, int seed = 123456789);
 
 	virtual void           createCalcs   ();
-	virtual LPRDOFUNArithm createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seq_src_info) const;
+	virtual LPRDOFUNArithm createCallCalc(LPRDOFUNParams& pParamList, const RDOParserSrcInfo& seq_src_info) const;
 };
 
 // --------------------------------------------------------------------------------
@@ -286,15 +301,18 @@ private:
 class RDOFUNSequenceByHist: public RDOFUNSequence
 {
 public:
-	OBJECT(RDOFUNSequenceByHistHeader) IS INSTANCE_OF(RDOParserSrcInfo)
+	PREDECLARE_POINTER(RDOFUNSequenceByHistHeader);
+	class RDOFUNSequenceByHistHeader
+		: public rdo::counter_reference
+		, public RDOParserSrcInfo
 	{
 	DECLARE_FACTORY(RDOFUNSequenceByHistHeader);
 	public:
-		CREF(RDOFUNSequence::LPRDOFUNSequenceHeader) getHeader() const { return m_pHeader; }
-		int                                          getSeed  () const { return m_seed;    }
+		const RDOFUNSequence::LPRDOFUNSequenceHeader& getHeader() const { return m_pHeader; }
+		int                                           getSeed  () const { return m_seed;    }
 
 	private:
-		RDOFUNSequenceByHistHeader(CREF(RDOFUNSequence::LPRDOFUNSequenceHeader) pHeader, int seed = 123456789)
+		RDOFUNSequenceByHistHeader(const RDOFUNSequence::LPRDOFUNSequenceHeader& pHeader, int seed = 123456789)
 			: RDOParserSrcInfo(pHeader->src_info())
 			, m_pHeader       (pHeader            )
 			, m_seed          (seed               )
@@ -305,10 +323,10 @@ public:
 	};
 
 protected:
-	RDOFUNSequenceByHist(CREF(LPRDOFUNSequenceByHistHeader) pHeader);
+	RDOFUNSequenceByHist(const LPRDOFUNSequenceByHistHeader& pHeader);
 
 private:
-	virtual LPRDOFUNArithm createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) src_info) const;
+	virtual LPRDOFUNArithm createCallCalc(LPRDOFUNParams& pParamList, const RDOParserSrcInfo& src_info) const;
 };
 
 // --------------------------------------------------------------------------------
@@ -320,10 +338,10 @@ DECLARE_FACTORY(RDOFUNSequenceByHistReal);
 public:
 	typedef std::vector<rdo::runtime::RDOValue> ValueList;
 
-	void addReal(CREF(LPRDOValue) pFrom, CREF(LPRDOValue) pTo, CREF(LPRDOValue) pFreq);
+	void addReal(const LPRDOValue& pFrom, const LPRDOValue& pTo, const LPRDOValue& pFreq);
 
 private:
-	RDOFUNSequenceByHistReal(CREF(LPRDOFUNSequenceByHistHeader) pHeader, CREF(LPRDOValue) pFrom, CREF(LPRDOValue) pTo, CREF(LPRDOValue) pFreq);
+	RDOFUNSequenceByHistReal(const LPRDOFUNSequenceByHistHeader& pHeader, const LPRDOValue& pFrom, const LPRDOValue& pTo, const LPRDOValue& pFreq);
 	virtual void createCalcs();
 
 	ValueList m_from;
@@ -341,10 +359,10 @@ DECLARE_FACTORY(RDOFUNSequenceByHistEnum);
 public:
 	typedef std::vector<rdo::runtime::RDOValue> ValueList;
 
-	void addEnum(CREF(LPRDOValue) pValue, CREF(LPRDOValue) pFreq);
+	void addEnum(const LPRDOValue& pValue, const LPRDOValue& pFreq);
 
 private:
-	RDOFUNSequenceByHistEnum(CREF(LPRDOFUNSequenceByHistHeader) pHeader, CREF(LPRDOValue) pValue, CREF(LPRDOValue) pFreq);
+	RDOFUNSequenceByHistEnum(const LPRDOFUNSequenceByHistHeader& pHeader, const LPRDOValue& pValue, const LPRDOValue& pFreq);
 	virtual void createCalcs();
 
 	ValueList m_values;
@@ -361,13 +379,13 @@ class RDOFUNSequenceEnumerative: public RDOFUNSequence
 {
 DECLARE_FACTORY(RDOFUNSequenceEnumerative);
 public:
-	void addValue(CREF(LPRDOValue) pValue)
+	void addValue(const LPRDOValue& pValue)
 	{
 		m_valueList.push_back(m_pHeader->getType()->value_cast(pValue));
 	}
 
 private:
-	RDOFUNSequenceEnumerative(CREF(LPRDOFUNSequenceHeader) pHeader, CREF(LPRDOValue) pValue)
+	RDOFUNSequenceEnumerative(const LPRDOFUNSequenceHeader& pHeader, const LPRDOValue& pValue)
 		: RDOFUNSequence(pHeader, 0)
 	{
 		addValue(pValue);
@@ -379,7 +397,7 @@ private:
 	ValueList m_valueList;
 
 	virtual void           createCalcs   ();
-	virtual LPRDOFUNArithm createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) src_info) const;
+	virtual LPRDOFUNArithm createCallCalc(LPRDOFUNParams& pParamList, const RDOParserSrcInfo& src_info) const;
 };
 DECLARE_POINTER(RDOFUNSequenceEnumerative);
 
@@ -390,16 +408,19 @@ DECLARE_POINTER(RDOFUNSequenceEnumerative);
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNFunctionListElement
 // --------------------------------------------------------------------------------
-OBJECT(RDOFUNFunctionListElement) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOFUNFunctionListElement);
+class RDOFUNFunctionListElement
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOFUNFunctionListElement)
 public:
-	virtual rdo::runtime::LPRDOCalcIsEqual createIsEqualCalc(CREF(LPRDOTypeParam) pRetType, CREF(rdo::runtime::LPRDOCalcFuncParam) pFuncParam, CREF(RDOParserSrcInfo) src_pos) const;
-	virtual rdo::runtime::LPRDOCalcConst   createResultCalc (CREF(LPRDOTypeParam) pRetType, CREF(RDOParserSrcInfo) src_pos) const = 0;
-	virtual rbool                          isEquivalence    () const { return false; }
+	virtual rdo::runtime::LPRDOCalcIsEqual createIsEqualCalc(const LPRDOTypeParam& pRetType, const rdo::runtime::LPRDOCalcFuncParam& pFuncParam, const RDOParserSrcInfo& src_pos) const;
+	virtual rdo::runtime::LPRDOCalcConst createResultCalc(const LPRDOTypeParam& pRetType, const RDOParserSrcInfo& src_pos) const = 0;
+	virtual bool isEquivalence() const { return false; }
 
 protected:
-	RDOFUNFunctionListElement(CREF(RDOParserSrcInfo) src_info);
+	RDOFUNFunctionListElement(const RDOParserSrcInfo& src_info);
 	virtual ~RDOFUNFunctionListElement();
 };
 
@@ -410,9 +431,9 @@ class RDOFUNFunctionListElementIdentif: public RDOFUNFunctionListElement
 {
 DECLARE_FACTORY(RDOFUNFunctionListElementIdentif)
 private:
-	RDOFUNFunctionListElementIdentif(CREF(RDOParserSrcInfo) src_info);
+	RDOFUNFunctionListElementIdentif(const RDOParserSrcInfo& src_info);
 
-	virtual rdo::runtime::LPRDOCalcConst createResultCalc(CREF(LPRDOTypeParam) pRetType, CREF(RDOParserSrcInfo) src_pos) const;
+	virtual rdo::runtime::LPRDOCalcConst createResultCalc(const LPRDOTypeParam& pRetType, const RDOParserSrcInfo& src_pos) const;
 };
 DECLARE_POINTER(RDOFUNFunctionListElementIdentif);
 
@@ -426,8 +447,8 @@ public:
 	double getValue() const { return m_value; }
 
 private:
-	RDOFUNFunctionListElementReal(CREF(YYLTYPE) position, double value);
-	virtual rdo::runtime::LPRDOCalcConst createResultCalc(CREF(LPRDOTypeParam) pRetType, CREF(RDOParserSrcInfo) src_pos) const;
+	RDOFUNFunctionListElementReal(const YYLTYPE& position, double value);
+	virtual rdo::runtime::LPRDOCalcConst createResultCalc(const LPRDOTypeParam& pRetType, const RDOParserSrcInfo& src_pos) const;
 
 	double m_value;
 };
@@ -443,8 +464,8 @@ public:
 	int getValue() const { return m_value; }
 
 private:
-	RDOFUNFunctionListElementInt(CREF(YYLTYPE) position, int value);
-	virtual rdo::runtime::LPRDOCalcConst createResultCalc(CREF(LPRDOTypeParam) pRetType, CREF(RDOParserSrcInfo) src_pos) const;
+	RDOFUNFunctionListElementInt(const YYLTYPE& position, int value);
+	virtual rdo::runtime::LPRDOCalcConst createResultCalc(const LPRDOTypeParam& pRetType, const RDOParserSrcInfo& src_pos) const;
 
 	int m_value;
 };
@@ -457,25 +478,28 @@ class RDOFUNFunctionListElementEq: public RDOFUNFunctionListElement
 {
 DECLARE_FACTORY(RDOFUNFunctionListElementEq)
 private:
-	RDOFUNFunctionListElementEq(CREF(YYLTYPE) position);
+	RDOFUNFunctionListElementEq(const YYLTYPE& position);
 
-	virtual rdo::runtime::LPRDOCalcConst createResultCalc(CREF(LPRDOTypeParam) pRetType, CREF(RDOParserSrcInfo) src_pos) const;
-	virtual rbool                        isEquivalence   () const { return true; }
+	virtual rdo::runtime::LPRDOCalcConst createResultCalc(const LPRDOTypeParam& pRetType, const RDOParserSrcInfo& src_pos) const;
+	virtual bool isEquivalence() const { return true; }
 };
 DECLARE_POINTER(RDOFUNFunctionListElementEq);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNCalculateIf
 // --------------------------------------------------------------------------------
-OBJECT(RDOFUNCalculateIf) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOFUNCalculateIf);
+class RDOFUNCalculateIf
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOFUNCalculateIf)
 public:
-	REF(LPRDOFUNLogic)  getCondition() { return m_pCondition; }
-	REF(LPRDOFUNArithm) getAction   () { return m_pAction;    }
+	LPRDOFUNLogic&  getCondition() { return m_pCondition; }
+	LPRDOFUNArithm& getAction   () { return m_pAction;    }
 
 private:
-	RDOFUNCalculateIf(CREF(LPRDOFUNLogic) pCondition, CREF(LPRDOFUNArithm) pAction);
+	RDOFUNCalculateIf(const LPRDOFUNLogic& pCondition, const LPRDOFUNArithm& pAction);
 	virtual ~RDOFUNCalculateIf();
 
 	LPRDOFUNLogic  m_pCondition;
@@ -485,38 +509,43 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNFunction
 // --------------------------------------------------------------------------------
-OBJECT(RDOFUNFunction) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOFUNFunction);
+class RDOFUNFunction
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOFUNFunction)
 friend class Converter;
 public:
 	typedef std::vector<LPRDOParam> ParamList;
 
-	void       add                    (CREF(LPRDOParam)                  pParam       );
-	void       add                    (CREF(LPRDOFUNFunctionListElement) pListElement );
-	void       add                    (CREF(LPRDOFUNCalculateIf)         pCalculateIf );
-	LPRDOParam findFUNFunctionParam   (CREF(tstring)                     paramName    ) const;
-	int        findFUNFunctionParamNum(CREF(tstring)                     paramName    ) const;
-	void       createListCalc         ();
-	void       createTableCalc        (CREF(YYLTYPE)                     elements_pos );
-	void       createAlgorithmicCalc  (CREF(RDOParserSrcInfo)            body_src_info);
+	void add(const LPRDOParam& pParam);
+	void add(const LPRDOFUNFunctionListElement& pListElement);
+	void add(const LPRDOFUNCalculateIf& pCalculateIf);
 
-	CREF(tstring)    name     () const { return src_info().src_text(); }
-	CREF(LPRDOParam) getReturn() const { return m_pReturn;             }
-	const ParamList  getParams() const { return m_paramList;           }
+	LPRDOParam findFUNFunctionParam(const std::string& paramName) const;
+	int findFUNFunctionParamNum(const std::string& paramName) const;
 
-	void                       setFunctionCalc(CREF(rdo::runtime::LPRDOFunCalc) pCalc);
+	void createListCalc();
+	void createTableCalc(const YYLTYPE& elements_pos);
+	void createAlgorithmicCalc(const RDOParserSrcInfo& body_src_info);
+
+	const std::string& name() const { return src_info().src_text(); }
+	const LPRDOParam& getReturn() const { return m_pReturn; }
+	const ParamList getParams() const { return m_paramList; }
+
+	void                       setFunctionCalc(const rdo::runtime::LPRDOFunCalc& pCalc);
 	rdo::runtime::LPRDOFunCalc getFunctionCalc() const { return m_pFunctionCalc; }
 
-	void insertPostLinked(CREF(rdo::runtime::LPRDOCalcFunctionCaller) pCalc)
+	void insertPostLinked(const rdo::runtime::LPRDOCalcFunctionCaller& pCalc)
 	{
 		ASSERT(pCalc);
 		m_postLinkedList.push_back(pCalc);
 	}
 
 private:
-	RDOFUNFunction(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOParam) pReturn);
-	RDOFUNFunction(CREF(tstring) name,              CREF(LPRDOParam) pReturn);
+	RDOFUNFunction(const RDOParserSrcInfo& src_info, const LPRDOParam& pReturn);
+	RDOFUNFunction(const std::string& name, const LPRDOParam& pReturn);
 	virtual ~RDOFUNFunction();
 
 	typedef std::vector<LPRDOFUNFunctionListElement>           ElementList;
@@ -536,18 +565,21 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNGroup
 // --------------------------------------------------------------------------------
-OBJECT(RDOFUNGroup) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOFUNGroup);
+class RDOFUNGroup
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOFUNGroup);
 public:
-	CREF(LPRDORTPResType) getResType()const { return m_pResType; }
+	const LPRDORTPResType& getResType()const { return m_pResType; }
 
 protected:
-	RDOFUNGroup(CREF(RDOParserSrcInfo) res_info);
+	RDOFUNGroup(const RDOParserSrcInfo& res_info);
 	virtual ~RDOFUNGroup();
 
 private:
-	void init(CREF(RDOParserSrcInfo) res_info);
+	void init(const RDOParserSrcInfo& res_info);
 
 	LPRDORTPResType m_pResType;
 };
@@ -555,9 +587,9 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNGroupLogic
 // --------------------------------------------------------------------------------
-CLASS(RDOFUNGroupLogic):
-	    INSTANCE_OF(RDOFUNGroup       )
-	AND INSTANCE_OF(boost::noncopyable)
+class RDOFUNGroupLogic
+	: public RDOFUNGroup
+	, public boost::noncopyable
 {
 DECLARE_FACTORY(RDOFUNGroupLogic)
 public:
@@ -570,10 +602,10 @@ public:
 		fgt_notforall = 4
 	};
 
-	LPRDOFUNLogic createFunLogic(REF(LPRDOFUNLogic) pCondition);
+	LPRDOFUNLogic createFunLogic(LPRDOFUNLogic& pCondition);
 
 private:
-	RDOFUNGroupLogic(FunGroupType funType, CREF(RDOParserSrcInfo) res_info);
+	RDOFUNGroupLogic(FunGroupType funType, const RDOParserSrcInfo& res_info);
 
 	const int m_funType;
 };
@@ -587,12 +619,12 @@ class RDOFUNSelect: public RDOFUNGroup
 DECLARE_FACTORY(RDOFUNSelect)
 public:
 	void           initSelect          (LPRDOFUNLogic pCondition = NULL);
-	LPRDOFUNLogic  createFunSelectGroup(RDOFUNGroupLogic::FunGroupType funType, REF(LPRDOFUNLogic) pCondition);
-	LPRDOFUNLogic  createFunSelectEmpty(CREF(RDOParserSrcInfo) empty_info);
-	LPRDOFUNArithm createFunSelectSize (CREF(RDOParserSrcInfo) size_info );
+	LPRDOFUNLogic  createFunSelectGroup(RDOFUNGroupLogic::FunGroupType funType, LPRDOFUNLogic& pCondition);
+	LPRDOFUNLogic  createFunSelectEmpty(const RDOParserSrcInfo& empty_info);
+	LPRDOFUNArithm createFunSelectSize (const RDOParserSrcInfo& size_info );
 
 private:
-	RDOFUNSelect(CREF(RDOParserSrcInfo) res_info);
+	RDOFUNSelect(const RDOParserSrcInfo& res_info);
 
 	rdo::runtime::LPRDOFunCalcSelect m_pCalcSelect;
 };

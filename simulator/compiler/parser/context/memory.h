@@ -22,7 +22,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- IContextMemory
 // --------------------------------------------------------------------------------
-S_INTERFACE(IContextMemory)
+struct IContextMemory
 {
 	virtual LPLocalVariableListStack getLocalMemory() = 0;
 };
@@ -33,10 +33,10 @@ public:                                      \
 // --------------------------------------------------------------------------------
 // -------------------- ContextMemory
 // --------------------------------------------------------------------------------
-CLASS(ContextMemory):
-	    INSTANCE_OF      (Context       )
-	AND IMPLEMENTATION_OF(IContextMemory)
-	AND IMPLEMENTATION_OF(IContextFind  )
+class ContextMemory
+	: public Context
+	, public IContextMemory
+	, public IContextFind
 {
 DECLARE_FACTORY(ContextMemory);
 public:

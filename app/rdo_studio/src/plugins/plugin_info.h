@@ -20,7 +20,8 @@
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
-OBJECT(PluginInfo)
+PREDECLARE_POINTER(PluginInfo);
+class PluginInfo: public rdo::counter_reference
 {
 DECLARE_FACTORY(PluginInfo);
 public:
@@ -55,8 +56,10 @@ private:
 	bool           pluginIsActive;
 };
 
-OBJECT(PluginInfoList)
-AND INSTANCE_OF(std::list<LPPluginInfo>)
+PREDECLARE_POINTER(PluginInfoList);
+class PluginInfoList
+	: public rdo::counter_reference
+	, public std::list<LPPluginInfo>
 {
 	DECLARE_FACTORY(PluginInfo);
 };

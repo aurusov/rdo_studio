@@ -28,7 +28,7 @@ ChartSerie::Options::Options()
 	, showInLegend     (true)
 {}
 
-bool ChartSerie::Options::operator== (CREF(Options) options) const
+bool ChartSerie::Options::operator== (const Options& options) const
 {
 	return title             == options.title
 		&& color             == options.color
@@ -42,7 +42,7 @@ bool ChartSerie::Options::operator== (CREF(Options) options) const
 // --------------------------------------------------------------------------------
 // -------------------- ChartSerie
 // --------------------------------------------------------------------------------
-ChartSerie::ChartSerie(CREF(LPSerie) pSerie)
+ChartSerie::ChartSerie(const LPSerie& pSerie)
 	: m_pSerie(pSerie)
 {
 	if (m_pSerie)
@@ -54,22 +54,22 @@ ChartSerie::ChartSerie(CREF(LPSerie) pSerie)
 ChartSerie::~ChartSerie()
 {}
 
-CREF(LPSerie) ChartSerie::getSerie() const
+const LPSerie& ChartSerie::getSerie() const
 {
 	return m_pSerie;
 }
 
-CREF(ChartSerie::Options) ChartSerie::options() const
+const ChartSerie::Options& ChartSerie::options() const
 {
 	return m_options;
 }
 
-void ChartSerie::setOptions(CREF(Options) options)
+void ChartSerie::setOptions(const Options& options)
 {
 	m_options = options;
 }
 
-bool ChartSerie::isTracerSerie(CREF(LPSerie) pSerie) const
+bool ChartSerie::isTracerSerie(const LPSerie& pSerie) const
 {
 	return m_pSerie == pSerie;
 }
@@ -79,7 +79,7 @@ void ChartSerie::drawSerie(ChartView* const pView, QPainter& painter, const QRec
 	m_pSerie->drawSerie(pView, painter, rect, m_options.color, m_options.markerType, m_options.markerSize, m_options.markerNeedDraw, m_options.markerTransparent);
 }
 
-void ChartSerie::getCaptions(std::vector<tstring>& captions, const int valueCount) const
+void ChartSerie::getCaptions(std::vector<std::string>& captions, const int valueCount) const
 {
 	m_pSerie->getCaptions(captions, valueCount);
 }

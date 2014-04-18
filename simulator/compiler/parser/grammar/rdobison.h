@@ -13,7 +13,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 // Определим YYSTYPE именно в этом файле, чтобы убрать зависимость от rdogramma.h
@@ -28,14 +27,14 @@ typedef int YYSTYPE;
 
 struct yyltype
 {
-	ruint m_first_line;
-	ruint m_first_pos;
+	std::size_t m_first_line;
+	std::size_t m_first_pos;
 
-	ruint m_last_line;
-	ruint m_last_pos;
+	std::size_t m_last_line;
+	std::size_t m_last_pos;
 
-	ruint m_first_seek;
-	ruint m_last_seek;
+	std::size_t m_first_seek;
+	std::size_t m_last_seek;
 };
 #define YYLTYPE yyltype
 

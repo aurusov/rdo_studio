@@ -47,12 +47,12 @@ void RDOParser::insert##NAME(LPRDO##NAME value) \
 
 #define DECLARE_PARSER_OBJECT_CONTAINER(NAME) \
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(NAME) \
-const LPRDO##NAME RDOParser::find##NAME(CREF(tstring) name) const \
+const LPRDO##NAME RDOParser::find##NAME(const std::string& name) const \
 { \
 	NAME##List::const_iterator it = std::find_if(m_all##NAME.begin(), m_all##NAME.end(), compareName<RDO##NAME>(name)); \
 	return it != m_all##NAME.end() ? *it : LPRDO##NAME(NULL); \
 } \
-rbool RDOParser::remove##NAME(const LPRDO##NAME item) \
+bool RDOParser::remove##NAME(const LPRDO##NAME item) \
 { \
 	NAME##List::iterator it = std::find(m_all##NAME.begin(), m_all##NAME.end(), item); \
 	if (it == m_all##NAME.end()) \
@@ -84,17 +84,17 @@ rdoModelObjects::RDOFileType RDOParser::getFileToParse()
 	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->m_type : rdoModelObjects::PAT;
 }
 
-ruint RDOParser::lexer_loc_line()
+std::size_t RDOParser::lexer_loc_line()
 {
 	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->lexer_loc_line() : ~0;
 }
 
-ruint RDOParser::lexer_loc_pos()
+std::size_t RDOParser::lexer_loc_pos()
 {
 	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->lexer_loc_pos() : 0;
 }
 
-tstring RDOParser::lexer_text()
+std::string RDOParser::lexer_text()
 {
 	LPRDOParserRDOItem pParserItem = !s_parserStack.empty()
 		? s_parserStack.back()->m_parser_item.object_dynamic_cast<RDOParserRDOItem>()
@@ -102,7 +102,7 @@ tstring RDOParser::lexer_text()
 
 	return pParserItem
 		? pParserItem->text()
-		: tstring();
+		: std::string();
 }
 
 LPRDOParser RDOParser::s_parser()
@@ -273,7 +273,7 @@ LPExpression contextSequence(const std::string& name, const RDOParserSrcInfo& sr
 	);
 }
 
-LPExpression contextUnknownEnum(const rdo::runtime::LPRDOEnumType& enumType, ruint index, const RDOParserSrcInfo& srcInfo)
+LPExpression contextUnknownEnum(const rdo::runtime::LPRDOEnumType& enumType, std::size_t index, const RDOParserSrcInfo& srcInfo)
 {
 	LPTypeInfo typeInfo = rdo::Factory<TypeInfo>::delegate<RDOType__identificator>(srcInfo);
 	return rdo::Factory<Expression>::create(
@@ -363,7 +363,7 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 				LPRDOEnumType enumType = type->type().object_dynamic_cast<RDOEnumType>();
 				ASSERT(enumType);
 
-				ruint index = enumType->getEnums()->findEnum(identifier);
+				std::size_t index = enumType->getEnums()->findEnum(identifier);
 				if (index != rdo::runtime::RDOEnumType::END)
 				{
 					return FindResult(CreateExpression(boost::bind(&contextUnknownEnum, enumType->getEnums(), index, srcInfo)));
@@ -375,46 +375,46 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 	return Context::FindResult();
 }
 
-rbool RDOParser::isCurrentDPTSearch()
+bool RDOParser::isCurrentDPTSearch()
 {
 	return getLastDPTSearch() && !getLastDPTSearch()->closed() ? true : false;
 }
 
-rbool RDOParser::isCurrentDPTPrior()
+bool RDOParser::isCurrentDPTPrior()
 {
 	return getLastDPTPrior() ? true : false;
 }
 
-void RDOParser::insertChanges(CREF(tstring) name, CREF(tstring) value)
+void RDOParser::insertChanges(const std::string& name, const std::string& value)
 {
 	m_changes.push_back(Changes(name, value));
 }
 
-tstring RDOParser::getChanges() const
+std::string RDOParser::getChanges() const
 {
 	std::stringstream stream;
 	stream << "$Changes" << std::endl;
-	ruint changes_max_length = 0;
-	STL_FOR_ALL_CONST(m_changes, change_it)
+	std::size_t changes_max_length = 0;
+	for (const auto& change: m_changes)
 	{
-		if (change_it->m_name.length() > changes_max_length)
+		if (change.m_name.length() > changes_max_length)
 		{
-			changes_max_length = change_it->m_name.length();
+			changes_max_length = change.m_name.length();
 		}
 	}
-	STL_FOR_ALL_CONST(m_changes, change_it)
+	for (const auto& change: m_changes)
 	{
-		stream << "  " << change_it->m_name;
-		for (ruint i = change_it->m_name.length(); i < changes_max_length; i++)
+		stream << "  " << change.m_name;
+		for (std::size_t i = change.m_name.length(); i < changes_max_length; i++)
 		{
 			stream << " ";
 		}
-		stream << "  = " << change_it->m_value << std::endl;
+		stream << "  = " << change.m_value << std::endl;
 	}
 	return stream.str();
 }
 
-tstring RDOParser::getModelStructure()
+std::string RDOParser::getModelStructure()
 {
 	std::stringstream modelStructure;
 
@@ -423,34 +423,34 @@ tstring RDOParser::getModelStructure()
 
 	// RTP
 	modelStructure << std::endl << std::endl << "$Resource_type" << std::endl;
-	STL_FOR_ALL_CONST(m_allRTPResType, rtp_it)
+	for (const auto& rtp: m_allRTPResType)
 	{
-		(*rtp_it)->writeModelStructure(modelStructure);
+		rtp->writeModelStructure(modelStructure);
 	}
 
 	// RSS
 	modelStructure << std::endl << "$Resources" << std::endl;
-	STL_FOR_ALL_CONST(m_allRSSResource, rss_it)
+	for (const auto& rss: m_allRSSResource)
 	{
-		(*rss_it)->writeModelStructure(modelStructure);
+		rss->writeModelStructure(modelStructure);
 	}
 
 	// PAT
 	modelStructure << std::endl << "$Pattern" << std::endl;
-	STL_FOR_ALL_CONST(m_allPATPattern, pat_it)
+	for (const auto& pat: m_allPATPattern)
 	{
-		(*pat_it)->writeModelStructure(modelStructure);
+		pat->writeModelStructure(modelStructure);
 	}
 
 	// OPR/DPT
-	ruint counter = 1;
+	std::size_t counter = 1;
 	modelStructure << std::endl << "$Activities" << std::endl;
 	modelStructure << m_pRuntime->writeActivitiesStructure(counter);
 
 	// DPT only
-	for (ruint i = 0; i < m_allDPTSearch.size(); i++)
+	for (std::size_t i = 0; i < m_allDPTSearch.size(); i++)
 	{
-		for (ruint j = 0; j < m_allDPTSearch.at(i)->getActivities().size(); j++)
+		for (std::size_t j = 0; j < m_allDPTSearch.at(i)->getActivities().size(); j++)
 		{
 			LPRDODPTSearchActivity pSearchActivity = m_allDPTSearch.at(i)->getActivities().at(j);
 			ASSERT(pSearchActivity);
@@ -460,10 +460,10 @@ tstring RDOParser::getModelStructure()
 
 	// PMD
 	modelStructure << std::endl << "$Watching" << std::endl;
-	ruint watching_max_length = 0;
-	STL_FOR_ALL_CONST(m_pRuntime->getResult(), watching_it)
+	std::size_t watching_max_length = 0;
+	for (const auto& watching: m_pRuntime->getResult())
 	{
-		LPITrace          trace     = *watching_it;
+		LPITrace          trace     = watching;
 		LPIName           name      = trace;
 		LPIModelStructure structure = trace;
 		if (trace && name && structure)
@@ -474,9 +474,9 @@ tstring RDOParser::getModelStructure()
 			}
 		}
 	}
-	STL_FOR_ALL_CONST(m_pRuntime->getResult(), watching_it)
+	for (const auto& watching: m_pRuntime->getResult())
 	{
-		LPITrace          trace     = *watching_it;
+		LPITrace          trace     = watching;
 		LPIName           name      = trace;
 		LPIModelStructure structure = trace;
 		if (trace && name && structure)
@@ -484,7 +484,7 @@ tstring RDOParser::getModelStructure()
 			if (trace->traceable())
 			{
 				modelStructure << "  " << name->name();
-				for (ruint i = name->name().length(); i < watching_max_length + 2; i++)
+				for (std::size_t i = name->name().length(); i < watching_max_length + 2; i++)
 					modelStructure << " ";
 
 				structure->writeModelStructure(modelStructure);
@@ -506,7 +506,7 @@ void RDOParser::parse()
 	runRTPPost();
 }
 
-void RDOParser::parse(REF(std::istream) stream)
+void RDOParser::parse(std::istream& stream)
 {
 	BOOST_FOREACH(const LPRDOParserItem& compiler, m_compilers)
 	{
@@ -526,16 +526,16 @@ void RDOParser::runRSSPost()
 {
 	//! В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
 #ifdef RDOSIM_COMPATIBLE
-	STL_FOR_ALL_CONST(getRTPResTypes(), rtp_it)
+	for (const auto& rtp: getRTPResTypes())
 	{
 #endif
-		STL_FOR_ALL_CONST(getRSSResources(), rss_it)
+		for (const auto& rss: getRSSResources())
 		{
 #ifdef RDOSIM_COMPATIBLE
-			if ((*rss_it)->getType() == *rtp_it)
+			if (rss->getType() == rtp)
 			{
 #endif
-				const std::vector<rdo::runtime::LPRDOCalc> calcList = (*rss_it)->createCalc();
+				const std::vector<rdo::runtime::LPRDOCalc> calcList = rss->createCalc();
 				BOOST_FOREACH(const rdo::runtime::LPRDOCalc& calc, calcList)
 				{
 					runtime()->addInitCalc(calc);
@@ -574,7 +574,7 @@ void RDOParser::runRTPPost()
 	}
 }
 
-void RDOParser::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
+void RDOParser::checkFunctionName(const RDOParserSrcInfo& src_info)
 {
 	LPRDOFUNConstant pConstant = findFUNConstant(src_info.src_text());
 	if (pConstant)
@@ -600,12 +600,12 @@ void RDOParser::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
 	}
 }
 
-void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
+void RDOParser::checkActivityName(const RDOParserSrcInfo& src_info)
 {
-	STL_FOR_ALL_CONST(getDPTSearchs(), it_search)
+	for (const auto& search: getDPTSearchs())
 	{
-		RDODPTSearch::ActivityList::const_iterator it_search_act = std::find_if((*it_search)->getActivities().begin(), (*it_search)->getActivities().end(), compareName<RDODPTSearchActivity>(src_info.src_text()));
-		if (it_search_act != (*it_search)->getActivities().end())
+		RDODPTSearch::ActivityList::const_iterator it_search_act = std::find_if(search->getActivities().begin(), search->getActivities().end(), compareName<RDODPTSearchActivity>(src_info.src_text()));
+		if (it_search_act != search->getActivities().end())
 		{
 			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
 			error().push_only((*it_search_act)->src_info(), "См. первое определение");
@@ -613,20 +613,20 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 //			error("Activity name: " + *_name + " already defined");
 		}
 	}
-	STL_FOR_ALL_CONST(getDPTSomes(), it_some)
+	for (const auto& some: getDPTSomes())
 	{
-		RDODPTSome::ActivityList::const_iterator it_some_act = std::find_if((*it_some)->getActivities().begin(), (*it_some)->getActivities().end(), compareName<RDODPTSomeActivity>(src_info.src_text()));
-		if (it_some_act != (*it_some)->getActivities().end())
+		RDODPTSome::ActivityList::const_iterator it_some_act = std::find_if(some->getActivities().begin(), some->getActivities().end(), compareName<RDODPTSomeActivity>(src_info.src_text()));
+		if (it_some_act != some->getActivities().end())
 		{
 			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
 			error().push_only((*it_some_act)->src_info(), "См. первое определение");
 			error().push_done();
 		}
 	}
-	STL_FOR_ALL_CONST(getDPTPriors(), it_prior)
+	for (const auto& prior: getDPTPriors())
 	{
-		RDODPTPrior::ActivityList::const_iterator it_prior_act = std::find_if((*it_prior)->getActivities().begin(), (*it_prior)->getActivities().end(), compareName<RDODPTPriorActivity>(src_info.src_text()));
-		if (it_prior_act != (*it_prior)->getActivities().end())
+		RDODPTPrior::ActivityList::const_iterator it_prior_act = std::find_if(prior->getActivities().begin(), prior->getActivities().end(), compareName<RDODPTPriorActivity>(src_info.src_text()));
+		if (it_prior_act != prior->getActivities().end())
 		{
 			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
 			error().push_only((*it_prior_act)->src_info(), "См. первое определение");
@@ -635,7 +635,7 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 	}
 }
 
-void RDOParser::checkDPTName(CREF(RDOParserSrcInfo) src_info)
+void RDOParser::checkDPTName(const RDOParserSrcInfo& src_info)
 {
 	if (src_info.src_text().empty())
 	{

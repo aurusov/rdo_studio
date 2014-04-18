@@ -24,17 +24,17 @@ inline LPIBaseOperation RDOSimulator::getMustContinueOpr() const
 	return m_pOprMustContinue;
 }
 
-inline void RDOSimulator::setMustContinueOpr(CREF(LPIBaseOperation) pOperation)
+inline void RDOSimulator::setMustContinueOpr(const LPIBaseOperation& pOperation)
 {
 	m_pOprMustContinue = pOperation;
 }
 
-inline ruint RDOSimulator::getSizeofSim() const
+inline std::size_t RDOSimulator::getSizeofSim() const
 {
 	return m_sizeofSim;
 }
 
-inline void RDOSimulator::appendBaseOperation(LPIBaseOperationContainer pLogic, CREF(LPIBaseOperation) pBaseOperation)
+inline void RDOSimulator::appendBaseOperation(LPIBaseOperationContainer pLogic, const LPIBaseOperation& pBaseOperation)
 {
 	ASSERT(pLogic        );
 	ASSERT(pBaseOperation);

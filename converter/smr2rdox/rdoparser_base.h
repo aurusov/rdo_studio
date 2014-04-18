@@ -28,16 +28,17 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-typedef int  (*t_bison_parse_fun)(PTR(void) lexer  );
+typedef int (*t_bison_parse_fun)(void* lexer);
 typedef void (*t_bison_error_fun)(const char* message);
-typedef int  (*t_flex_lexer_fun) (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+typedef int (*t_flex_lexer_fun)(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserItem
 // --------------------------------------------------------------------------------
 class Converter;
 
-OBJECT(RDOParserItem)
+PREDECLARE_POINTER(RDOParserItem);
+class RDOParserItem: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOParserItem);
 public:
@@ -47,20 +48,15 @@ public:
 	t_bison_error_fun m_error_fun;
 	t_flex_lexer_fun  m_lexer_fun;
 
-	virtual void parse(PTR(Converter) pParser)
-	{
-		UNUSED(pParser);
-	}
-	virtual void parse(PTR(Converter) pParser, REF(std::istream) streamIn)
-	{
-		UNUSED(pParser );
-		UNUSED(streamIn);
-	}
+	virtual void parse(Converter* /*pParser*/)
+	{}
+	virtual void parse(Converter* /*pParser*/, std::istream& /*streamIn*/)
+	{}
 
-	virtual ruint lexer_loc_line() { return ruint(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE); };
-	virtual ruint lexer_loc_pos () { return 0; };
+	virtual std::size_t lexer_loc_line() { return std::size_t(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE); };
+	virtual std::size_t lexer_loc_pos() { return 0; };
 
-	rbool needStream() const
+	bool needStream() const
 	{
 		return m_needStream;
 	}
@@ -70,7 +66,7 @@ protected:
 	RDOParserItem(rdo::converter::smr2rdox::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun);
 	virtual ~RDOParserItem();
 
-	rbool m_needStream;
+	bool m_needStream;
 
 private:
 	void init();
@@ -79,26 +75,27 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserContainer
 // --------------------------------------------------------------------------------
-OBJECT(RDOParserContainer)
+PREDECLARE_POINTER(RDOParserContainer);
+class RDOParserContainer: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOParserContainer);
 public:
-	typedef std::map<ruint, LPRDOParserItem> List;
-	typedef List::iterator                   Iterator;
+	typedef std::map<std::size_t, LPRDOParserItem> List;
+	typedef List::iterator Iterator;
 
-	static const ruint UNDEFINED_ID = ruint(~0);
+	static const std::size_t UNDEFINED_ID = std::size_t(~0);
 
-	Iterator begin()            { return m_list.begin();     }
-	Iterator end  ()            { return m_list.end();       }
-	Iterator find (ruint index) { return m_list.find(index); }
+	Iterator begin() { return m_list.begin(); }
+	Iterator end() { return m_list.end(); }
+	Iterator find(std::size_t index) { return m_list.find(index); }
 
-	static void getMinMax(rdo::converter::smr2rdox::RDOParseType type, REF(ruint) min, REF(ruint) max);
+	static void getMinMax(rdo::converter::smr2rdox::RDOParseType type, std::size_t& min, std::size_t& max);
 
 protected:
 	RDOParserContainer();
 	virtual ~RDOParserContainer();
 
-	ruint insert(rdo::converter::smr2rdox::RDOParseType type, CREF(LPRDOParserItem) pParser);
+	std::size_t insert(rdo::converter::smr2rdox::RDOParseType type, const LPRDOParserItem& pParser);
 
 private:
 	List m_list;

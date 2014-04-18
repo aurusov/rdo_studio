@@ -28,31 +28,32 @@ PREDECLARE_POINTER(RDOArrayType    );
 PREDECLARE_POINTER(RDOArrayIterator);
 
 //! Элемент массива
-OBJECT(RDOArrayValue)
+PREDECLARE_POINTER(RDOArrayValue);
+class RDOArrayValue: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOArrayValue)
 public:
 	typedef std::vector<RDOValue> Container;
 
-	CREF(LPRDOArrayType) type() const;
+	const LPRDOArrayType& type() const;
 
-	void push_back(CREF(RDOValue) item);
+	void push_back(const RDOValue& item);
 	LPRDOArrayIterator begin();
 	LPRDOArrayIterator end  ();
-	void insert(CREF(LPRDOArrayIterator) pWhere, CREF(LPRDOArrayIterator) pFromFirst, CREF(LPRDOArrayIterator) pFromLast);
-	void  erase(CREF(LPRDOArrayIterator) pFirst, CREF(LPRDOArrayIterator) pLast);
+	void insert(const LPRDOArrayIterator& pWhere, const LPRDOArrayIterator& pFromFirst, const LPRDOArrayIterator& pFromLast);
+	void  erase(const LPRDOArrayIterator& pFirst, const LPRDOArrayIterator& pLast);
 
-	ruint   size       () const;
-	tstring getAsString() const;
+	std::size_t size() const;
+	std::string getAsString() const;
 
-	CREF(RDOValue) getItem(CREF(RDOValue) index) const;
-	void           setItem(CREF(RDOValue) index, CREF(RDOValue) item);
+	const RDOValue& getItem(const RDOValue& index) const;
+	void            setItem(const RDOValue& index, const RDOValue& item);
 
 	LPRDOArrayValue clone() const;
 
 private:
-	RDOArrayValue(CREF(LPRDOArrayType)  pType );
-	RDOArrayValue(CREF(LPRDOArrayValue) pValue);
+	RDOArrayValue(const LPRDOArrayType&  pType );
+	RDOArrayValue(const LPRDOArrayValue& pValue);
 	virtual ~RDOArrayValue();
 
 	Container       m_container;
@@ -66,18 +67,18 @@ DECLARE_FACTORY(RDOArrayIterator)
 public:
 	typedef RDOArrayValue::Container::iterator Iterator;
 
-	Iterator            getIterator() const;
-	CREF(RDOValue)      getValue   () const;
-	LPRDOArrayIterator  preInc     (rsint delta);
-	LPRDOArrayIterator  postInc    (rsint delta);
-	LPRDOArrayIterator  next       ();
-	rbool               equal      (CREF(LPRDOArrayIterator) pIterator) const;
-	LPRDOArrayIterator  clone      () const;
+	Iterator getIterator() const;
+	const RDOValue& getValue() const;
+	LPRDOArrayIterator preInc(int delta);
+	LPRDOArrayIterator postInc(int delta);
+	LPRDOArrayIterator next();
+	bool equal(const LPRDOArrayIterator& pIterator) const;
+	LPRDOArrayIterator clone() const;
 
 private:
-	RDOArrayIterator(CREF(LPRDOArrayIterator) pIterator);
-	RDOArrayIterator(CREF(RDOArrayIterator)   iterator );
-	RDOArrayIterator(CREF(Iterator)           iterator );
+	RDOArrayIterator(const LPRDOArrayIterator& pIterator);
+	RDOArrayIterator(const RDOArrayIterator&   iterator );
+	RDOArrayIterator(const Iterator&           iterator );
 	virtual ~RDOArrayIterator();
 
 	Iterator  m_iterator;
@@ -91,10 +92,10 @@ public:
 	typedef  LPRDOType      LPItemType;
 	typedef  RDOArrayValue  value_type;
 
-	CREF(LPItemType) getItemType() const;
+	const LPItemType& getItemType() const;
 
 private:
-	RDOArrayType(CREF(LPItemType) pItemType);
+	RDOArrayType(const LPItemType& pItemType);
 	virtual ~RDOArrayType();
 
 	LPItemType  m_pItemType;

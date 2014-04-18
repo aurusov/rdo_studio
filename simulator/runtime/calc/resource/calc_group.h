@@ -20,28 +20,30 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Базовый класс для групповых калков
-CALC_SUB(RDOFunCalcGroup, RDOFunCalc)
+PREDECLARE_POINTER(RDOFunCalcGroup);
+class RDOFunCalcGroup: public RDOFunCalc
 {
 protected:
 	int        m_nResType;
 	LPRDOCalc  m_pCondition;
 
-	RDOFunCalcGroup(int nResType, CREF(LPRDOCalc) pCondition);
+	RDOFunCalcGroup(int nResType, const LPRDOCalc& pCondition);
 };
 
 /*!
   \def     DEFINE_CALC_GROUP
   \brief   Групповые калки
 */
-#define DEFINE_CALC_GROUP(CalcName)                                \
-CALC_SUB(RDOFunCalc##CalcName, RDOFunCalcGroup)                    \
-{                                                                  \
-DECLARE_FACTORY(RDOFunCalc##CalcName)                              \
-private:                                                           \
-	RDOFunCalc##CalcName(int nResType, CREF(LPRDOCalc) pCondition) \
-		: RDOFunCalcGroup(nResType, pCondition)                    \
-	{}                                                             \
-	DECLARE_ICalc;                                                 \
+#define DEFINE_CALC_GROUP(CalcName)                                 \
+PREDECLARE_POINTER(RDOFunCalc##CalcName);                           \
+class RDOFunCalc##CalcName: public RDOFunCalcGroup                  \
+{                                                                   \
+DECLARE_FACTORY(RDOFunCalc##CalcName)                               \
+private:                                                            \
+	RDOFunCalc##CalcName(int nResType, const LPRDOCalc& pCondition) \
+		: RDOFunCalcGroup(nResType, pCondition)                     \
+	{}                                                              \
+	DECLARE_ICalc;                                                  \
 };
 
 /*!

@@ -25,12 +25,12 @@ inline DefineArea::DefineArea()
 inline DefineArea::~DefineArea()
 {}
 
-inline DefineArea::DefineArea(CREF(RDOValue) leftRange, CREF(RDOValue) rightRange)
+inline DefineArea::DefineArea(const RDOValue& leftRange, const RDOValue& rightRange)
 {
 	IntervalType mType = DomainPart::closed(leftRange, rightRange);
 	m_domain = Domain(mType);
 }
-inline DefineArea::DefineArea(CREF(RDOValue) value)
+inline DefineArea::DefineArea(const RDOValue& value)
 {
 	IntervalType mType = DomainPart::closed(value,value);
 	m_domain = Domain(mType);
@@ -43,11 +43,11 @@ inline DefineArea::DefineArea(CREF(RDOValue) value)
 inline FuzzySet::FuzzySet()
 {}
 
-inline FuzzySet::FuzzySet(CREF(LPDefineArea) pDefineArea)
+inline FuzzySet::FuzzySet(const LPDefineArea& pDefineArea)
 	: m_defineArea(pDefineArea)
 {}
 
-inline FuzzySet::FuzzySet(CREF(LPFuzzySet) pSet)
+inline FuzzySet::FuzzySet(const LPFuzzySet& pSet)
 	: m_fuzzySet  (pSet->m_fuzzySet  )
 	, m_defineArea(pSet->m_defineArea)
 {}
@@ -55,34 +55,34 @@ inline FuzzySet::FuzzySet(CREF(LPFuzzySet) pSet)
 inline FuzzySet::~FuzzySet()
 {}
 
-inline void FuzzySet::setValues(CREF(FuzzySetDefinition) values)
+inline void FuzzySet::setValues(const FuzzySetDefinition& values)
 {
 	m_fuzzySet = values;
 }
 
-inline LPFuzzySet FuzzySet::append(CREF(RDOValue) rdovalue, double appertain)
+inline LPFuzzySet FuzzySet::append(const RDOValue& rdovalue, double appertain)
 {
-	std::pair<FuzzySet::FuzzySetDefinition::iterator, rbool> checkValue;
+	std::pair<FuzzySet::FuzzySetDefinition::iterator, bool> checkValue;
 	checkValue = m_fuzzySet.insert(std::pair<RDOValue,double>(rdovalue, appertain));
 	return LPFuzzySet(this);
 }
 
-inline LPFuzzySet FuzzySet::operator() (CREF(RDOValue) rdovalue, double appertain)
+inline LPFuzzySet FuzzySet::operator() (const RDOValue& rdovalue, double appertain)
 {
 	return append(rdovalue, appertain);
 }
 
-inline REF(double) FuzzySet::operator[] (CREF(RDOValue) rdovalue)
+inline double& FuzzySet::operator[] (const RDOValue& rdovalue)
 {
 	return m_fuzzySet[rdovalue];
 }
 
-inline FuzzySet::FuzzySetDefinition::const_iterator FuzzySet::find(CREF(RDOValue) rdovalue) const
+inline FuzzySet::FuzzySetDefinition::const_iterator FuzzySet::find(const RDOValue& rdovalue) const
 {
 	return m_fuzzySet.find(rdovalue);
 }
 
-inline FuzzySet::FuzzyItem FuzzySet::findValue(CREF(RDOValue) rdovalue) const
+inline FuzzySet::FuzzyItem FuzzySet::findValue(const RDOValue& rdovalue) const
 {
 	FuzzySetDefinition::const_iterator found = find(rdovalue);
 	if (found != end()) return FuzzyItem(found->first, found->second);
@@ -93,19 +93,19 @@ inline FuzzySet::FuzzySetDefinition::const_iterator FuzzySet::begin() const { re
 inline FuzzySet::FuzzySetDefinition::const_iterator FuzzySet::end  () const { return m_fuzzySet.end();   }
 inline FuzzySet::FuzzySetDefinition::iterator       FuzzySet::begin()       { return m_fuzzySet.begin(); }
 inline FuzzySet::FuzzySetDefinition::iterator       FuzzySet::end  ()       { return m_fuzzySet.end();   }
-inline rbool                                        FuzzySet::empty() const { return m_fuzzySet.empty(); }
-inline rbool FuzzySet::inRange (CREF(RDOValue) rdovalue)
+inline bool                                         FuzzySet::empty() const { return m_fuzzySet.empty(); }
+inline bool FuzzySet::inRange (const RDOValue& rdovalue)
 {
 	return m_fuzzySet.find(rdovalue) != m_fuzzySet.end();
 }
 // --------------------------------------------------------------------------------
 // -------------------- MemberFunctionProperties
 // --------------------------------------------------------------------------------
-inline LPFuzzySet MemberFunctionProperties::a_con (CREF(LPFuzzySet) pSet)
+inline LPFuzzySet MemberFunctionProperties::a_con (const LPFuzzySet& pSet)
 {
 	return a_pow(pSet, 2.0);
 }
-inline LPFuzzySet MemberFunctionProperties::a_dil (CREF(LPFuzzySet) pSet)
+inline LPFuzzySet MemberFunctionProperties::a_dil (const LPFuzzySet& pSet)
 {
 	return a_pow(pSet, 0.5);
 }
@@ -113,15 +113,15 @@ inline LPFuzzySet MemberFunctionProperties::a_dil (CREF(LPFuzzySet) pSet)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFuzzyTerm
 // --------------------------------------------------------------------------------
-inline CREF(LPFuzzySet) RDOFuzzyTerm::getFuzzySetDefinition() const
+inline const LPFuzzySet& RDOFuzzyTerm::getFuzzySetDefinition() const
 {
 	return (m_term.second);
 }
-inline tstring RDOFuzzyTerm::getName() const
+inline std::string RDOFuzzyTerm::getName() const
 {
 	return (m_term.first);
 }
-inline RDOFuzzyTerm::RDOFuzzyTerm(CREF(termName) pName, CREF(LPFuzzySet) pSet)
+inline RDOFuzzyTerm::RDOFuzzyTerm(const termName& pName, const LPFuzzySet& pSet)
 {
     m_term = std::make_pair(pName, pSet);
 }
@@ -136,12 +136,12 @@ inline RDOLingvoVariable::TermSet::const_iterator           RDOLingvoVariable::b
 inline RDOLingvoVariable::TermSet::const_iterator           RDOLingvoVariable::end  () const     {return m_set.end  ();}
 inline RDOLingvoVariable::~RDOLingvoVariable()
 {}
-inline RDOLingvoVariable::RDOLingvoVariable(CREF(LPRDOFuzzyTerm) term, nameOfVariable nameOfVariable)
+inline RDOLingvoVariable::RDOLingvoVariable(const LPRDOFuzzyTerm& term, nameOfVariable nameOfVariable)
 {
 	m_name = nameOfVariable;
 	m_set.insert(make_pair(term->getName(), term->getFuzzySetDefinition()));
 }
-inline RDOLingvoVariable::RDOLingvoVariable(CREF(RDOValue)pDefineAreaValue, CREF(LPRDOLingvoVariable) variable)
+inline RDOLingvoVariable::RDOLingvoVariable(const RDOValue&pDefineAreaValue, const LPRDOLingvoVariable& variable)
 	: m_name("activated")
 {
 	LPDefineArea   defineArea    = rdo::Factory<DefineArea>::create(pDefineAreaValue);
@@ -151,7 +151,7 @@ inline RDOLingvoVariable::RDOLingvoVariable(CREF(RDOValue)pDefineAreaValue, CREF
 		m_set.insert(std::pair<RDOFuzzyTerm::Term::first_type,LPFuzzySet>(it->first,setOfVariable));
 	}
 }
-inline RDOLingvoVariable::RDOLingvoVariable(CREF(RDOLingvoVariable) variable)
+inline RDOLingvoVariable::RDOLingvoVariable(const RDOLingvoVariable& variable)
 {
 	m_set = variable.m_set;
 	m_name  = variable.m_name;
@@ -160,11 +160,11 @@ inline void RDOLingvoVariable::setName(nameOfVariable nameVariable)
 {
 	m_name = nameVariable;
 }
-inline REF(LPFuzzySet) RDOLingvoVariable::operator[] (tstring name)
+inline LPFuzzySet& RDOLingvoVariable::operator[] (std::string name)
 {
 	return m_set[name];
 }
-inline void RDOLingvoVariable::append(tstring name,CREF(LPFuzzySet) fuzzySet)
+inline void RDOLingvoVariable::append(std::string name, const LPFuzzySet& fuzzySet)
 {
 	operator[](name) = fuzzySet;
 }

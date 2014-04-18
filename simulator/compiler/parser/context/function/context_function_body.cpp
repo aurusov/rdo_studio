@@ -43,7 +43,7 @@ void ContextFunctionBody::popContext()
 	RDOParser::s_parser()->contextStack()->pop<ContextMemory>();
 }
 
-void ContextFunctionBody::setBody(CREF(rdo::runtime::LPRDOCalc) pBody)
+void ContextFunctionBody::setBody(const rdo::runtime::LPRDOCalc& pBody)
 {
 	m_onBody(pBody);
 }

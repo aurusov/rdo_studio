@@ -24,7 +24,7 @@ public:
 	DockTrace(QWidget* pParent);
 	virtual ~DockTrace();
 
-	REF(context_type) getContext();
+	context_type& getContext();
 };
 
 #endif // _RDO_STUDIO_DOCK_TRACE_H_

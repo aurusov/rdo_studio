@@ -24,12 +24,12 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOActivity
 // --------------------------------------------------------------------------------
-void RDOActivity::addParamCalc(CREF(LPRDOCalc) pCalc)
+void RDOActivity::addParamCalc(const LPRDOCalc& pCalc)
 {
 	m_paramsCalcs.push_back(pCalc);
 }
 
-int RDOActivity::getResByRelRes(ruint rel_res_id) const
+int RDOActivity::getResByRelRes(std::size_t rel_res_id) const
 {
 	if (m_relResID.size() <= rel_res_id)
 	{
@@ -38,7 +38,7 @@ int RDOActivity::getResByRelRes(ruint rel_res_id) const
 	return m_relResID.at(rel_res_id);
 }
 
-void RDOActivity::setRelRes(ruint rel_res_id, ruint res_id)
+void RDOActivity::setRelRes(std::size_t rel_res_id, std::size_t res_id)
 {
 	if (m_relResID.size() <= rel_res_id)
 	{
@@ -47,7 +47,7 @@ void RDOActivity::setRelRes(ruint rel_res_id, ruint res_id)
 	m_relResID[rel_res_id] = res_id;
 }
 
-void RDOActivity::setPatternParameters(CREF(LPRDORuntime) pRuntime, const std::vector<LPRDOCalc>& params)
+void RDOActivity::setPatternParameters(const LPRDORuntime& pRuntime, const std::vector<LPRDOCalc>& params)
 {
 	std::vector<RDOValue> params_values;
 	params_values.reserve(params.size());
@@ -58,7 +58,7 @@ void RDOActivity::setPatternParameters(CREF(LPRDORuntime) pRuntime, const std::v
 	setPatternParameters(pRuntime, params_values);
 }
 
-void RDOActivity::setPatternParameters(CREF(LPRDORuntime) pRuntime, const std::vector<RDOValue>& params)
+void RDOActivity::setPatternParameters(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& params)
 {
 	for (size_t index = 0; index < params.size(); ++index)
 	{
@@ -66,7 +66,7 @@ void RDOActivity::setPatternParameters(CREF(LPRDORuntime) pRuntime, const std::v
 	}
 }
 
-void RDOActivity::getRelevantResources(CREF(LPRDORuntime) pRuntime, std::list<LPRDOResource>& rel_res_list)
+void RDOActivity::getRelevantResources(const LPRDORuntime& pRuntime, std::list<LPRDOResource>& rel_res_list)
 {
 	rel_res_list.clear();
 	int size = m_relResID.size();
@@ -76,7 +76,7 @@ void RDOActivity::getRelevantResources(CREF(LPRDORuntime) pRuntime, std::list<LP
 	}
 }
 
-void RDOActivity::updateConvertStatus(CREF(LPRDORuntime) pRuntime, const std::vector<RDOResource::ConvertStatus>& status_list)
+void RDOActivity::updateConvertStatus(const LPRDORuntime& pRuntime, const std::vector<RDOResource::ConvertStatus>& status_list)
 {
 	updateRelRes(pRuntime);
 	int i = 0;
@@ -102,9 +102,9 @@ void RDOActivity::updateConvertStatus(CREF(LPRDORuntime) pRuntime, const std::ve
 	}
 }
 
-tstring RDOActivity::traceResourcesList(char prefix, CREF(LPRDORuntime) pRuntime)
+std::string RDOActivity::traceResourcesList(char prefix, const LPRDORuntime& pRuntime)
 {
-	tstring res;
+	std::string res;
 	for (std::list<LPRDOResource>::const_iterator i = m_relevantResources.begin(); i != m_relevantResources.end(); ++i)
 	{
 		if (*i)
@@ -115,11 +115,10 @@ tstring RDOActivity::traceResourcesList(char prefix, CREF(LPRDORuntime) pRuntime
 	return res;
 }
 
-tstring RDOActivity::traceResourcesListNumbers(CREF(LPRDORuntime) pRuntime, rbool show_create_index)
+std::string RDOActivity::traceResourcesListNumbers(const LPRDORuntime& /*pRuntime*/, bool show_create_index)
 {
-	UNUSED(pRuntime);
 #ifndef RDOSIM_COMPATIBLE
-	UNUSED(show_create_index);
+	(void)show_create_index;
 #endif
 	std::ostringstream res;
 	res << m_relevantResources.size() << " ";

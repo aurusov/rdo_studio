@@ -25,15 +25,14 @@ using namespace rdo::gui::tracer;
 LogMainWnd::LogMainWnd(QWidget* pParent)
 	: QAbstractScrollArea(pParent)
 {
-	PTR(LogView) pLog = new LogView(this, &g_pApp->getStyle()->style_trace);
+	LogView* pLog = new LogView(this, &g_pApp->getStyle()->style_trace);
 	pLog->show();
 
 	setViewport(pLog);
 }
 
-bool LogMainWnd::viewportEvent(PTR(QEvent) pEvent)
+bool LogMainWnd::viewportEvent(QEvent* /*pEvent*/)
 {
-	UNUSED(pEvent);
 	return false;
 }
 
@@ -47,7 +46,7 @@ void LogMainWnd::focusOutEvent(QFocusEvent* pEvent)
 	static_cast<QObject*>(viewport())->event(pEvent);
 }
 
-void LogMainWnd::keyPressEvent(PTR(QKeyEvent) pEvent)
+void LogMainWnd::keyPressEvent(QKeyEvent* pEvent)
 {
 	switch (pEvent->key())
 	{

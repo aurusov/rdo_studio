@@ -35,7 +35,7 @@ static const double const2 = 11.4;
 typedef  boost::tuple<LPRDORuntime, LPRDOCalc, LPRDOCalc>  CalcTriple;
 
 template <class T>
-RDOValue calc(CREF(CalcTriple) calcTriple)
+RDOValue calc(const CalcTriple& calcTriple)
 {
 	BOOST_CHECK(calcTriple.get<0>());
 	BOOST_CHECK(calcTriple.get<1>());
@@ -188,7 +188,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 				LPRDOCalc pParamLeft = pGetFunParam;
 				BOOST_CHECK(pParamLeft);
 
-				LPRDOCalc pParamRight = rdo::Factory<RDOCalcConst>::create(RDOValue(rsint(1)));
+				LPRDOCalc pParamRight = rdo::Factory<RDOCalcConst>::create(RDOValue(int(1)));
 				BOOST_CHECK(pParamRight);
 
 				pIFCondition = rdo::Factory<RDOCalcIsEqual>::create(pParamLeft, pParamRight);
@@ -200,7 +200,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 
 			//! return 1
 			LPRDOCalc pThen = rdo::Factory<RDOCalcFunReturn>::create(
-				rdo::Factory<RDOCalcConst>::create(RDOValue(rsint(1)))
+				rdo::Factory<RDOCalcConst>::create(RDOValue(int(1)))
 			);
 			BOOST_CHECK(pThen);
 
@@ -213,7 +213,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 					LPRDOCalc pParamLeft = pGetFunParam;
 					BOOST_CHECK(pParamLeft);
 
-					LPRDOCalc pParamRight = rdo::Factory<RDOCalcConst>::create(RDOValue(rsint(1)));
+					LPRDOCalc pParamRight = rdo::Factory<RDOCalcConst>::create(RDOValue(int(1)));
 					BOOST_CHECK(pParamRight);
 
 					pParamValue = rdo::Factory<RDOCalcMinus>::create(pParamLeft, pParamRight);
@@ -249,15 +249,15 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 
 	private:
 		//! ручная набивка вызова функции int fun(5)
-		static LPRDOCalc externalCaller(CREF(LPRDOCalc) pBody)
+		static LPRDOCalc externalCaller(const LPRDOCalc& pBody)
 		{
-			LPRDOCalc pParam = rdo::Factory<RDOCalcConst>::create(RDOValue(rsint(5)));
+			LPRDOCalc pParam = rdo::Factory<RDOCalcConst>::create(RDOValue(int(5)));
 			BOOST_CHECK(pParam);
 
 			return caller(pBody, pParam);
 		}
 
-		static LPRDOCalc caller(CREF(LPRDOCalc) pBody, CREF(LPRDOCalc) pParam)
+		static LPRDOCalc caller(const LPRDOCalc& pBody, const LPRDOCalc& pParam)
 		{
 			BOOST_CHECK(pBody );
 			BOOST_CHECK(pParam);
@@ -274,11 +274,11 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 	Error error;
 
 	RDOValue resultFunParam = generator::create(generator::MO_FUN_PARAM)->calcValue(rdo::Factory<RDORuntime>::create(&error));
-	tstring resultFunParamStr = resultFunParam.getAsString();
+	std::string resultFunParamStr = resultFunParam.getAsString();
 	BOOST_CHECK(resultFunParam.getInt() == 120);
 
 	RDOValue resultParamFun = generator::create(generator::MO_PARAM_FUN)->calcValue(rdo::Factory<RDORuntime>::create(&error));
-	tstring resultParamFunStr = resultParamFun.getAsString();
+	std::string resultParamFunStr = resultParamFun.getAsString();
 	BOOST_CHECK(resultParamFun.getInt() == 120);
 }
 
@@ -293,10 +293,10 @@ BOOST_AUTO_TEST_CASE(RDOCalc_SpeedTest)
 
 	typedef  boost::chrono::process_user_cpu_clock  clock;
 
-	static const ruint RUN_TEST_COUNT = 1000000;
+	static const std::size_t RUN_TEST_COUNT = 1000000;
 
 	clock::time_point timeStart = clock::now();
-	for (ruint i = 0; i < RUN_TEST_COUNT; ++i)
+	for (std::size_t i = 0; i < RUN_TEST_COUNT; ++i)
 	{
 		pPlus->calcValue(pRuntime);
 	}

@@ -22,7 +22,7 @@ namespace rdo {
 //! \details Нужен для получения идентификатора интерфейса по его типу
 //! \tparam  T  - тип интерфейса
 //! \tparam  id - уникальный идентификатр интерфейса
-template <class T, ruint id>
+template <class T, std::size_t id>
 class InterfaceRegistrator
 {
 public:
@@ -65,9 +65,9 @@ Registered##I::ID
 namespace rdo {
 
 class IUnknown;
-typedef PTR(IUnknown) LPIUnknown;
+typedef IUnknown* LPIUnknown;
 class IGetUnknown;
-typedef PTR(IGetUnknown) LPIGetUnknown;
+typedef IGetUnknown* LPIGetUnknown;
 
 template<class T> class Interface;
 
@@ -76,27 +76,27 @@ class UnknownPointer
 {
 public:
 	UnknownPointer ();
-	UnknownPointer (REF(IUnknown) unknown    );
+	UnknownPointer (IUnknown& unknown);
 	UnknownPointer (LPIGetUnknown pGetUnknown);
-	UnknownPointer (PTR(void) pInterface, LPIUnknown pUnknown);
-	UnknownPointer (CREF(UnknownPointer) pointer);
+	UnknownPointer (void* pInterface, LPIUnknown pUnknown);
+	UnknownPointer (const UnknownPointer& pointer);
 	~UnknownPointer();
 
-	rbool               operator== (CREF(UnknownPointer) pointer) const;
-	REF(UnknownPointer) operator=  (CREF(UnknownPointer) pointer);
+	bool operator==(const UnknownPointer& pointer) const;
+	UnknownPointer& operator=(const UnknownPointer& pointer);
 
-	operator rbool() const;
+	operator bool() const;
 
-	UnknownPointer                  query_cast  (ruint id);
+	UnknownPointer                  query_cast  (std::size_t id);
 	template<class I> Interface<I>  query_cast  ();
 	template<class I> operator      Interface<I>();
 
-	UnknownPointer                  query_cast  (ruint id) const;
+	UnknownPointer                  query_cast  (std::size_t id) const;
 	template<class I> Interface<I>  query_cast  () const;
 	template<class I> operator      Interface<I>() const;
 
 protected:
-	PTR(void)   m_pInterface;
+	void* m_pInterface;
 
 private:
 	LPIUnknown  m_pUnknown;
@@ -111,17 +111,17 @@ public:
 
 	Interface();
 	Interface(LPIGetUnknown pGetUnknown);
-	Interface(PTR(void) pInterface, LPIUnknown pUnknown);
-	Interface(CREF(this_type) aInterface);
+	Interface(void* pInterface, LPIUnknown pUnknown);
+	Interface(const this_type& aInterface);
 
-	REF(this_type) operator=     (CREF(this_type) aInterface);
-	               operator rbool() const;
+	this_type& operator=(const this_type& aInterface);
+	operator bool() const;
 
-	PTR(I)  get();
-	CPTR(I) get() const;
+	I* get();
+	const I* get() const;
 
-	PTR(I)  operator-> ();
-	CPTR(I) operator-> () const;
+	I* operator->();
+	const I* operator->() const;
 };
 
 class IUnknown
@@ -129,16 +129,16 @@ class IUnknown
 public:
 	virtual void           AddRef () = 0;
 	virtual void           Release() = 0;
-	virtual UnknownPointer QueryInterface(ruint id) = 0;
+	virtual UnknownPointer QueryInterface(std::size_t id) = 0;
 };
-typedef PTR(IUnknown) LPIUnknown;
+typedef IUnknown* LPIUnknown;
 
 class IGetUnknown
 {
 public:
 	virtual LPIUnknown GetUnknown() = 0;
 };
-typedef PTR(IGetUnknown) LPIGetUnknown;
+typedef IGetUnknown* LPIGetUnknown;
 
 template <class T>
 class IFactory
@@ -152,15 +152,15 @@ private:
 	friend class IFactory<T>;
 	friend class IFactory<T>::Object;
 	private:
-		ruint  m_counter;
-		PTR(T) m_pObject;
+		std::size_t m_counter;
+		T* m_pObject;
 
 		Counter();
 		operator UnknownPointer();
 
 		virtual void           AddRef        ();
 		virtual void           Release       ();
-		virtual UnknownPointer QueryInterface(ruint id);
+		virtual UnknownPointer QueryInterface(std::size_t id);
 	};
 
 public:
@@ -170,49 +170,49 @@ public:
 		Object();
 
 		template <typename P1>
-		Object(CREF(P1) p1)
+		Object(const P1& p1)
 			: T(p1)
 		{
 			create();
 		}
 
 		template <typename P1, typename P2>
-		Object(CREF(P1) p1, CREF(P2) p2)
+		Object(const P1& p1, const P2& p2)
 			: T(p1, p2)
 		{
 			create();
 		}
 
 		template <typename P1, typename P2, typename P3>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3)
+		Object(const P1& p1, const P2& p2, const P3& p3)
 			: T(p1, p2, p3)
 		{
 			create();
 		}
 
 		template <typename P1, typename P2, typename P3, typename P4>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4)
+		Object(const P1& p1, const P2& p2, const P3& p3, const P4& p4)
 			: T(p1, p2, p3, p4)
 		{
 			create();
 		}
 
 		template <typename P1, typename P2, typename P3, typename P4, typename P5>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5)
+		Object(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5)
 			: T(p1, p2, p3, p4, p5)
 		{
 			create();
 		}
 
 		template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6)
+		Object(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5, const P6& p6)
 			: T(p1, p2, p3, p4, p5, p6)
 		{
 			create();
 		}
 
 		template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
-		Object(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7)
+		Object(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5, const P6& p6, const P7& p7)
 			: T(p1, p2, p3, p4, p5, p6, p7)
 		{
 			create();
@@ -231,30 +231,30 @@ public:
 	static UnknownPointer create();
 
 	template <typename P1>
-	static UnknownPointer create(CREF(P1) p1);
+	static UnknownPointer create(const P1& p1);
 
 	template <typename P1, typename P2>
-	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2);
+	static UnknownPointer create(const P1& p1, const P2& p2);
 
 	template <typename P1, typename P2, typename P3>
-	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3);
+	static UnknownPointer create(const P1& p1, const P2& p2, const P3& p3);
 
 	template <typename P1, typename P2, typename P3, typename P4>
-	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4);
+	static UnknownPointer create(const P1& p1, const P2& p2, const P3& p3, const P4& p4);
 
 	template <typename P1, typename P2, typename P3, typename P4, typename P5>
-	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5);
+	static UnknownPointer create(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5);
 
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
-	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6);
+	static UnknownPointer create(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5, const P6& p6);
 
 	template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
-	static UnknownPointer create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7);
+	static UnknownPointer create(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5, const P6& p6, const P7& p7);
 
-	static void destroy(PTR(T) pObject);
+	static void destroy(T* pObject);
 
 private:
-	static UnknownPointer init(PTR(Object) pObject);
+	static UnknownPointer init(Object* pObject);
 };
 
 } // namespace rdo
@@ -267,15 +267,15 @@ private:
 
 #define QUERY_INTERFACE_BEGIN                           \
 public:                                                 \
-PTR(void) QueryInterface(ruint id)                      \
+void* QueryInterface(std::size_t id)                    \
 {
 
 #define QUERY_INTERFACE_PARENT(A)                       \
-	PTR(void) pIterface##A = A::QueryInterface(id);     \
+	void* pIterface##A = A::QueryInterface(id);         \
 	if (pIterface##A) return pIterface##A;
 
 #define QUERY_INTERFACE(A)                              \
-	if (id == IID(A)) return static_cast<PTR(A)>(this);
+	if (id == IID(A)) return static_cast<A*>(this);
 
 #define QUERY_INTERFACE_END                             \
 	return NULL;                                        \
@@ -284,10 +284,10 @@ PTR(void) QueryInterface(ruint id)                      \
 class IInit
 {
 public:
-	virtual rbool init() = 0;
+	virtual bool init() = 0;
 };
-#define DECLARE_IInit     \
-	virtual rbool init();
+#define DECLARE_IInit \
+	virtual bool init();
 
 INTERFACE_REGISTRATOR(IInit, 0);
 

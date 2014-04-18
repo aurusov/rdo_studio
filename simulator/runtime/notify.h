@@ -30,16 +30,16 @@ public:
 		RO_BEFOREDELETE = 0
 	};
 
-	void connect    (PTR(INotify) pTo, ruint message);
-	void disconnect (PTR(INotify) pTo               );
-	void disconnect (PTR(INotify) pTo, ruint message);
-	void fireMessage(ruint message, PTR(void) pParam) const;
+	void connect(INotify* pTo, std::size_t message);
+	void disconnect(INotify* pTo);
+	void disconnect(INotify* pTo, std::size_t message);
+	void fireMessage(std::size_t message, void* pParam) const;
 
 private:
-	typedef std::multimap<ruint, PTR(INotify)> Connected;
+	typedef std::multimap<std::size_t, INotify*> Connected;
 	Connected m_connected;
 
-	void disconnect(Connected::iterator it, PTR(INotify) pTo);
+	void disconnect(Connected::iterator it, INotify* pTo);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

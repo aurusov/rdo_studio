@@ -22,7 +22,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogicBase
 // --------------------------------------------------------------------------------
-RDOLogicBase::RDOLogicBase(CREF(RDOParserSrcInfo) src_info)
+RDOLogicBase::RDOLogicBase(const RDOParserSrcInfo& src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_multithreading(false   )
 {}
@@ -30,12 +30,12 @@ RDOLogicBase::RDOLogicBase(CREF(RDOParserSrcInfo) src_info)
 RDOLogicBase::~RDOLogicBase()
 {}
 
-CREF(tstring) RDOLogicBase::name() const
+const std::string& RDOLogicBase::name() const
 {
 	return src_info().src_text();
 }
 
-rbool RDOLogicBase::setPrior(REF(LPRDOFUNArithm) pPrior)
+bool RDOLogicBase::setPrior(LPRDOFUNArithm& pPrior)
 {
 	LPIPriority pPriority = m_pRuntimeLogic;
 	if (pPriority)
@@ -45,17 +45,17 @@ rbool RDOLogicBase::setPrior(REF(LPRDOFUNArithm) pPrior)
 	return false;
 }
 
-rbool RDOLogicBase::getMultithreading() const
+bool RDOLogicBase::getMultithreading() const
 {
 	return m_multithreading;
 }
 
-void RDOLogicBase::setMultithreading(rbool multithreading)
+void RDOLogicBase::setMultithreading(bool multithreading)
 {
 	m_multithreading = multithreading;
 }
 
-void RDOLogicBase::setCondition(CREF(LPRDOFUNLogic) pConditon)
+void RDOLogicBase::setCondition(const LPRDOFUNLogic& pConditon)
 {
 	m_pConditon = pConditon;
 }

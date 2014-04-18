@@ -24,11 +24,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOCalcCreateResource
 // --------------------------------------------------------------------------------
 RDOCalcCreateResource::RDOCalcCreateResource(
-	ruint resourceTypeID,
-	CREF(std::vector<RDOValue>) rParamsCalcs,
-	rbool traceFlag,
-	rbool permanentFlag,
-	ruint relResID
+	std::size_t resourceTypeID,
+	const std::vector<RDOValue>& rParamsCalcs,
+	bool traceFlag,
+	bool permanentFlag,
+	std::size_t relResID
 )
 	: m_resourceTypeID(resourceTypeID)
 	, m_traceFlag     (traceFlag     )
@@ -40,14 +40,14 @@ RDOCalcCreateResource::RDOCalcCreateResource(
 	ASSERT(m_relResID == ~0 || (m_relResID != ~0 && !m_permanentFlag));
 }
 
-RDOValue RDOCalcCreateResource::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcCreateResource::doCalc(const LPRDORuntime& pRuntime)
 {
 	const LPRDOResourceTypeList& resourceType = pRuntime->getResType(m_resourceTypeID);
 
 	LPRDOResource pResource = resourceType.interface_cast<IResourceType>()->createRes(pRuntime, pRuntime->getResourceId(), m_paramsCalcs, m_traceFlag, m_permanentFlag);
 	ASSERT(pResource);
 
-	if (m_relResID != ruint(~0))
+	if (m_relResID != std::size_t(~0))
 	{
 		pRuntime->getCurrentActivity()->setRelRes(m_relResID, pResource->getTraceID());
 	}

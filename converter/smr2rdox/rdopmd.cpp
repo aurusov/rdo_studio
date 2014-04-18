@@ -23,22 +23,20 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int cnv_pmdlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_pmdlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void cnv_pmderror(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_pmderror(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDResult
 // --------------------------------------------------------------------------------
-RDOPMDResult::RDOPMDResult(CREF(RDOParserSrcInfo) src_info)
+RDOPMDResult::RDOPMDResult(const RDOParserSrcInfo& src_info)
 	: RDOParserSrcInfo(src_info)
 {
 	LPRDOPMDResult pResult = Converter::s_converter()->findPMDResult(src_text());
@@ -53,7 +51,7 @@ RDOPMDResult::RDOPMDResult(CREF(RDOParserSrcInfo) src_info)
 RDOPMDResult::~RDOPMDResult()
 {}
 
-void RDOPMDResult::endOfCreation(CREF(LPIResult) pResult)
+void RDOPMDResult::endOfCreation(const LPIResult& pResult)
 {
 	m_pResult = pResult;
 	LPITrace trace = m_pResult;
@@ -69,7 +67,7 @@ void RDOPMDResult::endOfCreation(CREF(LPIResult) pResult)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchPar
 // --------------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info)
+RDOPMDWatchPar::RDOPMDWatchPar(const RDOParserSrcInfo& src_info, bool trace, const RDOParserSrcInfo& res_src_info, const RDOParserSrcInfo& par_src_info)
 	: RDOPMDResult(src_info)
 {
 	LPRDORSSResource pResource = Converter::s_converter()->findRSSResource(res_src_info.src_text());
@@ -106,7 +104,7 @@ RDOPMDWatchPar::RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, rbool trace, CRE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchState
 // --------------------------------------------------------------------------------
-RDOPMDWatchState::RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info, rbool trace, LPRDOFUNLogic pLogic)
+RDOPMDWatchState::RDOPMDWatchState(const RDOParserSrcInfo& src_info, bool trace, LPRDOFUNLogic pLogic)
 	: RDOPMDResult(src_info)
 {
 	endOfCreation(RF(rdo::runtime::RDOPMDWatchState)::create(Converter::s_converter()->runtime(), src_text(), trace, pLogic->getCalc()));
@@ -115,7 +113,7 @@ RDOPMDWatchState::RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info, rbool trace,
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchTemp
 // --------------------------------------------------------------------------------
-RDOPMDWatchTemp::RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info)
+RDOPMDWatchTemp::RDOPMDWatchTemp(const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& res_type_src_info)
 	: RDOPMDResult(src_info)
 {
 	LPRDORTPResType pResType = Converter::s_converter()->findRTPResType(res_type_src_info.src_text());
@@ -134,7 +132,7 @@ RDOPMDWatchTemp::RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParser
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchQuant
 // --------------------------------------------------------------------------------
-RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_type_src_info)
+RDOPMDWatchQuant::RDOPMDWatchQuant(const RDOParserSrcInfo& src_info, bool trace, const RDOParserSrcInfo& res_type_src_info)
 	: RDOPMDWatchTemp(src_info, res_type_src_info)
 {
 	LPRDOFUNGroupLogic pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(res_type_src_info.src_text()));
@@ -142,7 +140,7 @@ RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(RDOParserSrcInfo) src_info, rbool trace,
 	endOfCreation(RF(rdo::runtime::RDOPMDWatchQuant)::create(Converter::s_converter()->runtime(), src_text(), trace, res_type_src_info.src_text(), pGroupLogic->getResType()->getNumber()));
 }
 
-void RDOPMDWatchQuant::setLogic(REF(LPRDOFUNLogic) pLogic)
+void RDOPMDWatchQuant::setLogic(LPRDOFUNLogic& pLogic)
 {
 	LPIResultWatchQuant pQuant = m_pResult;
 	ASSERT(pQuant);
@@ -161,7 +159,7 @@ void RDOPMDWatchQuant::setLogicNoCheck()
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchValue
 // --------------------------------------------------------------------------------
-RDOPMDWatchValue::RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_type_src_info)
+RDOPMDWatchValue::RDOPMDWatchValue(const RDOParserSrcInfo& src_info, bool trace, const RDOParserSrcInfo& res_type_src_info)
 	: RDOPMDWatchTemp(src_info, res_type_src_info)
 {
 	LPRDOFUNGroupLogic pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(res_type_src_info.src_text()));
@@ -169,7 +167,7 @@ RDOPMDWatchValue::RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, rbool trace,
 	endOfCreation(RF(rdo::runtime::RDOPMDWatchValue)::create(Converter::s_converter()->runtime(), src_text(), trace, res_type_src_info.src_text(), pGroupLogic->getResType()->getNumber()));
 }
 
-void RDOPMDWatchValue::setLogic(REF(LPRDOFUNLogic) pLogic, REF(LPRDOFUNArithm) pArithm)
+void RDOPMDWatchValue::setLogic(LPRDOFUNLogic& pLogic, LPRDOFUNArithm& pArithm)
 {
 	LPIResultWatchValue pWatch = m_pResult;
 	ASSERT(pWatch);
@@ -178,7 +176,7 @@ void RDOPMDWatchValue::setLogic(REF(LPRDOFUNLogic) pLogic, REF(LPRDOFUNArithm) p
 	Converter::s_converter()->getFUNGroupStack().pop_back();
 }
 
-void RDOPMDWatchValue::setLogicNoCheck(REF(LPRDOFUNArithm) pArithm)
+void RDOPMDWatchValue::setLogicNoCheck(LPRDOFUNArithm& pArithm)
 {
 	LPIResultWatchValue pWatch = m_pResult;
 	ASSERT(pWatch);
@@ -190,7 +188,7 @@ void RDOPMDWatchValue::setLogicNoCheck(REF(LPRDOFUNArithm) pArithm)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDGetValue
 // --------------------------------------------------------------------------------
-RDOPMDGetValue::RDOPMDGetValue(CREF(RDOParserSrcInfo) src_info, LPRDOFUNArithm pArithm)
+RDOPMDGetValue::RDOPMDGetValue(const RDOParserSrcInfo& src_info, LPRDOFUNArithm pArithm)
 	: RDOPMDResult(src_info)
 {
 	endOfCreation(RF(rdo::runtime::RDOPMDGetValue)::create(Converter::s_converter()->runtime(), src_text(), pArithm->createCalc()));

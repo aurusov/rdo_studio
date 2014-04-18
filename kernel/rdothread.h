@@ -62,7 +62,7 @@
 // -------------------- RDOThread
 // --------------------------------------------------------------------------------
 #ifdef RDO_MT
-typedef ruint (*RDOThreadFun)(PTR(void) pParam);
+typedef std::size_t (*RDOThreadFun)(void* pParam);
 #endif
 
 class RDOThread: public boost::noncopyable
@@ -95,7 +95,7 @@ public:
 		RT_REPOSITORY_MODEL_SAVE,
 		RT_REPOSITORY_MODEL_OPEN_GET_NAME,     // param = rdo::repository::RDOThreadRepository::OpenFile*
 		RT_REPOSITORY_MODEL_CLOSE,
-		RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE,   // param = result:rbool*, работает как И
+		RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE,   // param = result:bool*, работает как И
 		RT_REPOSITORY_MODEL_CLOSE_ERROR,
 		RT_REPOSITORY_MODEL_GET_FILEINFO,      // param = rdo::repository::RDOThreadRepository::FileInfo*
 		RT_REPOSITORY_LOAD,                    // param = rdo::repository::RDOThreadRepository::FileData*
@@ -106,7 +106,7 @@ public:
 		RT_SIMULATOR_PARSE_ERROR,
 		RT_SIMULATOR_PARSE_ERROR_SMR,
 		RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY,
-		RT_SIMULATOR_PARSE_STRING,             // param = tstring*
+		RT_SIMULATOR_PARSE_STRING,             // param = std::string*
 		RT_SIMULATOR_MODEL_STOP_OK,
 		RT_SIMULATOR_MODEL_STOP_BY_USER,
 		RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR,
@@ -121,7 +121,7 @@ public:
 		RT_RUNTIME_MODEL_START_AFTER,
 		RT_RUNTIME_MODEL_STOP_BEFORE,
 		RT_RUNTIME_MODEL_STOP_AFTER,
-		RT_RUNTIME_TRACE_STRING,               // param = tstring*
+		RT_RUNTIME_TRACE_STRING,               // param = std::string*
 		RT_RUNTIME_GET_MODE,                   // param = result:rdo::runtime::RunTimeMode*
 		RT_RUNTIME_SET_MODE,                   // param = mode:rdo::runtime::RunTimeMode*
 		RT_RUNTIME_GET_SPEED,                  // param = result:double[0..1]%*
@@ -130,16 +130,16 @@ public:
 		RT_RUNTIME_SET_SHOWRATE,               // param = show_rate:double[0..+max_double]*
 		RT_RUNTIME_GET_TIMENOW,                // param = result:double*
 		RT_RUNTIME_GET_FRAME,                  // param = { result:rdo::animation::Frame*, frame_number:int }*
-		RT_RUNTIME_GET_LAST_BREAKPOINT,        // param = tstring*
+		RT_RUNTIME_GET_LAST_BREAKPOINT,        // param = std::string*
 		RT_RUNTIME_KEY_DOWN,                   // param = scanCode:uint*
 		RT_RUNTIME_KEY_UP,                     // param = scanCode:uint*
-		RT_RUNTIME_FRAME_AREA_DOWN,            // param = area_name:tstring*
+		RT_RUNTIME_FRAME_AREA_DOWN,            // param = area_name:std::string*
 		RT_CONVERTOR_NONE,
 		RT_CONVERTOR_OK,
 		RT_CONVERTOR_ERROR,
 		RT_CODECOMP_GET_DATA,                  // param = rdo::service::simulation::RDOThreadCodeComp::GetCodeComp*
-		RT_DEBUG_STRING,                       // param = tstring*
-		RT_RESULT_STRING,                      // param = tstring*
+		RT_DEBUG_STRING,                       // param = std::string*
+		RT_RESULT_STRING,                      // param = std::string*
 		RT_CORBA_PARSER_GET_RTP,
 		RT_CORBA_PARSER_GET_RSS,
 		RT_CORBA_PARSER_GET_RTP_COUNT,
@@ -148,7 +148,7 @@ public:
 		RT_PROCGUI_BLOCK_PROCESS,
 		RT_PROCGUI_BLOCK_TERMINATE
 	};
-	tstring messageToString(RDOTreadMessage message) {
+	std::string messageToString(RDOTreadMessage message) {
 		switch ( message ) {
 			case RT_THREAD_CLOSE                      : return "RT_THREAD_CLOSE";
 			case RT_THREAD_CONNECTION                 : return "RT_THREAD_CONNECTION";
@@ -232,15 +232,15 @@ public:
 #ifdef RDO_MT
 	private:
 		enum Type { post = 0, send, manual } type;
-		PTR(CEvent) send_event;
-		PTR(CMutex) param_lock;
+		CEvent* send_event;
+		CMutex* param_lock;
 #endif
 	public:
-		PTR(RDOThread)   from;
-		RDOTreadMessage  message;
-		PTR(void)        param;
+		RDOThread* from;
+		RDOTreadMessage message;
+		void* param;
 #ifdef RDO_MT
-		RDOMessageInfo(PTR(RDOThread) _from, RDOTreadMessage _message, PTR(void) _param, Type _type )
+		RDOMessageInfo(RDOThread* _from, RDOTreadMessage _message, void* _param, Type _type )
 			: from      (_from   )
 			, message   (_message)
 			, param     (_param  )
@@ -248,7 +248,7 @@ public:
 			, send_event(NULL    )
 			, param_lock(NULL    )
 		{}
-		RDOMessageInfo(CREF(RDOMessageInfo) copy)
+		RDOMessageInfo(const RDOMessageInfo& copy)
 			: type      (copy.type      )
 			, send_event(copy.send_event)
 			, from      (copy.from      )
@@ -259,12 +259,12 @@ public:
 		void lock()   { if ( param_lock ) param_lock->Lock();   }
 		void unlock() { if ( param_lock ) param_lock->Unlock(); }
 #else
-		RDOMessageInfo(PTR(RDOThread) _from, RDOTreadMessage _message, PTR(void) _param)
+		RDOMessageInfo(RDOThread* _from, RDOTreadMessage _message, void* _param)
 			: from   (_from   )
 			, message(_message)
 			, param  (_param  )
 		{}
-		RDOMessageInfo(CREF(RDOMessageInfo) copy)
+		RDOMessageInfo(const RDOMessageInfo& copy)
 			: from   (copy.from   )
 			, message(copy.message)
 			, param  (copy.param  )
@@ -274,19 +274,19 @@ public:
 #endif
 	};
 
-	tstring      getName        () const         { return thread_name;               }
-	ruint        getID          () const         { return thread_id;                 }
+	std::string getName() const { return thread_name; }
+	std::size_t getID() const { return thread_id; }
 #ifdef RDO_MT
-	rbool        isGUI          () const         { return thread_fun ? false : true; }
-	PTR(CEvent)  getDestroyEvent() const         { return thread_destroy;            }
+	bool isGUI() const { return thread_fun ? false : true; }
+	CEvent* getDestroyEvent() const { return thread_destroy; }
 #endif
 
 /*
 	class RDOTreadMethod {
 	public:
-		RDOThread*   thread;
-		tstring  name;
-		ruint        index;
+		RDOThread* thread;
+		std::string name;
+		std::size_t index;
 	};
 
 	// POST: отправка сообщений без ожидания выполнения
@@ -300,7 +300,7 @@ public:
 	}
 */
 	// SEND: отправка сообщений с ожиданием выполнения
-	void sendMessage(PTR(RDOThread) to, RDOTreadMessage message, PTR(void) pParam = NULL)
+	void sendMessage(RDOThread* to, RDOTreadMessage message, void* pParam = NULL)
 	{
 #ifdef RDO_MT
 		RDOMessageInfo msg(this, message, pParam, RDOThread::RDOMessageInfo::send);
@@ -323,15 +323,15 @@ public:
 
 #ifdef RDO_MT
 	// MANUAL: отправка сообщений с 'ручным' ожиданием выполнения для this
-	PTR(CEvent) manualMessageFrom(RDOTreadMessage message, PTR(void) pParam = NULL);
+	CEvent* manualMessageFrom(RDOTreadMessage message, void* pParam = NULL);
 #endif
 
 	// Рассылка уведомлений всем тредам с учетом их notifies
 	// Важно: должна вызываться только для this (в собственной треде)
-	void broadcastMessage(RDOTreadMessage message, PTR(void) pParam = NULL, rbool lock = false);
+	void broadcastMessage(RDOTreadMessage message, void* pParam = NULL, bool lock = false);
 
 #ifdef TR_TRACE
-	static void trace(CREF(tstring) str);
+	static void trace(const std::string& str);
 #endif
 
 protected:
@@ -341,55 +341,55 @@ protected:
 	// 2. Каждая треда имеет доступ к списку уведомлений (notifies), чтобы понять, а надо ли посылать сообщение треде.
 	// Второе еще можно сделать через дублирование: map< key = thread*, value = notifies > в каджой треде,
 	// а вот как добавить сообщение - не совсем понрятно.
-	static ruint threadFun(PTR(void) pParam);
+	static std::size_t threadFun(void* pParam);
 	const RDOThreadFun thread_fun;
-	PTR(CWinThread)    thread_win;
-	CEvent             proc_create;    // Вызывается из процедуры треды, конструктор должен его дождаться
-	CEvent             thread_create;  // Вызывается из конструктора объекта, процедура должна его дождаться
-	PTR(CEvent)        thread_destroy; // Вызывается из деструктора объекта
-	rbool              broadcast_waiting; // Без мутекса, т.к. меняется только в одной треде
-	rbool              was_start;         // Без мутекса, т.к. меняется только в одной треде
-	rbool              was_close;
+	CWinThread* thread_win;
+	CEvent proc_create; // Вызывается из процедуры треды, конструктор должен его дождаться
+	CEvent thread_create; // Вызывается из конструктора объекта, процедура должна его дождаться
+	CEvent* thread_destroy; // Вызывается из деструктора объекта
+	bool broadcast_waiting; // Без мутекса, т.к. меняется только в одной треде
+	bool was_start; // Без мутекса, т.к. меняется только в одной треде
+	bool was_close;
 #endif
-	const tstring      thread_name;
-	rsint              thread_id;
-	rsint              idle_cnt;
+	const std::string thread_name;
+	int thread_id;
+	int idle_cnt;
 
 	typedef std::vector<RDOTreadMessage> NotifieList;
 
-	NotifieList        notifies; // Список сообщений, на которые реагирует треда
-	                             // Если он пуст, то обрабатываются все сообщения.
-	                             // RT_THREAD_CLOSE обрабатывается в RDOThread::processMessages()
-	                             // Если сообщение посылается не из kernel'а, а напрямую, то
-	                             // то оно не будет проходить через этот фильтр, а сразу попадет в очередь.
+	NotifieList notifies; // Список сообщений, на которые реагирует треда
+	                      // Если он пуст, то обрабатываются все сообщения.
+	                      // RT_THREAD_CLOSE обрабатывается в RDOThread::processMessages()
+	                      // Если сообщение посылается не из kernel'а, а напрямую, то
+	                      // то оно не будет проходить через этот фильтр, а сразу попадет в очередь.
 
 #ifdef RDO_MT
-	CMutex                         notifies_mutex;
+	CMutex notifies_mutex;
 
 	// Очередь сообщений
 	typedef std::list<RDOMessageInfo> MessageList;
-	MessageList      messages;
-	CMutex           messages_mutex;
+	MessageList messages;
+	CMutex messages_mutex;
 
 	class BroadcastData {
 	public:
-		typedef std::vector<PTR(CEvent)> EventList;
-		EventList    events;
-		ruint        cnt;
-		PTR(HANDLE)  handles;
+		typedef std::vector<CEvent*> EventList;
+		EventList events;
+		std::size_t cnt;
+		HANDLE* handles;
 
 		BroadcastData()
 			: cnt    (0   )
 			, handles(NULL)
 		{}
-		BroadcastData(ruint _cnt)
+		BroadcastData(std::size_t _cnt)
 			: cnt(_cnt)
 		{
-			for (ruint i = 0; i < cnt; i++ )
+			for (std::size_t i = 0; i < cnt; i++ )
 				events.push_back(new CEvent());
 			handles = new HANDLE[cnt];
 		}
-		BroadcastData(CREF(BroadcastData) copy)
+		BroadcastData(const BroadcastData& copy)
 			: cnt    (copy.cnt    )
 			, handles(copy.handles)
 		{
@@ -400,7 +400,7 @@ protected:
 
 		void clear()
 		{
-			for (ruint i = 0; i < cnt; i++)
+			for (std::size_t i = 0; i < cnt; i++)
 				delete events[i];
 			delete[] handles;
 		}
@@ -409,9 +409,9 @@ protected:
 			if (cnt)
 			{
 				events.resize(cnt * 2);
-				PTR(HANDLE) handles_backup = handles;
+				HANDLE* handles_backup = handles;
 				handles = new HANDLE[cnt * 2];
-				for (ruint i = 0; i < cnt; i++)
+				for (std::size_t i = 0; i < cnt; i++)
 				{
 					events.push_back(new CEvent());
 					handles[i] = handles_backup[i];
@@ -423,29 +423,29 @@ protected:
 			else
 			{
 				cnt = 10;
-				for (ruint i = 0; i < cnt; i++)
+				for (std::size_t i = 0; i < cnt; i++)
 					events.push_back(new CEvent());
 				handles = new HANDLE[cnt];
 			}
 		}
 	};
 	typedef std::vector<BroadcastData> BroadcastDataList;
-	BroadcastDataList  broadcast_data;
-	ruint              broadcast_cnt;
+	BroadcastDataList broadcast_data;
+	std::size_t broadcast_cnt;
 
 #endif
 
 #ifdef RDO_MT
-	virtual PTR(RDOThread) getKernel();
+	virtual RDOThread* getKernel();
 #else
-	PTR(RDOThread) getKernel();
+	RDOThread* getKernel();
 #endif
 
 	// Создавать можно только через потомков
 #ifdef RDO_MT
-	RDOThread(CREF(tstring) _thread_name, RDOThreadFun _thread_fun = NULL);
+	RDOThread(const std::string& _thread_name, RDOThreadFun _thread_fun = NULL);
 #else
-	RDOThread(CREF(tstring) _thread_name);
+	RDOThread(const std::string& _thread_name);
 #endif
 	// Удаляет объкты функция треды. kernel удаляется через статический метод
 	virtual ~RDOThread();                                                                          
@@ -453,14 +453,14 @@ protected:
 	// Надо обязательно вызвать из конструктора объекта, чтобы настроить правильно this для виртуальных функций,
 	void after_constructor();
 
-	virtual void  proc (REF(RDOMessageInfo) msg) = 0;
+	virtual void  proc (RDOMessageInfo& msg) = 0;
 	virtual void  idle ();
 	virtual void  start();
 	virtual void  stop ();
 #ifdef RDO_MT
-	virtual rbool processMessages();
+	virtual bool processMessages();
 #else
-	void          processMessages(REF(RDOMessageInfo) msg)
+	void          processMessages(RDOMessageInfo& msg)
 	{
 #ifdef TR_TRACE
 		RDOThread::trace("---------------- " + messageToString(msg.message) + ": " + (msg.from ? msg.from->thread_name : "NULL") + " -> " + thread_name);
@@ -492,11 +492,11 @@ class RDOThreadMT: public RDOThread
 {
 protected:
 #ifdef RDO_MT
-	RDOThreadMT(CREF(tstring) _thread_name, RDOThreadFun _thread_fun = RDOThread::threadFun)
+	RDOThreadMT(const std::string& _thread_name, RDOThreadFun _thread_fun = RDOThread::threadFun)
 		: RDOThread(_thread_name, _thread_fun)
 	{}
 #else
-	RDOThreadMT(CREF(tstring) _thread_name)
+	RDOThreadMT(const std::string& _thread_name)
 		: RDOThread(_thread_name)
 	{}
 #endif
@@ -513,21 +513,21 @@ class RDOThreadGUI: public RDOThread
 {
 friend class RDOKernelGUI;
 private:
-	PTR(RDOThread) kernel_gui;
+	RDOThread* kernel_gui;
 
 protected:
-	RDOThreadGUI(CREF(tstring) _thread_name, PTR(RDOThread) _kernel_gui)
+	RDOThreadGUI(const std::string& _thread_name, RDOThread* _kernel_gui)
 		: RDOThread (_thread_name)
 		, kernel_gui(_kernel_gui )
 	{}
-	virtual PTR(RDOThread) getKernel      ();
-	virtual rbool          processMessages();
+	virtual RDOThread* getKernel();
+	virtual bool processMessages();
 };
 #else
 class RDOThreadGUI: public RDOThread
 {
 protected:
-	RDOThreadGUI(CREF(tstring) _thread_name, PTR(RDOThread))
+	RDOThreadGUI(const std::string& _thread_name, RDOThread*)
 		: RDOThread(_thread_name)
 	{}
 };

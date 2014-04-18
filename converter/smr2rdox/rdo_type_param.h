@@ -24,19 +24,21 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeParam
 // --------------------------------------------------------------------------------
-OBJECT(RDOTypeParam)
-	IS INSTANCE_OF       (RDOParserSrcInfo)
-	AND IMPLEMENTATION_OF(IModelStructure )
+PREDECLARE_POINTER(RDOTypeParam);
+class RDOTypeParam
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
+	, public IModelStructure
 {
 DECLARE_FACTORY(RDOTypeParam);
 public:
-	LPRDOType   type      ()                        const;
-	LPRDOValue  value_cast(CREF(LPRDOValue) pValue) const;
+	LPRDOType   type      ()                         const;
+	LPRDOValue  value_cast(const LPRDOValue& pValue) const;
 
 	DECLARE_IModelStructure;
 
 protected:
-	RDOTypeParam(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info);
+	RDOTypeParam(const LPRDOType& pType, const RDOParserSrcInfo& src_info);
 	virtual ~RDOTypeParam();
 
 private:

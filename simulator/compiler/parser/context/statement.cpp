@@ -37,7 +37,7 @@ ContextReturnable::ContextReturnable()
 ContextReturnable::~ContextReturnable()
 {}
 
-rbool ContextReturnable::getReturnFlag() const
+bool ContextReturnable::getReturnFlag() const
 {
 	if (m_returnFlag)
 		return true;
@@ -61,7 +61,7 @@ void ContextReturnable::addChildContext()
 	RDOParser::s_parser()->contextStack()->push(pContext);
 }
 
-rbool ContextReturnable::getChildFlags() const
+bool ContextReturnable::getChildFlags() const
 {
 	BOOST_FOREACH(const LPContextReturnable& pContext, m_contextReturnableList)
 	{

@@ -25,7 +25,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- ATOM_TYPE_PARSER
 // --------------------------------------------------------------------------------
 #define DECLARE_ATOM_TYPE_PARSER(Type, TypeName) \
-tstring RDOType__##Type::name() const            \
+std::string RDOType__##Type::name() const        \
 {                                                \
 	return TypeName;                             \
 }
@@ -41,16 +41,13 @@ DECLARE_ATOM_TYPE_PARSER(string,        "string"       );
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__unknow
 // --------------------------------------------------------------------------------
-LPRDOType RDOType__unknow::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOType RDOType__unknow::type_cast(const LPRDOType& /*pFrom*/, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& /*to_src_info*/, const RDOParserSrcInfo& src_info) const
 {
-	UNUSED(pFrom      );
-	UNUSED(to_src_info);
-
 	parser::g_error().error(src_info, rdo::format("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к неизвестному типу", from_src_info.src_text().c_str()));
 	return NULL;
 }
 
-LPRDOValue RDOType__unknow::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOValue RDOType__unknow::value_cast(const LPRDOValue& pFrom, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	ASSERT(pFrom);
 
@@ -60,7 +57,7 @@ LPRDOValue RDOType__unknow::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrc
 	return LPRDOValue(NULL);
 }
 
-rdo::runtime::LPRDOCalc RDOType__unknow::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdo::runtime::LPRDOCalc RDOType__unknow::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
 {
 	return parent_type::calc_cast(pCalc, pType);
 }
@@ -70,9 +67,8 @@ rdo::runtime::RDOValue RDOType__unknow::get_default() const
 	return rdo::runtime::RDOValue();
 }
 
-void RDOType__unknow::writeModelStructure(std::ostream& stream) const
+void RDOType__unknow::writeModelStructure(std::ostream& /*stream*/) const
 {
-	UNUSED(stream);
 	parser::g_error().error(RDOParserSrcInfo(), "Внутренная ошибка парсера. Невозможно записать неизвестный тип в отчет");
 	NEVER_REACH_HERE;
 }
@@ -80,11 +76,8 @@ void RDOType__unknow::writeModelStructure(std::ostream& stream) const
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__void
 // --------------------------------------------------------------------------------
-LPRDOType RDOType__void::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOType RDOType__void::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& /*to_src_info*/, const RDOParserSrcInfo& src_info) const
 {
-	UNUSED(to_src_info);
-	ASSERT(pFrom      );
-
 	if (pFrom->type()->typeID() == rdo::runtime::RDOType::t_void)
 	{
 		return rdo::Factory<RDOType__void>::create();
@@ -93,7 +86,7 @@ LPRDOType RDOType__void::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo)
 	return NULL;
 }
 
-LPRDOValue RDOType__void::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOValue RDOType__void::value_cast(const LPRDOValue& pFrom, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	ASSERT(pFrom);
 
@@ -108,7 +101,7 @@ LPRDOValue RDOType__void::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcIn
 	return LPRDOValue(NULL);
 }
 
-rdo::runtime::LPRDOCalc RDOType__void::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdo::runtime::LPRDOCalc RDOType__void::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
 {
 	return parent_type::calc_cast(pCalc, pType);
 }
@@ -118,9 +111,8 @@ rdo::runtime::RDOValue RDOType__void::get_default() const
 	return rdo::runtime::RDOValue();
 }
 
-void RDOType__void::writeModelStructure(std::ostream& stream) const
+void RDOType__void::writeModelStructure(std::ostream& /*stream*/) const
 {
-	UNUSED(stream);
 	parser::g_error().error(RDOParserSrcInfo(), "Внутренная ошибка парсера. Невозможно записать void-тип в отчет");
 	NEVER_REACH_HERE;
 }
@@ -128,7 +120,7 @@ void RDOType__void::writeModelStructure(std::ostream& stream) const
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__int
 // --------------------------------------------------------------------------------
-LPRDOType RDOType__int::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOType RDOType__int::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	ASSERT(pFrom);
 
@@ -154,19 +146,19 @@ LPRDOType RDOType__int::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) 
 	return NULL;
 }
 
-LPRDOValue RDOType__int::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOValue RDOType__int::value_cast(const LPRDOValue& pFrom, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	ASSERT(pFrom);
 
 	LPRDOValue pToValue;
 	try
 	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<PTR(RDOType__int)>(this), pFrom->src_info());
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<RDOType__int*>(this), pFrom->src_info());
 		ASSERT(pType);
 		pToValue = rdo::Factory<RDOValue>::create(pFrom->value().getInt(), pFrom->src_info(), pType);
 		ASSERT(pToValue);
 	}
-	catch (CREF(rdo::runtime::RDOValueException))
+	catch (const rdo::runtime::RDOValueException&)
 	{}
 
 	if (!pToValue || pToValue->typeID() == rdo::runtime::RDOType::t_unknow)
@@ -178,7 +170,7 @@ LPRDOValue RDOType__int::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInf
 	return pToValue;
 }
 
-rdo::runtime::LPRDOCalc RDOType__int::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdo::runtime::LPRDOCalc RDOType__int::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
 {
 	if (pType->typeID() == rdo::runtime::RDOType::t_real)
 	{
@@ -200,7 +192,7 @@ void RDOType__int::writeModelStructure(std::ostream& stream) const
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__real
 // --------------------------------------------------------------------------------
-LPRDOType RDOType__real::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOType RDOType__real::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	ASSERT(pFrom);
 
@@ -217,19 +209,19 @@ LPRDOType RDOType__real::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo)
 	return NULL;
 }
 
-LPRDOValue RDOType__real::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOValue RDOType__real::value_cast(const LPRDOValue& pFrom, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	ASSERT(pFrom);
 
 	LPRDOValue pToValue;
 	try
 	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<PTR(RDOType__real)>(this), pFrom->src_info());
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<RDOType__real*>(this), pFrom->src_info());
 		ASSERT(pType);
 		pToValue = rdo::Factory<RDOValue>::create(pFrom->value().getDouble(), pFrom->src_info(), pType);
 		ASSERT(pToValue);
 	}
-	catch (CREF(rdo::runtime::RDOValueException))
+	catch (const rdo::runtime::RDOValueException&)
 	{}
 
 	if (!pToValue || pToValue->typeID() == rdo::runtime::RDOType::t_unknow)
@@ -241,7 +233,7 @@ LPRDOValue RDOType__real::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcIn
 	return pToValue;
 }
 
-rdo::runtime::LPRDOCalc RDOType__real::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdo::runtime::LPRDOCalc RDOType__real::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
 {
 	return parent_type::calc_cast(pCalc, pType);
 }
@@ -259,7 +251,7 @@ void RDOType__real::writeModelStructure(std::ostream& stream) const
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__string
 // --------------------------------------------------------------------------------
-LPRDOType RDOType__string::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOType RDOType__string::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	ASSERT(pFrom);
 
@@ -275,19 +267,19 @@ LPRDOType RDOType__string::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInf
 	return NULL;
 }
 
-LPRDOValue RDOType__string::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOValue RDOType__string::value_cast(const LPRDOValue& pFrom, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	ASSERT(pFrom);
 
 	LPRDOValue pToValue;
 	try
 	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<PTR(RDOType__string)>(this), pFrom->src_info());
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<RDOType__string*>(this), pFrom->src_info());
 		ASSERT(pType);
 		pToValue = rdo::Factory<RDOValue>::create(pFrom->value().getString(), pFrom->src_info(), pType);
 		ASSERT(pToValue);
 	}
-	catch (CREF(rdo::runtime::RDOValueException))
+	catch (const rdo::runtime::RDOValueException&)
 	{}
 
 	if (!pToValue || pToValue->typeID() == rdo::runtime::RDOType::t_unknow)
@@ -299,7 +291,7 @@ LPRDOValue RDOType__string::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrc
 	return pToValue;
 }
 
-rdo::runtime::LPRDOCalc RDOType__string::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdo::runtime::LPRDOCalc RDOType__string::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
 {
 	return parent_type::calc_cast(pCalc, pType);
 }
@@ -317,11 +309,8 @@ void RDOType__string::writeModelStructure(std::ostream& stream) const
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__identificator
 // --------------------------------------------------------------------------------
-LPRDOType RDOType__identificator::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOType RDOType__identificator::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& /*to_src_info*/, const RDOParserSrcInfo& src_info) const
 {
-	UNUSED(to_src_info);
-	ASSERT(pFrom      );
-
 	switch (pFrom->type()->typeID())
 	{
 	case rdo::runtime::RDOType::t_identificator:
@@ -332,7 +321,7 @@ LPRDOType RDOType__identificator::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParse
 	return NULL;
 }
 
-LPRDOValue RDOType__identificator::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOValue RDOType__identificator::value_cast(const LPRDOValue& pFrom, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	ASSERT(pFrom);
 
@@ -348,7 +337,7 @@ LPRDOValue RDOType__identificator::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOPa
 	return LPRDOValue(NULL);
 }
 
-rdo::runtime::LPRDOCalc RDOType__identificator::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdo::runtime::LPRDOCalc RDOType__identificator::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
 {
 	return parent_type::calc_cast(pCalc, pType);
 }
@@ -358,9 +347,8 @@ rdo::runtime::RDOValue RDOType__identificator::get_default() const
 	return rdo::runtime::RDOValue("", rdo::runtime::g_identificator);
 }
 
-void RDOType__identificator::writeModelStructure(std::ostream& stream) const
+void RDOType__identificator::writeModelStructure(std::ostream& /*stream*/) const
 {
-	UNUSED(stream);
 	parser::g_error().error(RDOParserSrcInfo(), "Внутренная ошибка парсера. Невозможно записать тип идектификатор в отчет");
 	NEVER_REACH_HERE;
 }
@@ -368,7 +356,7 @@ void RDOType__identificator::writeModelStructure(std::ostream& stream) const
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__bool
 // --------------------------------------------------------------------------------
-LPRDOType RDOType__bool::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOType RDOType__bool::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	ASSERT(pFrom);
 
@@ -384,19 +372,19 @@ LPRDOType RDOType__bool::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo)
 	return NULL;
 }
 
-LPRDOValue RDOType__bool::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOValue RDOType__bool::value_cast(const LPRDOValue& pFrom, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	ASSERT(pFrom);
 
 	LPRDOValue pToValue;
 	try
 	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<PTR(RDOType__bool)>(this), pFrom->src_info());
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(const_cast<RDOType__bool*>(this), pFrom->src_info());
 		ASSERT(pType);
 		pToValue = rdo::Factory<RDOValue>::create(pFrom->value().getBool(), pFrom->src_info(), pType);
 		ASSERT(pToValue);
 	}
-	catch (CREF(rdo::runtime::RDOValueException))
+	catch (const rdo::runtime::RDOValueException&)
 	{}
 
 	if (!pToValue || pToValue->typeID() == rdo::runtime::RDOType::t_unknow)
@@ -408,7 +396,7 @@ LPRDOValue RDOType__bool::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcIn
 	return pToValue;
 }
 
-rdo::runtime::LPRDOCalc RDOType__bool::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdo::runtime::LPRDOCalc RDOType__bool::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
 {
 	return parent_type::calc_cast(pCalc, pType);
 }

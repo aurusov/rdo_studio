@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationTextElement)
 	rdo::animation::Point point(0,0);
 	rdo::animation::Size size(10, 10);
 	rdo::animation::BoundedElement boundedElement(point, size);
-	tstring text("RDO");
+	const std::string text("RDO");
 
 	rdo::animation::TextElement::TextAlign align = rdo::animation::TextElement::TETA_CENTER;
 
@@ -208,8 +208,8 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationEllipseElement)
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationBmpElement)
 {
 	rdo::animation::Point point(0,0);
-	tstring bmp_name("rdo_bmp");
-	tstring mask_name("mask");
+	const std::string bmp_name("rdo_bmp");
+	const std::string mask_name("mask");
 
 	rdo::animation::BmpElement bmpElement(point, bmp_name, mask_name);
 
@@ -220,8 +220,8 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationBmpElement)
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationSBmpElement)
 {
-	tstring bmp_name("rdo_bmp");
-	tstring mask_name("mask");
+	const std::string bmp_name("rdo_bmp");
+	const std::string mask_name("mask");
 
 	rdo::animation::Point point(0, 0);
 	rdo::animation::Size size(10, 10);
@@ -237,7 +237,7 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationSBmpElement)
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationActiveElement)
 {
-	tstring text("RDO");
+	const std::string text("RDO");
 
 	rdo::animation::Point point(0, 0);
 	rdo::animation::Size size(10, 10);

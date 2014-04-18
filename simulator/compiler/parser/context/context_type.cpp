@@ -20,11 +20,11 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- TypeContext
 // --------------------------------------------------------------------------------
-TypeContext::TypeContext(CREF(LPTypeInfo) pType)
+TypeContext::TypeContext(const LPTypeInfo& pType)
 	: m_pType(pType)
 {}
 
-CREF(LPTypeInfo) TypeContext::getTypeInfo() const
+const LPTypeInfo& TypeContext::getTypeInfo() const
 {
 	return m_pType;
 }

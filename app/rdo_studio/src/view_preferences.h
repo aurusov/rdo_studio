@@ -204,14 +204,14 @@ private:
 		{}
 	};
 
-	typedef std::list<PTR(StyleProperty)> PropertyList;
+	typedef std::list<StyleProperty*> PropertyList;
 
 	class StyleItem: boost::noncopyable
 	{
 	public:
 		ItemType                                type;
 		int&                                    font_size;
-		tstring&                                font_name;
+		std::string&                            font_name;
 		bool&                                   wordwrap;
 		bool&                                   horzscrollbar;
 		bool&                                   warning;
@@ -221,7 +221,7 @@ private:
 
 		PropertyList properties;
 
-		StyleItem(ItemType type, int& font_size, tstring& font_name, bool& wordwrap = null_wordwrap, bool& horzscrollbar = null_horzscrollbar, rdo::gui::editor::EditStyle::Bookmark& bookmarkstyle = null_bookmarkstyle, rdo::gui::editor::ModelStyle::Fold& foldstyle = null_foldstyle, bool& commentfold = null_commentfold, bool& warning = null_warning)
+		StyleItem(ItemType type, int& font_size, std::string& font_name, bool& wordwrap = null_wordwrap, bool& horzscrollbar = null_horzscrollbar, rdo::gui::editor::EditStyle::Bookmark& bookmarkstyle = null_bookmarkstyle, rdo::gui::editor::ModelStyle::Fold& foldstyle = null_foldstyle, bool& commentfold = null_commentfold, bool& warning = null_warning)
 			: type(type)
 			, font_size(font_size)
 			, font_name(font_name)
@@ -234,12 +234,12 @@ private:
 		{}
 	};
 
-	typedef std::list<PTR(StyleItem)> StyleItemList;
+	typedef std::list<StyleItem*> StyleItemList;
 
 	StyleItemList style_list;
 
 	int         all_font_size;
-	tstring     all_font_name;
+	std::string all_font_name;
 	QColor      all_fg_color;
 	QColor      all_bg_color;
 
@@ -267,19 +267,19 @@ private:
 	rdo::gui::tracer::ChartViewStyle  style_chart;
 	rdo::gui::frame::FrameStyle       style_frame;
 
-	PTR(rdo::gui::editor::Model)         preview_editor;
-	PTR(rdo::gui::editor::Build)         preview_build;
-	PTR(rdo::gui::editor::Debug)         preview_debug;
-	PTR(rdo::gui::editor::Results)       preview_results;
-	PTR(rdo::gui::editor::Find)          preview_find;
-	PTR(rdo::gui::tracer::LogMainWnd)    preview_trace;
-	PTR(rdo::gui::tracer::ChartDoc)      preview_chart_doc;
-	PTR(rdo::gui::tracer::ChartView)     preview_chart;
+	rdo::gui::editor::Model*             preview_editor;
+	rdo::gui::editor::Build*             preview_build;
+	rdo::gui::editor::Debug*             preview_debug;
+	rdo::gui::editor::Results*           preview_results;
+	rdo::gui::editor::Find*              preview_find;
+	rdo::gui::tracer::LogMainWnd*        preview_trace;
+	rdo::gui::tracer::ChartDoc*          preview_chart_doc;
+	rdo::gui::tracer::ChartView*         preview_chart;
 	std::vector<rdo::gui::tracer::Time>  preview_times;
 	rdo::gui::tracer::LPSerie            preview_serie;
-	PTR(rdo::gui::frame::OptionsView)    preview_frame;
+	rdo::gui::frame::OptionsView*        preview_frame;
 
-	typedef PTR(QTreeWidgetItem) treeItem;
+	typedef QTreeWidgetItem* treeItem;
 
 	//Все окна
 	treeItem m_pRoot;
@@ -379,17 +379,17 @@ private:
 	treeItem m_pEdgingColor;
 	treeItem m_pBackgroundColor;
 
-	PTR(QColorDialog) fgColorDlg;
-	PTR(QColorDialog) bgColorDlg;
+	QColorDialog* fgColorDlg;
+	QColorDialog* bgColorDlg;
 
 	void createStyles();
 	void createPreview();
 	void createTree();
 	void insertColors(QComboBox* colorBox);
 	void insertColor (const QColor& color, const QString& colorName, QComboBox* colorBox);
-	PTR(StyleProperty) getStyleProperty();
-	PTR(StyleItem) getStyleItem();
-	PTR(QTreeWidgetItem) createTreeItem (PTR(QTreeWidgetItem) parent, CREF(QString) name, ItemType itemType);
+	StyleProperty* getStyleProperty();
+	StyleItem* getStyleItem();
+	QTreeWidgetItem* createTreeItem (QTreeWidgetItem* parent, const QString& name, ItemType itemType);
 	
 	void apply();
 	void checkAllData();
@@ -399,7 +399,7 @@ private:
 	void updateDialog();
 	void updatePreview();
 	void updateStyleTab();
-	void updateThemeComboBox(PTR(StyleProperty) prop);
+	void updateThemeComboBox(StyleProperty* prop);
 	void updateTheme();
 
 	typedef std::vector<int> IntVector;

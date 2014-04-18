@@ -75,12 +75,12 @@ Serie::~Serie()
 	m_documentList.clear();
 }
 
-CREF(QString) Serie::getTitle() const
+const QString& Serie::getTitle() const
 {
 	return m_title;
 }
 
-void Serie::setTitle(CREF(QString) value)
+void Serie::setTitle(const QString& value)
 {
 	m_title = value;
 }
@@ -135,7 +135,7 @@ Serie::ValuesList::const_iterator Serie::end() const
 	return m_valueList.end();
 }
 
-void Serie::getCaptions(std::vector<tstring>& captions, const int valueCount) const
+void Serie::getCaptions(std::vector<std::string>& captions, const int valueCount) const
 {
 	if (!captions.empty())
 		captions.clear();
@@ -144,7 +144,7 @@ void Serie::getCaptions(std::vector<tstring>& captions, const int valueCount) co
 	{
 		double valoffset = (m_maxValue - m_minValue) / (double)(valueCount - 1);
 		double valo = m_minValue;
-		tstring formatstr = "%.3f";
+		std::string formatstr = "%.3f";
 		if (m_valueCount > 1)
 		{
 			for (int i = 0; i < valueCount; i++)
@@ -160,7 +160,7 @@ void Serie::getCaptions(std::vector<tstring>& captions, const int valueCount) co
 	}
 }
 
-void Serie::getCaptionsInt(std::vector<tstring>& captions, const int valueCount) const
+void Serie::getCaptionsInt(std::vector<std::string>& captions, const int valueCount) const
 {
 	Serie::getCaptions(captions, valueCount);
 
@@ -176,7 +176,7 @@ void Serie::getCaptionsInt(std::vector<tstring>& captions, const int valueCount)
 	}
 	int valo = (int)m_minValue;
 	int valoffset = (int)((m_maxValue - m_minValue) / (real_val_count - 1));
-	tstring formatstr = "%d";
+	std::string formatstr = "%d";
 	for (int i = 0; i < real_val_count; i++)
 	{
 		captions.push_back(rdo::format(formatstr.c_str(), valo));
@@ -184,13 +184,13 @@ void Serie::getCaptionsInt(std::vector<tstring>& captions, const int valueCount)
 	}
 }
 
-void Serie::getCaptionsDouble(std::vector<tstring>& captions, const int valueCount) const
+void Serie::getCaptionsDouble(std::vector<std::string>& captions, const int valueCount) const
 {
 	Serie::getCaptions(captions, valueCount);
 
 	double valoffset = (m_maxValue - m_minValue) / (double)(valueCount - 1);
 	double valo = m_minValue;
-	tstring formatstr = "%.3f";
+	std::string formatstr = "%.3f";
 	if (m_valueCount > 1)
 	{
 		for (int i = 0; i < valueCount; i++)
@@ -205,7 +205,7 @@ void Serie::getCaptionsDouble(std::vector<tstring>& captions, const int valueCou
 	}
 }
 
-void Serie::getCaptionsBool(std::vector<tstring>& captions, const int valueCount) const
+void Serie::getCaptionsBool(std::vector<std::string>& captions, const int valueCount) const
 {
 	Serie::getCaptions(captions, valueCount);
 	captions.push_back("FALSE");
@@ -483,7 +483,7 @@ Serie::ExportData Serie::exportData()
 	exportData.reserve(m_valueList.size() + 1);
 	exportData.push_back(QString("%1;%2").arg("время").arg(m_title));
 
-	BOOST_FOREACH(PTR(Value) pValue, m_valueList)
+	BOOST_FOREACH(Value* pValue, m_valueList)
 	{
 		exportData.push_back(QString("%1;%2").arg(pValue->getModelTime()->time).arg(pValue->getValue()));
 	}

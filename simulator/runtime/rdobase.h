@@ -36,14 +36,15 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \class     RDOSimulatorBase
   \brief     Один из базовых классов для RDORuntime
 */
-OBJECT(RDOSimulatorBase)
+PREDECLARE_POINTER(RDOSimulatorBase);
+class RDOSimulatorBase: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOSimulatorBase)
 public:
 	// Публичные методы управления симулятором
-	virtual void  rdoInit();
-	virtual rbool rdoNext();
-	virtual void  rdoPostProcess();
+	virtual void rdoInit();
+	virtual bool rdoNext();
+	virtual void rdoPostProcess();
 
 	void   setStartTime  (double value);
 	double getCurrentTime() const;
@@ -64,12 +65,12 @@ public:
 	void inc_cnt_events();
 	void inc_cnt_choice_from();
 
-	ruint get_cnt_events();
-	ruint get_cnt_choice_from();
-	ruint get_cnt_calc_arithm() const;
-	ruint get_cnt_calc_logic()  const;
+	std::size_t get_cnt_events();
+	std::size_t get_cnt_choice_from();
+	std::size_t get_cnt_calc_arithm() const;
+	std::size_t get_cnt_calc_logic() const;
 
-	static ruint getMSec(CREF(boost::posix_time::ptime) ptime);
+	static std::size_t getMSec(const boost::posix_time::ptime& ptime);
 
 protected:
 	RDOSimulatorBase();
@@ -80,20 +81,20 @@ protected:
 	typedef  std::map<double, BOPlannedList>             BOPlannedMap;
 
 	BOPlannedMap m_timePoints;
-	rbool        m_checkOperation;
+	bool m_checkOperation;
 
 	void setCurrentTime(double value);
 
 	// Выполнение любых операций (паттерны, DPT и процессы)
 	// Если вернулось значение true, то необходимо вызвать doOperation
 	// и в следующий раз/ без перевода модельного времени вперед
-	virtual rbool doOperation()  = 0;
+	virtual bool doOperation() = 0;
 
 	//! Проверка на условие конца моделирования
-	virtual rbool endCondition() = 0;
+	virtual bool endCondition() = 0;
 
 	//! Проверка на точки останова
-	virtual rbool breakPoints() = 0;
+	virtual bool breakPoints() = 0;
 
 	//! Инициализация симулятора
 	virtual void onInit()    = 0;
@@ -117,7 +118,7 @@ protected:
 	virtual void postProcess() = 0;
 
 	// Проверка на нажатие клавиши или активной области
-	virtual rbool isKeyDown() const = 0;
+	virtual bool isKeyDown() const = 0;
 
 	/// @todo не ошибочная ли это реализация по умолчанию?
 	// Вызывается при увеличении модельного времени
@@ -131,17 +132,17 @@ private:
 
 	RunTimeMode  m_mode;
 
-	double       m_speed;
-	ruint        m_speed_range_max;
-	ruint        m_next_delay_count;
-	ruint        m_next_delay_current;
+	double m_speed;
+	std::size_t m_speed_range_max;
+	std::size_t m_next_delay_count;
+	std::size_t m_next_delay_current;
 
-	double       m_showRate;
-	double       m_msec_wait;
-	ruint        m_msec_prev;
+	double m_showRate;
+	double m_msec_wait;
+	std::size_t m_msec_prev;
 
-	ruint        m_cnt_events;
-	ruint        m_cnt_choice_from;
+	std::size_t m_cnt_events;
+	std::size_t m_cnt_choice_from;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

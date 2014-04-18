@@ -18,30 +18,28 @@
 #include <boost/test/included/unit_test.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
-#include "utils/src/common/rdotypes.h"
 #include "utils/src/debug/rdodebug.h"
 // --------------------------------------------------------------------------------
 
 class MyOperation
 {
 public:
-	MyOperation(ruint dummy)
+	MyOperation(std::size_t dummy)
 		: m_dummy(dummy)
 	{}
 
-	rbool operator< (CREF(MyOperation) opr) const
+	bool operator< (const MyOperation& opr) const
 	{
 		return m_dummy < opr.m_dummy;
 	}
 
-	ruint getData()
+	std::size_t getData()
 	{
 		return m_dummy;
 	}
 
 private:
-	ruint m_dummy;
+	std::size_t m_dummy;
 };
 
 template <class T, class C = std::vector<T> >
@@ -53,13 +51,13 @@ public:
 	typedef typename List::iterator       Iterator;
 	typedef typename List::const_iterator CIterator;
 
-	Iterator  begin()       { return m_list.begin(); }
-	Iterator  end  ()       { return m_list.end  (); }
+	Iterator begin() { return m_list.begin(); }
+	Iterator end() { return m_list.end(); }
 	CIterator begin() const { return m_list.begin(); }
-	CIterator end  () const { return m_list.end  (); }
-	rbool     empty() const { return m_list.empty(); }
+	CIterator end() const { return m_list.end(); }
+	bool empty() const { return m_list.empty(); }
 
-	REF(Container) operator() (CREF(Item) item)
+	Container& operator() (const Item& item)
 	{
 		m_list.push_back(item);
 		return *this;
@@ -73,7 +71,7 @@ class OrderFIFO
 {
 public:
 	template <class Container>
-	static void sort(REF(Container))
+	static void sort(Container&)
 	{}
 };
 
@@ -81,7 +79,7 @@ class OrderLIFO
 {
 public:
 	template <class Container>
-	static void sort(REF(Container) container)
+	static void sort(Container& container)
 	{
 		std::reverse(container.begin(), container.end());
 	}
@@ -91,7 +89,7 @@ class OrderPrior
 {
 public:
 	template <class Container>
-	static void sort(REF(Container) container)
+	static void sort(Container& container)
 	{
 		std::sort(container.begin(), container.end());
 	}
@@ -111,7 +109,7 @@ public:
 			m_container(*it);
 		}
 	}
-	rbool checkOperation(const data_vector& data)
+	bool checkOperation(const data_vector& data)
 	{
 		Order::sort(m_container);
 

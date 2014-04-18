@@ -50,7 +50,7 @@ public:
 
 	virtual void setVisible(bool visible);
 
-	CREF(LPStatusBar) statusBar() const;
+	const LPStatusBar& statusBar() const;
 
 	void update_start();
 	void update_stop ();
@@ -58,9 +58,9 @@ public:
 	virtual void addSubWindow     (QWidget* pWidget);
 	virtual void activateSubWindow(QWidget* pWidget);
 
-	PTR(QSlider) m_pModelSpeedSlider;
+	QSlider* m_pModelSpeedSlider;
 
-	void insertMenuFileReopenItem(CREF(QString) item);
+	void insertMenuFileReopenItem(const QString& item);
 
 	template <typename SlotFun>
 	void updateInsertMenu(bool enabled, const typename QtPrivate::FunctionPointer<SlotFun>::Object* pObject, SlotFun pSlot)
@@ -83,7 +83,7 @@ public:
 	class InsertMenuData: public QObject
 	{
 	public:
-		typedef  boost::optional<ruint>  Position;
+		typedef boost::optional<std::size_t> Position;
 
 		InsertMenuData(QObject* pParent, const QString& text, const Position& position = Position());
 

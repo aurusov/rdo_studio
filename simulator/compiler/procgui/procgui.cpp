@@ -21,7 +21,7 @@ OPEN_COMPILER_GUI_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUICalc
 // --------------------------------------------------------------------------------
-ProcGUICalc::ProcGUICalc(CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(LPRPShapeDataBlock) pParams)
+ProcGUICalc::ProcGUICalc(const rdo::runtime::LPRDORuntime& pRuntime, const LPRPShapeDataBlock& pParams)
 	: m_pRuntime(pRuntime)
 	, m_pParams (pParams )
 {
@@ -72,9 +72,9 @@ rdo::runtime::LPRDOCalc ProcGUICalc::getCalc()
 	return m_pCalc;
 }
 
-rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getNormalCalc(ruint base, double arg1, double arg2)
+rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getNormalCalc(std::size_t base, double arg1, double arg2)
 {
-	PTR(rdo::runtime::RandGeneratorNormal) pGenerator = new rdo::runtime::RandGeneratorNormal();
+	rdo::runtime::RandGeneratorNormal* pGenerator = new rdo::runtime::RandGeneratorNormal();
 	ASSERT(pGenerator);
 	rdo::runtime::LPRDOCalcSeqInit pInitCalc = rdo::Factory<rdo::runtime::RDOCalcSeqInit>::create(base, pGenerator);
 	ASSERT(pInitCalc);
@@ -92,9 +92,9 @@ rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getNormalCalc(ruint base, dou
 	return pFuctionCall;
 }
 
-rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getUniformCalc(ruint base, double arg1, double arg2)
+rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getUniformCalc(std::size_t base, double arg1, double arg2)
 {
-	PTR(rdo::runtime::RandGeneratorUniform) pGenerator = new rdo::runtime::RandGeneratorUniform();
+	rdo::runtime::RandGeneratorUniform* pGenerator = new rdo::runtime::RandGeneratorUniform();
 	ASSERT(pGenerator);
 	rdo::runtime::LPRDOCalcSeqInit pInitCalc = rdo::Factory<rdo::runtime::RDOCalcSeqInit>::create(base, pGenerator);
 	ASSERT(pInitCalc);
@@ -112,9 +112,9 @@ rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getUniformCalc(ruint base, do
 	return pFuctionCall;
 }
 
-rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getExpCalc(ruint base, double arg)
+rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getExpCalc(std::size_t base, double arg)
 {
-	PTR(rdo::runtime::RandGeneratorExponential) pGenerator = new rdo::runtime::RandGeneratorExponential();
+	rdo::runtime::RandGeneratorExponential* pGenerator = new rdo::runtime::RandGeneratorExponential();
 	ASSERT(pGenerator);
 	rdo::runtime::LPRDOCalcSeqInit pInitCalc = rdo::Factory<rdo::runtime::RDOCalcSeqInit>::create(base, pGenerator);
 	ASSERT(pInitCalc);
@@ -129,9 +129,9 @@ rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getExpCalc(ruint base, double
 	return pFuctionCall;
 }
 
-rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getTriangularCalc(ruint base, double arg1, double arg2, double arg3)
+rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getTriangularCalc(std::size_t base, double arg1, double arg2, double arg3)
 {
-	PTR(rdo::runtime::RandGeneratorTriangular) pGenerator = new rdo::runtime::RandGeneratorTriangular();
+	rdo::runtime::RandGeneratorTriangular* pGenerator = new rdo::runtime::RandGeneratorTriangular();
 	rdo::runtime::LPRDOCalcSeqInit pInitCalc = rdo::Factory<rdo::runtime::RDOCalcSeqInit>::create(base, pGenerator);
 	ASSERT(pInitCalc);
 	m_pRuntime->addInitCalc(pInitCalc);
@@ -151,10 +151,10 @@ rdo::runtime::LPRDOCalcFunctionCaller ProcGUICalc::getTriangularCalc(ruint base,
 // --------------------------------------------------------------------
 // ---------- ProcGUIProcess
 // --------------------------------------------------------------------
-tstring ProcGUIProcess::s_namePrefix = "";
-tstring ProcGUIProcess::s_nameSufix  = "s";
+std::string ProcGUIProcess::s_namePrefix = "";
+std::string ProcGUIProcess::s_nameSufix  = "s";
 
-ProcGUIProcess::ProcGUIProcess(CREF(rdo::runtime::LPRDORuntime) pRuntime)
+ProcGUIProcess::ProcGUIProcess(const rdo::runtime::LPRDORuntime& pRuntime)
 	: m_pRuntime(pRuntime)
 {
 	ASSERT(m_pRuntime);
@@ -172,17 +172,17 @@ void ProcGUIProcess::clear()
 	m_blockList.clear();
 }
 
-void ProcGUIProcess::insertBlock(CREF(LPProcGUIBlock) pBlock)
+void ProcGUIProcess::insertBlock(const LPProcGUIBlock& pBlock)
 {
 	ASSERT(pBlock);
 	m_blockList.push_back(pBlock);
 }
 
-void ProcGUIProcess::initResources(CREF(parser::LPRDOParser) pParser)
+void ProcGUIProcess::initResources(const parser::LPRDOParser& pParser)
 {
-	STL_FOR_ALL_CONST(m_resNameList, it)
+	for (const auto& name: m_resNameList)
 	{
-		parser::LPRDORSSResource pResource = pParser->findRSSResource(*it);
+		parser::LPRDORSSResource pResource = pParser->findRSSResource(name);
 		ASSERT(pResource);
 		const std::vector<rdo::runtime::LPRDOCalc> calcList = pResource->createCalc();
 		ASSERT(!calcList.empty());
@@ -191,7 +191,7 @@ void ProcGUIProcess::initResources(CREF(parser::LPRDOParser) pParser)
 	}
 }
 
-void ProcGUIProcess::addResNameToBlock(CREF(tstring) name)
+void ProcGUIProcess::addResNameToBlock(const std::string& name)
 {
 	ASSERT(!name.empty());
 
@@ -205,7 +205,7 @@ void ProcGUIProcess::addResNameToBlock(CREF(tstring) name)
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIBlock
 // --------------------------------------------------------------------------------
-ProcGUIBlock::ProcGUIBlock(CREF(LPProcGUIProcess) pProcess, CREF(tstring) name)
+ProcGUIBlock::ProcGUIBlock(const LPProcGUIProcess& pProcess, const std::string& name)
 	: m_name(name)
 {
 	ASSERT(pProcess);
@@ -218,7 +218,7 @@ ProcGUIBlock::~ProcGUIBlock()
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIBlockGenerate
 // --------------------------------------------------------------------------------
-ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(parser::LPRDOParser) pParser, CREF(LPRPShapeDataBlockCreate) pParams)
+ProcGUIBlockGenerate::ProcGUIBlockGenerate(const LPProcGUIProcess& pProcess, const rdo::runtime::LPRDORuntime& pRuntime, const parser::LPRDOParser& pParser, const LPRPShapeDataBlockCreate& pParams)
 	: ProcGUIBlock(pProcess, pParams->getName())
 	, ProcGUICalc (pRuntime, pParams           )
 	, m_pParams   (pParams                     )
@@ -228,8 +228,8 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, CREF
 	ASSERT(pParser  );
 	ASSERT(m_pParams);
 
-	tstring rtpName      = "Транзакты";
-	tstring rtpParamName = "Время_создания";
+	const std::string rtpName = "Транзакты";
+	const std::string rtpParamName = "Время_создания";
 
 	//! Получили список всех типов ресурсов
 	rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
@@ -286,7 +286,7 @@ ProcGUIBlockGenerate::~ProcGUIBlockGenerate()
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIBlockTerminate
 // --------------------------------------------------------------------------------
-ProcGUIBlockTerminate::ProcGUIBlockTerminate(CREF(LPProcGUIProcess) pProcess, CREF(LPRPShapeDataBlockTerminate) pParams)
+ProcGUIBlockTerminate::ProcGUIBlockTerminate(const LPProcGUIProcess& pProcess, const LPRPShapeDataBlockTerminate& pParams)
 	: ProcGUIBlock(pProcess, pParams->getName())
 	, m_pParams   (pParams                     )
 {
@@ -294,7 +294,7 @@ ProcGUIBlockTerminate::ProcGUIBlockTerminate(CREF(LPProcGUIProcess) pProcess, CR
 	ASSERT(m_pParams);
 
 	//! \todo добавить поддержку арифметических выражений
-	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(static_cast<ruint>(m_pParams->getTermInc())));
+	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(static_cast<std::size_t>(m_pParams->getTermInc())));
 	ASSERT(pCalc);
 	m_pBlock = RF(rdo::runtime::RDOPROCTerminate)::create(pProcess->getProcess(), pCalc);
 	ASSERT(m_pBlock);
@@ -311,7 +311,7 @@ ProcGUIBlockTerminate::~ProcGUIBlockTerminate()
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIBlockProcess
 // --------------------------------------------------------------------------------
-ProcGUIBlockProcess::ProcGUIBlockProcess(CREF(LPProcGUIProcess) pProcess, CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(parser::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams)
+ProcGUIBlockProcess::ProcGUIBlockProcess(const LPProcGUIProcess& pProcess, const rdo::runtime::LPRDORuntime& pRuntime, const parser::LPRDOParser& pParser, const LPRPShapeDataBlockProcess& pParams)
 	: ProcGUIBlock(pProcess, pParams->getName())
 	, m_pParams   (pParams                     )
 {
@@ -320,10 +320,10 @@ ProcGUIBlockProcess::ProcGUIBlockProcess(CREF(LPProcGUIProcess) pProcess, CREF(r
 	ASSERT(pParser  );
 	ASSERT(m_pParams);
 
-	CREF(RPShapeDataBlockProcess::ActionList) actionList = m_pParams->getActionList();
-	STL_FOR_ALL_CONST(actionList, it)
+	const RPShapeDataBlockProcess::ActionList& actionList = m_pParams->getActionList();
+	for (const auto action: actionList)
 	{
-		switch (*it)
+		switch (action)
 		{
 			case RPShapeDataBlockProcess::A_SEIZE:
 			{
@@ -365,7 +365,7 @@ ProcGUIBlockProcess::~ProcGUIBlockProcess()
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIAdvance
 // --------------------------------------------------------------------------------
-ProcGUIAdvance::ProcGUIAdvance(CREF(LPProcGUIProcess) pProcess, CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(LPRPShapeDataBlockProcess) pParams)
+ProcGUIAdvance::ProcGUIAdvance(const LPProcGUIProcess& pProcess, const rdo::runtime::LPRDORuntime& pRuntime, const LPRPShapeDataBlockProcess& pParams)
 	: ProcGUIBlock(pProcess, rdo::format("%s Advance", pParams->getName().c_str()))
 	, ProcGUICalc (pRuntime, pParams)
 	, m_pParams   (pParams)
@@ -389,7 +389,7 @@ ProcGUIAdvance::~ProcGUIAdvance()
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUISeize
 // --------------------------------------------------------------------------------
-ProcGUISeize::ProcGUISeize(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams)
+ProcGUISeize::ProcGUISeize(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser, const LPRPShapeDataBlockProcess& pParams)
 	: ProcGUIBlock(pProcess, rdo::format("%s Seize", pParams->getName().c_str()))
 	, m_pParams   (pParams)
 {
@@ -397,15 +397,15 @@ ProcGUISeize::ProcGUISeize(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOPa
 	ASSERT(pParser  );
 	ASSERT(m_pParams);
 
-	CREF(RPShapeDataBlockProcess::ResNameList) resNameList = m_pParams->getResNameList();
-	STL_FOR_ALL_CONST(resNameList, it)
+	const RPShapeDataBlockProcess::ResNameList& resNameList = m_pParams->getResNameList();
+	for (const auto& name: resNameList)
 	{
-		addResourceName(*it);
-		pProcess->addResNameToBlock(*it);
-		tstring resName = *it;
+		addResourceName(name);
+		pProcess->addResNameToBlock(name);
+		const std::string resName = name;
 		//! Получили список всех ресурсов
 		rdo::compiler::mbuilder::RDOResourceList rssList(pParser);
-		rdo::compiler::mbuilder::RDOResType      rtp;
+		rdo::compiler::mbuilder::RDOResType rtp;
 		//! Если ресурс существует, берем его тип и проверяем
 		if (rssList[resName].exist())
 		{
@@ -423,7 +423,7 @@ ProcGUISeize::ProcGUISeize(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOPa
 		{
 			//! Ресурс не найден, сформировать имя типа по имени ресурса
 			//! Сформировать имя типа по имени ресурса
-			tstring rtpName(ProcGUIProcess::s_namePrefix + resName + ProcGUIProcess::s_nameSufix);
+			const std::string rtpName(ProcGUIProcess::s_namePrefix + resName + ProcGUIProcess::s_nameSufix);
 			//! Получили список всех типов ресурсов
 			rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
 			//! Нашли тип ресурса
@@ -447,23 +447,23 @@ ProcGUISeize::ProcGUISeize(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOPa
 ProcGUISeize::~ProcGUISeize()
 {}
 
-void ProcGUISeize::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser)
+void ProcGUISeize::createRuntime(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser)
 {
 	ASSERT(pProcess);
 	ASSERT(pParser );
 
-	STL_FOR_ALL_CONST(m_resNameList, it)
+	for (const auto& name: m_resNameList)
 	{
-		parser::LPRDORSSResource pResource = pParser->findRSSResource(*it);
+		parser::LPRDORSSResource pResource = pParser->findRSSResource(name);
 		if (pResource)
 		{
-			tstring resName = pResource->name();
+			const std::string resName = pResource->name();
 			//! Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(pParser);
 			//! Создадим тип ресурса
 			rdo::compiler::mbuilder::RDOResType rtp = rssList[resName].getType();
 			//! "Состояние"
-			tstring rtpParamName = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
+			const std::string rtpParamName = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
 			//! проверим его на наличие перечислимого параметра
 			if (!rtp.m_params[rtpParamName].exist())
 			{
@@ -476,7 +476,7 @@ void ProcGUISeize::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::L
 		}
 		else
 		{
-			pParser->error().error(parser::RDOParserSrcInfo(), rdo::format("Внутренняя ошибка ProcGUISeize: не нашли parser-ресурс '%s'", it->c_str()));
+			pParser->error().error(parser::RDOParserSrcInfo(), rdo::format("Внутренняя ошибка ProcGUISeize: не нашли parser-ресурс '%s'", name.c_str()));
 		}
 	}
 	if (!m_parserForRuntime.empty())
@@ -490,7 +490,7 @@ void ProcGUISeize::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::L
 	}
 }
 
-void ProcGUISeize::addResourceName(CREF(tstring) name)
+void ProcGUISeize::addResourceName(const std::string& name)
 {
 	ASSERT(!name.empty());
 	m_resNameList.push_back(name);
@@ -499,7 +499,7 @@ void ProcGUISeize::addResourceName(CREF(tstring) name)
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIRelease
 // --------------------------------------------------------------------------------
-ProcGUIRelease::ProcGUIRelease(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser, CREF(LPRPShapeDataBlockProcess) pParams)
+ProcGUIRelease::ProcGUIRelease(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser, const LPRPShapeDataBlockProcess& pParams)
 	: ProcGUIBlock(pProcess, rdo::format("%s Release", pParams->getName().c_str()))
 	, m_pParams   (pParams)
 {
@@ -507,12 +507,12 @@ ProcGUIRelease::ProcGUIRelease(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPR
 	ASSERT(pParser  );
 	ASSERT(m_pParams);
 
-	CREF(RPShapeDataBlockProcess::ResNameList) resNameList = m_pParams->getResNameList();
-	STL_FOR_ALL_CONST(resNameList, it)
+	const RPShapeDataBlockProcess::ResNameList& resNameList = m_pParams->getResNameList();
+	for (const auto& name: resNameList)
 	{
-		addResourceName(*it);
-		pProcess->addResNameToBlock(*it);
-		tstring resName = *it;
+		addResourceName(name);
+		pProcess->addResNameToBlock(name);
+		const std::string resName = name;
 		//! Получили список всех ресурсов
 		rdo::compiler::mbuilder::RDOResourceList rssList(pParser);
 		rdo::compiler::mbuilder::RDOResType      rtp;
@@ -533,7 +533,7 @@ ProcGUIRelease::ProcGUIRelease(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPR
 		{
 			//! Ресурс не найден, сформировать имя типа по имени ресурса
 			//! Сформировать имя типа по имени ресурса
-			tstring rtpName(ProcGUIProcess::s_namePrefix + resName + ProcGUIProcess::s_nameSufix);
+			const std::string rtpName(ProcGUIProcess::s_namePrefix + resName + ProcGUIProcess::s_nameSufix);
 			//! Получили список всех типов ресурсов
 			rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
 			//! Нашли тип ресурса
@@ -557,23 +557,23 @@ ProcGUIRelease::ProcGUIRelease(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPR
 ProcGUIRelease::~ProcGUIRelease()
 {}
 
-void ProcGUIRelease::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser)
+void ProcGUIRelease::createRuntime(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser)
 {
 	ASSERT(pProcess);
 	ASSERT(pParser );
 
-	STL_FOR_ALL_CONST(m_resNameList, it)
+	for (const auto& name: m_resNameList)
 	{
-		parser::LPRDORSSResource pResource = pParser->findRSSResource(*it);
+		parser::LPRDORSSResource pResource = pParser->findRSSResource(name);
 		if (pResource)
 		{
-			tstring resName = pResource->name();
+			const std::string resName = pResource->name();
 			//! Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(pParser);
 			//! Создадим тип ресурса
 			rdo::compiler::mbuilder::RDOResType rtp = rssList[resName].getType();
 			//! "Состояние"
-			tstring rtpParamName = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
+			const std::string rtpParamName = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
 			//! проверим его на наличие перечислимого параметра
 			if (!rtp.m_params[rtpParamName].exist())
 			{
@@ -586,7 +586,7 @@ void ProcGUIRelease::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser:
 		}
 		else
 		{
-			pParser->error().error(parser::RDOParserSrcInfo(), rdo::format("Внутренняя ошибка ProcGUIRelease: не нашли parser-ресурс '%s'", it->c_str()));
+			pParser->error().error(parser::RDOParserSrcInfo(), rdo::format("Внутренняя ошибка ProcGUIRelease: не нашли parser-ресурс '%s'", name.c_str()));
 		}
 	}
 	if (!m_parserForRuntime.empty())
@@ -600,7 +600,7 @@ void ProcGUIRelease::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser:
 	}
 }
 
-void ProcGUIRelease::addResourceName(CREF(tstring) name)
+void ProcGUIRelease::addResourceName(const std::string& name)
 {
 	ASSERT(!name.empty());
 	m_resNameList.push_back(name);
@@ -609,7 +609,7 @@ void ProcGUIRelease::addResourceName(CREF(tstring) name)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCQueue
 // --------------------------------------------------------------------------------
-ProcGUIQueue::ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser, CREF(tstring) name)
+ProcGUIQueue::ProcGUIQueue(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser, const std::string& name)
 	: ProcGUIBlock  (pProcess, rdo::format("%s Queue", name.c_str()))
 	, m_resourceName(name)
 {
@@ -622,8 +622,8 @@ ProcGUIQueue::ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOPa
 	//! Получили список всех типов ресурсов
 	rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
 	rdo::compiler::mbuilder::RDOResType     rtp;
-	tstring rtpName   = "QDEPART";
-	tstring queueName = "Очередь_" + m_resourceName;
+	const std::string rtpName = "QDEPART";
+	const std::string queueName = "Очередь_" + m_resourceName;
 	//! Если ресурс существует, берем его тип и проверяем
 	if (rssList[m_resourceName].exist())
 	{
@@ -631,7 +631,7 @@ ProcGUIQueue::ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOPa
 		rdo::compiler::mbuilder::BlockForQueue::checkType(rtp, parser::RDOParserSrcInfo());
 		parser::LPRDOPMDWatchPar pResult = rdo::Factory<parser::RDOPMDWatchPar>::create(parser::RDOParserSrcInfo(queueName));
 		ASSERT(pResult);
-		pResult->init(false, parser::RDOParserSrcInfo(m_resourceName), parser::RDOParserSrcInfo(tstring("длина_очереди")));
+		pResult->init(false, parser::RDOParserSrcInfo(m_resourceName), parser::RDOParserSrcInfo(std::string("длина_очереди")));
 	}
 	else
 	{
@@ -644,7 +644,7 @@ ProcGUIQueue::ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOPa
 				rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, m_resourceName);
 				parser::LPRDOPMDWatchPar pResult = rdo::Factory<parser::RDOPMDWatchPar>::create(parser::RDOParserSrcInfo(queueName));
 				ASSERT(pResult);
-				pResult->init(false, parser::RDOParserSrcInfo(m_resourceName), parser::RDOParserSrcInfo(tstring("длина_очереди")));
+				pResult->init(false, parser::RDOParserSrcInfo(m_resourceName), parser::RDOParserSrcInfo(std::string("длина_очереди")));
 			}
 		}
 		else
@@ -655,7 +655,7 @@ ProcGUIQueue::ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOPa
 				rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, m_resourceName);
 				parser::LPRDOPMDWatchPar pResult = rdo::Factory<parser::RDOPMDWatchPar>::create(parser::RDOParserSrcInfo(queueName));
 				ASSERT(pResult);
-				pResult->init(false, parser::RDOParserSrcInfo(m_resourceName), parser::RDOParserSrcInfo(tstring("длина_очереди")));
+				pResult->init(false, parser::RDOParserSrcInfo(m_resourceName), parser::RDOParserSrcInfo(std::string("длина_очереди")));
 			}
 		}
 	}
@@ -664,7 +664,7 @@ ProcGUIQueue::ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOPa
 ProcGUIQueue::~ProcGUIQueue()
 {}
 
-void ProcGUIQueue::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser)
+void ProcGUIQueue::createRuntime(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser)
 {
 	ASSERT(pProcess);
 	ASSERT(pParser );
@@ -672,14 +672,14 @@ void ProcGUIQueue::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::L
 	parser::LPRDORSSResource pResource = pParser->findRSSResource(m_resourceName);
 	if (pResource)
 	{
-		tstring resName = pResource->name();
+		const std::string resName = pResource->name();
 		//! Получили список всех ресурсов
 		rdo::compiler::mbuilder::RDOResourceList rssList(pParser);
 		//! Создадим тип ресурса
 		rdo::compiler::mbuilder::RDOResType rtp = rssList[resName].getType();
 		//! "длина_очереди"
-		tstring rtpParamName        = rdo::runtime::RDOPROCQueue::getQueueParamName();
-		m_parserForRuntime.Id_res   = pResource->getID();
+		const std::string rtpParamName = rdo::runtime::RDOPROCQueue::getQueueParamName();
+		m_parserForRuntime.Id_res = pResource->getID();
 		m_parserForRuntime.Id_param = rtp.m_params[rtpParamName].id();
 	}
 	else
@@ -694,7 +694,7 @@ void ProcGUIQueue::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::L
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUIDepart
 // --------------------------------------------------------------------------------
-ProcGUIDepart::ProcGUIDepart(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser, CREF(tstring) name)
+ProcGUIDepart::ProcGUIDepart(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser, const std::string& name)
 	: ProcGUIBlock  (pProcess, rdo::format("%s Depart", name.c_str()))
 	, m_resourceName(name)
 {
@@ -707,7 +707,7 @@ ProcGUIDepart::ProcGUIDepart(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDO
 	//! Получили список всех типов ресурсов
 	rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
 	rdo::compiler::mbuilder::RDOResType rtp;
-	tstring rtpName = "QDEPART";
+	const std::string rtpName = "QDEPART";
 	//! Если ресурс существует, берем его тип и проверяем
 	if (rssList[m_resourceName].exist())
 	{
@@ -738,7 +738,7 @@ ProcGUIDepart::ProcGUIDepart(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDO
 ProcGUIDepart::~ProcGUIDepart()
 {}
 
-void ProcGUIDepart::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::LPRDOParser) pParser)
+void ProcGUIDepart::createRuntime(const LPProcGUIProcess& pProcess, const parser::LPRDOParser& pParser)
 {
 	ASSERT(pProcess);
 	ASSERT(pParser );
@@ -746,14 +746,14 @@ void ProcGUIDepart::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(parser::
 	parser::LPRDORSSResource pResource = pParser->findRSSResource(m_resourceName);
 	if (pResource)
 	{
-		tstring resName = pResource->name();
+		const std::string resName = pResource->name();
 		//! Получили список всех ресурсов
 		rdo::compiler::mbuilder::RDOResourceList rssList(pParser);
 		//! Создадим тип ресурса
 		rdo::compiler::mbuilder::RDOResType rtp = rssList[resName].getType();
 		//! "длина_очереди"
-		tstring rtpParamName        = rdo::runtime::RDOPROCDepart::getDepartParamName();
-		m_parserForRuntime.Id_res   = pResource->getID();
+		const std::string rtpParamName = rdo::runtime::RDOPROCDepart::getDepartParamName();
+		m_parserForRuntime.Id_res = pResource->getID();
 		m_parserForRuntime.Id_param = rtp.m_params[rtpParamName].id();
 	}	
 	else

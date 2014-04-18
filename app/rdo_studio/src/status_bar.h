@@ -16,12 +16,14 @@
 #include <QProgressBar>
 #include <QMainWindow>
 #include <QLabel>
+#include <boost/mpl/integral_c.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
-OBJECT(StatusBar)
+PREDECLARE_POINTER(StatusBar);
+class StatusBar: public rdo::counter_reference
 {
 DECLARE_FACTORY(StatusBar)
 public:
@@ -37,14 +39,14 @@ public:
 	};
 
 	template <Type N>
-	void update(CREF(QString) message)
+	void update(const QString& message)
 	{
 		update(StatusBarType<N>(), message);
 	}
 
-	void beginProgress(rsint lower, rsint upper);
-	void stepProgress ();
-	void endProgress  ();
+	void beginProgress(int lower, int upper);
+	void stepProgress();
+	void endProgress();
 
 private:
 	StatusBar(QMainWindow* pParent);
@@ -66,15 +68,15 @@ private:
 	{};
 
 	template <Type N>
-	void update(StatusBarType<N> statusBar, CREF(QString) message)
+	void update(StatusBarType<N> statusBar, const QString& message)
 	{
-		PTR(QLabel) pLabel = getLabel(statusBar);
+		QLabel* pLabel = getLabel(statusBar);
 		ASSERT(pLabel);
 		pLabel->setText(message);
 	}
 
 	template <Type N>
-	PTR(QLabel) getLabel(StatusBarType<N>);
+	QLabel* getLabel(StatusBarType<N>);
 };
 
 #endif // _RDO_STUDIO_STATUS_BAR_H_

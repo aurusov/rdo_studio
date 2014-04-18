@@ -9,7 +9,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/namespace.h"
 #include "simulator/runtime/rdo_enum.h"
 // --------------------------------------------------------------------------------
@@ -25,13 +24,13 @@ inline RDOResults::RDOResults()
 inline RDOResults::~RDOResults()
 {}
 
-inline void RDOResults::width(ruint w)
+inline void RDOResults::width(std::size_t w)
 {
 	getOStream().width(w);
 }
 
 template<class T> 
-inline REF(RDOResults) RDOResults::operator<< (CREF(T) value)
+inline RDOResults& RDOResults::operator<< (const T& value)
 {
 	getOStream() << value;
 	return *this;
@@ -40,28 +39,28 @@ inline REF(RDOResults) RDOResults::operator<< (CREF(T) value)
 // --------------------------------------------------------------------------------
 // -------------------- RDORuntime
 // --------------------------------------------------------------------------------
-inline REF(Notify) RDORuntime::notify()
+inline Notify& RDORuntime::notify()
 {
 	return m_notify;
 }
 
-inline REF(Error) RDORuntime::error()
+inline Error& RDORuntime::error()
 {
 	ASSERT(m_pError);
 	return *m_pError;
 }
 
-inline REF(RDOHotKey) RDORuntime::hotkey()
+inline RDOHotKey& RDORuntime::hotkey()
 {
 	return m_hotKey;
 }
 
-inline REF(RDOResults) RDORuntime::getResults()
+inline RDOResults& RDORuntime::getResults()
 {
 	return *m_resultList;
 }
 
-inline REF(RDOResults) RDORuntime::getResultsInfo()
+inline RDOResults& RDORuntime::getResultsInfo()
 {
 	return *m_resultListInfo;
 }
@@ -77,44 +76,44 @@ inline double RDORuntime::getSeconds()
 	return (double)(time(NULL) - m_physicTime);
 }
 
-inline ruint RDORuntime::getCurrentTerm() const
+inline std::size_t RDORuntime::getCurrentTerm() const
 {
 	return m_currentTerm;
 }
 
-inline void RDORuntime::setCurrentTerm(ruint value)
+inline void RDORuntime::setCurrentTerm(std::size_t value)
 {
 	m_currentTerm = value;
 }
 
-inline REF(LPIActivity) RDORuntime::getCurrentActivity()
+inline LPIActivity& RDORuntime::getCurrentActivity()
 {
 	return m_currActivity;
 }
 
-inline void RDORuntime::setCurrentActivity(CREF(LPIActivity) activity)
+inline void RDORuntime::setCurrentActivity(const LPIActivity& activity)
 {
 	m_currActivity = activity;
 }
 
-inline CREF(RDORuntime::LPIResultList) RDORuntime::getResult() const
+inline const RDORuntime::LPIResultList& RDORuntime::getResult() const
 {
 	return m_resultAllList;
 }
 
-inline void RDORuntime::addInitCalc(CREF(LPRDOCalc) initCalc)
+inline void RDORuntime::addInitCalc(const LPRDOCalc& initCalc)
 {
 	m_initCalcList.push_back(initCalc);
 }
 
-inline REF(RDOValue) RDORuntime::getResParamValRaw(ruint resID, ruint paramID)
+inline RDOValue& RDORuntime::getResParamValRaw(std::size_t resID, std::size_t paramID)
 {
 	LPRDOResource pResource = getResourceByID(resID);
 	ASSERT(pResource);
 	return pResource->getParamRaw(paramID);
 }
 
-inline void RDORuntime::setResParamVal(ruint resID, ruint paramID, CREF(RDOValue) value)
+inline void RDORuntime::setResParamVal(std::size_t resID, std::size_t paramID, const RDOValue& value)
 {
 	LPRDOResource pResource = getResourceByID(resID);
 	ASSERT(pResource);
@@ -131,7 +130,7 @@ inline void RDORuntime::pushFuncArgument(RDOValue arg)
 	m_funcStack.push_back(arg);
 }
 
-inline void RDORuntime::pushGroupFunc(CREF(LPRDOResource) pResource)
+inline void RDORuntime::pushGroupFunc(const LPRDOResource& pResource)
 {
 	m_groupFuncStack.push_back(pResource);
 }
@@ -162,14 +161,14 @@ inline void RDORuntime::popFuncTop()
 	m_funcStack.pop_back();
 }
 
-inline LPRDOResource RDORuntime::getResourceByID(ruint resourceID) const
+inline LPRDOResource RDORuntime::getResourceByID(std::size_t resourceID) const
 {
-	return resourceID != ruint(~0) && resourceID < m_resourceListByID.size()
+	return resourceID != std::size_t(~0) && resourceID < m_resourceListByID.size()
 		? m_resourceListByID[resourceID]
 		: LPRDOResource(NULL);
 }
 
-inline void RDORuntime::setPatternParameter(ruint paramID, CREF(RDOValue) paramValue)
+inline void RDORuntime::setPatternParameter(std::size_t paramID, const RDOValue& paramValue)
 {
 	if (m_patternParameterList.size() <= paramID)
 	{
@@ -178,7 +177,7 @@ inline void RDORuntime::setPatternParameter(ruint paramID, CREF(RDOValue) paramV
 	m_patternParameterList[paramID] = paramValue;
 }
 
-inline RDOValue RDORuntime::getPatternParameter(ruint paramID) const
+inline RDOValue RDORuntime::getPatternParameter(std::size_t paramID) const
 {
 	ASSERT(paramID < m_patternParameterList.size());
 	return m_patternParameterList[paramID];
@@ -204,21 +203,21 @@ inline void RDORuntime::onUserBreak()
 	m_whyStop = rdo::simulation::report::EC_UserBreak;
 }
 
-inline void RDORuntime::addResType(CREF(LPRDOResourceTypeList) pResType)
+inline void RDORuntime::addResType(const LPRDOResourceTypeList& pResType)
 {
 	ASSERT(pResType);
 	ASSERT(m_resourceTypeList.size() == pResType->getTraceID() - 1);
 	m_resourceTypeList.push_back(pResType);
 }
 
-inline CREF(LPRDOResourceTypeList) RDORuntime::getResType(ruint number) const
+inline const LPRDOResourceTypeList& RDORuntime::getResType(std::size_t number) const
 {
 	ASSERT(number > 0);
 	ASSERT(number - 1 < m_resourceTypeList.size());
 	return m_resourceTypeList[number - 1];
 }
 
-inline CREF(LPIThreadProxy) RDORuntime::getThreadProxy() const
+inline const LPIThreadProxy& RDORuntime::getThreadProxy() const
 {
 	return m_pThreadProxy;
 }
@@ -226,7 +225,7 @@ inline CREF(LPIThreadProxy) RDORuntime::getThreadProxy() const
 inline RDORuntime::ResList RDORuntime::getResourcesBeforeSim() const
 {
 	ResList list;
-	for (ruint i = 0; i < m_resourceTypeList.size(); i++)
+	for (std::size_t i = 0; i < m_resourceTypeList.size(); i++)
 	{
 		ResCIterator it, end;
 		it  = m_resourceTypeList[i]->res_begin();
@@ -249,17 +248,17 @@ inline void RDORuntime::preProcess()
 // --------------------------------------------------------------------------------
 // -------------------- RDORuntime::BreakPoint
 // --------------------------------------------------------------------------------
-inline RDORuntime::BreakPoint::BreakPoint(CREF(tstring) name, CREF(LPRDOCalc) pCalc)
+inline RDORuntime::BreakPoint::BreakPoint(const std::string& name, const LPRDOCalc& pCalc)
 	: m_name (name )
 	, m_pCalc(pCalc)
 {}
 
-inline CREF(tstring) RDORuntime::BreakPoint::getName() const
+inline const std::string& RDORuntime::BreakPoint::getName() const
 {
 	return m_name;
 }
 
-inline CREF(LPRDOCalc) RDORuntime::BreakPoint::getCalc() const
+inline const LPRDOCalc& RDORuntime::BreakPoint::getCalc() const
 {
 	return m_pCalc;
 }

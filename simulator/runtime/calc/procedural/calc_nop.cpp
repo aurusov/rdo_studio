@@ -25,9 +25,8 @@ RDOCalcNop::RDOCalcNop()
 RDOCalcNop::~RDOCalcNop()
 {}
 
-RDOValue RDOCalcNop::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcNop::doCalc(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return RDOValue();
 }
 

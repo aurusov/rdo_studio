@@ -24,7 +24,7 @@ private:
 	typedef char Small;
 	class        Big    { char dummy[2]; };
 
-	static Small Test (CREF(U));
+	static Small Test (const U&);
 	static Big   Test (...);
 	static T     MakeT();
 
@@ -41,7 +41,7 @@ public:
 	enum { same   = true };
 };
 
-#define SUPERSUBCLASS(T, U) (SuperSubClass<CPTR(U), CPTR(T)>::exists)
+#define SUPERSUBCLASS(T, U) (SuperSubClass<const U*, const T*>::exists)
 
 } // namespace rdo
 

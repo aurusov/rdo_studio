@@ -23,12 +23,12 @@ namespace report {
 class BuildEditLineInfo: public LogEditLineInfo
 {
 public:
-	BuildEditLineInfo(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type);
-	explicit BuildEditLineInfo(CREF(FileMessage) message);
-	explicit BuildEditLineInfo(CREF(tstring) message);
+	BuildEditLineInfo(const std::string& text, rdoModelObjects::RDOFileType file, std::size_t line, std::size_t pos, Type type);
+	explicit BuildEditLineInfo(const FileMessage& message);
+	explicit BuildEditLineInfo(const std::string& message);
 	virtual ~BuildEditLineInfo();
 
-	virtual tstring getMessage() const;
+	virtual std::string getMessage() const;
 };
 
 }}} // namespace rdo::simulation::report

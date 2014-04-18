@@ -24,12 +24,12 @@ Pattern::Pattern(Kind kind)
 Pattern::~Pattern()
 {}
 
-CREF(QString) Pattern::getName() const
+const QString& Pattern::getName() const
 {
 	return m_name;
 }
 
-void Pattern::setName(CREF(QString) name)
+void Pattern::setName(const QString& name)
 {
 	m_name = name;
 }

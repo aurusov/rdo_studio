@@ -45,22 +45,22 @@ public:
 	typedef  BaseOperationList::const_iterator  CIterator;
 
 protected:
-	RDOLogic(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent = NULL);
+	RDOLogic(const LPRDORuntime& pRuntime, LPIBaseOperationContainer pParent = NULL);
 	virtual ~RDOLogic();
 
 	DECLARE_IBaseOperationContainer;
 
-	LPRDOCalc                 m_pCondition;
-	rbool                     m_lastCondition;
-	ChildList                 m_childList;
-	LPIBaseOperation          m_pFirst;
+	LPRDOCalc m_pCondition;
+	bool m_lastCondition;
+	ChildList m_childList;
+	LPIBaseOperation m_pFirst;
 	LPIBaseOperationContainer m_pParent;
-	rbool                     m_multithreading;
+	bool m_multithreading;
 
 private:
-	rbool checkSelfCondition(CREF(LPRDORuntime) pRuntime);
-	void  start             (CREF(LPRDORuntime) pRuntime);
-	void  stop              (CREF(LPRDORuntime) pRuntime);
+	bool checkSelfCondition(const LPRDORuntime& pRuntime);
+	void start(const LPRDORuntime& pRuntime);
+	void stop(const LPRDORuntime& pRuntime);
 
 	DECLARE_IBaseOperation;
 	DECLARE_ILogic;
@@ -73,7 +73,7 @@ private:
 class RDOOrderSimple
 {
 public:
-	static LPIBaseOperation sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container);
+	static LPIBaseOperation sort(const LPRDORuntime& pRuntime, BaseOperationList& container);
 };
 
 /*!
@@ -83,7 +83,7 @@ public:
 class RDOOrderMeta
 {
 public:
-	static LPIBaseOperation sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container);
+	static LPIBaseOperation sort(const LPRDORuntime& pRuntime, BaseOperationList& container);
 };
 
 /*!
@@ -96,7 +96,7 @@ class RDOLogicSimple: public RDOLogic<RDOOrderSimple>
 protected:
 	DEFINE_IFACTORY(RDOLogicSimple);
 
-	RDOLogicSimple(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent)
+	RDOLogicSimple(const LPRDORuntime& pRuntime, LPIBaseOperationContainer pParent)
 		: RDOLogic<RDOOrderSimple>(pRuntime, pParent)
 	{}
 	virtual ~RDOLogicSimple()

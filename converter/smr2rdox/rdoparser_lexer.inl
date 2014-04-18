@@ -17,7 +17,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOLexer
 // --------------------------------------------------------------------------------
-inline RDOLexer::RDOLexer(PTR(Converter) pParser, PTR(std::istream) yyin, PTR(std::ostream) yyout)
+inline RDOLexer::RDOLexer(Converter* pParser, std::istream* yyin, std::ostream* yyout)
 	: yyFlexLexer(yyin, yyout)
 	, m_lpval    (NULL       )
 	, m_lploc    (NULL       )
@@ -85,7 +85,7 @@ inline void RDOLexer::setvalue(int value)
 	*m_lpval = value;
 }
 
-inline PTR(Converter) RDOLexer::converter()
+inline Converter* RDOLexer::converter()
 {
 	return m_pParser;
 }
@@ -100,7 +100,7 @@ inline void RDOLexer::enumReset()
 	m_enumEmpty = true;
 }
 
-inline rbool RDOLexer::enumEmpty()
+inline bool RDOLexer::enumEmpty()
 {
 	return m_enumEmpty;
 }

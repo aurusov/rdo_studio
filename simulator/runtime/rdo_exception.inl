@@ -9,7 +9,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
 
@@ -18,11 +17,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOException
 // --------------------------------------------------------------------------------
-inline RDOException::RDOException(CREF(tstring) message)
+inline RDOException::RDOException(const std::string& message)
 	: m_message(message)
 {}
 
-inline CREF(tstring) RDOException::message() const
+inline const std::string& RDOException::message() const
 {
 	return m_message;
 }
@@ -30,11 +29,11 @@ inline CREF(tstring) RDOException::message() const
 // --------------------------------------------------------------------------------
 // -------------------- RDORuntimeException
 // --------------------------------------------------------------------------------
-inline RDORuntimeException::RDORuntimeException(CREF(tstring) message)
+inline RDORuntimeException::RDORuntimeException(const std::string& message)
 	: RDOException(message)
 {}
 
-inline tstring RDORuntimeException::getType() const
+inline std::string RDORuntimeException::getType() const
 {
 	return "RDO Runtime Error";
 }
@@ -42,11 +41,11 @@ inline tstring RDORuntimeException::getType() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeException
 // --------------------------------------------------------------------------------
-inline RDOTypeException::RDOTypeException(CREF(tstring) message)
+inline RDOTypeException::RDOTypeException(const std::string& message)
 	: RDORuntimeException(message)
 {}
 
-inline tstring RDOTypeException::getType() const
+inline std::string RDOTypeException::getType() const
 {
 	return "RDOType Error";
 }
@@ -54,11 +53,11 @@ inline tstring RDOTypeException::getType() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOValueException
 // --------------------------------------------------------------------------------
-inline RDOValueException::RDOValueException(CREF(tstring) message)
+inline RDOValueException::RDOValueException(const std::string& message)
 	: RDORuntimeException(message)
 {}
 
-inline tstring RDOValueException::getType() const
+inline std::string RDOValueException::getType() const
 {
 	return "RDOValue Error";
 }
@@ -70,7 +69,7 @@ inline RDOUndefinedException::RDOUndefinedException()
 	: RDORuntimeException("")
 {}
 
-inline tstring RDOUndefinedException::getType() const
+inline std::string RDOUndefinedException::getType() const
 {
 	return "RDOValue Undefined Error";
 }
@@ -78,11 +77,11 @@ inline tstring RDOUndefinedException::getType() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOInternalException
 // --------------------------------------------------------------------------------
-inline RDOInternalException::RDOInternalException(CREF(tstring) message)
+inline RDOInternalException::RDOInternalException(const std::string& message)
 	: RDORuntimeException(message)
 {}
 
-inline tstring RDOInternalException::getType() const
+inline std::string RDOInternalException::getType() const
 {
 	return "RDO Internal Error";
 }

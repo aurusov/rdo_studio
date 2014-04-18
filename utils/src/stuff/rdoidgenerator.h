@@ -20,7 +20,7 @@ namespace rdo {
 class IDGenerator
 {
 public:
-	typedef ruint ID;
+	typedef std::size_t ID;
 
 	IDGenerator()
 		: m_id(0)

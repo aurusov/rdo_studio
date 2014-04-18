@@ -24,14 +24,14 @@
 class IResultGroup
 {
 public:
-	virtual void onStart (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual void onStop  (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual void onAppend(CREF(LPIResult)                  pResult ) = 0;
+	virtual void onStart (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+	virtual void onStop  (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+	virtual void onAppend(const LPIResult&                  pResult ) = 0;
 };
 
-#define DECLARE_IResultGroup                                  \
-	void onStart (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	void onStop  (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	void onAppend(CREF(LPIResult)                  pResult );
+#define DECLARE_IResultGroup                                   \
+	void onStart (const rdo::runtime::LPRDORuntime& pRuntime); \
+	void onStop  (const rdo::runtime::LPRDORuntime& pRuntime); \
+	void onAppend(const LPIResult&                  pResult );
 
 #endif // _LIB_RUNTIME_RESULT_GROUP_I_H_

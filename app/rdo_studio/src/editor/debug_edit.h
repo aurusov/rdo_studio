@@ -26,7 +26,7 @@ public:
 	Debug(QWidget* pParent);
 	virtual ~Debug();
 
-	void appendLine(CREF(QString) str);
+	void appendLine(const QString& str);
 
 private:
 	typedef  Edit  super;

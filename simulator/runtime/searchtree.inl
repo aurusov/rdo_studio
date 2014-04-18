@@ -34,31 +34,23 @@ inline int TreeRoot::getNewNodeNumber()
 // --------------------------------------------------------------------------------
 // -------------------- TreeRoot
 // --------------------------------------------------------------------------------
-inline void TreeNode::onSearchOpenNode(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+inline void TreeNode::onSearchOpenNode(const LPRDORuntime& /*pRuntime*/)
+{}
 
-inline void TreeNode::onSearchNodeInfoDeleted(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+inline void TreeNode::onSearchNodeInfoDeleted(const LPRDORuntime& /*pRuntime*/)
+{}
 
-inline void TreeNode::onSearchNodeInfoReplaced(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+inline void TreeNode::onSearchNodeInfoReplaced(const LPRDORuntime& /*pRuntime*/)
+{}
 
-inline void TreeNode::onSearchNodeInfoNew(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+inline void TreeNode::onSearchNodeInfoNew(const LPRDORuntime& /*pRuntime*/)
+{}
 
 /*!
-  \fn      rbool compareNodes(const TreeNode* tn1, const TreeNode* tn2)
+  \fn      bool compareNodes(const TreeNode* tn1, const TreeNode* tn2)
   \brief   функция сравнения вершин графа для сортировки списка OPEN
 */
-inline rbool compareNodes(const TreeNode* tn1, const TreeNode* tn2)
+inline bool compareNodes(const TreeNode* tn1, const TreeNode* tn2)
 {
 	if (fabs(tn1->m_costRest - tn2->m_costRest) > 0.0000001)
 	{

@@ -20,11 +20,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcPatParam
 // --------------------------------------------------------------------------------
-RDOCalcPatParam::RDOCalcPatParam(ruint paramID)
+RDOCalcPatParam::RDOCalcPatParam(std::size_t paramID)
 	: m_paramID(paramID)
 {}
 
-RDOValue RDOCalcPatParam::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcPatParam::doCalc(const LPRDORuntime& pRuntime)
 {
 	return pRuntime->getPatternParameter(m_paramID);
 }

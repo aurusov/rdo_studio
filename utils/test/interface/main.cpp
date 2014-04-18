@@ -24,44 +24,44 @@
 
 #define DISABLE_CONSOLE_OUTPUT
 
-const tstring strIMy1            = "void fun1():  ";
-const tstring strIMy2            = "void fun2():  ";
-const tstring strIMy3            = "void fun3():  ";
-const tstring strMyClass1Create  = "MyClass1():";
-const tstring strMyClass1Destroy = "~MyClass1():";
-const tstring strMyClass2Create  = "MyClass2():";
-const tstring strMyClass2Destroy = "~MyClass2():";
-const tstring strMyClass3Create  = "MyClass3():";
-const tstring strMyClass3Destroy = "~MyClass3():";
-const tchar   initFValue         = '1';
-const tchar   initSValue         = '2';
-const tchar   initTValue         = '3';
+const std::string strIMy1 = "void fun1():  ";
+const std::string strIMy2 = "void fun2():  ";
+const std::string strIMy3 = "void fun3():  ";
+const std::string strMyClass1Create = "MyClass1():";
+const std::string strMyClass1Destroy = "~MyClass1():";
+const std::string strMyClass2Create = "MyClass2():";
+const std::string strMyClass2Destroy = "~MyClass2():";
+const std::string strMyClass3Create = "MyClass3():";
+const std::string strMyClass3Destroy = "~MyClass3():";
+const char initFValue = '1';
+const char initSValue = '2';
+const char initTValue = '3';
 
-typedef std::list<tstring> LogList;
+typedef std::list<std::string> LogList;
 LogList s_logList;
 
 class IMy1
 {
 public:
-	virtual tstring fun1() = 0;
+	virtual std::string fun1() = 0;
 };
 
 class IMy2
 {
 public:
-	virtual tstring fun2() = 0;
+	virtual std::string fun2() = 0;
 };
 
 class IMy3
 {
 public:
-	virtual tstring fun3() = 0;
+	virtual std::string fun3() = 0;
 };
 
 class IMy4
 {
 public:
-	virtual tstring fun4() = 0;
+	virtual std::string fun4() = 0;
 };
 
 INTERFACE_REGISTRATOR(IMy1, 1);
@@ -78,7 +78,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	MyClass1(tchar i)
+	MyClass1(char i)
 		: m_i(i)
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
@@ -93,23 +93,23 @@ protected:
 #endif
 		s_logList.push_back(strMyClass1Destroy + m_i);
 	}
-	rbool init()
+	bool init()
 	{
 		return true;
 	}
 
 protected:
-	tchar m_i;
+	char m_i;
 
 private:
-	tstring fun1()
+	std::string fun1()
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
 		std::cout << strIMy1 << m_i << std::endl;
 #endif
 		return strIMy1 + m_i;
 	}
-	tstring fun2()
+	std::string fun2()
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
 		std::cout << strIMy2 << m_i << std::endl;
@@ -127,7 +127,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	MyClass2(tchar i)
+	MyClass2(char i)
 		: MyClass1(i)
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
@@ -142,7 +142,7 @@ private:
 #endif
 		s_logList.push_back(strMyClass2Destroy + m_i);
 	}
-	tstring fun3()
+	std::string fun3()
 	{
 		ASSERT(this);
 		LPIMy1 int1 = this;
@@ -163,7 +163,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	MyClass3(tchar i)
+	MyClass3(char i)
 		: m_i(i)
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
@@ -180,10 +180,10 @@ protected:
 	}
 
 protected:
-	tchar m_i;
+	char m_i;
 
 private:
-	tstring fun3()
+	std::string fun3()
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
 		std::cout << strIMy3 << m_i << std::endl;
@@ -236,28 +236,28 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest)
 		myInterfaceList.push_back(smptr);
 		myInterfaceList.push_back(smptr2);
 
-		tchar symbolT = '0';
-		STL_FOR_ALL_CONST(myInterfaceList, it)
+		char symbolT = '0';
+		for (const auto& item: myInterfaceList)
 		{
 			rdo::Interface<IMy1> ptr1;
-			ptr1 = *it;
+			ptr1 = item;
 			if (ptr1)
 			{
-				symbolT = (*it == smptr ? initFValue : (*it == smptr2 ? initSValue : initTValue));
+				symbolT = (item == smptr ? initFValue : (item == smptr2 ? initSValue : initTValue));
 				BOOST_CHECK(ptr1->fun1() == strIMy1 + symbolT);
 			}
 
-			rdo::Interface<IMy2> ptr2 = *it;
+			rdo::Interface<IMy2> ptr2 = item;
 			if (ptr2)
 			{
-				symbolT = (*it == smptr ? initFValue : (*it == smptr2 ? initSValue : initTValue));
+				symbolT = (item == smptr ? initFValue : (item == smptr2 ? initSValue : initTValue));
 				BOOST_CHECK(ptr2->fun2() == strIMy2 + symbolT);
 			}
 
-			rdo::Interface<IMy3> ptr3 = *it;
+			rdo::Interface<IMy3> ptr3 = item;
 			if (ptr3)
 			{
-				symbolT = (*it == smptr ? initFValue : (*it == smptr2 ? initSValue : initTValue));
+				symbolT = (item == smptr ? initFValue : (item == smptr2 ? initSValue : initTValue));
 				BOOST_CHECK(ptr3->fun3() == strIMy3 + symbolT);
 			}
 		}

@@ -49,11 +49,11 @@ void Manager::Frame::clear()
 // --------------------------------------------------------------------------------
 // -------------------- Manager
 // --------------------------------------------------------------------------------
-Manager::Manager(CREF(OnChangeFrame) onChangeFrame)
-	: m_lastShowedFrame    (ruint(~0))
-	, m_currentShowingFrame(ruint(~0))
-	, m_changed            (false    )
-	, m_onChangeFrame      (onChangeFrame)
+Manager::Manager(const OnChangeFrame& onChangeFrame)
+	: m_lastShowedFrame(std::size_t(~0))
+	, m_currentShowingFrame(std::size_t(~0))
+	, m_changed(false)
+	, m_onChangeFrame(onChangeFrame)
 {
 	//! @todo А почему объект не удаляется ? Это происходит автоматически ?
 
@@ -80,17 +80,17 @@ bool Manager::init()
 	return true;
 }
 
-void Manager::insertFrame(CREF(QString) frameName)
+void Manager::insertFrame(const QString& frameName)
 {
-	PTR(Frame) item = new Frame();
+	Frame* item = new Frame();
 	item->m_pTreeWidgetItem = g_pApp->getIMainWnd()->getDockFrame().getContext().insertFrame(frameName);
 	item->m_name            = frameName;
 	m_frameList.push_back(item);
 }
 
-ruint Manager::findFrameIndex(CPTR(QTreeWidgetItem) pTreeWidgetItem) const
+std::size_t Manager::findFrameIndex(const QTreeWidgetItem* pTreeWidgetItem) const
 {
-	ruint index = 0;
+	std::size_t index = 0;
 	BOOST_FOREACH(const Frame* pFrame, m_frameList)
 	{
 		if (pFrame->m_pTreeWidgetItem == pTreeWidgetItem)
@@ -99,12 +99,12 @@ ruint Manager::findFrameIndex(CPTR(QTreeWidgetItem) pTreeWidgetItem) const
 		}
 		index++;
 	}
-	return ruint(~0);
+	return std::size_t(~0);
 }
 
-ruint Manager::findFrameIndex(CPTR(View) pView) const
+std::size_t Manager::findFrameIndex(const View* pView) const
 {
-	ruint index = 0;
+	std::size_t index = 0;
 	BOOST_FOREACH(const Frame* pFrame, m_frameList)
 	{
 		if (pFrame->m_pView == pView)
@@ -113,12 +113,12 @@ ruint Manager::findFrameIndex(CPTR(View) pView) const
 		}
 		index++;
 	}
-	return ruint(~0);
+	return std::size_t(~0);
 }
 
-ruint Manager::findFrameIndex(CPTR(Content) pContent) const
+std::size_t Manager::findFrameIndex(const Content* pContent) const
 {
-	ruint index = 0;
+	std::size_t index = 0;
 	BOOST_FOREACH(const Frame* pFrame, m_frameList)
 	{
 		if (pFrame->m_pContent == pContent)
@@ -127,22 +127,22 @@ ruint Manager::findFrameIndex(CPTR(Content) pContent) const
 		}
 		index++;
 	}
-	return ruint(~0);
+	return std::size_t(~0);
 }
 
-CREF(QString) Manager::getFrameName(ruint index) const
+const QString& Manager::getFrameName(std::size_t index) const
 {
 	ASSERT(index < m_frameList.size());
 	return m_frameList[index]->m_name;
 }
 
-PTR(View) Manager::getFrameView(ruint index) const
+View* Manager::getFrameView(std::size_t index) const
 {
 	ASSERT(index < m_frameList.size());
 	return m_frameList[index]->m_pView;
 }
 
-PTR(View) Manager::getFrameViewFirst() const
+View* Manager::getFrameViewFirst() const
 {
 	if (m_frameList.empty())
 		return NULL;
@@ -150,7 +150,7 @@ PTR(View) Manager::getFrameViewFirst() const
 	return m_frameList.front()->m_pView;
 }
 
-ruint Manager::count() const
+std::size_t Manager::count() const
 {
 	return m_frameList.size();
 }
@@ -162,25 +162,25 @@ bool Manager::isChanged()
 	return res;
 }
 
-void Manager::areaDown(ruint frameIndex, CREF(QPoint) point) const
+void Manager::areaDown(std::size_t frameIndex, const QPoint& point) const
 {
-	ASSERT(frameIndex != ruint(~0) && frameIndex < m_frameList.size());
+	ASSERT(frameIndex != std::size_t(~0) && frameIndex < m_frameList.size());
 
-	CREF(rdo::gui::animation::AreaList) areaList = m_frameList[frameIndex]->m_areaList;
+	const rdo::gui::animation::AreaList& areaList = m_frameList[frameIndex]->m_areaList;
 	BOOST_FOREACH(const rdo::gui::animation::AreaList::value_type& area, areaList)
 	{
 		if (area.second.m_rect.contains(point))
 		{
-			tstring areaName = area.first.toStdString();
+			std::string areaName = area.first.toStdString();
 			g_pModel->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_FRAME_AREA_DOWN, &areaName);
 		}
 	}
 }
 
-PTR(View) Manager::createView(ruint index)
+View* Manager::createView(std::size_t index)
 {
-	PTR(View) pView = NULL;
-	if (index != ruint(~0))
+	View* pView = NULL;
+	if (index != std::size_t(~0))
 	{
 		pView = new View(NULL);
 		g_pApp->getIMainWnd()->addSubWindow(pView);
@@ -205,10 +205,10 @@ bool Manager::isShowing() const
 	return false;
 }
 
-void Manager::disconnectView(CPTR(View) pView)
+void Manager::disconnectView(const View* pView)
 {
-	ruint index = findFrameIndex(pView);
-	if (index != ruint(~0))
+	std::size_t index = findFrameIndex(pView);
+	if (index != std::size_t(~0))
 	{
 		m_frameList[index]->m_pView = NULL;
 	}
@@ -217,7 +217,7 @@ void Manager::disconnectView(CPTR(View) pView)
 
 void Manager::closeAll()
 {
-	ruint backup = m_lastShowedFrame;
+	std::size_t backup = m_lastShowedFrame;
 	BOOST_FOREACH(Frame* pFrame, m_frameList)
 	{
 		if (pFrame->m_pView)
@@ -248,31 +248,31 @@ void Manager::clear()
 	m_frameList .clear();
 	m_bitmapList.clear();
 
-	m_lastShowedFrame = ruint(~0);
-	setCurrentShowingFrame(ruint(~0));
+	m_lastShowedFrame = std::size_t(~0);
+	setCurrentShowingFrame(std::size_t(~0));
 }
 
-ruint Manager::getLastShowedFrame() const
+std::size_t Manager::getLastShowedFrame() const
 {
 	return m_lastShowedFrame;
 }
 
-void Manager::setLastShowedFrame(ruint index)
+void Manager::setLastShowedFrame(std::size_t index)
 {
-	if (index != ruint(~0) && index < count())
+	if (index != std::size_t(~0) && index < count())
 	{
 		m_lastShowedFrame = index;
 	}
 }
 
-void Manager::setCurrentShowingFrame(ruint index)
+void Manager::setCurrentShowingFrame(std::size_t index)
 {
-	if (index == ruint(~0) || (index != ruint(~0) && index < count()))
+	if (index == std::size_t(~0) || (index != std::size_t(~0) && index < count()))
 	{
 		m_currentShowingFrame = index;
 		if (g_pApp->getStyle())
 		{
-			if (m_currentShowingFrame != ruint(~0))
+			if (m_currentShowingFrame != std::size_t(~0))
 			{
 				g_pApp->getIMainWnd()->getDockFrame().getContext().setCurrentItem(m_frameList[m_currentShowingFrame]->m_pTreeWidgetItem);
 			}
@@ -285,15 +285,15 @@ void Manager::setCurrentShowingFrame(ruint index)
 	}
 }
 
-void Manager::resetCurrentShowingFrame(ruint index)
+void Manager::resetCurrentShowingFrame(std::size_t index)
 {
 	if (index == m_currentShowingFrame)
 	{
-		setCurrentShowingFrame(ruint(~0));
+		setCurrentShowingFrame(std::size_t(~0));
 	}
 }
 
-void Manager::insertBitmap(CREF(QString) bitmapName)
+void Manager::insertBitmap(const QString& bitmapName)
 {
 	if (m_bitmapList.find(bitmapName) != m_bitmapList.end())
 		return;
@@ -321,11 +321,11 @@ void Manager::insertBitmap(CREF(QString) bitmapName)
 	g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 }
 
-void Manager::showFrame(CPTRC(rdo::animation::Frame) pFrame, ruint index)
+void Manager::showFrame(const rdo::animation::Frame* const pFrame, std::size_t index)
 {
 	if (index < count())
 	{
-		PTR(View) pFrameView = getFrameView(index);
+		View* pFrameView = getFrameView(index);
 		ASSERT(pFrameView);
 		rdo::gui::BitmapList bitmapGeneratedList;
 		pFrameView->update(pFrame, m_bitmapList, bitmapGeneratedList, m_frameList[index]->m_areaList);
@@ -338,11 +338,11 @@ void Manager::showFrame(CPTRC(rdo::animation::Frame) pFrame, ruint index)
 
 void Manager::showNextFrame()
 {
-	ruint cnt = count();
+	std::size_t cnt = count();
 	if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame < cnt-1)
 	{
-		ruint index = m_currentShowingFrame + 1;
-		PTR(View) pView = getFrameView(index);
+		std::size_t index = m_currentShowingFrame + 1;
+		View* pView = getFrameView(index);
 		if (!pView)
 		{
 			pView = createView(index);
@@ -359,11 +359,11 @@ void Manager::showNextFrame()
 
 void Manager::showPrevFrame()
 {
-	ruint cnt = count();
-	if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame != ruint(~0))
+	std::size_t cnt = count();
+	if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame != std::size_t(~0))
 	{
-		ruint index = m_currentShowingFrame - 1;
-		PTR(View) pView = getFrameView(index);
+		std::size_t index = m_currentShowingFrame - 1;
+		View* pView = getFrameView(index);
 		if (!pView)
 		{
 			pView = createView(index);
@@ -378,12 +378,12 @@ void Manager::showPrevFrame()
 	}
 }
 
-void Manager::showFrame(ruint index)
+void Manager::showFrame(std::size_t index)
 {
-	ruint cnt = count();
+	std::size_t cnt = count();
 	if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && index >= 0 && index < cnt)
 	{
-		PTR(View) pView = getFrameView(index);
+		View* pView = getFrameView(index);
 		if (!pView)
 		{
 			pView = createView(index);
@@ -400,21 +400,21 @@ void Manager::showFrame(ruint index)
 
 bool Manager::canShowNextFrame() const
 {
-	ruint cnt = count();
-	return g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame == ruint(~0) || m_currentShowingFrame < cnt-1);
+	std::size_t cnt = count();
+	return g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame == std::size_t(~0) || m_currentShowingFrame < cnt-1);
 }
 
 bool Manager::canShowPrevFrame() const
 {
 	int cnt = count();
-	return g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame != ruint(~0) && m_currentShowingFrame > 0);
+	return g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame != std::size_t(~0) && m_currentShowingFrame > 0);
 }
 
 void Manager::updateStyles() const
 {
 	BOOST_FOREACH(Frame* pFrame, m_frameList)
 	{
-		PTR(View) pFrameView = pFrame->m_pView;
+		View* pFrameView = pFrame->m_pView;
 		if (pFrameView)
 		{
 			pFrameView->updateFont();
@@ -432,8 +432,8 @@ void Manager::onSubWindowActivated(QMdiSubWindow* pWindow)
 	if (!pFrameAnimationWnd)
 		return;
 
-	ruint index = findFrameIndex(pFrameAnimationWnd);
-	setLastShowedFrame    (index);
+	std::size_t index = findFrameIndex(pFrameAnimationWnd);
+	setLastShowedFrame(index);
 	setCurrentShowingFrame(index);
 }
 
@@ -442,11 +442,11 @@ void Manager::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pTreeWidgetItem, in
 	if (g_pModel->getRuntimeMode() == rdo::runtime::RTM_MaxSpeed)
 		return;
 
-	ruint index = findFrameIndex(pTreeWidgetItem);
-	if (index == ruint(~0))
+	std::size_t index = findFrameIndex(pTreeWidgetItem);
+	if (index == std::size_t(~0))
 		return;
 
-	PTR(View) pView = getFrameView(index);
+	View* pView = getFrameView(index);
 	if (!pView)
 	{
 		createView(index);

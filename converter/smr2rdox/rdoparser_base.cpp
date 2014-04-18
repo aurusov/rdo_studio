@@ -63,11 +63,11 @@ RDOParserContainer::RDOParserContainer()
 RDOParserContainer::~RDOParserContainer()
 {}
 
-ruint RDOParserContainer::insert(rdo::converter::smr2rdox::RDOParseType type, CREF(LPRDOParserItem) pParser)
+std::size_t RDOParserContainer::insert(rdo::converter::smr2rdox::RDOParseType type, const LPRDOParserItem& pParser)
 {
 	ASSERT(pParser);
 
-	ruint min, max;
+	std::size_t min, max;
 	RDOParserContainer::getMinMax(type, min, max);
 	if (min != UNDEFINED_ID && max != UNDEFINED_ID)
 	{
@@ -79,7 +79,7 @@ ruint RDOParserContainer::insert(rdo::converter::smr2rdox::RDOParseType type, CR
 		}
 		else
 		{
-			ruint index = it->first;
+			std::size_t index = it->first;
 			while (it != m_list.end() && it->first <= max)
 			{
 				index++;
@@ -99,7 +99,7 @@ ruint RDOParserContainer::insert(rdo::converter::smr2rdox::RDOParseType type, CR
 	return 0;
 }
 
-void RDOParserContainer::getMinMax(rdo::converter::smr2rdox::RDOParseType type, REF(ruint) min, REF(ruint) max)
+void RDOParserContainer::getMinMax(rdo::converter::smr2rdox::RDOParseType type, std::size_t& min, std::size_t& max)
 {
 	switch (type)
 	{
@@ -114,7 +114,7 @@ void RDOParserContainer::getMinMax(rdo::converter::smr2rdox::RDOParseType type, 
 		case rdo::converter::smr2rdox::obFRM : min = 900;  max = 999;  break;
 		case rdo::converter::smr2rdox::obSMR : min = 1000; max = 1099; break;
 		case rdo::converter::smr2rdox::obPOST: min = 1100; max = 1199; break;
-		default                              : min = ruint(UNDEFINED_ID); max = ruint(UNDEFINED_ID); break;
+		default                              : min = std::size_t(UNDEFINED_ID); max = std::size_t(UNDEFINED_ID); break;
 	}
 }
 

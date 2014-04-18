@@ -19,11 +19,12 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Начало сбора статистики по группе показателей
-CALC(RDOCalcWatchGroupStart)
+PREDECLARE_POINTER(RDOCalcWatchGroupStart);
+class RDOCalcWatchGroupStart: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStart)
 protected:
-	RDOCalcWatchGroupStart(CREF(LPIResultGroup) pResultGroup);
+	RDOCalcWatchGroupStart(const LPIResultGroup& pResultGroup);
 	virtual ~RDOCalcWatchGroupStart();
 
 	LPIResultGroup m_pResultGroup;
@@ -32,11 +33,12 @@ protected:
 };
 
 //! Окончание сбора статистики по группе показателей
-CALC(RDOCalcWatchGroupStop)
+PREDECLARE_POINTER(RDOCalcWatchGroupStop);
+class RDOCalcWatchGroupStop: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStop)
 protected:
-	RDOCalcWatchGroupStop(CREF(LPIResultGroup) pResultGroup);
+	RDOCalcWatchGroupStop(const LPIResultGroup& pResultGroup);
 	virtual ~RDOCalcWatchGroupStop();
 
 	LPIResultGroup m_pResultGroup;

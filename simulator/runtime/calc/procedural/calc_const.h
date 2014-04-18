@@ -24,18 +24,19 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \details  Возвращает константное значение
   \ingroup  calc calc_const
 */
-CALC(RDOCalcConst)
+PREDECLARE_POINTER(RDOCalcConst);
+class RDOCalcConst: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcConst)
 public:
 	//! Возвращает хранимую константу, может быть использован в parser-time
 	//! \result Значение константы
-	CREF(RDOValue) getValue() const;
+	const RDOValue& getValue() const;
 
 private:
 	//! Инициализируется указанным значением переменную базового класса \ref RDOCalc::m_value
 	//! \param value - Значение константы
-	RDOCalcConst(CREF(RDOValue) value);
+	RDOCalcConst(const RDOValue& value);
 
 	RDOValue m_value;
 

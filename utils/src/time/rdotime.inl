@@ -20,11 +20,11 @@ inline Time::Time()
 	: m_value(Time::invalid().value())
 {}
 
-inline Time::Time(CREF(Value) value)
+inline Time::Time(const Value& value)
 	: m_value(value)
 {}
 
-inline rbool Time::operator== (CREF(Time) time)
+inline bool Time::operator==(const Time& time)
 {
 	return m_value == time.m_value;
 }
@@ -34,7 +34,7 @@ inline Time::operator Value() const
 	return m_value;
 }
 
-inline tstring Time::asString() const
+inline std::string Time::asString() const
 {
 	if (m_value == Time::invalid())
 	{
@@ -42,11 +42,11 @@ inline tstring Time::asString() const
 	}
 	else
 	{
-		return boost::posix_time::to_simple_string_type<tchar>(boost::posix_time::microsec_clock::local_time());
+		return boost::posix_time::to_simple_string_type<char>(boost::posix_time::microsec_clock::local_time());
 	}
 }
 
-inline CREF(Time::Value) Time::value() const
+inline const Time::Value& Time::value() const
 {
 	return m_value;
 }

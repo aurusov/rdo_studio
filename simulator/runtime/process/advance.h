@@ -49,16 +49,16 @@ protected:
 	{
 		LPRDOPROCTransact transact;
 		double            timeLeave;
-		LeaveTr(CREF(LPRDOPROCTransact) _transact, double _timeLeave);
+		LeaveTr(const LPRDOPROCTransact& _transact, double _timeLeave);
 	};
 	std::list<LeaveTr> leave_list;
 
 private:
-	RDOPROCAdvance(LPIPROCProcess process, CREF(LPRDOCalc) _pDelayCalc);
+	RDOPROCAdvance(LPIPROCProcess process, const LPRDOCalc& _pDelayCalc);
 
 	LPIInternalStatistics m_pStatistics;
 
-	void onMakePlaned(CREF(LPRDORuntime) pRuntime);
+	void onMakePlaned(const LPRDORuntime& pRuntime);
 
 	DECLARE_IBaseOperation;
 	DECLARE_IInternalStatisticsManager;

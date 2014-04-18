@@ -63,13 +63,13 @@ public:
 
 	long double  timeScale       () const;
 	int          chartShift      () const;
-	CREF(Time)   drawFromX       () const;
-	CREF(Time)   drawToX         () const;
+	const Time&  drawFromX       () const;
+	const Time&  drawToX         () const;
 	int          drawFromEventID () const;
 	int          drawToEventCount() const;
 
-	CREF(ChartDoc::TimesList)            unwrapTimesList() const;
-	const ChartViewStyle* const style          () const;
+	const ChartDoc::TimesList& unwrapTimesList() const;
+	const ChartViewStyle* const style() const;
 
 	bool doUnwrapTime () const;
 
@@ -80,7 +80,7 @@ private:
 	QRect m_clientRect;
 
 	int m_valueCountX;
-	std::vector<tstring> m_captionList;
+	std::vector<std::string> m_captionList;
 	int m_valueCountY;
 
 	bool m_timeWrapFlag;
@@ -94,7 +94,7 @@ private:
 	bool        maxXVisible       () const;
 	QScrollBar& getHorzScrollBar  ();
 	void        updateScrollBars  ();
-	bool        scrollHorizontally(rsint inc);
+	bool        scrollHorizontally(int inc);
 
 	long double         m_timeScale;
 	int                 m_chartShift;
@@ -182,10 +182,10 @@ public:
 private:
 	typedef  QAbstractScrollArea  super;
 
-	virtual bool viewportEvent(PTR(QEvent)      pEvent);
-	virtual void focusInEvent (PTR(QFocusEvent) pEvent);
-	virtual void focusOutEvent(PTR(QFocusEvent) pEvent);
-	virtual void keyPressEvent(PTR(QKeyEvent)   pEvent);
+	virtual bool viewportEvent(QEvent*      pEvent);
+	virtual void focusInEvent (QFocusEvent* pEvent);
+	virtual void focusOutEvent(QFocusEvent* pEvent);
+	virtual void keyPressEvent(QKeyEvent*   pEvent);
 };
 
 }}} // namespace rdo::gui::tracer

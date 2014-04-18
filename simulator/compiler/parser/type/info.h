@@ -21,25 +21,26 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- TypeInfo
 // --------------------------------------------------------------------------------
-OBJECT(TypeInfo)
+PREDECLARE_POINTER(TypeInfo);
+class TypeInfo: public rdo::counter_reference
 {
 DECLARE_FACTORY(TypeInfo)
 public:
-	CREF(LPRDOType)        type      () const;
-	RDOParserSrcInfo       src_info  () const;
-	CREF(RDOParserSrcInfo) src_info  (CREF(RDOParserSrcInfo) srcInfo) const;
-	LPTypeInfo             type_cast (CREF(LPTypeInfo) pFrom, CREF(RDOParserSrcInfo) src_info) const;
-	LPRDOValue             value_cast(CREF(LPRDOValue) pValue) const;
+	const LPRDOType&        type      () const;
+	RDOParserSrcInfo        src_info  () const;
+	const RDOParserSrcInfo& src_info  (const RDOParserSrcInfo& srcInfo) const;
+	LPTypeInfo              type_cast (const LPTypeInfo& pFrom, const RDOParserSrcInfo& src_info) const;
+	LPRDOValue              value_cast(const LPRDOValue& pValue) const;
 
 protected:
-	TypeInfo(CREF(LPTypeInfo) pTypeInfo);
+	TypeInfo(const LPTypeInfo& pTypeInfo);
 	virtual ~TypeInfo();
 
 private:
-	TypeInfo(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) srcInfo);
+	TypeInfo(const LPRDOType& pType, const RDOParserSrcInfo& srcInfo);
 
 	template <class T>
-	static LPTypeInfo create(CREF(RDOParserSrcInfo) srcInfo);
+	static LPTypeInfo create(const RDOParserSrcInfo& srcInfo);
 
 	LPRDOType                         m_pType;
 	boost::optional<RDOParserSrcInfo> m_srcInfo;

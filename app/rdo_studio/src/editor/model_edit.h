@@ -31,12 +31,12 @@ public:
 	Model(QWidget* pParent, QWidget* pView = NULL);
 	virtual ~Model();
 
-	void setEditorStyle(PTR(ModelStyle) pStyle);
+	void setEditorStyle(ModelStyle* pStyle);
 
 	void setErrorLine(int line = -1);
 
-	CPTR(Log) getLog() const;
-	void setLog(REF(Log) log);
+	const Log* getLog() const;
+	void setLog(Log& log);
 
 	void setCanClearErrorLine(bool value);
 

@@ -18,7 +18,8 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Открывающая скобка
-CALC(RDOCalcOpenBrace)
+PREDECLARE_POINTER(RDOCalcOpenBrace);
+class RDOCalcOpenBrace: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcOpenBrace)
 private:
@@ -28,7 +29,8 @@ private:
 };
 
 //! Закрывающая скобка
-CALC(RDOCalcCloseBrace)
+PREDECLARE_POINTER(RDOCalcCloseBrace);
+class RDOCalcCloseBrace: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcCloseBrace)
 private:
@@ -38,7 +40,8 @@ private:
 };
 
 //! Окончание функции
-CALC(RDOCalcFunEnd)
+PREDECLARE_POINTER(RDOCalcFunEnd);
+class RDOCalcFunEnd: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFunEnd)
 private:

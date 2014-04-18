@@ -24,7 +24,7 @@ OPEN_RDO_PARSER_NAMESPACE
 const std::string Expression::CONTEXT_PARAM_SET_EXPRESSION = "set_expression";
 const std::string Expression::CONTEXT_PARAM_SET_OPERATION_TYPE = "set_operation_type";
 
-Expression::Expression(CREF(LPTypeInfo) pType, CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) src_info)
+Expression::Expression(const LPTypeInfo& pType, const rdo::runtime::LPRDOCalc& pCalc, const RDOParserSrcInfo& src_info)
 	: m_pType(pType)
 	, m_pCalc(pCalc)
 {
@@ -41,7 +41,7 @@ Expression::Expression(CREF(LPTypeInfo) pType, CREF(rdo::runtime::LPRDOCalc) pCa
 	setSrcInfo(src_info);
 }
 
-Expression::Expression(CREF(LPRDOValue) pValue)
+Expression::Expression(const LPRDOValue& pValue)
 	: m_pType (pValue->typeInfo())
 	, m_pValue(pValue            )
 {
@@ -54,7 +54,7 @@ Expression::Expression(CREF(LPRDOValue) pValue)
 	setSrcInfo(pValue->src_info());
 }
 
-Expression::Expression(CREF(LPExpression) pExpression)
+Expression::Expression(const LPExpression& pExpression)
 	: m_pType (pExpression->m_pType )
 	, m_pValue(pExpression->m_pValue)
 	, m_pCalc (pExpression->m_pCalc )
@@ -63,17 +63,17 @@ Expression::Expression(CREF(LPExpression) pExpression)
 Expression::~Expression()
 {}
 
-CREF(LPTypeInfo) Expression::typeInfo() const
+const LPTypeInfo& Expression::typeInfo() const
 {
 	return m_pType;
 }
 
-CREF(rdo::runtime::LPRDOCalc) Expression::calc() const
+const rdo::runtime::LPRDOCalc& Expression::calc() const
 {
 	return m_pCalc;
 }
 
-void Expression::setSrcInfo(CREF(RDOParserSrcInfo) src_info)
+void Expression::setSrcInfo(const RDOParserSrcInfo& src_info)
 {
 	RDOParserSrcInfo::setSrcInfo(src_info);
 	if (m_pCalc)

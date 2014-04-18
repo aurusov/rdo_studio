@@ -72,7 +72,7 @@ type identity_NEVER_REACH_HERE(type value)
 
 #else // not COMPILER_VISUAL_STUDIO
 
-void NewOutputDebugString(CREF(tstring) message)
+void NewOutputDebugString(const std::string& message)
 {
 	std::cerr << message << std::endl;
 }

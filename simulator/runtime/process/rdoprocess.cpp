@@ -13,8 +13,6 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/process/rdoprocess.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/calc/resource/calc_relevant.h"
@@ -25,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCProcess
 // --------------------------------------------------------------------------------
-RDOPROCProcess::RDOPROCProcess(CREF(tstring) name, CREF(LPRDORuntime) pRuntime)
+RDOPROCProcess::RDOPROCProcess(const std::string& name, const LPRDORuntime& pRuntime)
 	: RDOLogicSimple(pRuntime, NULL)
 	, m_name        (name          )
 {}
@@ -49,7 +47,7 @@ LPIResourceType RDOPROCProcess::getTranType() const
 	return m_pTransactType;
 }
 
-void RDOPROCProcess::next(CREF(LPRDOPROCTransact) pTransact)
+void RDOPROCProcess::next(const LPRDOPROCTransact& pTransact)
 {
 	if (pTransact->getBlock())
 	{
@@ -108,7 +106,7 @@ void RDOPROCProcess::next(CREF(LPRDOPROCTransact) pTransact)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCTransact
 // --------------------------------------------------------------------------------
-RDOPROCTransact::RDOPROCTransact(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
+RDOPROCTransact::RDOPROCTransact(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& paramsCalcs, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool temporary)
 	: RDOResource(pRuntime, paramsCalcs, pResType, resID, typeID, trace, temporary)
 {
 	m_state = RDOResource::CS_Create;
@@ -118,7 +116,7 @@ RDOPROCTransact::RDOPROCTransact(CREF(LPRDORuntime) pRuntime, CREF(std::vector<R
 RDOPROCTransact::~RDOPROCTransact()
 {}
 
-LPRDOResource RDOPROCTransact::clone(CREF(LPRDORuntime) pRuntime) const
+LPRDOResource RDOPROCTransact::clone(const LPRDORuntime& pRuntime) const
 {
 	LPRDOResource pResource = rdo::Factory<RDOPROCTransact>::create(pRuntime, getParamList(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
 	ASSERT(pResource);
@@ -133,14 +131,14 @@ void RDOPROCTransact::next()
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCResource
 // --------------------------------------------------------------------------------
-RDOPROCResource::RDOPROCResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
+RDOPROCResource::RDOPROCResource(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& paramsCalcs, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool temporary)
 	: RDOResource(pRuntime, paramsCalcs, pResType, resID, typeID, trace, temporary)
 {}
 
 RDOPROCResource::~RDOPROCResource()
 {}
 
-LPRDOResource RDOPROCResource::clone(CREF(LPRDORuntime) pRuntime) const
+LPRDOResource RDOPROCResource::clone(const LPRDORuntime& pRuntime) const
 {
 	LPRDOResource pResource = rdo::Factory<RDOPROCResource>::create(pRuntime, getParamList(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
 	ASSERT(pResource);
@@ -154,7 +152,7 @@ RDOPROCBlock::RDOPROCBlock(LPIPROCProcess pProcess)
 	: m_process(pProcess)
 {}
 
-rbool RDOPROCBlock::init()
+bool RDOPROCBlock::init()
 {
 	if (!m_process)
 		return false;
@@ -163,7 +161,7 @@ rbool RDOPROCBlock::init()
 	return true;
 }
 
-RDOPROCBlock::TransactIt RDOPROCBlock::transactFind(CREF(LPTransact) pTransact)
+RDOPROCBlock::TransactIt RDOPROCBlock::transactFind(const LPTransact& pTransact)
 {
 	return std::find(m_transacts.begin(), m_transacts.end(), pTransact);
 }
@@ -173,12 +171,12 @@ RDOPROCBlock::TransactIt RDOPROCBlock::transactEnd()
 	return m_transacts.end();
 }
 
-void RDOPROCBlock::transactGoIn(CREF(LPTransact) pTransact)
+void RDOPROCBlock::transactGoIn(const LPTransact& pTransact)
 {
 	m_transacts.push_back(pTransact);
 }
 
-void RDOPROCBlock::transactGoOut(CREF(LPTransact) pTransact)
+void RDOPROCBlock::transactGoOut(const LPTransact& pTransact)
 {
 	m_transacts.remove(pTransact);
 }

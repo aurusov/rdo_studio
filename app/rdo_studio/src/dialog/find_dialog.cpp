@@ -20,7 +20,7 @@ FindDialog::Settings::Settings()
 	, searchDown    (true )
 {}
 
-FindDialog::Settings::Settings(CREF(Settings) settings)
+FindDialog::Settings::Settings(const Settings& settings)
 	: what          (settings.what          )
 	, matchCase     (settings.matchCase     )
 	, matchWholeWord(settings.matchWholeWord)
@@ -51,7 +51,7 @@ FindDialog::~FindDialog()
 	m_onCloseCallback();
 }
 
-void FindDialog::setSettings(CREF(Settings) settings)
+void FindDialog::setSettings(const Settings& settings)
 {
 	m_settings = settings;
 

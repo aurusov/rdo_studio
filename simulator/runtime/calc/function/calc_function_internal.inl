@@ -24,13 +24,13 @@ inline RDOFunCalcStd<F>::RDOFunCalcStd(function_type pFunction)
 {}
 
 template <class F>
-inline RDOValue RDOFunCalcStd<F>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline RDOValue RDOFunCalcStd<F>::doCalc(const LPRDORuntime& pRuntime)
 {
 	return calc(pRuntime, typename F::param_count());
 }
 
 template <class F>
-inline RDOValue RDOFunCalcStd<F>::calc(CREF(LPRDORuntime) pRuntime, std_fun_one_param)
+inline RDOValue RDOFunCalcStd<F>::calc(const LPRDORuntime& pRuntime, std_fun_one_param)
 {
 	return m_pFunction(
 		GetParam<typename F::arg1_type>::getParam(pRuntime, 0)
@@ -38,7 +38,7 @@ inline RDOValue RDOFunCalcStd<F>::calc(CREF(LPRDORuntime) pRuntime, std_fun_one_
 }
 
 template <class F>
-inline RDOValue RDOFunCalcStd<F>::calc(CREF(LPRDORuntime) pRuntime, std_fun_two_param)
+inline RDOValue RDOFunCalcStd<F>::calc(const LPRDORuntime& pRuntime, std_fun_two_param)
 {
 	return m_pFunction(
 		GetParam<typename F::arg1_type>::getParam(pRuntime, 0),
@@ -46,12 +46,12 @@ inline RDOValue RDOFunCalcStd<F>::calc(CREF(LPRDORuntime) pRuntime, std_fun_two_
 	);
 }
 
-FORCE_INLINE double GetParam<double>::getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
+inline double GetParam<double>::getParam(const LPRDORuntime& pRuntime, std::size_t paramNumber)
 {
 	return pRuntime->getFuncArgument(paramNumber).getDouble();
 }
 
-FORCE_INLINE int GetParam<int>::getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
+inline int GetParam<int>::getParam(const LPRDORuntime& pRuntime, std::size_t paramNumber)
 {
 	return pRuntime->getFuncArgument(paramNumber).getInt();
 }

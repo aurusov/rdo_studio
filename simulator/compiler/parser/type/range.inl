@@ -15,7 +15,7 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 template<class T>
-inline RDOTypeRange<T>::RDOTypeRange(CREF(LPRDOTypeRangeRange) range)
+inline RDOTypeRange<T>::RDOTypeRange(const LPRDOTypeRangeRange& range)
 	: T      (     )
 	, m_range(range)
 {
@@ -27,19 +27,19 @@ inline RDOTypeRange<T>::~RDOTypeRange()
 {}
 
 template<class T>
-inline tstring RDOTypeRange<T>::name() const
+inline std::string RDOTypeRange<T>::name() const
 {
 	return rdo::format("%s %s", T::name().c_str(), m_range->src_text().c_str());
 }
 
 template<class T>
-inline LPRDOType RDOTypeRange<T>::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+inline LPRDOType RDOTypeRange<T>::type_cast(const LPRDOType& from, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	return parent_type::type_cast(from, from_src_info, to_src_info, src_info);
 }
 
 template<class T>
-inline LPRDOValue RDOTypeRange<T>::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+inline LPRDOValue RDOTypeRange<T>::value_cast(const LPRDOValue& pFrom, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	LPRDOValue pToValue = T::value_cast(pFrom, to_src_info, src_info);
 	ASSERT(pToValue);
@@ -48,13 +48,13 @@ inline LPRDOValue RDOTypeRange<T>::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOPa
 }
 
 template<class T>
-inline rdo::runtime::LPRDOCalc RDOTypeRange<T>::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+inline rdo::runtime::LPRDOCalc RDOTypeRange<T>::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
 {
 	return rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(range()->getMin()->value(), range()->getMax()->value(), T::calc_cast(pCalc, pType));
 }
 
 template<class T>
-inline CREF(LPRDOTypeRangeRange) RDOTypeRange<T>::range() const
+inline const LPRDOTypeRangeRange& RDOTypeRange<T>::range() const
 {
 	return m_range;
 }

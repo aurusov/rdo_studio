@@ -24,10 +24,10 @@ public:
 	DockResults(QWidget* pParent);
 	virtual ~DockResults();
 
-	void appendString(CREF(QString) str);
+	void appendString(const QString& str);
 	void clear();
 
-	REF(context_type) getContext();
+	context_type& getContext();
 };
 
 #endif // _RDO_STUDIO_DOCK_RESULTS_H_

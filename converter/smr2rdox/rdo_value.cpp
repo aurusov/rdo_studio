@@ -21,20 +21,20 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOValue
 // --------------------------------------------------------------------------------
-RDOValue::RDOValue(CREF(rdo::runtime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info)
+RDOValue::RDOValue(const rdo::runtime::RDOValue& value, const LPRDOType& type, const RDOParserSrcInfo& src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 	, m_type          (type    )
 {}
 
-RDOValue::RDOValue(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info)
+RDOValue::RDOValue(const LPRDOType& type, const RDOParserSrcInfo& src_info)
 	: RDOParserSrcInfo(src_info    )
 	, m_value         (type->type())
 	, m_type          (type        )
 {}
 
 // Для t_identificator известно только имя, но не тип
-RDOValue::RDOValue(CREF(RDOParserSrcInfo) src_info)
+RDOValue::RDOValue(const RDOParserSrcInfo& src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (rdo::runtime::RDOValue(src_info.src_text(), rdo::runtime::g_identificator))
 	, m_type          (rdo::Factory<RDOType__identificator>::create())
@@ -47,7 +47,7 @@ RDOValue::RDOValue()
 	, m_type          (rdo::Factory<RDOType__unknow>::create())
 {}
 
-CREF(LPRDOType) RDOValue::type() const
+const LPRDOType& RDOValue::type() const
 {
 	return m_type;
 }
@@ -57,22 +57,22 @@ rdo::runtime::RDOType::TypeID RDOValue::typeID() const
 	return m_type->type()->typeID();
 }
 
-CREF(rdo::runtime::RDOValue) RDOValue::value() const
+const rdo::runtime::RDOValue& RDOValue::value() const
 {
 	return m_value;
 }
 
-CPTR(rdo::runtime::RDOValue) RDOValue::operator-> () const
+const rdo::runtime::RDOValue* RDOValue::operator->() const
 {
 	return &m_value;
 }
 
-rbool RDOValue::defined() const
+bool RDOValue::defined() const
 {
 	return m_value.typeID() != rdo::runtime::RDOType::t_unknow;
 }
 
-rbool RDOValue::constant() const
+bool RDOValue::constant() const
 {
 	return
 		m_value.typeID() == rdo::runtime::RDOType::t_int  ||
@@ -81,7 +81,7 @@ rbool RDOValue::constant() const
 		m_value.typeID() == rdo::runtime::RDOType::t_string;
 }
 
-LPRDOValue RDOValue::getIdentificator(CREF(tstring) identificator)
+LPRDOValue RDOValue::getIdentificator(const std::string& identificator)
 {
 	return rdo::Factory<RDOValue>::create(RDOParserSrcInfo(identificator));
 }

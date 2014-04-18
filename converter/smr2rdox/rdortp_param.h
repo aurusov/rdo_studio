@@ -25,10 +25,10 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDORTPResType);
 
-CLASS(RDORTPParam):
-	    INSTANCE_OF      (RDOParam       )
-	AND IMPLEMENTATION_OF(IModelStructure)
-	AND IMPLEMENTATION_OF(IName          )
+class RDORTPParam
+	: public RDOParam
+	, public IModelStructure
+	, public IName
 {
 DECLARE_FACTORY(RDORTPParam);
 public:
@@ -36,7 +36,7 @@ public:
 	DECLARE_IName;
 
 private:
-	RDORTPParam(CREF(LPRDOTypeParam) pParamType, CREF(LPRDOValue) pDefault, CREF(RDOParserSrcInfo) src_info);
+	RDORTPParam(const LPRDOTypeParam& pParamType, const LPRDOValue& pDefault, const RDOParserSrcInfo& src_info);
 	virtual ~RDORTPParam();
 };
 DECLARE_POINTER(RDORTPParam);

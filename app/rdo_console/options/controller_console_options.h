@@ -38,18 +38,18 @@ public:
 	boost::filesystem::path getModelFileName () const;
 	boost::filesystem::path getScriptFileName() const;
 
-	rbool helpQuery() const;
-	rbool convertQuery() const;
+	bool helpQuery() const;
+	bool convertQuery() const;
 
 private:
 	po::options_description m_options;
-	po::variables_map       m_variables;
-	rbool                   m_help;
-	rbool                   m_convert;
+	po::variables_map m_variables;
+	bool m_help;
+	bool m_convert;
 
-	void createGeneralOptions(REF(po::options_description) options);
-	void createConvertorOptions(REF(po::options_description) options);
-	void createAdditionalOptions(REF(po::options_description) options);
+	void createGeneralOptions(po::options_description& options);
+	void createConvertorOptions(po::options_description& options);
+	void createAdditionalOptions(po::options_description& options);
 };
 
 } // namespace rdo

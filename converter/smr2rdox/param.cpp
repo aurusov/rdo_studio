@@ -17,7 +17,7 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-RDOParam::RDOParam(CREF(tstring) name, CREF(LPRDOTypeParam) pType, CREF(LPRDOValue) pDefault)
+RDOParam::RDOParam(const std::string& name, const LPRDOTypeParam& pType, const LPRDOValue& pDefault)
 	: RDOParserSrcInfo(name        )
 	, m_pType         (pType       )
 	, m_pDefault      (pDefault    )
@@ -25,7 +25,7 @@ RDOParam::RDOParam(CREF(tstring) name, CREF(LPRDOTypeParam) pType, CREF(LPRDOVal
 	checkDefault();
 }
 
-RDOParam::RDOParam(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) pType, CREF(LPRDOValue) pDefault)
+RDOParam::RDOParam(const RDOParserSrcInfo& src_info, const LPRDOTypeParam& pType, const LPRDOValue& pDefault)
 	: RDOParserSrcInfo(src_info)
 	, m_pType         (pType   )
 	, m_pDefault      (pDefault)

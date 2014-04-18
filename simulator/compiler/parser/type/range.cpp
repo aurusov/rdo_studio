@@ -17,7 +17,7 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-RDOTypeRangeRange::RDOTypeRangeRange(CREF(LPRDOValue) pMinValue, CREF(LPRDOValue) pMaxValue, CREF(RDOParserSrcInfo) src_info)
+RDOTypeRangeRange::RDOTypeRangeRange(const LPRDOValue& pMinValue, const LPRDOValue& pMaxValue, const RDOParserSrcInfo& src_info)
 	: RDOParserSrcInfo(src_info )
 	, m_pMinValue     (pMinValue)
 	, m_pMaxValue     (pMaxValue)
@@ -42,7 +42,7 @@ void RDOTypeRangeRange::checkRange() const
 	}
 }
 
-void RDOTypeRangeRange::checkValue(CREF(LPRDOValue) pValue) const
+void RDOTypeRangeRange::checkValue(const LPRDOValue& pValue) const
 {
 	ASSERT(pValue);
 
@@ -61,12 +61,12 @@ void RDOTypeRangeRange::checkValue(CREF(LPRDOValue) pValue) const
 	}
 }
 
-CREF(LPRDOValue) RDOTypeRangeRange::getMin() const
+const LPRDOValue& RDOTypeRangeRange::getMin() const
 {
 	return m_pMinValue;
 }
 
-CREF(LPRDOValue) RDOTypeRangeRange::getMax() const
+const LPRDOValue& RDOTypeRangeRange::getMax() const
 {
 	return m_pMaxValue;
 }

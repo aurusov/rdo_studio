@@ -25,12 +25,12 @@ inline RDOPROCQueue::RDOPROCQueue(LPIPROCProcess process, parser_for_Queue From_
 	: RDOPROCBlockForQueue(process, From_Par)
 {}
 
-inline ruint RDOPROCQueue::getDefaultValue()
+inline std::size_t RDOPROCQueue::getDefaultValue()
 {
 	return 0;
 }
 
-inline tstring RDOPROCQueue::getQueueParamName()
+inline std::string RDOPROCQueue::getQueueParamName()
 {
 	return "длина_очереди";
 }
@@ -42,12 +42,12 @@ inline RDOPROCDepart::RDOPROCDepart(LPIPROCProcess process, parser_for_Queue Fro
 	: RDOPROCBlockForQueue(process, From_Par)
 {}
 
-inline ruint RDOPROCDepart::getDefaultValue()
+inline std::size_t RDOPROCDepart::getDefaultValue()
 {
 	return 0;
 }
 
-inline tstring RDOPROCDepart::getDepartParamName()
+inline std::string RDOPROCDepart::getDepartParamName()
 {
 	return "длина_очереди";
 }

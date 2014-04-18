@@ -53,7 +53,7 @@ StatusBar::StatusBar(QMainWindow* pParent)
 StatusBar::~StatusBar()
 {}
 
-void StatusBar::beginProgress(rsint lower, rsint upper)
+void StatusBar::beginProgress(int lower, int upper)
 {
 	m_pProgressBar->setRange(lower, upper);
 	m_pProgressBar->setValue(lower);
@@ -81,43 +81,43 @@ void StatusBar::endProgress()
 }
 
 template <>
-PTR(QLabel) StatusBar::getLabel<StatusBar::SB_COORD>(StatusBarType<SB_COORD>)
+QLabel* StatusBar::getLabel<StatusBar::SB_COORD>(StatusBarType<SB_COORD>)
 {
 	return m_pSBCoord;
 }
 
 template <>
-PTR(QLabel) StatusBar::getLabel<StatusBar::SB_MODIFY>(StatusBarType<SB_MODIFY>)
+QLabel* StatusBar::getLabel<StatusBar::SB_MODIFY>(StatusBarType<SB_MODIFY>)
 {
 	return m_pSBModify;
 }
 
 template <>
-PTR(QLabel) StatusBar::getLabel<StatusBar::SB_OVERWRITE>(StatusBarType<SB_OVERWRITE>)
+QLabel* StatusBar::getLabel<StatusBar::SB_OVERWRITE>(StatusBarType<SB_OVERWRITE>)
 {
 	return m_pSBOverwrite;
 }
 
 template <>
-PTR(QLabel) StatusBar::getLabel<StatusBar::SB_MODEL_TIME>(StatusBarType<SB_MODEL_TIME>)
+QLabel* StatusBar::getLabel<StatusBar::SB_MODEL_TIME>(StatusBarType<SB_MODEL_TIME>)
 {
 	return m_pSBModelTime;
 }
 
 template <>
-PTR(QLabel) StatusBar::getLabel<StatusBar::SB_MODEL_RUNTYPE>(StatusBarType<SB_MODEL_RUNTYPE>)
+QLabel* StatusBar::getLabel<StatusBar::SB_MODEL_RUNTYPE>(StatusBarType<SB_MODEL_RUNTYPE>)
 {
 	return m_pSBModelRuntype;
 }
 
 template <>
-PTR(QLabel) StatusBar::getLabel<StatusBar::SB_MODEL_SPEED>(StatusBarType<SB_MODEL_SPEED>)
+QLabel* StatusBar::getLabel<StatusBar::SB_MODEL_SPEED>(StatusBarType<SB_MODEL_SPEED>)
 {
 	return m_pSBModelSpeed;
 }
 
 template <>
-PTR(QLabel) StatusBar::getLabel<StatusBar::SB_MODEL_SHOWRATE>(StatusBarType<SB_MODEL_SHOWRATE>)
+QLabel* StatusBar::getLabel<StatusBar::SB_MODEL_SHOWRATE>(StatusBarType<SB_MODEL_SHOWRATE>)
 {
 	return m_pSBModelShowRate;
 }

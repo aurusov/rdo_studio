@@ -22,7 +22,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcDiv
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcDiv::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcDiv::doCalc(const LPRDORuntime& pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
 	RDOValue right = m_pRight->calcValue(pRuntime);
@@ -36,7 +36,7 @@ RDOValue RDOCalcDiv::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcPlusEnumSafe
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcPlusEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcPlusEnumSafe::doCalc(const LPRDORuntime& pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
 	return m_pLeft->calcValue(pRuntime).getEnumAsInt() + m_pRight->calcValue(pRuntime).getEnumAsInt();
@@ -45,7 +45,7 @@ RDOValue RDOCalcPlusEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcMultEnumSafe
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcMultEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcMultEnumSafe::doCalc(const LPRDORuntime& pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
 	return m_pLeft->calcValue(pRuntime).getEnumAsInt() * m_pRight->calcValue(pRuntime).getEnumAsInt();

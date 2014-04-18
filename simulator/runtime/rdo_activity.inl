@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOActivity
 // --------------------------------------------------------------------------------
-inline RDOActivity::RDOActivity(rbool trace, CREF(tstring) name)
+inline RDOActivity::RDOActivity(bool trace, const std::string& name)
 	: RDOTraceableObject(trace)
 	, m_oprName         (name )
 {}
@@ -29,7 +29,7 @@ inline RDOActivity::RDOActivity(rbool trace, CREF(tstring) name)
 inline RDOActivity::~RDOActivity()
 {}
 
-inline void RDOActivity::updateRelRes(CREF(LPRDORuntime) pRuntime)
+inline void RDOActivity::updateRelRes(const LPRDORuntime& pRuntime)
 {
 	getRelevantResources(pRuntime, m_relevantResources);
 }
@@ -38,7 +38,7 @@ inline void RDOActivity::updateRelRes(CREF(LPRDORuntime) pRuntime)
 // -------------------- RDOActivityPattern
 // --------------------------------------------------------------------------------
 template<class T>
-inline RDOActivityPattern<T>::RDOActivityPattern(CREF(rdo::intrusive_ptr<T>) pPattern, rbool trace, CREF(tstring) name)
+inline RDOActivityPattern<T>::RDOActivityPattern(const rdo::intrusive_ptr<T>& pPattern, bool trace, const std::string& name)
 	: RDOActivity(trace, name)
 	, m_pPattern (pPattern   )
 {}
@@ -54,7 +54,7 @@ inline void RDOActivityPattern<T>::writeModelStructure(std::ostream& stream) con
 }
 
 template<class T>
-inline CREF(tstring) RDOActivityPattern<T>::tracePatternId() const
+inline const std::string& RDOActivityPattern<T>::tracePatternId() const
 {
 	return m_pPattern->traceId();
 }
