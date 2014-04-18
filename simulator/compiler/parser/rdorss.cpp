@@ -225,4 +225,9 @@ std::vector<rdo::runtime::LPRDOCalc> RDORSSResource::createCalcList() const
 	return calcList;
 }
 
+std::string RDORSSResource::asString() const
+{
+	return name();
+}
+
 CLOSE_RDO_PARSER_NAMESPACE

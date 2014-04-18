@@ -1009,13 +1009,13 @@ std::string RDOValue::onPointerAsString() const
 	{
 		LPRDOArrayValue pValue = getPointer<RDOArrayValue>();
 		ASSERT(pValue);
-		return pValue->getAsString();
+		return pValue->asString();
 	}
 
 	LPRDOArrayIterator pThisArrayIterator = m_pType.object_dynamic_cast<RDOArrayIterator>();
 	if (pThisArrayIterator)
 	{
-		return pThisArrayIterator->getValue().getAsString();
+		return pThisArrayIterator->asString();
 	}
 
 	LPRDOMatrixType pThisMatrixType = m_pType.object_dynamic_cast<RDOMatrixType>();
@@ -1023,13 +1023,13 @@ std::string RDOValue::onPointerAsString() const
 	{
 		LPRDOMatrixValue pValue = getPointer<RDOMatrixValue>();
 		ASSERT(pValue);
-		return pValue->getAsString();
+		return pValue->asString();
 	}
 
 	LPRDOMatrixIterator pThisMatrixIterator = m_pType.object_dynamic_cast<RDOMatrixIterator>();
 	if (pThisMatrixIterator)
 	{
-		return pThisMatrixIterator->getValue().getAsString();
+		return pThisMatrixIterator->asString();
 	}
 
 	LPRDOResourceTypeList pThisResource = m_pType.object_dynamic_cast<RDOResourceTypeList>();

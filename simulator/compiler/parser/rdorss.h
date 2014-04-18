@@ -21,6 +21,7 @@
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
 #include "simulator/runtime/rdo_object.h"
+#include "simulator/runtime/rdo_as_string_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -37,6 +38,7 @@ class RDORSSResource
 	, public boost::noncopyable
 	, public Context
 	, public IContextFind
+	, public rdo::runtime::IAsString
 {
 DECLARE_FACTORY(RDORSSResource);
 public:
@@ -91,6 +93,8 @@ public:
 	{
 		m_traceCalc = pTraceCalc;
 	}
+
+	DECLARE_IAsString;
 
 protected:
 	RDORSSResource(const LPRDOParser& pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, std::size_t id = UNDEFINED_ID);

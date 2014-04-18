@@ -18,6 +18,7 @@
 #include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/rdo_type.h"
 #include "simulator/runtime/rdo_object.h"
+#include "simulator/runtime/rdo_as_string_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -27,7 +28,7 @@ PREDECLARE_POINTER(RDOMatrixIterator);
 
 //! Элемент матрицы
 PREDECLARE_POINTER(RDOMatrixValue);
-class RDOMatrixValue: public rdo::counter_reference
+class RDOMatrixValue: public rdo::counter_reference, public IAsString
 {
 DECLARE_FACTORY(RDOMatrixValue)
 public:
@@ -42,10 +43,11 @@ public:
 	void  erase(const LPRDOMatrixIterator& pFirst, const LPRDOMatrixIterator& pLast);
 
 	std::size_t size() const;
-	std::string getAsString() const;
 
 	const RDOValue& getItem(const RDOValue& index) const;
 	void            setItem(const RDOValue& index, const RDOValue& item);
+
+	DECLARE_IAsString;
 
 private:
 	RDOMatrixValue(const LPRDOMatrixType&  pType );
@@ -57,7 +59,7 @@ private:
 };
 
 //! Итератор матрицы
-class RDOMatrixIterator: public RDOType
+class RDOMatrixIterator: public RDOType, public IAsString
 {
 DECLARE_FACTORY(RDOMatrixIterator)
 public:
@@ -70,6 +72,8 @@ public:
 	LPRDOMatrixIterator  next       ();
 	bool                 equal      (const LPRDOMatrixIterator& pIterator) const;
 	LPRDOMatrixIterator  clone      () const;
+
+	DECLARE_IAsString;
 
 private:
 	RDOMatrixIterator(const LPRDOMatrixIterator& pIterator);
