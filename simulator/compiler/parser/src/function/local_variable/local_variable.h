@@ -25,18 +25,19 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- LocalVariable
 // --------------------------------------------------------------------------------
-OBJECT(LocalVariable)
+PREDECLARE_POINTER(LocalVariable);
+class LocalVariable: public rdo::counter_reference
 {
 DECLARE_FACTORY(LocalVariable);
 public:
-	CREF(tstring)           getName        () const;
-	CREF(RDOParserSrcInfo)  getSrcInfo     () const;
-	CREF(LPExpression)      getExpression  () const;
-	CREF(LPTypeInfo)        getTypeInfo    () const;
-	rdo::runtime::RDOValue  getDefaultValue() const;
+	const std::string& getName() const;
+	const RDOParserSrcInfo& getSrcInfo() const;
+	const LPExpression& getExpression() const;
+	const LPTypeInfo& getTypeInfo() const;
+	rdo::runtime::RDOValue getDefaultValue() const;
 
 private:
-	LocalVariable(CREF(LPRDOValue) pName, CREF(LPExpression) pExpression);
+	LocalVariable(const LPRDOValue& pName, const LPExpression& pExpression);
 	virtual ~LocalVariable();
 
 	LPRDOValue    m_pName;
@@ -46,14 +47,15 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- LocalVariableList
 // --------------------------------------------------------------------------------
-OBJECT(LocalVariableList)
+PREDECLARE_POINTER(LocalVariableList);
+class LocalVariableList: public rdo::counter_reference
 {
 DECLARE_FACTORY(LocalVariableList);
 public:
-	typedef  std::map<tstring, LPLocalVariable>  VariableList;
+	typedef  std::map<std::string, LPLocalVariable>  VariableList;
 
-	void            append           (CREF(LPLocalVariable) pVariable);
-	LPLocalVariable findLocalVariable(CREF(tstring)         name     ) const;
+	void append(const LPLocalVariable& pVariable);
+	LPLocalVariable findLocalVariable(const std::string& name) const;
 
 private:
 	LocalVariableList();
@@ -65,17 +67,18 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- LocalVariableListStack
 // --------------------------------------------------------------------------------
-OBJECT(LocalVariableListStack)
+PREDECLARE_POINTER(LocalVariableListStack);
+class LocalVariableListStack: public rdo::counter_reference
 {
 DECLARE_FACTORY(LocalVariableListStack);
 public:
 	typedef std::list<LPLocalVariableList> VariableListStack;
 
-	void push(CREF(LPLocalVariableList) pVariableList);
+	void push(const LPLocalVariableList& pVariableList);
 	void pop ();
 	LPLocalVariableList top() const;
 
-	LPLocalVariable findLocalVariable(CREF(tstring) name) const;
+	LPLocalVariable findLocalVariable(const std::string& name) const;
 
 private:
 	LocalVariableListStack();

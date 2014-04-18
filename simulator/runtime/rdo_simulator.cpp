@@ -39,17 +39,17 @@ RDOSimulator::RDOSimulator()
 RDOSimulator::~RDOSimulator()
 {}
 
-void RDOSimulator::appendLogic(CREF(LPIBaseOperation) pLogic, LPIBaseOperationContainer pParent)
+void RDOSimulator::appendLogic(const LPIBaseOperation& pLogic, LPIBaseOperationContainer pParent)
 {
 	ASSERT(pParent);
 	pParent->append(pLogic);
 }
 
-rbool RDOSimulator::doOperation()
+bool RDOSimulator::doOperation()
 {
-	LPRDORuntime pRuntime(static_cast<PTR(RDORuntime)>(this));
+	LPRDORuntime pRuntime(static_cast<RDORuntime*>(this));
 
-	rbool res;
+	bool res;
 	if (getMustContinueOpr())
 	{
 		// Есть действие, которое необходимо продолжить. Используется в DPT
@@ -62,7 +62,7 @@ rbool RDOSimulator::doOperation()
 	}
 	else
 	{
-		rbool foundPlaned = false;
+		bool foundPlaned = false;
 		// Отработаем все запланированные на данный момент события
 		if (!m_checkOperation && !m_timePoints.empty())
 		{
@@ -110,7 +110,7 @@ rbool RDOSimulator::doOperation()
 			{
 				res = pMetaLogic->onCheckCondition(pRuntime);
 			}
-			catch (CREF(RDOUndefinedException))
+			catch (const RDOUndefinedException&)
 			{
 				res = false;
 			}
@@ -131,12 +131,12 @@ rbool RDOSimulator::doOperation()
 
 void RDOSimulator::preProcess()
 {
-	LPRDORuntime pRuntime(static_cast<PTR(RDORuntime)>(this));
+	LPRDORuntime pRuntime(static_cast<RDORuntime*>(this));
 	m_pMetaLogic.query_cast<IBaseOperation>()->onStart(pRuntime);
 	onResetResult();
 }
 
-tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, REF(ruint) counter)
+std::string writeActivitiesStructureRecurse(const LPIBaseOperationContainer& pLogic, std::size_t& counter)
 {
 	std::stringstream stream;
 	IBaseOperationContainer::CIterator it = pLogic->begin();
@@ -155,7 +155,7 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 	stream << std::endl;
 #endif
 
-	ruint _counter = 1;
+	std::size_t _counter = 1;
 	it = pLogic->begin();
 	while (it != pLogic->end())
 	{
@@ -183,7 +183,7 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 	return stream.str();
 }
 
-tstring RDOSimulator::writeActivitiesStructure(REF(ruint) counter)
+std::string RDOSimulator::writeActivitiesStructure(std::size_t& counter)
 {
 	return writeActivitiesStructureRecurse(m_pMetaLogic, counter);
 }

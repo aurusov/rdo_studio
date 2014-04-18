@@ -117,9 +117,9 @@ QString NewModelDialog::getModelPath() const
 	return modelPath->text();
 }
 
-ruint NewModelDialog::getTemplateIndex() const
+std::size_t NewModelDialog::getTemplateIndex() const
 {
-	ruint result = 0;
+	std::size_t result = 0;
 	if (template2->isChecked())
 	{
 		result = 2;

@@ -48,7 +48,7 @@ RDOParserRDOItem::~RDOParserRDOItem()
 	}
 }
 
-void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser)
+void RDOParserRDOItem::parse(const LPRDOParser& pParser)
 {
 	ASSERT(pParser);
 
@@ -74,7 +74,7 @@ void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser)
 	}
 }
 
-void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser, REF(std::istream) in_stream)
+void RDOParserRDOItem::parse(const LPRDOParser& pParser, std::istream& in_stream)
 {
 	ASSERT(pParser  );
 	ASSERT(!m_pLexer);
@@ -93,13 +93,13 @@ void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser, REF(std::istream) in_str
 	}
 }
 
-PTR(RDOLexer) RDOParserRDOItem::getLexer(CREF(LPRDOParser) pParser, PTR(std::istream) in_stream, PTR(std::ostream) out_stream)
+RDOLexer* RDOParserRDOItem::getLexer(const LPRDOParser& pParser, std::istream* in_stream, std::ostream* out_stream)
 {
 	ASSERT(pParser);
 	return new RDOLexer(pParser, in_stream, out_stream);
 }
 
-ruint RDOParserRDOItem::lexer_loc_line()
+std::size_t RDOParserRDOItem::lexer_loc_line()
 {
 	if (m_pLexer)
 	{
@@ -107,16 +107,16 @@ ruint RDOParserRDOItem::lexer_loc_line()
 	}
 	else
 	{
-		return ruint(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
+		return std::size_t(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
 	}
 }
 
-ruint RDOParserRDOItem::lexer_loc_pos()
+std::size_t RDOParserRDOItem::lexer_loc_pos()
 {
 	return m_pLexer && m_pLexer->m_lploc ? m_pLexer->m_lploc->m_first_pos : 0;
 }
 
-tstring RDOParserRDOItem::text() const
+std::string RDOParserRDOItem::text() const
 {
 	ASSERT(m_pLexer);
 	return m_pLexer->YYText();

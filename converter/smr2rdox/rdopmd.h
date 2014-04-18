@@ -20,24 +20,27 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int  cnv_pmdparse(PTR(void) lexer);
-int  cnv_pmdlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+int cnv_pmdparse(void* lexer);
+int cnv_pmdlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
 void cnv_pmderror(const char* message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDResult
 // --------------------------------------------------------------------------------
-OBJECT(RDOPMDResult) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOPMDResult);
+class RDOPMDResult
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOPMDResult);
 public:
-	CREF(tstring) name() const { return src_text(); }
+	const std::string& name() const { return src_text(); }
 
 protected:
-	RDOPMDResult(CREF(RDOParserSrcInfo) src_info);
+	RDOPMDResult(const RDOParserSrcInfo& src_info);
 	virtual ~RDOPMDResult();
 
-	void endOfCreation(CREF(LPIResult) pResult);
+	void endOfCreation(const LPIResult& pResult);
 
 	LPIResult m_pResult;
 };
@@ -49,7 +52,7 @@ class RDOPMDWatchPar: public RDOPMDResult
 {
 DECLARE_FACTORY(RDOPMDWatchPar);
 private:
-	RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info);
+	RDOPMDWatchPar(const RDOParserSrcInfo& src_info, bool trace, const RDOParserSrcInfo& res_src_info, const RDOParserSrcInfo& par_src_info);
 };
 
 // --------------------------------------------------------------------------------
@@ -59,7 +62,7 @@ class RDOPMDWatchState: public RDOPMDResult
 {
 DECLARE_FACTORY(RDOPMDWatchState);
 private:
-	RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info, rbool trace, LPRDOFUNLogic pLogic);
+	RDOPMDWatchState(const RDOParserSrcInfo& src_info, bool trace, LPRDOFUNLogic pLogic);
 };
 
 // --------------------------------------------------------------------------------
@@ -68,7 +71,7 @@ private:
 class RDOPMDWatchTemp: public RDOPMDResult
 {
 protected:
-	RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info);
+	RDOPMDWatchTemp(const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& res_type_src_info);
 };
 
 // --------------------------------------------------------------------------------
@@ -78,11 +81,11 @@ class RDOPMDWatchQuant: public RDOPMDWatchTemp
 {
 DECLARE_FACTORY(RDOPMDWatchQuant);
 public:
-	void setLogic       (REF(LPRDOFUNLogic) pLogic);
+	void setLogic       (LPRDOFUNLogic& pLogic);
 	void setLogicNoCheck();
 
 private:
-	RDOPMDWatchQuant(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_type_src_info);
+	RDOPMDWatchQuant(const RDOParserSrcInfo& src_info, bool trace, const RDOParserSrcInfo& res_type_src_info);
 };
 DECLARE_POINTER(RDOPMDWatchQuant);
 
@@ -93,11 +96,11 @@ class RDOPMDWatchValue: public RDOPMDWatchTemp
 {
 DECLARE_FACTORY(RDOPMDWatchValue);
 public:
-	void setLogic       (REF(LPRDOFUNLogic) pLogic, REF(LPRDOFUNArithm) pArithm);
-	void setLogicNoCheck(REF(LPRDOFUNArithm) pArithm);
+	void setLogic       (LPRDOFUNLogic& pLogic, LPRDOFUNArithm& pArithm);
+	void setLogicNoCheck(LPRDOFUNArithm& pArithm);
 
 private:
-	RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_type_src_info);
+	RDOPMDWatchValue(const RDOParserSrcInfo& src_info, bool trace, const RDOParserSrcInfo& res_type_src_info);
 };
 DECLARE_POINTER(RDOPMDWatchValue);
 
@@ -108,7 +111,7 @@ class RDOPMDGetValue: public RDOPMDResult
 {
 DECLARE_FACTORY(RDOPMDGetValue);
 private:
-	RDOPMDGetValue(CREF(RDOParserSrcInfo) src_info, LPRDOFUNArithm pArithm);
+	RDOPMDGetValue(const RDOParserSrcInfo& src_info, LPRDOFUNArithm pArithm);
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

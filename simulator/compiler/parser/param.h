@@ -34,13 +34,13 @@ DECLARE_FACTORY(RDOParam)
 public:
 	static const std::string CONTEXT_PARAM_PARAM_ID;
 
-	CREF(tstring)    name       () const { return src_info().src_text(); }
-	LPTypeInfo       getTypeInfo() const { return m_pType;               }
-	CREF(LPRDOValue) getDefault () const { return m_pDefault;            }
+	const std::string& name() const { return src_info().src_text(); }
+	LPTypeInfo getTypeInfo() const { return m_pType; }
+	const LPRDOValue& getDefault () const { return m_pDefault; }
 
 protected:
-	RDOParam(CREF(tstring)          name,    CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault = LPRDOValue(NULL));
-	RDOParam(CREF(RDOParserSrcInfo) srcInfo, CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault = LPRDOValue(NULL));
+	RDOParam(const std::string& name, const LPTypeInfo& pType, const LPRDOValue& pDefault = LPRDOValue(NULL));
+	RDOParam(const RDOParserSrcInfo& srcInfo, const LPTypeInfo& pType, const LPRDOValue& pDefault = LPRDOValue(NULL));
 	virtual ~RDOParam();
 
 private:

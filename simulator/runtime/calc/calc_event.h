@@ -19,7 +19,8 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Базовая калка для управления событиями
-CALC(RDOCalcEvent)
+PREDECLARE_POINTER(RDOCalcEvent);
+class RDOCalcEvent: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcEvent)
 
@@ -30,7 +31,8 @@ protected:
 };
 
 //! Планирование события
-CALC_SUB(RDOCalcEventPlan, RDOCalcEvent)
+PREDECLARE_POINTER(RDOCalcEventPlan);
+class RDOCalcEventPlan: public RDOCalcEvent
 {
 DECLARE_FACTORY(RDOCalcEventPlan)
 private:
@@ -43,7 +45,8 @@ private:
 };
 
 //! Остановка события
-CALC_SUB(RDOCalcEventStop, RDOCalcEvent)
+PREDECLARE_POINTER(RDOCalcEventStop);
+class RDOCalcEventStop: public RDOCalcEvent
 {
 DECLARE_FACTORY(RDOCalcEventStop)
 private:

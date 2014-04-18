@@ -23,16 +23,17 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-typedef int  (*t_bison_parse_fun)(PTR(void) lexer  );
+typedef int(*t_bison_parse_fun)(void* lexer);
 typedef void (*t_bison_error_fun)(const char* message);
-typedef int  (*t_flex_lexer_fun) (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+typedef int(*t_flex_lexer_fun)(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserItem
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOParser);
 
-OBJECT(RDOParserItem)
+PREDECLARE_POINTER(RDOParserItem);
+class RDOParserItem: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOParserItem);
 public:
@@ -48,11 +49,11 @@ public:
 	t_bison_error_fun m_error_fun;
 	t_flex_lexer_fun  m_lexer_fun;
 
-	virtual void parse(CREF(LPRDOParser) pParser) = 0;
-	virtual void parse(CREF(LPRDOParser) pParser, REF(std::istream) in_stream);
+	virtual void parse(const LPRDOParser& pParser) = 0;
+	virtual void parse(const LPRDOParser& pParser, std::istream& in_stream);
 
-	virtual ruint lexer_loc_line();
-	virtual ruint lexer_loc_pos ();
+	virtual std::size_t lexer_loc_line();
+	virtual std::size_t lexer_loc_pos();
 
 protected:
 	RDOParserItem();

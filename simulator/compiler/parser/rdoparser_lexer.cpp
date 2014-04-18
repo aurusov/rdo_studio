@@ -21,7 +21,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOLexer
 // --------------------------------------------------------------------------------
-RDOLexer::RDOLexer(CREF(LPRDOParser) pParser, PTR(std::istream) yyin, PTR(std::ostream) yyout)
+RDOLexer::RDOLexer(const LPRDOParser& pParser, std::istream* yyin, std::ostream* yyout)
 	: yyFlexLexer(yyin, yyout)
 	, m_lpval    (NULL       )
 	, m_lploc    (NULL       )
@@ -32,15 +32,15 @@ RDOLexer::RDOLexer(CREF(LPRDOParser) pParser, PTR(std::istream) yyin, PTR(std::o
 	, m_array_param_cnt(0    )
 {}
 
-CREF(LPRDOParser) RDOLexer::parser() const
+const LPRDOParser& RDOLexer::parser() const
 {
 	return m_pParser;
 }
 
 #ifdef YY_INTERACTIVE
-int RDOLexer::LexerInput(PTR(char) buf, int /* max_size */)
+int RDOLexer::LexerInput(char* buf, int /* max_size */)
 #else
-int RDOLexer::LexerInput(PTR(char) buf, int max_size)
+int RDOLexer::LexerInput(char* buf, int max_size)
 #endif
 {
 	if (m_yyin->eof() || m_yyin->fail())
@@ -70,7 +70,7 @@ int RDOLexer::LexerInput(PTR(char) buf, int max_size)
 #endif
 }
 
-void RDOLexer::LexerOutput(CPTR(char) buf, int size)
+void RDOLexer::LexerOutput(const char* buf, int size)
 {
 	(void) m_yyout->write(buf, size);
 }

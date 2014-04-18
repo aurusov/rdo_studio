@@ -21,19 +21,19 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPParam
 // --------------------------------------------------------------------------------
-RDORTPParam::RDORTPParam(CREF(LPRDOTypeParam) pParamType, CREF(LPRDOValue) pDefault, CREF(RDOParserSrcInfo) src_info)
+RDORTPParam::RDORTPParam(const LPRDOTypeParam& pParamType, const LPRDOValue& pDefault, const RDOParserSrcInfo& src_info)
 	: RDOParam(src_info, pParamType, pDefault)
 {}
 
 RDORTPParam::~RDORTPParam()
 {}
 
-CREF(tstring) RDORTPParam::name() const
+const std::string& RDORTPParam::name() const
 {
 	return RDOParam::name();
 }
 
-void RDORTPParam::writeModelStructure(REF(std::ostream) stream) const
+void RDORTPParam::writeModelStructure(std::ostream& stream) const
 {
 	stream << name() << " ";
 	getType()->writeModelStructure(stream);

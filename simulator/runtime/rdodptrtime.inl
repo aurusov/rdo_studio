@@ -9,7 +9,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -17,7 +16,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearchRuntime
 // --------------------------------------------------------------------------------
-inline RDODPTSearchRuntime::RDODPTSearchRuntime(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent, CREF(LPRDOCalc) _pCondition, CREF(LPRDOCalc) _pTermCondition, CREF(LPRDOCalc) _pEvaluateBy, rbool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag)
+inline RDODPTSearchRuntime::RDODPTSearchRuntime(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent, const LPRDOCalc& _pCondition, const LPRDOCalc& _pTermCondition, const LPRDOCalc& _pEvaluateBy, bool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag)
 	: RDODPTSearchTrace(pRuntime, parent)
 	, pCondition       (_pCondition     )
 	, pTermCondition   (_pTermCondition )
@@ -28,22 +27,22 @@ inline RDODPTSearchRuntime::RDODPTSearchRuntime(CREF(LPRDORuntime) pRuntime, LPI
 	traceFlag = _traceFlag;
 }
 
-inline rbool  RDODPTSearchRuntime::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+inline bool RDODPTSearchRuntime::onCheckCondition(const LPRDORuntime& pRuntime)
 {
 	return pCondition->calcValue(pRuntime).getAsBool();
 }
 
-inline rbool RDODPTSearchRuntime::TermCondition(CREF(LPRDORuntime) pRuntime)
+inline bool RDODPTSearchRuntime::TermCondition(const LPRDORuntime& pRuntime)
 {
 	return pTermCondition->calcValue(pRuntime).getAsBool();
 }
 
-inline double RDODPTSearchRuntime::EvaluateBy(CREF(LPRDORuntime) pRuntime)
+inline double RDODPTSearchRuntime::EvaluateBy(const LPRDORuntime& pRuntime)
 {
 	return pEvaluateBy->calcValue(pRuntime).getDouble();
 }
 
-inline rbool RDODPTSearchRuntime::NeedCompareTops()
+inline bool RDODPTSearchRuntime::NeedCompareTops()
 {
 	return compTops;
 }

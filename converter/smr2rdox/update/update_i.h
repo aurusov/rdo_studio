@@ -23,7 +23,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- IDocUpdate
 // --------------------------------------------------------------------------------
-S_INTERFACE(IDocUpdate)
+struct IDocUpdate
 {
 public:
 	class Position
@@ -31,46 +31,49 @@ public:
 	public:
 		enum
 		{
-			POSITION_BEGIN = static_cast<ruint>(~0),
-			POSITION_END   = static_cast<ruint>(~1)
+			POSITION_BEGIN = static_cast<std::size_t>(~0),
+			POSITION_END = static_cast<std::size_t>(~1)
 		};
 
-		Position(ruint          pos);
-		Position(CREF(Position) pos);
+		Position(std::size_t pos);
+		Position(const Position& pos);
 
-		ruint get  () const;
+		std::size_t get() const;
 
-		rbool begin() const;
-		rbool end  () const;
-		rbool real () const;
+		bool begin() const;
+		bool end() const;
+		bool real() const;
 
-		void     operator+= (CREF(Position) pos);
-		void     operator-= (CREF(Position) pos);
-		Position operator+  (CREF(Position) pos) const;
-		Position operator-  (CREF(Position) pos) const;
-		rbool    operator<= (CREF(Position) pos) const;
-		rbool    operator>= (CREF(Position) pos) const;
-		rbool    operator<  (CREF(Position) pos) const;
-		rbool    operator>  (CREF(Position) pos) const;
-		rbool    operator== (CREF(Position) pos) const;
-		rbool    operator!= (CREF(Position) pos) const;
+		void operator+=(const Position& pos);
+		void operator-=(const Position& pos);
+		Position operator+(const Position& pos) const;
+		Position operator-(const Position& pos) const;
+		bool operator<=(const Position& pos) const;
+		bool operator>=(const Position& pos) const;
+		bool operator<(const Position& pos) const;
+		bool operator>(const Position& pos) const;
+		bool operator==(const Position& pos) const;
+		bool operator!=(const Position& pos) const;
 
 	private:
-		ruint m_position;
+		std::size_t m_position;
 	};
 
-	virtual void apply (REF(LPIDocument) pDocument) const                             = 0;
-	virtual void insert(IDocument::Type type, CREF(Position) to,   ruint size)        = 0;
-	virtual void remove(IDocument::Type type, CREF(Position) from, CREF(Position) to) = 0;
-	virtual void dump  (REF(LPIDocument) pDocument) const                             = 0;
+	virtual void apply(LPIDocument& pDocument) const = 0;
+	virtual void insert(IDocument::Type type, const Position& to, std::size_t size) = 0;
+	virtual void remove(IDocument::Type type, const Position& from, const Position& to) = 0;
+	virtual void dump(LPIDocument& pDocument) const = 0;
 };
-#define DECLARE_IDocUpdate                                                     \
-	void apply (REF(LPIDocument) pDocument) const;                             \
-	void insert(IDocument::Type type, CREF(Position) to, ruint size);          \
-	void remove(IDocument::Type type, CREF(Position) from, CREF(Position) to); \
-	void dump  (REF(LPIDocument) pDocument) const;
+#define DECLARE_IDocUpdate                                                       \
+	void apply(LPIDocument& pDocument) const;                                    \
+	void insert(IDocument::Type type, const Position& to, std::size_t size);     \
+	void remove(IDocument::Type type, const Position& from, const Position& to); \
+	void dump(LPIDocument& pDocument) const;
 
-OBJECT(DocUpdate) IS IMPLEMENTATION_OF(IDocUpdate)
+PREDECLARE_POINTER(DocUpdate);
+class DocUpdate
+	: public rdo::counter_reference
+	, public IDocUpdate
 {
 protected:
 	DocUpdate(IDocument::Type file = IDocument::UNDEFINED);

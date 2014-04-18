@@ -77,13 +77,8 @@ Model::Model(QWidget* pParent, QWidget* pView)
 Model::~Model()
 {}
 
-void Model::catchModified(int modificationType, int position, int length, int linesAdded, const QByteArray& bytes, int line, int foldLevelNow, int foldLevelPrev)
+void Model::catchModified(int modificationType, int /*position*/, int /*length*/, int /*linesAdded*/, const QByteArray& /*bytes*/, int line, int foldLevelNow, int foldLevelPrev)
 {
-	UNUSED(linesAdded);
-	UNUSED(length    );
-	UNUSED(position  );
-	UNUSED(bytes     );
-
 	if (modificationType & SC_MOD_CHANGEFOLD)
 	{
 		foldChanged(line, foldLevelNow, foldLevelPrev);
@@ -102,7 +97,7 @@ void Model::catchMarginClick(int position, int modifiers, int margin)
 	}
 }
 
-void Model::setEditorStyle(PTR(ModelStyle) pStyle)
+void Model::setEditorStyle(ModelStyle* pStyle)
 {
 	super::setEditorStyle(pStyle);
 	if (!m_pStyle)
@@ -185,9 +180,9 @@ void Model::setEditorStyle(PTR(ModelStyle) pStyle)
 		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER    , foldFgColor, foldBgColor);
 		break;
 	}
-	tstring cf_prop("CommentFold");
-	tstring cf_val_1("1");
-	tstring cf_val_0("0");
+	std::string cf_prop("CommentFold");
+	std::string cf_val_1("1");
+	std::string cf_val_0("0");
 	sendEditorString(SCI_SETPROPERTY, reinterpret_cast<unsigned long>(cf_prop.c_str()), style->commentFold ? cf_val_1.c_str() : cf_val_0.c_str());
 	sendEditor(SCI_COLOURISE, 0, -1);
 
@@ -374,8 +369,8 @@ void Model::onEditCommentSelection() const
 	if (!isSelected())
 		return;
 
-	tstring startComment("/*");
-	tstring endComment("*/");
+	std::string startComment("/*");
+	std::string endComment("*/");
 	int startCommentLength = startComment.length();
 	CharacterRange cr = getSelectionRange();
 	int caretPosition = getCurrentPos();
@@ -403,17 +398,17 @@ void Model::onEditCompleteWord()
 		return;
 
 	setFocus();
-	tstring primaryKwList = getAllKW();
+	std::string primaryKwList = getAllKW();
 	WordList fullWordList;
 	fullWordList.Set(primaryKwList.c_str());
 	fullWordList.InList("");
 	primaryKwList = "";
 
-	typedef std::vector<tstring> string_list;
+	typedef std::vector<std::string> string_list;
 
 	class compareStringScintilla {
 	public:
-		bool operator()(tstring A, tstring B) {
+		bool operator()(std::string A, std::string B) {
 			return CompareNCaseInsensitive(A.c_str(), B.c_str(), A.length()) < 0;
 		}
 	};
@@ -421,7 +416,7 @@ void Model::onEditCompleteWord()
 	compareStringScintilla functor;
 
 	WordListUtil getList(fullWordList);
-	string_list basicList = getList.getNearestWords(tstring());
+	string_list basicList = getList.getNearestWords(std::string());
 	std::sort(basicList.begin(), basicList.end(), functor);
 	for (string_list::const_iterator it = basicList.begin(); it != basicList.end(); ++it)
 	{
@@ -461,10 +456,10 @@ void Model::onEditCompleteWord()
 	}
 
 	string_list::const_iterator it = prioritySortedKwList.begin();
-	tstring stWord = *it;
+	std::string stWord = *it;
 	std::sort(prioritySortedKwList.begin(), prioritySortedKwList.end(), functor);
 
-	tstring foundKeyWords = "";
+	std::string foundKeyWords = "";
 	for (string_list::const_iterator it = prioritySortedKwList.begin(); it != prioritySortedKwList.end(); ++it) 
 	{
 		foundKeyWords += (*it);
@@ -475,7 +470,7 @@ void Model::onEditCompleteWord()
 	}
 	const char* list;
 
-	if (static_cast<PTR(ModelStyle)>(m_pStyle)->autoComplete.showFullList)
+	if (static_cast<ModelStyle*>(m_pStyle)->autoComplete.showFullList)
 	{
 		list = primaryKwList.c_str();
 	}
@@ -490,8 +485,8 @@ void Model::onEditCompleteWord()
 
 	if (list) 
 	{
-		tstring startKeyWord       = "";
-		tstring startKeyWordScroll = stWord;
+		std::string startKeyWord       = "";
+		std::string startKeyWordScroll = stWord;
 		bool useReplace = false;
 		if (foundKeyWords.c_str())
 		{
@@ -505,16 +500,16 @@ void Model::onEditCompleteWord()
 			}
 		}
 
-		while (startKeyWord.find('?') != tstring::npos)
+		while (startKeyWord.find('?') != std::string::npos)
 		{
-			tstring::size_type pos1 = startKeyWord.find('?');
-			tstring::size_type pos2 = startKeyWord.find(' ', pos1);
+			std::string::size_type pos1 = startKeyWord.find('?');
+			std::string::size_type pos2 = startKeyWord.find(' ', pos1);
 			startKeyWord.erase(pos1, pos2 - pos1);
 		}
-		while (startKeyWordScroll.find('?') != tstring::npos)
+		while (startKeyWordScroll.find('?') != std::string::npos)
 		{
-			tstring::size_type pos1 = startKeyWordScroll.find('?');
-			tstring::size_type pos2 = startKeyWordScroll.find(' ', pos1);
+			std::string::size_type pos1 = startKeyWordScroll.find('?');
+			std::string::size_type pos2 = startKeyWordScroll.find(' ', pos1);
 			startKeyWordScroll.erase(pos1, pos2 - pos1);
 		}
 
@@ -570,12 +565,12 @@ void Model::onInsertCommand(QObject* pObject)
 	);
 }
 
-CPTR(Log) Model::getLog() const
+const Log* Model::getLog() const
 {
 	return m_pLog;
 }
 
-void Model::setLog(REF(Log) pLog)
+void Model::setLog(Log& pLog)
 {
 	m_pLog = &pLog;
 }
@@ -603,10 +598,10 @@ void Model::onGotoPrev()
 
 void Model::onHelpContext()
 {
-	tstring keyword = getCurrentOrSelectedWord();
-	tstring s = getAllKW();
+	std::string keyword = getCurrentOrSelectedWord();
+	std::string s = getAllKW();
 
-	if (s.find_first_of(keyword) == tstring::npos || keyword.empty())
+	if (s.find_first_of(keyword) == std::string::npos || keyword.empty())
 	{
 		model::TabCtrl* pTab = g_pModel->getTab();
 		if (pTab)

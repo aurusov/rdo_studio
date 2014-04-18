@@ -14,7 +14,6 @@
 #include <memory>
 #include <boost/config.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo
@@ -27,12 +26,12 @@ namespace rdo
 			 MemDCBase();
 			~MemDCBase();
 
-			ruint     width () const;
-			ruint     height() const;
+			std::size_t width() const;
+			std::size_t height() const;
 
 		protected:
-			ruint m_width;
-			ruint m_height;
+			std::size_t m_width;
+			std::size_t m_height;
 		};
 
 		template <class TDC, class TBMP>
@@ -42,23 +41,23 @@ namespace rdo
 			 MemDC();
 			~MemDC();
 
-			rbool valid () const;
-			rbool create(ruint width, ruint height);
-			rbool create(ruint width, ruint height, TDC& from);
-			rbool resize(ruint width, ruint height);
+			bool valid() const;
+			bool create(std::size_t width, std::size_t height);
+			bool create(std::size_t width, std::size_t height, TDC& from);
+			bool resize(std::size_t width, std::size_t height);
 
-			TDC&  dc    ();
+			TDC& dc();
 			TBMP& buffer();
 
 		private:
 #ifdef BOOST_NO_CXX11_SMART_PTR
-			std::auto_ptr<TDC>     m_pDC;
-			std::auto_ptr<TBMP>    m_pBitmap;
+			std::auto_ptr<TDC> m_pDC;
+			std::auto_ptr<TBMP> m_pBitmap;
 #else
-			std::unique_ptr<TDC>   m_pDC;
-			std::unique_ptr<TBMP>  m_pBitmap;
+			std::unique_ptr<TDC> m_pDC;
+			std::unique_ptr<TBMP> m_pBitmap;
 #endif
-			rbool onCreate();
+			bool onCreate();
 
 			void clear();
 		};

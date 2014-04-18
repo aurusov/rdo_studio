@@ -72,19 +72,19 @@ RDOHotKey::Toolkit::Toolkit()
 
 	for (char i = '0'; i <= '9'; ++i)
 	{
-		m_keyList.insert(KeySet::value_type(tstring(1, i), (KeyCode)i));
+		m_keyList.insert(KeySet::value_type(std::string(1, i), (KeyCode)i));
 	}
 
 	for (char i = 'A'; i <= 'Z'; ++i)
 	{
-		m_keyList.insert(KeySet::value_type(tstring(1, i), (KeyCode)i));
+		m_keyList.insert(KeySet::value_type(std::string(1, i), (KeyCode)i));
 	}
 }
 
 RDOHotKey::Toolkit::~Toolkit()
 {}
 
-RDOHotKey::KeyCode RDOHotKey::Toolkit::codeFromString(CREF(tstring) keyName) const
+RDOHotKey::KeyCode RDOHotKey::Toolkit::codeFromString(const std::string& keyName) const
 {
 	KeySet::const_iterator it = m_keyList.find(keyName);
 	return it == m_keyList.end() ? KeyCode(UNDEFINED_KEY) : it->second;
@@ -93,7 +93,7 @@ RDOHotKey::KeyCode RDOHotKey::Toolkit::codeFromString(CREF(tstring) keyName) con
 // --------------------------------------------------------------------------------
 // -------------------- RDOHotKey::KeyInModelList
 // --------------------------------------------------------------------------------
-rbool RDOHotKey::KeyInModelList::insert(CREF(KeyCode) keyCode)
+bool RDOHotKey::KeyInModelList::insert(const KeyCode& keyCode)
 {
 	if (check(keyCode))
 	{
@@ -103,7 +103,7 @@ rbool RDOHotKey::KeyInModelList::insert(CREF(KeyCode) keyCode)
 	return true;
 }
 
-rbool RDOHotKey::KeyInModelList::check(CREF(KeyCode) keyCode) const
+bool RDOHotKey::KeyInModelList::check(const KeyCode& keyCode) const
 {
 	return boost::find(m_keyList, keyCode) != m_keyList.end();
 }
@@ -118,7 +118,7 @@ RDOHotKey::KeyDownList::KeyDownList()
 RDOHotKey::KeyDownList::~KeyDownList()
 {}
 
-rbool RDOHotKey::KeyDownList::down(CREF(KeyCode) keyCode)
+bool RDOHotKey::KeyDownList::down(const KeyCode& keyCode)
 {
 	// Если нажаты VK_SHIFT или VK_CONTROL, то сбросим буфер клавиатуры
 	if (keyCode == VK_SHIFT || keyCode == VK_CONTROL)
@@ -156,7 +156,7 @@ rbool RDOHotKey::KeyDownList::down(CREF(KeyCode) keyCode)
 	return cnt > 0;
 }
 
-void RDOHotKey::KeyDownList::up(CREF(KeyCode) keyCode)
+void RDOHotKey::KeyDownList::up(const KeyCode& keyCode)
 {
 	// Если отжаты VK_SHIFT или VK_CONTROL, то сбросим удалим их из буфера
 	//if (keyCode == VK_SHIFT || keyCode == VK_CONTROL)
@@ -176,11 +176,11 @@ void RDOHotKey::KeyDownList::up(CREF(KeyCode) keyCode)
 	//}
 }
 
-rbool RDOHotKey::KeyDownList::isPressed(CREF(KeyCode) keyCode, rbool shift, rbool control)
+bool RDOHotKey::KeyDownList::isPressed(const KeyCode& keyCode, bool shift, bool control)
 {
 	if (keyCode == 0) return false;
-	rbool shift_found   = false;
-	rbool control_found = false;
+	bool shift_found   = false;
+	bool control_found = false;
 	// Найдем VK_SHIFT и/или VK_CONTROL в буфере
 	KeyList::iterator it = m_keyList.begin();
 	while (it != m_keyList.end())
@@ -217,7 +217,7 @@ rbool RDOHotKey::KeyDownList::isPressed(CREF(KeyCode) keyCode, rbool shift, rboo
 	return false;
 }
 
-rbool RDOHotKey::KeyDownList::isFound() const
+bool RDOHotKey::KeyDownList::isFound() const
 {
 	return m_keyFound;
 }
@@ -230,7 +230,7 @@ void RDOHotKey::KeyDownList::clear()
 // --------------------------------------------------------------------------------
 // -------------------- RDOHotKey::AreaList
 // --------------------------------------------------------------------------------
-void RDOHotKey::AreaList::click(CREF(tstring) areaName)
+void RDOHotKey::AreaList::click(const std::string& areaName)
 {
 	if (boost::find(m_activeAreasMouseClicked, areaName) != m_activeAreasMouseClicked.end())
 		return;
@@ -238,7 +238,7 @@ void RDOHotKey::AreaList::click(CREF(tstring) areaName)
 	m_activeAreasMouseClicked.push_back(areaName);
 }
 
-rbool RDOHotKey::AreaList::check(CREF(tstring) areaName)
+bool RDOHotKey::AreaList::check(const std::string& areaName)
 {
 	NameList::iterator it = boost::find(m_activeAreasMouseClicked, areaName);
 	if (it == m_activeAreasMouseClicked.end())
@@ -249,7 +249,7 @@ rbool RDOHotKey::AreaList::check(CREF(tstring) areaName)
 	return true;
 }
 
-rbool RDOHotKey::AreaList::empty() const
+bool RDOHotKey::AreaList::empty() const
 {
 	return m_activeAreasMouseClicked.empty();
 }
@@ -274,27 +274,27 @@ void RDOHotKey::clear()
 	m_areaList.clear();
 }
 
-rbool RDOHotKey::isKeyDown() const
+bool RDOHotKey::isKeyDown() const
 {
 	return m_keyDown.isFound() || !m_areaList.empty();
 }
 
-CREF(RDOHotKey::Toolkit) RDOHotKey::toolkit() const
+const RDOHotKey::Toolkit& RDOHotKey::toolkit() const
 {
 	return m_toolkit;
 }
 
-REF(RDOHotKey::KeyInModelList) RDOHotKey::keyInModel()
+RDOHotKey::KeyInModelList& RDOHotKey::keyInModel()
 {
 	return m_keyInModel;
 }
 
-REF(RDOHotKey::KeyDownList) RDOHotKey::keyDown()
+RDOHotKey::KeyDownList& RDOHotKey::keyDown()
 {
 	return m_keyDown;
 }
 
-REF(RDOHotKey::AreaList) RDOHotKey::areaList()
+RDOHotKey::AreaList& RDOHotKey::areaList()
 {
 	return m_areaList;
 }

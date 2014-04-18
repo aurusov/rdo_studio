@@ -182,7 +182,7 @@ Application::~Application()
 	if (m_pStudioGUI)
 	{
 		m_pStudioGUI->sendMessage(m_pStudioGUI, RDOThread::RT_THREAD_CLOSE);
-		delete static_cast<PTR(ThreadStudioGUI)>(m_pStudioGUI);
+		delete static_cast<ThreadStudioGUI*>(m_pStudioGUI);
 		m_pStudioGUI = NULL;
 	}
 #endif
@@ -211,7 +211,7 @@ void Application::onInit(int argc, char** argv)
 	po::options_description desc("RAO-studio");
 	desc.add_options()
 		("help,h", "display help message")
-		("input,i", po::value<tstring>(), "model file name")
+		("input,i", po::value<std::string>(), "model file name")
 		("gui_silent_mode,s", "turn on GUI silent mode from console running")
 		("autorun", "auto run model")
 		("autoexit", "auto exit after simulation stoped")
@@ -239,10 +239,10 @@ void Application::onInit(int argc, char** argv)
 		quit();
 	}
 
-	tstring openModelName;
+	std::string openModelName;
 	if (vm.count("input"))
 	{
-		openModelName = vm["input"].as<tstring>();
+		openModelName = vm["input"].as<std::string>();
 		openModelName = rdo::locale::convertFromCLocale(openModelName);
 	}
 
@@ -311,27 +311,27 @@ rdo::gui::tracer::Tracer* Application::getTracer() const
 	return g_pTracer;
 }
 
-PTR(QMainWindow) Application::getMainWnd()
+QMainWindow* Application::getMainWnd()
 {
 	return m_pMainFrame;
 }
 
-PTR(MainWindowBase) Application::getStyle()
+MainWindowBase* Application::getStyle()
 {
 	return m_pMainFrame;
 }
 
-PTR(MainWindowBase) Application::getIMainWnd()
+MainWindowBase* Application::getIMainWnd()
 {
 	return m_pMainFrame;
 }
 
-REF(std::ofstream) Application::log()
+std::ofstream& Application::log()
 {
 	return m_log;
 }
 
-QString Application::getFullHelpFileName(CREF(QString) helpFileName) const
+QString Application::getFullHelpFileName(const QString& helpFileName) const
 {
 	QString result = chkHelpExist(helpFileName);
 	if (result.size() < 3)
@@ -345,7 +345,7 @@ QString Application::getFullHelpFileName(CREF(QString) helpFileName) const
 	return result;
 }
 
-QString Application::chkHelpExist(CREF(QString) helpFileName) const
+QString Application::chkHelpExist(const QString& helpFileName) const
 {
 	QString fullHelpFileName = QString("%1%2")
 		.arg(QString::fromStdWString(rdo::File::extractFilePath(qApp->applicationFilePath().toStdWString()).wstring()))
@@ -372,9 +372,9 @@ void Application::chkAndRunQtAssistant()
 		m_pAssistant = runQtAssistant();
 }
 
-PTR(QProcess) Application::runQtAssistant() const
+QProcess* Application::runQtAssistant() const
 {
-	PTR(QProcess) pProcess = new QProcess;
+	QProcess* pProcess = new QProcess;
 	QStringList args;
 	args << QString("-collectionFile")
 		<< getFullHelpFileName()
@@ -384,7 +384,7 @@ PTR(QProcess) Application::runQtAssistant() const
 	return pProcess;
 }
 
-void Application::callQtAssistant(CREF(QByteArray) ba)
+void Application::callQtAssistant(const QByteArray& ba)
 {
 	chkAndRunQtAssistant();
 	if (m_pAssistant->state() != m_pAssistant->Running)
@@ -439,12 +439,12 @@ void Application::setOpenLastProject(bool value)
 	}
 }
 
-CREF(QString) Application::getLastProjectName() const
+const QString& Application::getLastProjectName() const
 {
 	return m_lastProjectName;
 }
 
-void Application::setLastProjectName(CREF(QString) projectName)
+void Application::setLastProjectName(const QString& projectName)
 {
 	m_pMainFrame->insertMenuFileReopenItem(projectName);
 	if (m_lastProjectName != projectName)
@@ -536,12 +536,13 @@ void Application::autoCloseByModel()
 	}
 }
 
-void Application::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void) pParam)
+void Application::broadcastMessage(RDOThread::RDOTreadMessage message, void* pParam)
 {
 #ifdef RDO_MT
-	PTR(CEvent) pEvent = m_pStudioMT->manualMessageFrom(message, pParam);
-	while (::WaitForSingleObject(pEvent->m_hObject, 0) == WAIT_TIMEOUT) {
-		static_cast<PTR(ThreadStudioGUI)>(m_pStudioGUI)->processMessages();
+	CEvent* pEvent = m_pStudioMT->manualMessageFrom(message, pParam);
+	while (::WaitForSingleObject(pEvent->m_hObject, 0) == WAIT_TIMEOUT)
+	{
+		static_cast<ThreadStudioGUI*>(m_pStudioGUI)->processMessages();
 		if (m_pMainFrame) {
 			m_pMainFrame->UpdateWindow();
 		} else {
@@ -557,13 +558,13 @@ void Application::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void)
 void Application::onIdle()
 {
 #ifdef RDO_MT
-	static_cast<PTR(ThreadStudioGUI)>(m_pStudioGUI)->processMessages();
+	static_cast<ThreadStudioGUI*>(m_pStudioGUI)->processMessages();
 #else
 	kernel->idle();
 #endif
 }
 
-CREF(rdo::gui::editor::LPModelStyle) Application::getModelStyle() const
+const rdo::gui::editor::LPModelStyle& Application::getModelStyle() const
 {
 	ASSERT(m_pModelStyle);
 	return m_pModelStyle;
@@ -705,7 +706,7 @@ void Application::convertSettings() const
 
 	if (convertor.contains("reopen"))
 	{
-		for (ruint i = 0; i < 10; i++)
+		for (std::size_t i = 0; i < 10; i++)
 		{
 			QString value = convertor.value<QString>(QString("reopen/%1%2").arg(i+1 < 10 ? "0" : "").arg(i+1));
 			if (value.isEmpty())

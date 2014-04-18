@@ -39,7 +39,7 @@ RDOCalcEventPlan::RDOCalcEventPlan(const LPIEvent& event, const LPRDOCalc& pTime
 	ASSERT(m_pTimeCalc);
 }
 
-RDOValue RDOCalcEventPlan::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcEventPlan::doCalc(const LPRDORuntime& pRuntime)
 {
 	RDOValue time = m_pTimeCalc->calcValue(pRuntime);
 
@@ -65,7 +65,7 @@ RDOCalcEventStop::RDOCalcEventStop(const LPIEvent& event)
 	: RDOCalcEvent(event)
 {}
 
-RDOValue RDOCalcEventStop::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcEventStop::doCalc(const LPRDORuntime& pRuntime)
 {
 	pRuntime->removeTimePoint(m_pEvent);
 	return RDOValue();

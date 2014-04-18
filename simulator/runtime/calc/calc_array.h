@@ -19,11 +19,12 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Размер массива
-CALC(RDOCalcArraySize)
+PREDECLARE_POINTER(RDOCalcArraySize);
+class RDOCalcArraySize: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcArraySize)
 private:
-	RDOCalcArraySize(CREF(LPRDOCalc) pCalc);
+	RDOCalcArraySize(const LPRDOCalc& pCalc);
 
 	LPRDOCalc m_pCalc;
 
@@ -31,11 +32,12 @@ private:
 };
 
 //! Возвращает элемент массива
-CALC(RDOCalcArrayItem)
+PREDECLARE_POINTER(RDOCalcArrayItem);
+class RDOCalcArrayItem: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcArrayItem)
 private:
-	RDOCalcArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArrayInd);
+	RDOCalcArrayItem(const LPRDOCalc& pArray, const LPRDOCalc& pArrayInd);
 
 	LPRDOCalc m_pArray;
 	LPRDOCalc m_pArrayInd;
@@ -44,11 +46,12 @@ private:
 };
 
 //! Устанавливает элемент массива
-CALC(RDOCalcSetArrayItem)
+PREDECLARE_POINTER(RDOCalcSetArrayItem);
+class RDOCalcSetArrayItem: public RDOCalc
 {
 	DECLARE_FACTORY(RDOCalcSetArrayItem)
 private:
-	RDOCalcSetArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArrayInd, CREF(LPRDOCalc) pSetItem);
+	RDOCalcSetArrayItem(const LPRDOCalc& pArray, const LPRDOCalc& pArrayInd, const LPRDOCalc& pSetItem);
 
 	LPRDOCalc m_pArray;
 	LPRDOCalc m_pArrayInd;

@@ -31,15 +31,15 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class ILogic
 {
 public:
-	virtual void init             (CREF(rdo::runtime::LPRDORuntime) pRuntime      ) = 0;
-	virtual void setCondition     (CREF(rdo::runtime::LPRDOCalc)    pCondition    ) = 0;
-	virtual void setMultithreading(rbool                            multithreading) = 0;
+	virtual void init             (const rdo::runtime::LPRDORuntime& pRuntime      ) = 0;
+	virtual void setCondition     (const rdo::runtime::LPRDOCalc&    pCondition    ) = 0;
+	virtual void setMultithreading(bool                              multithreading) = 0;
 };
 
-#define DECLARE_ILogic                                                              \
-	virtual void init             (CREF(rdo::runtime::LPRDORuntime) pRuntime      ); \
-	virtual void setCondition     (CREF(rdo::runtime::LPRDOCalc)    pCondition    ); \
-	virtual void setMultithreading(rbool                            multithreading);
+#define DECLARE_ILogic                                                                \
+	virtual void init             (const rdo::runtime::LPRDORuntime& pRuntime      ); \
+	virtual void setCondition     (const rdo::runtime::LPRDOCalc&    pCondition    ); \
+	virtual void setMultithreading(bool                              multithreading);
 
 /*!
   \interface IBaseOperationContainer
@@ -53,24 +53,24 @@ public:
 	typedef  List::iterator        Iterator;
 	typedef  List::const_iterator  CIterator;
 
-	virtual Iterator              begin ()                = 0;
-	virtual Iterator              end   ()                = 0;
-	virtual CIterator             begin () const          = 0;
-	virtual CIterator             end   () const          = 0;
-	virtual void                  append(CREF(Item) item) = 0;
-	virtual rbool                 empty () const          = 0;
-	virtual REF(LPIBaseOperation) back  ()                = 0;
-	virtual void                  clear ()                = 0;
+	virtual Iterator          begin ()                 = 0;
+	virtual Iterator          end   ()                 = 0;
+	virtual CIterator         begin () const           = 0;
+	virtual CIterator         end   () const           = 0;
+	virtual void              append(const Item& item) = 0;
+	virtual bool              empty () const           = 0;
+	virtual LPIBaseOperation& back  ()                 = 0;
+	virtual void              clear ()                 = 0;
 };
 
-#define DECLARE_IBaseOperationContainer                    \
-	virtual Iterator              begin ();                \
-	virtual Iterator              end   ();                \
-	virtual CIterator             begin () const;          \
-	virtual CIterator             end   () const;          \
-	virtual void                  append(CREF(Item) item); \
-	virtual rbool                 empty () const;          \
-	virtual REF(LPIBaseOperation) back  ();                \
-	virtual void                  clear ();
+#define DECLARE_IBaseOperationContainer                 \
+	virtual Iterator          begin ();                 \
+	virtual Iterator          end   ();                 \
+	virtual CIterator         begin () const;           \
+	virtual CIterator         end   () const;           \
+	virtual void              append(const Item& item); \
+	virtual bool              empty () const;           \
+	virtual LPIBaseOperation& back  ();                 \
+	virtual void              clear ();
 
 #endif // _LIB_RUNTIME_LOGIC_I_H_

@@ -20,12 +20,12 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAdvance
 // --------------------------------------------------------------------------------
-inline RDOPROCAdvance::RDOPROCAdvance(LPIPROCProcess process, CREF(LPRDOCalc) _pDelayCalc)
+inline RDOPROCAdvance::RDOPROCAdvance(LPIPROCProcess process, const LPRDOCalc& _pDelayCalc)
 	: RDOPROCBlock(process    )
 	, pDelayCalc  (_pDelayCalc)
 {}
 
-inline RDOPROCAdvance::LeaveTr::LeaveTr(CREF(LPRDOPROCTransact) _transact, double _timeLeave)
+inline RDOPROCAdvance::LeaveTr::LeaveTr(const LPRDOPROCTransact& _transact, double _timeLeave)
 	: transact (_transact )
 	, timeLeave(_timeLeave)
 {}

@@ -20,7 +20,7 @@
 DockResults::DockResults(QWidget* pParent)
 	: DockFocusable("Результаты", pParent)
 {
-	PTR(context_type) pWidget = new context_type(this);
+	context_type* pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(300, 110));
 
 	setWidget(pWidget);
@@ -31,7 +31,7 @@ DockResults::DockResults(QWidget* pParent)
 DockResults::~DockResults()
 {}
 
-void DockResults::appendString(CREF(QString) str)
+void DockResults::appendString(const QString& str)
 {
 	int pos = getContext().getCurrentPos();
 	getContext().setCurrentPos(getContext().getLength());
@@ -46,7 +46,7 @@ void DockResults::clear()
 	getContext().clearAll();
 }
 
-REF(DockResults::context_type) DockResults::getContext()
+DockResults::context_type& DockResults::getContext()
 {
-	return *static_cast<PTR(context_type)>(widget());
+	return *static_cast<context_type*>(widget());
 }

@@ -38,7 +38,7 @@ class RDOThreadRepository;
 
 class RDOKernel: public RDOThreadMT
 {
-friend void RDOThread::broadcastMessage( RDOTreadMessage message, void* param, rbool lock );
+friend void RDOThread::broadcastMessage( RDOTreadMessage message, void* param, bool lock );
 friend class Application;
 
 protected:
@@ -48,13 +48,13 @@ protected:
 	virtual void proc( RDOMessageInfo& msg );
 	virtual void start();
 
-	typedef std::list<PTR(RDOThread)> RDOThreadList;
-	RDOThreadList               threads;
+	typedef std::list<RDOThread*> RDOThreadList;
+	RDOThreadList threads;
 #ifdef RDO_MT
-	mutable CMutex              threads_mutex;
+	mutable CMutex threads_mutex;
 #endif
 //	std::list< RDOTreadMethod > methods;
-//	CMutex                      methods_mutex;
+//	CMutex methods_mutex;
 //	void method_registration( RDOTreadMethod& msg ); // thread-safety
 
 	RDOThread*                                     thread_studio;
@@ -105,10 +105,10 @@ public:
 //
 class RDOKernelGUI: public RDOThread
 {
-friend virtual rbool RDOThreadGUI::processMessages();
+friend virtual bool RDOThreadGUI::processMessages();
 
 protected:
-	RDOKernelGUI( CREF(tstring) _thread_name ); // Создание и удаление через потомков
+	RDOKernelGUI(const std::string& _thread_name); // Создание и удаление через потомков
 	virtual ~RDOKernelGUI();
 
 	virtual void proc( RDOMessageInfo& msg );

@@ -19,11 +19,12 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Проверка на диапазон
-CALC(RDOCalcCheckRange)
+PREDECLARE_POINTER(RDOCalcCheckRange);
+class RDOCalcCheckRange: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcCheckRange)
 private:
-	RDOCalcCheckRange(CREF(RDOValue) minValue, CREF(RDOValue) maxValue, CREF(LPRDOCalc) pCalc);
+	RDOCalcCheckRange(const RDOValue& minValue, const RDOValue& maxValue, const LPRDOCalc& pCalc);
 
 	RDOValue   m_minValue;
 	RDOValue   m_maxValue;

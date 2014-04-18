@@ -21,7 +21,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- LocalVariable
 // --------------------------------------------------------------------------------
-LocalVariable::LocalVariable(CREF(LPRDOValue) pName, CREF(LPExpression) pExpression)
+LocalVariable::LocalVariable(const LPRDOValue& pName, const LPExpression& pExpression)
 	: m_pName      (pName      )
 	, m_pExpression(pExpression)
 {
@@ -37,22 +37,22 @@ LocalVariable::LocalVariable(CREF(LPRDOValue) pName, CREF(LPExpression) pExpress
 LocalVariable::~LocalVariable()
 {}
 
-CREF(tstring) LocalVariable::getName() const
+const std::string& LocalVariable::getName() const
 {
 	return m_pName->value().getIdentificator();
 }
 
-CREF(RDOParserSrcInfo) LocalVariable::getSrcInfo() const
+const RDOParserSrcInfo& LocalVariable::getSrcInfo() const
 {
 	return *m_pName;
 }
 
-CREF(LPExpression) LocalVariable::getExpression() const
+const LPExpression& LocalVariable::getExpression() const
 {
 	return m_pExpression;
 }
 
-CREF(LPTypeInfo) LocalVariable::getTypeInfo() const
+const LPTypeInfo& LocalVariable::getTypeInfo() const
 {
 	return m_pExpression->typeInfo();
 }
@@ -71,7 +71,7 @@ LocalVariableList::LocalVariableList()
 LocalVariableList::~LocalVariableList()
 {}
 
-void LocalVariableList::append(CREF(LPLocalVariable) pVariable)
+void LocalVariableList::append(const LPLocalVariable& pVariable)
 {
 	ASSERT(pVariable);
 
@@ -87,7 +87,7 @@ void LocalVariableList::append(CREF(LPLocalVariable) pVariable)
 	m_variableList.insert(VariableList::value_type(pVariable->getName(), pVariable));
 }
 
-LPLocalVariable LocalVariableList::findLocalVariable(CREF(tstring) name) const
+LPLocalVariable LocalVariableList::findLocalVariable(const std::string& name) const
 {
 	VariableList::const_iterator it = m_variableList.find(name);
 	return it != m_variableList.end() ? it->second : LPLocalVariable(NULL);
@@ -99,7 +99,7 @@ LPLocalVariable LocalVariableList::findLocalVariable(CREF(tstring) name) const
 LocalVariableListStack::LocalVariableListStack()
 {}
 
-void LocalVariableListStack::push(CREF(LPLocalVariableList) pVariableList)
+void LocalVariableListStack::push(const LPLocalVariableList& pVariableList)
 {
 	m_pVariableListStack.push_back(pVariableList);
 }
@@ -116,7 +116,7 @@ LPLocalVariableList LocalVariableListStack::top() const
 	return m_pVariableListStack.back();
 }
 
-LPLocalVariable LocalVariableListStack::findLocalVariable(CREF(tstring) name) const
+LPLocalVariable LocalVariableListStack::findLocalVariable(const std::string& name) const
 {
 	for (const auto& stack: m_pVariableListStack)
 	{

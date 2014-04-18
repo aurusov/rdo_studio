@@ -25,10 +25,10 @@ class RDOFRMFrame: public RDOFRMCommandList
 {
 DECLARE_FACTORY(RDOFRMFrame);
 public:
-	CREF(rdo::runtime::LPRDOFRMFrame) frame() const;
+	const rdo::runtime::LPRDOFRMFrame& frame() const;
 
 private:
-	RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo);
+	RDOFRMFrame(const RDOParserSrcInfo& srcInfo);
 	virtual ~RDOFRMFrame();
 
 	rdo::runtime::LPRDOFRMFrame m_pFrame;

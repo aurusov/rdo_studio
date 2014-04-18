@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- TreeRoot
 // --------------------------------------------------------------------------------
-TreeRoot::TreeRoot(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP)
+TreeRoot::TreeRoot(const LPRDORuntime& pRuntime, RDODPTSearch* pDP)
 	: m_dp                (pDP     )
 	, m_rootNode          (NULL    )
 	, m_targetNode        (NULL    )
@@ -40,7 +40,7 @@ TreeRoot::TreeRoot(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP)
 // --------------------------------------------------------------------------------
 // -------------------- TreeNode
 // --------------------------------------------------------------------------------
-TreeNode::TreeNode(CREF(LPRDORuntime) pRuntime, PTR(TreeNode) pParent, PTR(TreeRoot) pRoot, LPIDPTSearchActivity pActivity, double cost, int cnt)
+TreeNode::TreeNode(const LPRDORuntime& pRuntime, TreeNode* pParent, TreeRoot* pRoot, LPIDPTSearchActivity pActivity, double cost, int cnt)
 	: m_pRuntime     (pRuntime )
 	, m_parent       (pParent  )
 	, m_root         (pRoot    )
@@ -252,7 +252,7 @@ void TreeNode::ExpandChildren()
 	std::sort(m_root->m_OPEN.begin(), m_root->m_OPEN.end(), compareNodes);
 }
 
-TreeNode::NodeFoundInfo TreeNode::CheckIfExistBetter(CREF(LPRDORuntime) pChildRuntime, double useCost, TreeNode** loser)
+TreeNode::NodeFoundInfo TreeNode::CheckIfExistBetter(const LPRDORuntime& pChildRuntime, double useCost, TreeNode** loser)
 {
 	ASSERT(pChildRuntime);
 

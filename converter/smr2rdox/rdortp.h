@@ -26,8 +26,8 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int  cnv_rtpparse(PTR(void) lexer);
-int  cnv_rtplex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
+int cnv_rtpparse(void* lexer);
+int cnv_rtplex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
 void cnv_rtperror(const char* message);
 
 // --------------------------------------------------------------------------------
@@ -35,38 +35,40 @@ void cnv_rtperror(const char* message);
 // --------------------------------------------------------------------------------
 class Converter;
 
-OBJECT(RDORTPResType)
-	IS  INSTANCE_OF(RDOParserSrcInfo  )
-	AND INSTANCE_OF(boost::noncopyable)
+PREDECLARE_POINTER(RDORTPResType);
+class RDORTPResType
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
+	, public boost::noncopyable
 {
 DECLARE_FACTORY(RDORTPResType);
 public:
 	typedef std::vector<LPRDORTPParam> ParamList;
 
-	static const ruint UNDEFINED_PARAM = ruint(~0);
+	static const std::size_t UNDEFINED_PARAM = std::size_t(~0);
 
-	CREF(tstring) name       () const   { return src_text();   };
-	rsint         getNumber  () const   { return m_number;     };
-	rbool         isPermanent() const   { return m_permanent;  };
-	rbool         isTemporary() const   { return !m_permanent; };
+	const std::string& name() const { return src_text(); };
+	int getNumber() const { return m_number; };
+	bool isPermanent() const { return m_permanent; };
+	bool isTemporary() const { return !m_permanent; };
 
-	void addParam(CREF(LPRDORTPParam) param);
-	void addParam(CREF(tstring) param_name, rdo::runtime::RDOType::TypeID param_typeID);
-	LPRDORTPParam findRTPParam(CREF(tstring) paramName) const;
-	void finish  ();
+	void addParam(const LPRDORTPParam& param);
+	void addParam(const std::string& param_name, rdo::runtime::RDOType::TypeID param_typeID);
+	LPRDORTPParam findRTPParam(const std::string& paramName) const;
+	void finish();
 
-	ruint           getRTPParamNumber(CREF(tstring) paramName) const;
-	CREF(ParamList) getParams        ()                        const { return m_params; }
+	std::size_t getRTPParamNumber(const std::string& paramName) const;
+	const ParamList& getParams() const { return m_params; }
 
-	void writeModelStructure(REF(std::ostream) stream) const;
+	void writeModelStructure(std::ostream& stream) const;
 
 private:
-	RDORTPResType(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
+	RDORTPResType(Converter* pParser, const RDOParserSrcInfo& src_info, bool permanent);
 	virtual ~RDORTPResType();
 
-	const rsint m_number;
-	const rbool m_permanent;
-	ParamList   m_params;
+	const int m_number;
+	const bool m_permanent;
+	ParamList m_params;
 };
 DECLARE_POINTER(RDORTPResType);
 
@@ -80,7 +82,7 @@ DECLARE_POINTER(RDORTPResType);
 //class RDORTPFuzzyMembershiftPoint: public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
-//	RDORTPFuzzyMembershiftPoint(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, double x_value, double y_value):
+//	RDORTPFuzzyMembershiftPoint(Converter* pParser, const RDOParserSrcInfo& src_info, double x_value, double y_value):
 //		RDOParserObject(pParser),
 //		RDOParserSrcInfo(src_info),
 //		m_x_value(x_value),
@@ -103,14 +105,14 @@ DECLARE_POINTER(RDORTPResType);
 //class RDORTPFuzzyMembershiftFun: public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
-//	RDORTPFuzzyMembershiftFun(PTR(Converter) pParser):
+//	RDORTPFuzzyMembershiftFun(Converter* pParser):
 //		RDOParserObject(pParser)
 //		{
 //		}
 //	virtual ~RDORTPFuzzyMembershiftFun() {}
 //
-//	typedef PTR(RDORTPFuzzyMembershiftPoint) Item;
-//	typedef std::vector< Item >              Items;
+//	typedef RDORTPFuzzyMembershiftPoint* Item;
+//	typedef std::vector<Item> Items;
 //
 //	void add(Item point)
 //	{
@@ -131,7 +133,7 @@ DECLARE_POINTER(RDORTPResType);
 //class RDORTPFuzzyTerm: public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
-//	RDORTPFuzzyTerm(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyMembershiftFun) pMembersfift_fun):
+//	RDORTPFuzzyTerm(Converter* pParser, const RDOParserSrcInfo& src_info, RDORTPFuzzyMembershiftFun* pMembersfift_fun):
 //		RDOParserObject(pParser),
 //		RDOParserSrcInfo(src_info),
 //		m_fun (pMembersfift_fun)
@@ -139,11 +141,11 @@ DECLARE_POINTER(RDORTPResType);
 //		}
 //	virtual ~RDORTPFuzzyTerm() {}
 //
-//	CREF(tstring) name       () const { return src_info().src_text(); }
-//	double        MemberShift() const { return m_fun->getVal();       }
+//	const std::string& name() const { return src_info().src_text(); }
+//	double MemberShift() const { return m_fun->getVal(); }
 //
 //private:
-//	PTR(RDORTPFuzzyMembershiftFun) m_fun;
+//	RDORTPFuzzyMembershiftFun* m_fun;
 //};
 //// --------------------------------------------------------------------------------
 //// -------------------- RDORTPFuzzyTermsSet - набор терминов одного параметра
@@ -151,20 +153,20 @@ DECLARE_POINTER(RDORTPResType);
 //class RDORTPFuzzyTermsSet: public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
-//	RDORTPFuzzyTermsSet(PTR(Converter) pParser)
+//	RDORTPFuzzyTermsSet(Converter* pParser)
 //		: RDOParserObject(pParser)
 //	{
 //	}
 //	virtual ~RDORTPFuzzyTermsSet() {}
 //
-//	typedef PTR(RDORTPFuzzyTerm) Item;
-//	typedef std::vector<Item>    Items;
+//	typedef RDORTPFuzzyTerm* Item;
+//	typedef std::vector<Item> Items;
 //
 //	void add(Item term)
 //	{
 //		m_terms.push_back(term);
 //	}
-//	rbool empty() const
+//	bool empty() const
 //	{
 //		return m_terms.empty();
 //	}
@@ -179,7 +181,7 @@ DECLARE_POINTER(RDORTPResType);
 //class RDORTPFuzzyParam : public RDOParserObject, public RDOParserSrcInfo
 //{
 //public:
-//	RDORTPFuzzyParam(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, PTR(RDORTPFuzzyTermsSet) terms_set):
+//	RDORTPFuzzyParam(Converter* pParser, const RDOParserSrcInfo& src_info, RDORTPFuzzyTermsSet* terms_set):
 //		RDOParserObject(pParser),
 //		RDOParserSrcInfo(src_info),
 //		m_set (terms_set)
@@ -187,10 +189,10 @@ DECLARE_POINTER(RDORTPResType);
 //		}
 //	virtual ~RDORTPFuzzyParam() {}
 //
-//	CREF(tstring) name() const { return src_info().src_text(); }
+//	const std::string& name() const { return src_info().src_text(); }
 //
 //private:
-//	PTR(RDORTPFuzzyTermsSet) m_set; // набор терминов параметра
+//	RDORTPFuzzyTermsSet* m_set; // набор терминов параметра
 //};
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

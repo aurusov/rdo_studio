@@ -9,7 +9,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
 
@@ -18,21 +17,21 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcDiv
 // --------------------------------------------------------------------------------
-inline RDOCalcDiv::RDOCalcDiv(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+inline RDOCalcDiv::RDOCalcDiv(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
 	: parent_type(pLeft, pRight)
 {}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcPlusEnumSafe
 // --------------------------------------------------------------------------------
-inline RDOCalcPlusEnumSafe::RDOCalcPlusEnumSafe(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+inline RDOCalcPlusEnumSafe::RDOCalcPlusEnumSafe(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
 	: RDOCalcPlus(pLeft, pRight)
 {}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcMultEnumSafe
 // --------------------------------------------------------------------------------
-inline RDOCalcMultEnumSafe::RDOCalcMultEnumSafe(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+inline RDOCalcMultEnumSafe::RDOCalcMultEnumSafe(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
 	: RDOCalcMult(pLeft, pRight)
 {}
 

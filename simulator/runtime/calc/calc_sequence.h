@@ -21,24 +21,26 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Инициализация последовательности псевдослучайных чисел
-CALC(RDOCalcSeqInit)
+PREDECLARE_POINTER(RDOCalcSeqInit);
+class RDOCalcSeqInit: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcSeqInit)
 public:
 	void setBase(int base);
 
 private:
-	RDOCalcSeqInit(int base, PTR(RandGenerator) gen);
+	RDOCalcSeqInit(int base, RandGenerator* gen);
 	virtual ~RDOCalcSeqInit();
 
-	int                m_base;
-	PTR(RandGenerator) m_gen;
+	int m_base;
+	RandGenerator* m_gen;
 
 	DECLARE_ICalc;
 };
 
 //! Вычисляет следующее значение последовательности псевдослучайных чисел
-CALC_SUB(RDOCalcSeqNext, RDOFunCalc)
+PREDECLARE_POINTER(RDOCalcSeqNext);
+class RDOCalcSeqNext: public RDOFunCalc
 {
 public:
 	struct Range
@@ -47,16 +49,16 @@ public:
 		double  m_max;
 
 		Range();
-		Range(CREF(double) min, CREF(double) max);
+		Range(const double& min, const double& max);
 	};
 
-	rbool                   m_res_real;
-	boost::optional<Range>  m_range;
+	bool m_res_real;
+	boost::optional<Range> m_range;
 
 protected:
 	RDOCalcSeqNext();
 
-	virtual RDOValue getNextValue(CREF(LPRDORuntime) pRuntime) = 0;
+	virtual RDOValue getNextValue(const LPRDORuntime& pRuntime) = 0;
 };
 
 //! Псевдослучайное распределение
@@ -64,9 +66,9 @@ template<class T>
 class RDOCalcRandomDistribution: public RDOCalcSeqNext
 {
 protected:
-	RDOCalcRandomDistribution(PTR(T) gen);
+	RDOCalcRandomDistribution(T* gen);
 	virtual ~RDOCalcRandomDistribution();
-	PTR(T) m_gen;
+	T* m_gen;
 
 private:
 	DECLARE_ICalc;
@@ -76,16 +78,17 @@ private:
   \def     DEFINE_RANDON_DISTRIBUTION
   \brief   Макрос для разных законов распределения
 */
-#define DEFINE_RANDON_DISTRIBUTION(CalcName, Distribution)                  \
-CALC_SUB(RDOCalcSeqNext##CalcName, RDOCalcRandomDistribution<Distribution>) \
-{                                                                           \
-DECLARE_FACTORY(RDOCalcSeqNext##CalcName)                                   \
-private:                                                                    \
-	RDOCalcSeqNext##CalcName(PTR(Distribution) gen)                         \
-		: RDOCalcRandomDistribution<Distribution>(gen)                      \
-	{}                                                                      \
-                                                                            \
-	virtual RDOValue getNextValue(CREF(LPRDORuntime) pRuntime);             \
+#define DEFINE_RANDON_DISTRIBUTION(CalcName, Distribution)                     \
+PREDECLARE_POINTER(RDOCalcSeqNext##CalcName);                                  \
+class RDOCalcSeqNext##CalcName: public RDOCalcRandomDistribution<Distribution> \
+{                                                                              \
+DECLARE_FACTORY(RDOCalcSeqNext##CalcName)                                      \
+private:                                                                       \
+	RDOCalcSeqNext##CalcName(Distribution* gen)                                \
+		: RDOCalcRandomDistribution<Distribution>(gen)                         \
+	{}                                                                         \
+	                                                                           \
+	virtual RDOValue getNextValue(const LPRDORuntime& pRuntime);               \
 };
 
 /*!

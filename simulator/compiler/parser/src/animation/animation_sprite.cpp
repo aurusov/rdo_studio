@@ -17,7 +17,7 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-RDOFRMSprite::RDOFRMSprite(CREF(RDOParserSrcInfo) src_info)
+RDOFRMSprite::RDOFRMSprite(const RDOParserSrcInfo& src_info)
 	: RDOFRMCommandList(src_info)
 {
 	m_pSprite = rdo::Factory<rdo::runtime::RDOFRMSprite>::create(function()->src_info());

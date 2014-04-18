@@ -44,13 +44,13 @@ public:
 
 	bool isMDIMaximazed() const { return true; }
 
-	REF(DockBuild)      getDockBuild    () { ASSERT(m_pDockBuild    ); return *m_pDockBuild;     }
-	REF(DockDebug)      getDockDebug    () { ASSERT(m_pDockDebug    ); return *m_pDockDebug;     }
-	REF(DockTrace)      getDockTrace    () { ASSERT(m_pDockTrace    ); return *m_pDockTrace;     }
-	REF(DockResults)    getDockResults  () { ASSERT(m_pDockResults  ); return *m_pDockResults;   }
-	REF(DockFind)       getDockFind     () { ASSERT(m_pDockFind     ); return *m_pDockFind;      }
-	REF(DockChartTree)  getDockChartTree() { ASSERT(m_pDockChartTree); return *m_pDockChartTree; }
-	REF(DockFrame)      getDockFrame    () { ASSERT(m_pDockFrame    ); return *m_pDockFrame;     }
+	DockBuild&      getDockBuild    () { ASSERT(m_pDockBuild    ); return *m_pDockBuild;     }
+	DockDebug&      getDockDebug    () { ASSERT(m_pDockDebug    ); return *m_pDockDebug;     }
+	DockTrace&      getDockTrace    () { ASSERT(m_pDockTrace    ); return *m_pDockTrace;     }
+	DockResults&    getDockResults  () { ASSERT(m_pDockResults  ); return *m_pDockResults;   }
+	DockFind&       getDockFind     () { ASSERT(m_pDockFind     ); return *m_pDockFind;      }
+	DockChartTree&  getDockChartTree() { ASSERT(m_pDockChartTree); return *m_pDockChartTree; }
+	DockFrame&      getDockFrame    () { ASSERT(m_pDockFrame    ); return *m_pDockFrame;     }
 
 	virtual void updateAllStyles() = 0;
 
@@ -61,13 +61,13 @@ public:
 	virtual void activateSubWindow(QWidget* pWidget) = 0;
 
 protected:
-	PTR(DockBuild)      m_pDockBuild;
-	PTR(DockDebug)      m_pDockDebug;
-	PTR(DockTrace)      m_pDockTrace;
-	PTR(DockResults)    m_pDockResults;
-	PTR(DockFind)       m_pDockFind;
-	PTR(DockChartTree)  m_pDockChartTree;
-	PTR(DockFrame)      m_pDockFrame;
+	DockBuild*      m_pDockBuild;
+	DockDebug*      m_pDockDebug;
+	DockTrace*      m_pDockTrace;
+	DockResults*    m_pDockResults;
+	DockFind*       m_pDockFind;
+	DockChartTree*  m_pDockChartTree;
+	DockFrame*      m_pDockFrame;
 };
 
 #endif // _RDO_STUDIO_MAIN_WINDOW_BASE_H_

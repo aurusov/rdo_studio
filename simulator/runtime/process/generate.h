@@ -22,11 +22,12 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-OBJECT_INTERFACE(IInternalStatistics)
+PREDECLARE_OBJECT_INTERFACE(IInternalStatistics)
+struct IInternalStatistics: public rdo::RefCounter<IInternalStatistics>
 {
 DECLARE_FACTORY(IInternalStatistics)
 public:
-	virtual void setTransCount(ruint count) = 0;
+	virtual void setTransCount(std::size_t count) = 0;
 
 protected:
 	IInternalStatistics()
@@ -40,7 +41,7 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IInternalStatisticsManager
 {
 public:
-	virtual void setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics) = 0;
+	virtual void setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics) = 0;
 
 protected:
 	IInternalStatisticsManager()
@@ -50,7 +51,7 @@ protected:
 };
 
 #define DECLARE_IInternalStatisticsManager \
-	virtual void setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics);
+	virtual void setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics);
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -68,19 +69,19 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 public:
-	void calcNextTimeInterval(CREF(LPRDORuntime) pRuntime);
+	void calcNextTimeInterval(const LPRDORuntime& pRuntime);
 
 private:
-	RDOPROCGenerate(LPIPROCProcess process, CREF(LPRDOCalc) pTime, CREF(LPRDOCalc) pCreateAndGoOnTransactCalc, boost::optional<ruint> maxCreateTransactCount = boost::optional<ruint>());
+	RDOPROCGenerate(LPIPROCProcess process, const LPRDOCalc& pTime, const LPRDOCalc& pCreateAndGoOnTransactCalc, boost::optional<std::size_t> maxCreateTransactCount = boost::optional<std::size_t>());
 
-	double                 timeNext;
-	LPRDOCalc              m_pTimeCalc;
-	LPRDOCalc              m_pCreateAndGoOnTransactCalc;
-	boost::optional<ruint> m_maxCreateTransactCount;
-	ruint                  m_createdTransactCount;
-	LPIInternalStatistics  m_pStatistics;
+	double timeNext;
+	LPRDOCalc m_pTimeCalc;
+	LPRDOCalc m_pCreateAndGoOnTransactCalc;
+	boost::optional<std::size_t> m_maxCreateTransactCount;
+	std::size_t m_createdTransactCount;
+	LPIInternalStatistics m_pStatistics;
 
-	void onMakePlaned(CREF(LPRDORuntime) pRuntime);
+	void onMakePlaned(const LPRDORuntime& pRuntime);
 
 	DECLARE_IBaseOperation;
 	DECLARE_IInternalStatisticsManager;

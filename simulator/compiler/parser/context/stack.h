@@ -24,7 +24,8 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(Context);
 
-OBJECT(ContextStack)
+PREDECLARE_POINTER(ContextStack);
+class ContextStack: public rdo::counter_reference
 {
 DECLARE_FACTORY(ContextStack);
 public:
@@ -37,7 +38,7 @@ public:
 
 	LPContext top   () const;
 	LPContext global() const;
-	LPContext prev  (CREF(LPContext) pContext) const;
+	LPContext prev  (const LPContext& pContext) const;
 
 	void pop_not_safed();
 

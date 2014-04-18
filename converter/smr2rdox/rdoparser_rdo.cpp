@@ -46,7 +46,7 @@ RDOParserRDOItem::~RDOParserRDOItem()
 	}
 }
 
-void RDOParserRDOItem::parse(PTR(Converter) pParser, REF(std::istream) streamIn)
+void RDOParserRDOItem::parse(Converter* pParser, std::istream& streamIn)
 {
 	ASSERT(pParser);
 
@@ -63,13 +63,13 @@ void RDOParserRDOItem::parse(PTR(Converter) pParser, REF(std::istream) streamIn)
 		m_parser_fun(m_pLexer);
 }
 
-PTR(RDOLexer) RDOParserRDOItem::getLexer(PTR(Converter) pParser, PTR(std::istream) streamIn, PTR(std::ostream) streamOut)
+RDOLexer* RDOParserRDOItem::getLexer(Converter* pParser, std::istream* streamIn, std::ostream* streamOut)
 {
 	ASSERT(pParser);
 	return new RDOLexer(pParser, streamIn, streamOut);
 }
 
-ruint RDOParserRDOItem::lexer_loc_line()
+std::size_t RDOParserRDOItem::lexer_loc_line()
 {
 	if (m_pLexer)
 	{
@@ -77,11 +77,11 @@ ruint RDOParserRDOItem::lexer_loc_line()
 	}
 	else
 	{
-		return ruint(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
+		return std::size_t(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
 	}
 }
 
-ruint RDOParserRDOItem::lexer_loc_pos()
+std::size_t RDOParserRDOItem::lexer_loc_pos()
 {
 	return m_pLexer && m_pLexer->m_lploc ? m_pLexer->m_lploc->m_first_pos : 0;
 }
@@ -93,7 +93,7 @@ RDOParserRSS::RDOParserRSS()
 	: RDOParserRDOItem(rdo::converter::smr2rdox::RSS_IN, cnv_rssparse, cnv_rsserror, cnv_rsslex)
 {}
 
-void RDOParserRSS::parse(PTR(Converter) pParser, REF(std::istream) streamIn)
+void RDOParserRSS::parse(Converter* pParser, std::istream& streamIn)
 {
 	ASSERT(pParser);
 	pParser->setHaveKWResources   (false);
@@ -110,7 +110,7 @@ RDOParserRSSPost::RDOParserRSSPost()
 	m_needStream = false;
 }
 
-void RDOParserRSSPost::parse(PTR(Converter) pParser)
+void RDOParserRSSPost::parse(Converter* pParser)
 {
 	ASSERT(pParser);
 
@@ -188,10 +188,8 @@ int roundLocal(double value)
 	return (int)floor(value + 0.5);
 }
 
-void RDOParserSTDFUN::parse(PTR(Converter) pParser)
+void RDOParserSTDFUN::parse(Converter* /*pParser*/)
 {
-	UNUSED(pParser);
-
 	typedef rdo::runtime::std_fun1<double, double>         StdFun_D_D;
 	typedef rdo::runtime::std_fun2<double, double, double> StdFun_D_DD;
 	typedef rdo::runtime::std_fun2<double, double, int>    StdFun_D_DI;

@@ -24,7 +24,8 @@ OPEN_COMPILER_GUI_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlock
 // --------------------------------------------------------------------------------
-OBJECT(RPShapeDataBlock)
+PREDECLARE_POINTER(RPShapeDataBlock);
+class RPShapeDataBlock: public rdo::counter_reference
 {
 DECLARE_FACTORY(RPShapeDataBlock);
 public:
@@ -37,28 +38,28 @@ public:
 		Triangular
 	};
 
-	void setBase  (int base   );
-	void setDisp  (double disp);
-	void setExp   (double exp );
-	void setMax   (double max );
+	void setBase(int base);
+	void setDisp(double disp);
+	void setExp(double exp);
+	void setMax(double max);
 
-	zakonRaspr    getZakon() const { return m_zakon; }
-	CREF(tstring) getName () const { return m_name;  }
-	int           getBase () const { return m_base;  }
-	double        getDisp () const { return m_disp;  }
-	double        getExp  () const { return m_exp;   }
-	double        getMax  () const { return m_max;   }
+	zakonRaspr getZakon() const { return m_zakon; }
+	const std::string& getName () const { return m_name; }
+	int getBase() const { return m_base; }
+	double getDisp() const { return m_disp; }
+	double getExp() const { return m_exp; }
+	double getMax() const { return m_max; }
 
 protected:
-	RPShapeDataBlock(zakonRaspr zakon, CREF(tstring) name);
+	RPShapeDataBlock(zakonRaspr zakon, const std::string& name);
 	virtual ~RPShapeDataBlock() {}
 
 	zakonRaspr m_zakon;
-	tstring    m_name;
-	int        m_base;
-	double     m_exp;
-	double     m_disp;
-	double     m_max;
+	std::string m_name;
+	int m_base;
+	double m_exp;
+	double m_disp;
+	double m_max;
 };
 
 // --------------------------------------------------------------------------------
@@ -68,41 +69,42 @@ class RPShapeDataBlockCreate: public RPShapeDataBlock
 {
 DECLARE_FACTORY(RPShapeDataBlockCreate)
 public:
-	boost::optional<ruint>  getAmount() const      { return m_amount; }
-	void setAmount(boost::optional<ruint> amount);
+	boost::optional<std::size_t> getAmount() const { return m_amount; }
+	void setAmount(boost::optional<std::size_t> amount);
 
-	CREF(rdo::runtime::LPIInternalStatistics) getStatistics() const      { return m_pStatistics; }
-	void setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics);
+	const rdo::runtime::LPIInternalStatistics& getStatistics() const { return m_pStatistics; }
+	void setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics);
 
 private:
-	RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name);
+	RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, const std::string& name);
 	virtual ~RPShapeDataBlockCreate();
 
-	boost::optional<ruint>               m_amount;
-	rdo::runtime::LPIInternalStatistics  m_pStatistics;
+	boost::optional<std::size_t> m_amount;
+	rdo::runtime::LPIInternalStatistics m_pStatistics;
 };
 DECLARE_POINTER(RPShapeDataBlockCreate);
 
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlockTerminate
 // --------------------------------------------------------------------------------
-OBJECT(RPShapeDataBlockTerminate)
+PREDECLARE_POINTER(RPShapeDataBlockTerminate);
+class RPShapeDataBlockTerminate: public rdo::counter_reference
 {
 DECLARE_FACTORY(RPShapeDataBlockTerminate)
 public:
-	void    setTermInc(int term_inc);
-	int     getTermInc() const        { return m_term_inc; }
-	tstring getName   () const        { return m_name;     }
+	void setTermInc(int term_inc);
+	int getTermInc() const { return m_term_inc; }
+	std::string getName() const { return m_name; }
 
-	CREF(rdo::runtime::LPIInternalStatistics) getStatistics() const      { return m_pStatistics; }
-	void setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics);
+	const rdo::runtime::LPIInternalStatistics& getStatistics() const { return m_pStatistics; }
+	void setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics);
 
 private:
-	RPShapeDataBlockTerminate(CREF(tstring) name);
+	RPShapeDataBlockTerminate(const std::string& name);
 	virtual ~RPShapeDataBlockTerminate();
 
-	int                                 m_term_inc;
-	tstring                             m_name;
+	int m_term_inc;
+	std::string m_name;
 	rdo::runtime::LPIInternalStatistics m_pStatistics;
 };
 
@@ -120,20 +122,20 @@ public:
 		A_RELEASE
 	};
 
-	typedef  std::list<Action>   ActionList;
-	typedef  std::list<tstring>  ResNameList;
+	typedef std::list<Action> ActionList;
+	typedef std::list<std::string> ResNameList;
 
 	void addAction(Action action);
-	void addRes   (CREF(tstring) res);
+	void addRes(const std::string& res);
 	
-	CREF(ActionList)  getActionList () const;
-	CREF(ResNameList) getResNameList() const;
+	const ActionList& getActionList () const;
+	const ResNameList& getResNameList() const;
 
-	CREF(rdo::runtime::LPIInternalStatistics) getStatistics() const      { return m_pStatistics; }
-	void setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics);
+	const rdo::runtime::LPIInternalStatistics& getStatistics() const { return m_pStatistics; }
+	void setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics);
 
 private:
-	RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name);
+	RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, const std::string& name);
 	virtual ~RPShapeDataBlockProcess();
 
 	ActionList  m_actionList;

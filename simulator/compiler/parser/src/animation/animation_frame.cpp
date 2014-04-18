@@ -20,22 +20,20 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-int frmlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int frmlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void frmerror(const char* message)
-{
-	UNUSED(message);
-}
+void frmerror(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMFrame
 // --------------------------------------------------------------------------------
-RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
+RDOFRMFrame::RDOFRMFrame(const RDOParserSrcInfo& srcInfo)
 	: RDOFRMCommandList(srcInfo)
 {
 	m_pFrame = rdo::Factory<rdo::runtime::RDOFRMFrame>::create(function()->src_info());
@@ -48,7 +46,7 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
 RDOFRMFrame::~RDOFRMFrame()
 {}
 
-CREF(rdo::runtime::LPRDOFRMFrame) RDOFRMFrame::frame() const
+const rdo::runtime::LPRDOFRMFrame& RDOFRMFrame::frame() const
 {
 	return m_pFrame;
 }

@@ -12,7 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo
@@ -21,13 +20,13 @@ namespace rdo
 	{
 		struct ScrollMetric
 		{
-			rsint position;
-			rsint posMax;
-			rsint pageSize;
+			int position;
+			int posMax;
+			int pageSize;
 
 			ScrollMetric();
 
-			rbool applyInc(rsint delta);
+			bool applyInc(int delta);
 		};
 	} // namespace gui
 } // namespace rdo

@@ -32,11 +32,11 @@ private:
 		: RDOParserItem(rdoModelObjects::FUN, NULL, NULL, NULL)
 	{}
 
-	virtual void parse(CREF(LPRDOParser) pParser);
+	virtual void parse(const LPRDOParser& pParser);
 
 	typedef rdo::vector<LPTypeInfo> ParamList;
-	void generate    (CREF(tstring) name, CREF(rdo::runtime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const;
-	void generateReal(CREF(tstring) name, CREF(rdo::runtime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const;
+	void generate(const std::string& name, const rdo::runtime::LPRDOFunCalc& pCalc, const LPRDOParam& pReturnType, const ParamList& paramList) const;
+	void generateReal(const std::string& name, const rdo::runtime::LPRDOFunCalc& pCalc, const LPRDOParam& pReturnType, const ParamList& paramList) const;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

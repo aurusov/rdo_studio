@@ -24,22 +24,22 @@ namespace
 	const std::string ERROR_STRING("ошибка");
 }
 
-BuildEditLineInfo::BuildEditLineInfo(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type)
+BuildEditLineInfo::BuildEditLineInfo(const std::string& text, rdoModelObjects::RDOFileType file, std::size_t line, std::size_t pos, Type type)
 	: LogEditLineInfo(text, file, line, pos, type)
 {}
 
-BuildEditLineInfo::BuildEditLineInfo(CREF(FileMessage) message)
+BuildEditLineInfo::BuildEditLineInfo(const FileMessage& message)
 	: LogEditLineInfo(message)
 {}
 
-BuildEditLineInfo::BuildEditLineInfo(CREF(tstring) message)
+BuildEditLineInfo::BuildEditLineInfo(const std::string& message)
 	: LogEditLineInfo(message)
 {}
 
 BuildEditLineInfo::~BuildEditLineInfo()
 {}
 
-tstring BuildEditLineInfo::getMessage() const
+std::string BuildEditLineInfo::getMessage() const
 {
 	if (isSimpleTextMessage())
 	{
@@ -47,9 +47,9 @@ tstring BuildEditLineInfo::getMessage() const
 	}
 	else
 	{
-		const tstring file = rdoModelObjects::getFileTypeString(getFileType());
-		const tstring error = (getType() == FileMessage::MT_WARNING) ? WARNING_STRING : ERROR_STRING;
-		const tstring text = rdo::format("%s (%d): %s: %s", file.c_str(), getLineNumber() + 1, error.c_str(), getText().c_str());
+		const std::string file = rdoModelObjects::getFileTypeString(getFileType());
+		const std::string error = (getType() == FileMessage::MT_WARNING) ? WARNING_STRING : ERROR_STRING;
+		const std::string text = rdo::format("%s (%d): %s: %s", file.c_str(), getLineNumber() + 1, error.c_str(), getText().c_str());
 		return text;
 	}
 }

@@ -23,34 +23,30 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int cnv_patlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_patlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void cnv_paterror(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_paterror(const char* /*message*/)
+{}
 
-int pat_preparse_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int pat_preparse_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void pat_preparse_error(const char* message)
-{
-	UNUSED(message);
-}
+void pat_preparse_error(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPATPattern
 // --------------------------------------------------------------------------------
-RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
+RDOPATPattern::RDOPATPattern(const RDOParserSrcInfo& name_src_info)
 	: RDOParserSrcInfo    (name_src_info)
 	, m_useCommonChoice   (false        )
 	, m_currentRelResIndex(0            )
@@ -65,7 +61,7 @@ RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 	Converter::s_converter()->insertPATPattern(this);
 }
 
-tstring RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus value)
+std::string RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus value)
 {
 	switch (value)
 	{
@@ -76,10 +72,10 @@ tstring RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus valu
 	case rdo::runtime::RDOResource::CS_NoChange: return "NoChange";
 	default                                    : NEVER_REACH_HERE;
 	}
-	return tstring();
+	return std::string();
 }
 
-rdo::runtime::RDOResource::ConvertStatus RDOPATPattern::StrToStatus(CREF(tstring) value, CREF(YYLTYPE) convertor_pos)
+rdo::runtime::RDOResource::ConvertStatus RDOPATPattern::StrToStatus(const std::string& value, const YYLTYPE& convertor_pos)
 {
 	if (value == "Keep" || value == "keep")
 	{
@@ -105,7 +101,7 @@ rdo::runtime::RDOResource::ConvertStatus RDOPATPattern::StrToStatus(CREF(tstring
 	return rdo::runtime::RDOResource::CS_Keep;
 }
 
-void RDOPATPattern::beforeRelRensert(CREF(RDOParserSrcInfo) rel_info)
+void RDOPATPattern::beforeRelRensert(const RDOParserSrcInfo& rel_info)
 {
 	if (findRelevantResource(rel_info.src_text()))
 	{
@@ -113,7 +109,7 @@ void RDOPATPattern::beforeRelRensert(CREF(RDOParserSrcInfo) rel_info)
 	}
 }
 
-void RDOPATPattern::rel_res_insert(CREF(LPRDORelevantResource) pRelevantResource)
+void RDOPATPattern::rel_res_insert(const LPRDORelevantResource& pRelevantResource)
 {
 	ASSERT(pRelevantResource);
 	switch (getType())
@@ -127,7 +123,7 @@ void RDOPATPattern::rel_res_insert(CREF(LPRDORelevantResource) pRelevantResource
 	m_relResList.push_back(pRelevantResource);
 }
 
-void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPConvertCmdList) commands, CREF(YYLTYPE) convertor_pos, CREF(YYLTYPE) trace_pos, rdo::runtime::RDOResource::ConvertStatus status)
+void RDOPATPattern::addRelResConvert(bool trace, const LPConvertCmdList& commands, const YYLTYPE& convertor_pos, const YYLTYPE& trace_pos, rdo::runtime::RDOResource::ConvertStatus status)
 {
 	if (status == rdo::runtime::RDOResource::CS_NoChange || status == rdo::runtime::RDOResource::CS_NonExist)
 	{
@@ -158,7 +154,7 @@ void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPConvertCmdList) command
 	m_pCurrRelRes->getParamSetList().reset();
 }
 
-void RDOPATPattern::addParamSetCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
+void RDOPATPattern::addParamSetCalc(const rdo::runtime::LPRDOCalc& pCalc)
 {
 	switch (getType())
 	{
@@ -170,12 +166,12 @@ void RDOPATPattern::addParamSetCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
 	}
 }
 
-tstring RDOPATPattern::getPatternId() const
+std::string RDOPATPattern::getPatternId() const
 { 
 	return m_pPatRuntime->traceId(); 
 }
 
-void RDOPATPattern::writeModelStructure(REF(std::ostream) stream) const
+void RDOPATPattern::writeModelStructure(std::ostream& stream) const
 {
 	stream << getPatternId() << " " << name() << " " << getModelStructureLetter() << " " << m_relResList.size();
 	for (const auto& resource: m_relResList)
@@ -184,31 +180,31 @@ void RDOPATPattern::writeModelStructure(REF(std::ostream) stream) const
 	stream << std::endl;
 }
 
-LPRDOParam RDOPATPattern::findPATPatternParam(CREF(tstring) paramName) const
+LPRDOParam RDOPATPattern::findPATPatternParam(const std::string& paramName) const
 {
 	ParamList::const_iterator it = std::find_if(m_paramList.begin(), m_paramList.end(), compareName<RDOParam>(paramName));
 	return it != m_paramList.end() ? (*it) : LPRDOParam(NULL);
 }
 
-LPRDORelevantResource RDOPATPattern::findRelevantResource(CREF(tstring) resName) const
+LPRDORelevantResource RDOPATPattern::findRelevantResource(const std::string& resName) const
 {
 	RelResList::const_iterator it = std::find_if(m_relResList.begin(), m_relResList.end(), compareName<RDORelevantResource>(resName));
 	return it != m_relResList.end() ? (*it) : LPRDORelevantResource(NULL);
 }
 
-int RDOPATPattern::findPATPatternParamNum(CREF(tstring) paramName) const
+int RDOPATPattern::findPATPatternParamNum(const std::string& paramName) const
 {
 	ParamList::const_iterator it = std::find_if(m_paramList.begin(), m_paramList.end(), compareName<RDOParam>(paramName));
 	return it != m_paramList.end() ? it - m_paramList.begin() : -1;
 }
 
-ruint RDOPATPattern::findRelevantResourceNum(CREF(tstring) resName) const
+std::size_t RDOPATPattern::findRelevantResourceNum(const std::string& resName) const
 {
 	RelResList::const_iterator it = std::find_if(m_relResList.begin(), m_relResList.end(), compareName<RDORelevantResource>(resName));
-	return it != m_relResList.end() ? it - m_relResList.begin() : ruint(~0);
+	return it != m_relResList.end() ? it - m_relResList.begin() : std::size_t(~0);
 }
 
-void RDOPATPattern::add(CREF(LPRDOParam) pParam)
+void RDOPATPattern::add(const LPRDOParam& pParam)
 {
 	ASSERT(pParam);
 
@@ -234,21 +230,21 @@ void RDOPATPattern::setCommonChoiceFirst()
 //	rdo::converter::smr2rdox::g_error().error("Вызывать нельзя, т.к. в сообщениях об ошибках используется m_pCommonChoice");
 }
 
-void RDOPATPattern::setCommonChoiceWithMin(CREF(LPRDOFUNArithm) arithm)
+void RDOPATPattern::setCommonChoiceWithMin(const LPRDOFUNArithm& arithm)
 {
 	m_useCommonChoice  = true;
 	m_useCommonWithMax = false;
 	m_pCommonChoice    = arithm;
 }
 
-void RDOPATPattern::setCommonChoiceWithMax(CREF(LPRDOFUNArithm) arithm)
+void RDOPATPattern::setCommonChoiceWithMax(const LPRDOFUNArithm& arithm)
 {
 	m_useCommonChoice  = true;
 	m_useCommonWithMax = true;
 	m_pCommonChoice    = arithm;
 }
 
-void RDOPATPattern::setTime(REF(LPRDOFUNArithm) arithm)
+void RDOPATPattern::setTime(LPRDOFUNArithm& arithm)
 { 
 	switch (getType())
 	{
@@ -259,7 +255,7 @@ void RDOPATPattern::setTime(REF(LPRDOFUNArithm) arithm)
 	}
 }
 
-void RDOPATPattern::addChoiceFromCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
+void RDOPATPattern::addChoiceFromCalc(const rdo::runtime::LPRDOCalc& pCalc)
 {
 	switch (getType())
 	{
@@ -271,7 +267,7 @@ void RDOPATPattern::addChoiceFromCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
 	}
 }
 
-void RDOPATPattern::addRelResBody(CREF(RDOParserSrcInfo) body_name)
+void RDOPATPattern::addRelResBody(const RDOParserSrcInfo& body_name)
 { 
 	RelResList::const_iterator it = std::find_if(m_relResList.begin(), m_relResList.end(), compareName<RDORelevantResource>(body_name.src_text()));
 	if (it == m_relResList.end())
@@ -280,7 +276,7 @@ void RDOPATPattern::addRelResBody(CREF(RDOParserSrcInfo) body_name)
 	}
 	if (findRelevantResourceNum(body_name.src_text()) != m_currentRelResIndex)
 	{
-		tstring rel_res_waiting = m_currentRelResIndex < m_relResList.size() ? m_relResList[m_currentRelResIndex]->name().c_str() : "";
+		std::string rel_res_waiting = m_currentRelResIndex < m_relResList.size() ? m_relResList[m_currentRelResIndex]->name().c_str() : "";
 		rdo::converter::smr2rdox::g_error().error(body_name.src_info(), rdo::format("Ожидается описание релевантного ресурса '%s', вместо него найдено: %s", rel_res_waiting.c_str(), body_name.src_text().c_str()));
 	}
 	if ((*it)->m_alreadyHaveConverter)
@@ -293,7 +289,7 @@ void RDOPATPattern::addRelResBody(CREF(RDOParserSrcInfo) body_name)
 	m_currentRelResIndex++;
 }
 
-void RDOPATPattern::addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(LPRDOPATChoiceOrder) pChoiceOrder)
+void RDOPATPattern::addRelResUsage(const LPRDOPATChoiceFrom& pChoiceFrom, const LPRDOPATChoiceOrder& pChoiceOrder)
 {
 	if (!m_useCommonChoice)
 	{
@@ -403,7 +399,7 @@ void RDOPATPattern::end()
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternIrregEvent
 // --------------------------------------------------------------------------------
-RDOPatternIrregEvent::RDOPatternIrregEvent(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
+RDOPatternIrregEvent::RDOPatternIrregEvent(const RDOParserSrcInfo& name_src_info, bool trace)
 	: RDOPATPattern(name_src_info)
 {
 	m_pPatRuntime = rdo::Factory<rdo::runtime::RDOPatternIrregEvent>::create(trace);
@@ -411,7 +407,7 @@ RDOPatternIrregEvent::RDOPatternIrregEvent(CREF(RDOParserSrcInfo) name_src_info,
 	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 
-void RDOPatternIrregEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdo::runtime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos)
+void RDOPatternIrregEvent::addRelRes(const RDOParserSrcInfo& rel_info, const RDOParserSrcInfo& type_info, rdo::runtime::RDOResource::ConvertStatus beg, const YYLTYPE& convertor_pos)
 {
 	beforeRelRensert(rel_info);
 	if (beg == rdo::runtime::RDOResource::CS_NonExist || beg == rdo::runtime::RDOResource::CS_NoChange)
@@ -463,7 +459,7 @@ void RDOPatternIrregEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPa
 	}
 }
 
-void RDOPatternIrregEvent::addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(LPRDOPATChoiceOrder) pChoiceOrder)
+void RDOPatternIrregEvent::addRelResUsage(const LPRDOPATChoiceFrom& pChoiceFrom, const LPRDOPATChoiceOrder& pChoiceOrder)
 {
 	if (pChoiceFrom->m_type != RDOPATChoiceFrom::ch_empty)
 	{
@@ -477,10 +473,8 @@ void RDOPatternIrregEvent::addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, 
 	m_pCurrRelRes->m_pChoiceOrder = pChoiceOrder;
 }
 
-rdo::runtime::LPRDOCalc RDOPATPattern::createRelRes(rbool trace) const
+rdo::runtime::LPRDOCalc RDOPATPattern::createRelRes(bool /*trace*/) const
 {
-	UNUSED(trace);
-
 	std::vector<rdo::runtime::RDOValue> params_default;
 	for (const auto& param: m_pCurrRelRes->getType()->getParams())
 	{
@@ -505,12 +499,12 @@ rdo::runtime::LPRDOCalc RDOPATPattern::createRelRes(rbool trace) const
 	return pCalc;
 }
 
-tstring RDOPatternIrregEvent::getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdo::runtime::RDOResource::ConvertStatus status)
+std::string RDOPatternIrregEvent::getErrorMessage_NotNeedConvertor(const std::string& name, rdo::runtime::RDOResource::ConvertStatus status)
 {
 	return rdo::format("Для релевантного ресурса '%s' не требуется конвертор (Convert_event), т.к. его статус: %s", name.c_str(), RDOPATPattern::StatusToStr(status).c_str());
 }
 
-tstring RDOPatternIrregEvent::getWarningMessage_EmptyConvertor(CREF(tstring) name, rdo::runtime::RDOResource::ConvertStatus status)
+std::string RDOPatternIrregEvent::getWarningMessage_EmptyConvertor(const std::string& name, rdo::runtime::RDOResource::ConvertStatus status)
 {
 	return rdo::format("Для релевантного ресурса '%s' указан пустой конвертор (Convert_event), хотя его статус: %s", name.c_str(), RDOPATPattern::StatusToStr(status).c_str());
 }
@@ -518,7 +512,7 @@ tstring RDOPatternIrregEvent::getWarningMessage_EmptyConvertor(CREF(tstring) nam
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternRule
 // --------------------------------------------------------------------------------
-RDOPatternRule::RDOPatternRule(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
+RDOPatternRule::RDOPatternRule(const RDOParserSrcInfo& name_src_info, bool trace)
 	: RDOPATPattern(name_src_info)
 {
 //	Converter::s_converter()->runtime()->addRuntimeRule((RDOPatternRule *)(m_pPatRuntime = new RDOPatternRule(Converter::s_converter()->runtime(), _trace))); 
@@ -527,7 +521,7 @@ RDOPatternRule::RDOPatternRule(CREF(RDOParserSrcInfo) name_src_info, rbool trace
 	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 
-void RDOPatternRule::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdo::runtime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos)
+void RDOPatternRule::addRelRes(const RDOParserSrcInfo& rel_info, const RDOParserSrcInfo& type_info, rdo::runtime::RDOResource::ConvertStatus beg, const YYLTYPE& convertor_pos)
 {
 	beforeRelRensert(rel_info);
 	if (beg == rdo::runtime::RDOResource::CS_NonExist)
@@ -577,12 +571,12 @@ void RDOPatternRule::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSr
 	}
 }
 
-tstring RDOPatternRule::getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdo::runtime::RDOResource::ConvertStatus status)
+std::string RDOPatternRule::getErrorMessage_NotNeedConvertor(const std::string& name, rdo::runtime::RDOResource::ConvertStatus status)
 {
 	return rdo::format("Для релевантного ресурса '%s' не требуется конвертор (Convert_rule), т.к. его статус: %s", name.c_str(), RDOPATPattern::StatusToStr(status).c_str());
 }
 
-tstring RDOPatternRule::getWarningMessage_EmptyConvertor(CREF(tstring) name, rdo::runtime::RDOResource::ConvertStatus status)
+std::string RDOPatternRule::getWarningMessage_EmptyConvertor(const std::string& name, rdo::runtime::RDOResource::ConvertStatus status)
 {
 	return rdo::format("Для релевантного ресурса '%s' указан пустой конвертор (Convert_rule), хотя его статус: %s", name.c_str(), RDOPATPattern::StatusToStr(status).c_str());
 }
@@ -590,7 +584,7 @@ tstring RDOPatternRule::getWarningMessage_EmptyConvertor(CREF(tstring) name, rdo
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternOperation
 // --------------------------------------------------------------------------------
-RDOPatternOperation::RDOPatternOperation(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
+RDOPatternOperation::RDOPatternOperation(const RDOParserSrcInfo& name_src_info, bool trace)
 	: RDOPATPattern  (name_src_info )
 	, m_convertorType(convert_unknow)
 {
@@ -599,30 +593,24 @@ RDOPatternOperation::RDOPatternOperation(CREF(RDOParserSrcInfo) name_src_info, r
 	m_pPatRuntime->setTraceID(Converter::s_converter()->getPAT_id());
 }
 
-RDOPatternOperation::RDOPatternOperation(rbool trace, CREF(RDOParserSrcInfo) name_src_info)
+RDOPatternOperation::RDOPatternOperation(bool /*trace*/, const RDOParserSrcInfo& name_src_info)
 	: RDOPATPattern  (name_src_info )
 	, m_convertorType(convert_unknow)
-{
-	UNUSED(trace);
-}
+{}
 
-void RDOPatternOperation::rel_res_insert(CREF(LPRDORelevantResource) pRelevantResource)
+void RDOPatternOperation::rel_res_insert(const LPRDORelevantResource& pRelevantResource)
 {
 	ASSERT(pRelevantResource);
 	RDOPATPattern::rel_res_insert(pRelevantResource);
 	getPatRuntime<rdo::runtime::RDOPatternOperation>()->addConvertorEndStatus(pRelevantResource->m_statusEnd);
 }
 
-void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdo::runtime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos)
+void RDOPatternOperation::addRelRes(const RDOParserSrcInfo& /*rel_info*/, const RDOParserSrcInfo& /*type_info*/, rdo::runtime::RDOResource::ConvertStatus /*beg*/, const YYLTYPE& convertor_pos)
 {
-	UNUSED(rel_info );
-	UNUSED(type_info);
-	UNUSED(beg      );
-
 	rdo::converter::smr2rdox::g_error().error(convertor_pos, "Внутренняя ошибка парсера");
 }
 
-void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdo::runtime::RDOResource::ConvertStatus beg, rdo::runtime::RDOResource::ConvertStatus end, CREF(YYLTYPE) convertor_begin_pos, CREF(YYLTYPE) convertor_end_pos)
+void RDOPatternOperation::addRelRes(const RDOParserSrcInfo& rel_info, const RDOParserSrcInfo& type_info, rdo::runtime::RDOResource::ConvertStatus beg, rdo::runtime::RDOResource::ConvertStatus end, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos)
 {
 	beforeRelRensert(rel_info);
 	switch (beg)
@@ -727,7 +715,7 @@ void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPar
 	}
 }
 
-void RDOPatternOperation::addRelResConvertBeginEnd(rbool trace_begin, CREF(LPConvertCmdList) cmd_begin, rbool trace_end, CREF(LPConvertCmdList) cmd_end, CREF(YYLTYPE) convertor_begin_pos, CREF(YYLTYPE) convertor_end_pos, CREF(YYLTYPE) trace_begin_pos, CREF(YYLTYPE) trace_end_pos)
+void RDOPatternOperation::addRelResConvertBeginEnd(bool trace_begin, const LPConvertCmdList& cmd_begin, bool trace_end, const LPConvertCmdList& cmd_end, const YYLTYPE& convertor_begin_pos, const YYLTYPE& convertor_end_pos, const YYLTYPE& trace_begin_pos, const YYLTYPE& trace_end_pos)
 {
 	if (cmd_begin)
 	{
@@ -745,7 +733,7 @@ void RDOPatternOperation::addRelResConvertBeginEnd(rbool trace_begin, CREF(LPCon
 	}
 }
 
-void RDOPatternOperation::addParamSetCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
+void RDOPatternOperation::addParamSetCalc(const rdo::runtime::LPRDOCalc& pCalc)
 {
 	switch (m_convertorType)
 	{
@@ -755,7 +743,7 @@ void RDOPatternOperation::addParamSetCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
 	}
 }
 
-tstring RDOPatternOperation::getErrorMessage_NotNeedConvertor(CREF(tstring) name, rdo::runtime::RDOResource::ConvertStatus status)
+std::string RDOPatternOperation::getErrorMessage_NotNeedConvertor(const std::string& name, rdo::runtime::RDOResource::ConvertStatus status)
 {
 	switch (m_convertorType)
 	{
@@ -763,10 +751,10 @@ tstring RDOPatternOperation::getErrorMessage_NotNeedConvertor(CREF(tstring) name
 	case convert_end  : return rdo::format("Для релевантного ресурса '%s' не требуется конвертор конца (Convert_end), т.к. его статус: %s", name.c_str(), RDOPATPattern::StatusToStr(status).c_str()); break;
 	default           : NEVER_REACH_HERE;
 	}
-	return tstring();
+	return std::string();
 }
 
-tstring RDOPatternOperation::getWarningMessage_EmptyConvertor(CREF(tstring) name, rdo::runtime::RDOResource::ConvertStatus status)
+std::string RDOPatternOperation::getWarningMessage_EmptyConvertor(const std::string& name, rdo::runtime::RDOResource::ConvertStatus status)
 {
 	switch (m_convertorType)
 	{
@@ -774,13 +762,13 @@ tstring RDOPatternOperation::getWarningMessage_EmptyConvertor(CREF(tstring) name
 	case convert_end  : return rdo::format("Для релевантного ресурса '%s' указан пустой конвертор конца (Convert_end), хотя его статус: %s", name.c_str(), RDOPATPattern::StatusToStr(status).c_str()); break;
 	default           : NEVER_REACH_HERE;
 	}
-	return tstring();
+	return std::string();
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternKeyboard
 // --------------------------------------------------------------------------------
-RDOPatternKeyboard::RDOPatternKeyboard(CREF(RDOParserSrcInfo) name_src_info, rbool trace)
+RDOPatternKeyboard::RDOPatternKeyboard(const RDOParserSrcInfo& name_src_info, bool trace)
 	: RDOPatternOperation(trace, name_src_info)
 {
 	m_pPatRuntime = rdo::Factory<rdo::runtime::RDOPatternKeyboard>::create(trace);

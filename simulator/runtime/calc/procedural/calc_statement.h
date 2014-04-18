@@ -22,7 +22,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Пустая операция
 //! @todo заменить на CalcNop ?
-CALC(RDOCalcNoChange)
+PREDECLARE_POINTER(RDOCalcNoChange);
+class RDOCalcNoChange: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcNoChange)
 private:
@@ -31,19 +32,20 @@ private:
 };
 
 //! Условный оператор if () then {}
-CALC(RDOCalcIf)
+PREDECLARE_POINTER(RDOCalcIf);
+class RDOCalcIf: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcIf)
 public:
-	void  setThenStatement(CREF(LPRDOCalc) pStatement);
-	void  setElseStatement(CREF(LPRDOCalc) pStatement);
+	void setThenStatement(const LPRDOCalc& pStatement);
+	void setElseStatement(const LPRDOCalc& pStatement);
 
-	rbool hasElse() const;
+	bool hasElse() const;
 
 private:
 	typedef  std::pair<LPRDOCalc, LPRDOCalc>  Statements;
 
-	RDOCalcIf(CREF(LPRDOCalc) pCondition);
+	RDOCalcIf(const LPRDOCalc& pCondition);
 
 	LPRDOCalc   m_pCondition;
 	Statements  m_statements;
@@ -52,14 +54,15 @@ private:
 };
 
 //! Оператор цикла for
-CALC(RDOCalcFor)
+PREDECLARE_POINTER(RDOCalcFor);
+class RDOCalcFor: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFor)
 public:
-	void setStatement(CREF(LPRDOCalc) pStatement);
+	void setStatement(const LPRDOCalc& pStatement);
 
 private:
-	RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression);
+	RDOCalcFor(const LPRDOCalc& pDeclaration, const LPRDOCalc& pCondition, const LPRDOCalc& pExpression);
 
 	LPRDOCalc m_pDeclaration;
 	LPRDOCalc m_pCondition;
@@ -70,18 +73,20 @@ private:
 };
 
 //! Оператор возврата return
-CALC(RDOCalcFunReturn)
+PREDECLARE_POINTER(RDOCalcFunReturn);
+class RDOCalcFunReturn: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFunReturn)
 private:
-	RDOCalcFunReturn(CREF(LPRDOCalc) pReturn);
+	RDOCalcFunReturn(const LPRDOCalc& pReturn);
 
 	LPRDOCalc m_pReturn;
 	DECLARE_ICalc;
 };
 
 //! Оператор возврата break
-CALC(RDOCalcFunBreak)
+PREDECLARE_POINTER(RDOCalcFunBreak);
+class RDOCalcFunBreak: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFunBreak)
 private:
@@ -91,11 +96,12 @@ private:
 };
 
 //! Простой список операторов
-CALC(RDOCalcBaseStatementList)
+PREDECLARE_POINTER(RDOCalcBaseStatementList);
+class RDOCalcBaseStatementList: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcBaseStatementList)
 public:
-	void        addCalcStatement(CREF(LPRDOCalc) pStatement);
+	void        addCalcStatement(const LPRDOCalc& pStatement);
 	RDOCalcList statementList();
 
 protected:
@@ -107,7 +113,8 @@ protected:
 };
 
 //! Останавливаемый список операторов
-CALC_SUB(RDOCalcStatementList, RDOCalcBaseStatementList)
+PREDECLARE_POINTER(RDOCalcStatementList);
+class RDOCalcStatementList: public RDOCalcBaseStatementList
 {
 DECLARE_FACTORY(RDOCalcStatementList)
 private:
@@ -117,11 +124,12 @@ private:
 };
 
 //! Ловушка для break
-CALC(RDOCalcBreakCatch)
+PREDECLARE_POINTER(RDOCalcBreakCatch);
+class RDOCalcBreakCatch: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcBreakCatch)
 public:
-	void addStatementList(CREF(LPRDOCalc) pStatementList);
+	void addStatementList(const LPRDOCalc& pStatementList);
 
 private:
 	RDOCalcBreakCatch();
@@ -132,11 +140,12 @@ private:
 };
 
 //! Ловушка для return
-CALC(RDOCalcReturnCatch)
+PREDECLARE_POINTER(RDOCalcReturnCatch);
+class RDOCalcReturnCatch: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcReturnCatch)
 public:
-	void setTryCalc(CREF(LPRDOCalc) pTryCalc);
+	void setTryCalc(const LPRDOCalc& pTryCalc);
 
 private:
 	RDOCalcReturnCatch();

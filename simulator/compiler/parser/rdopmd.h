@@ -25,18 +25,21 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDResult
 // --------------------------------------------------------------------------------
-OBJECT(RDOPMDResult) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOPMDResult);
+class RDOPMDResult
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOPMDResult);
 public:
-	CREF(tstring)   name      () const { return src_text(); }
-	CREF(LPIResult) getRuntime() const { return m_pResult;  }
+	const std::string& name() const { return src_text(); }
+	const LPIResult& getRuntime() const { return m_pResult; }
 
 protected:
-	RDOPMDResult(CREF(RDOParserSrcInfo) src_info);
+	RDOPMDResult(const RDOParserSrcInfo& src_info);
 	virtual ~RDOPMDResult();
 
-	void endOfCreation(CREF(LPIResult) pResult);
+	void endOfCreation(const LPIResult& pResult);
 
 	LPIResult m_pResult;
 };
@@ -44,17 +47,17 @@ protected:
 // --------------------------------------------------------------------------------
 // -------------------- RDOResultGroup
 // --------------------------------------------------------------------------------
-CLASS(RDOResultGroup):
-	    INSTANCE_OF(RDOParserSrcInfo)
-	AND INSTANCE_OF(Context         )
+class RDOResultGroup
+	: public RDOParserSrcInfo
+	, public Context
 {
 DECLARE_FACTORY(RDOResultGroup);
 public:
-	void                 init      (CREF(RDOParserSrcInfo) src_info);
-	CREF(tstring)        name      () const;
-	CREF(LPIResultGroup) getRuntime() const;
-	void                 append    (CREF(LPRDOPMDResult) pResult   );
-	LPRDOPMDResult       find      (CREF(tstring)       resultName) const;
+	void init(const RDOParserSrcInfo& src_info);
+	const std::string& name() const;
+	const LPIResultGroup& getRuntime() const;
+	void append(const LPRDOPMDResult& pResult);
+	LPRDOPMDResult find(const std::string& resultName) const;
 
 private:
 	RDOResultGroup();
@@ -74,10 +77,10 @@ class RDOPMDWatchPar: public RDOPMDResult
 {
 DECLARE_FACTORY(RDOPMDWatchPar);
 public:
-	void init(rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info);
+	void init(bool trace, const RDOParserSrcInfo& res_src_info, const RDOParserSrcInfo& par_src_info);
 
 private:
-	RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info);
+	RDOPMDWatchPar(const RDOParserSrcInfo& src_info);
 	virtual ~RDOPMDWatchPar();
 };
 DECLARE_POINTER(RDOPMDWatchPar);
@@ -89,10 +92,10 @@ class RDOPMDWatchState: public RDOPMDResult
 {
 DECLARE_FACTORY(RDOPMDWatchState);
 public:
-	void init(rbool trace, LPRDOFUNLogic pLogic);
+	void init(bool trace, LPRDOFUNLogic pLogic);
 
 private:
-	RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info);
+	RDOPMDWatchState(const RDOParserSrcInfo& src_info);
 	virtual ~RDOPMDWatchState();
 };
 DECLARE_POINTER(RDOPMDWatchState);
@@ -103,7 +106,7 @@ DECLARE_POINTER(RDOPMDWatchState);
 class RDOPMDWatchTemp: public RDOPMDResult
 {
 protected:
-	RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info);
+	RDOPMDWatchTemp(const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& res_type_src_info);
 	virtual ~RDOPMDWatchTemp();
 };
 
@@ -114,12 +117,12 @@ class RDOPMDWatchQuant: public RDOPMDWatchTemp
 {
 DECLARE_FACTORY(RDOPMDWatchQuant);
 public:
-	void init           (rbool trace, CREF(RDOParserSrcInfo) res_type_src_info);
-	void setLogic       (REF(LPRDOFUNLogic) pLogic);
+	void init           (bool trace, const RDOParserSrcInfo& res_type_src_info);
+	void setLogic       (LPRDOFUNLogic& pLogic);
 	void setLogicNoCheck();
 
 private:
-	RDOPMDWatchQuant(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info);
+	RDOPMDWatchQuant(const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& res_type_src_info);
 	virtual ~RDOPMDWatchQuant();
 
 	LPRDOFUNGroupLogic m_pGroupLogic;
@@ -133,12 +136,12 @@ class RDOPMDWatchValue: public RDOPMDWatchTemp
 {
 DECLARE_FACTORY(RDOPMDWatchValue);
 public:
-	void init           (rbool trace, CREF(RDOParserSrcInfo) res_type_src_info);
-	void setLogic       (REF(LPRDOFUNLogic) pLogic, REF(LPRDOFUNArithm) pArithm);
-	void setLogicNoCheck(REF(LPRDOFUNArithm) pArithm);
+	void init           (bool trace, const RDOParserSrcInfo& res_type_src_info);
+	void setLogic       (LPRDOFUNLogic& pLogic, LPRDOFUNArithm& pArithm);
+	void setLogicNoCheck(LPRDOFUNArithm& pArithm);
 
 private:
-	RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info);
+	RDOPMDWatchValue(const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& res_type_src_info);
 	virtual ~RDOPMDWatchValue();
 
 	LPRDOFUNGroupLogic m_pGroupLogic;
@@ -155,7 +158,7 @@ public:
 	void init(LPRDOFUNArithm pArithm);
 
 private:
-	RDOPMDGetValue(CREF(RDOParserSrcInfo) src_info);
+	RDOPMDGetValue(const RDOParserSrcInfo& src_info);
 	virtual ~RDOPMDGetValue();
 };
 DECLARE_POINTER(RDOPMDGetValue);

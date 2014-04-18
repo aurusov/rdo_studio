@@ -40,14 +40,14 @@ public:
 	ChartTree(QWidget* pParent);
 	virtual ~ChartTree();
 
-	void setModelName   (CREF(QString)    modelName);
-	void addResourceType(CREF(LPResourceType)  pRTP);
-	void addResource    (CREF(LPResource)      pRSS);
-	void updateResource (CREF(LPResource)      pRSS);
-	void addPattern     (CREF(LPPattern)       pPAT);
-	void addOperation   (CREF(LPOperationBase) pOPR);
-	void addResult      (CREF(LPResult)        pPMV);
-	void deleteChildren (CREF(LPChartTreeItem) pParent);
+	void setModelName   (const QString&    modelName);
+	void addResourceType(const LPResourceType&  pRTP);
+	void addResource    (const LPResource&      pRSS);
+	void updateResource (const LPResource&      pRSS);
+	void addPattern     (const LPPattern&       pPAT);
+	void addOperation   (const LPOperationBase& pOPR);
+	void addResult      (const LPResult&        pPMV);
+	void deleteChildren (const LPChartTreeItem& pParent);
 	void clear();
 
 private:
@@ -72,13 +72,13 @@ private:
 	IconList         m_iconList;
 	QMenu*           m_pPopupMenu;
 
-	void createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) item, CREF(QString) name, IconType iconType);
+	void createItem(const LPChartTreeItem& parent, const LPChartTreeItem& item, const QString& name, IconType iconType);
 
-	void  createChart          (PTR(QTreeWidgetItem) pCtrlItem) const;
-	bool  activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const;
+	void  createChart          (QTreeWidgetItem* pCtrlItem) const;
+	bool  activateExistingChart(QTreeWidgetItem* pCtrlItem) const;
 
-	LPChartTreeItem      getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const;
-	PTR(QTreeWidgetItem) getSelected        () const;
+	LPChartTreeItem getIfItemIsDrawable(const QTreeWidgetItem* pCtrlItem) const;
+	QTreeWidgetItem* getSelected() const;
 
 	virtual void focusInEvent    (QFocusEvent* pEvent);
 	virtual void focusOutEvent   (QFocusEvent* pEvent);
@@ -86,7 +86,7 @@ private:
 	virtual void contextMenuEvent(QContextMenuEvent* pEvent);
 	virtual void onUpdateActions (bool activated);
 
-	void doDragDrop(CREF(LPSerie) pSerie);
+	void doDragDrop(const LPSerie& pSerie);
 
 private slots:
 	void onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int);

@@ -39,7 +39,7 @@ RDOSimulatorTrace::~RDOSimulatorTrace()
 	}
 }
 
-void RDOSimulatorTrace::copyFrom(CREF(LPRDOSimulatorTrace) pOther)
+void RDOSimulatorTrace::copyFrom(const LPRDOSimulatorTrace& pOther)
 {
 	ASSERT(pOther);
 
@@ -55,7 +55,7 @@ void RDOSimulatorTrace::rdoInit()
 	RDOSimulator::rdoInit();
 }
 
-ruint RDOSimulatorTrace::getResourceId()
+std::size_t RDOSimulatorTrace::getResourceId()
 {
 	if (freeResourcesIds.empty())
 	{
@@ -69,13 +69,13 @@ ruint RDOSimulatorTrace::getResourceId()
 			TRACE1("getFreeResourceId: %d\n", id);
 		}
 #endif
-		ruint id = freeResourcesIds.back();
+		const std::size_t id = freeResourcesIds.back();
 		freeResourcesIds.pop_back();
 		return id;
 	}
 }
 
-void RDOSimulatorTrace::eraseFreeResourceId(ruint id)
+void RDOSimulatorTrace::eraseFreeResourceId(std::size_t id)
 {
 	MAPII::iterator it = resourcesIdsRefs.find(id);
 	if (it != resourcesIdsRefs.end())
@@ -118,7 +118,7 @@ void RDOSimulatorTrace::freeOperationId(int id)
 	freeOperationsIds.push_front(id);
 }
 
-void RDOSimulatorTrace::onResourceErase(CREF(LPRDOResource) pResource)
+void RDOSimulatorTrace::onResourceErase(const LPRDOResource& pResource)
 {
 	eraseFreeResourceId(pResource->getTraceID());
 }
@@ -127,7 +127,7 @@ void RDOSimulatorTrace::preProcess()
 {
 	RDOSimulator::preProcess();
 	getTracer()->startWriting();
-	LPRDORuntime pRuntime = static_cast<PTR(RDORuntime)>(this);
+	LPRDORuntime pRuntime = static_cast<RDORuntime*>(this);
 	getTracer()->writeTraceBegin(pRuntime);
 	getTracer()->writePermanentResources(pRuntime, getResourcesBeforeSim());
 	getTracer()->writeModelBegin(pRuntime);
@@ -138,7 +138,7 @@ void RDOSimulatorTrace::preProcess()
 
 void RDOSimulatorTrace::postProcess()
 {
-	LPRDORuntime pRuntime = static_cast<PTR(RDORuntime)>(this);
+	LPRDORuntime pRuntime = static_cast<RDORuntime*>(this);
 	getTracer()->writeTraceEnd(pRuntime);
 //	getTracer()->stopWriting();
 }

@@ -27,7 +27,7 @@ public:
 	Results(QWidget* pParent);
 	virtual ~Results();
 
-	void setEditorStyle(PTR(ResultsStyle) pStyle);
+	void setEditorStyle(ResultsStyle* pStyle);
 
 private:
 	typedef  Parser  super;

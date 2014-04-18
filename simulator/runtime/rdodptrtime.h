@@ -29,17 +29,17 @@ class RDODPTSearchRuntime: public RDODPTSearchTrace
 DEFINE_IFACTORY(RDODPTSearchRuntime);
 
 private:
-	RDODPTSearchRuntime(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent, CREF(LPRDOCalc) _pCondition, CREF(LPRDOCalc) _pTermCondition, CREF(LPRDOCalc) _pEvaluateBy, rbool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag);
+	RDODPTSearchRuntime(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent, const LPRDOCalc& _pCondition, const LPRDOCalc& _pTermCondition, const LPRDOCalc& _pEvaluateBy, bool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag);
 
 	LPRDOCalc pCondition;
 	LPRDOCalc pTermCondition;
 	LPRDOCalc pEvaluateBy;
-	rbool     compTops;
+	bool compTops;
 
-	virtual rbool  onCheckCondition(CREF(LPRDORuntime) pRuntime);
-	virtual rbool  TermCondition   (CREF(LPRDORuntime) pRuntime);
-	virtual double EvaluateBy      (CREF(LPRDORuntime) pRuntime);
-	virtual rbool  NeedCompareTops ();
+	virtual bool onCheckCondition(const LPRDORuntime& pRuntime);
+	virtual bool TermCondition(const LPRDORuntime& pRuntime);
+	virtual double EvaluateBy(const LPRDORuntime& pRuntime);
+	virtual bool NeedCompareTops();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

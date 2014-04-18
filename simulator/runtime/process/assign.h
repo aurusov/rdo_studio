@@ -38,7 +38,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPROCAssign(LPIPROCProcess pProcess, CREF(LPRDOCalc) pCalc);
+	RDOPROCAssign(LPIPROCProcess pProcess, const LPRDOCalc& pCalc);
 
 	LPRDOCalc pAssignCalc;
 

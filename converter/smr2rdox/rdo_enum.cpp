@@ -28,7 +28,7 @@ RDOEnumType::RDOEnumType()
 	ASSERT(m_pType);
 }
 
-RDOEnumType::RDOEnumType(CREF(rdo::runtime::LPRDOEnumType) pEnumType)
+RDOEnumType::RDOEnumType(const rdo::runtime::LPRDOEnumType& pEnumType)
 	: RDOType(rdo::runtime::g_unknow)
 {
 	rdo::runtime::LPRDOEnumType pType = rdo::Factory<rdo::runtime::RDOEnumType>::create();
@@ -45,9 +45,9 @@ RDOEnumType::RDOEnumType(CREF(rdo::runtime::LPRDOEnumType) pEnumType)
 RDOEnumType::~RDOEnumType()
 {}
 
-tstring RDOEnumType::name() const
+std::string RDOEnumType::name() const
 {
-	tstring str = "(";
+	std::string str = "(";
 	rdo::runtime::RDOEnumType::const_iterator it = getEnums()->begin();
 	while (it != getEnums()->end())
 	{
@@ -62,13 +62,13 @@ tstring RDOEnumType::name() const
 	return str;
 }
 
-LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOType RDOEnumType::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	switch (pFrom->type()->typeID())
 	{
 		case rdo::runtime::RDOType__int::t_enum:
 		{
-			LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
+			LPRDOEnumType pEnum(const_cast<RDOEnumType*>(this));
 			//! Это один и тот же тип
 			if (pEnum == pFrom)
 				return pEnum;
@@ -97,7 +97,7 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) f
 		{
 			if (getEnums()->exist(from_src_info.src_text()))
 			{
-				LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
+				LPRDOEnumType pEnum(const_cast<RDOEnumType*>(this));
 				return pEnum;
 			}
 			rdo::converter::smr2rdox::g_error().error(src_info, rdo::format("Значение '%s' не является элементом перечислимого типа %s", from_src_info.src_text().c_str(), to_src_info.src_text().c_str()));
@@ -112,10 +112,10 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) f
 	return NULL;
 }
 
-LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOValue RDOEnumType::value_cast(const LPRDOValue& pFrom, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	LPRDOValue pToValue;
-	LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
+	LPRDOEnumType pEnum(const_cast<RDOEnumType*>(this));
 	try
 	{
 		switch (pFrom->typeID())
@@ -141,7 +141,7 @@ LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo
 			break;
 		}
 	}
-	catch (CREF(rdo::runtime::RDOValueException))
+	catch (const rdo::runtime::RDOValueException&)
 	{}
 
 	if (!pToValue || pToValue->typeID() == rdo::runtime::RDOType::t_unknow)
@@ -153,27 +153,27 @@ LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo
 	return pToValue;
 }
 
-rdo::runtime::LPRDOCalc RDOEnumType::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdo::runtime::LPRDOCalc RDOEnumType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
 {
 	return RDOType::calc_cast(pCalc, pType);
 }
 
 LPRDOValue RDOEnumType::get_default() const
 {
-	LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
+	LPRDOEnumType pEnum(const_cast<RDOEnumType*>(this));
 	return rdo::Factory<RDOValue>::create(rdo::runtime::RDOValue(getEnums(), 0), pEnum, RDOParserSrcInfo());
 }
 
-void RDOEnumType::writeModelStructure(REF(std::ostream) stream) const
+void RDOEnumType::writeModelStructure(std::ostream& stream) const
 {
 	stream << "E " << getEnums()->getValues().size() << std::endl;
-	for (ruint i = 0; i < getEnums()->getValues().size(); i++)
+	for (std::size_t i = 0; i < getEnums()->getValues().size(); i++)
 	{
 		stream << "    " << i << " " << getEnums()->getValues().at(i) << std::endl;
 	}
 }
 
-void RDOEnumType::add(CREF(LPRDOValue) pNext)
+void RDOEnumType::add(const LPRDOValue& pNext)
 {
 	ASSERT(pNext);
 

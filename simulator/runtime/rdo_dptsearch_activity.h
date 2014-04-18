@@ -34,7 +34,7 @@ QUERY_INTERFACE(IDPTSearchActivity)
 QUERY_INTERFACE_END
 
 private:
-	RDODPTSearchActivity(CREF(LPIRule) rule, ValueTime valueTime, CREF(LPRDOCalc) pCost);
+	RDODPTSearchActivity(const LPIRule& rule, ValueTime valueTime, const LPRDOCalc& pCost);
 
 	LPIRule                        m_rule;
 	LPRDOCalc                      m_pCost;

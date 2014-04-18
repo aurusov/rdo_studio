@@ -31,17 +31,17 @@ inline LPRDOPROCResource RDOPROCTransact::getRes()
 	return m_res;
 }
 
-inline void RDOPROCTransact::setRes(CREF(LPRDOPROCResource) pResource)
+inline void RDOPROCTransact::setRes(const LPRDOPROCResource& pResource)
 {
 	m_res = pResource;
 }
 
-inline REF(LPIPROCBlock) RDOPROCTransact::getBlock()
+inline LPIPROCBlock& RDOPROCTransact::getBlock()
 {
 	return m_block;
 }
 
-inline void RDOPROCTransact::setBlock(CREF(LPIPROCBlock) block)
+inline void RDOPROCTransact::setBlock(const LPIPROCBlock& block)
 {
 	m_block = block;
 }
@@ -49,7 +49,7 @@ inline void RDOPROCTransact::setBlock(CREF(LPIPROCBlock) block)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCResource
 // --------------------------------------------------------------------------------
-inline tstring RDOPROCResource::whoAreYou()
+inline std::string RDOPROCResource::whoAreYou()
 {
 	return "procRes";
 }

@@ -28,12 +28,12 @@ class RDOArrayType
 {
 DECLARE_FACTORY(RDOArrayType);
 public:
-	CREF(LPTypeInfo)             getItemType        () const;
+	const LPTypeInfo&            getItemType        () const;
 	rdo::runtime::LPRDOArrayType getRuntimeArrayType() const;
 	LPTypeInfo                   typeInfo           () const;
 
 private:
-	RDOArrayType         (CREF(LPTypeInfo) pItemType, CREF(RDOParserSrcInfo) src_info);
+	RDOArrayType         (const LPTypeInfo& pItemType, const RDOParserSrcInfo& src_info);
 	virtual ~RDOArrayType();
 
 	LPTypeInfo m_pItemType;

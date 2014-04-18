@@ -29,7 +29,7 @@
 // --------------------------------------------------------------------------------
 
 typedef std::vector<double> Container;
-typedef std::vector<ruint>  ContainerInt;
+typedef std::vector<std::size_t> ContainerInt;
 
 const double       g_pi                  = 3.141592653589793;
 const long int     g_seed                = 123456789;               //!< база генератора
@@ -39,21 +39,21 @@ const std::string  g_fileUniformName     = "data_uniform.txt";      //!< фай�
 const std::string  g_fileExponentialName = "data_exponential.txt";  //!< файл данных
 const std::string  g_fileTriangularName  = "data_trinagular.txt";   //!< файл данных
 
-const ruint    g_count                = 100000;                     //!< количество генерируемых данных
-const double   g_main                 = 10.0;                       //!< параметр закона экспоненциального и нормального
-const double   g_var                  = 1.0;                        //!< параметр закона нормального
-const double   g_from                 = 1.0;                        //!< параметр закона равномерного и треугольного
-const double   g_to                   = 7.0;                        //!< параметр закона равномерного и треугольного
-const double   g_top                  = 5.0;                        //!< параметр закона треугольного
+const std::size_t g_count                = 100000;                     //!< количество генерируемых данных
+const double      g_main                 = 10.0;                       //!< параметр закона экспоненциального и нормального
+const double      g_var                  = 1.0;                        //!< параметр закона нормального
+const double      g_from                 = 1.0;                        //!< параметр закона равномерного и треугольного
+const double      g_to                   = 7.0;                        //!< параметр закона равномерного и треугольного
+const double      g_top                  = 5.0;                        //!< параметр закона треугольного
 #if defined(ARCHITECTURE_X86)
-const ruint    g_precision            = 20;                         //!< точность вещественного числа при выводе в поток
+const std::size_t g_precision            = 20;                         //!< точность вещественного числа при выводе в поток
 #elif defined(ARCHITECTURE_AMD64) || defined(ARCHITECTURE_ARM)
-const ruint    g_precision            = 14;                         //!< точность вещественного числа при выводе в поток
+const std::size_t g_precision            = 14;                         //!< точность вещественного числа при выводе в поток
 #endif
 
-const ruint    g_countOfExamples      = 2000;                       //!< количество чисел в выборке
-const ruint    g_countOfR             = 39;                         //!< число разрядов
-const double   g_ksiEtalon            = 50.9985;                    //!< табличное значение. 95% вероятность того, что это действительно тот самый закон распределения
+const std::size_t g_countOfExamples      = 2000;                       //!< количество чисел в выборке
+const std::size_t g_countOfR             = 39;                         //!< число разрядов
+const double      g_ksiEtalon            = 50.9985;                    //!< табличное значение. 95% вероятность того, что это действительно тот самый закон распределения
 
 // --------------------------------------------------------------------------------
 // -------Templates
@@ -68,7 +68,7 @@ void onGenerateData(F binder, const std::string& g_fileName)
 	Container test;
 	test.reserve(g_count);
 
-	for (ruint i = 0; i < g_count; ++i)
+	for (std::size_t i = 0; i < g_count; ++i)
 	{
 		test.push_back(binder.operator()(&sequence));
 	}
@@ -120,7 +120,7 @@ void onCheckData(F binder, const std::string& g_fileName)
 				s >> valueTest;
 			}
 
-			rbool check = valueOriginal == valueTest;
+			const bool check = valueOriginal == valueTest;
 			BOOST_CHECK(check);
 			if (!check)
 			{
@@ -137,12 +137,12 @@ double  area (F binder, double n, double m)
 	double k  = 1;
 	double S1 = 1;
 	double S2 = 0;
-	ruint  t  = 10;
+	std::size_t t  = 10;
 	while (fabs(S1-S2) / S1 > 0.01)
 	{
 		S2 = S1;
 		S1 = 0;
-		for (ruint g = 0; g < t + 1; ++g)
+		for (std::size_t g = 0; g < t + 1; ++g)
 		{
 			if ((g == 0) || (g == t - 1))
 				k = 0.5;
@@ -162,7 +162,7 @@ void onCheckKsi(F binder, S binderSeq, double left, double right)
 	x.reserve(g_countOfR + 1);
 	double elem = (right-left) / (g_countOfR*1.0); // расстояние между точками на прямой
 
-	for (ruint i = 0; i < g_countOfR + 1; ++i)
+	for (std::size_t i = 0; i < g_countOfR + 1; ++i)
 	{
 		x.push_back(left + elem*i);
 	}
@@ -171,7 +171,7 @@ void onCheckKsi(F binder, S binderSeq, double left, double right)
 	vb.reserve(g_countOfExamples);
 
 	G sequence(g_seed);                            // выборка
-	for (ruint i = 0; i < g_countOfExamples; ++i)
+	for (std::size_t i = 0; i < g_countOfExamples; ++i)
 	{
 		vb.push_back(binderSeq.operator()(&sequence));
 	}
@@ -179,10 +179,10 @@ void onCheckKsi(F binder, S binderSeq, double left, double right)
 	Container f_vb;                                // контейнер для храниения количества попаданий на интервал
 	f_vb.reserve(g_countOfR);
 
-	for (ruint i = 0; i < g_countOfR; ++i)          // нахождение количества попаданий на интервал
+	for (std::size_t i = 0; i < g_countOfR; ++i)          // нахождение количества попаданий на интервал
 	{
-		ruint freq = 0;
-		for (ruint k = 0; k < g_countOfExamples; ++k)
+		std::size_t freq = 0;
+		for (std::size_t k = 0; k < g_countOfExamples; ++k)
 		{
 			if ((vb[k] > x[i]) & (vb[k] <= x[i+1]))
 			{
@@ -195,13 +195,13 @@ void onCheckKsi(F binder, S binderSeq, double left, double right)
 	Container F_etalon;
 	F_etalon.reserve(g_countOfR);
 
-	for (ruint i = 0; i < g_countOfR; ++i)
+	for (std::size_t i = 0; i < g_countOfR; ++i)
 	{
 		F_etalon.push_back(area<T>(binder, x[i], x[i+1]));
 	}
 
 	double ksi = 0;
-	for (ruint i = 0; i < g_countOfR; ++i)
+	for (std::size_t i = 0; i < g_countOfR; ++i)
 	{
 		double ksiTemp = F_etalon[i] * g_countOfExamples;
 		ksi += (f_vb[i] - ksiTemp) * (f_vb[i] - ksiTemp) / ksiTemp;
@@ -256,9 +256,8 @@ public:
 		, m_max(max)
 	{}
 
-	double get(double x) const
+	double get(double /*x*/) const
 	{
-		UNUSED(x);
 		return 1 / (m_max-m_min);
 	}
 

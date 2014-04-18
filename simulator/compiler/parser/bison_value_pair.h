@@ -24,17 +24,17 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- BisonValuePair
 // --------------------------------------------------------------------------------
 template <class T1, class T2>
-class BisonValuePair: INSTANCE_OF(rdo::counter_reference)
+class BisonValuePair: public rdo::counter_reference
 {
 public:
-	CREF(T1) getFirst () const;
-	CREF(T2) getSecond() const;
+	const T1& getFirst () const;
+	const T2& getSecond() const;
 
 private:
 	typedef  BisonValuePair<T1, T2>  this_type;
 	DECLARE_FACTORY(this_type);
 
-	BisonValuePair(CREF(T1) first, CREF(T2) second);
+	BisonValuePair(const T1& first, const T2& second);
 	virtual ~BisonValuePair();
 
 	typedef  std::pair<T1, T2>  Value;

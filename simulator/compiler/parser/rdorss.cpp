@@ -29,7 +29,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 const std::string RDORSSResource::GET_RESOURCE = "resource_expression";
 
-RDORSSResource::RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, ruint id)
+RDORSSResource::RDORSSResource(const LPRDOParser& pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, std::size_t id)
 	: RDOParserSrcInfo(src_info                                      )
 	, m_pResType      (pResType                                      )
 	, m_id            (id == UNDEFINED_ID ? pParser->getRSS_id() : id)
@@ -69,7 +69,7 @@ Context::FindResult RDORSSResource::onFindContext(const std::string& method, con
 	{
 		const std::string paramName = params.identifier();
 
-		ruint parNumb = getType()->getRTPParamNumber(paramName);
+		const std::size_t parNumb = getType()->getRTPParamNumber(paramName);
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 		{
 			RDOParser::s_parser()->error().error(srcInfo, rdo::format("Неизвестный параметр ресурса: %s", paramName.c_str()));
@@ -108,7 +108,7 @@ void RDORSSResource::writeModelStructure(std::ostream& stream) const
 	stream << (getID() + 1) << " " << name() << " " << getType()->getNumber() << std::endl;
 }
 
-void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
+void RDORSSResource::addParam(const LPRDOValue& pParam)
 {
 	ASSERT(pParam);
 
@@ -169,7 +169,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 	m_currParam++;
 }
 
-rbool RDORSSResource::defined() const
+bool RDORSSResource::defined() const
 {
 	return m_currParam == getType()->getParams().end();
 }

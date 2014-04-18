@@ -15,7 +15,7 @@
 namespace rdo {
 
 template<class T>
-inline void stack<T>::push(CREF(T) item)
+inline void stack<T>::push(const T& item)
 {
 	m_container.push_back(item);
 }
@@ -29,19 +29,19 @@ inline void stack<T>::pop()
 }
 
 template<class T>
-inline rbool stack<T>::empty() const
+inline bool stack<T>::empty() const
 {
 	return m_container.empty();
 }
 
 template<class T>
-inline ruint stack<T>::size() const
+inline std::size_t stack<T>::size() const
 {
 	return m_container.size();
 }
 
 template<class T>
-inline CREF(T) stack<T>::top() const
+inline const T& stack<T>::top() const
 {
 	ASSERT(!empty());
 
@@ -49,7 +49,7 @@ inline CREF(T) stack<T>::top() const
 }
 
 template<class T>
-inline REF(T) stack<T>::top()
+inline T& stack<T>::top()
 {
 	ASSERT(!empty());
 

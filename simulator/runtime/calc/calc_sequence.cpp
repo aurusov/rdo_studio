@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcSeqInit
 // --------------------------------------------------------------------------------
-RDOCalcSeqInit::RDOCalcSeqInit(int base, PTR(RandGenerator) gen)
+RDOCalcSeqInit::RDOCalcSeqInit(int base, RandGenerator* gen)
 	: m_base(base)
 	, m_gen (gen )
 {}
@@ -31,9 +31,8 @@ void RDOCalcSeqInit::setBase(int base)
 	m_base = base;
 }
 
-RDOValue RDOCalcSeqInit::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcSeqInit::doCalc(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	m_gen->setSeed(m_base);
 	return RDOValue();
 }
@@ -51,7 +50,7 @@ RDOCalcSeqNext::Range::Range()
 	, m_max(0)
 {}
 
-RDOCalcSeqNext::Range::Range(CREF(double) min, CREF(double) max)
+RDOCalcSeqNext::Range::Range(const double& min, const double& max)
 	: m_min(min)
 	, m_max(max)
 {}
@@ -63,7 +62,7 @@ RDOCalcSeqNext::RDOCalcSeqNext()
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcSeqNextUniform
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcSeqNextUniform::getNextValue(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcSeqNextUniform::getNextValue(const LPRDORuntime& pRuntime)
 {
 	RDOValue from = pRuntime->getFuncArgument(0);
 	RDOValue to   = pRuntime->getFuncArgument(1);
@@ -82,7 +81,7 @@ RDOValue RDOCalcSeqNextUniform::getNextValue(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcSeqNextNormal
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcSeqNextNormal::getNextValue(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcSeqNextNormal::getNextValue(const LPRDORuntime& pRuntime)
 {
 	return m_gen->next(pRuntime->getFuncArgument(0).getDouble(), pRuntime->getFuncArgument(1).getDouble());
 }
@@ -90,7 +89,7 @@ RDOValue RDOCalcSeqNextNormal::getNextValue(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcSeqNextExponential
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcSeqNextExponential::getNextValue(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcSeqNextExponential::getNextValue(const LPRDORuntime& pRuntime)
 {
 	return m_gen->next(pRuntime->getFuncArgument(0).getDouble());
 }
@@ -98,7 +97,7 @@ RDOValue RDOCalcSeqNextExponential::getNextValue(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcSeqNextTriangular
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcSeqNextTriangular::getNextValue(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcSeqNextTriangular::getNextValue(const LPRDORuntime& pRuntime)
 {
 	RDOValue from = pRuntime->getFuncArgument(0);
 	RDOValue top  = pRuntime->getFuncArgument(1);
@@ -119,9 +118,8 @@ RDOValue RDOCalcSeqNextTriangular::getNextValue(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcSeqNextByHist
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcSeqNextByHist::getNextValue(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcSeqNextByHist::getNextValue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return m_gen->next();
 }
 

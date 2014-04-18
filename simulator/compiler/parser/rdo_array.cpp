@@ -22,14 +22,14 @@ OPEN_RDO_PARSER_NAMESPACE
 //----------------------------------------------------------------------------
 //---------- RDOArrayValue
 //----------------------------------------------------------------------------
-RDOArrayValue::RDOArrayValue(CREF(LPRDOArrayType) pArrayType)
+RDOArrayValue::RDOArrayValue(const LPRDOArrayType& pArrayType)
 	: m_pArrayType(pArrayType)
 {}
 
 RDOArrayValue::~RDOArrayValue()
 {}
 
-void RDOArrayValue::insertItem(CREF(LPRDOValue) pValue)
+void RDOArrayValue::insertItem(const LPRDOValue& pValue)
 {
 	ASSERT(pValue);
 
@@ -39,12 +39,12 @@ void RDOArrayValue::insertItem(CREF(LPRDOValue) pValue)
 	m_container.push_back(pItemValue);
 }
 
-CREF(LPRDOArrayType) RDOArrayValue::getArrayType() const
+const LPRDOArrayType& RDOArrayValue::getArrayType() const
 {
 	return m_pArrayType;
 }
 
-REF(LPRDOArrayType) RDOArrayValue::getArrayType()
+LPRDOArrayType& RDOArrayValue::getArrayType()
 {
 	return m_pArrayType;
 }
@@ -65,9 +65,9 @@ rdo::runtime::LPRDOArrayValue RDOArrayValue::createRuntimeValue() const
 	return pArrayValue;
 }
 
-tstring RDOArrayValue::getAsString() const
+std::string RDOArrayValue::getAsString() const
 {
-	tstring arrayValue;
+	std::string arrayValue;
 
 	for (Container::const_iterator it = m_container.begin(); it != m_container.end(); ++it)
 	{
@@ -83,7 +83,7 @@ tstring RDOArrayValue::getAsString() const
 	return rdo::format("%s]", arrayValue.c_str());
 }
 
-CREF(RDOArrayValue::Container) RDOArrayValue::getContainer() const
+const RDOArrayValue::Container& RDOArrayValue::getContainer() const
 {
 	return m_container;
 }

@@ -24,12 +24,12 @@ ChartTreeItem::ChartTreeItem(bool drawable)
 ChartTreeItem::~ChartTreeItem()
 {}
 
-void ChartTreeItem::setCtrlItem(PTR(QTreeWidgetItem) pCtrlItem)
+void ChartTreeItem::setCtrlItem(QTreeWidgetItem* pCtrlItem)
 {
 	m_pCtrlItem = pCtrlItem;
 }
 
-REF(QTreeWidgetItem) ChartTreeItem::getCtrlItem()
+QTreeWidgetItem& ChartTreeItem::getCtrlItem()
 {
 	ASSERT(m_pCtrlItem)
 	return *m_pCtrlItem;

@@ -16,7 +16,6 @@
 #include "ui_new_model_dialog.h"
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 class NewModelDialog
@@ -31,7 +30,7 @@ public:
 
 	QString getModelName() const;
 	QString getModelPath() const;
-	ruint   getTemplateIndex() const;
+	std::size_t getTemplateIndex() const;
 
 private:
 	QFont    m_font;

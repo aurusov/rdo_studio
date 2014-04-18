@@ -42,18 +42,15 @@ RDOParserItem::RDOParserItem(
 RDOParserItem::~RDOParserItem()
 {}
 
-void RDOParserItem::parse(CREF(LPRDOParser) pParser, REF(std::istream) in_stream)
+void RDOParserItem::parse(const LPRDOParser& /*pParser*/, std::istream& /*in_stream*/)
+{}
+
+std::size_t RDOParserItem::lexer_loc_line()
 {
-	UNUSED(pParser  );
-	UNUSED(in_stream);
+	return std::size_t(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
 }
 
-ruint RDOParserItem::lexer_loc_line()
-{
-	return ruint(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
-}
-
-ruint RDOParserItem::lexer_loc_pos()
+std::size_t RDOParserItem::lexer_loc_pos()
 {
 	return 0;
 }

@@ -95,15 +95,15 @@ public:
 	virtual bool styleUsing( const int styleType ) const;
 	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
 	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
-	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
-	virtual tstring styleBGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+	virtual std::string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+	virtual std::string styleBGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
 	static EditStyle getDefaultStyle();
 	static EditStyle getClassicStyle();
 	static EditStyle getTwilightStyle();
 	static EditStyle getOceanStyle();
 
-	static tstring colorToHEX( const QColor color );
+	static std::string colorToHEX( const QColor color );
 
 	QColor caretColor;
 	QColor selectionBgColor;

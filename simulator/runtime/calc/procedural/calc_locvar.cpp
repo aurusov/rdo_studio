@@ -21,14 +21,14 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcCreateLocalVariable
 // --------------------------------------------------------------------------------
-RDOCalcCreateLocalVariable::RDOCalcCreateLocalVariable(CREF(tstring) name, CREF(LPRDOCalc) pValueCalc)
+RDOCalcCreateLocalVariable::RDOCalcCreateLocalVariable(const std::string& name, const LPRDOCalc& pValueCalc)
 	: m_name      (name      )
 	, m_pValueCalc(pValueCalc)
 {
 	ASSERT(m_pValueCalc);
 }
 
-RDOValue RDOCalcCreateLocalVariable::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcCreateLocalVariable::doCalc(const LPRDORuntime& pRuntime)
 {
 	RDOValue value = m_pValueCalc->calcValue(pRuntime);
 	pRuntime->getMemoryStack()->create(m_name, value);
@@ -38,11 +38,11 @@ RDOValue RDOCalcCreateLocalVariable::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetLocalVariable
 // --------------------------------------------------------------------------------
-RDOCalcGetLocalVariable::RDOCalcGetLocalVariable(CREF(tstring) name)
+RDOCalcGetLocalVariable::RDOCalcGetLocalVariable(const std::string& name)
 	: m_name(name)
 {}
 
-RDOValue RDOCalcGetLocalVariable::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcGetLocalVariable::doCalc(const LPRDORuntime& pRuntime)
 {
 	return pRuntime->getMemoryStack()->get(m_name);
 }
@@ -53,13 +53,13 @@ RDOValue RDOCalcGetLocalVariable::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOCalcLocalVariableList::RDOCalcLocalVariableList()
 {}
 
-void RDOCalcLocalVariableList::addCalcLocalVariable(CREF(LPRDOCalc) pCalc)
+void RDOCalcLocalVariableList::addCalcLocalVariable(const LPRDOCalc& pCalc)
 {
 	ASSERT(pCalc);
 	m_calcLocalVariableList.push_back(pCalc);
 }
 
-RDOValue RDOCalcLocalVariableList::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcLocalVariableList::doCalc(const LPRDORuntime& pRuntime)
 {
 	for (const auto& calc: m_calcLocalVariableList)
 	{
@@ -71,7 +71,7 @@ RDOValue RDOCalcLocalVariableList::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcSetLocalVariable
 // --------------------------------------------------------------------------------
-RDOCalcSetLocalVariable::RDOCalcSetLocalVariable(CREF(tstring) name, LPRDOCalc pCalc)
+RDOCalcSetLocalVariable::RDOCalcSetLocalVariable(const std::string& name, LPRDOCalc pCalc)
 	: m_name (name )
 	, m_pCalc(pCalc)
 {}
@@ -79,7 +79,7 @@ RDOCalcSetLocalVariable::RDOCalcSetLocalVariable(CREF(tstring) name, LPRDOCalc p
 RDOCalcSetLocalVariable::~RDOCalcSetLocalVariable()
 {}
 
-RDOValue RDOCalcSetLocalVariable::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcSetLocalVariable::doCalc(const LPRDORuntime& pRuntime)
 {
 	pRuntime->getMemoryStack()->set(m_name, m_pCalc->calcValue(pRuntime));
 	return RDOValue();

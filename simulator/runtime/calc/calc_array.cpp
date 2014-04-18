@@ -20,14 +20,14 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcArraySize
 // --------------------------------------------------------------------------------
-RDOCalcArraySize::RDOCalcArraySize(CREF(LPRDOCalc) pCalc)
+RDOCalcArraySize::RDOCalcArraySize(const LPRDOCalc& pCalc)
 	: m_pCalc(pCalc)
 {}
 
-RDOValue RDOCalcArraySize::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcArraySize::doCalc(const LPRDORuntime& pRuntime)
 {
 	RDOValue value = m_pCalc->calcValue(pRuntime);
-	CREF(LPRDOArrayValue) pArrayValue = value.getPointerByType<RDOArrayType>();
+	const LPRDOArrayValue& pArrayValue = value.getPointerByType<RDOArrayType>();
 	ASSERT(pArrayValue);
 	return pArrayValue->size();
 }
@@ -35,7 +35,7 @@ RDOValue RDOCalcArraySize::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcArrayItem
 // --------------------------------------------------------------------------------
-RDOCalcArrayItem::RDOCalcArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArrayInd)
+RDOCalcArrayItem::RDOCalcArrayItem(const LPRDOCalc& pArray, const LPRDOCalc& pArrayInd)
 	: m_pArray   (pArray   )
 	, m_pArrayInd(pArrayInd)
 {
@@ -45,11 +45,11 @@ RDOCalcArrayItem::RDOCalcArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArra
 	setSrcInfo(m_pArrayInd->srcInfo());
 }
 
-RDOValue RDOCalcArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcArrayItem::doCalc(const LPRDORuntime& pRuntime)
 {
 	RDOValue value = m_pArray->calcValue(pRuntime);
 
-	CREF(LPRDOArrayValue) pArrayValue = value.getPointerByType<RDOArrayType>();
+	const LPRDOArrayValue& pArrayValue = value.getPointerByType<RDOArrayType>();
 	ASSERT(pArrayValue);
 
 	return pArrayValue->getItem(m_pArrayInd->calcValue(pRuntime));
@@ -58,7 +58,7 @@ RDOValue RDOCalcArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcSetArrayItem
 // --------------------------------------------------------------------------------
-RDOCalcSetArrayItem::RDOCalcSetArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArrayInd, CREF(LPRDOCalc) pSetItem)
+RDOCalcSetArrayItem::RDOCalcSetArrayItem(const LPRDOCalc& pArray, const LPRDOCalc& pArrayInd, const LPRDOCalc& pSetItem)
 	: m_pArray   (pArray   )
 	, m_pArrayInd(pArrayInd)
 	, m_pSetItem (pSetItem )
@@ -70,11 +70,11 @@ RDOCalcSetArrayItem::RDOCalcSetArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc)
 	setSrcInfo(m_pArrayInd->srcInfo());
 }
 
-RDOValue RDOCalcSetArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcSetArrayItem::doCalc(const LPRDORuntime& pRuntime)
 {
 	RDOValue value = m_pArray->calcValue(pRuntime);
 
-	CREF(LPRDOArrayValue) pArrayValue = value.getPointerByType<RDOArrayType>();
+	const LPRDOArrayValue& pArrayValue = value.getPointerByType<RDOArrayType>();
 	ASSERT(pArrayValue);
 	pArrayValue->setItem(m_pArrayInd->calcValue(pRuntime), m_pSetItem->calcValue(pRuntime));
 

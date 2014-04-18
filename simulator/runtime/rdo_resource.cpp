@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOResource
 // --------------------------------------------------------------------------------
-RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
+RDOResource::RDOResource(const LPRDORuntime& /*pRuntime*/, const ParamList& paramList, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool temporary)
 	: RDORuntimeObject   (                                      )
 	, RDOTraceableObject (trace, resID, rdo::toString(resID + 1))
 	, m_temporary        (temporary                             )
@@ -30,12 +30,11 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList,
 	, m_referenceCount   (0                                     )
 	, m_resType          (pResType                              )
 {
-	UNUSED(pRuntime);
 	appendParams(paramList.begin(), paramList.end());
 }
 
 /// @todo копирующий конструктор не используется - нужен ли он?
-RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy)
+RDOResource::RDOResource(const LPRDORuntime& /*pRuntime*/, const RDOResource& copy)
 	: RDORuntimeObject   (                 )
 	, RDOTraceableObject (copy.traceable(), copy.getTraceID(), copy.traceId())
 	, m_paramList        (copy.m_paramList )
@@ -46,7 +45,6 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy)
 	, m_resType          (copy.m_resType   )
 	, m_typeId           (copy.m_typeId    )
 {
-	UNUSED(pRuntime);
 	appendParams(copy.m_paramList.begin(), copy.m_paramList.end());
 /// @todo посмотреть history и принять решение о комментарии
 //	getRuntime()->incrementResourceIdReference( getTraceID() );
@@ -72,7 +70,7 @@ bool RDOResource::operator== (const RDOResource& other) const
 	return true;
 }
 
-LPRDOResource RDOResource::clone(CREF(LPRDORuntime) pRuntime) const
+LPRDOResource RDOResource::clone(const LPRDORuntime& pRuntime) const
 {
 	const LPRDOResourceTypeList& resourceType = pRuntime->getResType(m_type);
 	ASSERT(resourceType);
@@ -81,14 +79,14 @@ LPRDOResource RDOResource::clone(CREF(LPRDORuntime) pRuntime) const
 	return pResource;
 }
 
-tstring RDOResource::getTypeId()
+std::string RDOResource::getTypeId()
 {
 	std::ostringstream str;
 	str << m_type;
 	return str.str();
 }
 
-tstring RDOResource::traceParametersValue()
+std::string RDOResource::traceParametersValue()
 {
 	std::ostringstream str;
 	if(m_paramList.size() > 0)
@@ -99,10 +97,10 @@ tstring RDOResource::traceParametersValue()
 #ifdef RDOSIM_COMPATIBLE
 			std::ostringstream _str;
 			_str << *it;
-			tstring::size_type pos = _str.str().find("e");
-			if (pos != tstring::npos)
+			std::string::size_type pos = _str.str().find("e");
+			if (pos != std::string::npos)
 			{
-				tstring __str = _str.str();
+				std::string __str = _str.str();
 				__str.erase(pos + 2, 1);
 				str << __str.c_str();
 			}
@@ -121,7 +119,7 @@ tstring RDOResource::traceParametersValue()
 	return str.str();
 }
 
-tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime)
+std::string RDOResource::traceResourceState(char prefix, const LPRDORuntime& pRuntime)
 {
 	std::ostringstream res;
 	if (traceable() || (prefix != '\0'))
@@ -161,20 +159,18 @@ tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime
 	return res.str();
 }
 
-void RDOResource::setRuntime(CREF(LPRDORuntime) pRuntime)
+void RDOResource::setRuntime(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
-
 	/// @todo походу надо удалить метод
 	NEVER_REACH_HERE;
 }
 
-tstring RDOResource::whoAreYou()
+std::string RDOResource::whoAreYou()
 {
 	return "rdoRes";
 }
 
-void RDOResource::makeTemporary(rbool value)
+void RDOResource::makeTemporary(bool value)
 {
 	m_temporary = value;
 }
@@ -189,57 +185,57 @@ void RDOResource::setState(RDOResource::ConvertStatus value)
 	m_state = value;
 }
 
-rbool RDOResource::checkType(ruint type) const
+bool RDOResource::checkType(std::size_t type) const
 {
 	return m_type == type;
 }
 
-CREF(LPIResourceType) RDOResource::getResType() const
+const LPIResourceType& RDOResource::getResType() const
 {
 	return m_resType;
 }
 
-ruint RDOResource::getType() const
+std::size_t RDOResource::getType() const
 {
 	return m_type;
 }
 
-CREF(RDOResource::ParamList) RDOResource::getParamList() const
+const RDOResource::ParamList& RDOResource::getParamList() const
 {
 	return m_paramList;
 }
 
-CREF(RDOValue) RDOResource::getParam(ruint index) const
+const RDOValue& RDOResource::getParam(std::size_t index) const
 {
 	ASSERT(index < m_paramList.size());
 	return m_paramList[index];
 }
 
-REF(RDOValue) RDOResource::getParamRaw(ruint index)
+RDOValue& RDOResource::getParamRaw(std::size_t index)
 {
 	ASSERT(index < m_paramList.size());
 	setState(CS_Keep);
 	return m_paramList[index];
 }
 
-void RDOResource::setParam(ruint index, CREF(RDOValue) value)
+void RDOResource::setParam(std::size_t index, const RDOValue& value)
 {
 	ASSERT(index < m_paramList.size());
 	setState(CS_Keep);
 	m_paramList[index] = value;
 }
 
-ruint RDOResource::paramsCount() const
+std::size_t RDOResource::paramsCount() const
 {
 	return m_paramList.size();
 }
 
-void RDOResource::appendParams(CREF(ParamCIt) from_begin, CREF(ParamCIt) from_end)
+void RDOResource::appendParams(const ParamCIt& from_begin, const ParamCIt& from_end)
 {
 	m_paramList.insert(m_paramList.end(), from_begin, from_end);
 }
 
-rbool RDOResource::canFree() const
+bool RDOResource::canFree() const
 {
 	return m_referenceCount == 0;
 }
@@ -254,7 +250,7 @@ void RDOResource::decRef()
 	--m_referenceCount;
 }
 
-tstring RDOResource::traceTypeId()
+std::string RDOResource::traceTypeId()
 {
 	return m_typeId.empty() ? (m_typeId = getTypeId()) : m_typeId;
 }

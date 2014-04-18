@@ -25,24 +25,25 @@
 // --------------------------------------------------------------------------------
 
 class Log;
-PTR(Log) g_pLog = NULL;
+Log* g_pLog = NULL;
 
-class Log: public std::list<rsint>
+class Log: public std::list<int>
 {
 public:
 	 Log() { g_pLog = this; }
 	~Log() { g_pLog = NULL; }
 };
 
-const rsint MULTIPLEXER = 100;
-const rsint CHECK1      = 7890;
-const rsint CHECK2      = 5362;
+const int MULTIPLEXER = 100;
+const int CHECK1 = 7890;
+const int CHECK2 = 5362;
 
-OBJECT(MyClass)
+PREDECLARE_POINTER(MyClass);
+class MyClass: public rdo::counter_reference
 {
 DECLARE_FACTORY(MyClass)
 public:
-	rsint m_a;
+	int m_a;
 
 	enum { DAFAUL_VALUE = 1 };
 
@@ -51,7 +52,8 @@ protected:
 	~MyClass()                    { g_pLog->push_back(-m_a); }
 };
 
-OBJECT_INTERFACE(IMyClass21)
+PREDECLARE_OBJECT_INTERFACE(IMyClass21)
+struct IMyClass21: public rdo::RefCounter<IMyClass21>
 {
 	enum { DAFAUL_VALUE = 21 };
 
@@ -65,17 +67,17 @@ OBJECT_INTERFACE(IMyClass21)
 public:                    \
 	void ifun21();
 
-CLASS(MyClass2):
-	    IMPLEMENTATION_OF(IMyClass21)
-	AND INSTANCE_OF      (MyClass   )
+class MyClass2
+	: public IMyClass21
+	, public MyClass
 {
 DECLARE_FACTORY(MyClass2)
 public:
-	rsint m_b;
+	int m_b;
 
 	enum { DAFAUL_VALUE = 2 };
 
-	rbool operator== (CREF(MyClass2) obj) const
+	bool operator==(const MyClass2& obj) const
 	{
 		return m_b == obj.m_b;
 	}
@@ -89,15 +91,13 @@ protected:
 DECLARE_POINTER(MyClass2)
 
 void MyClass2::ifun21()
-{
-	int i = 1;
-	UNUSED(i);
-}
+{}
 
-OBJECT(MyClass3)
+PREDECLARE_POINTER(MyClass3);
+class MyClass3: public rdo::counter_reference
 {
 public:
-	rsint m_c;
+	int m_c;
 
 	enum { DAFAUL_VALUE = 3 };
 
@@ -110,11 +110,11 @@ public:
 	}
 };
 
-CLASS(MyClass4): INSTANCE_OF(MyClass2)
+class MyClass4: public MyClass2
 {
 DECLARE_FACTORY(MyClass4)
 public:
-	rsint m_d;
+	int m_d;
 
 	enum { DAFAUL_VALUE = 4 };
 
@@ -149,7 +149,7 @@ BOOST_AUTO_TEST_CASE(CastSmartPtrToBool)
 	Log log;
 	{
 		LPMyClass pMyClass2 = rdo::Factory<MyClass>::create();
-		BOOST_CHECK((rbool)pMyClass2);
+		BOOST_CHECK((bool)pMyClass2);
 	}
 	BOOST_CHECK(log.size() == 2);
 	auto it = log.begin();
@@ -195,7 +195,7 @@ BOOST_AUTO_TEST_CASE(CreateSmartPtrByThis)
 {
 	Log log;
 	{
-		PTR(MyClass3) pMyClass3Raw = new MyClass3();
+		MyClass3* pMyClass3Raw = new MyClass3();
 		BOOST_CHECK(pMyClass3Raw);
 
 		LPMyClass3 pMyClass3_1(pMyClass3Raw);

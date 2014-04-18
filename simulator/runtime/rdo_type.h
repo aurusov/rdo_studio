@@ -12,8 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
-#include "utils/src/common/rdotypes.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
@@ -26,7 +24,8 @@ class RDOValue;
   \class     RDOType
   \brief     Базовый тип данных РДО
 */
-OBJECT(RDOType)
+PREDECLARE_POINTER(RDOType);
+class RDOType: public rdo::counter_reference
 {
 public:
 	/*!

@@ -157,7 +157,7 @@ bool ParserStyle::styleItalic( const int styleType ) const
 	return false;
 }
 
-tstring ParserStyle::styleFGColorToHEX( const int styleType ) const
+std::string ParserStyle::styleFGColorToHEX( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_RDO_DEFAULT     : return colorToHEX( defaultColor );

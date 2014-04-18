@@ -31,22 +31,20 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-int dptlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int dptlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void dpterror(const char* message)
-{
-	UNUSED(message);
-}
+void dpterror(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTActivity
 // --------------------------------------------------------------------------------
-RDODPTActivity::RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
+RDODPTActivity::RDODPTActivity(const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_currParam     (0       )
 {
@@ -68,7 +66,7 @@ Context::FindResult RDODPTActivity::onFindContext(const std::string& method, con
 	return m_pPattern->onFindContext(method, params, srcInfo);
 }
 
-void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
+void RDODPTActivity::addParam(const LPRDOValue& pParam)
 {
 	ASSERT(pParam);
 
@@ -108,13 +106,13 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 	m_currParam++;
 }
 
-void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
+void RDODPTActivity::endParam(const YYLTYPE& param_pos)
 {
 	if (m_pPattern->m_paramList.size() > m_currParam)
 	{
 		LPRDOParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
 		RDOParser::s_parser()->error().push_only(param_pos, rdo::format("Указаны не все параметра образца '%s':", m_pPattern->src_text().c_str()));
-		for (ruint i = m_currParam; i < m_pPattern->m_paramList.size(); i++)
+		for (std::size_t i = m_currParam; i < m_pPattern->m_paramList.size(); i++)
 		{
 			pPatternParam = m_pPattern->m_paramList.at(i);
 			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format("Ожидаемый параметр '%s' имеет тип '%s'", pPatternParam->name().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
@@ -135,7 +133,7 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 	RDOParser::s_parser()->contextStack()->pop<RDODPTActivity>();
 }
 
-rbool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) pPrior)
+bool RDODPTActivity::setPrior(LPRDOFUNArithm& pPrior)
 {
 	LPIPriority pPriorActivity = m_pActivity;
 	if (pPriorActivity)
@@ -148,7 +146,7 @@ rbool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) pPrior)
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTActivityHotKey
 // --------------------------------------------------------------------------------
-RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
+RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info)
 	: RDODPTActivity(src_info, pattern_src_info)
 {
 	switch (pattern()->getType())
@@ -175,7 +173,7 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 RDODPTActivityHotKey::~RDODPTActivityHotKey()
 {}
 
-void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_pos)
+void RDODPTActivityHotKey::addHotKey(const std::string& hotKey, const YYLTYPE& hotkey_pos)
 {
 	if (pattern()->getType() != RDOPATPattern::PT_Keyboard)
 	{
@@ -212,7 +210,7 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSomeActivity
 // --------------------------------------------------------------------------------
-RDODPTSomeActivity::RDODPTSomeActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
+RDODPTSomeActivity::RDODPTSomeActivity(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info)
 	: RDODPTActivityHotKey(pDPT, src_info, pattern_src_info)
 {}
 
@@ -222,7 +220,7 @@ RDODPTSomeActivity::~RDODPTSomeActivity()
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTPriorActivity
 // --------------------------------------------------------------------------------
-RDODPTPriorActivity::RDODPTPriorActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
+RDODPTPriorActivity::RDODPTPriorActivity(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info)
 	: RDODPTActivityHotKey(pDPT, src_info, pattern_src_info)
 {}
 
@@ -232,7 +230,7 @@ RDODPTPriorActivity::~RDODPTPriorActivity()
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSome
 // --------------------------------------------------------------------------------
-RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
+RDODPTSome::RDODPTSome(const RDOParserSrcInfo& src_info, LPILogic pParent)
 	: RDOLogic<rdo::runtime::RDODPTSome, RDODPTSomeActivity>(src_info)
 {
 	RDOParser::s_parser()->checkDPTName(this->src_info());
@@ -246,12 +244,8 @@ RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 RDODPTSome::~RDODPTSome()
 {}
 
-Context::FindResult RDODPTSome::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::FindResult RDODPTSome::onFindContext(const std::string& /*method*/, const Context::Params& /*params*/, const RDOParserSrcInfo& /*srcInfo*/) const
 {
-	UNUSED(method);
-	UNUSED(params);
-	UNUSED(srcInfo);
-
 	//! Добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
 	return FindResult();
 }
@@ -259,7 +253,7 @@ Context::FindResult RDODPTSome::onFindContext(const std::string& method, const C
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTPrior
 // --------------------------------------------------------------------------------
-RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
+RDODPTPrior::RDODPTPrior(const RDOParserSrcInfo& src_info, LPILogic pParent)
 	: RDOLogic<rdo::runtime::RDODPTPrior, RDODPTPriorActivity>(src_info)
 {
 	RDOParser::s_parser()->checkDPTName(this->src_info());
@@ -273,12 +267,8 @@ RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 RDODPTPrior::~RDODPTPrior()
 {}
 
-Context::FindResult RDODPTPrior::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::FindResult RDODPTPrior::onFindContext(const std::string& /*method*/, const Context::Params& /*params*/, const RDOParserSrcInfo& /*srcInfo*/) const
 {
-	UNUSED(method);
-	UNUSED(params);
-	UNUSED(srcInfo);
-
 	//! Добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
 	return FindResult();
 }
@@ -286,7 +276,7 @@ Context::FindResult RDODPTPrior::onFindContext(const std::string& method, const 
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearchActivity
 // --------------------------------------------------------------------------------
-RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
+RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info)
 	: RDODPTActivity(src_info, pattern_src_info   )
 	, m_value       (IDPTSearchActivity::vt_before)
 {
@@ -313,7 +303,7 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(
 RDODPTSearchActivity::~RDODPTSearchActivity()
 {}
 
-void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LPRDOFUNArithm) pRuleCost)
+void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, const LPRDOFUNArithm& pRuleCost)
 {
 	m_value     = value;
 	m_pRuleCost = pRuleCost;
@@ -322,7 +312,7 @@ void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LP
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearch
 // --------------------------------------------------------------------------------
-RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace, LPILogic pParent)
+RDODPTSearch::RDODPTSearch(const RDOParserSrcInfo& src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace, LPILogic pParent)
 	: RDOLogic<rdo::runtime::RDODPTSearchRuntime, RDODPTSearchActivity>(src_info)
 	, m_pParent(pParent)
 	, m_closed (false  )
@@ -336,12 +326,8 @@ RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdo::runtime::RDODPT
 RDODPTSearch::~RDODPTSearch()
 {}
 
-Context::FindResult RDODPTSearch::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::FindResult RDODPTSearch::onFindContext(const std::string& /*method*/, const Context::Params& /*params*/, const RDOParserSrcInfo& /*srcInfo*/) const
 {
-	UNUSED(method);
-	UNUSED(params);
-	UNUSED(srcInfo);
-
 	//! Добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
 	return FindResult();
 }

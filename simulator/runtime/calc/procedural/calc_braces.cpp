@@ -24,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 RDOCalcOpenBrace::RDOCalcOpenBrace()
 {}
 
-RDOValue RDOCalcOpenBrace::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcOpenBrace::doCalc(const LPRDORuntime& pRuntime)
 {
 	LPRDOMemory pLocalMemory = rdo::Factory<RDOMemory>::create();
 	pRuntime->getMemoryStack()->push(pLocalMemory);
@@ -37,7 +37,7 @@ RDOValue RDOCalcOpenBrace::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOCalcCloseBrace::RDOCalcCloseBrace()
 {}
 
-RDOValue RDOCalcCloseBrace::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcCloseBrace::doCalc(const LPRDORuntime& pRuntime)
 {
 	pRuntime->getMemoryStack()->pop();
 	return RDOValue();

@@ -24,7 +24,7 @@ template <class T>
 class intrusive_ptr_interface_wrapper: public rdo::intrusive_ptr<T>, public rdo::IRefCounter
 {
 public:
-	intrusive_ptr_interface_wrapper(CREF(rdo::intrusive_ptr<T>) pPointer);
+	intrusive_ptr_interface_wrapper(const rdo::intrusive_ptr<T>& pPointer);
 	DECLARE_IRefCounter;
 
 private:

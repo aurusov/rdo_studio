@@ -24,7 +24,7 @@ public:
 	DockFrame(QWidget* pParent);
 	virtual ~DockFrame();
 
-	REF(context_type) getContext();
+	context_type& getContext();
 };
 
 #endif // _RDO_STUDIO_DOCK_FRAME_H_

@@ -25,13 +25,13 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOHotKey
 {
 public:
-	typedef  ruint               KeyCode;
+	typedef std::size_t KeyCode;
 
 private:
 	typedef  std::list<KeyCode>  KeyList;
 
 public:
-	static const ruint UNDEFINED_KEY = ruint(~0);
+	static const std::size_t UNDEFINED_KEY = std::size_t(~0);
 
 	//! Вспомогательный класс
 	class Toolkit
@@ -44,11 +44,11 @@ public:
 		//! Переводит имя клавиши в код клавиши
 		//! @param  keyName - имя клавиши
 		//! @result код клавиши в операционной системе
-		KeyCode codeFromString(CREF(tstring) keyName) const;
+		KeyCode codeFromString(const std::string& keyName) const;
 
 	private:
-		typedef  std::map<tstring, KeyCode>  KeySet;
-		KeySet  m_keyList;
+		typedef std::map<std::string, KeyCode> KeySet;
+		KeySet m_keyList;
 	};
 
 	//! Используемые в моделе клавиши, список формируется в момент компиляции
@@ -58,12 +58,12 @@ public:
 		//! Добавляет используемую в моделе клавишу
 		//! @param  keyCode - код клавиши
 		//! @result true, если код добавлен успешно
-		rbool insert(CREF(KeyCode) keyCode);
+		bool insert(const KeyCode& keyCode);
 
 		//! Проверяет наличие клавиши
 		//! @param  keyCode - код клавиши
 		//! @result true, если код найден в списке
-		rbool check(CREF(KeyCode) keyCode) const;
+		bool check(const KeyCode& keyCode) const;
 
 	private:
 		KeyList m_keyList;
@@ -79,29 +79,29 @@ public:
 		//! Фиксирует нажатие клавиши
 		//! @param  keyCode - код клавиши
 		//! @result true, если клавиша добавлена в список нажатых
-		rbool down(CREF(KeyCode) keyCode);
+		bool down(const KeyCode& keyCode);
 
 		//! Фиксирует отжатие клавиши
 		//! @param  keyCode - код клавиши
-		void up(CREF(KeyCode) keyCode);
+		void up(const KeyCode& keyCode);
 
 		//! Проверяет, есть ли клавиша в списке нажатых
 		//! @param  keyCode - код клавиши
 		//! @param  shift   - признак нажатого Shift'а
 		//! @param  control - признак нажатого Ctrl'а
 		//! @result true, если клавиша есть в списке нажатых
-		rbool isPressed(CREF(KeyCode) keyCode, rbool shift, rbool control);
+		bool isPressed(const KeyCode& keyCode, bool shift, bool control);
 
 		//! Результат других методов
 		//! @result true, если \ref down или \ref isPressed вернули true в момент совего вызова
-		rbool isFound() const;
+		bool isFound() const;
 
 		//! Очищает список текущих нажатых клавиш
 		void clear();
 
 	private:
 		KeyList m_keyList;
-		rbool   m_keyFound;
+		bool m_keyFound;
 	};
 
 	//! Обрабатывает клики мышкой на активные области, содержит только список текущих нажатых
@@ -110,23 +110,23 @@ public:
 	public:
 		//! Фиксирует нажатие на область
 		//! @param areaName - имя области
-		void  click(CREF(tstring) areaName);
+		void  click(const std::string& areaName);
 
 		//! Проверяет было ли нажатие на область
 		//! @param  areaName - имя области
 		//! @result true, если было нажатие
-		rbool check(CREF(tstring) areaName);
+		bool check(const std::string& areaName);
 
 		//! Проверяет было ли нажатие хотя бы на одну область
 		//! @result true, если было нажатие
-		rbool empty() const;
+		bool empty() const;
 
 		//! Очищает список
 		void clear();
 
 	private:
-		typedef  std::list<tstring>  NameList;
-		NameList  m_activeAreasMouseClicked;
+		typedef std::list<std::string> NameList;
+		NameList m_activeAreasMouseClicked;
 	};
 
 	RDOHotKey();
@@ -137,29 +137,29 @@ public:
 
 	//! Возвращает вспомогательный класс
 	//! @result вспомогательный класс
-	CREF(Toolkit) toolkit() const;
+	const Toolkit& toolkit() const;
 
 	//! Возвращает используемые в моделе клавиши
 	//! @result используемые в моделе клавиши
-	REF(KeyInModelList) keyInModel();
+	KeyInModelList& keyInModel();
 
 	//! Возвращает список текущих нажатых клавиш
 	//! @result список текущих нажатых клавиш
-	REF(KeyDownList) keyDown();
+	KeyDownList& keyDown();
 
 	//! Возвращает список текущий нажатых активных областей
 	//! @result список текущий нажатых активных областей
-	REF(AreaList) areaList();
+	AreaList& areaList();
 
 	//! Проверяет факт нажатия клавиши или выбора активной области
 	//! @result true, если была нажата клавиша или активная область
-	rbool isKeyDown() const;
+	bool isKeyDown() const;
 
 private:
-	Toolkit        m_toolkit;
+	Toolkit m_toolkit;
 	KeyInModelList m_keyInModel;
-	KeyDownList    m_keyDown;
-	AreaList       m_areaList;
+	KeyDownList m_keyDown;
+	AreaList m_areaList;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

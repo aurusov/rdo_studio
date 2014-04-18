@@ -12,7 +12,6 @@
 #include <iostream>
 #include <boost/format.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "utils/src/locale/rdolocale.h"
 #include "app/rdo_console/terminate_codes.h"
 #include "app/rdo_console/options/controller_console_options.h"
@@ -49,7 +48,7 @@ ControllerConsoleOptions::ControllerConsoleOptions(int argc, char *argv[])
 		po::store(po::parse_command_line(argc, argv, m_options), m_variables);
 		po::notify(m_variables);
 	}
-	catch (CREF(std::exception) e)
+	catch (const std::exception& e)
 	{
 		const std::string error = boost::str(boost::format("command line error: %1%") % e.what());
 		rdo::locale::cout(error);
@@ -92,7 +91,7 @@ boost::filesystem::path ControllerConsoleOptions::getModelFileName() const
 	boost::filesystem::path result;
 	if (m_variables.count(MODEL_COMMAND))
 	{
-		tstring modelFileName = m_variables[MODEL_COMMAND].as<tstring>();
+		std::string modelFileName = m_variables[MODEL_COMMAND].as<std::string>();
 #if defined(OST_WINDOWS)
 		modelFileName = rdo::locale::convertFromCLocale(modelFileName);
 #elif defined(OST_LINUX)
@@ -108,7 +107,7 @@ boost::filesystem::path ControllerConsoleOptions::getScriptFileName() const
 	boost::filesystem::path result;
 	if (m_variables.count(SCRIPT_COMMAND))
 	{
-		tstring eventsFileName = m_variables[SCRIPT_COMMAND].as<tstring>();
+		std::string eventsFileName = m_variables[SCRIPT_COMMAND].as<std::string>();
 #if defined(OST_WINDOWS)
 		eventsFileName = rdo::locale::convertFromCLocale(eventsFileName);
 #elif defined(OST_LINUX)
@@ -119,33 +118,33 @@ boost::filesystem::path ControllerConsoleOptions::getScriptFileName() const
 	return result;
 }
 
-rbool ControllerConsoleOptions::helpQuery() const
+bool ControllerConsoleOptions::helpQuery() const
 {
 	return m_help;
 }
 
-rbool ControllerConsoleOptions::convertQuery() const
+bool ControllerConsoleOptions::convertQuery() const
 {
 	return m_convert;
 }
 
-void ControllerConsoleOptions::createGeneralOptions(REF(po::options_description) options)
+void ControllerConsoleOptions::createGeneralOptions(po::options_description& options)
 {
 	options.add_options()
-			((MODEL_COMMAND + COMMA_STRING + MODEL_COMMAND_SHORT).c_str(), po::value<tstring>(), MODEL_COMMENT.c_str())
-			((SCRIPT_COMMAND + COMMA_STRING + SCRIPT_COMMAND_SHORT).c_str(), po::value<tstring>(), SCRIPT_COMMENT.c_str())
+			((MODEL_COMMAND + COMMA_STRING + MODEL_COMMAND_SHORT).c_str(), po::value<std::string>(), MODEL_COMMENT.c_str())
+			((SCRIPT_COMMAND + COMMA_STRING + SCRIPT_COMMAND_SHORT).c_str(), po::value<std::string>(), SCRIPT_COMMENT.c_str())
 			((LANGUAGE_COMMAND + COMMA_STRING + LANGUAGE_COMMAND_SHORT).c_str(), LANGUAGE_COMMENT.c_str())
 			((VERSION_COMMAND + COMMA_STRING + VERSION_COMMAND_SHORT).c_str(), VERSION_COMMENT.c_str())
 			((HELP_COMMAND + COMMA_STRING + HELP_COMMAND_SHORT).c_str(), HELP_COMMENT.c_str());
 }
 
-void ControllerConsoleOptions::createConvertorOptions(REF(po::options_description) options)
+void ControllerConsoleOptions::createConvertorOptions(po::options_description& options)
 {
 	options.add_options()
 		((CONVERTOR_COMMAND + COMMA_STRING + CONVERTOR_COMMAND_SHORT).c_str(), CONVERTOR_COMMENT.c_str());
 }
 
-void ControllerConsoleOptions::createAdditionalOptions(REF(po::options_description) options)
+void ControllerConsoleOptions::createAdditionalOptions(po::options_description& options)
 {
 	options.add_options()
 			(AUTO_RUN_COMMAND.c_str(), AUTO_RUN_COMMENT.c_str())

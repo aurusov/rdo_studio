@@ -31,7 +31,7 @@ QUERY_INTERFACE_PARENT(RDOPatternPrior)
 QUERY_INTERFACE_END
 
 private:
-	RDODPTFree (CREF(LPRDORuntime) pRuntime);
+	RDODPTFree(const LPRDORuntime& pRuntime);
 	virtual ~RDODPTFree();
 };
 

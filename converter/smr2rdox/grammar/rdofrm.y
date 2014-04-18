@@ -396,7 +396,7 @@ frm_show
 		ASSERT(pOpenBraceInsert);
 		CONVERTER->insertDocUpdate(pOpenBraceInsert);
 
-		tstring closeBrace(")");
+		const std::string closeBrace(")");
 		LPDocUpdate pCloseBraceInsert = rdo::Factory<UpdateInsert>::create(
 			@2.m_last_seek,
 			closeBrace
@@ -457,55 +457,55 @@ frm_color
 	}
 	| RDO_color_white
 	{
-		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(255), rbyte(255), rbyte(255), RDOParserSrcInfo(@1, LEXER->YYText()));
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(255), (unsigned char)(255), (unsigned char)(255), RDOParserSrcInfo(@1, LEXER->YYText()));
 		ASSERT(pColor);
 		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_black
 	{
-		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(0), rbyte(0), rbyte(0), RDOParserSrcInfo(@1, LEXER->YYText()));
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(0), (unsigned char)(0), (unsigned char)(0), RDOParserSrcInfo(@1, LEXER->YYText()));
 		ASSERT(pColor);
 		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_red
 	{
-		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(255), rbyte(0), rbyte(0), RDOParserSrcInfo(@1, LEXER->YYText()));
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(255), (unsigned char)(0), (unsigned char)(0), RDOParserSrcInfo(@1, LEXER->YYText()));
 		ASSERT(pColor);
 		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_green
 	{
-		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(0), rbyte(255), rbyte(0), RDOParserSrcInfo(@1, LEXER->YYText()));
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(0), (unsigned char)(255), (unsigned char)(0), RDOParserSrcInfo(@1, LEXER->YYText()));
 		ASSERT(pColor);
 		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_blue
 	{
-		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(0), rbyte(0), rbyte(255), RDOParserSrcInfo(@1, LEXER->YYText()));
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(0), (unsigned char)(0), (unsigned char)(255), RDOParserSrcInfo(@1, LEXER->YYText()));
 		ASSERT(pColor);
 		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_cyan
 	{
-		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(0), rbyte(255), rbyte(255), RDOParserSrcInfo(@1, LEXER->YYText()));
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(0), (unsigned char)(255), (unsigned char)(255), RDOParserSrcInfo(@1, LEXER->YYText()));
 		ASSERT(pColor);
 		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_magenta
 	{
-		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(255), rbyte(0), rbyte(255), RDOParserSrcInfo(@1, LEXER->YYText()));
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(255), (unsigned char)(0), (unsigned char)(255), RDOParserSrcInfo(@1, LEXER->YYText()));
 		ASSERT(pColor);
 		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_yellow
 	{
-		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(255), rbyte(255), rbyte(0), RDOParserSrcInfo(@1, LEXER->YYText()));
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(255), (unsigned char)(255), (unsigned char)(0), RDOParserSrcInfo(@1, LEXER->YYText()));
 		ASSERT(pColor);
 		$$ = CONVERTER->stack().push(pColor);
 	}
 	| RDO_color_gray
 	{
-		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(127), rbyte(127), rbyte(127), RDOParserSrcInfo(@1, LEXER->YYText()));
+		LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(127), (unsigned char)(127), (unsigned char)(127), RDOParserSrcInfo(@1, LEXER->YYText()));
 		ASSERT(pColor);
 		$$ = CONVERTER->stack().push(pColor);
 	}
@@ -514,7 +514,7 @@ frm_color
 		LPRDOFUNArithm pRed   = rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($2));
 		LPRDOFUNArithm pGreen = rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($3));
 		LPRDOFUNArithm pBlue  = rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($4));
-		LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(ruint(0), RDOParserSrcInfo()), rdo::Factory<RDOValue>::create(ruint(255), RDOParserSrcInfo()), RDOParserSrcInfo());
+		LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(std::size_t(0), RDOParserSrcInfo()), rdo::Factory<RDOValue>::create(std::size_t(255), RDOParserSrcInfo()), RDOParserSrcInfo());
 		LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 		LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOParserSrcInfo());
 		pRed->checkParamType  (pType);
@@ -542,7 +542,7 @@ frm_color
 		LPRDOFUNArithm pRed   = CONVERTER->stack().pop<RDOFUNArithm>($2);
 		LPRDOFUNArithm pGreen = CONVERTER->stack().pop<RDOFUNArithm>($4);
 		LPRDOFUNArithm pBlue  = CONVERTER->stack().pop<RDOFUNArithm>($6);
-		LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(ruint(0), RDOParserSrcInfo()), rdo::Factory<RDOValue>::create(ruint(255), RDOParserSrcInfo()), RDOParserSrcInfo());
+		LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(std::size_t(0), RDOParserSrcInfo()), rdo::Factory<RDOValue>::create(std::size_t(255), RDOParserSrcInfo()), RDOParserSrcInfo());
 		LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 		LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOParserSrcInfo());
 		pRed->checkParamType  (pType);
@@ -1784,7 +1784,7 @@ frm_active
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
 
-		tstring oprName = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string oprName = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDOOPROperation pOperation = CONVERTER->findOPROperation(oprName);
 		if (!pOperation)
 		{
@@ -2100,7 +2100,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
 		ASSERT(pFunParams);
-		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @3);
 		pFunParams->setSrcText(funName + "()");
@@ -2112,7 +2112,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = CONVERTER->stack().pop<RDOFUNParams>($3);
 		ASSERT(pFunParams);
-		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
 		pFunParams->setSrcText(funName + "(" + pFunParams->src_text() + ")");

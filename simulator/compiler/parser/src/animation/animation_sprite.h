@@ -21,7 +21,7 @@ class RDOFRMSprite: public RDOFRMCommandList
 {
 DECLARE_FACTORY(RDOFRMSprite);
 private:
-	RDOFRMSprite(CREF(RDOParserSrcInfo) src_info);
+	RDOFRMSprite(const RDOParserSrcInfo& src_info);
 	virtual ~RDOFRMSprite();
 
 	rdo::runtime::LPRDOFRMSprite m_pSprite;

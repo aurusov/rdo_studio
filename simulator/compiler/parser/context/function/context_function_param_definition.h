@@ -22,7 +22,8 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- IContextParamDefinitionManager
 // --------------------------------------------------------------------------------
-OBJECT_INTERFACE(IContextParamDefinitionManager)
+PREDECLARE_OBJECT_INTERFACE(IContextParamDefinitionManager)
+struct IContextParamDefinitionManager: public rdo::RefCounter<IContextParamDefinitionManager>
 {
 DECLARE_FACTORY(IContextParamDefinitionManager)
 public:

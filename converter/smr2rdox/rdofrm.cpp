@@ -20,22 +20,20 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int cnv_frmlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_frmlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void cnv_frmerror(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_frmerror(const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMFrame
 // --------------------------------------------------------------------------------
-RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
+RDOFRMFrame::RDOFRMFrame(const RDOParserSrcInfo& srcInfo)
 	: RDOParserSrcInfo(srcInfo)
 	, m_itemCount     (0)
 {
@@ -43,7 +41,7 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
 	Converter::s_converter()->insertFRMFrame(this);
 }
 
-void RDOFRMFrame::setShowIfBlock(CREF(Seek) firstSeek)
+void RDOFRMFrame::setShowIfBlock(const Seek& firstSeek)
 {
 	if (m_firstSeek.is_initialized() && m_lastSeek.is_initialized() && m_itemCount > 1)
 	{
@@ -67,18 +65,18 @@ void RDOFRMFrame::setShowIfBlock(CREF(Seek) firstSeek)
 	m_lastSeek.reset();
 }
 
-void RDOFRMFrame::addItem(CREF(rdo::runtime::LPRDOCalc), ruint lastSeek)
+void RDOFRMFrame::addItem(const rdo::runtime::LPRDOCalc&, std::size_t lastSeek)
 {
 	++m_itemCount;
 	m_lastSeek = lastSeek;
 }
 
-void RDOFRMFrame::setFrameConditionPos(ruint firstSeek, ruint lastSeek)
+void RDOFRMFrame::setFrameConditionPos(std::size_t firstSeek, std::size_t lastSeek)
 {
 	m_frameConditionPos = std::make_pair(firstSeek, lastSeek);
 }
 
-void RDOFRMFrame::onAfterBackPicture(ruint lastSeek)
+void RDOFRMFrame::onAfterBackPicture(std::size_t lastSeek)
 {
 	if (!m_frameConditionPos.is_initialized())
 		return;

@@ -25,48 +25,48 @@ inline Interface<I>::Interface(LPIGetUnknown pGetUnknown)
 {}
 
 template<class I>
-inline Interface<I>::Interface(PTR(void) pInterface, LPIUnknown pUnknown)
+inline Interface<I>::Interface(void* pInterface, LPIUnknown pUnknown)
 	: UnknownPointer(pInterface, pUnknown)
 {}
 
 template<class I>
-inline Interface<I>::Interface(CREF(this_type) aInterface)
+inline Interface<I>::Interface(const this_type& aInterface)
 	: UnknownPointer(aInterface)
 {}
 
 template<class I>
-inline REF(typename Interface<I>::this_type) Interface<I>::operator= (CREF(this_type) aInterface)
+inline typename Interface<I>::this_type& Interface<I>::operator= (const this_type& aInterface)
 {
 	parent_type::operator= (aInterface);
 	return *this;
 }
 
 template<class I>
-inline Interface<I>::operator rbool() const
+inline Interface<I>::operator bool() const
 {
 	return m_pInterface != NULL;
 }
 
 template<class I>
-inline PTR(I) Interface<I>::get()
+inline I* Interface<I>::get()
 {
-	return static_cast<PTR(I)>(m_pInterface);
+	return static_cast<I*>(m_pInterface);
 }
 
 template<class I>
-inline CPTR(I) Interface<I>::get() const
+inline const I* Interface<I>::get() const
 {
-	return static_cast<PTR(I)>(m_pInterface);
+	return static_cast<I*>(m_pInterface);
 }
 
 template<class I>
-inline PTR(I) Interface<I>::operator-> ()
+inline I* Interface<I>::operator->()
 {
 	return get();
 }
 
 template<class I>
-inline CPTR(I) Interface<I>::operator-> () const
+inline const I* Interface<I>::operator->() const
 {
 	return get();
 }
@@ -76,7 +76,7 @@ inline UnknownPointer::UnknownPointer()
 	, m_pUnknown  (NULL)
 {}
 
-inline UnknownPointer::UnknownPointer(REF(IUnknown) unknown)
+inline UnknownPointer::UnknownPointer(IUnknown& unknown)
 	: m_pInterface(NULL    )
 	, m_pUnknown  (&unknown)
 {
@@ -92,7 +92,7 @@ inline UnknownPointer::UnknownPointer(LPIGetUnknown pGetUnknown)
 		m_pUnknown->AddRef();
 }
 
-inline UnknownPointer::UnknownPointer(PTR(void) pInterface, LPIUnknown pUnknown)
+inline UnknownPointer::UnknownPointer(void* pInterface, LPIUnknown pUnknown)
 	: m_pInterface(pInterface)
 	, m_pUnknown  (pUnknown  )
 {
@@ -100,7 +100,7 @@ inline UnknownPointer::UnknownPointer(PTR(void) pInterface, LPIUnknown pUnknown)
 		m_pUnknown->AddRef();
 }
 
-inline UnknownPointer::UnknownPointer(CREF(UnknownPointer) pointer)
+inline UnknownPointer::UnknownPointer(const UnknownPointer& pointer)
 	: m_pInterface(pointer.m_pInterface)
 	, m_pUnknown  (pointer.m_pUnknown  )
 {
@@ -114,12 +114,12 @@ inline UnknownPointer::~UnknownPointer()
 		m_pUnknown->Release();
 }
 
-inline rbool UnknownPointer::operator== (CREF(UnknownPointer) pointer) const
+inline bool UnknownPointer::operator==(const UnknownPointer& pointer) const
 {
 	return m_pUnknown == pointer.m_pUnknown;
 }
 
-inline REF(UnknownPointer) UnknownPointer::operator= (CREF(UnknownPointer) pointer)
+inline UnknownPointer& UnknownPointer::operator= (const UnknownPointer& pointer)
 {
 	if (m_pUnknown)
 		m_pUnknown->Release();
@@ -132,12 +132,12 @@ inline REF(UnknownPointer) UnknownPointer::operator= (CREF(UnknownPointer) point
 	return *this;
 }
 
-inline UnknownPointer::operator rbool () const
+inline UnknownPointer::operator bool() const
 {
 	return m_pUnknown != NULL;
 }
 
-inline UnknownPointer UnknownPointer::query_cast(ruint id)
+inline UnknownPointer UnknownPointer::query_cast(std::size_t id)
 {
 	return m_pUnknown ? m_pUnknown->QueryInterface(id) : UnknownPointer();
 }
@@ -155,7 +155,7 @@ inline UnknownPointer::operator Interface<I> ()
 	return query_cast<I>();
 }
 
-inline UnknownPointer UnknownPointer::query_cast(ruint id) const
+inline UnknownPointer UnknownPointer::query_cast(std::size_t id) const
 {
 	return m_pUnknown ? m_pUnknown->QueryInterface(id) : UnknownPointer();
 }
@@ -204,9 +204,9 @@ inline void IFactory<T>::Counter::Release()
 }
 
 template <class T>
-inline UnknownPointer IFactory<T>::Counter::QueryInterface(ruint id)
+inline UnknownPointer IFactory<T>::Counter::QueryInterface(std::size_t id)
 {
-	PTR(void) pInterface = m_pObject->QueryInterface(id);
+	void* pInterface = m_pObject->QueryInterface(id);
 	return pInterface ? UnknownPointer(pInterface, this) : UnknownPointer();
 }
 
@@ -241,61 +241,61 @@ inline UnknownPointer IFactory<T>::create()
 
 template <class T>
 template <typename P1>
-inline UnknownPointer IFactory<T>::create(CREF(P1) p1)
+inline UnknownPointer IFactory<T>::create(const P1& p1)
 {
 	return init(new Object(p1));
 }
 
 template <class T>
 template <typename P1, typename P2>
-inline UnknownPointer IFactory<T>::create(CREF(P1) p1, CREF(P2) p2)
+inline UnknownPointer IFactory<T>::create(const P1& p1, const P2& p2)
 {
 	return init(new Object(p1, p2));
 }
 
 template <class T>
 template <typename P1, typename P2, typename P3>
-inline UnknownPointer IFactory<T>::create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3)
+inline UnknownPointer IFactory<T>::create(const P1& p1, const P2& p2, const P3& p3)
 {
 	return init(new Object(p1, p2, p3));
 }
 
 template <class T>
 template <typename P1, typename P2, typename P3, typename P4>
-inline UnknownPointer IFactory<T>::create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4)
+inline UnknownPointer IFactory<T>::create(const P1& p1, const P2& p2, const P3& p3, const P4& p4)
 {
 	return init(new Object(p1, p2, p3, p4));
 }
 
 template <class T>
 template <typename P1, typename P2, typename P3, typename P4, typename P5>
-inline UnknownPointer IFactory<T>::create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5)
+inline UnknownPointer IFactory<T>::create(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5)
 {
 	return init(new Object(p1, p2, p3, p4, p5));
 }
 
 template <class T>
 template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
-inline UnknownPointer IFactory<T>::create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6)
+inline UnknownPointer IFactory<T>::create(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5, const P6& p6)
 {
 	return init(new Object(p1, p2, p3, p4, p5, p6));
 }
 
 template <class T>
 template <typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
-inline UnknownPointer IFactory<T>::create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3, CREF(P4) p4, CREF(P5) p5, CREF(P6) p6, CREF(P7) p7)
+inline UnknownPointer IFactory<T>::create(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5, const P6& p6, const P7& p7)
 {
 	return init(new Object(p1, p2, p3, p4, p5, p6, p7));
 }
 
 template <class T>
-inline void IFactory<T>::destroy(PTR(T) pObject)
+inline void IFactory<T>::destroy(T* pObject)
 {
 	delete pObject;
 }
 
 template <class T>
-inline UnknownPointer IFactory<T>::init(PTR(Object) pObject)
+inline UnknownPointer IFactory<T>::init(Object* pObject)
 {
 	UnknownPointer uPointer(pObject ? *pObject->GetUnknown() : UnknownPointer());
 	LPIInit iInit = uPointer;

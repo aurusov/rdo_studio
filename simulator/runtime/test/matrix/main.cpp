@@ -27,10 +27,10 @@
 
 BOOST_AUTO_TEST_SUITE(RDORuntime_Matrix_Test)
 
-typedef  rdo::vector<rsint>                                                 Container;
-typedef  std::pair<rdo::runtime::LPRDOMatrixValue, rdo::runtime::RDOValue>  Matrix;
+typedef rdo::vector<int> Container;
+typedef std::pair<rdo::runtime::LPRDOMatrixValue, rdo::runtime::RDOValue> Matrix;
 
-Matrix createMatrix(CREF(Container) data)
+Matrix createMatrix(const Container& data)
 {
 	rdo::runtime::LPRDOMatrixType  pType  = rdo::Factory<rdo::runtime::RDOMatrixType>::create(rdo::runtime::g_int);
 	ASSERT(pType);
@@ -45,7 +45,7 @@ Matrix createMatrix(CREF(Container) data)
 	return std::make_pair(pValue, rdo::runtime::RDOValue(pType, pValue));
 }
 
-tstring getString(CREF(rdo::runtime::LPRDOMatrixValue) pMatrix, CREF(rdo::runtime::LPRDOMatrixIterator) pIt)
+std::string getString(const rdo::runtime::LPRDOMatrixValue& pMatrix, const rdo::runtime::LPRDOMatrixIterator& pIt)
 {
 	if (!pIt->equal(pMatrix->end()))
 	{
@@ -54,7 +54,7 @@ tstring getString(CREF(rdo::runtime::LPRDOMatrixValue) pMatrix, CREF(rdo::runtim
 	return "";
 }
 
-tstring getString(CREF(rdo::runtime::RDOValue) it, CREF(rdo::runtime::RDOValue) end)
+std::string getString(const rdo::runtime::RDOValue& it, const rdo::runtime::RDOValue& end)
 {
 	if (it != end)
 	{
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestIteratorPrePlus)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	tstring result;
+	std::string result;
 	rdo::runtime::LPRDOMatrixIterator pIt = matrix.first->begin();
 	while (!pIt->equal(matrix.first->end()))
 	{
@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestIteratorPostPlus)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	tstring result;
+	std::string result;
 	rdo::runtime::LPRDOMatrixIterator pIt = matrix.first->begin();
 	while (!pIt->equal(matrix.first->end()))
 	{
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestIteratorPreMinus)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	tstring result;
+	std::string result;
 	rdo::runtime::LPRDOMatrixIterator pIt = matrix.first->end();
 	do
 	{
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestIteratorPostMinus)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	tstring result;
+	std::string result;
 	rdo::runtime::LPRDOMatrixIterator pIt = matrix.first->end();
 	do
 	{
@@ -147,7 +147,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePrePlus)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	tstring result;
+	std::string result;
 	rdo::runtime::LPRDOMatrixIterator pIt  = matrix.first->begin();
 	rdo::runtime::LPRDOMatrixIterator pEnd = matrix.first->end  ();
 	rdo::runtime::RDOValue it (pIt,  pIt );
@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePostPlus)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	tstring result;
+	std::string result;
 	rdo::runtime::LPRDOMatrixIterator pIt  = matrix.first->begin();
 	rdo::runtime::LPRDOMatrixIterator pEnd = matrix.first->end  ();
 	rdo::runtime::RDOValue it (pIt,  pIt );
@@ -183,7 +183,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePreMinus)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	tstring result;
+	std::string result;
 	rdo::runtime::LPRDOMatrixIterator pIt    = matrix.first->end  ();
 	rdo::runtime::LPRDOMatrixIterator pBegin = matrix.first->begin();
 	rdo::runtime::LPRDOMatrixIterator pEnd   = matrix.first->end  ();
@@ -205,7 +205,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePostMinus)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	tstring result;
+	std::string result;
 	rdo::runtime::LPRDOMatrixIterator pIt    = matrix.first->end  ();
 	rdo::runtime::LPRDOMatrixIterator pBegin = matrix.first->begin();
 	rdo::runtime::LPRDOMatrixIterator pEnd   = matrix.first->end  ();
@@ -227,23 +227,23 @@ BOOST_AUTO_TEST_CASE(MatrixTestSetItem)
 {
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
-	ruint ind  = 1;
-	ruint item = 48;
+	std::size_t ind = 1;
+	std::size_t item = 48;
 	rdo::runtime::RDOValue index(ind);
 	rdo::runtime::RDOValue value(item);
 	matrix.first->setItem(index, value);
 
 	BOOST_CHECK(matrix.second.getAsString() == "[1, 48, 3]");
 
-	ind         = 3;
-	index       = ind;
-	rbool found = false;
+	ind = 3;
+	index = ind;
+	bool found = false;
 
 	try
 	{
 		matrix.first->setItem(index, value);
 	}
-	catch (CREF(rdo::runtime::RDORuntimeException) ex)
+	catch (const rdo::runtime::RDORuntimeException& ex)
 	{
 		if (!ex.message().empty())
 		{
@@ -261,21 +261,21 @@ BOOST_AUTO_TEST_CASE(MatrixTestGetItem)
 {
 	Matrix matrix = createMatrix(Container()(1)(48)(3));
 
-	ruint ind = 1;
+	std::size_t ind = 1;
 	rdo::runtime::RDOValue index(ind);
 	rdo::runtime::RDOValue value(matrix.first->getItem(index));
 
 	BOOST_CHECK(value.getAsString() == "48");
 
-	ind         = 3;
-	index       = ind;
-	rbool found = false;
+	ind = 3;
+	index = ind;
+	bool found = false;
 
 	try
 	{
 		matrix.first->getItem(index);
 	}
-	catch (CREF(rdo::runtime::RDORuntimeException) ex)
+	catch (const rdo::runtime::RDORuntimeException& ex)
 	{
 		if (!ex.message().empty())
 		{
