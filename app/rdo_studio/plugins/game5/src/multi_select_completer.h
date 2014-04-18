@@ -16,6 +16,7 @@
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
+
 class MultiSelectCompleter : public QCompleter
 {
 public:
@@ -25,6 +26,5 @@ public:
 	virtual QString pathFromIndex(const QModelIndex& index) const;
 	virtual QStringList splitPath(const QString& path) const;
 };
-
 
 #endif // _RDO_PLUGIN_GAME_5_MULTI_SELECT_COMPLETER_H_
