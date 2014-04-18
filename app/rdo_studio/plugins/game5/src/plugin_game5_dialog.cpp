@@ -33,6 +33,7 @@ namespace
 		MOVE_RIGHT,
 		MOVE_LEFT
 	};
+	const std::size_t HOLE_NUMBER = 0;
 } // end anonymous namespace
 
 PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* pParent)
@@ -66,11 +67,9 @@ PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* 
 	connect(buttonOk          , &QPushButton::clicked, this, &PluginGame5GenerateSituationDialog::onClickOk           );
 
 	connect(this     , &PluginGame5GenerateSituationDialog::buttonRandomClicked,
-	        gameBoard, &Board::buildRandomOrder
-	);
+	        gameBoard, &Board::buildRandomOrder);
 	connect(buttonRightLineup, &QPushButton::clicked,
-	        gameBoard        , &Board::buildCorrectOrder
-	);
+	        gameBoard        , &Board::buildCorrectOrder);
 
 	if (pParent)
 	{
@@ -79,8 +78,7 @@ PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* 
 }
 
 PluginGame5GenerateSituationDialog::~PluginGame5GenerateSituationDialog()
-{
-}
+{}
 
 void PluginGame5GenerateSituationDialog::onClickHide(bool state)
 {
@@ -103,7 +101,7 @@ void PluginGame5GenerateSituationDialog::emitSolvabilityCheck()
 	emit buttonRandomClicked(solvabilityCheck->isChecked());
 }
 
-std::string PluginGame5GenerateSituationDialog::evaluateBy()
+std::string PluginGame5GenerateSituationDialog::evaluateBy() const
 {
 	if (radioButton0->isChecked())
 	{
@@ -123,7 +121,7 @@ std::string PluginGame5GenerateSituationDialog::evaluateBy()
 	}
 }
 
-std::string PluginGame5GenerateSituationDialog::activityValue(int direction)
+std::string PluginGame5GenerateSituationDialog::activityValue(int direction) const
 {
 	QString costValue;
 	QString calcSwitcher;
@@ -148,41 +146,42 @@ std::string PluginGame5GenerateSituationDialog::activityValue(int direction)
 		default:
 			break;
 	}
-	QString string = calcSwitcher + " " + costValue ;
+	const QString string = calcSwitcher + " " + costValue ;
 	return string.toStdString();
 }
 
-std::string PluginGame5GenerateSituationDialog::RTPtabText()
+std::string PluginGame5GenerateSituationDialog::RTPtabText() const
 {
 	std::stringstream RTPtabTextStream; 
 	RTPtabTextStream
 	<<	"$Resource_type Фишка : permanent\n"
 	<<	"$Parameters\n"
-	<<	"	Номер          : integer[1.." << (gameBoard->m_tilesCountX * gameBoard->m_tilesCountY)- 1 << "]\n"
-	<<	"	Местоположение : integer[1.." << (gameBoard->m_tilesCountX * gameBoard->m_tilesCountY)    << "]\n"
+	<<	"	Номер          : integer[1.." << gameBoard->getQuantityOfTiles()     << "]\n"
+	<<	"	Местоположение : integer[1.." << gameBoard->getQuantityOfTiles() + 1 << "]\n"
 	<<	"$End\n"
 	<<	"\n"
 	<<	"$Resource_type Дырка_t : permanent\n"
 	<<	"$Parameters\n"
-	<<	"\t	Место: integer[1.." << (gameBoard->m_tilesCountX * gameBoard->m_tilesCountY) << "]\n"
+	<<	"\t	Место: integer[1.." << gameBoard->getQuantityOfTiles() + 1 << "]\n"
 	<<	"$End\n";
 	return RTPtabTextStream.str();
 }
 
-std::string PluginGame5GenerateSituationDialog::RSStabText()
+std::string PluginGame5GenerateSituationDialog::RSStabText() const
 {
 	std::stringstream RSStabTextStream; 
-	RSStabTextStream <<	"$Resources\n";
+	RSStabTextStream
+	<<	"$Resources\n";
 	for (int i = 1; i < gameBoard->getQuantityOfTiles() + 1; i++)
 	{
 		RSStabTextStream << "\tФишка" << i <<" = Фишка(" << i << ", " << gameBoard->getTilePosition(i) << ");\n";
 	}
-	RSStabTextStream << "\tДырка = Дырка_t(" << gameBoard->getTilePosition(0) << ");\n";
+	RSStabTextStream << "\tДырка = Дырка_t(" << gameBoard->getTilePosition(HOLE_NUMBER) << ");\n";
 	RSStabTextStream <<	"$End\n";
 	return RSStabTextStream.str();
 }
 
-std::string PluginGame5GenerateSituationDialog::PATtabText()
+std::string PluginGame5GenerateSituationDialog::PATtabText() const
 {
 	std::stringstream PATtabTextStream; 
 	PATtabTextStream
@@ -206,7 +205,7 @@ std::string PluginGame5GenerateSituationDialog::PATtabText()
 	return PATtabTextStream.str();
 }
 
-std::string PluginGame5GenerateSituationDialog::DPTtabText()
+std::string PluginGame5GenerateSituationDialog::DPTtabText() const
 {
 	std::stringstream DPTtabTextStream; 
 	DPTtabTextStream
@@ -225,7 +224,7 @@ std::string PluginGame5GenerateSituationDialog::DPTtabText()
 	return DPTtabTextStream.str();
 }
 
-std::string PluginGame5GenerateSituationDialog::FUNtabText()
+std::string PluginGame5GenerateSituationDialog::FUNtabText() const
 {
 	std::stringstream FUNtabTextStream; 
 	FUNtabTextStream
@@ -322,7 +321,7 @@ std::string PluginGame5GenerateSituationDialog::FUNtabText()
 	return FUNtabTextStream.str();
 }
 
-void PluginGame5GenerateSituationDialog::clearAllTabs()
+void PluginGame5GenerateSituationDialog::clearAllTabs() const
 {
 	rdo::gui::model::Model* pModel = getCurrentModel();
 	for (int i = 0; i < pModel->getTab()->tabBar()->count(); i++)
@@ -341,7 +340,7 @@ void PluginGame5GenerateSituationDialog::callTilesOrderDialog()
 	dlg.exec();
 }
 
-void PluginGame5GenerateSituationDialog::updateTabs()
+void PluginGame5GenerateSituationDialog::updateTabs() const
 {
 	rdo::gui::model::Model* pModel = getCurrentModel();
 	if (pModel->getTab())
@@ -363,7 +362,7 @@ void PluginGame5GenerateSituationDialog::onPluginAction()
 	exec();
 }
 
-QStringList PluginGame5GenerateSituationDialog::parseFunTab()
+QStringList PluginGame5GenerateSituationDialog::parseFunTab() const
 {
 	rdo::gui::model::Model* pModel = getCurrentModel();
 	std::stringstream txtStream;
@@ -372,7 +371,7 @@ QStringList PluginGame5GenerateSituationDialog::parseFunTab()
 	QRegExp regExp("(\\$Function)(\\s*)([A-Za-z0-9_А-Яа-я\\$]*)(\\s*):");
 
 	QStringList list;
-	int pos=0;
+	int pos = 0;
 	while((pos = regExp.indexIn(tabStr, pos))!= -1)
 	{
 		list << regExp.cap(3);
@@ -381,13 +380,13 @@ QStringList PluginGame5GenerateSituationDialog::parseFunTab()
 	return list;
 }
 
-rdo::gui::model::Model* PluginGame5GenerateSituationDialog::getCurrentModel()
+rdo::gui::model::Model* PluginGame5GenerateSituationDialog::getCurrentModel() const
 {
 	MainWindow* pMainWindow = (MainWindow*)(parent());
 	return pMainWindow->getModel();
 }
 
-std::vector<unsigned int> PluginGame5GenerateSituationDialog::getBoardState()
+std::vector<unsigned int> PluginGame5GenerateSituationDialog::getBoardState() const
 {
 	return gameBoard->getBoardState();
 }
