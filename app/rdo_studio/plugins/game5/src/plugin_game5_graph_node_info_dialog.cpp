@@ -44,17 +44,13 @@ void PluginGame5GraphNodeInfoDialog::updateDlg(GraphNode* node)
 	labelPathCostOut    ->setText(QString::number(node->getPathCost()));
 	labelRestPathCostOut->setText(QString::number(node->getRestPathCost()));
 	labelRelevantTileOut->setText(QString::number(node->getRelevantTile()));
-	QString moveText;
+	QString moveText = node->getMoveDirection();
 	if (node->getRelevantTile())
 	{
-		moveText = node->getMoveDirection() + " (c " + QString::number(node->getTileMoveFrom())
-		         + " на " + QString::number(node->getTileMoveTo()) + ")";
+		moveText += " (c " + QString::number(node->getTileMoveFrom())
+		         +  " на " + QString::number(node->getTileMoveTo()) + ")";
 	}
-	else
-	{
-		moveText = node->getMoveDirection();
-	}
-	labelSolutionOut->setText(node->isRelatedToSolution() ? "Да" : "Нет");
+	labelSolutionOut     ->setText(node->isRelatedToSolution() ? "Да" : "Нет");
 	labelMoveDirectionOut->setText(moveText);
 	labelMoveCostOut     ->setText(QString::number(node->getMoveCost()));
 	labelNodeNumOut      ->setText(QString::number(node->getNodeID()));
