@@ -126,6 +126,7 @@ SET(RESULT_FILES
 
 SET(SIMULATOR_FILES
 	keyboard.h
+	rdo_as_string_i.h
 	rdo_exception.h
 	rdo_exception.inl
 	rdo_memory.cpp
