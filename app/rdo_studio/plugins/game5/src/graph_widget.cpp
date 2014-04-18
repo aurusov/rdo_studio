@@ -19,8 +19,9 @@
 
 namespace
 {
-	const double MAX_FACTOR = 10;
-	const double MIN_FACTOR = 0.1;
+	const double MAX_FACTOR  = 10;
+	const double MIN_FACTOR  = 0.1;
+	const double SCALE_SPEED = 1/2400.;
 } // end anonymous namespace
 
 GraphWidget::GraphWidget(QWidget* pParent)
@@ -60,7 +61,7 @@ void GraphWidget::wheelEvent(QWheelEvent* wEvent)
 {
 	if (wEvent->modifiers() & Qt::SHIFT)
 	{
-		scaleView(pow((double)2, wEvent->delta() / 2400.0));
+		scaleView(pow(2., wEvent->delta() * SCALE_SPEED));
 	}
 	else
 	{
