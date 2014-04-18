@@ -12,30 +12,29 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
-#include <QGraphicsItem>
+#include <QGroupBox>
+#include <QLabel>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/plugins/game5/src/graph_items_types.h"
 // --------------------------------------------------------------------------------
 
 class GraphInfo;
 
-class GraphInfo : public QGraphicsItem
+class GraphInfo : public QGroupBox
 {
 public:
-	GraphInfo  (int solutionCost, int numOfOpenNodes, int totalNumOfNodes, double x, double y);
+	 GraphInfo(QWidget* parent = 0);
 	~GraphInfo();
 
-	enum { Type = UserType + TypeID::GRAPH_INFO };
-	virtual int type() const { return Type; }
+	void update(int solutionCost, int numOfOpenNodes, int totalNumOfNodes);
 
 private:
-	const int m_solutionCost;
-	const int m_numOfOpenNodes;
-	const int m_totalNumOfNodes;
-
-	virtual QRectF boundingRect() const;
-	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
+	QLabel* m_solutionCostLabel;
+	QLabel* m_solutionCostValue;
+	QLabel* m_numberOfOpenNodesLabel;
+	QLabel* m_numberOfOpenNodesValue;
+	QLabel* m_totalNumberOfNodesLabel;
+	QLabel* m_totalNumberOfNodesValue;
 };
 
 #endif // _RDO_PLUGIN_GAME_5_GRAPH_INFO_H_

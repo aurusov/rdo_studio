@@ -21,7 +21,6 @@ namespace TypeID
 {
 	const int GRAPH_NODE = 1;
 	const int GRAPH_EDGE = 2;
-	const int GRAPH_INFO = 3;
 }
 
 #endif // _RDO_PLUGIN_GAME_5_GRAPH_ITEMS_TYPES_H

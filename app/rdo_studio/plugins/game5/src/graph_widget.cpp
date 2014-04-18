@@ -11,6 +11,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <math.h>
+#include <QGridLayout>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/graph_widget.h"
@@ -24,11 +25,22 @@ namespace
 
 GraphWidget::GraphWidget(QWidget* pParent)
 	: QGraphicsView(pParent)
+	, m_graphInfo(this)
 {
 	QGraphicsScene* pScene = new QGraphicsScene(this);
 	pScene->setItemIndexMethod(QGraphicsScene::NoIndex);
 
 	setScene(pScene);
+
+	QGridLayout* graphWidgetLayout = new QGridLayout(this);
+	graphWidgetLayout->setContentsMargins(0, 0, 0, 0);
+
+	QSpacerItem* verticalSpacer   = new QSpacerItem(20, 40, QSizePolicy::Minimum  , QSizePolicy::Expanding);
+	QSpacerItem* horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+	graphWidgetLayout->addWidget(&m_graphInfo    , 0, 0, 1, 1);
+	graphWidgetLayout->addItem  (verticalSpacer  , 1, 0, 1, 1);
+	graphWidgetLayout->addItem  (horizontalSpacer, 0, 1, 2, 1);
 
 	setCacheMode(CacheBackground);
 	setViewportUpdateMode(BoundingRectViewportUpdate);
@@ -37,7 +49,11 @@ GraphWidget::GraphWidget(QWidget* pParent)
 }
 
 GraphWidget::~GraphWidget()
+{}
+
+void GraphWidget::updateGraphInfo(int solutionCost, int numberOfOpenNodes, int totalNumberOfNodes)
 {
+	m_graphInfo.update(solutionCost, numberOfOpenNodes, totalNumberOfNodes);
 }
 
 void GraphWidget::wheelEvent(QWheelEvent* wEvent)

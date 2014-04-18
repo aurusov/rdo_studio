@@ -361,8 +361,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 			}
 		}
 	}
-	graphWidget->scene()->addItem(new GraphInfo(parseTraceInfo("DPS_CO"), parseTraceInfo("DPS_TO"), parseTraceInfo("DPS_TT"),
-	                                          graphWidget->scene()->sceneRect().x(), graphWidget->scene()->sceneRect().y()));
+	graphWidget->updateGraphInfo(parseTraceInfo("DPS_CO"), parseTraceInfo("DPS_TO"), parseTraceInfo("DPS_TT"));
 }
 
 void PluginGame5GraphDialog::onPluginAction(const std::vector<unsigned int>& boardState)
