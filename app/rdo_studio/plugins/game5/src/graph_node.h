@@ -73,6 +73,7 @@ public:
 	                                          int relevantTile, int tileMoveTo, const QString& moveDirection);
 	static QString generateNodeTextMediumView(int nodeID, int pathCost, int restPathCost, int moveCost);
 	static QString generateNodeTextSmallView (int nodeID);
+
 signals:
 	void clickedNode(GraphNode* node);
 	void doubleClicked();

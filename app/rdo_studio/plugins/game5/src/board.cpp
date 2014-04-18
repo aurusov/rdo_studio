@@ -35,7 +35,7 @@ Board::Board(QWidget* pParent)
 	, m_topLeftX    (m_boardSpacer)
 	, m_topLeftY    (m_boardSpacer)
 {
-	setFixedSize(m_boardSizeX,m_boardSizeY);
+	setFixedSize(m_boardSizeX, m_boardSizeY);
 
 	setStyleSheet("\
 		background-color: pink; \
