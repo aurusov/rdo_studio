@@ -17,10 +17,16 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-namespace TypeID
+namespace rdo {
+namespace plugin {
+namespace game5 {
+
+enum TypeID
 {
-	const int GRAPH_NODE = 1;
-	const int GRAPH_EDGE = 2;
-}
+	GRAPH_NODE = QGraphicsItem::UserType + 1,
+	GRAPH_EDGE = QGraphicsItem::UserType + 2,
+};
+
+}}} // namespace rdo::plugin::game5
 
 #endif // _RDO_PLUGIN_GAME_5_GRAPH_ITEMS_TYPES_H

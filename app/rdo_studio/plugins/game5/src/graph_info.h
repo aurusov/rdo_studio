@@ -3,7 +3,7 @@
   \file      app/rdo_studio/plugins/game5/src/graph_info.h
   \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
   \date      22.09.2013
-  \brief     
+  \brief
   \indent    4T
 */
 
