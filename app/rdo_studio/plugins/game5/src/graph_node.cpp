@@ -19,7 +19,6 @@
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/graph_node.h"
-#include "app/rdo_studio/plugins/game5/src/graph_edge.h"
 // --------------------------------------------------------------------------------
 
 namespace
@@ -209,21 +208,13 @@ QVariant GraphNode::itemChange(GraphicsItemChange change, const QVariant &value)
 	switch (change)
 	{
 		case ItemPositionHasChanged:
-			for (auto edge: edgeList)
-			{
-				edge->adjust();
-			}
+			emit positionChanged();
 			break;
 		default:
 			break;
 	}
 
 	return QGraphicsItem::itemChange(change, value);
-}
-
-void GraphNode::addEdge(GraphEdge* edge)
-{
-	edgeList.push_back(edge);
 }
 
 void GraphNode::addChild(GraphNode* child)

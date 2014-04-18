@@ -18,10 +18,6 @@
 #include "app/rdo_studio/plugins/game5/src/graph_items_types.h"
 // --------------------------------------------------------------------------------
 
-class GraphWidget;
-class QGraphicsSceneMouseEvent;
-class GraphEdge;
-
 class GraphNode: public QGraphicsObject
 {Q_OBJECT
 
@@ -57,8 +53,6 @@ public:
 	int             getTileMoveTo       () const;
 	bool            isRelatedToSolution () const;
 
-	void addEdge(GraphEdge* edge);
-
 	bool   haveChild ()    const;
 	double childrenMeanX() const;
 	double childrenMeanY() const;
@@ -77,9 +71,9 @@ public:
 signals:
 	void clickedNode(GraphNode* node);
 	void doubleClicked();
+	void positionChanged();
 
 private:
-	std::list<GraphEdge*> edgeList;
 	std::list<GraphNode*> childrenList;
 
 	GraphNode* m_pParentGraphNode;

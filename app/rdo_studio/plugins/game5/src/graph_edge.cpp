@@ -32,8 +32,8 @@ GraphEdge::GraphEdge(GraphNode& sourceNode, GraphNode& destNode)
 {
 	setAcceptedMouseButtons(Qt::NoButton);
 	adjust();
-	sourceNode.addEdge(this);
-	destNode.addEdge(this);
+	connect(&source, &GraphNode::positionChanged, this, &GraphEdge::adjust);
+	connect(&dest  , &GraphNode::positionChanged, this, &GraphEdge::adjust);
 }
 
 GraphEdge::~GraphEdge()

@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
-#include <QGraphicsItem>
+#include <QGraphicsObject>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/graph_items_types.h"
@@ -20,13 +20,12 @@
 
 class GraphNode;
 
-class GraphEdge : public QGraphicsItem
-{
-public:
-	GraphEdge (GraphNode& sourceNode, GraphNode& destNode);
-	~GraphEdge();
+class GraphEdge : public QGraphicsObject
+{Q_OBJECT
 
-	void adjust();
+public:
+	 GraphEdge(GraphNode& sourceNode, GraphNode& destNode);
+	~GraphEdge();
 
 	enum { Type = rdo::plugin::game5::TypeID::GRAPH_EDGE };
 	virtual int type() const { return Type; }
@@ -43,6 +42,9 @@ private:
 
 	virtual QRectF boundingRect() const;
 	virtual void   paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+private slots:
+	void adjust();
 };
 
 #endif // _RDO_PLUGIN_GAME_5_GRAPH_EDGE_H_

@@ -13,6 +13,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 SET(PLUGIN_GAME5_MOC_FILES
 	src/board.h
 	src/checkable_line_edit.h
+	src/graph_edge.h
 	src/graph_node.h
 	src/plugin_game5.h
 	src/plugin_game5_dialog.h
