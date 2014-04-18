@@ -75,6 +75,7 @@ void GraphWidget::keyPressEvent(QKeyEvent* kEvent)
 	{
 		setDragMode(ScrollHandDrag);
 		setInteractive(false);
+		m_dragModeCtrl = true;
 	}
 }
 
@@ -83,9 +84,36 @@ void GraphWidget::keyReleaseEvent(QKeyEvent* kEvent)
 	QGraphicsView::keyReleaseEvent(kEvent);
 	if (kEvent->key() == Qt::Key_Control)
 	{
-		setDragMode(NoDrag);
-		setInteractive(true);
+		if (!m_dragModeClick)
+		{
+			setDragMode(NoDrag);
+			setInteractive(true);
+		}
+		m_dragModeCtrl = false;
 	}
+}
+
+void GraphWidget::mousePressEvent(QMouseEvent* mEvent)
+{
+	if (mEvent->button() == Qt::MouseButton::LeftButton && !itemAt(mEvent->pos()))
+	{
+		setDragMode(ScrollHandDrag);
+		m_dragModeClick = true;
+	}
+	QGraphicsView::mousePressEvent(mEvent);
+}
+
+void GraphWidget::mouseReleaseEvent(QMouseEvent* mEvent)
+{
+	if (mEvent->button() == Qt::MouseButton::LeftButton)
+	{
+		if (!m_dragModeCtrl)
+		{
+			setDragMode(NoDrag);
+		}
+		m_dragModeClick = false;
+	}
+	QGraphicsView::mouseReleaseEvent(mEvent);
 }
 
 void GraphWidget::scaleView(double scaleFactor)

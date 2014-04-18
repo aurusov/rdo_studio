@@ -29,10 +29,14 @@ public:
 
 private:
 	GraphInfo m_graphInfo;
+	bool m_dragModeCtrl;
+	bool m_dragModeClick;
 
-	virtual void wheelEvent     (QWheelEvent* wEvent);
-	virtual void keyPressEvent  (QKeyEvent* kEvent);
-	virtual void keyReleaseEvent(QKeyEvent* kEvent);
+	virtual void wheelEvent       (QWheelEvent* wEvent);
+	virtual void keyPressEvent    (QKeyEvent*   kEvent);
+	virtual void keyReleaseEvent  (QKeyEvent*   kEvent);
+	virtual void mousePressEvent  (QMouseEvent* mEvent);
+	virtual void mouseReleaseEvent(QMouseEvent* mEvent);
 
 	void scaleView(double scaleFactor);
 };
