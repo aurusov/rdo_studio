@@ -3,8 +3,8 @@
   \file      rdorss.y
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -14,6 +14,7 @@
 %}
 
 %pure-parser
+%param {void* lexer}
 
 %token RDO_Resource_type				257
 %token RDO_permanent					258
@@ -80,7 +81,7 @@
 %token RDO_set							319
 %token RDO_IDENTIF_NoChange_NoChange	320
 %token RDO_Operations					321
-	
+
 %token RDO_Results						322
 %token RDO_watch_par					323
 %token RDO_watch_state					324
@@ -284,7 +285,7 @@ rss_res_descr
 		);
 		ASSERT(pLeftParenInsert);
 		CONVERTER->insertDocUpdate(pLeftParenInsert);
-		
+
 		LPDocUpdate pRightParenSemicolonInsert = rdo::Factory<UpdateInsert>::create(
 			@3.m_last_seek,
 			");"
@@ -346,7 +347,7 @@ rss_res_type
 		);
 		ASSERT(pColonReplace);
 		CONVERTER->insertDocUpdate(pColonReplace);
-		
+
 		$$ = CONVERTER->stack().push(pResource);
 	}
 	| RDO_IDENTIF_COLON error
@@ -370,7 +371,7 @@ rss_trace
 	;
 
 rss_values
-	: /* empty */ 
+	: /* empty */
 	{
 		$$ = 1;
 	}

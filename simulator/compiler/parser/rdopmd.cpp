@@ -31,7 +31,7 @@ int pmdlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void pmderror(const char* /*message*/)
+void pmderror(YYLTYPE* /*llocp*/, void* /*lexer*/, YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
 {}
 
 // --------------------------------------------------------------------------------

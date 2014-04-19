@@ -3,8 +3,8 @@
   \file      rdopat.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -32,7 +32,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int cnv_patparse(void* lexer);
 int cnv_patlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
-void cnv_paterror(const char* message);
+void cnv_paterror(YYLTYPE* llocp, void* lexer, const char* message);
 
 // --------------------------------------------------------------------------------
 // -------------------- ConvertCmdList
@@ -105,7 +105,7 @@ public:
 	virtual void               rel_res_insert(const LPRDORelevantResource& pRelevantResource);
 
 	void beforeRelRensert(const RDOParserSrcInfo& rel_info);
-	
+
 	LPRDORelevantResource m_pCurrRelRes;
 
 	LPRDOFUNArithm        time;

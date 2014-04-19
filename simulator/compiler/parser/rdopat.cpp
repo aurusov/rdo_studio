@@ -33,7 +33,7 @@ int patlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void paterror(const char* /*message*/)
+void paterror(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
 {}
 
 int evnlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
@@ -43,7 +43,7 @@ int evnlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void evnerror(const char* /*message*/)
+void evnerror(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
 {}
 
 int evn_preparse_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
@@ -53,7 +53,7 @@ int evn_preparse_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void evn_preparse_error(const char* /*message*/)
+void evn_preparse_error(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
 {}
 
 // --------------------------------------------------------------------------------

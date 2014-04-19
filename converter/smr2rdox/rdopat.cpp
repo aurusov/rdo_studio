@@ -30,7 +30,7 @@ int cnv_patlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void cnv_paterror(const char* /*message*/)
+void cnv_paterror(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
 {}
 
 int pat_preparse_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
@@ -40,7 +40,7 @@ int pat_preparse_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void pat_preparse_error(const char* /*message*/)
+void pat_preparse_error(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
 {}
 
 // --------------------------------------------------------------------------------

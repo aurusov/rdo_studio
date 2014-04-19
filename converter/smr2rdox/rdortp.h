@@ -3,8 +3,8 @@
   \file      rdortp.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -28,7 +28,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int cnv_rtpparse(void* lexer);
 int cnv_rtplex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
-void cnv_rtperror(const char* message);
+void cnv_rtperror(YYLTYPE* llocp, void* lexer, const char* message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPResType
@@ -73,7 +73,7 @@ private:
 DECLARE_POINTER(RDORTPResType);
 
 //// --------------------------------------------------------------------------------
-////------------------------------ FOR FUZZY LOGIC ------------------------------	
+////------------------------------ FOR FUZZY LOGIC ------------------------------
 //// --------------------------------------------------------------------------------
 //
 //// --------------------------------------------------------------------------------
@@ -118,9 +118,9 @@ DECLARE_POINTER(RDORTPResType);
 //	{
 //		m_points.push_back(point);
 //	}
-//	double  getVal() const 
-//	{ 
-//		return m_value; 
+//	double  getVal() const
+//	{
+//		return m_value;
 //	}
 //
 //private:
