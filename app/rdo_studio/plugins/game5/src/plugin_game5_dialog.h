@@ -11,10 +11,10 @@
 #define _RDO_PLUGIN_GAME_5_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-// ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/warning_disable.h"
 #include "ui_plugin_game5_dialog.h"
 #include "utils/src/common/warning_enable.h"
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/board.h"
 #include "app/rdo_studio/src/model/model.h"
 // --------------------------------------------------------------------------------

@@ -11,10 +11,10 @@
 #define _RDO_PLUGIN_GAME_5_TILE_ORDER_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-// ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/warning_disable.h"
 #include "ui_plugin_game5_tiles_order_dialog.h"
 #include "utils/src/common/warning_enable.h"
+// ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
 class TilesOrderDialog
