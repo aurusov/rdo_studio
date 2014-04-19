@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdo_random_distribution.inl
+  \file      rdo_random_distribution.cpp
   \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      02.08.2011
   \brief     Датчики псевдослучайных чисел
@@ -9,6 +9,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "rdo_random_distribution.h"
 #include "simulator/runtime/rdo_value.h"
 // --------------------------------------------------------------------------------
 
@@ -17,19 +18,19 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RandGenerator
 // --------------------------------------------------------------------------------
-inline RandGenerator::RandGenerator(long int seed)
+RandGenerator::RandGenerator(long int seed)
 	: m_seed(seed)
 {}
 
-inline RandGenerator::~RandGenerator()
+RandGenerator::~RandGenerator()
 {}
 
-inline void RandGenerator::setSeed(long int seed)
+void RandGenerator::setSeed(long int seed)
 {
 	m_seed = seed;
 }
 
-inline double RandGenerator::u01()
+double RandGenerator::u01()
 {
 #ifdef RDO_NATIVE_U01
 	m_seed = m_seed * 69069 + 1;
@@ -56,11 +57,11 @@ inline double RandGenerator::u01()
 // --------------------------------------------------------------------------------
 // -------------------- RandGeneratorUniform
 // --------------------------------------------------------------------------------
-inline RandGeneratorUniform::RandGeneratorUniform(long int seed)
+RandGeneratorUniform::RandGeneratorUniform(long int seed)
 	: RandGenerator(seed)
 {}
 
-inline double RandGeneratorUniform::next(double from, double to)
+double RandGeneratorUniform::next(double from, double to)
 {
 	return u01() * (to - from) + from;
 }
@@ -68,11 +69,11 @@ inline double RandGeneratorUniform::next(double from, double to)
 // --------------------------------------------------------------------------------
 // -------------------- RandGeneratorExponential
 // --------------------------------------------------------------------------------
-inline RandGeneratorExponential::RandGeneratorExponential(long int seed)
+RandGeneratorExponential::RandGeneratorExponential(long int seed)
 	: RandGenerator(seed)
 {}
 
-inline double RandGeneratorExponential::next(double math)
+double RandGeneratorExponential::next(double math)
 {
 	return -log(u01()) * math;
 }
@@ -80,11 +81,11 @@ inline double RandGeneratorExponential::next(double math)
 // --------------------------------------------------------------------------------
 // -------------------- RandGeneratorNormal
 // --------------------------------------------------------------------------------
-inline RandGeneratorNormal::RandGeneratorNormal(long int seed)
+RandGeneratorNormal::RandGeneratorNormal(long int seed)
 	: RandGenerator(seed)
 {}
 
-inline double RandGeneratorNormal::next(double av, double var)
+double RandGeneratorNormal::next(double av, double var)
 {
 	double ran = 0;
 	for (int i = 0; i < 12; ++i)
@@ -97,11 +98,11 @@ inline double RandGeneratorNormal::next(double av, double var)
 // --------------------------------------------------------------------------------
 // -------------------- RandGeneratorTriangular
 // --------------------------------------------------------------------------------
-inline RandGeneratorTriangular::RandGeneratorTriangular(long int seed)
+RandGeneratorTriangular::RandGeneratorTriangular(long int seed)
 	: RandGenerator(seed)
 {}
 
-inline double RandGeneratorTriangular::next(double from, double top, double to)
+double RandGeneratorTriangular::next(double from, double top, double to)
 {
 	double result;
 	if (u01() > (top-from)/(to-from))
@@ -118,16 +119,16 @@ inline double RandGeneratorTriangular::next(double from, double top, double to)
 // --------------------------------------------------------------------------------
 // -------------------- RandGeneratorCommonNext
 // --------------------------------------------------------------------------------
-inline RandGeneratorCommonNext::RandGeneratorCommonNext()
+RandGeneratorCommonNext::RandGeneratorCommonNext()
 {}
 
-inline RandGeneratorCommonNext::~RandGeneratorCommonNext()
+RandGeneratorCommonNext::~RandGeneratorCommonNext()
 {}
 
 // --------------------------------------------------------------------------------
 // -------------------- RandGeneratorByHist
 // --------------------------------------------------------------------------------
-inline RandGeneratorByHist::RandGeneratorByHist(long int seed)
+RandGeneratorByHist::RandGeneratorByHist(long int seed)
 	: RandGeneratorUniform   (seed)
 	, RandGeneratorCommonNext(    )
 	, summ                   (0   )
@@ -136,11 +137,11 @@ inline RandGeneratorByHist::RandGeneratorByHist(long int seed)
 // --------------------------------------------------------------------------------
 // -------------------- RandGeneratorByHistReal
 // --------------------------------------------------------------------------------
-inline RandGeneratorByHistReal::RandGeneratorByHistReal(long int seed)
+RandGeneratorByHistReal::RandGeneratorByHistReal(long int seed)
 	: RandGeneratorByHist(seed)
 {}
 
-inline void RandGeneratorByHistReal::addValues(double from, double to, double freq)
+void RandGeneratorByHistReal::addValues(double from, double to, double freq)
 {
 	m_from.push_back(from);
 	m_to.push_back  (to  );
@@ -148,7 +149,7 @@ inline void RandGeneratorByHistReal::addValues(double from, double to, double fr
 	summ += freq;
 }
 
-inline RDOValue RandGeneratorByHistReal::next()
+RDOValue RandGeneratorByHistReal::next()
 {
 	double ran1 = RandGeneratorUniform::next(0, summ);
 	double add = 0;
@@ -164,18 +165,18 @@ inline RDOValue RandGeneratorByHistReal::next()
 // --------------------------------------------------------------------------------
 // -------------------- RandGeneratorByHistEnum
 // --------------------------------------------------------------------------------
-inline RandGeneratorByHistEnum::RandGeneratorByHistEnum(long int seed)
+RandGeneratorByHistEnum::RandGeneratorByHistEnum(long int seed)
 	: RandGeneratorByHist(seed)
 {}
 
-inline void RandGeneratorByHistEnum::addValues(RDOValue val, double freq)
+void RandGeneratorByHistEnum::addValues(RDOValue val, double freq)
 {
 	m_vals.push_back(val);
 	m_freq.push_back(freq);
 	summ += freq;
 }
 
-inline RDOValue RandGeneratorByHistEnum::next()
+RDOValue RandGeneratorByHistEnum::next()
 {
 	double ran1 = RandGeneratorUniform::next(0, summ);
 	double add = 0;
@@ -191,20 +192,20 @@ inline RDOValue RandGeneratorByHistEnum::next()
 // --------------------------------------------------------------------------------
 // -------------------- RandGeneratorEnumerative
 // --------------------------------------------------------------------------------
-inline RandGeneratorEnumerative::RandGeneratorEnumerative()
+RandGeneratorEnumerative::RandGeneratorEnumerative()
 	: RandGeneratorCommonNext( )
 	, m_curr                 (0)
 {}
 
-inline RandGeneratorEnumerative::~RandGeneratorEnumerative()
+RandGeneratorEnumerative::~RandGeneratorEnumerative()
 {}
 
-inline void RandGeneratorEnumerative::addValue(RDOValue val)
+void RandGeneratorEnumerative::addValue(RDOValue val)
 {
 	m_vals.push_back(val);
 }
 
-inline RDOValue RandGeneratorEnumerative::next()
+RDOValue RandGeneratorEnumerative::next()
 {
 	RDOValue res = m_vals[m_curr++];
 	if (m_curr >= m_vals.size()) m_curr = 0;

@@ -210,6 +210,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdo_random_distribution.inl"
-
 #endif // _LIB_RUNTIME_RANDOM_DISTRIBUTION_H_
