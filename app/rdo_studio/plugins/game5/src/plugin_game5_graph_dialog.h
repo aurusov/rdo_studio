@@ -53,8 +53,8 @@ private:
 
 		bool operator() (int i, int j)
 		{
-			int iParentOLO = m_pDlg->m_graph[i]->getParentGraphNode()->getGraphOnLevelOrder();
-			int jParentOLO = m_pDlg->m_graph[j]->getParentGraphNode()->getGraphOnLevelOrder();
+			const int iParentOLO = m_pDlg->m_graph[i]->getParentGraphNode()->getGraphOnLevelOrder();
+			const int jParentOLO = m_pDlg->m_graph[j]->getParentGraphNode()->getGraphOnLevelOrder();
 
 			return iParentOLO < jParentOLO;
 		}
@@ -68,14 +68,14 @@ private:
 
 	void quickSort(std::vector<int>& vector);
 
-	std::vector<int> getSolutionNodes();
+	std::vector<int> getSolutionNodes() const;
 	void updateCheckedNode(GraphNode* node);
-	QString     getTraceTimeStamp();
-	QString     getTraceFile();
-	QStringList parseTrace();
+	QString     getTraceTimeStamp() const;
+	QString     getTraceFile() const;
+	QStringList parseTrace() const;
 
-	QString getTraceInfo();
-	int parseTraceInfo(const QString& key);
+	QString getTraceInfo() const;
+	int parseTraceInfo(const QString& key) const;
 };
 
 #endif // _RDO_PLUGIN_GAME5_GRAPH_DIALOG_H_
