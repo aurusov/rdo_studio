@@ -30,7 +30,7 @@ signals:
 	void tilesOrderCommited(const std::vector<unsigned int>& state);
 
 private:
-	QString validatorRegExpPattern(int value);
+	QString validatorRegExpPattern(int value) const;
 
 private slots:
 	void onOkClick();

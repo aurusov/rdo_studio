@@ -58,7 +58,7 @@ void TilesOrderDialog::onOkClick()
 	accept();
 }
 
-QString TilesOrderDialog::validatorRegExpPattern(int value)
+QString TilesOrderDialog::validatorRegExpPattern(int value) const
 {
 	QString singleRegExp;
 	int leastBit = value % 10 - 1;
