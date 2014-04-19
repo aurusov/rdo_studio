@@ -18,8 +18,8 @@
 // --------------------------------------------------------------------------------
 
 class Tile: public QPushButton
-{
-Q_OBJECT
+{Q_OBJECT
+
 public:
 	Tile(int number, QWidget* pParent);
 	virtual ~Tile();
