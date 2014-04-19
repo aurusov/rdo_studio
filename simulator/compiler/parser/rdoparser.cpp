@@ -536,7 +536,7 @@ void RDOParser::runRSSPost()
 #endif
 				if (!rss->getIsNested())
 				{
-					const std::vector<rdo::runtime::LPRDOCalc> calcList = rss->createCalc();
+					const std::vector<rdo::runtime::LPRDOCalc> calcList = rss->createCalcList();
 					for (const rdo::runtime::LPRDOCalc& calc: calcList)
 					{
 						runtime()->addInitCalc(calc);
