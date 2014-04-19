@@ -44,7 +44,7 @@ protected:
 
 #ifdef RDO_NATIVE_U01
 	//! @param  m_seed  База генератора
-	std::size_t m_seed;
+	std::uint32_t m_seed;
 #else
 	long int m_seed;
 #endif
