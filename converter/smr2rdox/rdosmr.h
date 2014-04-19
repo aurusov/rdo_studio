@@ -29,11 +29,11 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int cnv_smr_file_parse(void* lexer);
 int cnv_smr_file_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
-void cnv_smr_file_error(const char* message);
+void cnv_smr_file_error(YYLTYPE* llocp, void* lexer, const char* message);
 
 int cnv_smr_sim_parse(void* lexer);
 int cnv_smr_sim_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
-void cnv_smr_sim_error(const char* message);
+void cnv_smr_sim_error(YYLTYPE* llocp, void* lexer, const char* message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOSMR

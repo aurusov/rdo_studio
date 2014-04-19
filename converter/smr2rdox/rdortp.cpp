@@ -28,7 +28,7 @@ int cnv_rtplex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void cnv_rtperror(const char* /*message*/)
+void cnv_rtperror(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
 {}
 
 // --------------------------------------------------------------------------------

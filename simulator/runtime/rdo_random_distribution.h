@@ -44,7 +44,7 @@ protected:
 
 #ifdef RDO_NATIVE_U01
 	//! @param  m_seed  База генератора
-	std::size_t m_seed;
+	std::uint32_t m_seed;
 #else
 	long int m_seed;
 #endif
@@ -209,7 +209,5 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/rdo_random_distribution.inl"
 
 #endif // _LIB_RUNTIME_RANDOM_DISTRIBUTION_H_

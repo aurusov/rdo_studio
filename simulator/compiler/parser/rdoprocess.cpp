@@ -34,7 +34,7 @@ int proc_rtp_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void proc_rtp_error(const char* /*message*/)
+void proc_rtp_error(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
 {}
 
 int proc_rss_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
@@ -44,7 +44,7 @@ int proc_rss_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void proc_rss_error(const char* /*message*/)
+void proc_rss_error(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
 {}
 
 int proc_opr_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
@@ -54,7 +54,7 @@ int proc_opr_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void proc_opr_error(const char* /*message*/)
+void proc_opr_error(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
 {}
 
 // -------------------- RDOPROCProcess

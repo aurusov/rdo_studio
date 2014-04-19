@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/type/function_type.h"
 #include "simulator/compiler/parser/rdo_value.h"
@@ -79,7 +78,7 @@ LPRDOType FunctionParamType::type_cast(const LPRDOType& pFrom, const RDOParserSr
 	}
 
 	ParamList::const_iterator paramFromIt = pFromParamType->paramList().begin();
-	BOOST_FOREACH(const LPTypeInfo& pParamType, paramList())
+	for (const LPTypeInfo& pParamType: paramList())
 	{
 		pParamType->type_cast(*paramFromIt, src_info);
 		++paramFromIt;

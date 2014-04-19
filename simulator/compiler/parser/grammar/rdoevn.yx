@@ -17,6 +17,7 @@
 %}
 
 %pure-parser
+%param {void* lexer}
 
 %token RDO_Resource_type
 %token RDO_permanent

@@ -11,7 +11,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/frame_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "kernel/rdothread.h"
@@ -64,7 +63,7 @@ Manager::~Manager()
 {
 	clear();
 
-	BOOST_FOREACH(Frame* pFrame, m_frameList)
+	for (Frame* pFrame: m_frameList)
 	{
 		delete pFrame;
 	}
@@ -91,7 +90,7 @@ void Manager::insertFrame(const QString& frameName)
 std::size_t Manager::findFrameIndex(const QTreeWidgetItem* pTreeWidgetItem) const
 {
 	std::size_t index = 0;
-	BOOST_FOREACH(const Frame* pFrame, m_frameList)
+	for (const Frame* pFrame: m_frameList)
 	{
 		if (pFrame->m_pTreeWidgetItem == pTreeWidgetItem)
 		{
@@ -105,7 +104,7 @@ std::size_t Manager::findFrameIndex(const QTreeWidgetItem* pTreeWidgetItem) cons
 std::size_t Manager::findFrameIndex(const View* pView) const
 {
 	std::size_t index = 0;
-	BOOST_FOREACH(const Frame* pFrame, m_frameList)
+	for (const Frame* pFrame: m_frameList)
 	{
 		if (pFrame->m_pView == pView)
 		{
@@ -119,7 +118,7 @@ std::size_t Manager::findFrameIndex(const View* pView) const
 std::size_t Manager::findFrameIndex(const Content* pContent) const
 {
 	std::size_t index = 0;
-	BOOST_FOREACH(const Frame* pFrame, m_frameList)
+	for (const Frame* pFrame: m_frameList)
 	{
 		if (pFrame->m_pContent == pContent)
 		{
@@ -167,7 +166,7 @@ void Manager::areaDown(std::size_t frameIndex, const QPoint& point) const
 	ASSERT(frameIndex != std::size_t(~0) && frameIndex < m_frameList.size());
 
 	const rdo::gui::animation::AreaList& areaList = m_frameList[frameIndex]->m_areaList;
-	BOOST_FOREACH(const rdo::gui::animation::AreaList::value_type& area, areaList)
+	for (const rdo::gui::animation::AreaList::value_type& area: areaList)
 	{
 		if (area.second.m_rect.contains(point))
 		{
@@ -197,7 +196,7 @@ View* Manager::createView(std::size_t index)
 
 bool Manager::isShowing() const
 {
-	BOOST_FOREACH(const Frame* pFrame, m_frameList)
+	for (const Frame* pFrame: m_frameList)
 	{
 		if (pFrame->m_pView && pFrame->m_pView->isVisible())
 			return true;
@@ -218,7 +217,7 @@ void Manager::disconnectView(const View* pView)
 void Manager::closeAll()
 {
 	std::size_t backup = m_lastShowedFrame;
-	BOOST_FOREACH(Frame* pFrame, m_frameList)
+	for (Frame* pFrame: m_frameList)
 	{
 		if (pFrame->m_pView)
 		{
@@ -235,7 +234,7 @@ void Manager::clear()
 	{
 		g_pApp->getIMainWnd()->getDockFrame().getContext().clear();
 	}
-	BOOST_FOREACH(Frame* pFrame, m_frameList)
+	for (Frame* pFrame: m_frameList)
 	{
 		if (pFrame->m_pView)
 		{
@@ -412,7 +411,7 @@ bool Manager::canShowPrevFrame() const
 
 void Manager::updateStyles() const
 {
-	BOOST_FOREACH(Frame* pFrame, m_frameList)
+	for (Frame* pFrame: m_frameList)
 	{
 		View* pFrameView = pFrame->m_pView;
 		if (pFrameView)

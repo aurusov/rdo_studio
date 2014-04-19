@@ -12,7 +12,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <boost/algorithm/string.hpp>
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/editor/lexer/word_list_util.h"
 // --------------------------------------------------------------------------------
@@ -82,7 +81,7 @@ std::vector<std::string> WordListUtil::getNearestWords(const std::string& userPa
 	std::sort(priorityResult.begin(), priorityResult.end());
 	float const minPriority = 0.3f;
 
-	BOOST_FOREACH(const PriorityResultItem& item, priorityResult)
+	for (const PriorityResultItem& item: priorityResult)
 	{
 		if(item.priority >= minPriority)
 			result.push_back(item.value);

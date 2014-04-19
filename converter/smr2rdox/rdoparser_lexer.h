@@ -3,8 +3,8 @@
   \file      rdoparser_lexer.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -19,7 +19,7 @@
 #ifndef __FLEX_LEXER_H
 #undef yyFlexLexer
 #define yyFlexLexer cnvFlexLexer
-#include "thirdparty/bison_flex/include/FlexLexer.h"
+#include <FlexLexer.h>
 #endif
 // --------------------------------------------------------------------------------
 

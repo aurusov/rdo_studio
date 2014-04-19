@@ -10,7 +10,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/thread.hpp>
 #include <boost/format.hpp>
-#include <boost/foreach.hpp>
 #include <boost/date_time.hpp>
 #include <boost/filesystem/fstream.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -175,7 +174,7 @@ void write_build_log(std::ostream& stream, const string_list& list)
 	{
 		exit(TERMINATION_WITH_APP_RUNTIME_ERROR);
 	}
-	BOOST_FOREACH(const string_list::value_type& line, list)
+	for (const string_list::value_type& line: list)
 	{
 		stream << line.c_str() << std::endl;
 	}

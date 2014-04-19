@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
-#include <boost/foreach.hpp>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
@@ -163,7 +162,7 @@ QVariant GraphNode::itemChange(GraphicsItemChange change, const QVariant &value)
 	switch (change)
 	{
 		case ItemPositionHasChanged:
-			BOOST_FOREACH (GraphEdge* edge, edgeList)
+			for (GraphEdge* edge: edgeList)
 			{
 				edge->adjust();
 			}
@@ -196,7 +195,7 @@ double GraphNode::childrenMeanX() const
 		return 0.;
 
 	double value(0);
-	BOOST_FOREACH(GraphNode* child, childrenList)
+	for (GraphNode* child: childrenList)
 	{
 		value += child->pos().x();
 	}
@@ -219,7 +218,7 @@ const GraphNode::NodeList& GraphNode::getChildrenList() const
 
 void GraphNode::forceShift(double deltaX)
 {
-	BOOST_FOREACH(GraphNode* child, childrenList)
+	for (GraphNode* child: childrenList)
 	{
 		child->forceShift(deltaX);
 	}

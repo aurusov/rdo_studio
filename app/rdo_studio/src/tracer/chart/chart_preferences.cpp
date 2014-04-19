@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/tracer_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/chart/chart_preferences.h"
 #include "app/rdo_studio/src/tracer/chart/chart_view.h"
@@ -46,7 +45,7 @@ ChartPreferences::ChartPreferences(ChartView* pView)
 
 	ChartDoc* doc = m_pView->getDocument();
 
-	BOOST_FOREACH(const ChartSerie* const pSerie, doc->getSerieList())
+	for (const ChartSerie* const pSerie: doc->getSerieList())
 	{
 		yTraceComboBox->addItem(pSerie->getSerie()->getTitle());
 		valueComboBox->addItem(pSerie->getSerie()->getTitle());

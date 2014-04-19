@@ -30,7 +30,7 @@ int cnv_pmdlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void cnv_pmderror(const char* /*message*/)
+void cnv_pmderror(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
 {}
 
 // --------------------------------------------------------------------------------

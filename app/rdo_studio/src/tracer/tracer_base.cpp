@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/tracer_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 #include <boost/range/algorithm/find.hpp>
 #include <boost/algorithm/string.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -385,11 +384,11 @@ Time* TracerBase::addTime(const std::string& time)
 		Time* pTimeNow = new Time(val);
 		m_timeList.push_back(pTimeNow);
 		m_eventIndex = 0;
-		BOOST_FOREACH(const LPOperationBase& pOperationBase, m_operationList)
+		for (const LPOperationBase& pOperationBase: m_operationList)
 		{
 			pOperationBase->monitorTime(pTimeNow, m_eventIndex);
 		}
-		BOOST_FOREACH(const LPEvent& pEvent, m_eventList)
+		for (const LPEvent& pEvent: m_eventList)
 		{
 			pEvent->monitorTime(pTimeNow, m_eventIndex);
 		}
@@ -398,7 +397,7 @@ Time* TracerBase::addTime(const std::string& time)
 	{
 		pLastTime->eventCount++;
 		m_eventIndex++;
-		BOOST_FOREACH(ChartDoc* pDocument, m_documentList)
+		for (ChartDoc* pDocument: m_documentList)
 		{
 			pDocument->incTimeEventsCount(pLastTime);
 		}
@@ -448,7 +447,7 @@ LPResource TracerBase::getResource(std::string& line)
 	LPResource pResult;
 	int findID = boost::lexical_cast<int>(getNextValue(line));
 	int i = 0;
-	BOOST_FOREACH(const LPResource& pResource, m_resourceList)
+	for (const LPResource& pResource: m_resourceList)
 	{
 		if (pResource->getID() == findID && !pResource->isErased())
 		{
@@ -501,7 +500,7 @@ LPResult TracerBase::getResult(std::string& line)
 {
 	LPResult pResult;
 	int findid = boost::lexical_cast<int>(getNextValue(line));
-	BOOST_FOREACH(const LPResult& pResultItem, m_resultList)
+	for (const LPResult& pResultItem: m_resultList)
 	{
 		if (pResultItem->getID() == findid)
 		{
@@ -550,7 +549,7 @@ void TracerBase::clear()
 
 void TracerBase::clearCharts()
 {
-	BOOST_FOREACH(ChartDoc* pDocument, m_documentList)
+	for (ChartDoc* pDocument: m_documentList)
 	{
 		pDocument->getFirstView()->parentWidget()->parentWidget()->close();
 	}
@@ -718,7 +717,7 @@ void TracerBase::removeChart(ChartDoc* pDocument)
 
 void TracerBase::updateChartsStyles() const
 {
-	BOOST_FOREACH(ChartDoc* pDocument, m_documentList)
+	for (ChartDoc* pDocument: m_documentList)
 	{
 		pDocument->setStyle(&g_pApp->getStyle()->style_chart);
 	}

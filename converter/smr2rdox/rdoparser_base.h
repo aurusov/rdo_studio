@@ -3,8 +3,8 @@
   \file      rdoparser_base.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -29,7 +29,6 @@
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 typedef int (*t_bison_parse_fun)(void* lexer);
-typedef void (*t_bison_error_fun)(const char* message);
 typedef int (*t_flex_lexer_fun)(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
 
 // --------------------------------------------------------------------------------
@@ -45,7 +44,6 @@ public:
 	rdo::converter::smr2rdox::RDOFileTypeIn m_type;
 
 	t_bison_parse_fun m_parser_fun;
-	t_bison_error_fun m_error_fun;
 	t_flex_lexer_fun  m_lexer_fun;
 
 	virtual void parse(Converter* /*pParser*/)
@@ -63,7 +61,7 @@ public:
 
 protected:
 	RDOParserItem();
-	RDOParserItem(rdo::converter::smr2rdox::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun);
+	RDOParserItem(rdo::converter::smr2rdox::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_flex_lexer_fun lexer_fun);
 	virtual ~RDOParserItem();
 
 	bool m_needStream;

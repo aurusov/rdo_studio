@@ -38,7 +38,7 @@ int dptlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void dpterror(const char* /*message*/)
+void dpterror(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
 {}
 
 // --------------------------------------------------------------------------------

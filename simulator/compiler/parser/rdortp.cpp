@@ -69,7 +69,7 @@ int rtplex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 	return LEXER->yylex();
 }
 
-void rtperror(const char* /*message*/)
+void rtperror(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
 {}
 
 // --------------------------------------------------------------------------------

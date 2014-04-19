@@ -102,7 +102,7 @@ SET(FRAME_FILES
 
 SET(FUN_FILES
 	rdo_random_distribution.h
-	rdo_random_distribution.inl
+	rdo_random_distribution.cpp
 )
 
 SET(INTERFACES_FILES

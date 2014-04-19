@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/editor_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 #include <boost/algorithm/string.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/report/src/error_code.h"
@@ -277,7 +276,7 @@ bool Log::hasSelectLine() const
 
 void Log::clearLines()
 {
-	BOOST_FOREACH(LogEditLineInfo* pInfo, m_lines)
+	for (LogEditLineInfo* pInfo: m_lines)
 	{
 		delete pInfo;
 	}
