@@ -2,8 +2,8 @@
   \copyright (c) RDO-Team, 2011
   \file      rdo_resources.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -205,7 +205,7 @@ private:
 	Type m_type;
 	std::size_t m_id;
 };
-	
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOResource
 // --------------------------------------------------------------------------------
@@ -252,7 +252,7 @@ public:
 private:
 	RDOResType m_rtp;
 	Params m_params;
-	int m_id;
+	std::size_t m_id;
 };
 
 // --------------------------------------------------------------------------------
