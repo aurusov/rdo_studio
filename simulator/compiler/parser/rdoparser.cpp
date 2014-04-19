@@ -12,7 +12,6 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/calc_pattern.h"
 #include "simulator/runtime/rdo_pattern.h"
@@ -358,7 +357,7 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 		//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
 		{
 			ErrorBlockMonicker errorBlockMonicker;
-			BOOST_FOREACH(const LPTypeInfo& type, m_preCastTypeList)
+			for (const LPTypeInfo& type: m_preCastTypeList)
 			{
 				LPRDOEnumType enumType = type->type().object_dynamic_cast<RDOEnumType>();
 				ASSERT(enumType);
@@ -497,7 +496,7 @@ std::string RDOParser::getModelStructure()
 
 void RDOParser::parse()
 {
-	BOOST_FOREACH(const LPRDOParserItem& compiler, m_compilers)
+	for (const LPRDOParserItem& compiler: m_compilers)
 	{
 		m_parser_item = compiler;
 		m_parser_item->parse(this);
@@ -508,7 +507,7 @@ void RDOParser::parse()
 
 void RDOParser::parse(std::istream& stream)
 {
-	BOOST_FOREACH(const LPRDOParserItem& compiler, m_compilers)
+	for (const LPRDOParserItem& compiler: m_compilers)
 	{
 		m_parser_item = compiler;
 		m_parser_item->parse(this, stream);
@@ -536,7 +535,7 @@ void RDOParser::runRSSPost()
 			{
 #endif
 				const std::vector<rdo::runtime::LPRDOCalc> calcList = rss->createCalc();
-				BOOST_FOREACH(const rdo::runtime::LPRDOCalc& calc, calcList)
+				for (const rdo::runtime::LPRDOCalc& calc: calcList)
 				{
 					runtime()->addInitCalc(calc);
 				}
@@ -552,7 +551,7 @@ void RDOParser::runRSSPost()
 void RDOParser::runSMRPost()
 {
 	//! Планирование событий, описанных в SMR
-	BOOST_FOREACH(const LPRDOPATPattern& pattern, getPATPatterns())
+	for (const LPRDOPATPattern& pattern: getPATPatterns())
 	{
 		LPRDOPatternEvent event = pattern.object_dynamic_cast<RDOPatternEvent>();
 		if (!event)
@@ -568,7 +567,7 @@ void RDOParser::runSMRPost()
 
 void RDOParser::runRTPPost()
 {
-	BOOST_FOREACH(const LPRDORTPResType& type, getRTPResTypes())
+	for (const LPRDORTPResType& type: getRTPResTypes())
 	{
 		type->setupRuntimeFactory();
 	}

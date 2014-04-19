@@ -11,7 +11,6 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 #include <boost/range/algorithm/find_if.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/procedural/calc_statement.h"
@@ -119,7 +118,7 @@ LPFunctionType Function::generateType() const
 	ASSERT(m_pReturnType);
 
 	FunctionParamType::ParamList paramTypeList;
-	BOOST_FOREACH(const LPRDOParam& pParam, m_paramList)
+	for (const LPRDOParam& pParam: m_paramList)
 	{
 		paramTypeList.push_back(pParam->getTypeInfo());
 	}

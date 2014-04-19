@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/context/statement.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -63,7 +62,7 @@ void ContextReturnable::addChildContext()
 
 bool ContextReturnable::getChildFlags() const
 {
-	BOOST_FOREACH(const LPContextReturnable& pContext, m_contextReturnableList)
+	for (const LPContextReturnable& pContext: m_contextReturnableList)
 	{
 		if (!pContext->getReturnFlag())
 			return false;

@@ -12,7 +12,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 #include <boost/range/algorithm/find.hpp>
 #include <QProcess>
 #include <QTextCodec>
@@ -399,7 +398,7 @@ void MainWindow::createInsertMenu()
 		)
 	);
 
-	BOOST_FOREACH(const MenuList::value_type& menu, menuList)
+	for (const MenuList::value_type& menu: menuList)
 	{
 		if (menu.first.isEmpty())
 		{
@@ -411,7 +410,7 @@ void MainWindow::createInsertMenu()
 		QMenu* pMenu = new QMenu(menu.first, this);
 		menuInsert->addMenu(pMenu);
 
-		BOOST_FOREACH(const MenuItem& menuItem, menu.second)
+		for (const MenuItem& menuItem: menu.second)
 		{
 			QAction* pAction = pMenu->addAction(menuItem.title());
 			pAction->setEnabled(false);
@@ -790,13 +789,13 @@ void MainWindow::loadMenuFileReopen()
 
 	QStringList groupList = settings.childKeys();
 	std::vector<int> indexList;
-	BOOST_FOREACH(const QString& index, groupList)
+	for (const QString& index: groupList)
 	{
 		indexList.push_back(index.toInt());
 	}
 	std::sort(indexList.begin(), indexList.end());
 
-	BOOST_FOREACH(int index, indexList)
+	for (int index: indexList)
 	{
 		QString value = settings.value(QString::number(index), QString()).toString();
 		if (!value.isEmpty())
@@ -814,7 +813,7 @@ void MainWindow::saveMenuFileReopen() const
 	settings.beginGroup("reopen");
 
 	std::size_t index = 1;
-	BOOST_FOREACH(const QString& fileName, m_reopenList)
+	for (const QString& fileName: m_reopenList)
 	{
 		settings.setValue(QString::number(index++), fileName);
 	}
@@ -825,13 +824,13 @@ void MainWindow::saveMenuFileReopen() const
 void MainWindow::updateInsertMenu(bool enabled)
 {
 	QList<QAction*> menuList = menuInsert->actions();
-	BOOST_FOREACH(const QAction* pMenu, menuList)
+	for (const QAction* pMenu: menuList)
 	{
 		if (pMenu->isSeparator())
 			continue;
 
 		QList<QAction*> itemList = pMenu->menu()->actions();
-		BOOST_FOREACH(QAction* pItem, itemList)
+		for (QAction* pItem: itemList)
 		{
 			pItem->setEnabled(enabled);
 		}
@@ -901,7 +900,7 @@ void MainWindow::forAllSubWindows(F functor, QMdiSubWindow* pTopSubWindow)
 	{
 		firstCall = false;
 		QList<QMdiSubWindow*> windowList = mdiArea->subWindowList();
-		BOOST_FOREACH(QMdiSubWindow* pSubWindow, windowList)
+		for (QMdiSubWindow* pSubWindow: windowList)
 		{
 			if (pSubWindow != pTopSubWindow)
 			{

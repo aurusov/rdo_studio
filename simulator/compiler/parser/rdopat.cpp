@@ -12,7 +12,6 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdopat.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -380,7 +379,7 @@ std::vector<runtime::LPRDOCalc> RDOPATPattern::createParamsCalcs(const std::vect
 	result.reserve(m_paramList.size());
 
 	std::size_t currParam = 0;
-	BOOST_FOREACH(const LPRDOFUNArithm& pParam, params)
+	for (const LPRDOFUNArithm& pParam: params)
 	{
 		ASSERT(pParam);
 		if (currParam < m_paramList.size())

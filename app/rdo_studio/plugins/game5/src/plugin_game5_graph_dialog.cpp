@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
-#include <boost/foreach.hpp>
 #include <algorithm>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -171,7 +170,7 @@ void PluginGame5GraphDialog::updateGraph(const QString& startBoardState)
 	QStringList parsingResult = parseTrace();
 	m_graph.resize(parsingResult.size() + 2);
 	m_graph[1] = new GraphNode(1, NULL, 0, 0, 0, 0, 0, 0, 0, 0, startBoardState);
-	BOOST_FOREACH(const QString& string, parsingResult)
+	for (const QString& string: parsingResult)
 	{
 		int graphNode        = string.section(" ",  1,  1).toInt();
 		int parentGraphNode  = string.section(" ",  2,  2).toInt();
@@ -220,7 +219,7 @@ void PluginGame5GraphDialog::updateGraph(const QString& startBoardState)
 		}
 	}
 
-	BOOST_FOREACH(int node, getSolutionNodes())
+	for (int node: getSolutionNodes())
 	{
 		m_graph[node]->setRelatedToSolution(true);
 	}
@@ -248,7 +247,7 @@ void PluginGame5GraphDialog::updateGraph(const QString& startBoardState)
 			{
 				graphWidget->scene->addItem(m_graph[node]);
 				m_graph[node]->setPos(m_graph[node]->childrenMeanX(), m_graph[node]->childrenMeanY() - 40);
-				BOOST_FOREACH(GraphNode* childNode, m_graph[node]->getChildrenList())
+				for (GraphNode* childNode: m_graph[node]->getChildrenList())
 				{
 					graphWidget->scene->addItem(new GraphEdge(m_graph[node], childNode));
 				}
@@ -278,7 +277,7 @@ void PluginGame5GraphDialog::updateGraph(const QString& startBoardState)
 			unbuiltRangeVector.push_back(temp);
 			tempCounter = 0;
 		}
-		BOOST_FOREACH(const UnbuiltRange& unbuiltRange, unbuiltRangeVector)
+		for (const UnbuiltRange& unbuiltRange: unbuiltRangeVector)
 		{
 			unsigned int endUnbuiltRange = unbuiltRange.firstNode + unbuiltRange.range;
 			if (unbuiltRange.firstNode == 0)

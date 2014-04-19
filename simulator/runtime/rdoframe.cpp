@@ -11,7 +11,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdoframe.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -161,7 +160,7 @@ RDOValue RDOFRMSprite::doCalc(const LPRDORuntime& pRuntime)
 
 void RDOFRMSprite::getBitmaps(IRDOFRMItemGetBitmap::ImageNameList& list) const
 {
-	BOOST_FOREACH(const LPIRDOFRMItemGetBitmap& pGetBitmap, m_getBitmapList)
+	for (const LPIRDOFRMItemGetBitmap& pGetBitmap: m_getBitmapList)
 	{
 		pGetBitmap->getBitmaps(list);
 	}

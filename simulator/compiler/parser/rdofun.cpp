@@ -12,7 +12,6 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -687,7 +686,7 @@ LPFunctionParamType ArithmContainer::getType() const
 {
 	FunctionParamType::ParamList paramList;
 
-	BOOST_FOREACH(const LPRDOFUNArithm& pArithm, m_arithmList)
+	for (const LPRDOFUNArithm& pArithm: m_arithmList)
 	{
 		paramList.push_back(pArithm->typeInfo());
 	}
@@ -755,7 +754,7 @@ LPExpression RDOFUNParams::createCallExpression(const LPExpression& pExpression)
 	pFuncCall->setSrcInfo(src_info());
 
 	ArithmContainer::Container::const_iterator arithmIt = m_pArithmContainer->getContainer().begin();
-	BOOST_FOREACH(const LPTypeInfo& pFuncParam, pFunctionParamType->paramList())
+	for (const LPTypeInfo& pFuncParam: pFunctionParamType->paramList())
 	{
 		if (pFuncParam->type()->typeID() != rdo::runtime::RDOType::t_void)
 		{

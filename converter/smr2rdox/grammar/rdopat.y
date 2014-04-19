@@ -193,7 +193,6 @@
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/format.hpp>
-#include <boost/foreach.hpp>
 #include <boost/algorithm/string/join.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/rdoparser.h"
@@ -1594,7 +1593,7 @@ pat_pattern
 			std::vector<std::string> planning_params;
 			planning_params.push_back(planning_time);
 
-			BOOST_FOREACH(const LPRDOParam& param, pPattern->getParamList())
+			for (const LPRDOParam& param: pPattern->getParamList())
 			{
 				planning_params.push_back(param->name());
 			}

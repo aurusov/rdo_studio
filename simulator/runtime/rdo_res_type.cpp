@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
@@ -57,7 +56,7 @@ void RDOResourceTypeList::insertNewResource(const LPRDORuntime& pRuntime, const 
 	ASSERT(pResource);
 
 #ifdef _DEBUG
-	BOOST_FOREACH(const LPRDOResource& resource, m_resourceList)
+	for (const LPRDOResource& resource: m_resourceList)
 	{
 		ASSERT(resource->getTraceID() != pResource->getTraceID());
 	}
@@ -87,7 +86,7 @@ LPRDOResourceTypeList RDOResourceTypeList::clone(const LPRDORuntime& pRuntime) c
 	LPRDOResourceTypeList type = rdo::Factory<RDOResourceTypeList>::create(getTraceID(), pRuntime);
 	ASSERT(type);
 	type->setFactoryMethod(m_create);
-	BOOST_FOREACH(const LPRDOResource& resource, m_resourceList)
+	for (const LPRDOResource& resource: m_resourceList)
 	{
 		type->insertNewResource(pRuntime, resource->clone(pRuntime));
 	}

@@ -12,7 +12,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <algorithm>
-#include <boost/foreach.hpp>
 #include <QProcess>
 #include <QEvent>
 #include <QClipboard>
@@ -223,7 +222,7 @@ void ChartView::recalcLayout()
 	{
 		QFontMetrics legendFontMetrics(m_fontLegend);
 		int count = 0;
-		BOOST_FOREACH(const ChartSerie* const pSerie, pDoc->getSerieList())
+		for (const ChartSerie* const pSerie: pDoc->getSerieList())
 		{
 			size = pSerie->getLegendSize(legendFontMetrics, m_chartRect);
 			if (size.width() && size.height())
@@ -556,7 +555,7 @@ void ChartView::drawLegend(QPainter& painter, const QRect& legendRect)
 	ChartDoc* doc = getDocument();
 	QRect rect(legendRect);
 	painter.setFont(m_fontLegend);
-	BOOST_FOREACH(const ChartSerie* const pSerie, doc->getSerieList())
+	for (const ChartSerie* const pSerie: doc->getSerieList())
 	{
 		QSize size = pSerie->drawLegend(painter, rect, m_pStyle->legendFgColor);
 		rect.setTop(rect.top() + size.height());
@@ -663,7 +662,7 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 			std::string str;
 			int lastx = 0;
 			QSize sz;
-			BOOST_FOREACH(const Time* const pTime, m_unwrapTimesList)
+			for (const Time* const pTime: m_unwrapTimesList)
 			{
 				tmprect.setLeft(chartRect.left() + (int)((pTime->time - m_unwrapTimesList.front()->time) * m_timeScale + ticks * m_pStyle->pFontsTicks.tickWidth - m_chartShift));
 				tmprect.setLeft(std::min(tmprect.left(), chartRect.right() - 1));
@@ -968,7 +967,7 @@ void ChartView::paintEvent(QPaintEvent*)
 		drawXAxis(painter, m_chartRect);
 		drawGrid(painter, m_chartRect);
 
-		BOOST_FOREACH(const ChartSerie* const pSerie, doc->getSerieList())
+		for (const ChartSerie* const pSerie: doc->getSerieList())
 		{
 			pSerie->drawSerie(this, painter, m_chartRect);
 		}

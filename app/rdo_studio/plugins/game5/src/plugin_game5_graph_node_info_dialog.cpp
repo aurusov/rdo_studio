@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
-#include <boost/foreach.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_graph_node_info_dialog.h"
@@ -84,7 +83,7 @@ void PluginGame5GraphNodeInfoDialog::updateDlg(GraphNode* node)
 
 void PluginGame5GraphNodeInfoDialog::nextNode()
 {
-	BOOST_FOREACH(GraphNode* node, m_pNode->getChildrenList())
+	for (GraphNode* node: m_pNode->getChildrenList())
 	{
 		if (node->isRelatedToSolution())
 		{

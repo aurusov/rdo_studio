@@ -11,7 +11,6 @@
 #include "app/rdo_studio/pch/tracer_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
-#include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
 #include <QProcess>
 #include <QTextStream>
@@ -175,7 +174,7 @@ void ChartTree::addResult(const LPResult& pPMV)
 void ChartTree::deleteChildren(const LPChartTreeItem& pParent)
 {
 	QList<QTreeWidgetItem*> children = pParent->getCtrlItem().takeChildren();
-	BOOST_FOREACH(QTreeWidgetItem* item, children)
+	for (QTreeWidgetItem* item: children)
 	{
 		pParent->getCtrlItem().removeChild(item);
 	}
@@ -264,7 +263,7 @@ void ChartTree::onChartExport()
 	if (data.open(QIODevice::Text | QFile::WriteOnly | QFile::Truncate)) 
 	{
 		QTextStream stream(&data);
-		BOOST_FOREACH(const Serie::ExportData::value_type& exportItem, exportData)
+		for (const Serie::ExportData::value_type& exportItem: exportData)
 		{
 			stream << exportItem << endl;
 		}

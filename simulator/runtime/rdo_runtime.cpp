@@ -18,7 +18,6 @@
 	#include <float.h>
 #endif // COMPILER_GCC
 #include <iomanip>
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/debug/rdodebug.h"
 #include "utils/src/animation/rdoanimation.h"
@@ -391,7 +390,7 @@ void RDORuntime::copyFrom(const LPRDORuntime& pOther)
 
 	LPRDORuntime pThis(const_cast<RDORuntime*>(this));
 
-	BOOST_FOREACH(const LPRDOResourceTypeList& pRTP, pOther->m_resourceTypeList)
+	for (const LPRDOResourceTypeList& pRTP: pOther->m_resourceTypeList)
 	{
 		pRTP->clone(pThis);
 	}

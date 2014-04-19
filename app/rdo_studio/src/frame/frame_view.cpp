@@ -12,7 +12,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 #include <QLayout>
 #include <QPainter>
 #include "utils/src/common/warning_enable.h"
@@ -179,7 +178,7 @@ void Content::update(
 
 	m_memDC.dc().setFont(m_font);
 
-	BOOST_FOREACH(rdo::animation::FrameItem* pCurrElement, pFrame->m_elements)
+	for (rdo::animation::FrameItem* pCurrElement: pFrame->m_elements)
 	{
 		ASSERT(pCurrElement);
 		switch (pCurrElement->getType())

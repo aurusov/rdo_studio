@@ -11,7 +11,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <boost/thread/locks.hpp>
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "simulator/service/src/simulator.h"
@@ -161,7 +160,7 @@ void console_controller::proc(RDOThread::RDOMessageInfo& msg)
 
 void console_controller::fillBuildLogList(std::vector<FileMessage>& errors)
 {
-	BOOST_FOREACH(const FileMessage& error, errors)
+	for (const FileMessage& error: errors)
 	{
 		const BuildEditLineInfo info(error);
 		const std::string line = info.getMessage();

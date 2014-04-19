@@ -11,7 +11,6 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/calc_event.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -45,7 +44,7 @@ RDOValue RDOCalcEventPlan::doCalc(const LPRDORuntime& pRuntime)
 
 	std::vector<RDOValue> params;
 	params.reserve(m_params.size());
-	BOOST_FOREACH(const LPRDOCalc& param, m_params)
+	for (const LPRDOCalc& param: m_params)
 	{
 		params.push_back(param->calcValue(pRuntime));
 	}

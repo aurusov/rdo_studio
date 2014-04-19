@@ -13,7 +13,6 @@
 #include "utils/src/common/warning_disable.h"
 #include <limits>
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <boost/numeric/conversion/bounds.hpp>
 #include <QMessageBox>
@@ -375,7 +374,7 @@ void Model::proc(RDOThread::RDOMessageInfo& msg)
 			g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
-			BOOST_FOREACH(const FileMessage& message, errors)
+			for (const FileMessage& message: errors)
 			{
 				g_pApp->getIMainWnd()->getDockBuild().appendString(message);
 				if (message.getType() == FileMessage::MT_WARNING)
@@ -402,7 +401,7 @@ void Model::proc(RDOThread::RDOMessageInfo& msg)
 			g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
-			BOOST_FOREACH(const FileMessage& message, errors)
+			for (const FileMessage& message: errors)
 			{
 				g_pApp->getIMainWnd()->getDockBuild().appendString(message);
 				if (message.getType() == FileMessage::MT_WARNING)
@@ -433,7 +432,7 @@ void Model::proc(RDOThread::RDOMessageInfo& msg)
 			g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
-			BOOST_FOREACH(const FileMessage& message, errors)
+			for (const FileMessage& message: errors)
 			{
 				g_pApp->getIMainWnd()->getDockBuild().appendString(message);
 				if (message.getType() == FileMessage::MT_WARNING)
@@ -972,11 +971,11 @@ void Model::afterModelStart()
 		rdo::service::simulation::RDOThreadSimulator::GetList getListBitmaps(rdo::service::simulation::RDOThreadSimulator::GetList::bitmaps, &bitmaps);
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListFrames );
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListBitmaps);
-		BOOST_FOREACH(const std::string& name, bitmaps)
+		for (const std::string& name: bitmaps)
 		{
 			m_frameManager.insertBitmap(QString::fromStdString(name));
 		}
-		BOOST_FOREACH(const std::string& name, frames)
+		for (const std::string& name: frames)
 		{
 			m_frameManager.insertFrame(QString::fromStdString(name));
 		}

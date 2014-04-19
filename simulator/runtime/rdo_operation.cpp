@@ -12,7 +12,6 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_operation.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -75,7 +74,7 @@ IBaseOperation::BOResult RDOOperation::onDoOperation(const LPRDORuntime& pRuntim
 
 	std::vector<RDOValue> params;
 	params.reserve(m_paramsCalcs.size());
-	BOOST_FOREACH(const LPRDOCalc& param, m_paramsCalcs)
+	for (const LPRDOCalc& param: m_paramsCalcs)
 	{
 		params.push_back(param->calcValue(pRuntime));
 	}
