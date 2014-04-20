@@ -2,8 +2,8 @@
   \copyright (c) RDO-Team, 2011
   \file      rdo_resources.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -304,9 +304,9 @@ bool RDOResource::fillParserResourceParams(parser::LPRDORSSResource& pToParserRS
 		if (value_it == end())
 			return false;
 
-		ASSERT(value_it->second);
 		runtime::RDOValue value = value_it->second->calc().object_dynamic_cast<runtime::RDOCalcConst>()->getValue();
-		parser::LPRDOValue pValue = Factory<parser::RDOValue>::create(value, pToParserRSS->src_info(), value.type().object_dynamic_cast<parser::TypeInfo>());
+		parser::LPRDOValue pValue = Factory<parser::RDOValue>::create(value, pToParserRSS->src_info(), value_it->second->typeInfo());
+		ASSERT(pValue);
 		pValue = param.type()->value_cast(pValue);
 		/// @todo а почему тут toParserRSS->src_info(), а не value_it->src_info() ?
 		pValue->setSrcInfo(pToParserRSS->src_info());
