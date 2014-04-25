@@ -168,7 +168,7 @@ int PluginGame5GraphDialog::parseTraceInfo(const QString& key) const
 void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startBoardState)
 {
 	graphWidget->scene()->clear();//@todo (*)Хранить и рисовать 2 разных объекта
-	m_graph.clear();            //Очистка вектора, объекты удалены при очистке сцены
+	m_graphNodeList.clear();      //Очистка вектора, объекты удалены при очистке сцены
 	m_clickedNode = NULL;
 
 	GraphNode* leftNode;
@@ -183,20 +183,20 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 	m_nodeWidth  = nodeRect.width();
 	m_nodeHeight = nodeRect.height();
 
-	m_graph.resize(parsingResult.size() + 2);
-	m_graph[1] = new GraphNode(1, NULL, 0, 0, "Начало поиска", 0, 0, 0, 0, 0, startBoardState, m_nodeWidth, m_nodeHeight);
+	m_graphNodeList.resize(parsingResult.size() + 1);
+	m_graphNodeList[0] = new GraphNode(1, NULL, 0, 0, "Начало поиска", 0, 0, 0, 0, 0, startBoardState, m_nodeWidth, m_nodeHeight);
 	for (const auto& string: parsingResult)
 	{
-		const int graphNode        = string.section(" ",  1,  1).toInt();
-		const int parentGraphNode  = string.section(" ",  2,  2).toInt();
-		const int pathCost         = string.section(" ",  3,  3).toInt();
-		const int restPathCost     = string.section(" ",  4,  4).toInt() - pathCost;
-		const int moveDirection    = string.section(" ",  5,  5).toInt();
-		const int moveCost         = string.section(" ",  7,  7).toInt();
+		const int graphNodeId       = string.section(" ",  1,  1).toInt();
+		const int parentGraphNodeId = string.section(" ",  2,  2).toInt();
+		const int pathCost          = string.section(" ",  3,  3).toInt();
+		const int restPathCost      = string.section(" ",  4,  4).toInt() - pathCost;
+		const int moveDirection     = string.section(" ",  5,  5).toInt();
+		const int moveCost          = string.section(" ",  7,  7).toInt();
 
-		const int tileMoveFrom     = string.section(" ", -1, -1).toInt();
-		const int tileMoveTo       = string.section(" ", -2, -2).toInt();
-		const int relevantTile     = string.section(" ", -4, -4).toInt();
+		const int tileMoveFrom      = string.section(" ", -1, -1).toInt();
+		const int tileMoveTo        = string.section(" ", -2, -2).toInt();
+		const int relevantTile      = string.section(" ", -4, -4).toInt();
 
 		QString moveDirectionText;
 		switch (moveDirection)
@@ -207,27 +207,30 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 			case 4: moveDirectionText = "Вниз"  ; break;
 		}
 
-		const int graphLevel = m_graph[parentGraphNode]->getGraphLevel() + 1;
-		std::vector<unsigned int> boardState = m_graph[parentGraphNode]->getBoardState();
+		const int graphNodeIndex = graphNodeId - 1;
+		const int parentGraphNodeIndex = parentGraphNodeId - 1;
+
+		const int graphLevel = m_graphNodeList[parentGraphNodeIndex]->getGraphLevel() + 1;
+		std::vector<unsigned int> boardState = m_graphNodeList[parentGraphNodeIndex]->getBoardState();
 		std::swap(boardState[tileMoveFrom - 1], boardState[tileMoveTo - 1]);
 
-		m_graph[graphNode] = new GraphNode(graphNode, m_graph[parentGraphNode], pathCost, restPathCost,
-		                                   moveDirectionText, moveCost, relevantTile, graphLevel,
-		                                   tileMoveFrom, tileMoveTo, boardState, m_nodeWidth, m_nodeHeight
-		);
+		m_graphNodeList[graphNodeIndex] = new GraphNode(graphNodeId, m_graphNodeList[parentGraphNodeIndex],
+		                                                pathCost, restPathCost, moveDirectionText, moveCost,
+		                                                relevantTile, graphLevel, tileMoveFrom, tileMoveTo,
+		                                                boardState, m_nodeWidth, m_nodeHeight);
+		connect(m_graphNodeList[graphNodeIndex], &GraphNode::clickedNode  , this, &PluginGame5GraphDialog::updateCheckedNode);
+		connect(m_graphNodeList[graphNodeIndex], &GraphNode::doubleClicked, this, &PluginGame5GraphDialog::emitShowNodeInfoDlg);
 	}
 
-	for (unsigned int i = 1; i < m_graph.size(); i++)
+	for (unsigned int i = 0; i < m_graphNodeList.size(); i++)
 	{
-		const int graphLevel = m_graph[i]->getGraphLevel();
-		connect(m_graph[i], &GraphNode::clickedNode  , this, &PluginGame5GraphDialog::updateCheckedNode);
-		connect(m_graph[i], &GraphNode::doubleClicked, this, &PluginGame5GraphDialog::emitShowNodeInfoDlg);
+		const int nodeGraphLevel = m_graphNodeList[i]->getGraphLevel();
 		const int currentLevel = paintLevel.size() - 1;
-		if (currentLevel < graphLevel)
+		if (currentLevel < nodeGraphLevel)
 		{
 			paintLevel.push_back(std::vector<int>());
 		}
-		paintLevel[graphLevel].push_back(i);
+		paintLevel[nodeGraphLevel].push_back(i);
 	}
 
 	for (unsigned int i = 1; i < paintLevel.size(); i++)
@@ -235,24 +238,24 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 		quickSort(paintLevel[i]);
 		for (unsigned int j = 0; j < paintLevel[i].size(); j++)
 		{
-			m_graph[paintLevel[i][j]]->setGraphOnLevelOrder(j);
+			m_graphNodeList[paintLevel[i][j]]->setGraphOnLevelOrder(j);
 		}
 	}
 
-	for (auto node: getSolutionNodes())
+	for (auto nodeId: getSolutionNodes())
 	{
-		m_graph[node]->setRelatedToSolution(true);
+		m_graphNodeList[nodeId - 1]->setRelatedToSolution(true);
 	}
 	
 	for (unsigned int j = 0; j < paintLevel.back().size(); j++)
 	{
 		const int node = paintLevel.back()[j];
 
-		graphWidget->scene()->addItem(m_graph[node]);
-		m_graph[node]->setPos((SPACER_X + m_nodeWidth) * (j + 1), (paintLevel.size() - 1) * (SPACER_Y + m_nodeHeight));
+		graphWidget->scene()->addItem(m_graphNodeList[node]);
+		m_graphNodeList[node]->setPos((SPACER_X + m_nodeWidth) * (j + 1), (paintLevel.size() - 1) * (SPACER_Y + m_nodeHeight));
 	}
-	leftNode  = m_graph[paintLevel.back().front()];
-	rightNode = m_graph[paintLevel.back().back()];
+	leftNode  = m_graphNodeList[paintLevel.back().front()];
+	rightNode = m_graphNodeList[paintLevel.back().back()];
 	
 	for (int i = (int)paintLevel.size() - 2; i >= 0; i--)
 	{
@@ -263,13 +266,13 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 		for (unsigned int j = 0; j < paintLevel[i].size(); j++)
 		{
 			const int node = paintLevel[i][j];
-			if (m_graph[node]->haveChild())
+			if (m_graphNodeList[node]->haveChild())
 			{
-				graphWidget->scene()->addItem(m_graph[node]);
-				m_graph[node]->setPos(m_graph[node]->childrenMeanX(), m_graph[node]->childrenMeanY() - (SPACER_Y + m_nodeHeight));
-				for (auto childNode: m_graph[node]->getChildrenList())
+				graphWidget->scene()->addItem(m_graphNodeList[node]);
+				m_graphNodeList[node]->setPos(m_graphNodeList[node]->childrenMeanX(), m_graphNodeList[node]->childrenMeanY() - (SPACER_Y + m_nodeHeight));
+				for (auto childNode: m_graphNodeList[node]->getChildrenList())
 				{
-					graphWidget->scene()->addItem(new GraphEdge(*m_graph[node], *childNode));
+					graphWidget->scene()->addItem(new GraphEdge(*m_graphNodeList[node], *childNode));
 				}
 
 				if (!buildFlag)
@@ -308,12 +311,12 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 					const int node = paintLevel[i][k];
 					const int segment = unbuiltRange.range - k + unbuiltRange.firstNode;
 
-					graphWidget->scene()->addItem(m_graph[node]);
-					m_graph[node]->setPos(m_graph[temp]->pos().x() - (SPACER_X + m_nodeWidth) * segment, m_graph[temp]->pos().y());
+					graphWidget->scene()->addItem(m_graphNodeList[node]);
+					m_graphNodeList[node]->setPos(m_graphNodeList[temp]->pos().x() - (SPACER_X + m_nodeWidth) * segment, m_graphNodeList[temp]->pos().y());
 				}
-				if (leftNode->pos().x() > m_graph[paintLevel[i][unbuiltRange.firstNode]]->pos().x())
+				if (leftNode->pos().x() > m_graphNodeList[paintLevel[i][unbuiltRange.firstNode]]->pos().x())
 				{
-					leftNode = m_graph[paintLevel[i][unbuiltRange.firstNode]];
+					leftNode = m_graphNodeList[paintLevel[i][unbuiltRange.firstNode]];
 				}
 			}
 			else if (endUnbuiltRange == paintLevel[i].size())
@@ -324,28 +327,28 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 					const int node = paintLevel[i][k];
 					const int segment = k - unbuiltRange.firstNode + 1;
 
-					graphWidget->scene()->addItem(m_graph[node]);
-					m_graph[node]->setPos(m_graph[temp]->pos().x() + (SPACER_X + m_nodeWidth) * segment, m_graph[temp]->pos().y());
+					graphWidget->scene()->addItem(m_graphNodeList[node]);
+					m_graphNodeList[node]->setPos(m_graphNodeList[temp]->pos().x() + (SPACER_X + m_nodeWidth) * segment, m_graphNodeList[temp]->pos().y());
 				}
-				if (rightNode->pos().x() < m_graph[paintLevel[i][endUnbuiltRange - 1]]->pos().x())
+				if (rightNode->pos().x() < m_graphNodeList[paintLevel[i][endUnbuiltRange - 1]]->pos().x())
 				{
-					rightNode = m_graph[paintLevel[i][endUnbuiltRange - 1]];
+					rightNode = m_graphNodeList[paintLevel[i][endUnbuiltRange - 1]];
 				}
 			}
 			else
 			{
 				const int temp1 = paintLevel[i][unbuiltRange.firstNode - 1];
 				const int temp2 = paintLevel[i][endUnbuiltRange];
-				double deltaX =  m_graph[temp2]->pos().x() - m_graph[temp1]->pos().x();
+				double deltaX =  m_graphNodeList[temp2]->pos().x() - m_graphNodeList[temp1]->pos().x();
 
 				if (deltaX < (unbuiltRange.range + 1) * (SPACER_X + m_nodeWidth))
 				{
 					for (unsigned int l = endUnbuiltRange; l < paintLevel[i].size(); l++)
 					{
 						const int node = paintLevel[i][l];
-						m_graph[node]->forceShift((unbuiltRange.range + 1) * (SPACER_X + m_nodeWidth) - deltaX);
+						m_graphNodeList[node]->forceShift((unbuiltRange.range + 1) * (SPACER_X + m_nodeWidth) - deltaX);
 					}
-					deltaX = m_graph[temp2]->pos().x() - m_graph[temp1]->pos().x();
+					deltaX = m_graphNodeList[temp2]->pos().x() - m_graphNodeList[temp1]->pos().x();
 				}
 
 				for (unsigned int k = unbuiltRange.firstNode; k < endUnbuiltRange; k++)
@@ -353,8 +356,8 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 					const int node    = paintLevel[i][k];
 					const int segment = k - unbuiltRange.firstNode + 1;
 
-					graphWidget->scene()->addItem(m_graph[node]);
-					m_graph[node]->setPos(m_graph[temp1]->pos().x() + segment * deltaX/(unbuiltRange.range + 1), m_graph[temp1]->pos().y());
+					graphWidget->scene()->addItem(m_graphNodeList[node]);
+					m_graphNodeList[node]->setPos(m_graphNodeList[temp1]->pos().x() + segment * deltaX/(unbuiltRange.range + 1), m_graphNodeList[temp1]->pos().y());
 				}
 			}
 		}

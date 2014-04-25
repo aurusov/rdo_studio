@@ -53,8 +53,8 @@ private:
 
 		bool operator() (int i, int j)
 		{
-			const int iParentOLO = m_pDlg->m_graph[i]->getParentGraphNode()->getGraphOnLevelOrder();
-			const int jParentOLO = m_pDlg->m_graph[j]->getParentGraphNode()->getGraphOnLevelOrder();
+			const int iParentOLO = m_pDlg->m_graphNodeList[i]->getParentGraphNode()->getGraphOnLevelOrder();
+			const int jParentOLO = m_pDlg->m_graphNodeList[j]->getParentGraphNode()->getGraphOnLevelOrder();
 
 			return iParentOLO < jParentOLO;
 		}
@@ -62,7 +62,7 @@ private:
 
 	QString m_traceTimeStamp;
 	GraphNode* m_clickedNode;
-	std::vector<GraphNode*> m_graph;
+	std::vector<GraphNode*> m_graphNodeList;
 	int m_nodeWidth;
 	int m_nodeHeight;
 
