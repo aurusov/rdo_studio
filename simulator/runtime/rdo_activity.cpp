@@ -11,7 +11,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/pch/stdpch.h"
 #include "simulator/runtime/rdo_activity.h"
@@ -51,7 +50,7 @@ void RDOActivity::setPatternParameters(const LPRDORuntime& pRuntime, const std::
 {
 	std::vector<RDOValue> params_values;
 	params_values.reserve(params.size());
-	BOOST_FOREACH(const LPRDOCalc& param, params)
+	for (const LPRDOCalc& param: params)
 	{
 		params_values.push_back(param->calcValue(pRuntime));
 	}

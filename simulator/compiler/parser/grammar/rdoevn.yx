@@ -17,6 +17,7 @@
 %}
 
 %pure-parser
+%param {void* lexer}
 
 %token RDO_Resource_type
 %token RDO_permanent
@@ -918,7 +919,7 @@ rss_resource
 			Context::Params traceParams;
 			traceParams["traceValue"] = traceValue;
 			result = result.getSwitchContext().context->find("trace()", traceParams, pName->src_info());
-			
+
 			LPExpression pExpression = result.getCreateExpression()();
 			ASSERT(pExpression);
 
@@ -1194,7 +1195,7 @@ pat_trace
 	{
 		$$ = 0;
 	}
-	| RDO_trace	
+	| RDO_trace
 	{
 		$$ = 1;
 	}
@@ -8471,7 +8472,7 @@ process_line
 
 			LPRDORTPResType pParserType = pProc->getTransacType();
 			ASSERT(pParserType);
-			
+
 			const bool permanentFlag = pParserType->isPermanent();
 			const bool traceFlag = true;
 
@@ -8841,7 +8842,7 @@ depart_param
 			$$ = PARSER->stack().push(pDepart);
 		}
 	}
-	| RDO_IDENTIF error 
+	| RDO_IDENTIF error
 	{
 		#PASS1
 		{
@@ -9133,7 +9134,7 @@ assign_param
 				{
 					PARSER->error().error(@1, rdo::format("Ссылка на неизвестный параметр ресурса: %s.%s", res.c_str(), param.c_str()));
 				}
-			
+
 				LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($5);
 				ASSERT(pArithm);
 
@@ -10235,7 +10236,7 @@ for_header
 
 			LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($5);
 			ASSERT(pCondition);
-			
+
 			rdo::runtime::LPRDOCalc pConditionCalc = pCondition->getCalc();
 			ASSERT(pConditionCalc);
 

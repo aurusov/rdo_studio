@@ -4,7 +4,7 @@
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      02.04.2011
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -29,7 +29,7 @@ class RDOParserSTDFUN: public RDOParserItem
 DECLARE_FACTORY(RDOParserSTDFUN);
 private:
 	RDOParserSTDFUN()
-		: RDOParserItem(rdoModelObjects::FUN, NULL, NULL, NULL)
+		: RDOParserItem(rdoModelObjects::FUN, NULL, NULL)
 	{}
 
 	virtual void parse(const LPRDOParser& pParser);

@@ -9,7 +9,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <stdexcept>
-#include <boost/foreach.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_console/events/xml_parser/rdo_event_xml_parser.h"
@@ -34,7 +33,7 @@ void event_xml_parser::parse(std::istream& stream, event_container& list) const
 	boost::property_tree::ptree pt;
 	boost::property_tree::read_xml(stream, pt);
 
-	BOOST_FOREACH(const boost::property_tree::ptree::value_type& v, pt.get_child("rscript.events"))
+	for (const boost::property_tree::ptree::value_type& v: pt.get_child("rscript.events"))
 	{
 		const boost::property_tree::ptree& node = v.second;
 

@@ -15,6 +15,7 @@
 %}
 
 %pure-parser
+%param {void* lexer}
 
 %token RDO_Resource_type				257
 %token RDO_permanent					258
@@ -81,7 +82,7 @@
 %token RDO_set							319
 %token RDO_IDENTIF_NoChange_NoChange	320
 %token RDO_Operations					321
-	
+
 %token RDO_Results						322
 %token RDO_watch_par					323
 %token RDO_watch_state					324
@@ -192,7 +193,6 @@
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/format.hpp>
-#include <boost/foreach.hpp>
 #include <boost/algorithm/string/join.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/rdoparser.h"
@@ -261,7 +261,7 @@ pat_main
 	;
 
 pat_header
-	: RDO_Pattern RDO_IDENTIF_COLON RDO_operation pat_trace 
+	: RDO_Pattern RDO_IDENTIF_COLON RDO_operation pat_trace
 	{
 		LPRDOValue pName = CONVERTER->stack().pop<RDOValue>($2);
 		ASSERT(pName);
@@ -1355,7 +1355,7 @@ pat_convert
 			{
 				case RDOPATPattern::PT_IE:
 				{
-					type = "нерегулярном событии"; 
+					type = "нерегулярном событии";
 					break;
 				}
 				case RDOPATPattern::PT_Rule:
@@ -1543,7 +1543,7 @@ pat_convert_cmd
 		{
 			CONVERTER->error().error(@2, rdo::format("Неизвестный параметр: %s", paramName.c_str()));
 		}
-		pRelRes->getParamSetList().insert(param);		
+		pRelRes->getParamSetList().insert(param);
 		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@4.m_last_seek, ";");
 		ASSERT(pInsert);
 		CONVERTER->insertDocUpdate(pInsert);
@@ -1593,7 +1593,7 @@ pat_pattern
 			std::vector<std::string> planning_params;
 			planning_params.push_back(planning_time);
 
-			BOOST_FOREACH(const LPRDOParam& param, pPattern->getParamList())
+			for (const LPRDOParam& param: pPattern->getParamList())
 			{
 				planning_params.push_back(param->name());
 			}

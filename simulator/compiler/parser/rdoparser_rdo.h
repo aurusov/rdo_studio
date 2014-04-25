@@ -3,8 +3,8 @@
   \file      rdoparser_rdo.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -39,7 +39,7 @@ public:
 	std::string text() const;
 
 protected:
-	RDOParserRDOItem(rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_bison_error_fun _error_fun, t_flex_lexer_fun _lexer_fun, StreamFrom from = sf_repository);
+	RDOParserRDOItem(rdoModelObjects::RDOFileType _type, t_bison_parse_fun _parser_fun, t_flex_lexer_fun _lexer_fun, StreamFrom from = sf_repository);
 	virtual ~RDOParserRDOItem();
 
 	RDOLexer* m_pLexer;

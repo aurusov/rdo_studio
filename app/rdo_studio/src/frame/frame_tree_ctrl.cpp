@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/frame_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/frame/frame_tree_ctrl.h"
 #include "app/rdo_studio/src/application.h"
@@ -47,7 +46,7 @@ QTreeWidgetItem* TreeCtrl::insertFrame(const QString& name)
 void TreeCtrl::clear()
 {
 	QList<QTreeWidgetItem*> children = m_pRootItem->takeChildren();
-	BOOST_FOREACH(QTreeWidgetItem* item, children)
+	for (QTreeWidgetItem* item: children)
 	{
 		m_pRootItem->removeChild(item);
 	}

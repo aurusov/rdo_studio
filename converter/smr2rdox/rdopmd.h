@@ -3,8 +3,8 @@
   \file      rdopmd.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -22,7 +22,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int cnv_pmdparse(void* lexer);
 int cnv_pmdlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
-void cnv_pmderror(const char* message);
+void cnv_pmderror(YYLTYPE* llocp, void* lexer, const char* message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDResult

@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 #include <boost/filesystem/fstream.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/update/document.h"
@@ -72,7 +71,7 @@ void Document::convert()
 
 #ifdef DUMP_DOCUMENT
 	{
-		BOOST_FOREACH(const Update& update, m_updateContainer)
+		for (const Update& update: m_updateContainer)
 		{
 			const LPDocUpdate pUpdate = update.first;
 			ASSERT(pUpdate);
@@ -81,7 +80,7 @@ void Document::convert()
 	}
 #endif
 
-	BOOST_FOREACH(Update& update, m_updateContainer)
+	for (Update& update: m_updateContainer)
 	{
 		update.second = true;
 		const LPDocUpdate pUpdate = update.first;
@@ -91,7 +90,7 @@ void Document::convert()
 #ifdef DUMP_DOCUMENT
 		{
 			TRACE("=================\n");
-			BOOST_FOREACH(const Update& update, m_updateContainer)
+			for (const Update& update: m_updateContainer)
 			{
 				if (!update.second)
 				{

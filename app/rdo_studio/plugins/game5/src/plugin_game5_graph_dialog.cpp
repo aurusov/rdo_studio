@@ -242,7 +242,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 		}
 	}
 
-	for (auto nodeId: getSolutionNodes())
+	for (int nodeId: getSolutionNodes())
 	{
 		m_graphNodeList[nodeId - 1]->setRelatedToSolution(true);
 	}
@@ -300,7 +300,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 			unbuiltRangeVector.push_back(temp);
 			tempCounter = 0;
 		}
-		for (const auto& unbuiltRange: unbuiltRangeVector)
+		for (const UnbuiltRange& unbuiltRange: unbuiltRangeVector)
 		{
 			const unsigned int endUnbuiltRange = unbuiltRange.firstNode + unbuiltRange.range;
 			if (unbuiltRange.firstNode == 0)

@@ -11,7 +11,6 @@
 #include "app/rdo_studio/pch/tracer_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <algorithm>
-#include <boost/foreach.hpp>
 #include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/tracer_serie.h"
@@ -483,7 +482,7 @@ Serie::ExportData Serie::exportData()
 	exportData.reserve(m_valueList.size() + 1);
 	exportData.push_back(QString("%1;%2").arg("время").arg(m_title));
 
-	BOOST_FOREACH(Value* pValue, m_valueList)
+	for (Value* pValue: m_valueList)
 	{
 		exportData.push_back(QString("%1;%2").arg(pValue->getModelTime()->time).arg(pValue->getValue()));
 	}

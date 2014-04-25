@@ -71,7 +71,7 @@ void PluginGame5GraphNodeInfoDialog::updateDlg(GraphNode* node)
 
 void PluginGame5GraphNodeInfoDialog::nextNode()
 {
-	for (auto node: m_pNode->getChildrenList())
+	for (GraphNode* node: m_pNode->getChildrenList())
 	{
 		if (node->isRelatedToSolution())
 		{

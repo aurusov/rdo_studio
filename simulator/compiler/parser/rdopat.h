@@ -3,8 +3,8 @@
   \file      rdopat.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -39,11 +39,11 @@ OPEN_RDO_PARSER_NAMESPACE
 
 int evnparse(void* lexer);
 int evnlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
-void evnerror(const char* message);
+void evnerror(YYLTYPE* llocp, void* lexer, const char* message);
 
 int evn_preparse_parse(void* lexer);
 int evn_preparse_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
-void evn_preparse_error(const char* message);
+void evn_preparse_error(YYLTYPE* llocp, void* lexer, const char* message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPATPattern

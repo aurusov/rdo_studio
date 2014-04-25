@@ -233,7 +233,7 @@ double GraphNode::childrenMeanX() const
 		return 0.;
 
 	double value(0);
-	for (const auto child: childrenList)
+	for (GraphNode* child: childrenList)
 	{
 		value += child->pos().x();
 	}
@@ -256,7 +256,7 @@ const std::list<GraphNode*>& GraphNode::getChildrenList() const
 
 void GraphNode::forceShift(double deltaX)
 {
-	for (auto child: childrenList)
+	for (GraphNode* child: childrenList)
 	{
 		child->forceShift(deltaX);
 	}

@@ -99,12 +99,12 @@ ENDIF(WIN32)
 # set base directory
 SET(RDO_BASE_DIRECTORY ${PROJECT_SOURCE_DIR})
 
-IF(MSVC OR MINGW)
+IF(WIN32)
     SET(PATH_STRING $ENV{PATH})
-    STRING(FIND "${PATH_STRING}" "thirdparty/bison_flex/bin" OUT)
+    STRING(FIND "${PATH_STRING}" "thirdparty/bison_flex" OUT)
     IF(${OUT} GREATER -1)
     ELSE()
-        SET(ENV{PATH} "$ENV{PATH};${RDO_BASE_DIRECTORY}/thirdparty/bison_flex/bin")
+        SET(ENV{PATH} "$ENV{PATH};${RDO_BASE_DIRECTORY}/thirdparty/bison_flex")
     ENDIF()
 ENDIF()
 

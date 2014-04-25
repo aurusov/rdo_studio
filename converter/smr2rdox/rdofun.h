@@ -3,8 +3,8 @@
   \file      rdofun.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -31,7 +31,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int  cnv_funparse(void* lexer);
 int  cnv_funlex  (YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
-void cnv_funerror(const char* message);
+void cnv_funerror(YYLTYPE* llocp, void* lexer, const char* message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNDoubleToIntByResult

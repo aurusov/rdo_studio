@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/application_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/view_preferences.h"
 #include "app/rdo_studio/src/application.h"
@@ -1606,7 +1605,7 @@ void ViewPreferences::insertColor(const QColor& color, const QString& colorName,
 ViewPreferences::StyleProperty* ViewPreferences::getStyleProperty()
 {
 	StyleItem* item = getStyleItem();
-	BOOST_FOREACH(StyleProperty* prop, item->properties)
+	for (StyleProperty* prop: item->properties)
 	{
 		if(prop->identificator == treeWidget->currentItem()->data(0, Qt::UserRole).toInt())
 			return prop;
@@ -1618,7 +1617,7 @@ ViewPreferences::StyleItem* ViewPreferences::getStyleItem()
 {
 	if(treeWidget->currentItem()->data(0, Qt::UserRole).toInt() == IT_ROOT)
 	{
-		BOOST_FOREACH(StyleItem* item, style_list)
+		for (StyleItem* item: style_list)
 		{
 			if(item->type == treeWidget->currentItem()->data(0, Qt::UserRole).toInt())
 				return item;
@@ -1627,14 +1626,14 @@ ViewPreferences::StyleItem* ViewPreferences::getStyleItem()
 
 	if(treeWidget->currentItem()->parent()->data(0, Qt::UserRole).toInt() == IT_ROOT)
 	{
-		BOOST_FOREACH(StyleItem* item, style_list)
+		for (StyleItem* item: style_list)
 		{
 			if(item->type == treeWidget->currentItem()->data(0, Qt::UserRole).toInt())
 			return item;
 		}
 	}
 
-	BOOST_FOREACH(StyleItem* item, style_list)
+	for (StyleItem* item: style_list)
 	{
 		if(item->type == treeWidget->currentItem()->parent()->data(0, Qt::UserRole).toInt())
 			return item;
@@ -1773,7 +1772,7 @@ void ViewPreferences::populateRow(const LPPluginInfo& plgInfo)
 
 void ViewPreferences::fillPluginInfoTable()
 {
-	BOOST_FOREACH(const LPPluginInfo& pluginInfo, *m_pPluginInfoList)
+	for (const LPPluginInfo& pluginInfo: *m_pPluginInfoList)
 	{
 		populateRow(pluginInfo);
 	}
@@ -1803,7 +1802,7 @@ void ViewPreferences::updateButtonsState()
 ViewPreferences::IntVector ViewPreferences::selectedRows() const
 {
 	std::vector<int> sortedRows;
-	BOOST_FOREACH(const QModelIndex& index, pluginInfoTable->selectionModel()->selectedRows())
+	for (const QModelIndex& index: pluginInfoTable->selectionModel()->selectedRows())
 	{
 		sortedRows.push_back(index.row()); 
 	}

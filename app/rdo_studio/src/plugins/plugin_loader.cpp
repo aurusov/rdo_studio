@@ -14,7 +14,6 @@
 #include <QDir>
 #include <QApplication>
 #include <QSettings>
-#include <boost/foreach.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/plugins/plugin_loader.h"
@@ -28,7 +27,7 @@ Loader::Loader()
 
 Loader::~Loader()
 {
-	BOOST_FOREACH(const LPPluginInfo& pluginInfo, *m_pMergedPluginInfoList)
+	for (const LPPluginInfo& pluginInfo: *m_pMergedPluginInfoList)
 	{
 		if (pluginInfo->isActive())
 			stopPlugin(pluginInfo);
@@ -40,12 +39,12 @@ PluginInfoList Loader::getMergedPluginInfoList() const
 	PluginInfoList pluginHistory = getPluginsHistory();
 	PluginInfoList currentLoadedPlugin = getCurrentPlugins();
 	PluginInfoList mergedPlugin;
-	BOOST_FOREACH(const LPPluginInfo& pluginInfo, currentLoadedPlugin)
+	for (const LPPluginInfo& pluginInfo: currentLoadedPlugin)
 	{
 		matchPluginInfo(pluginHistory, pluginInfo);
 		mergedPlugin.push_back(pluginInfo);
 	}
-	BOOST_FOREACH(const LPPluginInfo& pluginInfo, pluginHistory)
+	for (const LPPluginInfo& pluginInfo: pluginHistory)
 	{
 		if (matchPluginInfo(mergedPlugin, pluginInfo) != rdo::plugin::ExactMatched)
 		{
@@ -81,7 +80,7 @@ void Loader::setPluginInfoList(const PluginInfoList& value) const
 	settings.remove("plugins");
 	settings.beginWriteArray("plugins");
 	int index = 0;
-	BOOST_FOREACH(const LPPluginInfo& pluginInfo, value)
+	for (const LPPluginInfo& pluginInfo: value)
 	{
 		if (pluginInfo->getState() != rdo::plugin::IdOnlyMatched)
 		{
@@ -104,7 +103,7 @@ PluginInfoList Loader::getCurrentPlugins() const
 	if (dir.cd("plugins"))
 	{
 		QStringList fileList = getFileList(dir.path());
-		BOOST_FOREACH(const QString& filePath, fileList)
+		for (const QString& filePath: fileList)
 		{
 			QPluginLoader* pluginLoader = new QPluginLoader(filePath);
 			PluginInterface* pluginInterface = loadPlugin(pluginLoader);
@@ -130,7 +129,7 @@ PluginInfoList Loader::getCurrentPlugins() const
 int Loader::matchPluginInfo(const PluginInfoList& list, const LPPluginInfo& matchingPluginInfo) const
 {
 	int pluginState = matchingPluginInfo->getState();
-	BOOST_FOREACH(const LPPluginInfo& pluginInfo, list)
+	for (const LPPluginInfo& pluginInfo: list)
 	{
 		if (matchingPluginInfo->getGUID() == pluginInfo->getGUID())
 		{
@@ -155,12 +154,12 @@ QStringList Loader::getFileList(const QString& startDir) const
 	QDir dir(startDir);
 	QStringList list;
 
-	BOOST_FOREACH(const QString& file, dir.entryList(QDir::Files))
+	for (const QString& file: dir.entryList(QDir::Files))
 	{
 		list += dir.absoluteFilePath(file);
 	}
 
-	BOOST_FOREACH(const QString& subdir, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
+	for (const QString& subdir: dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
 	{
 		list += getFileList(startDir + "/" + subdir);
 	}
@@ -211,7 +210,7 @@ void Loader::startPlugin(const LPPluginInfo& pluginInfo)
 
 void Loader::startAutoloadedPlugins()
 {
-	BOOST_FOREACH(const LPPluginInfo& pluginInfo, *m_pMergedPluginInfoList)
+	for (const LPPluginInfo& pluginInfo: *m_pMergedPluginInfoList)
 	{
 		if (pluginInfo->getAutoload() && pluginInfo->isAvailable())
 		{

@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 #include <boost/format.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/locale/rdolocale.h"
@@ -65,7 +64,7 @@ void RDOPMDResultGroup::resetResult(const LPRDORuntime& pRuntime)
 			pThreadProxy->sendMessage(IThreadProxy::TID_REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);
 			if (m_streamTable.is_open())
 			{
-				BOOST_FOREACH(const LPIResult& pResult, m_resultList)
+				for (const LPIResult& pResult: m_resultList)
 				{
 					LPIResultGetValue pGetValue = pResult;
 					if (pGetValue)
@@ -80,7 +79,7 @@ void RDOPMDResultGroup::resetResult(const LPRDORuntime& pRuntime)
 		}
 	}
 
-	BOOST_FOREACH(LPIResult& pResult, m_resultList)
+	for (LPIResult& pResult: m_resultList)
 	{
 		pResult->resetResult(pRuntime);
 	}
@@ -91,7 +90,7 @@ void RDOPMDResultGroup::checkResult(const LPRDORuntime& pRuntime)
 	if (m_state == RGS_STOP)
 		return;
 
-	BOOST_FOREACH(LPIResult& pResult, m_resultList)
+	for (LPIResult& pResult: m_resultList)
 	{
 		pResult->checkResult(pRuntime);
 	}
@@ -121,7 +120,7 @@ void RDOPMDResultGroup::calcStat(const LPRDORuntime& pRuntime, std::ostream& str
 	}
 
 	bool tableWrite = false;
-	BOOST_FOREACH(LPIResult& pResult, m_resultList)
+	for (LPIResult& pResult: m_resultList)
 	{
 		std::stringstream textStream;
 

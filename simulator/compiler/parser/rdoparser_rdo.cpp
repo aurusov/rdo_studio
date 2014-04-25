@@ -11,7 +11,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "repository/rdorepository.h"
@@ -34,8 +33,8 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserRDOItem
 // --------------------------------------------------------------------------------
-RDOParserRDOItem::RDOParserRDOItem(rdoModelObjects::RDOFileType type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun, StreamFrom from)
-	: RDOParserItem(type, parser_fun, error_fun, lexer_fun, from)
+RDOParserRDOItem::RDOParserRDOItem(rdoModelObjects::RDOFileType type, t_bison_parse_fun parser_fun, t_flex_lexer_fun lexer_fun, StreamFrom from)
+	: RDOParserItem(type, parser_fun, lexer_fun, from)
 	, m_pLexer(NULL)
 {}
 

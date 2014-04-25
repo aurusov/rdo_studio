@@ -44,7 +44,7 @@ struct yyltype
 
 #define YYLLOC_DEFAULT(Current, Rhs, N)                             \
 	do {                                                            \
-		if (YYID(N))                                                \
+		if (N)                                                      \
 		{                                                           \
 			(Current).m_first_line = YYRHSLOC(Rhs, 1).m_first_line; \
 			(Current).m_first_pos  = YYRHSLOC(Rhs, 1).m_first_pos;  \
@@ -63,6 +63,6 @@ struct yyltype
 			(Current).m_last_seek  = YYRHSLOC(Rhs, 0).m_last_seek;  \
 		}                                                           \
 	}                                                               \
-	while (YYID(0))
+	while (0)
 
 #endif // _RDOBISON_H_
