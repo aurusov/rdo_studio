@@ -10,44 +10,40 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
-#include <QPainter>
+#include <QFormLayout>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/graph_info.h"
 // --------------------------------------------------------------------------------
 
-GraphInfo::GraphInfo(int solutionCost, int numOfOpenNodes, int totalNumOfNodes, double x, double y)
-	: m_solutionCost   (solutionCost   )
-	, m_numOfOpenNodes (numOfOpenNodes )
-	, m_totalNumOfNodes(totalNumOfNodes)
+GraphInfo::GraphInfo(QWidget* parent)
+    : QGroupBox("Информация о графе", parent)
 {
-	setAcceptedMouseButtons(0);
-	setPos(x, y);
+	QFormLayout* graphInfoLayout = new QFormLayout(this);
+
+	m_solutionCostLabel       = new QLabel("Стоимость решения:", this);
+	m_solutionCostValue       = new QLabel(this);
+	m_numberOfOpenNodesLabel  = new QLabel("Количество раскрытых вершин:", this);
+	m_numberOfOpenNodesValue  = new QLabel(this);
+	m_totalNumberOfNodesLabel = new QLabel("Количество вершин в графе:", this);
+	m_totalNumberOfNodesValue = new QLabel(this);
+
+	graphInfoLayout->setWidget(0, QFormLayout::LabelRole, m_solutionCostLabel);
+	graphInfoLayout->setWidget(0, QFormLayout::FieldRole, m_solutionCostValue);
+	graphInfoLayout->setWidget(1, QFormLayout::LabelRole, m_numberOfOpenNodesLabel);
+	graphInfoLayout->setWidget(1, QFormLayout::FieldRole, m_numberOfOpenNodesValue);
+	graphInfoLayout->setWidget(2, QFormLayout::LabelRole, m_totalNumberOfNodesLabel);
+	graphInfoLayout->setWidget(2, QFormLayout::FieldRole, m_totalNumberOfNodesValue);
+
+	setStyleSheet("background-color: rgba(255, 255, 255, 40);");
 }
 
 GraphInfo::~GraphInfo()
+{}
+
+void GraphInfo::update(int solutionCost, int numOfOpenNodes, int totalNumOfNodes)
 {
-}
-
-QRectF GraphInfo::boundingRect() const
-{
-	double adjust = 2;
-	return QRectF(-adjust, -adjust, 200 + 2 * adjust, 70 + 2 * adjust);
-}
-
-void GraphInfo::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget* /*widget*/)
-{
-	QRect nodeRect(0, 0, 200, 70);
-	painter->setBrush(Qt::white);
-	painter->setPen(QPen(Qt::white, 0));
-	painter->setOpacity(0.4);
-	painter->drawRect(nodeRect);
-
-	QString str  = "Стоимость решения:___________" + QString::number(m_solutionCost)    + "\n";
-	        str += "Количество раскрытых вершин:_" + QString::number(m_numOfOpenNodes)  + "\n";
-	        str += "Количество вершин в графе:___" + QString::number(m_totalNumOfNodes) + "\n";
-
-	painter->setOpacity(1.);
-	painter->setPen(QPen(Qt::black, 0));
-	painter->drawText(nodeRect, Qt::AlignLeft, str);
+	m_solutionCostValue->setText(QString::number(solutionCost));
+	m_numberOfOpenNodesValue->setText(QString::number(numOfOpenNodes));
+	m_totalNumberOfNodesValue->setText(QString::number(totalNumOfNodes));
 }

@@ -11,10 +11,10 @@
 #define _RDO_PLUGIN_GAME5_GRAPH_NODE_INFO_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-// ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/warning_disable.h"
 #include "ui_plugin_game5_graph_node_info_dialog.h"
 #include "utils/src/common/warning_enable.h"
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/graph_node.h"
 // --------------------------------------------------------------------------------
 

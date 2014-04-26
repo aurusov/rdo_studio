@@ -13,11 +13,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <vector>
-#include "utils/src/common/warning_enable.h"
-// ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/warning_disable.h"
 #include "ui_plugin_game5_graph_dialog.h"
 #include "utils/src/common/warning_enable.h"
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/graph_node.h"
 // --------------------------------------------------------------------------------
 
@@ -31,10 +29,10 @@ public:
 	PluginGame5GraphDialog(QWidget* parent);
 	~PluginGame5GraphDialog();
 
-	void updateGraph(const QString& startBoardState);
+	void updateGraph(const std::vector<unsigned int>& startBoardState);
 
 public slots:
-	void onPluginAction(QString boardState);
+	void onPluginAction(const std::vector<unsigned int>& boardState);
 	void emitShowNodeInfoDlg();
 
 signals:
@@ -55,26 +53,29 @@ private:
 
 		bool operator() (int i, int j)
 		{
-			int iParentOLO = m_pDlg->m_graph[i]->getParentGraphNode()->getGraphOnLevelOrder();
-			int jParentOLO = m_pDlg->m_graph[j]->getParentGraphNode()->getGraphOnLevelOrder();
+			const int iParentOLO = m_pDlg->m_graphNodeList[i]->getParentGraphNode()->getGraphOnLevelOrder();
+			const int jParentOLO = m_pDlg->m_graphNodeList[j]->getParentGraphNode()->getGraphOnLevelOrder();
 
 			return iParentOLO < jParentOLO;
 		}
 	};
-	void quickSort(std::vector<int>& vector);
 
 	QString m_traceTimeStamp;
 	GraphNode* m_clickedNode;
-	std::vector<GraphNode*> m_graph;
+	std::vector<GraphNode*> m_graphNodeList;
+	int m_nodeWidth;
+	int m_nodeHeight;
 
-	std::vector<int> getSolutionNodes();
+	void quickSort(std::vector<int>& vector);
+
+	std::vector<int> getSolutionNodes() const;
 	void updateCheckedNode(GraphNode* node);
-	QString     getTraceTimeStamp();
-	QString     getTraceFile();
-	QStringList parseTrace();
+	QString     getTraceTimeStamp() const;
+	QString     getTraceFile() const;
+	QStringList parseTrace() const;
 
-	QString getTraceInfo();
-	int parseTraceInfo(const QString& key);
+	QString getTraceInfo() const;
+	int parseTraceInfo(const QString& key) const;
 };
 
 #endif // _RDO_PLUGIN_GAME5_GRAPH_DIALOG_H_

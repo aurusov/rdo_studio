@@ -24,8 +24,7 @@ MultiSelectCompleter::MultiSelectCompleter(const QStringList& items, QObject* pa
 }
 
 MultiSelectCompleter::~MultiSelectCompleter()
-{
-}
+{}
 
 QString MultiSelectCompleter::pathFromIndex(const QModelIndex& index) const
 {
@@ -33,7 +32,7 @@ QString MultiSelectCompleter::pathFromIndex(const QModelIndex& index) const
 	QString text = static_cast<QLineEdit*>(widget())->text();
 
 	int pos = text.lastIndexOf(' ');
-	if ( pos >= 0 )
+	if (pos >= 0)
 	{
 		path = text.left(pos) + " " + path;
 	}

@@ -44,31 +44,19 @@ void PluginGame5GraphNodeInfoDialog::updateDlg(GraphNode* node)
 	labelPathCostOut    ->setText(QString::number(node->getPathCost()));
 	labelRestPathCostOut->setText(QString::number(node->getRestPathCost()));
 	labelRelevantTileOut->setText(QString::number(node->getRelevantTile()));
-	QString moveText;
+	QString moveText = node->getMoveDirection();
 	if (node->getRelevantTile())
 	{
-		QString moveDirectionText;
-		switch (node->getMoveDirection())
-		{
-			case 1: moveDirectionText = "Вправо"; break;
-			case 2: moveDirectionText = "Влево" ; break;
-			case 3: moveDirectionText = "Вверх" ; break;
-			case 4: moveDirectionText = "Вниз"  ; break;
-		}
-		moveText = moveDirectionText + " (c " + QString::number(node->getTileMoveFrom())
-		         + " на " + QString::number(node->getTileMoveTo()) + ")";
+		moveText += " (c " + QString::number(node->getTileMoveFrom())
+		         +  " на " + QString::number(node->getTileMoveTo()) + ")";
 	}
-	else
-	{
-		moveText = "Начало поиска";
-	}
-	labelSolutionOut->setText(node->isRelatedToSolution() ? "Да" : "Нет");
+	labelSolutionOut     ->setText(node->isRelatedToSolution() ? "Да" : "Нет");
 	labelMoveDirectionOut->setText(moveText);
 	labelMoveCostOut     ->setText(QString::number(node->getMoveCost()));
-	labelNodeNumOut      ->setText(QString::number(node->getGraphNode()));
+	labelNodeNumOut      ->setText(QString::number(node->getNodeID()));
 	if (GraphNode* parentNode = node->getParentGraphNode())
 	{
-		labelParentNodeNumOut->setText(QString::number(parentNode->getGraphNode()));
+		labelParentNodeNumOut->setText(QString::number(parentNode->getNodeID()));
 	}
 	else
 	{
