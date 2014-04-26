@@ -21,9 +21,20 @@
 #include "app/rdo_studio/src/model/model_tab_ctrl.h"
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_dialog.h"
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_tiles_order_dialog.h"
-#include "app/rdo_studio/plugins/game5/src/cost_setup_table.h"
 #include "app/rdo_studio/plugins/game5/src/multi_select_completer.h"
 // --------------------------------------------------------------------------------
+
+namespace
+{
+	enum moveDirection
+	{
+		MOVE_UP = 0,
+		MOVE_DOWN,
+		MOVE_RIGHT,
+		MOVE_LEFT
+	};
+	const std::size_t HOLE_NUMBER = 0;
+} // end anonymous namespace
 
 PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* pParent)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
@@ -31,18 +42,18 @@ PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* 
 	setupUi(this);
 	gameBoard->init();
 
-	hiddenWidget->setFixedWidth(280);
+	MultiSelectCompleter* completer = new MultiSelectCompleter(QStringList(), this);
+	lineEditCustom->setCompleter(completer);
+
+	adjustSize();
+	hiddenWidget->setFixedWidth(hiddenWidget->width());
 	hiddenWidget->hide();
 
 	buttonHide->setCheckable(true);
 	buttonHide->setDefault(false);
 
-	MultiSelectCompleter* completer = new MultiSelectCompleter(QStringList(), this);
-	lineEditCustom->setCompleter(completer);
-
-	setFixedHeight(std::max(375, gameBoard->m_boardSizeY + 160));
 	adjustSize();
-	setFixedWidth(width());
+	setFixedSize(width(), height());
 	setSizeGripEnabled(false);
 
 	rdo::gui::model::Model* pModel = getCurrentModel();
@@ -55,15 +66,10 @@ PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* 
 	connect(buttonRandomLineup, &QPushButton::clicked, this, &PluginGame5GenerateSituationDialog::emitSolvabilityCheck);
 	connect(buttonOk          , &QPushButton::clicked, this, &PluginGame5GenerateSituationDialog::onClickOk           );
 
-	connect(tableCostValue, &CostSetupTable::itemCheckStateChanged,
-	        this          , &PluginGame5GenerateSituationDialog::onItemCheckStateChanged
-	);
 	connect(this     , &PluginGame5GenerateSituationDialog::buttonRandomClicked,
-	        gameBoard, &Board::buildRandomLineup
-	);
+	        gameBoard, &Board::buildRandomOrder);
 	connect(buttonRightLineup, &QPushButton::clicked,
-	        gameBoard        , &Board::buildRightLineup
-	);
+	        gameBoard        , &Board::buildCorrectOrder);
 
 	if (pParent)
 	{
@@ -72,8 +78,7 @@ PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* 
 }
 
 PluginGame5GenerateSituationDialog::~PluginGame5GenerateSituationDialog()
-{
-}
+{}
 
 void PluginGame5GenerateSituationDialog::onClickHide(bool state)
 {
@@ -96,22 +101,7 @@ void PluginGame5GenerateSituationDialog::emitSolvabilityCheck()
 	emit buttonRandomClicked(solvabilityCheck->isChecked());
 }
 
-void PluginGame5GenerateSituationDialog::onItemCheckStateChanged(QTableWidgetItem* item)
-{
-	QTableWidget* parentTable = item->tableWidget();
-	if (item->checkState() == Qt::Unchecked)
-	{
-		item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-		item->setText("1");
-	}
-	else
-	{
-		item->setFlags(item->flags() | Qt::ItemIsEditable);
-		parentTable->edit(parentTable->model()->index(item->row(), item->column()));
-	}
-}
-
-std::string PluginGame5GenerateSituationDialog::evaluateBy()
+std::string PluginGame5GenerateSituationDialog::evaluateBy() const
 {
 	if (radioButton0->isChecked())
 	{
@@ -131,43 +121,67 @@ std::string PluginGame5GenerateSituationDialog::evaluateBy()
 	}
 }
 
-std::string PluginGame5GenerateSituationDialog::activityValue(int tableRow)
+std::string PluginGame5GenerateSituationDialog::activityValue(int direction) const
 {
-	QString string = tableCostValue->item(tableRow, 1)->text() + " " + tableCostValue->item(tableRow, 2)->text();
+	QString costValue;
+	QString calcSwitcher;
+	switch (direction)
+	{
+		case MOVE_DOWN:
+			costValue    = moveDownCost->getLineEdit().text();
+			calcSwitcher = moveDownCalcSwitcher->currentText();
+			break;
+		case MOVE_LEFT:
+			costValue    = moveLeftCost->getLineEdit().text();
+			calcSwitcher = moveLeftCalcSwitcher->currentText();
+			break;
+		case MOVE_RIGHT:
+			costValue    = moveRightCost->getLineEdit().text();
+			calcSwitcher = moveRightCalcSwitcher->currentText();
+			break;
+		case MOVE_UP:
+			costValue    = moveUpCost->getLineEdit().text();
+			calcSwitcher = moveUpCalcSwitcher->currentText();
+			break;
+		default:
+			break;
+	}
+	const QString string = calcSwitcher + " " + costValue ;
 	return string.toStdString();
 }
 
-std::string PluginGame5GenerateSituationDialog::RTPtabText()
+std::string PluginGame5GenerateSituationDialog::RTPtabText() const
 {
 	std::stringstream RTPtabTextStream; 
 	RTPtabTextStream
 	<<	"$Resource_type Фишка : permanent\n"
 	<<	"$Parameters\n"
-	<<	"	Номер          : integer[1.." << (gameBoard->m_tilesCountX * gameBoard->m_tilesCountY)- 1 << "]\n"
-	<<	"	Местоположение : integer[1.." << (gameBoard->m_tilesCountX * gameBoard->m_tilesCountY)    << "]\n"
+	<<	"	Номер          : integer[1.." << gameBoard->getQuantityOfTiles()     << "]\n"
+	<<	"	Местоположение : integer[1.." << gameBoard->getQuantityOfTiles() + 1 << "]\n"
 	<<	"$End\n"
 	<<	"\n"
 	<<	"$Resource_type Дырка_t : permanent\n"
 	<<	"$Parameters\n"
-	<<	"\t	Место: integer[1.." << (gameBoard->m_tilesCountX * gameBoard->m_tilesCountY) << "]\n"
+	<<	"\t	Место: integer[1.." << gameBoard->getQuantityOfTiles() + 1 << "]\n"
 	<<	"$End\n";
 	return RTPtabTextStream.str();
 }
 
-std::string PluginGame5GenerateSituationDialog::RSStabText()
+std::string PluginGame5GenerateSituationDialog::RSStabText() const
 {
 	std::stringstream RSStabTextStream; 
-	RSStabTextStream <<	"$Resources\n";
-	for (unsigned int i = 1; i < gameBoard->getTilesPos().size(); i++)
+	RSStabTextStream
+	<<	"$Resources\n";
+	for (int i = 1; i < gameBoard->getQuantityOfTiles() + 1; i++)
 	{
-		RSStabTextStream << "\tФишка" << i <<" = Фишка(" << i << ", " << gameBoard->getTilesPos()[i] << ");\n";
+		RSStabTextStream << "\tФишка" << i <<" = Фишка(" << i << ", " << gameBoard->getTilePosition(i) << ");\n";
 	}
-	RSStabTextStream << "\tДырка = Дырка_t(" << gameBoard->getTilesPos()[0] << ");\n";
+	RSStabTextStream << "\tДырка = Дырка_t(" << gameBoard->getTilePosition(HOLE_NUMBER) << ");\n";
 	RSStabTextStream <<	"$End\n";
 	return RSStabTextStream.str();
 }
 
-std::string PluginGame5GenerateSituationDialog::PATtabText()
+std::string PluginGame5GenerateSituationDialog::PATtabText() const
 {
 	std::stringstream PATtabTextStream; 
 	PATtabTextStream
@@ -191,7 +205,7 @@ std::string PluginGame5GenerateSituationDialog::PATtabText()
 	return PATtabTextStream.str();
 }
 
-std::string PluginGame5GenerateSituationDialog::DPTtabText()
+std::string PluginGame5GenerateSituationDialog::DPTtabText() const
 {
 	std::stringstream DPTtabTextStream; 
 	DPTtabTextStream
@@ -202,15 +216,15 @@ std::string PluginGame5GenerateSituationDialog::DPTtabText()
 	<<	"$Evaluate_by " << evaluateBy() << "\n"
 	<<	"$Compare_tops = " << (checkBoxCopareTop->isChecked() ? "YES" : "NO") << "\n"
 	<<	"$Activities\n"
-	<<	"	Перемещение_вправо: Перемещение_фишки справа  1 value " << activityValue(0) << "\n"
-	<<	"	Перемещение_влево : Перемещение_фишки слева  -1 value " << activityValue(1) << "\n"
-	<<	"	Перемещение_вверх : Перемещение_фишки сверху -" << gameBoard->m_tilesCountX << " value " << activityValue(2) << "\n"
-	<<	"	Перемещение_вниз  : Перемещение_фишки снизу   " << gameBoard->m_tilesCountX << " value " << activityValue(3) << "\n"
+	<<	"	Перемещение_вправо: Перемещение_фишки справа  1 value " << activityValue(MOVE_LEFT) << "\n"
+	<<	"	Перемещение_влево : Перемещение_фишки слева  -1 value " << activityValue(MOVE_RIGHT) << "\n"
+	<<	"	Перемещение_вверх : Перемещение_фишки сверху -" << gameBoard->m_tilesCountX << " value " << activityValue(MOVE_DOWN) << "\n"
+	<<	"	Перемещение_вниз  : Перемещение_фишки снизу   " << gameBoard->m_tilesCountX << " value " << activityValue(MOVE_UP) << "\n"
 	<<	"$End";
 	return DPTtabTextStream.str();
 }
 
-std::string PluginGame5GenerateSituationDialog::FUNtabText()
+std::string PluginGame5GenerateSituationDialog::FUNtabText() const
 {
 	std::stringstream FUNtabTextStream; 
 	FUNtabTextStream
@@ -272,14 +286,14 @@ std::string PluginGame5GenerateSituationDialog::FUNtabText()
 	<<	"$Type = algorithmic\n"
 	<<	"$Parameters\n"
 	<<	"$Body\n"
-	<<	"	return " << gameBoard->getTilesPos().size() - 1 << " - (Фишка_на_месте(Фишка1.Номер, Фишка1.Местоположение)+\n";
-	for (unsigned int i = 2; i < gameBoard->getTilesPos().size() - 1; i++)
+	<<	"	return " << gameBoard->getQuantityOfTiles() << " - (Фишка_на_месте(Фишка1.Номер, Фишка1.Местоположение)+\n";
+	for (int i = 2; i < gameBoard->getQuantityOfTiles(); i++)
 	{
 		FUNtabTextStream
 	<<	"	            Фишка_на_месте(Фишка" << i <<".Номер, Фишка" << i <<".Местоположение)+\n";
 	}
 	FUNtabTextStream
-	<<	"	            Фишка_на_месте(Фишка" << gameBoard->getTilesPos().size() - 1 <<".Номер, Фишка" << gameBoard->getTilesPos().size() - 1 <<".Местоположение));\n"
+	<<	"	            Фишка_на_месте(Фишка" << gameBoard->getQuantityOfTiles() <<".Номер, Фишка" << gameBoard->getQuantityOfTiles() <<".Местоположение));\n"
 	<<	"$End\n"
 	<<	"\n"
 	<<	"$Function Расстояние_фишки_до_места : integer\n"
@@ -296,18 +310,18 @@ std::string PluginGame5GenerateSituationDialog::FUNtabText()
 	<<	"$Parameters\n"
 	<<	"$Body\n"
 	<<	"	return Расстояние_фишки_до_места(Фишка1.Номер, Фишка1.Местоположение)+\n";
-	for (unsigned int i = 2; i < gameBoard->getTilesPos().size() - 1; i++)
+	for (int i = 2; i < gameBoard->getQuantityOfTiles(); i++)
 	{
 		FUNtabTextStream
 	<<	"	       Расстояние_фишки_до_места(Фишка" << i << ".Номер, Фишка" << i << ".Местоположение)+\n";
 	}
 	FUNtabTextStream
-	<<	"	       Расстояние_фишки_до_места(Фишка" << gameBoard->getTilesPos().size() - 1 << ".Номер, Фишка" << gameBoard->getTilesPos().size() - 1 << ".Местоположение);\n"
+	<<	"	       Расстояние_фишки_до_места(Фишка" << gameBoard->getQuantityOfTiles() << ".Номер, Фишка" << gameBoard->getQuantityOfTiles() << ".Местоположение);\n"
 	<<	"$End";
 	return FUNtabTextStream.str();
 }
 
-void PluginGame5GenerateSituationDialog::clearAllTabs()
+void PluginGame5GenerateSituationDialog::clearAllTabs() const
 {
 	rdo::gui::model::Model* pModel = getCurrentModel();
 	for (int i = 0; i < pModel->getTab()->tabBar()->count(); i++)
@@ -326,7 +340,7 @@ void PluginGame5GenerateSituationDialog::callTilesOrderDialog()
 	dlg.exec();
 }
 
-void PluginGame5GenerateSituationDialog::updateTabs()
+void PluginGame5GenerateSituationDialog::updateTabs() const
 {
 	rdo::gui::model::Model* pModel = getCurrentModel();
 	if (pModel->getTab())
@@ -348,7 +362,7 @@ void PluginGame5GenerateSituationDialog::onPluginAction()
 	exec();
 }
 
-QStringList PluginGame5GenerateSituationDialog::parseFunTab()
+QStringList PluginGame5GenerateSituationDialog::parseFunTab() const
 {
 	rdo::gui::model::Model* pModel = getCurrentModel();
 	std::stringstream txtStream;
@@ -357,7 +371,7 @@ QStringList PluginGame5GenerateSituationDialog::parseFunTab()
 	QRegExp regExp("(\\$Function)(\\s*)([A-Za-z0-9_А-Яа-я\\$]*)(\\s*):");
 
 	QStringList list;
-	int pos=0;
+	int pos = 0;
 	while((pos = regExp.indexIn(tabStr, pos))!= -1)
 	{
 		list << regExp.cap(3);
@@ -366,13 +380,13 @@ QStringList PluginGame5GenerateSituationDialog::parseFunTab()
 	return list;
 }
 
-rdo::gui::model::Model* PluginGame5GenerateSituationDialog::getCurrentModel()
+rdo::gui::model::Model* PluginGame5GenerateSituationDialog::getCurrentModel() const
 {
 	MainWindow* pMainWindow = (MainWindow*)(parent());
 	return pMainWindow->getModel();
 }
 
-QString PluginGame5GenerateSituationDialog::getBoardState()
+std::vector<unsigned int> PluginGame5GenerateSituationDialog::getBoardState() const
 {
 	return gameBoard->getBoardState();
 }

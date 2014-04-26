@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>638</width>
-    <height>491</height>
+    <width>667</width>
+    <height>537</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -111,14 +111,121 @@
         </property>
         <layout class="QGridLayout" name="gridLayout_6">
          <item row="0" column="0">
-          <widget class="CostSetupTable" name="tableCostValue">
-           <property name="focusPolicy">
-            <enum>Qt::StrongFocus</enum>
-           </property>
-           <property name="tabKeyNavigation">
-            <bool>false</bool>
+          <widget class="QLabel" name="headerLabelDirection">
+           <property name="text">
+            <string>Движение</string>
            </property>
           </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="headerLabelCalc">
+           <property name="text">
+            <string>Вычисление</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="moveRightLabel">
+           <property name="text">
+            <string>Вправо</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="moveRightCalcSwitcher">
+           <item>
+            <property name="text">
+             <string>after</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>before</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="moveLeftLabel">
+           <property name="text">
+            <string>Влево</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QComboBox" name="moveLeftCalcSwitcher">
+           <item>
+            <property name="text">
+             <string>after</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>before</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="moveUpLabel">
+           <property name="text">
+            <string>Вверх</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QComboBox" name="moveUpCalcSwitcher">
+           <item>
+            <property name="text">
+             <string>after</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>before</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="moveDownLabel">
+           <property name="text">
+            <string>Вниз</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QComboBox" name="moveDownCalcSwitcher">
+           <item>
+            <property name="text">
+             <string>after</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>before</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="headerLabelCost">
+           <property name="text">
+            <string>Стоимость</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="CheckableLineEdit" name="moveRightCost" native="true"/>
+         </item>
+         <item row="2" column="2">
+          <widget class="CheckableLineEdit" name="moveLeftCost" native="true"/>
+         </item>
+         <item row="3" column="2">
+          <widget class="CheckableLineEdit" name="moveUpCost" native="true"/>
+         </item>
+         <item row="4" column="2">
+          <widget class="CheckableLineEdit" name="moveDownCost" native="true"/>
          </item>
         </layout>
        </widget>
@@ -314,14 +421,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>CostSetupTable</class>
-   <extends>QTableWidget</extends>
-   <header>app/rdo_studio/plugins/game5/src/cost_setup_table.h</header>
-  </customwidget>
-  <customwidget>
    <class>Board</class>
    <extends>QWidget</extends>
    <header>app/rdo_studio/plugins/game5/src/board.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CheckableLineEdit</class>
+   <extends>QWidget</extends>
+   <header>app/rdo_studio/plugins/game5/src/checkable_line_edit.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

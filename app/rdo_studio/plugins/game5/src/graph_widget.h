@@ -16,22 +16,28 @@
 #include <QWheelEvent>
 #include "utils/src/common/warning_enable.h"
 // ---------------------------------------------------------------------- SYNOPSIS
+#include "app/rdo_studio/plugins/game5/src/graph_info.h"
 // --------------------------------------------------------------------------------
 
 class GraphWidget : public QGraphicsView
 {
 public:
-	GraphWidget(QWidget* parent = 0);
+	 GraphWidget(QWidget* parent = 0);
 	~GraphWidget();
 
-	QGraphicsScene* scene;
-
-protected:
-	virtual void wheelEvent     (QWheelEvent* wEvent);
-	virtual void keyPressEvent  (QKeyEvent* kEvent);
-	virtual void keyReleaseEvent(QKeyEvent* kEvent);
+	void updateGraphInfo(int solutionCost, int numberOfOpenNodes, int totalNumberOfNodes);
 
 private:
+	GraphInfo m_graphInfo;
+	bool m_dragModeCtrl;
+	bool m_dragModeClick;
+
+	virtual void wheelEvent       (QWheelEvent* wEvent);
+	virtual void keyPressEvent    (QKeyEvent*   kEvent);
+	virtual void keyReleaseEvent  (QKeyEvent*   kEvent);
+	virtual void mousePressEvent  (QMouseEvent* mEvent);
+	virtual void mouseReleaseEvent(QMouseEvent* mEvent);
+
 	void scaleView(double scaleFactor);
 };
 

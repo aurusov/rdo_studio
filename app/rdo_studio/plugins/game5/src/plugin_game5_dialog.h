@@ -11,10 +11,10 @@
 #define _RDO_PLUGIN_GAME_5_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-// ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/warning_disable.h"
 #include "ui_plugin_game5_dialog.h"
 #include "utils/src/common/warning_enable.h"
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/board.h"
 #include "app/rdo_studio/src/model/model.h"
 // --------------------------------------------------------------------------------
@@ -22,13 +22,13 @@
 class PluginGame5GenerateSituationDialog
 	: public QDialog
 	, public Ui_PluginGame5GenerateSituationDialog
-{
-Q_OBJECT
+{Q_OBJECT
+
 public:
 	PluginGame5GenerateSituationDialog(QWidget* parent);
 	~PluginGame5GenerateSituationDialog();
 
-	QString getBoardState();
+	std::vector<unsigned int> getBoardState() const;
 
 signals:
 	void buttonRandomClicked(bool solvabilityCheck);
@@ -36,28 +36,27 @@ signals:
 public slots:
 	void onPluginAction();
 
+private:
+	std::string evaluateBy() const;
+	std::string activityValue(int direction) const;
+
+	std::string RTPtabText() const;
+	std::string RSStabText() const;
+	std::string PATtabText() const;
+	std::string DPTtabText() const;
+	std::string FUNtabText() const;
+
+	void clearAllTabs() const;
+	rdo::gui::model::Model* getCurrentModel() const;
+	void updateTabs() const;
+
+	QStringList parseFunTab() const;
+
 private slots:
 	void callTilesOrderDialog();
 	void onClickOk();
 	void onClickHide(bool state);
 	void emitSolvabilityCheck();
-	void onItemCheckStateChanged(QTableWidgetItem* item);
-	
-private:
-	std::string evaluateBy();
-	std::string activityValue(int tableRow);
-
-	std::string RTPtabText();
-	std::string RSStabText();
-	std::string PATtabText();
-	std::string DPTtabText();
-	std::string FUNtabText();
-
-	void clearAllTabs();
-	rdo::gui::model::Model* getCurrentModel();
-	void updateTabs();
-
-	QStringList parseFunTab();
 };
 
 #endif // _RDO_PLUGIN_GAME_5_DIALOG_H_

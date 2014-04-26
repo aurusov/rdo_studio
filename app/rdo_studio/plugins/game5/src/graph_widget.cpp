@@ -11,18 +11,37 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <math.h>
+#include <QGridLayout>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/graph_widget.h"
 // --------------------------------------------------------------------------------
 
+namespace
+{
+	const double MAX_FACTOR  = 10;
+	const double MIN_FACTOR  = 0.1;
+	const double SCALE_SPEED = 1/2400.;
+} // end anonymous namespace
+
 GraphWidget::GraphWidget(QWidget* pParent)
 	: QGraphicsView(pParent)
-	, scene        (NULL   )
+	, m_graphInfo(this)
 {
-	scene = new QGraphicsScene(this);
-	scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-	setScene(scene);
+	QGraphicsScene* pScene = new QGraphicsScene(this);
+	pScene->setItemIndexMethod(QGraphicsScene::NoIndex);
+
+	setScene(pScene);
+
+	QGridLayout* graphWidgetLayout = new QGridLayout(this);
+	graphWidgetLayout->setContentsMargins(0, 0, 0, 0);
+
+	QSpacerItem* verticalSpacer   = new QSpacerItem(20, 40, QSizePolicy::Minimum  , QSizePolicy::Expanding);
+	QSpacerItem* horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+	graphWidgetLayout->addWidget(&m_graphInfo    , 0, 0, 1, 1);
+	graphWidgetLayout->addItem  (verticalSpacer  , 1, 0, 1, 1);
+	graphWidgetLayout->addItem  (horizontalSpacer, 0, 1, 2, 1);
 
 	setCacheMode(CacheBackground);
 	setViewportUpdateMode(BoundingRectViewportUpdate);
@@ -31,14 +50,18 @@ GraphWidget::GraphWidget(QWidget* pParent)
 }
 
 GraphWidget::~GraphWidget()
+{}
+
+void GraphWidget::updateGraphInfo(int solutionCost, int numberOfOpenNodes, int totalNumberOfNodes)
 {
+	m_graphInfo.update(solutionCost, numberOfOpenNodes, totalNumberOfNodes);
 }
 
 void GraphWidget::wheelEvent(QWheelEvent* wEvent)
 {
 	if (wEvent->modifiers() & Qt::SHIFT)
 	{
-		scaleView(pow((double)2, wEvent->delta() / 2400.0));
+		scaleView(pow(2., wEvent->delta() * SCALE_SPEED));
 	}
 	else
 	{
@@ -53,6 +76,7 @@ void GraphWidget::keyPressEvent(QKeyEvent* kEvent)
 	{
 		setDragMode(ScrollHandDrag);
 		setInteractive(false);
+		m_dragModeCtrl = true;
 	}
 }
 
@@ -61,15 +85,42 @@ void GraphWidget::keyReleaseEvent(QKeyEvent* kEvent)
 	QGraphicsView::keyReleaseEvent(kEvent);
 	if (kEvent->key() == Qt::Key_Control)
 	{
-		setDragMode(NoDrag);
-		setInteractive(true);
+		if (!m_dragModeClick)
+		{
+			setDragMode(NoDrag);
+			setInteractive(true);
+		}
+		m_dragModeCtrl = false;
 	}
+}
+
+void GraphWidget::mousePressEvent(QMouseEvent* mEvent)
+{
+	if (mEvent->button() == Qt::MouseButton::LeftButton && !itemAt(mEvent->pos()))
+	{
+		setDragMode(ScrollHandDrag);
+		m_dragModeClick = true;
+	}
+	QGraphicsView::mousePressEvent(mEvent);
+}
+
+void GraphWidget::mouseReleaseEvent(QMouseEvent* mEvent)
+{
+	if (mEvent->button() == Qt::MouseButton::LeftButton)
+	{
+		if (!m_dragModeCtrl)
+		{
+			setDragMode(NoDrag);
+		}
+		m_dragModeClick = false;
+	}
+	QGraphicsView::mouseReleaseEvent(mEvent);
 }
 
 void GraphWidget::scaleView(double scaleFactor)
 {
-	double factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
-	if (0.5 < factor && factor < 4)
+	const double factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
+	if (MIN_FACTOR < factor && factor < MAX_FACTOR)
 	{
 		scale(scaleFactor, scaleFactor);
 	}

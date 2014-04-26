@@ -3,7 +3,7 @@
   \file      app/rdo_studio/plugins/game5/src/graph_edge.h
   \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
   \date      22.09.2013
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -12,35 +12,39 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
-#include <QGraphicsItem>
+#include <QGraphicsObject>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "app/rdo_studio/plugins/game5/src/graph_items_types.h"
 // --------------------------------------------------------------------------------
 
 class GraphNode;
 
-class GraphEdge : public QGraphicsItem
-{
+class GraphEdge : public QGraphicsObject
+{Q_OBJECT
+
 public:
-	GraphEdge (GraphNode *sourceNode, GraphNode *destNode);
+	 GraphEdge(GraphNode& sourceNode, GraphNode& destNode);
 	~GraphEdge();
 
-	void adjust();
-
-	enum { Type = UserType + 2 };
+	enum { Type = rdo::plugin::game5::TypeID::GRAPH_EDGE };
 	virtual int type() const { return Type; }
 
-protected:
-	virtual QRectF boundingRect() const;
-	virtual void   paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-
 private:
-	GraphNode* source;
-	GraphNode* dest;
+	GraphNode& source;
+	GraphNode& dest;
 
 	QPointF sourcePoint;
 	QPointF destPoint;
-	double arrowSize;
+	const double arrowSize;
+	const double pointSize;
+	const double penWidth;
+
+	virtual QRectF boundingRect() const;
+	virtual void   paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+private slots:
+	void adjust();
 };
 
 #endif // _RDO_PLUGIN_GAME_5_GRAPH_EDGE_H_

@@ -18,7 +18,6 @@ Tile::Tile(int number, QWidget* pParent)
 	, tileNumber (number)
 {
 	setText(QString::number(number));
-	setObjectName("button" + QString::number(number));
 	setStyleSheet("\
 	               background-color: red; \
 	               border-style: outset; \
@@ -27,15 +26,13 @@ Tile::Tile(int number, QWidget* pParent)
 	               border-color: black; \
 	               font: bold 28px; \
 	               color: black; \
-	               padding: 6px;"
-	);
+	               padding: 6px;");
 
 	connect(this, &QPushButton::clicked, this, &Tile::reemitClicked);
 }
 
 Tile::~Tile()
-{
-}
+{}
 
 void Tile::reemitClicked()
 {
