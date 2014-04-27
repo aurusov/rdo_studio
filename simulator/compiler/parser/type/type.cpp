@@ -16,7 +16,8 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-RDOType::RDOType()
+RDOType::RDOType(TypeID typeID)
+	: runtime::RDOType(typeID)
 {}
 
 RDOType::~RDOType()

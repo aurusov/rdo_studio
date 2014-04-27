@@ -2,8 +2,8 @@
   \copyright (c) RDO-Team, 2011
   \file      simulator/compiler/parser/type/type.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -19,7 +19,7 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 class RDOType
-	: public virtual rdo::counter_reference
+	: public runtime::RDOType
 	, public IType
 	, public IModelStructure
 {
@@ -29,7 +29,7 @@ public:
 	virtual rdo::runtime::RDOType::TypeID typeID() const = 0;;
 
 protected:
-	RDOType();
+	RDOType(TypeID typeID);
 	virtual ~RDOType();
 };
 

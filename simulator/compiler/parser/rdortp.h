@@ -3,8 +3,8 @@
   \file      rdortp.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -42,10 +42,12 @@ class RDORTPResType
 	, public RuntimeWrapperType
 	, public Context
 	, public IContextFind
+	, public virtual rdo::counter_reference
 {
 DECLARE_FACTORY(RDORTPResType);
 public:
 	typedef std::vector<LPRDORTPParam> ParamList;
+	typedef RDORSSResource value_type;
 
 	enum Subtype
 	{
@@ -94,7 +96,7 @@ private:
 DECLARE_POINTER(RDORTPResType);
 
 //// --------------------------------------------------------------------------------
-////------------------------------ FOR FUZZY LOGIC ------------------------------	
+////------------------------------ FOR FUZZY LOGIC ------------------------------
 //// --------------------------------------------------------------------------------
 //
 //// --------------------------------------------------------------------------------
@@ -139,9 +141,9 @@ DECLARE_POINTER(RDORTPResType);
 //	{
 //		m_points.push_back(point);
 //	}
-//	double  getVal() const 
-//	{ 
-//		return m_value; 
+//	double  getVal() const
+//	{
+//		return m_value;
 //	}
 //
 //private:
