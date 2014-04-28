@@ -78,8 +78,6 @@ public:
 
 	void writeModelStructure(std::ostream& stream) const;
 
-	typedef RDORSSResource value_type;
-
 	DECLARE_IType;
 
 private:
