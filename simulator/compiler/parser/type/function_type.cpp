@@ -22,8 +22,9 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- FunctionParamType
 // --------------------------------------------------------------------------------
 FunctionParamType::FunctionParamType(const ParamList& paramList, const RDOParserSrcInfo& srcInfo)
-	: RDOParserSrcInfo(srcInfo  )
-	, m_paramList     (paramList)
+	: RDOType(t_unknow)
+	, RDOParserSrcInfo(srcInfo)
+	, m_paramList(paramList)
 {
 	if (m_paramList.empty())
 	{
@@ -115,7 +116,8 @@ void FunctionParamType::writeModelStructure(std::ostream& stream) const
 // -------------------- FunctionType
 // --------------------------------------------------------------------------------
 FunctionType::FunctionType(const LPTypeInfo& pReturnType, const LPFunctionParamType& pParamType, const RDOParserSrcInfo& srcInfo)
-	: RDOParserSrcInfo(srcInfo    )
+	: RDOType(pReturnType->type()->typeID())
+	, RDOParserSrcInfo(srcInfo    )
 	, m_pReturnType   (pReturnType)
 	, m_pParamType    (pParamType )
 {

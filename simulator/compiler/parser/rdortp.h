@@ -42,10 +42,12 @@ class RDORTPResType
 	, public RuntimeWrapperType
 	, public Context
 	, public IContextFind
+	, public virtual rdo::counter_reference
 {
 DECLARE_FACTORY(RDORTPResType);
 public:
 	typedef std::vector<LPRDORTPParam> ParamList;
+	typedef RDORSSResource value_type;
 
 	enum Subtype
 	{

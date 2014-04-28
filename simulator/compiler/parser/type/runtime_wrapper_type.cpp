@@ -17,10 +17,12 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 RuntimeWrapperType::RuntimeWrapperType()
+	: RDOType(t_pointer)
 {}
 
 RuntimeWrapperType::RuntimeWrapperType(const rdo::runtime::LPRDOType& pType)
-	: m_pType(pType)
+	: RDOType(pType->typeID())
+	, m_pType(pType)
 {
 	ASSERT(m_pType);
 }

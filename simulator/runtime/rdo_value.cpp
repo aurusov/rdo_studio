@@ -72,6 +72,7 @@ RDOValue::RDOValue(uint64_t value)
 	: m_pType(g_int)
 {
 	__get<uint64_t>() = value;
+	setUndefined(false);
 }
 #endif // ARCHITECTURES_AMD64
 

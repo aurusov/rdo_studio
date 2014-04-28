@@ -25,7 +25,7 @@ class RDOValue;
   \brief     Базовый тип данных РДО
 */
 PREDECLARE_POINTER(RDOType);
-class RDOType: public rdo::counter_reference
+class RDOType: public virtual rdo::counter_reference
 {
 public:
 	/*!
