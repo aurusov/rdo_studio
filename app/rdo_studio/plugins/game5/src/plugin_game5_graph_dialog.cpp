@@ -218,12 +218,13 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 		                                                pathCost, restPathCost, moveDirectionText, moveCost,
 		                                                relevantTile, graphLevel, tileMoveFrom, tileMoveTo,
 		                                                boardState, m_nodeWidth, m_nodeHeight);
-		connect(m_graphNodeList[graphNodeIndex], &GraphNode::clickedNode  , this, &PluginGame5GraphDialog::updateCheckedNode);
-		connect(m_graphNodeList[graphNodeIndex], &GraphNode::doubleClicked, this, &PluginGame5GraphDialog::emitShowNodeInfoDlg);
 	}
 
 	for (unsigned int i = 0; i < m_graphNodeList.size(); i++)
 	{
+		connect(m_graphNodeList[graphNodeIndex], &GraphNode::clickedNode  , this, &PluginGame5GraphDialog::updateCheckedNode);
+		connect(m_graphNodeList[graphNodeIndex], &GraphNode::doubleClicked, this, &PluginGame5GraphDialog::emitShowNodeInfoDlg);
+
 		const int nodeGraphLevel = m_graphNodeList[i]->getGraphLevel();
 		const int currentLevel = paintLevel.size() - 1;
 		if (currentLevel < nodeGraphLevel)
