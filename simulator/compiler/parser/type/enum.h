@@ -2,8 +2,8 @@
   \copyright (c) RDO-Team, 2011
   \file      enum.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/smart_ptr/factory/factory.h"
 #include "simulator/runtime/rdo_enum.h"
-#include "simulator/compiler/parser/type/runtime_wrapper_type.h"
+#include "simulator/compiler/parser/type/type.h"
 #include "simulator/compiler/parser/rdo_value.h"
 // --------------------------------------------------------------------------------
 
@@ -25,32 +25,29 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOEnumType);
 
-class RDOEnumType: public RuntimeWrapperType
+class RDOEnumType
+	: public rdo::runtime::RDOEnumType
+	, public IType
+	, public IModelStructure
 {
 DECLARE_FACTORY(RDOEnumType);
 public:
 	void add(const LPRDOValue& pNext);
 
-	rdo::runtime::LPRDOEnumType getEnums() const
+	bool operator== (const RDOEnumType& other) const
 	{
-		return m_pType.object_static_cast<rdo::runtime::RDOEnumType>();
+		return getValues() == other.getValues();
 	}
-
-	bool operator== (const RDOEnumType& pEnumType) const
+	bool operator!= (const RDOEnumType& other) const
 	{
-		return getEnums()->getValues() == pEnumType.getEnums()->getValues();
-	}
-	bool operator!= (const RDOEnumType& pEnumType) const
-	{
-		return !operator==(pEnumType);
+		return !operator==(other);
 	}
 
 	DECLARE_IType;
 	DECLARE_IModelStructure;
 
 private:
-	RDOEnumType         ();
-	RDOEnumType         (const rdo::runtime::LPRDOEnumType& pEnumType);
+	RDOEnumType();
 	virtual ~RDOEnumType();
 };
 

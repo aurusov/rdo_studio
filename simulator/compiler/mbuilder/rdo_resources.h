@@ -139,8 +139,8 @@ public:
 		explicit Param(const std::string& name, const rdo::runtime::RDOEnumType::Enums& enums, const parser::LPRDOValue& pDefault = parser::LPRDOValue(NULL));
 
 		const parser::LPTypeInfo& type() const { return m_pType; }
-		const rdo::runtime::RDOType::TypeID typeID () const { return m_pType->type()->typeID(); }
-		std::string typeStr() const { return m_pType->type()->name(); }
+		const rdo::runtime::RDOType::TypeID typeID () const { return m_pType->typeID(); }
+		std::string typeStr() const;
 
 		int id() const { return m_id; }
 
@@ -153,10 +153,10 @@ public:
 		const parser::LPRDOValue& getDefault() const  { return m_pDefault; }
 		void setDefault(const parser::LPRDOValue& pDefault);
 
-		parser::LPRDOEnumType    getEnum() const
+		parser::LPRDOEnumType getEnum() const
 		{
 			ASSERT(typeID() == rdo::runtime::RDOType::t_enum);
-			return type()->type().object_static_cast<parser::RDOEnumType>();
+			return type()->itype().object_static_cast<parser::RDOEnumType>();
 		}
 
 		bool operator== (const Param& param) const;

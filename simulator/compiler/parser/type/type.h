@@ -18,20 +18,16 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-class RDOType
-	: public runtime::RDOType
-	, public IType
-	, public IModelStructure
-{
-DECLARE_FACTORY(RDOType)
-public:
-	virtual const rdo::runtime::LPRDOType& type() const = 0;
-	virtual rdo::runtime::RDOType::TypeID typeID() const = 0;;
-
-protected:
-	RDOType(TypeID typeID);
-	virtual ~RDOType();
-};
+//class RDOType
+//	: public virtual runtime::RDOType
+//	, public IType
+//	, public IModelStructure
+//{
+//DECLARE_FACTORY(RDOType)
+//protected:
+//	RDOType(TypeID typeID);
+//	virtual ~RDOType();
+//};
 
 CLOSE_RDO_PARSER_NAMESPACE
 

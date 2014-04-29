@@ -13,7 +13,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/type/info.h"
+#include "simulator/runtime/rdo_type.h"
+#include "simulator/compiler/parser/rdo_object.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -22,7 +23,9 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- FunctionParamType
 // --------------------------------------------------------------------------------
 class FunctionParamType
-	: public RDOType
+	: public rdo::runtime::RDOType
+	, public IType
+	, public IModelStructure
 	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(FunctionParamType);
@@ -49,7 +52,9 @@ DECLARE_POINTER(FunctionParamType);
 // -------------------- FunctionType
 // --------------------------------------------------------------------------------
 class FunctionType
-	: public RDOType
+	: public rdo::runtime::RDOType
+	, public IType
+	, public IModelStructure
 	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(FunctionType);

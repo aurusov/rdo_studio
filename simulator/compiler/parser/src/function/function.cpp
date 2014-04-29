@@ -151,7 +151,7 @@ void Function::popFunctionBodyContext()
 {
 	ASSERT(m_pContextFunctionBody);
 
-	if (m_pReturnType->type()->typeID() != rdo::runtime::RDOType::t_void)
+	if (m_pReturnType->typeID() != rdo::runtime::RDOType::t_void)
 	{
 		if (!m_pContextFunctionBody->getReturnFlag())
 		{
@@ -186,13 +186,13 @@ void Function::setBody(const rdo::runtime::LPRDOCalc& pBody)
 	pCalcStatementList->addCalcStatement(pBody);
 	pCalcStatementList->addCalcStatement(pCalcCloseBrace);
 
-	if (m_pReturnType->type()->typeID() != rdo::runtime::RDOType::t_void && !m_pContextFunctionBody->getReturnFlag())
+	if (m_pReturnType->typeID() != rdo::runtime::RDOType::t_void && !m_pContextFunctionBody->getReturnFlag())
 	{
 		rdo::runtime::LPRDOCalc pCalcDefault = m_pDefaultValue;
 		if (!pCalcDefault)
 		{
 			//! Присвоить автоматическое значение по умолчанию, если оно не задано в явном виде
-			pCalcDefault = rdo::Factory<rdo::runtime::RDOCalcConst>::create(m_pReturnType->type()->get_default());
+			pCalcDefault = rdo::Factory<rdo::runtime::RDOCalcConst>::create(m_pReturnType->itype()->get_default());
 			ASSERT(pCalcDefault);
 			pCalcDefault->setSrcInfo(m_pReturnType->src_info());
 		}
@@ -243,7 +243,7 @@ Context::FindResult Function::onFindContext(const std::string& method, const Con
 		LPRDOParam pParam = findParam(identifier);
 		if (pParam)
 		{
-			rdo::runtime::RDOType::TypeID typeID = pParam->getTypeInfo()->type()->typeID();
+			rdo::runtime::RDOType::TypeID typeID = pParam->getTypeInfo()->typeID();
 			if (typeID == rdo::runtime::RDOType::t_identificator || typeID == rdo::runtime::RDOType::t_unknow)
 			{
 				RDOParser::s_parser()->error().push_only(
@@ -262,7 +262,7 @@ Context::FindResult Function::onFindContext(const std::string& method, const Con
 			}
 			else if (method == Context::METHOD_OPERATOR_DOT)
 			{
-				LPRDORTPResType resourceType = pParam->getTypeInfo()->type().object_dynamic_cast<RDORTPResType>();
+				LPRDORTPResType resourceType = pParam->getTypeInfo()->itype().object_dynamic_cast<RDORTPResType>();
 				if (resourceType)
 				{
 					Context::Params params_;

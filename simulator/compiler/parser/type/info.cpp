@@ -29,13 +29,24 @@ TypeInfo::TypeInfo(const LPTypeInfo& pTypeInfo)
 	init();
 }
 
-TypeInfo::TypeInfo(const LPRDOType& pType, const RDOParserSrcInfo& srcInfo)
-	: m_pType  (pType  )
+//TypeInfo::TypeInfo(const LPRDOType& pType, const RDOParserSrcInfo& srcInfo)
+//	: m_pType  (pType  )
+//	, m_srcInfo(srcInfo)
+//{
+//	if (m_srcInfo->src_text().empty())
+//	{
+//		m_srcInfo->setSrcText(itype()->name());
+//	}
+//	init();
+//}
+
+TypeInfo::TypeInfo(const LPIType& pType, const RDOParserSrcInfo& srcInfo)
+	: m_pType  (pType.object_dynamic_cast<rdo::runtime::RDOType>())
 	, m_srcInfo(srcInfo)
 {
 	if (m_srcInfo->src_text().empty())
 	{
-		m_srcInfo->setSrcText(pType->name());
+		m_srcInfo->setSrcText(itype()->name());
 	}
 	init();
 }
@@ -46,6 +57,23 @@ void TypeInfo::init()
 	{
 		RDOParser::s_parser()->insertPreCastType(this);
 	}
+}
+
+const rdo::runtime::LPRDOType& TypeInfo::qqq() const
+{
+	return m_pType;
+}
+
+rdo::runtime::RDOType::TypeID TypeInfo::typeID() const
+{
+	return m_pType->typeID();
+}
+
+rdo::intrusive_ptr<IType> TypeInfo::itype() const
+{
+	const rdo::intrusive_ptr<IType> result = m_pType.object_dynamic_cast<IType>();
+	ASSERT(result);
+	return result;
 }
 
 LPTypeInfo TypeInfo::type_cast(const LPTypeInfo& pFrom, const RDOParserSrcInfo& src_info) const

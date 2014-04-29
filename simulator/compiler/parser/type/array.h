@@ -2,8 +2,8 @@
   \copyright (c) RDO-Team, 2011
   \file      simulator/compiler/parser/type/array.h
   \author    Чирков Михаил
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -23,7 +23,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- RDOArrayType
 // --------------------------------------------------------------------------------
 class RDOArrayType
-	: public RuntimeWrapperType
+	: public rdo::runtime::RDOArrayType
 	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOArrayType);

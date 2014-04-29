@@ -153,6 +153,11 @@ bool RDOResType::Param::operator== (const Param& /*param*/) const
 	return true;
 }
 
+std::string RDOResType::Param::typeStr() const
+{
+	return m_pType->type().object_dynamic_cast<rdo::compiler::parser::IType>()->name();
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOResTypeList
 // --------------------------------------------------------------------------------

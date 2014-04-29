@@ -3,7 +3,7 @@
   \file      info.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      09.04.2011
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -26,7 +26,9 @@ class TypeInfo: public rdo::counter_reference
 {
 DECLARE_FACTORY(TypeInfo)
 public:
-	const LPRDOType&        type      () const;
+	const rdo::runtime::LPRDOType& qqq() const;
+	rdo::runtime::RDOType::TypeID typeID() const;
+	rdo::intrusive_ptr<IType> itype() const;
 	RDOParserSrcInfo        src_info  () const;
 	const RDOParserSrcInfo& src_info  (const RDOParserSrcInfo& srcInfo) const;
 	LPTypeInfo              type_cast (const LPTypeInfo& pFrom, const RDOParserSrcInfo& src_info) const;
@@ -37,12 +39,13 @@ protected:
 	virtual ~TypeInfo();
 
 private:
-	TypeInfo(const LPRDOType& pType, const RDOParserSrcInfo& srcInfo);
+	//TypeInfo(const rdo::runtime::LPRDOType& pType, const RDOParserSrcInfo& srcInfo);
+	TypeInfo(const LPIType& pType, const RDOParserSrcInfo& srcInfo);
 
 	template <class T>
 	static LPTypeInfo create(const RDOParserSrcInfo& srcInfo);
 
-	LPRDOType                         m_pType;
+	rdo::runtime::LPRDOType m_pType;
 	boost::optional<RDOParserSrcInfo> m_srcInfo;
 
 	void init();

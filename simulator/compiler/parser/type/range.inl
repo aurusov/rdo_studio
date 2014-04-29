@@ -3,7 +3,7 @@
   \file      range.inl
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      10.02.2010
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -33,7 +33,7 @@ inline std::string RDOTypeRange<T>::name() const
 }
 
 template<class T>
-inline LPRDOType RDOTypeRange<T>::type_cast(const LPRDOType& from, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
+inline LPIType RDOTypeRange<T>::type_cast(const LPIType& from, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	return parent_type::type_cast(from, from_src_info, to_src_info, src_info);
 }
@@ -48,7 +48,7 @@ inline LPRDOValue RDOTypeRange<T>::value_cast(const LPRDOValue& pFrom, const RDO
 }
 
 template<class T>
-inline rdo::runtime::LPRDOCalc RDOTypeRange<T>::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
+inline rdo::runtime::LPRDOCalc RDOTypeRange<T>::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& pType) const
 {
 	return rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(range()->getMin()->value(), range()->getMax()->value(), T::calc_cast(pCalc, pType));
 }

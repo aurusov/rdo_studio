@@ -76,14 +76,11 @@ void rtperror(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
 // -------------------- RDORTPResType
 // --------------------------------------------------------------------------------
 RDORTPResType::RDORTPResType(const LPRDOParser& pParser, const RDOParserSrcInfo& src_info, bool permanent)
-	: RDOParserSrcInfo(src_info            )
-	, m_number        (pParser->getRTP_id())
-	, m_permanent     (permanent           )
+	: RDOParserSrcInfo(src_info)
+	, RDOResourceTypeList(pParser->getRTP_id(), pParser->runtime())
+	, m_number(pParser->getRTP_id())
+	, m_permanent(permanent)
 {
-	m_pRuntimeResType = rdo::Factory<rdo::runtime::RDOResourceTypeList>::create(m_number, pParser->runtime()).interface_cast<rdo::runtime::IResourceType>();
-	m_pType = m_pRuntimeResType;
-	ASSERT(m_pType);
-
 	pParser->insertRTPResType(LPRDORTPResType(this));
 }
 
@@ -108,12 +105,6 @@ bool RDORTPResType::isTemporary() const
 const RDORTPResType::ParamList& RDORTPResType::getParams() const
 {
 	return m_params;
-}
-
-const rdo::runtime::LPIResourceType& RDORTPResType::getRuntimeResType() const
-{
-	ASSERT(m_pRuntimeResType);
-	return m_pRuntimeResType;
 }
 
 runtime::RDOType::TypeID RDORTPResType::typeID() const
@@ -226,7 +217,7 @@ LPRDOValue RDORTPResType::value_cast(const LPRDOValue& pFrom, const RDOParserSrc
 
 rdo::runtime::LPRDOCalc RDORTPResType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
 {
-	return RuntimeWrapperType::calc_cast(pCalc, pType);
+	return pCalc;
 }
 
 rdo::runtime::RDOValue RDORTPResType::get_default() const
