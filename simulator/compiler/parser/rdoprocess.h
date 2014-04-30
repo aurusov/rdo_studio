@@ -56,8 +56,9 @@ PREDECLARE_POINTER(RDOPROCOperator);
 
 PREDECLARE_POINTER(RDOPROCProcess);
 class RDOPROCProcess
-	: public rdo::counter_reference
-	, public RDOParserSrcInfo
+	: public RDOParserSrcInfo
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDOPROCProcess);
 public:
@@ -98,6 +99,8 @@ private:
 	LPRDOFUNLogic m_pConditon;
 	std::string m_name;
 	LPRDORTPResType m_transactType;
+
+	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 
 // --------------------------------------------------------------------------------
