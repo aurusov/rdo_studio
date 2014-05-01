@@ -3,7 +3,7 @@
   \file      range.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      10.02.2010
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -70,6 +70,6 @@ DECLARE_POINTER(RDOTypeRealRange);
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#include "simulator/compiler/parser/type/range.inl"
+#include "simulator/compiler/parser/type/range-inl.h"
 
 #endif // _RDOPARSER_TYPE_RANGE_H_

@@ -194,7 +194,7 @@ SET(TYPE_FUNCTION_FILES
 SET(TYPE_INFO_FILES
 	type/info.cpp
 	type/info.h
-	type/info.inl
+	type/info-inl.h
 )
 
 SET(TYPE_ARRAY_FILES
@@ -215,7 +215,7 @@ SET(TYPE_ENUM_FILES
 SET(TYPE_RANGE_FILES
 	type/range.cpp
 	type/range.h
-	type/range.inl
+	type/range-inl.h
 )
 
 SET(TYPE_SUCHAS_FILES

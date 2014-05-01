@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      info.inl
+  \file      info-inl.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      09.04.2011
   \brief
