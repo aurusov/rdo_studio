@@ -191,6 +191,7 @@ SET(TYPE_ENUM_FILES
 )
 
 SET(TYPE_RANGE_FILES
+	rdo_type_range.cpp
 	rdo_type_range.h
 	rdo_type_range-inl.h
 )
