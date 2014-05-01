@@ -111,7 +111,7 @@ rdo::runtime::RDOValue RDOArrayType::get_default() const
 void RDOArrayType::writeModelStructure(std::ostream& stream) const
 {
 	stream << "A ";
-	dynamic_cast<IModelStructure*>(m_pItemType->itype().get())->writeModelStructure(stream);
+	dynamic_cast<IModelStructure*>(m_pItemType->type().get())->writeModelStructure(stream);
 }
 
 const LPTypeInfo& RDOArrayType::getItemType() const

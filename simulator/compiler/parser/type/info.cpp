@@ -23,14 +23,14 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- TypeInfo
 // --------------------------------------------------------------------------------
 TypeInfo::TypeInfo(const LPTypeInfo& pTypeInfo)
-	: m_pType  (pTypeInfo->m_pType  )
+	: m_pType(pTypeInfo->m_pType)
 	, m_srcInfo(pTypeInfo->m_srcInfo)
 {
 	init();
 }
 
 TypeInfo::TypeInfo(const LPIType& pType, const RDOParserSrcInfo& srcInfo)
-	: m_pType  (pType.object_dynamic_cast<rdo::runtime::RDOType>())
+	: m_pType (pType)
 	, m_srcInfo(srcInfo)
 {
 	if (m_srcInfo->src_text().empty())
@@ -45,12 +45,16 @@ TypeInfo::~TypeInfo()
 
 RDOParserSrcInfo TypeInfo::src_info() const
 {
-	return m_srcInfo ? m_srcInfo.get() : RDOParserSrcInfo();
+	return m_srcInfo
+		? m_srcInfo.get()
+		: RDOParserSrcInfo();
 }
 
 const RDOParserSrcInfo& TypeInfo::src_info(const RDOParserSrcInfo& srcInfo) const
 {
-	return m_srcInfo ? m_srcInfo.get() : srcInfo;
+	return m_srcInfo
+		? m_srcInfo.get()
+		: srcInfo;
 }
 
 void TypeInfo::init()
@@ -61,21 +65,19 @@ void TypeInfo::init()
 	}
 }
 
-const rdo::runtime::LPRDOType& TypeInfo::type() const
+rdo::runtime::LPRDOType TypeInfo::type() const
 {
-	return m_pType;
+	return m_pType.object_dynamic_cast<rdo::runtime::RDOType>();
 }
 
 rdo::runtime::RDOType::TypeID TypeInfo::typeID() const
 {
-	return m_pType->typeID();
+	return type()->typeID();
 }
 
-LPIType TypeInfo::itype() const
+const LPIType& TypeInfo::itype() const
 {
-	const LPIType result = m_pType.object_dynamic_cast<IType>();
-	ASSERT(result);
-	return result;
+	return m_pType;
 }
 
 LPTypeInfo TypeInfo::type_cast(const LPTypeInfo& pFrom, const RDOParserSrcInfo& src_info) const

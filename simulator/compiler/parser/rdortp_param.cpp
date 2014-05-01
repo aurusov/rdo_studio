@@ -37,7 +37,7 @@ const std::string& RDORTPParam::name() const
 void RDORTPParam::writeModelStructure(std::ostream& stream) const
 {
 	stream << name() << " ";
-	dynamic_cast<IModelStructure*>(getTypeInfo()->itype().get())->writeModelStructure(stream);
+	dynamic_cast<IModelStructure*>(getTypeInfo()->type().get())->writeModelStructure(stream);
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
