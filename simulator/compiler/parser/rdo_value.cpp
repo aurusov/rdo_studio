@@ -93,7 +93,7 @@ RDOValue::RDOValue(const rdo::explicit_value<std::string>& value, const RDOParse
 
 RDOValue::RDOValue(const LPTypeInfo& pType)
 	: RDOParserSrcInfo(pType->src_info(RDOParserSrcInfo()))
-	, m_value         (pType->qqq())
+	, m_value         (pType->type())
 	, m_pType         (pType)
 {
 	ASSERT(m_pType);
@@ -101,7 +101,7 @@ RDOValue::RDOValue(const LPTypeInfo& pType)
 
 RDOValue::RDOValue(const LPTypeInfo& pType, const RDOParserSrcInfo& src_info)
 	: RDOParserSrcInfo(src_info)
-	, m_value         (pType->qqq())
+	, m_value         (pType->type())
 	, m_pType         (pType)
 {
 	ASSERT(m_pType);

@@ -23,7 +23,7 @@ OPEN_RDO_PARSER_NAMESPACE
  //---------- RDOArrayType
  //----------------------------------------------------------------------------
 RDOArrayType::RDOArrayType(const LPTypeInfo& pItemType, const RDOParserSrcInfo& src_info)
-	: rdo::runtime::RDOArrayType(pItemType->qqq())
+	: rdo::runtime::RDOArrayType(pItemType->type())
 	, RDOParserSrcInfo(src_info)
 	, m_pItemType(pItemType) // TODO кажется лишним
 {

@@ -26,7 +26,7 @@ class TypeInfo: public rdo::counter_reference
 {
 DECLARE_FACTORY(TypeInfo)
 public:
-	const rdo::runtime::LPRDOType& qqq() const;
+	const rdo::runtime::LPRDOType& type() const;
 	rdo::runtime::RDOType::TypeID typeID() const;
 	LPIType itype() const;
 	RDOParserSrcInfo        src_info  () const;

@@ -277,7 +277,7 @@ LPExpression contextUnknownEnum(const rdo::runtime::LPRDOEnumType& enumType, std
 	LPTypeInfo typeInfo = rdo::Factory<TypeInfo>::delegate<RDOType__identificator>(srcInfo);
 	return rdo::Factory<Expression>::create(
 		typeInfo,
-		rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(enumType->getValues()[index], typeInfo->qqq())),
+		rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(enumType->getValues()[index], typeInfo->type())),
 		srcInfo
 	);
 }

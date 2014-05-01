@@ -44,7 +44,7 @@ inline void RDOValue::setPointer(const rdo::intrusive_ptr<T>& pObject)
 	);
 
 	new (&m_buffer) rdo::intrusive_ptr_interface_wrapper<T>(pObject);
-	m_value = rdo::runtime::RDOValue(m_pType->qqq(), pObject->createRuntimeValue());
+	m_value = rdo::runtime::RDOValue(m_pType->type(), pObject->createRuntimeValue());
 }
 
 template <class T>

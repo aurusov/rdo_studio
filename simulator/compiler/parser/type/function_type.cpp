@@ -130,7 +130,7 @@ FunctionType::~FunctionType()
 
 const rdo::runtime::LPRDOType& FunctionType::type() const
 {
-	return m_pReturnType->qqq();
+	return m_pReturnType->type();
 }
 
 rdo::runtime::RDOType::TypeID FunctionType::typeID() const

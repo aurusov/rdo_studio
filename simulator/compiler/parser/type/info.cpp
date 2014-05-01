@@ -48,7 +48,7 @@ void TypeInfo::init()
 	}
 }
 
-const rdo::runtime::LPRDOType& TypeInfo::qqq() const
+const rdo::runtime::LPRDOType& TypeInfo::type() const
 {
 	return m_pType;
 }
