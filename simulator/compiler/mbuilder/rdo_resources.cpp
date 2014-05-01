@@ -52,7 +52,7 @@ RDOResType::Param::Param(const parser::LPRDORTPParam& param)
 	{
 		case rdo::runtime::RDOType::t_int:
 		{
-			parser::LPRDOTypeIntRange pRange = param->getTypeInfo()->type().object_dynamic_cast<parser::RDOTypeIntRange>();
+			parser::LPRDOTypeIntRange pRange = param->getTypeInfo()->itype().object_dynamic_cast<parser::RDOTypeIntRange>();
 			if (pRange)
 			{
 				m_pMin = pRange->range()->getMin();
@@ -62,7 +62,7 @@ RDOResType::Param::Param(const parser::LPRDORTPParam& param)
 		}
 		case rdo::runtime::RDOType::t_real:
 		{
-			parser::LPRDOTypeRealRange pRange = param->getTypeInfo()->type().object_dynamic_cast<parser::RDOTypeRealRange>();
+			parser::LPRDOTypeRealRange pRange = param->getTypeInfo()->itype().object_dynamic_cast<parser::RDOTypeRealRange>();
 			if (pRange)
 			{
 				m_pMin = pRange->range()->getMin();
@@ -155,7 +155,7 @@ bool RDOResType::Param::operator== (const Param& /*param*/) const
 
 std::string RDOResType::Param::typeStr() const
 {
-	return m_pType->type().object_dynamic_cast<rdo::compiler::parser::IType>()->name();
+	return m_pType->itype().object_dynamic_cast<rdo::compiler::parser::IType>()->name();
 }
 
 // --------------------------------------------------------------------------------

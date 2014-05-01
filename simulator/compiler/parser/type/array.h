@@ -24,16 +24,17 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 class RDOArrayType
 	: public rdo::runtime::RDOArrayType
+	, public IType
+	, public IModelStructure
 	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOArrayType);
 public:
-	const LPTypeInfo&            getItemType        () const;
-	rdo::runtime::LPRDOArrayType getRuntimeArrayType() const;
-	LPTypeInfo                   typeInfo           () const;
+	const LPTypeInfo& getItemType() const;
+	LPTypeInfo typeInfo() const;
 
 private:
-	RDOArrayType         (const LPTypeInfo& pItemType, const RDOParserSrcInfo& src_info);
+	RDOArrayType(const LPTypeInfo& pItemType, const RDOParserSrcInfo& src_info);
 	virtual ~RDOArrayType();
 
 	LPTypeInfo m_pItemType;

@@ -103,7 +103,7 @@ bool BlockForSeize::checkType(RDOResType rtp, const parser::RDOParserSrcInfo& in
 		parser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format("У типа ресурса '%s' параметр '%s' не является параметром перечислимого типа", rtp.name().c_str(), rtp_param_name.c_str()));
 
 	// Теперь проверим сами значения
-	if (!param.getEnum()->getEnums()->exist(rtp_state_free) || !param.getEnum()->getEnums()->exist(rtp_state_buzy))
+	if (!param.getEnum()->exist(rtp_state_free) || !param.getEnum()->exist(rtp_state_buzy))
 		parser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format("У типа ресурса '%s' перечислимый параметр '%s' должен иметь как минимум два обязательных значения: %s и %s", rtp.name().c_str(), param.name().c_str(), rtp_state_free.c_str(), rtp_state_buzy.c_str()));
 
 	parser::LPRDORTPResType pResType = parser::RDOParser::s_parser()->findRTPResType(rtp.name());

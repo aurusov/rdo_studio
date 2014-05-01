@@ -22,7 +22,7 @@ inline LPTypeInfo TypeInfo::create(const RDOParserSrcInfo& srcInfo)
 	rdo::runtime::LPRDOType pType = rdo::Factory<T>::create();
 	ASSERT(pType);
 
-	LPTypeInfo pTypeInfo = rdo::Factory<TypeInfo>::create(pType, srcInfo);
+	LPTypeInfo pTypeInfo = rdo::Factory<TypeInfo>::create(pType.object_dynamic_cast<IType>(), srcInfo);
 	ASSERT(pTypeInfo);
 
 	return pTypeInfo;

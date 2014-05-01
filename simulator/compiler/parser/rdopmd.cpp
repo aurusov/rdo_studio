@@ -172,7 +172,7 @@ void RDOPMDWatchPar::init(bool trace, const RDOParserSrcInfo& res_src_info, cons
 		RDOParser::s_parser()->error().push_only(pResource->getType()->src_info(), "См. тип ресурса");
 		RDOParser::s_parser()->error().push_done();
 	}
-	rdo::runtime::RDOType::TypeID typeID = pParam->getTypeInfo()->type()->typeID();
+	const rdo::runtime::RDOType::TypeID typeID = pParam->getTypeInfo()->typeID();
 	if (typeID != rdo::runtime::RDOType::t_int && typeID != rdo::runtime::RDOType::t_real)
 	{
 		RDOParser::s_parser()->error().push_only(par_src_info, "Наблюдать можно только за параметром целого или вещественного типа");

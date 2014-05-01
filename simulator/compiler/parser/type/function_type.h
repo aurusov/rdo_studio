@@ -14,7 +14,9 @@
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_type.h"
+#include "simulator/runtime/rdo_model_i.h"
 #include "simulator/compiler/parser/rdo_object.h"
+#include "simulator/compiler/parser/type/info.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

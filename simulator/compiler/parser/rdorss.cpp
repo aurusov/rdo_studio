@@ -139,7 +139,7 @@ void RDORSSResource::addParam(const LPRDOValue& pParam)
 			pAddParam = (*m_currParam)->getDefault()->defined()
 				? (*m_currParam)->getDefault()
 				: rdo::Factory<rdo::compiler::parser::RDOValue>::create(
-					(*m_currParam)->getTypeInfo()->type()->get_default(),
+					(*m_currParam)->getTypeInfo()->itype()->get_default(),
 					(*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()),
 					(*m_currParam)->getTypeInfo()
 				);

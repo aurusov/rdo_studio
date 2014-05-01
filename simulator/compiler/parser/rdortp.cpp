@@ -78,7 +78,7 @@ void rtperror(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
 RDORTPResType::RDORTPResType(const LPRDOParser& pParser, const RDOParserSrcInfo& src_info, bool permanent)
 	: RDOParserSrcInfo(src_info)
 	, RDOResourceTypeList(pParser->getRTP_id(), pParser->runtime())
-	, m_number(pParser->getRTP_id())
+	, m_number(pParser->getRTP_id()) // TODO кажется ненужным
 	, m_permanent(permanent)
 {
 	pParser->insertRTPResType(LPRDORTPResType(this));
@@ -158,13 +158,13 @@ std::string RDORTPResType::name() const
 	return s_name;
 }
 
-LPRDOType RDORTPResType::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
+LPIType RDORTPResType::type_cast(const LPIType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
-	switch (pFrom->typeID())
+	switch (pFrom.object_dynamic_cast<rdo::runtime::RDOType>()->typeID())
 	{
 	case rdo::runtime::RDOType::t_pointer:
 		{	
-			LPRDOType pThisRTPType(const_cast<RDORTPResType*>(this));
+			LPIType pThisRTPType(const_cast<RDORTPResType*>(this));
 
 			//! Это один и тот же тип
 			if (pThisRTPType == pFrom)
@@ -185,20 +185,20 @@ LPRDOType RDORTPResType::type_cast(const LPRDOType& pFrom, const RDOParserSrcInf
 		}
 	}
 
-	return LPRDOType(NULL);
+	return LPIType(NULL);
 }
 
 LPRDOValue RDORTPResType::value_cast(const LPRDOValue& pFrom, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	ASSERT(pFrom);
 
-	LPRDORTPResType pRTPResType = pFrom->typeInfo()->type().object_dynamic_cast<RDORTPResType>();
+	LPRDORTPResType pRTPResType = pFrom->typeInfo()->itype().object_dynamic_cast<RDORTPResType>();
 	if (pRTPResType)
 	{
-		LPRDOType pThisType = const_cast<RDORTPResType*>(this);
+		LPIType pThisType = const_cast<RDORTPResType*>(this);
 
 		//! Это один и тот же тип
-		if (pThisType == pRTPResType.object_parent_cast<RDOType>())
+		if (pThisType == pRTPResType.object_dynamic_cast<IType>())
 			return pFrom;
 
 		//! Типы разные, сгенерим ошибку
@@ -215,7 +215,7 @@ LPRDOValue RDORTPResType::value_cast(const LPRDOValue& pFrom, const RDOParserSrc
 	return LPRDOValue(NULL);
 }
 
-rdo::runtime::LPRDOCalc RDORTPResType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
+rdo::runtime::LPRDOCalc RDORTPResType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& pType) const
 {
 	return pCalc;
 }
@@ -298,9 +298,7 @@ void RDORTPResType::setupRuntimeFactory()
 	default:
 		NEVER_REACH_HERE;
 	}
-	rdo::runtime::LPRDOResourceTypeList type(m_pRuntimeResType);
-	ASSERT(type);
-	type->setFactoryMethod(create);
+	setFactoryMethod(create);
 }
 
 /*

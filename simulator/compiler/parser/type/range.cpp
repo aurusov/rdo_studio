@@ -34,7 +34,7 @@ void RDOTypeRangeRange::checkRange() const
 {
 	if (m_pMinValue->typeID() != m_pMaxValue->typeID())
 	{
-		parser::g_error().error(m_pMaxValue->src_info(), rdo::format("Границы диапазона должны быть одного типа, найдено: [%s] .. [%s]", m_pMinValue->typeInfo()->type()->name().c_str(), m_pMaxValue->typeInfo()->type()->name().c_str()));
+		parser::g_error().error(m_pMaxValue->src_info(), rdo::format("Границы диапазона должны быть одного типа, найдено: [%s] .. [%s]", m_pMinValue->typeInfo()->itype()->name().c_str(), m_pMaxValue->typeInfo()->itype()->name().c_str()));
 	}
 	if (m_pMinValue->value() > m_pMaxValue->value())
 	{

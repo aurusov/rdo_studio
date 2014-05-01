@@ -44,9 +44,9 @@ std::string RDOEnumType::name() const
 	return str;
 }
 
-LPRDOType RDOEnumType::type_cast(const LPRDOType& from, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
+LPIType RDOEnumType::type_cast(const LPIType& from, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
-	switch (from->type()->typeID())
+	switch (from.object_dynamic_cast<RDOType>()->typeID())
 	{
 		case rdo::runtime::RDOType__int::t_enum:
 		{
@@ -135,7 +135,7 @@ LPRDOValue RDOEnumType::value_cast(const LPRDOValue& pFrom, const RDOParserSrcIn
 			break;
 
 		case rdo::runtime::RDOType::t_enum:
-			if (pEnum == pFrom->typeInfo()->type()->type())
+			if (pEnum == pFrom->typeInfo()->itype())
 				pToValue = rdo::Factory<RDOValue>::create(pFrom);
 			break;
 
@@ -155,14 +155,14 @@ LPRDOValue RDOEnumType::value_cast(const LPRDOValue& pFrom, const RDOParserSrcIn
 	return pToValue;
 }
 
-rdo::runtime::LPRDOCalc RDOEnumType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
+rdo::runtime::LPRDOCalc RDOEnumType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& pType) const
 {
 	return pCalc;
 }
 
 rdo::runtime::RDOValue RDOEnumType::get_default() const
 {
-	return rdo::runtime::RDOValue(rdo::runtime::LPRDOEnumType(this), 0);
+	return rdo::runtime::RDOValue(rdo::runtime::LPRDOEnumType(const_cast<RDOEnumType*>(this)), 0);
 }
 
 void RDOEnumType::writeModelStructure(std::ostream& stream) const
@@ -182,7 +182,7 @@ void RDOEnumType::add(const LPRDOValue& pNext)
 	{
 		parser::g_error().error(pNext->src_info(), rdo::format("Значение перечислимого типа уже существует: %s", pNext->src_text().c_str()));
 	}
-	add(pNext->value().getAsString());
+	rdo::runtime::RDOEnumType::add(pNext->value().getAsString());
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

@@ -40,6 +40,8 @@ class RDORTPResType
 	: public RDOParserSrcInfo
 	, public boost::noncopyable
 	, public rdo::runtime::RDOResourceTypeList
+	, public IType
+	, public IModelStructure
 	, public Context
 	, public IContextFind
 	, public virtual rdo::counter_reference

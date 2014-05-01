@@ -79,7 +79,7 @@ rdo::intrusive_ptr<IType> TypeInfo::itype() const
 LPTypeInfo TypeInfo::type_cast(const LPTypeInfo& pFrom, const RDOParserSrcInfo& src_info) const
 {
 	/// @todo TypeInfo убрать параметр из src_info()
-	LPRDOType pType = type()->type_cast(pFrom->type(), pFrom->src_info(src_info), this->src_info(src_info), src_info);
+	LPIType pType = itype()->type_cast(pFrom->itype(), pFrom->src_info(src_info), this->src_info(src_info), src_info);
 	ASSERT(pType);
 	LPTypeInfo pTypeInfo = rdo::Factory<TypeInfo>::create(pType, this->src_info(src_info));
 	ASSERT(pTypeInfo);
@@ -88,7 +88,7 @@ LPTypeInfo TypeInfo::type_cast(const LPTypeInfo& pFrom, const RDOParserSrcInfo& 
 
 LPRDOValue TypeInfo::value_cast(const LPRDOValue& pValue) const
 {
-	return m_pType->value_cast(pValue, m_srcInfo.get(), pValue->src_info());
+	return itype()->value_cast(pValue, m_srcInfo.get(), pValue->src_info());
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
