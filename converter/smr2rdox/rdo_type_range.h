@@ -3,7 +3,7 @@
   \file      rdo_type_range.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      10.02.2010
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -72,6 +72,6 @@ DECLARE_POINTER(RDOTypeRealRange);
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-#include "converter/smr2rdox/rdo_type_range.inl"
+#include "converter/smr2rdox/rdo_type_range-inl.h"
 
 #endif // _CONVERTOR_RDO_TYPE_RANGE_H_

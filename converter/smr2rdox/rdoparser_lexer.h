@@ -67,6 +67,6 @@ CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 #define LEXER     reinterpret_cast<rdo::converter::smr2rdox::RDOLexer*>(lexer)
 #define LEXER_POS (*LEXER->m_lploc)
 
-#include "converter/smr2rdox/rdoparser_lexer.inl"
+#include "converter/smr2rdox/rdoparser_lexer-inl.h"
 
 #endif // _CONVERTOR_RDOCONVERTER_LEXER_H_

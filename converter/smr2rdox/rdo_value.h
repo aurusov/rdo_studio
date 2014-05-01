@@ -2,8 +2,8 @@
   \copyright (c) RDO-Team, 2011
   \file      rdo_value.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -60,6 +60,6 @@ private:
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-#include "converter/smr2rdox/rdo_value.inl"
+#include "converter/smr2rdox/rdo_value-inl.h"
 
 #endif // _CONVERTOR_RDOCONVERTER_VALUE_H_

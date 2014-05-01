@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdoparser_lexer.inl
+  \file      rdoparser_lexer-inl.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -52,7 +52,7 @@ inline void RDOLexer::loc_action()
 		{
 			switch (YYText()[i])
 			{
-			case '\n': 
+			case '\n':
 				m_lploc->m_last_line++;
 				m_lploc->m_last_pos = 0;
 				break;
