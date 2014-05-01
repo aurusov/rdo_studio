@@ -3,7 +3,7 @@
   \file      simulator/compiler/parser/rdo_value.inl
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      21.04.2010
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -44,7 +44,7 @@ inline void RDOValue::setPointer(const rdo::intrusive_ptr<T>& pObject)
 	);
 
 	new (&m_buffer) rdo::intrusive_ptr_interface_wrapper<T>(pObject);
-	m_value = rdo::runtime::RDOValue(m_pType->type()->type(), pObject->createRuntimeValue());
+	m_value = rdo::runtime::RDOValue(m_pType->type(), pObject->createRuntimeValue());
 }
 
 template <class T>

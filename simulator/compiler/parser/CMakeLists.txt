@@ -183,8 +183,6 @@ SET(RESORCES_PARAM_FILES
 )
 
 SET(TYPE_FILES
-	type/type.cpp
-	type/type.h
 	type/type_i.h
 )
 
@@ -196,33 +194,28 @@ SET(TYPE_FUNCTION_FILES
 SET(TYPE_INFO_FILES
 	type/info.cpp
 	type/info.h
-	type/info.inl
+	type/info-inl.h
 )
 
-SET(TYPE_RUNTIMEWRAPPER_FILES
-	type/runtime_wrapper_type.cpp
-	type/runtime_wrapper_type.h
-)
-
-SET(TYPE_RUNTIMEWRAPPER_ARRAY_FILES
+SET(TYPE_ARRAY_FILES
 	type/array.cpp
 	type/array.h
 )
 
-SET(TYPE_RUNTIMEWRAPPER_ATOM_FILES
+SET(TYPE_ATOM_FILES
 	type/atom.cpp
 	type/atom.h
 )
 
-SET(TYPE_RUNTIMEWRAPPER_ENUM_FILES
+SET(TYPE_ENUM_FILES
 	type/enum.cpp
 	type/enum.h
 )
 
-SET(TYPE_RUNTIMEWRAPPER_RANGE_FILES
+SET(TYPE_RANGE_FILES
 	type/range.cpp
 	type/range.h
-	type/range.inl
+	type/range-inl.h
 )
 
 SET(TYPE_SUCHAS_FILES
@@ -268,11 +261,10 @@ SET(SOURCE_FILES
 	${TYPE_FILES}
 	${TYPE_FUNCTION_FILES}
 	${TYPE_INFO_FILES}
-	${TYPE_RUNTIMEWRAPPER_FILES}
-	${TYPE_RUNTIMEWRAPPER_ARRAY_FILES}
-	${TYPE_RUNTIMEWRAPPER_ATOM_FILES}
-	${TYPE_RUNTIMEWRAPPER_ENUM_FILES}
-	${TYPE_RUNTIMEWRAPPER_RANGE_FILES}
+	${TYPE_ARRAY_FILES}
+	${TYPE_ATOM_FILES}
+	${TYPE_ENUM_FILES}
+	${TYPE_RANGE_FILES}
 	${TYPE_SUCHAS_FILES}
 	${VALUE_FILES}
 	${VALUE_ARRAY_FILES}
@@ -394,24 +386,20 @@ IF(MSVC_IDE) # options for windows #
 		${TYPE_INFO_FILES}
 	)
 
-	SOURCE_GROUP(".type\\.runtime_wrapper" FILES
-		${TYPE_RUNTIMEWRAPPER_FILES}
+	SOURCE_GROUP(".type\\.array" FILES
+		${TYPE_ARRAY_FILES}
 	)
 
-	SOURCE_GROUP(".type\\.runtime_wrapper\\.array" FILES
-		${TYPE_RUNTIMEWRAPPER_ARRAY_FILES}
+	SOURCE_GROUP(".type\\.atom" FILES
+		${TYPE_ATOM_FILES}
 	)
 
-	SOURCE_GROUP(".type\\.runtime_wrapper\\.atom" FILES
-		${TYPE_RUNTIMEWRAPPER_ATOM_FILES}
+	SOURCE_GROUP(".type\\.enum" FILES
+		${TYPE_ENUM_FILES}
 	)
 
-	SOURCE_GROUP(".type\\.runtime_wrapper\\.enum" FILES
-		${TYPE_RUNTIMEWRAPPER_ENUM_FILES}
-	)
-
-	SOURCE_GROUP(".type\\.runtime_wrapper\\.range" FILES
-		${TYPE_RUNTIMEWRAPPER_RANGE_FILES}
+	SOURCE_GROUP(".type\\.range" FILES
+		${TYPE_RANGE_FILES}
 	)
 
 	SOURCE_GROUP(".type\\.such_as" FILES

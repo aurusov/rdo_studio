@@ -17,7 +17,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_value.h"
-#include "simulator/compiler/parser/type/runtime_wrapper_type.h"
 #include "simulator/compiler/parser/type/enum.h"
 #include "simulator/compiler/parser/rdortp_param.h"
 #include "simulator/compiler/parser/context/context.h"
@@ -39,7 +38,9 @@ PREDECLARE_POINTER(RDORSSResource);
 class RDORTPResType
 	: public RDOParserSrcInfo
 	, public boost::noncopyable
-	, public RuntimeWrapperType
+	, public rdo::runtime::RDOResourceTypeList
+	, public IType
+	, public IModelStructure
 	, public Context
 	, public IContextFind
 	, public virtual rdo::counter_reference
@@ -70,8 +71,6 @@ public:
 	std::size_t getRTPParamNumber(const std::string& paramName) const;
 	const ParamList& getParams() const;
 
-	const rdo::runtime::LPIResourceType& getRuntimeResType() const;
-
 	void setSubtype(Subtype subtype);
 
 	void setupRuntimeFactory();
@@ -84,7 +83,6 @@ private:
 	RDORTPResType(const LPRDOParser& pParser, const RDOParserSrcInfo& src_info, bool permanent);
 	virtual ~RDORTPResType();
 
-	rdo::runtime::LPIResourceType m_pRuntimeResType;
 	const std::size_t m_number;
 	const bool m_permanent;
 	boost::optional<Subtype> m_subtype;

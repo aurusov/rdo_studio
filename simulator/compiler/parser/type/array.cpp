@@ -23,11 +23,11 @@ OPEN_RDO_PARSER_NAMESPACE
  //---------- RDOArrayType
  //----------------------------------------------------------------------------
 RDOArrayType::RDOArrayType(const LPTypeInfo& pItemType, const RDOParserSrcInfo& src_info)
-	: RuntimeWrapperType(rdo::Factory<rdo::runtime::RDOArrayType>::create(pItemType->type()->type()))
-	, RDOParserSrcInfo  (src_info )
-	, m_pItemType       (pItemType)
+	: rdo::runtime::RDOArrayType(pItemType->type())
+	, RDOParserSrcInfo(src_info)
+	, m_pItemType(pItemType) // TODO кажется лишним
 {
-	ASSERT(m_pType  );
+	ASSERT(m_pType);
 	ASSERT(pItemType);
 	setSrcText(name());
 }
@@ -37,10 +37,10 @@ RDOArrayType::~RDOArrayType()
 
 std::string RDOArrayType::name() const
 {
-	return rdo::format("array<%s>", m_pItemType->type()->name().c_str());
+	return rdo::format("array<%s>", m_pItemType->itype()->name().c_str());
 }
 
-LPRDOType RDOArrayType::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
+LPIType RDOArrayType::type_cast(const LPIType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	ASSERT(pFrom);
 
@@ -49,7 +49,7 @@ LPRDOType RDOArrayType::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo
 	{
 		LPRDOArrayType pThisArrayType(const_cast<RDOArrayType*>(this));
 
-		if (pThisArrayType->getItemType()->type()->type_cast(pFromArrayType->getItemType()->type(), pFromArrayType->src_info(), pThisArrayType->src_info(), pFromArrayType->src_info()))
+		if (pThisArrayType->getItemType()->itype()->type_cast(pFromArrayType->getItemType()->itype(), pFromArrayType->src_info(), pThisArrayType->src_info(), pFromArrayType->src_info()))
 		{
 			//! Это один и тот же тип
 			return pThisArrayType;
@@ -71,7 +71,7 @@ LPRDOValue RDOArrayType::value_cast(const LPRDOValue& pFrom, const RDOParserSrcI
 {
 	ASSERT(pFrom);
 
-	LPRDOArrayType pFromArrayType = pFrom->typeInfo()->type().object_dynamic_cast<RDOArrayType>();
+	LPRDOArrayType pFromArrayType = pFrom->typeInfo()->itype().object_dynamic_cast<RDOArrayType>();
 	if (pFromArrayType)
 	{
 		LPRDOArrayType  pThisArrayType(const_cast<RDOArrayType*>(this));
@@ -85,7 +85,7 @@ LPRDOValue RDOArrayType::value_cast(const LPRDOValue& pFrom, const RDOParserSrcI
 		{
 			LPRDOValue pItemValue = rdo::Factory<RDOValue>::create(it->getValue(), src_info, pThisArrayType->getItemType());
 			ASSERT(pItemValue);
-			pThisArrayValue->insertItem(pThisArrayType->getItemType()->type()->value_cast(pItemValue, to_src_info, src_info));
+			pThisArrayValue->insertItem(pThisArrayType->getItemType()->itype()->value_cast(pItemValue, to_src_info, src_info));
 		}
 		return rdo::Factory<RDOValue>::create(pThisArrayType->typeInfo(), pThisArrayValue, pFrom->src_info());
 	}
@@ -97,30 +97,26 @@ LPRDOValue RDOArrayType::value_cast(const LPRDOValue& pFrom, const RDOParserSrcI
 	return NULL;
 }
 
-rdo::runtime::LPRDOCalc RDOArrayType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& pType) const
+rdo::runtime::LPRDOCalc RDOArrayType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& pType) const
 {
-	return RuntimeWrapperType::calc_cast(pCalc, pType);
+	return pCalc;
 }
 
 rdo::runtime::RDOValue RDOArrayType::get_default() const
 {
-	return rdo::runtime::RDOValue(getRuntimeArrayType(), rdo::Factory<rdo::runtime::RDOArrayValue>::create(getRuntimeArrayType()));
+	const rdo::runtime::LPRDOArrayType pThis(const_cast<RDOArrayType*>(this));
+	return rdo::runtime::RDOValue(pThis, rdo::Factory<rdo::runtime::RDOArrayValue>::create(pThis));
 }
 
 void RDOArrayType::writeModelStructure(std::ostream& stream) const
 {
 	stream << "A ";
-	m_pItemType->type()->writeModelStructure(stream);
+	dynamic_cast<IModelStructure*>(m_pItemType->type().get())->writeModelStructure(stream);
 }
 
 const LPTypeInfo& RDOArrayType::getItemType() const
 {
 	return m_pItemType;
-}
-
-rdo::runtime::LPRDOArrayType RDOArrayType::getRuntimeArrayType() const
-{
-	return m_pType.object_static_cast<rdo::runtime::RDOArrayType>();
 }
 
 LPTypeInfo RDOArrayType::typeInfo() const

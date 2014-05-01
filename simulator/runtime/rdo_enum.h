@@ -43,7 +43,7 @@ public:
 	const CIterator end() const;
 	const Enums& getValues() const;
 
-private:
+protected:
 	RDOEnumType();
 	RDOEnumType(const Enums& enums);
 

@@ -151,8 +151,8 @@ public:
 	rdo::runtime::LPRDOCalc       calc       () const { return m_pExpression->calc();      }
 	rdo::runtime::RDOValue        const_value() const;
 
-	LPRDOEnumType                 enumType  () const { return typeInfo()->type().object_static_cast<RDOEnumType>(); }
-	rdo::runtime::RDOType::TypeID typeID    () const { return typeInfo()->type()->typeID();                         }
+	LPRDOEnumType                 enumType  () const { return typeInfo()->itype().object_static_cast<RDOEnumType>(); }
+	rdo::runtime::RDOType::TypeID typeID    () const { return typeInfo()->typeID(); }
 
 	virtual void setSrcInfo(const RDOParserSrcInfo& srcInfo );
 	virtual void setSrcPos (const RDOSrcInfo::Position& position);

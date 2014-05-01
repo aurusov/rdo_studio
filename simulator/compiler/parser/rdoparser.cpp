@@ -277,7 +277,7 @@ LPExpression contextUnknownEnum(const rdo::runtime::LPRDOEnumType& enumType, std
 	LPTypeInfo typeInfo = rdo::Factory<TypeInfo>::delegate<RDOType__identificator>(srcInfo);
 	return rdo::Factory<Expression>::create(
 		typeInfo,
-		rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(enumType->getValues()[index], typeInfo->type()->type())),
+		rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(enumType->getValues()[index], typeInfo->type())),
 		srcInfo
 	);
 }
@@ -359,13 +359,13 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 			ErrorBlockMonicker errorBlockMonicker;
 			for (const LPTypeInfo& type: m_preCastTypeList)
 			{
-				LPRDOEnumType enumType = type->type().object_dynamic_cast<RDOEnumType>();
+				LPRDOEnumType enumType = type->itype().object_dynamic_cast<RDOEnumType>();
 				ASSERT(enumType);
 
-				std::size_t index = enumType->getEnums()->findEnum(identifier);
+				std::size_t index = enumType->findEnum(identifier);
 				if (index != rdo::runtime::RDOEnumType::END)
 				{
-					return FindResult(CreateExpression(boost::bind(&contextUnknownEnum, enumType->getEnums(), index, srcInfo)));
+					return FindResult(CreateExpression(boost::bind(&contextUnknownEnum, enumType, index, srcInfo)));
 				}
 			}
 		}

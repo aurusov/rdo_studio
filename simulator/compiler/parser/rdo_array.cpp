@@ -33,8 +33,8 @@ void RDOArrayValue::insertItem(const LPRDOValue& pValue)
 {
 	ASSERT(pValue);
 
-	m_pArrayType->getItemType()->type()->type_cast(pValue->typeInfo()->type(), pValue->src_info(), m_pArrayType->src_info(), pValue->src_info());
-	LPRDOValue pItemValue = m_pArrayType->getItemType()->type()->value_cast(pValue, m_pArrayType->src_info(), pValue->src_info());
+	m_pArrayType->getItemType()->itype()->type_cast(pValue->typeInfo()->itype(), pValue->src_info(), m_pArrayType->src_info(), pValue->src_info());
+	LPRDOValue pItemValue = m_pArrayType->getItemType()->itype()->value_cast(pValue, m_pArrayType->src_info(), pValue->src_info());
 	ASSERT(pItemValue);
 	m_container.push_back(pItemValue);
 }
@@ -51,12 +51,13 @@ LPRDOArrayType& RDOArrayValue::getArrayType()
 
 rdo::runtime::RDOValue RDOArrayValue::getRArray() const
 {
-	return rdo::runtime::RDOValue(m_pArrayType->getRuntimeArrayType(), createRuntimeValue());
+	return rdo::runtime::RDOValue(m_pArrayType, createRuntimeValue());
 }
 
 rdo::runtime::LPRDOArrayValue RDOArrayValue::createRuntimeValue() const
 {
-	rdo::runtime::LPRDOArrayValue pArrayValue = rdo::Factory<rdo::runtime::RDOArrayValue>::create(m_pArrayType->getRuntimeArrayType());
+	rdo::runtime::LPRDOArrayValue pArrayValue = rdo::Factory<rdo::runtime::RDOArrayValue>::create(
+			m_pArrayType.object_dynamic_cast<rdo::runtime::RDOArrayType>());
 	ASSERT(pArrayValue);
 	for (const auto& item: m_container)
 	{
