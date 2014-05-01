@@ -17,7 +17,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_value.h"
-#include "simulator/compiler/parser/type/runtime_wrapper_type.h"
 #include "simulator/compiler/parser/type/enum.h"
 #include "simulator/compiler/parser/rdortp_param.h"
 #include "simulator/compiler/parser/context/context.h"

@@ -16,8 +16,6 @@
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/rdorss.h"
-#include "simulator/compiler/parser/type/type.h"
-
 #include "simulator/compiler/mbuilder/rdo_resources.h"
 
 #include "simulator/runtime/rdo_rule.h"

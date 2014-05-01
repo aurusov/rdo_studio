@@ -14,7 +14,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/smart_ptr/factory/factory.h"
 #include "simulator/runtime/rdo_enum.h"
-#include "simulator/compiler/parser/type/type.h"
 #include "simulator/compiler/parser/rdo_value.h"
 // --------------------------------------------------------------------------------
 

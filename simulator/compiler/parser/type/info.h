@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/optional.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/type/type.h"
+#include "simulator/compiler/parser/type/type_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -28,7 +28,7 @@ DECLARE_FACTORY(TypeInfo)
 public:
 	const rdo::runtime::LPRDOType& qqq() const;
 	rdo::runtime::RDOType::TypeID typeID() const;
-	rdo::intrusive_ptr<IType> itype() const;
+	LPIType itype() const;
 	RDOParserSrcInfo        src_info  () const;
 	const RDOParserSrcInfo& src_info  (const RDOParserSrcInfo& srcInfo) const;
 	LPTypeInfo              type_cast (const LPTypeInfo& pFrom, const RDOParserSrcInfo& src_info) const;
@@ -39,7 +39,6 @@ protected:
 	virtual ~TypeInfo();
 
 private:
-	//TypeInfo(const rdo::runtime::LPRDOType& pType, const RDOParserSrcInfo& srcInfo);
 	TypeInfo(const LPIType& pType, const RDOParserSrcInfo& srcInfo);
 
 	template <class T>

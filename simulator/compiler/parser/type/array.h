@@ -13,8 +13,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_array.h"
+#include "simulator/runtime/rdo_model_i.h"
 #include "simulator/compiler/parser/type/info.h"
-#include "simulator/compiler/parser/type/runtime_wrapper_type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
