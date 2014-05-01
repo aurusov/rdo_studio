@@ -29,10 +29,10 @@ public:
 	const rdo::runtime::LPRDOType& type() const;
 	rdo::runtime::RDOType::TypeID typeID() const;
 	LPIType itype() const;
-	RDOParserSrcInfo        src_info  () const;
-	const RDOParserSrcInfo& src_info  (const RDOParserSrcInfo& srcInfo) const;
-	LPTypeInfo              type_cast (const LPTypeInfo& pFrom, const RDOParserSrcInfo& src_info) const;
-	LPRDOValue              value_cast(const LPRDOValue& pValue) const;
+	RDOParserSrcInfo src_info() const;
+	const RDOParserSrcInfo& src_info(const RDOParserSrcInfo& srcInfo) const;
+	LPTypeInfo type_cast(const LPTypeInfo& pFrom, const RDOParserSrcInfo& src_info) const;
+	LPRDOValue value_cast(const LPRDOValue& pValue) const;
 
 protected:
 	TypeInfo(const LPTypeInfo& pTypeInfo);
