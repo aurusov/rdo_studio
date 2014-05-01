@@ -40,6 +40,19 @@ TypeInfo::TypeInfo(const LPIType& pType, const RDOParserSrcInfo& srcInfo)
 	init();
 }
 
+TypeInfo::~TypeInfo()
+{}
+
+RDOParserSrcInfo TypeInfo::src_info() const
+{
+	return m_srcInfo ? m_srcInfo.get() : RDOParserSrcInfo();
+}
+
+const RDOParserSrcInfo& TypeInfo::src_info(const RDOParserSrcInfo& srcInfo) const
+{
+	return m_srcInfo ? m_srcInfo.get() : srcInfo;
+}
+
 void TypeInfo::init()
 {
 	if (m_pType.object_dynamic_cast<RDOEnumType>())

@@ -28,17 +28,4 @@ inline LPTypeInfo TypeInfo::create(const RDOParserSrcInfo& srcInfo)
 	return pTypeInfo;
 }
 
-inline TypeInfo::~TypeInfo()
-{}
-
-inline RDOParserSrcInfo TypeInfo::src_info() const
-{
-	return m_srcInfo ? m_srcInfo.get() : RDOParserSrcInfo();
-}
-
-inline const RDOParserSrcInfo& TypeInfo::src_info(const RDOParserSrcInfo& srcInfo) const
-{
-	return m_srcInfo ? m_srcInfo.get() : srcInfo;
-}
-
 CLOSE_RDO_PARSER_NAMESPACE
