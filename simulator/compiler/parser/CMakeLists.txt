@@ -51,7 +51,7 @@ SET(ANIMATION_FILES
 
 SET(COMMON_FILES
 	bison_value_pair.h
-	bison_value_pair.inl
+	bison_value_pair-inl.h
 	namespace.h
 	rdo_object.cpp
 	rdo_object.h
@@ -60,7 +60,7 @@ SET(COMMON_FILES
 SET(CONTEXT_FILES
 	context/context.cpp
 	context/context.h
-	context/context.inl
+	context/context-inl.h
 	context/context_find.cpp
 	context/context_find_i.h
 	context/context_type.cpp
@@ -83,7 +83,7 @@ SET(CONTEXT_FUNCTION_FILES
 SET(DPT_FILES
 	rdo_logic.cpp
 	rdo_logic.h
-	rdo_logic.inl
+	rdo_logic-inl.h
 	rdo_logic_base.h
 	rdo_logic_base.cpp
 	rdodpt.cpp
@@ -150,7 +150,7 @@ SET(PARSER_ERROR_FILES
 SET(PARSER_LEXER_FILES
 	rdoparser_lexer.cpp
 	rdoparser_lexer.h
-	rdoparser_lexer.inl
+	rdoparser_lexer-inl.h
 )
 
 SET(PATTERN_FILES
@@ -226,7 +226,7 @@ SET(TYPE_SUCHAS_FILES
 SET(VALUE_FILES
 	rdo_value.cpp
 	rdo_value.h
-	rdo_value.inl
+	rdo_value-inl.h
 )
 
 SET(VALUE_ARRAY_FILES

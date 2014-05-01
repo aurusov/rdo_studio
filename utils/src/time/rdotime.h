@@ -43,6 +43,6 @@ private:
 
 } // namespace rdo
 
-#include "utils/src/time/rdotime.inl"
+#include "utils/src/time/rdotime-inl.h"
 
 #endif // _UTILS_RDOTIME_H_

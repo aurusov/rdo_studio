@@ -33,6 +33,6 @@ private:
 
 } // namespace rdo
 
-#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr_interface_wrapper.inl"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr_interface_wrapper-inl.h"
 
 #endif // _UTILS_SMART_PTR_INTRUSIVE_PTR_INTERFACE_WRAPPER_H_

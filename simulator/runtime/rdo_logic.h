@@ -121,6 +121,6 @@ protected:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdo_logic.inl"
+#include "simulator/runtime/rdo_logic-inl.h"
 
 #endif // _LIB_RUNTIME_LOGIC_H_

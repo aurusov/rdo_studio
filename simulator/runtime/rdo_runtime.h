@@ -296,6 +296,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdo_runtime.inl"
+#include "simulator/runtime/rdo_runtime-inl.h"
 
 #endif // _LIB_RUNTIME_RUNTIME_H_

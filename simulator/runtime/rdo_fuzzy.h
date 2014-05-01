@@ -184,6 +184,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdo_fuzzy.inl"
+#include "simulator/runtime/rdo_fuzzy-inl.h"
 
 #endif // _LIB_RUNTIME_FUZZY_H_

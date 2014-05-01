@@ -191,6 +191,6 @@ DECLARE_POINTER(RDOPatternKeyboard);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdo_pattern.inl"
+#include "simulator/runtime/rdo_pattern-inl.h"
 
 #endif // _LIB_RUNTIME_PATTERN_H_

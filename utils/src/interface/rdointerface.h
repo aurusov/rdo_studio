@@ -291,6 +291,6 @@ public:
 
 INTERFACE_REGISTRATOR(IInit, 0);
 
-#include "utils/src/interface/rdointerface.inl"
+#include "utils/src/interface/rdointerface-inl.h"
 
 #endif // _UTILS_RDOINTERFACE_H_

@@ -14,7 +14,7 @@ SET(CALC_FILES
 	calc/calc_array.h
 	calc/calc_base.cpp
 	calc/calc_base.h
-	calc/calc_base.inl
+	calc/calc_base-inl.h
 	calc/calc_event.cpp
 	calc/calc_event.h
 	calc/calc_pattern.cpp
@@ -23,7 +23,7 @@ SET(CALC_FILES
 	calc/calc_process.cpp
 	calc/calc_sequence.cpp
 	calc/calc_sequence.h
-	calc/calc_sequence.inl
+	calc/calc_sequence-inl.h
 	calc/calc_watch.cpp
 	calc/calc_watch.h
 )
@@ -33,7 +33,7 @@ SET(CALC_FUNCTION_FILES
 	calc/function/calc_function.h
 	calc/function/calc_function_internal.cpp
 	calc/function/calc_function_internal.h
-	calc/function/calc_function_internal.inl
+	calc/function/calc_function_internal-inl.h
 	calc/function/calc_function_system.cpp
 	calc/function/calc_function_system.h
 )
@@ -41,19 +41,19 @@ SET(CALC_FUNCTION_FILES
 SET(CALC_OPERATION_FILES
 	calc/operation/calc_arithm.cpp
 	calc/operation/calc_arithm.h
-	calc/operation/calc_arithm.inl
+	calc/operation/calc_arithm-inl.h
 	calc/operation/calc_binary.h
-	calc/operation/calc_binary.inl
+	calc/operation/calc_binary-inl.h
 	calc/operation/calc_logic.cpp
 	calc/operation/calc_logic.h
-	calc/operation/calc_logic.inl
+	calc/operation/calc_logic-inl.h
 	calc/operation/calc_unary.cpp
 	calc/operation/calc_unary.h
-	calc/operation/calc_unary.inl
+	calc/operation/calc_unary-inl.h
 	calc/operation/operation_name.h
-	calc/operation/operation_name.inl
+	calc/operation/operation_name-inl.h
 	calc/operation/operation_type.h
-	calc/operation/operation_type.inl
+	calc/operation/operation_type-inl.h
 )
 
 SET(CALC_PROCEDURAL_FILES
@@ -82,7 +82,7 @@ SET(CALC_RESOURCE_FILES
 	calc/resource/calc_relevant.h
 	calc/resource/calc_resource.cpp
 	calc/resource/calc_resource.h
-	calc/resource/calc_resource.inl
+	calc/resource/calc_resource-inl.h
 	calc/resource/calc_select.cpp
 	calc/resource/calc_select.h
 )
@@ -97,7 +97,7 @@ SET(COMMON_FILES
 SET(FRAME_FILES
 	rdoframe.cpp
 	rdoframe.h
-	rdoframe.inl
+	rdoframe-inl.h
 )
 
 SET(FUN_FILES
@@ -127,24 +127,24 @@ SET(RESULT_FILES
 SET(SIMULATOR_FILES
 	keyboard.h
 	rdo_exception.h
-	rdo_exception.inl
+	rdo_exception-inl.h
 	rdo_memory.cpp
 	rdo_memory.h
 	rdo_object.cpp
 	rdo_object.h
-	rdo_object.inl
+	rdo_object-inl.h
 	rdo_runtime.cpp
 	rdo_runtime.h
-	rdo_runtime.inl
+	rdo_runtime-inl.h
 	rdo_simulator.cpp
 	rdo_simulator.h
-	rdo_simulator.inl
+	rdo_simulator-inl.h
 	rdobase.cpp
 	rdobase.h
-	rdobase.inl
+	rdobase-inl.h
 	simtrace.cpp
 	simtrace.h
-	simtrace.inl
+	simtrace-inl.h
 	thread_proxy_i.h
 )
 
@@ -175,20 +175,20 @@ SET(SIMULATOR_DB_FILES
 SET(SIMULATOR_KB_LOGIC_BASE_FILES
 	rdo_logic.cpp
 	rdo_logic.h
-	rdo_logic.inl
+	rdo_logic-inl.h
 	rdo_logic_i.h
 )
 
 SET(SIMULATOR_KB_LOGIC_DPTSOME_FILES
 	rdo_logic_dptsome.cpp
 	rdo_logic_dptsome.h
-	rdo_logic_dptsome.inl
+	rdo_logic_dptsome-inl.h
 )
 
 SET(SIMULATOR_KB_LOGIC_DPTPRIOR_FILES
 	rdo_logic_dptprior.cpp
 	rdo_logic_dptprior.h
-	rdo_logic_dptprior.inl
+	rdo_logic_dptprior-inl.h
 )
 
 SET(SIMULATOR_KB_LOGIC_DPTSEARCH_FILES
@@ -196,39 +196,39 @@ SET(SIMULATOR_KB_LOGIC_DPTSEARCH_FILES
 	rdo_logic_dptsearch.h
 	rdo_logic_dptsearch_i.h
 	rdodptrtime.h
-	rdodptrtime.inl
+	rdodptrtime-inl.h
 	searchtrace.cpp
 	searchtrace.h
-	searchtrace.inl
+	searchtrace-inl.h
 	searchtrace_i.h
 	searchtree.cpp
 	searchtree.h
-	searchtree.inl
+	searchtree-inl.h
 )
 
 SET(SIMULATOR_KB_LOGIC_PROCESS_FILES
 	process/advance.cpp
 	process/advance.h
-	process/advance.inl
+	process/advance-inl.h
 	process/assign.cpp
 	process/assign.h
-	process/assign.inl
+	process/assign-inl.h
 	process/generate.cpp
 	process/generate.h
-	process/generate.inl
+	process/generate-inl.h
 	process/queue_depart.cpp
 	process/queue_depart.h
-	process/queue_depart.inl
+	process/queue_depart-inl.h
 	process/rdoprocess.cpp
 	process/rdoprocess.h
-	process/rdoprocess.inl
+	process/rdoprocess-inl.h
 	process/rdoprocess_i.h
 	process/seize_release.cpp
 	process/seize_release.h
-	process/seize_release.inl
+	process/seize_release-inl.h
 	process/terminate.cpp
 	process/terminate.h
-	process/terminate.inl
+	process/terminate-inl.h
 )
 
 SET(SIMULATOR_KB_OPERATIONS_BASE_FILES
@@ -236,14 +236,14 @@ SET(SIMULATOR_KB_OPERATIONS_BASE_FILES
 	rdo.h
 	rdo_activity.cpp
 	rdo_activity.h
-	rdo_activity.inl
+	rdo_activity-inl.h
 	rdo_activity_i.h
 	rdo_param_i.h
 	rdo_pattern.cpp
 	rdo_pattern.h
-	rdo_pattern.inl
+	rdo_pattern-inl.h
 	rdo_priority.h
-	rdo_priority.inl
+	rdo_priority-inl.h
 	rdo_priority_i.h
 )
 
@@ -280,14 +280,14 @@ SET(SIMULATOR_KB_OPERATIONS_DPTSEARCH_ACTIVITY_FILES
 SET(TRACE_FILES
 	rdotrace.cpp
 	rdotrace.h
-	rdotrace.inl
+	rdotrace-inl.h
 	rdotrace_i.h
 )
 
 SET(TYPE_FILES
 	rdo_type.cpp
 	rdo_type.h
-	rdo_type.inl
+	rdo_type-inl.h
 )
 
 SET(TYPE_ARRAY_FILES
@@ -297,13 +297,13 @@ SET(TYPE_ARRAY_FILES
 
 SET(TYPE_ENUM_FILES
 	rdo_enum.h
-	rdo_enum.inl
+	rdo_enum-inl.h
 )
 
 SET(TYPE_FUZZY_FILES
 	rdo_fuzzy.cpp
 	rdo_fuzzy.h
-	rdo_fuzzy.inl
+	rdo_fuzzy-inl.h
 )
 
 SET(TYPE_MATRIX_FILES
@@ -314,7 +314,7 @@ SET(TYPE_MATRIX_FILES
 SET(VALUE_FILES
 	rdo_value.cpp
 	rdo_value.h
-	rdo_value.inl
+	rdo_value-inl.h
 )
 
 SET(SOURCE_FILES

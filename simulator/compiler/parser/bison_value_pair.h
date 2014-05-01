@@ -44,6 +44,6 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#include "simulator/compiler/parser/bison_value_pair.inl"
+#include "simulator/compiler/parser/bison_value_pair-inl.h"
 
 #endif // _SIMULATOR_COMPILER_PARSER_BISON_VALUE_PAIR_H_

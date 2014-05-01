@@ -112,6 +112,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/simtrace.inl"
+#include "simulator/runtime/simtrace-inl.h"
 
 #endif // _LIB_RUNTIME_SIM_TRACE_H_

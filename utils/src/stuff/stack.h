@@ -38,6 +38,6 @@ private:
 
 } // namespace rdo
 
-#include "utils/src/stuff/stack.inl"
+#include "utils/src/stuff/stack-inl.h"
 
 #endif // _RDO_COMMON_STACK_H_

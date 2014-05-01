@@ -107,6 +107,6 @@ public:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/searchtrace.inl"
+#include "simulator/runtime/searchtrace-inl.h"
 
 #endif // _LIB_RUNTIME_SEARCH_TRACE_H_

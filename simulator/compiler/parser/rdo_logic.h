@@ -47,6 +47,6 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#include "simulator/compiler/parser/rdo_logic.inl"
+#include "simulator/compiler/parser/rdo_logic-inl.h"
 
 #endif // _RDOPARSER_LOGIC_H_

@@ -110,6 +110,6 @@ protected:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/searchtree.inl"
+#include "simulator/runtime/searchtree-inl.h"
 
 #endif // _LIB_RUNTIME_SEARCH_TREE_H_

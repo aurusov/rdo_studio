@@ -31,6 +31,6 @@ private:
 
 } // namespace rdo
 
-#include "utils/src/smart_ptr/ref_counter/counter_reference.inl"
+#include "utils/src/smart_ptr/ref_counter/counter_reference-inl.h"
 
 #endif // _UTILS_SMART_PTR_COUNTER_REFERENCE_H_

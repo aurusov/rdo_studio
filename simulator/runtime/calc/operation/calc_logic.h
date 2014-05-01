@@ -108,6 +108,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/operation/calc_logic.inl"
+#include "simulator/runtime/calc/operation/calc_logic-inl.h"
 
 #endif // _LIB_RUNTIME_CALC_OPERATION_LOGIC_H_

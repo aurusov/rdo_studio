@@ -74,7 +74,7 @@ SET(CONVERTER_ERROR_FILES
 
 SET(CONVERTER_LEXER_FILES
 	rdoparser_lexer.cpp
-	rdoparser_lexer.inl
+	rdoparser_lexer-inl.h
 	rdoparser_lexer.h
 )
 
@@ -177,7 +177,7 @@ SET(RUNTIME_FILES
 	runtime/rdo_ie.h
 	runtime/rdo_logic_dptfree.cpp
 	runtime/rdo_logic_dptfree.h
-	runtime/rdo_logic_dptfree.inl
+	runtime/rdo_logic_dptfree-inl.h
 )
 
 SET(TYPE_FILES
@@ -192,7 +192,7 @@ SET(TYPE_ENUM_FILES
 
 SET(TYPE_RANGE_FILES
 	rdo_type_range.h
-	rdo_type_range.inl
+	rdo_type_range-inl.h
 )
 
 SET(UPDATE_FILES
@@ -208,7 +208,7 @@ SET(UPDATE_FILES
 SET(VALUE_FILES
 	rdo_value.cpp
 	rdo_value.h
-	rdo_value.inl
+	rdo_value-inl.h
 )
 
 SET(VALUE_ARRAY_FILES

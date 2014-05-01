@@ -391,6 +391,6 @@ struct Frame
 
 }} // namespace rdo::animation
 
-#include "utils/src/animation/rdoanimation.inl"
+#include "utils/src/animation/rdoanimation-inl.h"
 
 #endif // _UTILS_RDOANIMATION_H_

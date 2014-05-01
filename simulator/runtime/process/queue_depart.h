@@ -104,6 +104,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/process/queue_depart.inl"
+#include "simulator/runtime/process/queue_depart-inl.h"
 
 #endif // _LIB_RUNTIME_PROCESS_QUEUE_DEPART_H_

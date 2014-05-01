@@ -53,6 +53,6 @@ DECLARE_POINTER(RDOEnumType);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdo_enum.inl"
+#include "simulator/runtime/rdo_enum-inl.h"
 
 #endif // _LIB_RUNTIME_ENUM_H_

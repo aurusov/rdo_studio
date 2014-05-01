@@ -37,6 +37,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdo_logic_dptsome.inl"
+#include "simulator/runtime/rdo_logic_dptsome-inl.h"
 
 #endif // _LIB_RUNTIME_LOGIC_DPTSOME_H_

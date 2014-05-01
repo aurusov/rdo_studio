@@ -79,6 +79,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdo_activity.inl"
+#include "simulator/runtime/rdo_activity-inl.h"
 
 #endif // _LIB_RUNTIME_ACTIVITY_H_

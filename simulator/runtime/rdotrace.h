@@ -160,6 +160,6 @@ protected:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdotrace.inl"
+#include "simulator/runtime/rdotrace-inl.h"
 
 #endif // _LIB_RUNTIME_TRACE_H_
