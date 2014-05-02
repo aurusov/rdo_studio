@@ -27,7 +27,6 @@ RDOArrayType::RDOArrayType(const LPTypeInfo& pItemType, const RDOParserSrcInfo& 
 	, RDOParserSrcInfo(src_info)
 	, m_pItemType(pItemType) // TODO кажется лишним
 {
-	ASSERT(m_pType);
 	ASSERT(pItemType);
 	setSrcText(name());
 }
