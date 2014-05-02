@@ -40,6 +40,20 @@ void RDOPROCBlockForQueue::_onStart(const LPRDORuntime& pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCQueue
 // --------------------------------------------------------------------------------
+RDOPROCQueue::RDOPROCQueue(LPIPROCProcess process, parser_for_Queue From_Par)
+	: RDOPROCBlockForQueue(process, From_Par)
+{}
+
+std::size_t RDOPROCQueue::getDefaultValue()
+{
+	return 0;
+}
+
+std::string RDOPROCQueue::getQueueParamName()
+{
+	return "длина_очереди";
+}
+
 void RDOPROCQueue::onStart(const LPRDORuntime& pRuntime)
 {
 	_onStart(pRuntime);
@@ -77,6 +91,20 @@ IBaseOperation::BOResult RDOPROCQueue::onContinue(const LPRDORuntime& /*pRuntime
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCDepart
 // --------------------------------------------------------------------------------
+RDOPROCDepart::RDOPROCDepart(LPIPROCProcess process, parser_for_Queue From_Par)
+	: RDOPROCBlockForQueue(process, From_Par)
+{}
+
+std::size_t RDOPROCDepart::getDefaultValue()
+{
+	return 0;
+}
+
+std::string RDOPROCDepart::getDepartParamName()
+{
+	return "длина_очереди";
+}
+
 void RDOPROCDepart::onStart(const LPRDORuntime& pRuntime)
 {
 	_onStart(pRuntime);

@@ -128,6 +128,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/process/rdoprocess-inl.h"
-
 #endif // _LIB_RUNTIME_PROCESS_H_

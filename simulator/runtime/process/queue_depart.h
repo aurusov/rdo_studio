@@ -29,7 +29,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 */
 struct runtime_for_Queue
 {
-	LPRDOResource rss; 
+	LPRDOResource rss;
 	int           Id_param;
 	RDOValue      defaultValue;
 };
@@ -103,7 +103,5 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/process/queue_depart-inl.h"
 
 #endif // _LIB_RUNTIME_PROCESS_QUEUE_DEPART_H_

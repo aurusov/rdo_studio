@@ -18,14 +18,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcBinaryBase
 // --------------------------------------------------------------------------------
-inline RDOCalcBinaryBase::RDOCalcBinaryBase(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
-	: m_pLeft (pLeft )
-	, m_pRight(pRight)
-{
-	ASSERT(m_pLeft );
-	ASSERT(m_pRight);
-}
-
 template <class T>
 inline LPRDOCalc RDOCalcBinaryBase::generateCalc(const LPRDOCalc& pFirst, const LPRDOCalc& pSecond)
 {

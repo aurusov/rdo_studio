@@ -22,6 +22,15 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCGenerate
 // --------------------------------------------------------------------------------
+RDOPROCGenerate::RDOPROCGenerate(LPIPROCProcess process, const LPRDOCalc& pTime, const LPRDOCalc& pCreateAndGoOnTransactCalc, boost::optional<std::size_t> maxCreateTransactCount)
+	: RDOPROCBlock                (process                   )
+	, timeNext                    (0.0                       )
+	, m_pTimeCalc                 (pTime                     )
+	, m_pCreateAndGoOnTransactCalc(pCreateAndGoOnTransactCalc)
+	, m_maxCreateTransactCount    (maxCreateTransactCount    )
+	, m_createdTransactCount      (0                         )
+{}
+
 void RDOPROCGenerate::onStart(const LPRDORuntime& pRuntime)
 {
 	calcNextTimeInterval(pRuntime);

@@ -66,6 +66,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/process/advance-inl.h"
-
 #endif // _LIB_RUNTIME_PROCESS_ADVANCE_H_

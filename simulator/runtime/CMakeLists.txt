@@ -14,7 +14,6 @@ SET(CALC_FILES
 	calc/calc_array.h
 	calc/calc_base.cpp
 	calc/calc_base.h
-	calc/calc_base-inl.h
 	calc/calc_event.cpp
 	calc/calc_event.h
 	calc/calc_pattern.cpp
@@ -41,12 +40,11 @@ SET(CALC_FUNCTION_FILES
 SET(CALC_OPERATION_FILES
 	calc/operation/calc_arithm.cpp
 	calc/operation/calc_arithm.h
-	calc/operation/calc_arithm-inl.h
+	calc/operation/calc_binary.cpp
 	calc/operation/calc_binary.h
 	calc/operation/calc_binary-inl.h
 	calc/operation/calc_logic.cpp
 	calc/operation/calc_logic.h
-	calc/operation/calc_logic-inl.h
 	calc/operation/calc_unary.cpp
 	calc/operation/calc_unary.h
 	calc/operation/calc_unary-inl.h
@@ -200,26 +198,19 @@ SET(SIMULATOR_KB_LOGIC_DPTSEARCH_FILES
 SET(SIMULATOR_KB_LOGIC_PROCESS_FILES
 	process/advance.cpp
 	process/advance.h
-	process/advance-inl.h
 	process/assign.cpp
 	process/assign.h
-	process/assign-inl.h
 	process/generate.cpp
 	process/generate.h
-	process/generate-inl.h
 	process/queue_depart.cpp
 	process/queue_depart.h
-	process/queue_depart-inl.h
 	process/rdoprocess.cpp
 	process/rdoprocess.h
-	process/rdoprocess-inl.h
 	process/rdoprocess_i.h
 	process/seize_release.cpp
 	process/seize_release.h
-	process/seize_release-inl.h
 	process/terminate.cpp
 	process/terminate.h
-	process/terminate-inl.h
 )
 
 SET(SIMULATOR_KB_OPERATIONS_BASE_FILES

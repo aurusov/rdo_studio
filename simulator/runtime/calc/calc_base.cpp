@@ -79,6 +79,11 @@ RDOValue RDOCalc::calcValue(const LPRDORuntime& pRuntime)
 	return RDOValue();
 }
 
+bool RDOCalc::compare(const LPRDOCalc& /*pCalc*/) const
+{
+	return false;
+}
+
 const RDOSrcInfo& RDOCalc::srcInfo() const
 {
 	return m_srcInfo;

@@ -49,9 +49,31 @@ void RDOPROCBlockForSeize::_onStart(const LPRDORuntime& pRuntime)
 	}
 }
 
+std::string RDOPROCBlockForSeize::getStateParamName()
+{
+	return "Состояние";
+}
+
+std::string RDOPROCBlockForSeize::getStateEnumFree()
+{
+	return "Свободен";
+}
+
+std::string RDOPROCBlockForSeize::getStateEnumBuzy()
+{
+	return "Занят";
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCSeize
 // --------------------------------------------------------------------------------
+RDOPROCSeize::RDOPROCSeize(LPIPROCProcess process, std::vector<parser_for_Seize> From_Par)
+	: RDOPROCBlockForSeize(process, From_Par)
+{
+	static std::size_t g_index = 1;
+	index = g_index++;
+}
+
 void RDOPROCSeize::onStart(const LPRDORuntime& pRuntime)
 {
 	_onStart(pRuntime);
@@ -123,6 +145,13 @@ IBaseOperation::BOResult RDOPROCSeize::onContinue(const LPRDORuntime& /*pRuntime
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCRelease
 // --------------------------------------------------------------------------------
+RDOPROCRelease::RDOPROCRelease(LPIPROCProcess process, std::vector<parser_for_Seize> From_Par)
+	: RDOPROCBlockForSeize(process, From_Par)
+{
+	static std::size_t g_index = 1;
+	index = g_index++;
+}
+
 void RDOPROCRelease::onStart(const LPRDORuntime& pRuntime)
 {
 	_onStart(pRuntime);

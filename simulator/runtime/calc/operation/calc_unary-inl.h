@@ -19,12 +19,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcUnaryBase
 // --------------------------------------------------------------------------------
-inline RDOCalcUnaryBase::RDOCalcUnaryBase(const LPRDOCalc& pOperation)
-	: m_pOperation(pOperation)
-{
-	ASSERT(m_pOperation);
-}
-
 template <class T>
 LPRDOCalc RDOCalcUnaryBase::generateCalc(const RDOSrcInfo::Position& position, const LPRDOCalc& pUnaryCalc)
 {
@@ -77,25 +71,5 @@ inline RDOValue RDOCalcUnary<ret_type, pOperator, CalcType>::doCalc(const LPRDOR
 	++OperatorType::getCalcCounter<CalcType>();
 	return (m_pOperation->calcValue(pRuntime).*pOperator)();
 }
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOCalcDoubleToIntByResult
-// --------------------------------------------------------------------------------
-inline void RDOCalcDoubleToIntByResult::needRound()
-{
-	m_round = true;
-}
-
-inline RDOCalcDoubleToIntByResult::RDOCalcDoubleToIntByResult(const LPRDOCalc& pOper)
-	: m_round     (false)
-	, m_pOperation(pOper)
-{}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOCalcInt
-// --------------------------------------------------------------------------------
-inline RDOCalcInt::RDOCalcInt(const LPRDOCalc& pOperation)
-	: m_pOperation(pOperation)
-{}
 
 CLOSE_RDO_RUNTIME_NAMESPACE
