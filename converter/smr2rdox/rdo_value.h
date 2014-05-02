@@ -60,6 +60,4 @@ private:
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-#include "converter/smr2rdox/rdo_value-inl.h"
-
 #endif // _CONVERTOR_RDOCONVERTER_VALUE_H_

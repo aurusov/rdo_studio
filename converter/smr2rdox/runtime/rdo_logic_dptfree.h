@@ -37,6 +37,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "converter/smr2rdox/runtime/rdo_logic_dptfree-inl.h"
-
 #endif // _LIB_RUNTIME_LOGIC_DPTFREE_H_
