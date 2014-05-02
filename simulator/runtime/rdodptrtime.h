@@ -44,6 +44,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdodptrtime-inl.h"
-
 #endif // _LIB_RUNTIME_DPTRTIME_H_

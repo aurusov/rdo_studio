@@ -30,22 +30,6 @@ inline RDOValue::RDOValue(const LPRDOType& pType, const rdo::intrusive_ptr<T>& p
 	setUndefined(false);
 }
 
-inline const LPRDOType& RDOValue::type() const
-{
-	return m_pType;
-}
-
-inline RDOType::TypeID RDOValue::typeID() const
-{
-	return m_pType->typeID();
-}
-
-inline std::ostream& operator<< (std::ostream& stream, const RDOValue& rdovalue)
-{
-	stream << rdovalue.getAsStringForTrace();
-	return stream;
-}
-
 template <class T>
 inline rdo::intrusive_ptr<T>& RDOValue::getPointer()
 {

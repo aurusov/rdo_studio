@@ -195,8 +195,8 @@ SET(SIMULATOR_KB_LOGIC_DPTSEARCH_FILES
 	rdo_logic_dptsearch.cpp
 	rdo_logic_dptsearch.h
 	rdo_logic_dptsearch_i.h
+	rdodptrtime.cpp
 	rdodptrtime.h
-	rdodptrtime-inl.h
 	searchtrace.cpp
 	searchtrace.h
 	searchtrace-inl.h
@@ -242,8 +242,8 @@ SET(SIMULATOR_KB_OPERATIONS_BASE_FILES
 	rdo_pattern.cpp
 	rdo_pattern.h
 	rdo_pattern-inl.h
+	rdo_priority.cpp
 	rdo_priority.h
-	rdo_priority-inl.h
 	rdo_priority_i.h
 )
 

@@ -19,6 +19,7 @@
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/process/rdoprocess_i.h"
 #include "simulator/runtime/rdo_logic.h"
+#include "simulator/runtime/rdo_priority.h"
 #include "simulator/runtime/rdo_res_type.h"
 // --------------------------------------------------------------------------------
 

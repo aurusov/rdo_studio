@@ -57,6 +57,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdo_priority-inl.h"
-
 #endif // _LIB_RUNTIME_PRIORITY_H_

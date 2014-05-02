@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdo_priority-inl.h
+  \file      rdo_priority.cpp
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      03.10.2009
@@ -10,7 +10,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/namespace.h"
+#include "simulator/runtime/rdo_priority.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -18,18 +18,18 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternPrior
 // --------------------------------------------------------------------------------
-inline RDOPatternPrior::RDOPatternPrior()
+RDOPatternPrior::RDOPatternPrior()
 {}
 
-inline RDOPatternPrior::~RDOPatternPrior()
+RDOPatternPrior::~RDOPatternPrior()
 {}
 
-inline LPRDOCalc RDOPatternPrior::getPrior()
+LPRDOCalc RDOPatternPrior::getPrior()
 {
 	return m_pPrior;
 }
 
-inline bool RDOPatternPrior::setPrior(const LPRDOCalc& pPrior)
+bool RDOPatternPrior::setPrior(const LPRDOCalc& pPrior)
 {
 	m_pPrior = pPrior;
 	return true;
@@ -38,11 +38,11 @@ inline bool RDOPatternPrior::setPrior(const LPRDOCalc& pPrior)
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTActivityCompare
 // --------------------------------------------------------------------------------
-inline RDODPTActivityCompare::RDODPTActivityCompare(const LPRDORuntime& pRuntime)
+RDODPTActivityCompare::RDODPTActivityCompare(const LPRDORuntime& pRuntime)
 	: m_pRuntime(pRuntime)
 {}
 
-inline bool RDODPTActivityCompare::operator()(const LPIBaseOperation& pOpr1, const LPIBaseOperation& pOpr2)
+bool RDODPTActivityCompare::operator()(const LPIBaseOperation& pOpr1, const LPIBaseOperation& pOpr2)
 {
 	LPIPriority pPattern1 = pOpr1;
 	LPIPriority pPattern2 = pOpr2;

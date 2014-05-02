@@ -182,6 +182,22 @@ void RDOValue::deleteValue()
 	}
 }
 
+const LPRDOType& RDOValue::type() const
+{
+	return m_pType;
+}
+
+RDOType::TypeID RDOValue::typeID() const
+{
+	return m_pType->typeID();
+}
+
+std::ostream& operator<< (std::ostream& stream, const RDOValue& rdovalue)
+{
+	stream << rdovalue.getAsStringForTrace();
+	return stream;
+}
+
 int RDOValue::getInt() const
 {
 	if (isUndefined())
