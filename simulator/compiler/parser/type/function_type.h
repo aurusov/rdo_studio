@@ -71,7 +71,7 @@ private:
 	LPTypeInfo           m_pReturnType;
 	LPFunctionParamType  m_pParamType;
 
-	virtual const rdo::runtime::LPRDOType& type() const;
+	virtual rdo::runtime::LPRDOType type() const;
 	virtual rdo::runtime::RDOType::TypeID typeID() const;
 
 	DECLARE_IType;

@@ -128,7 +128,7 @@ FunctionType::FunctionType(const LPTypeInfo& pReturnType, const LPFunctionParamT
 FunctionType::~FunctionType()
 {}
 
-const rdo::runtime::LPRDOType& FunctionType::type() const
+rdo::runtime::LPRDOType FunctionType::type() const
 {
 	return m_pReturnType->type();
 }
