@@ -39,6 +39,28 @@ RDOSimulator::RDOSimulator()
 RDOSimulator::~RDOSimulator()
 {}
 
+LPIBaseOperation RDOSimulator::getMustContinueOpr() const
+{
+	return m_pOprMustContinue;
+}
+
+void RDOSimulator::setMustContinueOpr(const LPIBaseOperation& pOperation)
+{
+	m_pOprMustContinue = pOperation;
+}
+
+std::size_t RDOSimulator::getSizeofSim() const
+{
+	return m_sizeofSim;
+}
+
+void RDOSimulator::appendBaseOperation(LPIBaseOperationContainer pLogic, const LPIBaseOperation& pBaseOperation)
+{
+	ASSERT(pLogic        );
+	ASSERT(pBaseOperation);
+	pLogic->append(pBaseOperation);
+}
+
 void RDOSimulator::appendLogic(const LPIBaseOperation& pLogic, LPIBaseOperationContainer pParent)
 {
 	ASSERT(pParent);

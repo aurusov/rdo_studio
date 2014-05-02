@@ -23,6 +23,19 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOActivity
 // --------------------------------------------------------------------------------
+RDOActivity::RDOActivity(bool trace, const std::string& name)
+	: RDOTraceableObject(trace)
+	, m_oprName         (name )
+{}
+
+RDOActivity::~RDOActivity()
+{}
+
+void RDOActivity::updateRelRes(const LPRDORuntime& pRuntime)
+{
+	getRelevantResources(pRuntime, m_relevantResources);
+}
+
 void RDOActivity::addParamCalc(const LPRDOCalc& pCalc)
 {
 	m_paramsCalcs.push_back(pCalc);

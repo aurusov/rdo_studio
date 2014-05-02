@@ -113,6 +113,4 @@ DEFINE_ATOM_TYPE(string);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdo_type-inl.h"
-
 #endif // _LIB_RUNTIME_TYPE_H_

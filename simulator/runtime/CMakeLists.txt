@@ -97,7 +97,6 @@ SET(COMMON_FILES
 SET(FRAME_FILES
 	rdoframe.cpp
 	rdoframe.h
-	rdoframe-inl.h
 )
 
 SET(FUN_FILES
@@ -138,10 +137,8 @@ SET(SIMULATOR_FILES
 	rdo_runtime-inl.h
 	rdo_simulator.cpp
 	rdo_simulator.h
-	rdo_simulator-inl.h
 	rdobase.cpp
 	rdobase.h
-	rdobase-inl.h
 	simtrace.cpp
 	simtrace.h
 	thread_proxy_i.h
@@ -236,7 +233,6 @@ SET(SIMULATOR_KB_OPERATIONS_BASE_FILES
 	rdo_param_i.h
 	rdo_pattern.cpp
 	rdo_pattern.h
-	rdo_pattern-inl.h
 	rdo_priority.cpp
 	rdo_priority.h
 	rdo_priority_i.h
@@ -281,7 +277,6 @@ SET(TRACE_FILES
 SET(TYPE_FILES
 	rdo_type.cpp
 	rdo_type.h
-	rdo_type-inl.h
 )
 
 SET(TYPE_ARRAY_FILES
@@ -290,14 +285,13 @@ SET(TYPE_ARRAY_FILES
 )
 
 SET(TYPE_ENUM_FILES
+	rdo_enum.cpp
 	rdo_enum.h
-	rdo_enum-inl.h
 )
 
 SET(TYPE_FUZZY_FILES
 	rdo_fuzzy.cpp
 	rdo_fuzzy.h
-	rdo_fuzzy-inl.h
 )
 
 SET(TYPE_MATRIX_FILES

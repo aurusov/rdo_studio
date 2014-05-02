@@ -19,22 +19,6 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOActivity
-// --------------------------------------------------------------------------------
-inline RDOActivity::RDOActivity(bool trace, const std::string& name)
-	: RDOTraceableObject(trace)
-	, m_oprName         (name )
-{}
-
-inline RDOActivity::~RDOActivity()
-{}
-
-inline void RDOActivity::updateRelRes(const LPRDORuntime& pRuntime)
-{
-	getRelevantResources(pRuntime, m_relevantResources);
-}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOActivityPattern
 // --------------------------------------------------------------------------------
 template<class T>

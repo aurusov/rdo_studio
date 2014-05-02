@@ -34,7 +34,7 @@ public:
 	typedef  boost::icl::interval<RDOValue> DomainPart;
 	typedef  boost::icl::interval<RDOValue>::type IntervalType;
 	typedef  boost::icl::interval_set<RDOValue> Domain;
-	
+
 	DefineArea (); // типа бесконечность
 	virtual ~DefineArea();
 private:
@@ -152,7 +152,7 @@ public:
 	TermSet::const_iterator end() const;
 
 	LPFuzzySet& operator[] (std::string name);
-	
+
 	void setName(nameOfVariable);
 	nameOfVariable getName() {return m_name;};
 	void append(std::string name, const LPFuzzySet& fuzzySet);
@@ -183,7 +183,5 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/rdo_fuzzy-inl.h"
 
 #endif // _LIB_RUNTIME_FUZZY_H_

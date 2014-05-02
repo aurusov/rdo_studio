@@ -17,8 +17,153 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // --------------------------------------------------------------------------------
-// -------------------- MemberFunctionProperties
+// -------------------- DefineArea
 // --------------------------------------------------------------------------------
+inline DefineArea::DefineArea()
+{
+	IntervalType mType = DomainPart::open(-10e15, 10e15);
+	m_domain = Domain(mType);
+}
+
+inline DefineArea::~DefineArea()
+{}
+
+inline DefineArea::DefineArea(const RDOValue& leftRange, const RDOValue& rightRange)
+{
+	IntervalType mType = DomainPart::closed(leftRange, rightRange);
+	m_domain = Domain(mType);
+}
+inline DefineArea::DefineArea(const RDOValue& value)
+{
+	IntervalType mType = DomainPart::closed(value,value);
+	m_domain = Domain(mType);
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- FuzzySet
+// --------------------------------------------------------------------------------
+RDOValue fun_add (const RDOValue& value1, const RDOValue& value2) { return value1 + value2; }
+RDOValue fun_sub (const RDOValue& value1, const RDOValue& value2) { return value1 - value2; }
+RDOValue fun_mult(const RDOValue& value1, const RDOValue& value2) { return value1 * value2; }
+RDOValue fun_div (const RDOValue& value1, const RDOValue& value2) { return value1 / value2; }
+
+inline FuzzySet::FuzzySet()
+{}
+
+inline FuzzySet::FuzzySet(const LPDefineArea& pDefineArea)
+	: m_defineArea(pDefineArea)
+{}
+
+inline FuzzySet::FuzzySet(const LPFuzzySet& pSet)
+	: m_fuzzySet  (pSet->m_fuzzySet  )
+	, m_defineArea(pSet->m_defineArea)
+{}
+
+inline FuzzySet::~FuzzySet()
+{}
+
+inline void FuzzySet::setValues(const FuzzySetDefinition& values)
+{
+	m_fuzzySet = values;
+}
+
+inline LPFuzzySet FuzzySet::append(const RDOValue& rdovalue, double appertain)
+{
+	std::pair<FuzzySet::FuzzySetDefinition::iterator, bool> checkValue;
+	checkValue = m_fuzzySet.insert(std::pair<RDOValue,double>(rdovalue, appertain));
+	return LPFuzzySet(this);
+}
+
+inline LPFuzzySet FuzzySet::operator() (const RDOValue& rdovalue, double appertain)
+{
+	return append(rdovalue, appertain);
+}
+
+inline double& FuzzySet::operator[] (const RDOValue& rdovalue)
+{
+	return m_fuzzySet[rdovalue];
+}
+
+inline FuzzySet::FuzzySetDefinition::const_iterator FuzzySet::find(const RDOValue& rdovalue) const
+{
+	return m_fuzzySet.find(rdovalue);
+}
+
+inline FuzzySet::FuzzyItem FuzzySet::findValue(const RDOValue& rdovalue) const
+{
+	FuzzySetDefinition::const_iterator found = find(rdovalue);
+	if (found != end()) return FuzzyItem(found->first, found->second);
+	else                return FuzzyItem(rdovalue,     0.0          );
+}
+
+inline FuzzySet::FuzzySetDefinition::const_iterator FuzzySet::begin() const { return m_fuzzySet.begin(); }
+inline FuzzySet::FuzzySetDefinition::const_iterator FuzzySet::end  () const { return m_fuzzySet.end();   }
+inline FuzzySet::FuzzySetDefinition::iterator       FuzzySet::begin()       { return m_fuzzySet.begin(); }
+inline FuzzySet::FuzzySetDefinition::iterator       FuzzySet::end  ()       { return m_fuzzySet.end();   }
+inline bool                                         FuzzySet::empty() const { return m_fuzzySet.empty(); }
+inline bool FuzzySet::inRange (const RDOValue& rdovalue)
+{
+	return m_fuzzySet.find(rdovalue) != m_fuzzySet.end();
+}
+
+LPFuzzySet FuzzySet::operator+ (const LPFuzzySet& pSet) const
+{
+	LPFuzzySet pThis(const_cast<FuzzySet*>(this));
+	return MemberFunctionProperties::ext_binary(fun_add, pThis, pSet);
+}
+LPFuzzySet FuzzySet::operator- (const LPFuzzySet& pSet) const 
+{
+	LPFuzzySet pThis(const_cast<FuzzySet*>(this));
+	return MemberFunctionProperties::ext_binary(fun_sub, pThis, pSet);
+}
+LPFuzzySet FuzzySet::operator* (const LPFuzzySet& pSet) const
+{
+	LPFuzzySet pThis(const_cast<FuzzySet*>(this));
+	return MemberFunctionProperties::ext_binary(fun_mult, pThis, pSet);
+}
+LPFuzzySet FuzzySet::operator/ (const LPFuzzySet& pSet) const
+{
+	LPFuzzySet pThis(const_cast<FuzzySet*>(this));
+	return MemberFunctionProperties::ext_binary(fun_div, pThis, pSet);
+}
+
+RDOValue fun_u_minus(const RDOValue& rdovalue             ) { return -rdovalue;                                    }
+RDOValue fun_u_obr  (const RDOValue& rdovalue             ) { return RDOValue(1)/rdovalue;                         }
+RDOValue fun_u_scale(const RDOValue& rdovalue, void* scale) { return rdovalue * (*static_cast<double*>(scale));    }
+RDOValue fun_u_log  (const RDOValue& rdovalue             ) { return rdovalue > 0 ? log(rdovalue.getDouble()) : 0; }
+
+LPFuzzySet MemberFunctionProperties::u_minus(const LPFuzzySet& pSet)               { return ext_unary(fun_u_minus,           pSet); }
+LPFuzzySet MemberFunctionProperties::u_obr  (const LPFuzzySet& pSet)               { return ext_unary(fun_u_obr,             pSet); }
+LPFuzzySet MemberFunctionProperties::u_scale(const LPFuzzySet& pSet, double scale) { return ext_unary(fun_u_scale, &scale, pSet);   }
+LPFuzzySet MemberFunctionProperties::u_log  (const LPFuzzySet& pSet)               { return ext_unary(fun_u_log,             pSet); }
+
+
+std::string FuzzySet::getAsString() const
+{
+	if (empty())
+		return "[empty value]";
+
+	std::string res = "";
+	FuzzySetDefinition::const_iterator it = begin();
+	while (it != end())
+	{
+		const bool output = it->second > 0.0;
+		if (output)
+			res += rdo::format("<%s/%.2lf>", it->first.getAsString().c_str(), it->second);
+
+		++it;
+
+		if (output && it != end())
+			res += " ";
+	}
+	return res;
+}
+
+LPFuzzySet FuzzySet::clone() const
+{
+	return rdo::Factory<FuzzySet>::create(LPFuzzySet(const_cast<FuzzySet*>(this)));
+}
+
 LPFuzzySet FuzzySet::operator&& (const LPFuzzySet& pSet) const
 {
 	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create();
@@ -71,6 +216,10 @@ LPFuzzySet FuzzySet::operator|| (const LPFuzzySet& pSet)const
 	}
 	return pFuzzySetResult;
 }
+
+// --------------------------------------------------------------------------------
+// -------------------- MemberFunctionProperties
+// --------------------------------------------------------------------------------
 /// @todo комментарии в *.h
 //! Декартово произведение (попарное) элементов двух множест с применением произвольной функции fun
 LPFuzzySet MemberFunctionProperties::ext_binary(ExtBinaryFun fun, const LPFuzzySet& pSet1, const LPFuzzySet& pSet2)
@@ -173,71 +322,14 @@ LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFunP fun, void* pParam, c
 	return LPFuzzySet();
 }
 
-RDOValue fun_add (const RDOValue& value1, const RDOValue& value2) { return value1 + value2; }
-RDOValue fun_sub (const RDOValue& value1, const RDOValue& value2) { return value1 - value2; }
-RDOValue fun_mult(const RDOValue& value1, const RDOValue& value2) { return value1 * value2; }
-RDOValue fun_div (const RDOValue& value1, const RDOValue& value2) { return value1 / value2; }
-
-LPFuzzySet FuzzySet::operator+ (const LPFuzzySet& pSet) const
+inline LPFuzzySet MemberFunctionProperties::a_con (const LPFuzzySet& pSet)
 {
-	LPFuzzySet pThis(const_cast<FuzzySet*>(this));
-	return MemberFunctionProperties::ext_binary(fun_add, pThis, pSet);
+	return a_pow(pSet, 2.0);
 }
-LPFuzzySet FuzzySet::operator- (const LPFuzzySet& pSet) const 
+inline LPFuzzySet MemberFunctionProperties::a_dil (const LPFuzzySet& pSet)
 {
-	LPFuzzySet pThis(const_cast<FuzzySet*>(this));
-	return MemberFunctionProperties::ext_binary(fun_sub, pThis, pSet);
+	return a_pow(pSet, 0.5);
 }
-LPFuzzySet FuzzySet::operator* (const LPFuzzySet& pSet) const
-{
-	LPFuzzySet pThis(const_cast<FuzzySet*>(this));
-	return MemberFunctionProperties::ext_binary(fun_mult, pThis, pSet);
-}
-LPFuzzySet FuzzySet::operator/ (const LPFuzzySet& pSet) const
-{
-	LPFuzzySet pThis(const_cast<FuzzySet*>(this));
-	return MemberFunctionProperties::ext_binary(fun_div, pThis, pSet);
-}
-
-RDOValue fun_u_minus(const RDOValue& rdovalue             ) { return -rdovalue;                                    }
-RDOValue fun_u_obr  (const RDOValue& rdovalue             ) { return RDOValue(1)/rdovalue;                         }
-RDOValue fun_u_scale(const RDOValue& rdovalue, void* scale) { return rdovalue * (*static_cast<double*>(scale));    }
-RDOValue fun_u_log  (const RDOValue& rdovalue             ) { return rdovalue > 0 ? log(rdovalue.getDouble()) : 0; }
-
-LPFuzzySet MemberFunctionProperties::u_minus(const LPFuzzySet& pSet)               { return ext_unary(fun_u_minus,           pSet); }
-LPFuzzySet MemberFunctionProperties::u_obr  (const LPFuzzySet& pSet)               { return ext_unary(fun_u_obr,             pSet); }
-LPFuzzySet MemberFunctionProperties::u_scale(const LPFuzzySet& pSet, double scale) { return ext_unary(fun_u_scale, &scale, pSet);   }
-LPFuzzySet MemberFunctionProperties::u_log  (const LPFuzzySet& pSet)               { return ext_unary(fun_u_log,             pSet); }
-
-
-std::string FuzzySet::getAsString() const
-{
-	if (empty())
-		return "[empty value]";
-
-	std::string res = "";
-	FuzzySetDefinition::const_iterator it = begin();
-	while (it != end())
-	{
-		const bool output = it->second > 0.0;
-		if (output)
-			res += rdo::format("<%s/%.2lf>", it->first.getAsString().c_str(), it->second);
-
-		++it;
-
-		if (output && it != end())
-			res += " ";
-	}
-	return res;
-}
-
-LPFuzzySet FuzzySet::clone() const
-{
-	return rdo::Factory<FuzzySet>::create(LPFuzzySet(const_cast<FuzzySet*>(this)));
-}
-// --------------------------------------------------------------------------------
-// -------------------- MemberFunctionProperties
-// --------------------------------------------------------------------------------
 
 LPFuzzySet MemberFunctionProperties::a_mult(const LPFuzzySet& pSet1, const LPFuzzySet& pSet2)
 {
@@ -361,6 +453,87 @@ RDOValue MemberFunctionProperties::defuzzyfication(const LPFuzzySet& pSet)
 }
 
 // --------------------------------------------------------------------------------
+// -------------------- RDOFuzzyTerm
+// --------------------------------------------------------------------------------
+inline const LPFuzzySet& RDOFuzzyTerm::getFuzzySetDefinition() const
+{
+	return (m_term.second);
+}
+inline std::string RDOFuzzyTerm::getName() const
+{
+	return (m_term.first);
+}
+inline RDOFuzzyTerm::RDOFuzzyTerm(const termName& pName, const LPFuzzySet& pSet)
+{
+    m_term = std::make_pair(pName, pSet);
+}
+
+inline RDOFuzzyTerm::~RDOFuzzyTerm()
+{}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOLingvoVariable
 // --------------------------------------------------------------------------------
+inline RDOLingvoVariable::TermSet::const_iterator RDOLingvoVariable::begin() const     {return m_set.begin();}
+inline RDOLingvoVariable::TermSet::const_iterator RDOLingvoVariable::end  () const     {return m_set.end  ();}
+inline RDOLingvoVariable::RDOLingvoVariable(const LPRDOFuzzyTerm& term, nameOfVariable nameOfVariable)
+{
+	m_name = nameOfVariable;
+	m_set.insert(make_pair(term->getName(), term->getFuzzySetDefinition()));
+}
+
+inline RDOLingvoVariable::RDOLingvoVariable(const RDOValue&pDefineAreaValue, const LPRDOLingvoVariable& variable)
+	: m_name("activated")
+{
+	LPDefineArea   defineArea    = rdo::Factory<DefineArea>::create(pDefineAreaValue);
+	LPFuzzySet     setOfVariable = rdo::Factory<FuzzySet>::create(defineArea);
+	for (RDOLingvoVariable::TermSet::const_iterator it = variable->begin(); it != variable->end(); it++)
+	{
+		m_set.insert(std::pair<RDOFuzzyTerm::Term::first_type,LPFuzzySet>(it->first,setOfVariable));
+	}
+}
+
+inline RDOLingvoVariable::RDOLingvoVariable(const RDOLingvoVariable& variable)
+{
+	m_set = variable.m_set;
+	m_name  = variable.m_name;
+}
+
+inline RDOLingvoVariable::~RDOLingvoVariable()
+{}
+
+inline void RDOLingvoVariable::setName(nameOfVariable nameVariable)
+{
+	m_name = nameVariable;
+}
+
+inline LPFuzzySet& RDOLingvoVariable::operator[] (std::string name)
+{
+	return m_set[name];
+}
+
+inline void RDOLingvoVariable::append(std::string name, const LPFuzzySet& fuzzySet)
+{
+	operator[](name) = fuzzySet;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- Statement
+// --------------------------------------------------------------------------------
+inline void Statement::setTerm(LPRDOFuzzyTerm term)
+{
+	m_term = term;
+}
+
+inline void Statement::setVariable(LPRDOLingvoVariable variable)
+{
+	m_variable = variable;
+}
+
+inline Statement::Statement()
+{}
+
+inline Statement::~Statement()
+{}
+
 CLOSE_RDO_RUNTIME_NAMESPACE
