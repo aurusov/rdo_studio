@@ -125,13 +125,12 @@ SET(RESULT_FILES
 
 SET(SIMULATOR_FILES
 	keyboard.h
+	rdo_exception.cpp
 	rdo_exception.h
-	rdo_exception-inl.h
 	rdo_memory.cpp
 	rdo_memory.h
 	rdo_object.cpp
 	rdo_object.h
-	rdo_object-inl.h
 	rdo_runtime.cpp
 	rdo_runtime.h
 	rdo_runtime-inl.h

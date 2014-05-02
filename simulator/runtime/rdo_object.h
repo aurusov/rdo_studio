@@ -32,96 +32,6 @@ public:
 	virtual ~RDORuntimeObject();
 };
 
-/// @todo удалить комментарии
-
-//class RDORuntimeObject
-//{
-//friend class RDORuntime;
-//public:
-//	virtual ~RDORuntimeObject();
-//	RDORuntimeParent* getParent() const { return m_parent;  }
-//	void reparent(RDORuntimeParent* parent);
-//	void detach();
-//
-////#ifndef _DEBUG
-////	void* operator new(size_t sz);
-////	void operator delete(void* v);
-////#endif
-//
-//protected:
-//	RDORuntimeObject(RDORuntimeParent* parent );
-//
-//	RDORuntimeParent* m_parent;
-//
-//private:
-//	size_t        m_object_size; // Размер текущего объекта
-//	static size_t s_memory_size; // Сумма размеров всех объектов
-//};
-
-// --------------------------------------------------------------------------------
-// -------------------- RDORuntimeParent
-// --------------------------------------------------------------------------------
-//class RDORuntimeParent: public RDORuntimeObject
-//{
-//public:
-//	RDORuntimeParent(RDORuntimeParent* parent);
-//	virtual ~RDORuntimeParent();
-//
-//	void insertObject(RDORuntimeObject* object)
-//	{
-//		if (object)
-//		{
-////			TRACE( "insert object: %d\n", object );
-//			if (object == this)
-//			{
-////				TRACE( "insert parent himself %d !!!!!!!!!!!!!!!!!!!\n", this );
-//			}
-//			else
-//			{
-//				m_childList.push_back(object);
-//			}
-//		}
-//		else
-//		{
-////			TRACE( "insert object NULL !!!!!!!!!!!!!!!\n" );
-//		}
-//	}
-//	void removeObject(RDORuntimeObject* object)
-//	{
-//		ChildList::reverse_iterator it = std::find(m_childList.rbegin(), m_childList.rend(), object);
-//		if (it != m_childList.rend())
-//		{
-////			TRACE( "remove object: %d\n", object );
-//			// Команда it.base() приводит реверсивный итератор к нормальному,
-//			// но перед этим необходимо сделать инкремент
-//			it++;
-//			m_childList.erase(it.base());
-//		}
-//		else
-//		{
-////			TRACE( "remove object: %d faild !!!!!!!!!!!!!!!!!!!!\n", object );
-//		}
-//	}
-//	void deleteObjects()
-//	{
-//		ChildList::reverse_iterator it = m_childList.rbegin();
-//		while (it != m_childList.rend())
-//		{
-//			delete *it;
-//			it = m_childList.rbegin();
-//		}
-//		m_childList.clear();
-//	}
-//
-//protected:
-//	typedef std::vector<RDORuntimeObject*> ChildList;
-//	ChildList m_childList;
-//};
-
-/*!
-  \class     RDOSrcInfo
-  \brief     Исходная информация
-*/
 class RDOSrcInfo
 {
 public:
@@ -171,7 +81,5 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/rdo_object-inl.h"
 
 #endif // _LIB_RUNTIME_OBJECT_H_

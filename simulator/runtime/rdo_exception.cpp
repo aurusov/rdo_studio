@@ -1,15 +1,17 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdo_exception-inl.h
+  \file      rdo_exception.cpp
   \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      06.08.2011
   \brief     Определение исключений
   \indent    4T
 */
 
+// ---------------------------------------------------------------------------- PCH
+#include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/namespace.h"
+#include "simulator/runtime/rdo_exception.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -17,11 +19,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOException
 // --------------------------------------------------------------------------------
-inline RDOException::RDOException(const std::string& message)
+RDOException::RDOException(const std::string& message)
 	: m_message(message)
 {}
 
-inline const std::string& RDOException::message() const
+const std::string& RDOException::message() const
 {
 	return m_message;
 }
@@ -29,11 +31,11 @@ inline const std::string& RDOException::message() const
 // --------------------------------------------------------------------------------
 // -------------------- RDORuntimeException
 // --------------------------------------------------------------------------------
-inline RDORuntimeException::RDORuntimeException(const std::string& message)
+RDORuntimeException::RDORuntimeException(const std::string& message)
 	: RDOException(message)
 {}
 
-inline std::string RDORuntimeException::getType() const
+std::string RDORuntimeException::getType() const
 {
 	return "RDO Runtime Error";
 }
@@ -41,11 +43,11 @@ inline std::string RDORuntimeException::getType() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeException
 // --------------------------------------------------------------------------------
-inline RDOTypeException::RDOTypeException(const std::string& message)
+RDOTypeException::RDOTypeException(const std::string& message)
 	: RDORuntimeException(message)
 {}
 
-inline std::string RDOTypeException::getType() const
+std::string RDOTypeException::getType() const
 {
 	return "RDOType Error";
 }
@@ -53,11 +55,11 @@ inline std::string RDOTypeException::getType() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOValueException
 // --------------------------------------------------------------------------------
-inline RDOValueException::RDOValueException(const std::string& message)
+RDOValueException::RDOValueException(const std::string& message)
 	: RDORuntimeException(message)
 {}
 
-inline std::string RDOValueException::getType() const
+std::string RDOValueException::getType() const
 {
 	return "RDOValue Error";
 }
@@ -65,11 +67,11 @@ inline std::string RDOValueException::getType() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOUndefinedException
 // --------------------------------------------------------------------------------
-inline RDOUndefinedException::RDOUndefinedException()
+RDOUndefinedException::RDOUndefinedException()
 	: RDORuntimeException("")
 {}
 
-inline std::string RDOUndefinedException::getType() const
+std::string RDOUndefinedException::getType() const
 {
 	return "RDOValue Undefined Error";
 }
@@ -77,11 +79,11 @@ inline std::string RDOUndefinedException::getType() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOInternalException
 // --------------------------------------------------------------------------------
-inline RDOInternalException::RDOInternalException(const std::string& message)
+RDOInternalException::RDOInternalException(const std::string& message)
 	: RDORuntimeException(message)
 {}
 
-inline std::string RDOInternalException::getType() const
+std::string RDOInternalException::getType() const
 {
 	return "RDO Internal Error";
 }
