@@ -62,6 +62,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdo_logic_dptprior-inl.h"
-
 #endif // _LIB_RUNTIME_LOGIC_DPTPRIOR_H_

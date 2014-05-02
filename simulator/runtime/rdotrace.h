@@ -45,7 +45,7 @@ public:
 	virtual void onEndl();
 };
 
-inline std::ostream& operator << (std::ostream& stream, RDOEndL& rdoEndL);
+std::ostream& operator << (std::ostream& stream, RDOEndL& rdoEndL);
 
 /*!
   \class     RDOTrace
@@ -159,7 +159,5 @@ protected:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/rdotrace-inl.h"
 
 #endif // _LIB_RUNTIME_TRACE_H_

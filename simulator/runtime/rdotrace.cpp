@@ -48,8 +48,63 @@ double doubleToString(double value)
 #endif
 
 // --------------------------------------------------------------------------------
+// -------------------- RDOEndL
+// --------------------------------------------------------------------------------
+void RDOEndL::onEndl()
+{}
+
+std::ostream& operator<< (std::ostream& stream, RDOEndL& rdoEndL)
+{
+	rdoEndL.onEndl();
+	return stream;
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOTrace - Формирует строки трассировки
 // --------------------------------------------------------------------------------
+RDOTrace::RDOTrace()
+	: m_isNullTracer    (true )
+	, m_canWriteToStream(false)
+{}
+
+RDOTrace::~RDOTrace()
+{}
+
+bool RDOTrace::canTrace() const
+{
+	return !isNull() && canWrite();
+}
+
+void  RDOTrace::startWriting()
+{
+	m_canWriteToStream = true;
+}
+
+void  RDOTrace::stopWriting()
+{
+	m_canWriteToStream = false;
+}
+
+bool RDOTrace::canWrite() const
+{
+	return m_canWriteToStream;
+}
+
+bool RDOTrace::isNull() const
+{
+	return m_isNullTracer;
+}
+
+std::ostream& RDOTrace::getOStream()
+{
+	return m_emptyOut;
+}
+
+RDOEndL& RDOTrace::getEOL()
+{
+	return m_emptyEndL;
+}
+
 void RDOTrace::writeSearchBegin(double currentTime, std::string decisionPointId)
 {
 	if (!canTrace())
@@ -411,6 +466,53 @@ void RDOTrace::writeResult(const LPRDORuntime& pRuntime, RDOResultTrace* pok)
 	getOStream() << "V  "  << pRuntime->getCurrentTime()
 		<< " " << pok->traceId()
 		<< "  " << pok->traceValue() << std::endl << getEOL();
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOTraceableObject
+// --------------------------------------------------------------------------------
+RDOTraceableObject::RDOTraceableObject(bool trace, std::size_t id, std::string str)
+	: m_trace (trace)
+	, m_id    (id   )
+	, m_str_id(str  )
+{}
+
+RDOTraceableObject::~RDOTraceableObject()
+{}
+
+bool RDOTraceableObject::traceable() const
+{
+	return m_trace;
+}
+
+void RDOTraceableObject::setTrace(bool trace)
+{
+	m_trace = trace;
+}
+
+std::size_t RDOTraceableObject::getTraceID() const
+{
+	return m_id;
+}
+
+void RDOTraceableObject::setTraceID(std::size_t id)
+{
+	setTraceID(id, id);
+}
+
+void RDOTraceableObject::setTraceID(std::size_t id, std::size_t str_id)
+{
+	m_id     = id;
+	m_str_id = rdo::toString(str_id);
+}
+
+std::string& RDOTraceableObject::traceId() const
+{
+	if (m_str_id.empty())
+	{
+		m_str_id = rdo::toString(m_id);
+	}
+	return m_str_id;
 }
 
 // --------------------------------------------------------------------------------

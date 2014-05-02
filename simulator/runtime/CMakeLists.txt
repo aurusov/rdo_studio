@@ -144,7 +144,6 @@ SET(SIMULATOR_FILES
 	rdobase-inl.h
 	simtrace.cpp
 	simtrace.h
-	simtrace-inl.h
 	thread_proxy_i.h
 )
 
@@ -182,13 +181,11 @@ SET(SIMULATOR_KB_LOGIC_BASE_FILES
 SET(SIMULATOR_KB_LOGIC_DPTSOME_FILES
 	rdo_logic_dptsome.cpp
 	rdo_logic_dptsome.h
-	rdo_logic_dptsome-inl.h
 )
 
 SET(SIMULATOR_KB_LOGIC_DPTPRIOR_FILES
 	rdo_logic_dptprior.cpp
 	rdo_logic_dptprior.h
-	rdo_logic_dptprior-inl.h
 )
 
 SET(SIMULATOR_KB_LOGIC_DPTSEARCH_FILES
@@ -199,11 +196,9 @@ SET(SIMULATOR_KB_LOGIC_DPTSEARCH_FILES
 	rdodptrtime.h
 	searchtrace.cpp
 	searchtrace.h
-	searchtrace-inl.h
 	searchtrace_i.h
 	searchtree.cpp
 	searchtree.h
-	searchtree-inl.h
 )
 
 SET(SIMULATOR_KB_LOGIC_PROCESS_FILES
@@ -280,7 +275,6 @@ SET(SIMULATOR_KB_OPERATIONS_DPTSEARCH_ACTIVITY_FILES
 SET(TRACE_FILES
 	rdotrace.cpp
 	rdotrace.h
-	rdotrace-inl.h
 	rdotrace_i.h
 )
 

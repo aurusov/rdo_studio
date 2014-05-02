@@ -16,6 +16,7 @@
 #include "simulator/runtime/process/seize_release.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/calc/resource/calc_relevant.h"
+#include "simulator/runtime/rdo_enum.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
