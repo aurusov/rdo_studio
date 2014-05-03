@@ -58,8 +58,8 @@ PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* 
 
 	rdo::gui::model::Model* pModel = getCurrentModel();
 	clearAllTabs();
-	pModel->getTab()->getItemEdit(rdoModelObjects::FUN)->clearAll();
-	pModel->getTab()->getItemEdit(rdoModelObjects::FUN)->appendText(QString::fromStdString(FUNtabText()));
+	pModel->getTab()->getItemEdit(rdo::model::FUN)->clearAll();
+	pModel->getTab()->getItemEdit(rdo::model::FUN)->appendText(QString::fromStdString(FUNtabText()));
 
 	connect(buttonHide        , &QPushButton::toggled, this, &PluginGame5GenerateSituationDialog::onClickHide         );
 	connect(buttonSetLineup   , &QPushButton::clicked, this, &PluginGame5GenerateSituationDialog::callTilesOrderDialog);
@@ -326,7 +326,7 @@ void PluginGame5GenerateSituationDialog::clearAllTabs() const
 	rdo::gui::model::Model* pModel = getCurrentModel();
 	for (int i = 0; i < pModel->getTab()->tabBar()->count(); i++)
 	{
-		if (i != rdoModelObjects::FUN)
+		if (i != rdo::model::FUN)
 		{
 			pModel->getTab()->getItemEdit(i)->clearAll();
 		}
@@ -347,10 +347,10 @@ void PluginGame5GenerateSituationDialog::updateTabs() const
 	{
 		clearAllTabs();
 
-		pModel->getTab()->getItemEdit(rdoModelObjects::RTP)->appendText(QString::fromStdString(RTPtabText()));
-		pModel->getTab()->getItemEdit(rdoModelObjects::RSS)->appendText(QString::fromStdString(RSStabText()));
-		pModel->getTab()->getItemEdit(rdoModelObjects::PAT)->appendText(QString::fromStdString(PATtabText()));
-		pModel->getTab()->getItemEdit(rdoModelObjects::DPT)->appendText(QString::fromStdString(DPTtabText()));
+		pModel->getTab()->getItemEdit(rdo::model::RTP)->appendText(QString::fromStdString(RTPtabText()));
+		pModel->getTab()->getItemEdit(rdo::model::RSS)->appendText(QString::fromStdString(RSStabText()));
+		pModel->getTab()->getItemEdit(rdo::model::PAT)->appendText(QString::fromStdString(PATtabText()));
+		pModel->getTab()->getItemEdit(rdo::model::DPT)->appendText(QString::fromStdString(DPTtabText()));
 	}
 }
 
@@ -366,7 +366,7 @@ QStringList PluginGame5GenerateSituationDialog::parseFunTab() const
 {
 	rdo::gui::model::Model* pModel = getCurrentModel();
 	std::stringstream txtStream;
-	pModel->getTab()->getItemEdit(rdoModelObjects::FUN)->save(txtStream);
+	pModel->getTab()->getItemEdit(rdo::model::FUN)->save(txtStream);
 	QString tabStr = QString::fromStdString(txtStream.str());
 	QRegExp regExp("(\\$Function)(\\s*)([A-Za-z0-9_А-Яа-я\\$]*)(\\s*):");
 

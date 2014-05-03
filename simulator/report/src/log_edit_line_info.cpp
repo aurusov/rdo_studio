@@ -17,7 +17,7 @@ namespace rdo {
 namespace simulation {
 namespace report {
 
-LogEditLineInfo::LogEditLineInfo(const std::string& text, rdoModelObjects::RDOFileType file, std::size_t line, std::size_t pos, Type type)
+LogEditLineInfo::LogEditLineInfo(const std::string& text, rdo::model::FileType file, std::size_t line, std::size_t pos, Type type)
 	: FileMessage(text, file, line, pos, type)
 	, m_posInLog(0)
 	, m_simpleTextMessage(false)
@@ -30,7 +30,7 @@ LogEditLineInfo::LogEditLineInfo(const FileMessage& message)
 {}
 
 LogEditLineInfo::LogEditLineInfo(const std::string& message)
-	: FileMessage(message, rdoModelObjects::PAT, 0, 0)
+	: FileMessage(message, rdo::model::PAT, 0, 0)
 	, m_posInLog(0)
 	, m_simpleTextMessage(true)
 {}
@@ -46,7 +46,7 @@ std::string LogEditLineInfo::getMessage() const
 	}
 	else
 	{
-		const std::string file = rdoModelObjects::getFileTypeString(getFileType());
+		const std::string file = rdo::model::getFileTypeString(getFileType());
 		const std::string text = rdo::format("%s (%d): %s", file.c_str(), getLineNumber() + 1, getText().c_str());
 		return text;
 	}

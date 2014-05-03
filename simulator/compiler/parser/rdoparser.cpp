@@ -78,9 +78,9 @@ DECLARE_PARSER_OBJECT_CONTAINER(PROCProcess   );
 
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(FUNGroup);
 
-rdoModelObjects::RDOFileType RDOParser::getFileToParse()
+rdo::model::FileType RDOParser::getFileToParse()
 {
-	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->m_type : rdoModelObjects::PAT;
+	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->m_type : rdo::model::PAT;
 }
 
 std::size_t RDOParser::lexer_loc_line()
@@ -114,31 +114,31 @@ RDOParser::RDOParser()
 	, m_parser_item(NULL )
 {
 	m_compilers.push_back(rdo::Factory<RDOParserSTDFUN> ::create());
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::SMR, evn_preparse_parse, evn_preparse_lex));
 
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RTP, evn_preparse_parse, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RTP, evnparse, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RSS, evn_preparse_parse, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RSS, evnparse, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, evn_preparse_parse, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::RTP, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::RTP, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::RSS, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::RSS, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::PRC, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::PRC, evnparse, evnlex));
 #ifdef CORBA_ENABLE
 	m_compilers.push_back(rdo::Factory<RDOParserCorbaRTP>::create());
 	m_compilers.push_back(rdo::Factory<RDOParserCorbaRSS>::create());
 #endif
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FUN, evn_preparse_parse, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FUN, evnparse, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::EVN, evn_preparse_parse, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::EVN, evnparse, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PAT, evn_preparse_parse, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PAT, evnparse, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, evn_preparse_parse, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, evnparse, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FRM, evn_preparse_parse, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FRM, evnparse, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PMD, evn_preparse_parse, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PMD, evnparse, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::FUN, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::FUN, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::EVN, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::EVN, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::PAT, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::PAT, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::DPT, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::DPT, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::FRM, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::FRM, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::PMD, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::PMD, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::SMR, evnparse, evnlex));
 }
 
 RDOParser::~RDOParser()

@@ -33,7 +33,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserRDOItem
 // --------------------------------------------------------------------------------
-RDOParserRDOItem::RDOParserRDOItem(rdoModelObjects::RDOFileType type, t_bison_parse_fun parser_fun, t_flex_lexer_fun lexer_fun, StreamFrom from)
+RDOParserRDOItem::RDOParserRDOItem(rdo::model::FileType type, t_bison_parse_fun parser_fun, t_flex_lexer_fun lexer_fun, StreamFrom from)
 	: RDOParserItem(type, parser_fun, lexer_fun, from)
 	, m_pLexer(NULL)
 {}

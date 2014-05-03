@@ -66,18 +66,18 @@ public:
 	void setSrcPos(std::size_t first_line, std::size_t first_pos, std::size_t last_line, std::size_t last_pos);
 
 	virtual void setSrcText(const std::string& value);
-	void setSrcFileType(rdoModelObjects::RDOFileType value);
+	void setSrcFileType(rdo::model::FileType value);
 
 	const RDOSrcInfo& src_info() const;
 	const Position& src_pos() const;
 	const std::string& src_text() const;
-	rdoModelObjects::RDOFileType src_filetype() const;
+	rdo::model::FileType src_filetype() const;
 	bool src_empty() const;
 
 private:
 	Position m_position;
 	std::string m_text_data;
-	rdoModelObjects::RDOFileType m_file_type;
+	rdo::model::FileType m_file_type;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -34,10 +34,10 @@ public:
 
 	struct FileData: public boost::noncopyable
 	{
-		rdoModelObjects::RDOFileType  m_type;
+		rdo::model::FileType  m_type;
 		std::stringstream&            m_stream;
 
-		FileData(rdoModelObjects::RDOFileType type, std::stringstream& stream)
+		FileData(rdo::model::FileType type, std::stringstream& stream)
 			: m_type  (type  )
 			, m_stream(stream)
 		{}
@@ -86,14 +86,14 @@ public:
 	};
 	struct FileInfo
 	{
-		rdoModelObjects::RDOFileType m_type;
+		rdo::model::FileType m_type;
 		boost::filesystem::path m_name;
 		boost::filesystem::path m_fullName;
 		boost::filesystem::path m_extension;
 		bool m_readOnly;
 		bool m_described;
 
-		FileInfo(rdoModelObjects::RDOFileType type = rdoModelObjects::SMR
+		FileInfo(rdo::model::FileType type = rdo::model::SMR
 		       , const boost::filesystem::path& name = boost::filesystem::path()
 		       , const boost::filesystem::path& fullName = boost::filesystem::path()
 		       , const boost::filesystem::path& extension = "smr"
@@ -135,7 +135,7 @@ private:
 			m_mustExist = true;
 		}
 	};
-	typedef std::map<rdoModelObjects::RDOFileType, fileInfo> FileList;
+	typedef std::map<rdo::model::FileType, fileInfo> FileList;
 
 	enum FindModel
 	{
@@ -192,17 +192,17 @@ protected:
 	void closeModel();
 	bool saveModel();
 
-	void load(rdoModelObjects::RDOFileType type, std::ostream& stream);
-	void save(rdoModelObjects::RDOFileType type, const std::stringstream& stream) const;
+	void load(rdo::model::FileType type, std::ostream& stream);
+	void save(rdo::model::FileType type, const std::stringstream& stream) const;
 
-	boost::filesystem::path getFileName(rdoModelObjects::RDOFileType type) const;
-	boost::filesystem::path getExtension(rdoModelObjects::RDOFileType type) const;
-	boost::filesystem::path getFileExtName(rdoModelObjects::RDOFileType type) const;
-	boost::filesystem::path getFullFileName(rdoModelObjects::RDOFileType type) const;
-	bool isReadOnly(rdoModelObjects::RDOFileType type) const;
-	bool isDescribed(rdoModelObjects::RDOFileType type) const;
-	bool isMustExist(rdoModelObjects::RDOFileType type) const;
-	bool isDeleteIfEmpty(rdoModelObjects::RDOFileType type) const;
+	boost::filesystem::path getFileName(rdo::model::FileType type) const;
+	boost::filesystem::path getExtension(rdo::model::FileType type) const;
+	boost::filesystem::path getFileExtName(rdo::model::FileType type) const;
+	boost::filesystem::path getFullFileName(rdo::model::FileType type) const;
+	bool isReadOnly(rdo::model::FileType type) const;
+	bool isDescribed(rdo::model::FileType type) const;
+	bool isMustExist(rdo::model::FileType type) const;
+	bool isDeleteIfEmpty(rdo::model::FileType type) const;
 
 	void loadBMP(boost::filesystem::path& name, std::ostream& stream) const;
 };

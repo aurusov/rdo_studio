@@ -59,7 +59,7 @@ bool RDOSrcInfo::Position::point() const
 // --------------------------------------------------------------------------------
 RDOSrcInfo::RDOSrcInfo()
 	: m_text_data(""              )
-	, m_file_type(rdoModelObjects::TRC)
+	, m_file_type(rdo::model::TRC)
 {}
 
 RDOSrcInfo::~RDOSrcInfo()
@@ -108,7 +108,7 @@ void RDOSrcInfo::setSrcText(const std::string& value)
 	m_text_data = value;
 }
 
-void RDOSrcInfo::setSrcFileType(rdoModelObjects::RDOFileType value)
+void RDOSrcInfo::setSrcFileType(rdo::model::FileType value)
 {
 	m_file_type = value;
 }
@@ -128,14 +128,14 @@ const std::string& RDOSrcInfo::src_text() const
 	return m_text_data;
 }
 
-rdoModelObjects::RDOFileType RDOSrcInfo::src_filetype() const
+rdo::model::FileType RDOSrcInfo::src_filetype() const
 {
 	return m_file_type;
 }
 
 bool RDOSrcInfo::src_empty() const
 {
-	return m_position.empty() && m_text_data.empty() && m_file_type == rdoModelObjects::TRC;
+	return m_position.empty() && m_text_data.empty() && m_file_type == rdo::model::TRC;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

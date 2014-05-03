@@ -26,7 +26,7 @@ public:
 
 	void appendString(
 		const QString& str,
-		rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT,
+		rdo::model::FileType fileType = rdo::model::PAT,
 		int lineNumber = -1, int posInLine = 0);
 	void clear();
 

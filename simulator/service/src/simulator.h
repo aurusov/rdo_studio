@@ -302,12 +302,12 @@ public:
 
 	struct GetCodeComp: public boost::noncopyable
 	{
-		rdoModelObjects::RDOFileType m_file;
+		rdo::model::FileType m_file;
 		int m_pos_x;
 		int m_pos_y;
 		std::string& m_result;
 
-		GetCodeComp(rdoModelObjects::RDOFileType file, int pos_x, int pos_y, std::string& result)
+		GetCodeComp(rdo::model::FileType file, int pos_x, int pos_y, std::string& result)
 			: m_file  (file  )
 			, m_pos_x (pos_x )
 			, m_pos_y (pos_y )
