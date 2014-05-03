@@ -85,6 +85,76 @@ void RDOLexer::LexerError(const char msg[])
 	exit(YY_EXIT_FAILURE);
 }
 
+void RDOLexer::loc_init()
+{
+	if (m_lploc)
+	{
+		m_lploc->m_first_line = 0;
+		m_lploc->m_first_pos  = 0;
+		m_lploc->m_last_line  = 0;
+		m_lploc->m_last_pos   = 0;
+		m_lploc->m_first_seek = 0;
+		m_lploc->m_last_seek  = 0;
+	}
+}
+
+void RDOLexer::loc_action()
+{
+	if (m_lploc)
+	{
+		m_lploc->m_first_line = m_lploc->m_last_line;
+		m_lploc->m_first_pos  = m_lploc->m_last_pos;
+		m_lploc->m_first_seek = m_lploc->m_last_seek;
+		for (int i = 0; i < YYLeng(); i++)
+		{
+			switch (YYText()[i])
+			{
+			case '\n': 
+				m_lploc->m_last_line++;
+				m_lploc->m_last_pos = 0;
+				break;
+			case '\r':
+				m_lploc->m_last_pos = 0;
+				break;
+			default:
+				m_lploc->m_last_pos++;
+				break;
+			}
+
+			m_lploc->m_last_seek++;
+		}
+	}
+}
+
+void RDOLexer::loc_delta_pos(int value)
+{
+	if (m_lploc)
+	{
+		m_lploc->m_first_pos += value;
+		m_lploc->m_last_pos  += value;
+	}
+}
+
+void RDOLexer::setvalue(int value)
+{
+	*m_lpval = value;
+}
+
+void RDOLexer::enumBegin()
+{
+	m_enumEmpty = false;
+}
+
+void RDOLexer::enumReset()
+{
+	m_enumEmpty = true;
+}
+
+bool RDOLexer::enumEmpty()
+{
+	return m_enumEmpty;
+}
+
 extern "C"
 {
 	int yywrap(void) 

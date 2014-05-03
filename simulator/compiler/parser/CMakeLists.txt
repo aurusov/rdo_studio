@@ -150,7 +150,6 @@ SET(PARSER_ERROR_FILES
 SET(PARSER_LEXER_FILES
 	rdoparser_lexer.cpp
 	rdoparser_lexer.h
-	rdoparser_lexer-inl.h
 )
 
 SET(PATTERN_FILES

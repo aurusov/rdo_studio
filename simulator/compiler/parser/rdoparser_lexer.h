@@ -68,6 +68,4 @@ CLOSE_RDO_PARSER_NAMESPACE
 #define LEXER     reinterpret_cast<rdo::compiler::parser::RDOLexer*>(lexer)
 #define LEXER_POS (*LEXER->m_lploc)
 
-#include "simulator/compiler/parser/rdoparser_lexer-inl.h"
-
 #endif // _RDOPARSER_LEXER_H_

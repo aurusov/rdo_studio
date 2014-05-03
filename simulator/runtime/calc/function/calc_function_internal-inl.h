@@ -46,14 +46,4 @@ inline RDOValue RDOFunCalcStd<F>::calc(const LPRDORuntime& pRuntime, std_fun_two
 	);
 }
 
-inline double GetParam<double>::getParam(const LPRDORuntime& pRuntime, std::size_t paramNumber)
-{
-	return pRuntime->getFuncArgument(paramNumber).getDouble();
-}
-
-inline int GetParam<int>::getParam(const LPRDORuntime& pRuntime, std::size_t paramNumber)
-{
-	return pRuntime->getFuncArgument(paramNumber).getInt();
-}
-
 CLOSE_RDO_RUNTIME_NAMESPACE
