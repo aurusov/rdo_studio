@@ -17,6 +17,7 @@
 #include <vector>
 #include <iostream>
 #include <boost/test/included/unit_test.hpp>
+#include <boost/date_time.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/interface/rdointerface.h"
@@ -276,6 +277,45 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest)
 	++it;
 	BOOST_CHECK(*it == strMyClass1Destroy + initFValue);
 	s_logList.clear();
+}
+
+BOOST_AUTO_TEST_CASE(InterfaceCastSpeedTest)
+{
+	const boost::posix_time::time_duration testDuration = boost::posix_time::microseconds(1000000);
+	const std::size_t minTestCount = 10000;
+	rdo::Interface<IMy1> obj = RF(MyClass2)::create(1);
+	std::size_t count = 0;
+
+	boost::posix_time::ptime testStart = boost::posix_time::microsec_clock::local_time();
+	while (boost::posix_time::microsec_clock::local_time() - testStart < testDuration)
+	{
+		for (std::size_t i = 0; i < minTestCount; ++i)
+		{
+			rdo::Interface<IMy2> imy2 = obj;
+		}
+		count += minTestCount;
+	}
+	std::cout << "InterfaceCastSpeedTest = " << count << std::endl;
+}
+
+BOOST_AUTO_TEST_CASE(DynamicCastSpeedTest)
+{
+	const boost::posix_time::time_duration testDuration = boost::posix_time::microseconds(1000000);
+	const std::size_t minTestCount = 10000;
+	rdo::Interface<IMy1> obj = RF(MyClass2)::create(1);
+	std::size_t count = 0;
+
+	boost::posix_time::ptime testStart = boost::posix_time::microsec_clock::local_time();
+	while (boost::posix_time::microsec_clock::local_time() - testStart < testDuration)
+	{
+		for (std::size_t i = 0; i < minTestCount; ++i)
+		{
+			IMy2* imy2 = dynamic_cast<IMy2*>(obj.get());
+			(void)imy2;
+		}
+		count += minTestCount;
+	}
+	std::cout << "DynamicCastSpeedTest   = " << count << std::endl;
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDOInterfaceTest
