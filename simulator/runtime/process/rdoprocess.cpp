@@ -25,20 +25,13 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 RDOPROCBlock::RDOPROCBlock(LPIPROCProcess pProcess)
 	: m_process(pProcess)
-{}
+{
+	LPIBaseOperation pThis(this);
+	m_process.object_dynamic_cast<IBaseOperationContainer>()->append(pThis);
+}
 
 RDOPROCBlock::~RDOPROCBlock()
 {}
-
-bool RDOPROCBlock::init()
-{
-	if (!m_process)
-		return false;
-
-	LPIBaseOperation pThis(const_cast<RDOPROCBlock*>(this));
-	m_process.object_dynamic_cast<IBaseOperationContainer>()->append(pThis);
-	return true;
-}
 
 RDOPROCBlock::TransactIt RDOPROCBlock::transactFind(const LPTransact& pTransact)
 {

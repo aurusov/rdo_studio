@@ -44,7 +44,6 @@ protected:
 	virtual ~RDOPROCBlock();
 
 	DECLARE_IPROCBlock;
-	virtual bool init();
 };
 
 /*!
