@@ -26,7 +26,7 @@ RDODPTSearchActivity::RDODPTSearchActivity(const LPIRule& rule, ValueTime valueT
 	, m_pCost           (pCost    )
 	, m_valueTime       (valueTime)
 {
-	LPITrace trace = m_rule;
+	LPITrace trace = m_rule.object_dynamic_cast<ITrace>();
 	ASSERT(trace);
 	setTraceID(trace->getTraceID());
 }

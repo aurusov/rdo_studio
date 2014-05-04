@@ -123,7 +123,7 @@ double RDOPatternEvent::getNextTimeInterval(const LPRDORuntime& pRuntime)
 
 LPIEvent RDOPatternEvent::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const std::string& oprName)
 {
-	LPIEvent pEvent = RF(RDOEvent)::create(pRuntime, this, traceable(), oprName);
+	LPIEvent pEvent = rdo::Factory<RDOEvent>::create(pRuntime, this, traceable(), oprName);
 	ASSERT(pEvent);
 	pRuntime->addRuntimeEvent(pLogic, pEvent);
 	return pEvent;
@@ -177,7 +177,7 @@ void RDOPatternRule::convertErase(const LPRDORuntime& pRuntime)
 
 LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const std::string& _oprName)
 {
-	LPIRule pRule = RF(RDORule)::create(pRuntime, this, traceable(), _oprName);
+	LPIRule pRule = rdo::Factory<rdo::runtime::RDORule>::create(pRuntime, this, traceable(), _oprName);
 	ASSERT(pRule);
 	pRuntime->addRuntimeRule(pLogic, pRule);
 	return pRule;
@@ -185,7 +185,7 @@ LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer pLogic, const L
 
 LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const LPRDOCalc& pCondition, const std::string& _oprName)
 {
-	LPIRule pRule = RF(RDORule)::create(pRuntime, this, traceable(), pCondition, _oprName);
+	LPIRule pRule = rdo::Factory<rdo::runtime::RDORule>::create(pRuntime, this, traceable(), pCondition, _oprName);
 	ASSERT(pRule);
 	pRuntime->addRuntimeRule(pLogic, pRule);
 	return pRule;
@@ -281,7 +281,7 @@ double RDOPatternOperation::getNextTimeInterval(const LPRDORuntime& pRuntime)
 
 LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const std::string& _oprName)
 {
-	LPIOperation pOperation = RF(RDOOperation)::create(pRuntime, this, traceable(), _oprName);
+	LPIOperation pOperation = rdo::Factory<RDOOperation>::create(pRuntime, this, traceable(), _oprName);
 	ASSERT(pOperation);
 	pRuntime->addRuntimeOperation(pLogic, pOperation);
 	return pOperation;
@@ -289,7 +289,7 @@ LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer pLogi
 
 LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const LPRDOCalc& pCondition, const std::string& _oprName)
 {
-	LPIOperation pOperation = RF(RDOOperation)::create(pRuntime, this, traceable(), pCondition, _oprName);
+	LPIOperation pOperation = rdo::Factory<RDOOperation>::create(pRuntime, this, traceable(), pCondition, _oprName);
 	ASSERT(pOperation);
 	pRuntime->addRuntimeOperation(pLogic, pOperation);
 	return pOperation;
@@ -307,17 +307,17 @@ RDOPatternKeyboard::~RDOPatternKeyboard()
 
 LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const std::string& _oprName)
 {
-	LPIKeyboard pKeyboard = RF(RDOKeyboard)::create(pRuntime, this, traceable(), _oprName);
+	LPIKeyboard pKeyboard = rdo::Factory<RDOKeyboard>::create(pRuntime, this, traceable(), _oprName);
 	ASSERT(pKeyboard);
-	pRuntime->addRuntimeOperation(pLogic, pKeyboard);
+	pRuntime->addRuntimeOperation(pLogic, pKeyboard.object_dynamic_cast<IOperation>());
 	return pKeyboard;
 }
 
 LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const LPRDOCalc& pCondition, const std::string& _oprName)
 {
-	LPIKeyboard pKeyboard = RF(RDOKeyboard)::create(pRuntime, this, traceable(), pCondition, _oprName);
+	LPIKeyboard pKeyboard = rdo::Factory<RDOKeyboard>::create(pRuntime, this, traceable(), pCondition, _oprName);
 	ASSERT(pKeyboard);
-	pRuntime->addRuntimeOperation(pLogic, pKeyboard);
+	pRuntime->addRuntimeOperation(pLogic, pKeyboard.object_dynamic_cast<IOperation>());
 	return pKeyboard;
 }
 

@@ -24,12 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 */
 class RDOPMDResultGroup: public IResult, public IResultGroup
 {
-DEFINE_IFACTORY(RDOPMDResultGroup);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IResult     )
-	QUERY_INTERFACE(IResultGroup)
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPMDResultGroup);
 private:
 	RDOPMDResultGroup(const std::string& name);
 	virtual ~RDOPMDResultGroup();

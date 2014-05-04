@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/interface/rdointerface.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/namespace.h"
 #include "simulator/runtime/rdo_value.h"
@@ -29,7 +28,7 @@ CLOSE_RDO_RUNTIME_NAMESPACE
   \interface IOperation
   \brief     Интерфейс модифицированного продукционного правила
 */
-class IOperation
+class IOperation: public virtual rdo::counter_reference
 {
 public:
 	virtual void   onBeforeChoiceFrom    (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
@@ -42,6 +41,7 @@ public:
 	virtual void   onAfterOperationEnd   (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
 	virtual double getNextTimeInterval   (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
 };
+DECLARE_POINTER(IOperation)
 
 #define DECLARE_IOperation \
 	virtual void   onBeforeChoiceFrom    (const rdo::runtime::LPRDORuntime& pRuntime); \
@@ -58,11 +58,12 @@ public:
   \interface IOperationTrace
   \brief     Интерфейс IOperationTrace
 */
-class IOperationTrace
+class IOperationTrace: public virtual rdo::counter_reference
 {
 public:
 	virtual std::string traceOperId() const = 0;
 };
+DECLARE_POINTER(IOperationTrace)
 
 #define DECLARE_IOperationTrace \
 	virtual std::string traceOperId() const;

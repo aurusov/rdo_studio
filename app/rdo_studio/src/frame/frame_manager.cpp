@@ -57,6 +57,11 @@ Manager::Manager(const OnChangeFrame& onChangeFrame)
 	//! @todo А почему объект не удаляется ? Это происходит автоматически ?
 
 	QObject::connect(g_pApp->getMainWndUI()->mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(onSubWindowActivated(QMdiSubWindow*)));
+
+	QObject::connect(
+		&g_pApp->getIMainWnd()->getDockFrame().getContext(), &TreeCtrl::itemDoubleClicked,
+		this, &Manager::onTreeWidgetItemDoubleClicked
+	);
 }
 
 Manager::~Manager()
@@ -67,16 +72,6 @@ Manager::~Manager()
 	{
 		delete pFrame;
 	}
-}
-
-bool Manager::init()
-{
-	connect(
-		&g_pApp->getIMainWnd()->getDockFrame().getContext(), &TreeCtrl::itemDoubleClicked,
-		this, &Manager::onTreeWidgetItemDoubleClicked
-	);
-
-	return true;
 }
 
 void Manager::insertFrame(const QString& frameName)

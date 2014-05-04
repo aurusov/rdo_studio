@@ -29,14 +29,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \class   RDOPROCAssign
   \brief   Процессный блок ASSIGN
 */
-class RDOPROCAssign: public RDOPROCBlock, public IBaseOperation
+class RDOPROCAssign: public RDOPROCBlock
 {
-DEFINE_IFACTORY(RDOPROCAssign);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPROCBlock  )
-	QUERY_INTERFACE       (IBaseOperation)
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPROCAssign);
 private:
 	RDOPROCAssign(LPIPROCProcess pProcess, const LPRDOCalc& pCalc);
 

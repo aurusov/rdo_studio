@@ -35,7 +35,8 @@ bool RDOPROCBlock::init()
 	if (!m_process)
 		return false;
 
-	m_process.query_cast<IBaseOperationContainer>()->append(this);
+	LPIBaseOperation pThis(const_cast<RDOPROCBlock*>(this));
+	m_process.object_dynamic_cast<IBaseOperationContainer>()->append(pThis);
 	return true;
 }
 
@@ -100,7 +101,7 @@ void RDOPROCProcess::next(const LPRDOPROCTransact& pTransact)
 		if (it != end())
 		{
 			// Берем этот блок
-			LPIPROCBlock block = *it;
+			LPIPROCBlock block = it->object_dynamic_cast<IPROCBlock>();
 			ASSERT(block);
 			// Находим перемещаемый транзакт в списке его транзактов
 			RDOPROCBlock::TransactIt it_res = block->transactFind(pTransact);
@@ -122,7 +123,7 @@ void RDOPROCProcess::next(const LPRDOPROCTransact& pTransact)
 			if (it != end())
 			{
 				// Берем этот блок
-				block = *it;
+				block = it->object_dynamic_cast<IPROCBlock>();
 				ASSERT(block);
 				pTransact->setBlock(block);
 				// Записываем в конец списка этого блока перемещаемый транзакт

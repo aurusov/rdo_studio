@@ -38,16 +38,7 @@ class RDOOperation
 	, public IOperationTrace
 {
 typedef RDOActivityPattern<RDOPatternOperation> pattern_type;
-DEFINE_IFACTORY(RDOOperation);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(pattern_type)
-	QUERY_INTERFACE_PARENT(RDOPatternPrior)
-	QUERY_INTERFACE(IBaseOperation)
-	QUERY_INTERFACE(IOperation)
-	QUERY_INTERFACE(IEvent)
-	QUERY_INTERFACE(IOperationTrace)
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOOperation);
 friend class RDOTrace;
 friend class RDOSimulatorTrace;
 friend class RDOSimulator;

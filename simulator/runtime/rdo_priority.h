@@ -26,10 +26,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 */
 class RDOPatternPrior: public IPriority
 {
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IPriority)
-QUERY_INTERFACE_END
-
 protected:
 	RDOPatternPrior();
 	virtual ~RDOPatternPrior();

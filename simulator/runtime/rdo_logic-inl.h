@@ -41,7 +41,7 @@ inline void RDOLogic<Order>::init(const LPRDORuntime& pRuntime)
 {
 	if (pRuntime)
 	{
-		pRuntime->appendLogic(rdo::UnknownPointer(this).query_cast<IBaseOperation>(), m_pParent);
+		pRuntime->appendLogic(this, m_pParent);
 	}
 }
 

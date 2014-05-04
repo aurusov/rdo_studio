@@ -661,7 +661,7 @@ RDOPatternEvent::RDOPatternEvent(const RDOParserSrcInfo& name_src_info, bool tra
 		RDOParser::s_parser()->runtime()->m_pMetaLogic,
 		RDOParser::s_parser()->runtime(),
 		name()
-	);
+	).object_dynamic_cast<IBaseOperation>();
 	ASSERT(m_pRuntimeEvent);
 }
 
@@ -783,7 +783,7 @@ void RDOPatternEvent::setBeforeStartModelPlaning(const rdo::runtime::LPRDOCalc& 
 runtime::LPRDOCalcEventPlan RDOPatternEvent::planning(const runtime::LPRDOCalc& time, const LPArithmContainer& params) const
 {
 	return rdo::Factory<runtime::RDOCalcEventPlan>::create(
-			m_pRuntimeEvent,
+			m_pRuntimeEvent.object_dynamic_cast<IEvent>(),
 			time,
 			createParamsCalcs(params->getContainer())
 	);
@@ -791,7 +791,7 @@ runtime::LPRDOCalcEventPlan RDOPatternEvent::planning(const runtime::LPRDOCalc& 
 
 runtime::LPRDOCalcEventStop RDOPatternEvent::stoping() const
 {
-	return rdo::Factory<runtime::RDOCalcEventStop>::create(m_pRuntimeEvent);
+	return rdo::Factory<runtime::RDOCalcEventStop>::create(m_pRuntimeEvent.object_dynamic_cast<IEvent>());
 }
 
 // --------------------------------------------------------------------------------

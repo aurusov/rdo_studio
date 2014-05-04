@@ -13,6 +13,7 @@
 #include "utils/src/smart_ptr/factory/factory-inl.h"
 #include "utils/src/smart_ptr/ref_counter/ref_counter.h"
 #include "utils/src/smart_ptr/ref_counter/ref_counter-inl.h"
+#include "intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo {
@@ -72,6 +73,12 @@ template<class T>
 template<class P>
 inline bool intrusive_ptr<T>::operator== (const intrusive_ptr<P>& sptr) const
 {
+	if (!m_object && !sptr.m_object)
+		return true;
+
+	if (!m_object || !sptr.m_object)
+		return false;
+
 	return &m_object->m_intrusive_counter == &sptr.m_object->m_intrusive_counter;
 }
 

@@ -24,7 +24,7 @@ LPIBaseOperation RDOOrderDPTPrior::sort(const LPRDORuntime& pRuntime, BaseOperat
 	BaseOperationList priorContainer;
 	for (const auto& operation: container)
 	{
-		if (operation.query_cast<IBaseOperation>()->onCheckCondition(pRuntime))
+		if (operation.object_dynamic_cast<IBaseOperation>()->onCheckCondition(pRuntime))
 		{
 			priorContainer.push_back(operation);
 		}
@@ -35,7 +35,7 @@ LPIBaseOperation RDOOrderDPTPrior::sort(const LPRDORuntime& pRuntime, BaseOperat
 
 	for (const auto& operation: container)
 	{
-		LPIPriority pPattern = operation;
+		LPIPriority pPattern = operation.object_dynamic_cast<IPriority>();
 		if (pPattern)
 		{
 			LPRDOCalc pPriorCalc = pPattern->getPrior();

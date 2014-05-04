@@ -51,7 +51,7 @@ RDOValue RDOCalcEventPlan::doCalc(const LPRDORuntime& pRuntime)
 
 	pRuntime->addTimePoint(
 		time.getDouble(),
-		m_pEvent,
+		m_pEvent.object_dynamic_cast<IBaseOperation>(),
 		boost::bind(&IEvent::onMakePlaned, m_pEvent.get(), pRuntime, params)
 	);
 	return time;
@@ -66,7 +66,7 @@ RDOCalcEventStop::RDOCalcEventStop(const LPIEvent& event)
 
 RDOValue RDOCalcEventStop::doCalc(const LPRDORuntime& pRuntime)
 {
-	pRuntime->removeTimePoint(m_pEvent);
+	pRuntime->removeTimePoint(m_pEvent.object_dynamic_cast<IBaseOperation>());
 	return RDOValue();
 }
 

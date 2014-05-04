@@ -71,14 +71,9 @@ protected:
   \class   RDOPROCSeize
   \brief   Процессный блок SEIZE
 */
-class RDOPROCSeize: public RDOPROCBlockForSeize, public IBaseOperation
+class RDOPROCSeize: public RDOPROCBlockForSeize
 {
-DEFINE_IFACTORY(RDOPROCSeize);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPROCBlockForSeize)
-	QUERY_INTERFACE       (IBaseOperation      )
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPROCSeize);
 private:
 	RDOPROCSeize(LPIPROCProcess process, std::vector <parser_for_Seize> From_Par);
 
@@ -94,14 +89,9 @@ private:
   \class   RDOPROCRelease
   \brief   Процессный блок RELEASE
 */
-class RDOPROCRelease: public RDOPROCBlockForSeize, public IBaseOperation
+class RDOPROCRelease: public RDOPROCBlockForSeize
 {
-DEFINE_IFACTORY(RDOPROCRelease);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPROCBlockForSeize)
-	QUERY_INTERFACE       (IBaseOperation      )
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPROCRelease);
 private:
 	RDOPROCRelease(LPIPROCProcess process, std::vector <parser_for_Seize> From_Par);
 

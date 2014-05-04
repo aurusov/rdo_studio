@@ -12,7 +12,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/interface/rdointerface.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/rdo_value.h"
 // --------------------------------------------------------------------------------
@@ -23,7 +22,7 @@ PREDECLARE_POINTER(RDORuntime)
 
 }} // namespace rdo::runtime
 
-class IEvent
+class IEvent: public virtual rdo::counter_reference
 {
 public:
 	virtual void onMakePlaned(const rdo::runtime::LPRDORuntime& pRuntime, const std::vector<rdo::runtime::RDOValue>& params) = 0;
@@ -31,5 +30,4 @@ public:
 	virtual ~IEvent()
 	{}
 };
-
-INTERFACE_PREDECLARATION(IEvent);
+DECLARE_POINTER(IEvent);

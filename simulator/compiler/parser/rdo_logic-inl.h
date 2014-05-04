@@ -27,7 +27,7 @@ inline RDOLogic<RTLogic, Activity>::~RDOLogic()
 template<class RTLogic, class Activity>
 inline typename RDOLogic<RTLogic, Activity>::LPActivity RDOLogic<RTLogic,Activity>::addNewActivity(const RDOParserSrcInfo& activity_src_info, const RDOParserSrcInfo& pattern_src_info)
 {
-	LPActivity pAactivity = rdo::Factory<Activity>::create(m_pRuntimeLogic, activity_src_info, pattern_src_info);
+	LPActivity pAactivity = rdo::Factory<Activity>::create(m_pRuntimeLogic.object_dynamic_cast<IBaseOperationContainer>(), activity_src_info, pattern_src_info);
 	ASSERT(pAactivity);
 	m_activityList.push_back(pAactivity);
 	return pAactivity;

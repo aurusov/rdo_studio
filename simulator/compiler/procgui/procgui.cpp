@@ -158,9 +158,9 @@ ProcGUIProcess::ProcGUIProcess(const rdo::runtime::LPRDORuntime& pRuntime)
 	: m_pRuntime(pRuntime)
 {
 	ASSERT(m_pRuntime);
-	m_pProcess = RF(rdo::runtime::RDOPROCProcess)::create("GuiProcess", m_pRuntime);
+	m_pProcess = rdo::Factory<rdo::runtime::RDOPROCProcess>::create("GuiProcess", m_pRuntime);
 	ASSERT(m_pProcess);
-	m_pProcess.query_cast<ILogic>()->init(m_pRuntime);
+	m_pProcess.object_dynamic_cast<ILogic>()->init(m_pRuntime);
 }
 
 ProcGUIProcess::~ProcGUIProcess()
@@ -266,15 +266,15 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(const LPProcGUIProcess& pProcess, con
 	rdo::runtime::LPRDOCalc pTimeCalc = getCalc();
 	ASSERT(pTimeCalc);
 
-	m_pBlock = RF(rdo::runtime::RDOPROCGenerate)::create(
-		pProcess->getProcess(),
+	m_pBlock = rdo::Factory<rdo::runtime::RDOPROCGenerate>::create(
+		pProcess->getProcess().object_dynamic_cast<IPROCProcess>(),
 		pTimeCalc,
 		pCreateTransactCalc,
 		m_pParams->getAmount()
 	);
 	ASSERT(m_pBlock);
 
-	LPIInternalStatisticsManager pStatisticsManager = m_pBlock;
+	LPIInternalStatisticsManager pStatisticsManager = m_pBlock.object_dynamic_cast<IInternalStatisticsManager>();
 	ASSERT(pStatisticsManager);
 
 	pStatisticsManager->setStatistics(m_pParams->getStatistics());
@@ -296,10 +296,10 @@ ProcGUIBlockTerminate::ProcGUIBlockTerminate(const LPProcGUIProcess& pProcess, c
 	//! \todo добавить поддержку арифметических выражений
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(static_cast<std::size_t>(m_pParams->getTermInc())));
 	ASSERT(pCalc);
-	m_pBlock = RF(rdo::runtime::RDOPROCTerminate)::create(pProcess->getProcess(), pCalc);
+	m_pBlock = rdo::Factory<rdo::runtime::RDOPROCTerminate>::create(pProcess->getProcess().object_dynamic_cast<IPROCProcess>(), pCalc);
 	ASSERT(m_pBlock);
 
-	LPIInternalStatisticsManager pStatisticsManagerDel = m_pBlock;
+	LPIInternalStatisticsManager pStatisticsManagerDel = m_pBlock.object_dynamic_cast<IInternalStatisticsManager>();
 	ASSERT(pStatisticsManagerDel);
 
 	pStatisticsManagerDel->setStatistics(m_pParams->getStatistics());
@@ -374,10 +374,10 @@ ProcGUIAdvance::ProcGUIAdvance(const LPProcGUIProcess& pProcess, const rdo::runt
 	ASSERT(pRuntime );
 	ASSERT(m_pParams);
 
-	m_pBlock = RF(rdo::runtime::RDOPROCAdvance)::create(pProcess->getProcess(), getCalc());
+	m_pBlock = rdo::Factory<rdo::runtime::RDOPROCAdvance>::create(pProcess->getProcess().object_dynamic_cast<IPROCProcess>(), getCalc());
 	ASSERT(m_pBlock);
 
-	LPIInternalStatisticsManager pStatisticsManagerProc = m_pBlock;
+	LPIInternalStatisticsManager pStatisticsManagerProc = m_pBlock.object_dynamic_cast<IInternalStatisticsManager>();
 	ASSERT(pStatisticsManagerProc);
 
 	pStatisticsManagerProc->setStatistics(m_pParams->getStatistics());
@@ -481,7 +481,7 @@ void ProcGUISeize::createRuntime(const LPProcGUIProcess& pProcess, const parser:
 	}
 	if (!m_parserForRuntime.empty())
 	{
-		m_pBlock = RF(rdo::runtime::RDOPROCSeize)::create(pProcess->getProcess(), m_parserForRuntime);
+		m_pBlock = rdo::Factory<rdo::runtime::RDOPROCSeize>::create(pProcess->getProcess().object_dynamic_cast<IPROCProcess>(), m_parserForRuntime);
 		ASSERT(m_pBlock);
 	}
 	else
@@ -591,7 +591,7 @@ void ProcGUIRelease::createRuntime(const LPProcGUIProcess& pProcess, const parse
 	}
 	if (!m_parserForRuntime.empty())
 	{
-		m_pBlock = RF(rdo::runtime::RDOPROCRelease)::create(pProcess->getProcess(), m_parserForRuntime);
+		m_pBlock = rdo::Factory<rdo::runtime::RDOPROCRelease>::create(pProcess->getProcess().object_dynamic_cast<IPROCProcess>(), m_parserForRuntime);
 		ASSERT(m_pBlock);
 	}
 	else
@@ -686,7 +686,7 @@ void ProcGUIQueue::createRuntime(const LPProcGUIProcess& pProcess, const parser:
 	{
 		pParser->error().error(parser::RDOParserSrcInfo(), rdo::format("Внутренняя ошибка ProcGUIQueue: не нашли parser-ресурс '%s'", m_resourceName.c_str()));
 	}
-	m_pBlock = RF(rdo::runtime::RDOPROCQueue)::create(pProcess->getProcess(), m_parserForRuntime);
+	m_pBlock = rdo::Factory<rdo::runtime::RDOPROCQueue>::create(pProcess->getProcess().object_dynamic_cast<IPROCProcess>(), m_parserForRuntime);
 	ASSERT(m_pBlock);
 }
 
@@ -760,7 +760,7 @@ void ProcGUIDepart::createRuntime(const LPProcGUIProcess& pProcess, const parser
 	{
 		pParser->error().error(parser::RDOParserSrcInfo(), rdo::format("Внутренняя ошибка ProcGUIDepart: не нашли parser-ресурс '%s'", m_resourceName.c_str()));
 	}
-	m_pBlock = RF(rdo::runtime::RDOPROCDepart)::create(pProcess->getProcess(), m_parserForRuntime);
+	m_pBlock = rdo::Factory<rdo::runtime::RDOPROCDepart>::create(pProcess->getProcess().object_dynamic_cast<IPROCProcess>(), m_parserForRuntime);
 	ASSERT(m_pBlock);
 }
 

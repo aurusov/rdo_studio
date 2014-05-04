@@ -19,7 +19,6 @@
 #endif
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo.h"
-#include "simulator/runtime/rdo_runtime_interface_registrator.h"
 #include "simulator/runtime/rdo_logic_i.h"
 // --------------------------------------------------------------------------------
 
@@ -31,14 +30,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \brief   Базовый класс для логик РДО
 */
 template <class Order>
-class RDOLogic: public IBaseOperation, public IBaseOperationContainer, public ILogic, CAST_TO_UNKNOWN
+class RDOLogic: public IBaseOperation, public IBaseOperationContainer, public ILogic
 {
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IBaseOperation)
-	QUERY_INTERFACE(IBaseOperationContainer)
-	QUERY_INTERFACE(ILogic)
-QUERY_INTERFACE_END
-
 public:
 	typedef  BaseOperationList                  ChildList;
 	typedef  BaseOperationList::iterator        Iterator;
@@ -94,8 +87,6 @@ public:
 class RDOLogicSimple: public RDOLogic<RDOOrderSimple>
 {
 protected:
-	DEFINE_IFACTORY(RDOLogicSimple);
-
 	RDOLogicSimple(const LPRDORuntime& pRuntime, LPIBaseOperationContainer pParent)
 		: RDOLogic<RDOOrderSimple>(pRuntime, pParent)
 	{}
@@ -109,9 +100,8 @@ protected:
 */
 class RDOLogicMeta: public RDOLogic<RDOOrderMeta>
 {
+DECLARE_FACTORY(RDOLogicMeta);
 protected:
-	DEFINE_IFACTORY(RDOLogicMeta);
-
 	RDOLogicMeta()
 		: RDOLogic<RDOOrderMeta>(NULL)
 	{}

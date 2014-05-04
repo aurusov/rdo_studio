@@ -2,8 +2,8 @@
   \copyright (c) RDO-Team, 2011
   \file      rdo_type.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -62,7 +62,7 @@ public:
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOType);
 class RDOType
-	: public rdo::counter_reference
+	: public virtual rdo::counter_reference
 	, public IType
 	, public IModelStructure
 {

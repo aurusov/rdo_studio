@@ -104,7 +104,6 @@ SET(FUN_FILES
 
 SET(INTERFACES_FILES
 	rdo_model_i.h
-	rdo_runtime_interface_registrator.h
 )
 
 SET(PCH_FILES

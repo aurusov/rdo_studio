@@ -17,7 +17,6 @@
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/rdo.h"
 #include "simulator/runtime/rdotrace_i.h"
-#include "simulator/runtime/rdo_runtime_interface_registrator.h"
 #include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------
 
@@ -111,10 +110,6 @@ private:
 */
 class RDOTraceableObject: public ITrace
 {
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(ITrace)
-QUERY_INTERFACE_END
-
 public:
 	enum { NONE = 0xFFFFFFFF };
 
@@ -143,11 +138,6 @@ private:
 */
 class RDOResultTrace: public RDOTraceableObject, public IResultTrace, public IResultTraceValue
 {
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOTraceableObject)
-	QUERY_INTERFACE(IResultTrace)
-QUERY_INTERFACE_END
-
 public:
 	RDOResultTrace(const LPRDORuntime& pRuntime, bool trace);
 

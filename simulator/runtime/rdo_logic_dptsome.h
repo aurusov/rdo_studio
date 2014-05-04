@@ -24,12 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 */
 class RDODPTSome: public RDOLogicSimple, public RDOPatternPrior
 {
-DEFINE_IFACTORY(RDODPTSome);
-QUERY_INTERFACE_BEGIN
-QUERY_INTERFACE_PARENT(RDOLogicSimple)
-QUERY_INTERFACE_PARENT(RDOPatternPrior)
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDODPTSome);
 private:
 	RDODPTSome(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent = NULL);
 	virtual ~RDODPTSome();

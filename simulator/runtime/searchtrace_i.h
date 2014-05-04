@@ -12,14 +12,13 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/interface/rdointerface.h"
 // --------------------------------------------------------------------------------
 
 /*!
   \interface IDPTSearchTraceStatistics
   \brief     Интерфейс IDPTSearchTraceStatistics
 */
-class IDPTSearchTraceStatistics
+class IDPTSearchTraceStatistics: public virtual rdo::counter_reference
 {
 public:
 	/*!
@@ -41,6 +40,7 @@ public:
 	virtual void getStatsDOUBLE(Type type, double& min, double& max, double& med) const = 0;
 	virtual void getStatsRUINT(Type type, std::size_t&  min, std::size_t&  max, double& med) const = 0;
 };
+DECLARE_POINTER(IDPTSearchTraceStatistics)
 
 #define DECLARE_IDPTSearchTraceStatistics                                                \
 	virtual std::size_t getCalcCnt() const;                                              \

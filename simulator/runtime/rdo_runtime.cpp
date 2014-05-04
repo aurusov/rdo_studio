@@ -502,35 +502,36 @@ void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer pLogic, const LPIEven
 {
 	ASSERT(pLogic);
 	ASSERT(pEvent);
-	appendBaseOperation(pLogic, pEvent);
+	appendBaseOperation(pLogic, pEvent.object_dynamic_cast<IBaseOperation>());
 }
 
 void RDORuntime::addRuntimeRule(LPIBaseOperationContainer pLogic, const LPIRule& pRule)
 {
 	ASSERT(pLogic);
 	ASSERT(pRule );
-	appendBaseOperation(pLogic, pRule);
+	appendBaseOperation(pLogic, pRule.object_dynamic_cast<IBaseOperation>());
 }
 
 void RDORuntime::addRuntimeOperation(LPIBaseOperationContainer pLogic, const LPIOperation& pOperation)
 {
 	ASSERT(pLogic    );
 	ASSERT(pOperation);
-	appendBaseOperation(pLogic, pOperation);
+	appendBaseOperation(pLogic, pOperation.object_dynamic_cast<IBaseOperation>());
 }
 
 void RDORuntime::addRuntimeResult(const LPIResult& pResult)
 {
 	m_resultAllList.push_back(pResult);
-	LPIResultTrace resultTrace = pResult;
-	LPITrace       trace       = pResult;
+	LPIResultTrace resultTrace = pResult.object_dynamic_cast<IResultTrace>();
+	LPITrace trace = pResult.object_dynamic_cast<ITrace>();
 	if (resultTrace && trace && trace->traceable())
 	{
 		m_resultTraceList.push_back(resultTrace);
 	}
-	if (pResult.query_cast<IResultWatchValue>())
+	const LPIResultWatchValue watch = pResult.object_dynamic_cast<IResultWatchValue>();
+	if (watch)
 	{
-		m_resultWatchValueList.push_back(pResult);
+		m_resultWatchValueList.push_back(watch);
 	}
 }
 

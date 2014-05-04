@@ -44,8 +44,8 @@ RDODPTActivityCompare::RDODPTActivityCompare(const LPRDORuntime& pRuntime)
 
 bool RDODPTActivityCompare::operator()(const LPIBaseOperation& pOpr1, const LPIBaseOperation& pOpr2)
 {
-	LPIPriority pPattern1 = pOpr1;
-	LPIPriority pPattern2 = pOpr2;
+	LPIPriority pPattern1 = pOpr1.object_dynamic_cast<IPriority>();
+	LPIPriority pPattern2 = pOpr2.object_dynamic_cast<IPriority>();
 	if (pPattern1 && pPattern2)
 	{
 		LPRDOCalc pPrior1 = pPattern1->getPrior();

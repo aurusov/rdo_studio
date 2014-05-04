@@ -33,7 +33,7 @@ RDOSimulator::RDOSimulator()
 	: RDOSimulatorBase( )
 	, m_sizeofSim     (0)
 {
-	m_pMetaLogic = RF(RDOLogicMeta)::create();
+	m_pMetaLogic = rdo::Factory<RDOLogicMeta>::create();
 }
 
 RDOSimulator::~RDOSimulator()
@@ -127,7 +127,7 @@ bool RDOSimulator::doOperation()
 		{
 			// Не нашли запланированное событие
 			// Проверить все возможные события и действия, вызвать первое, которое может быть вызвано
-			LPIBaseOperation pMetaLogic = m_pMetaLogic.query_cast<IBaseOperation>();
+			LPIBaseOperation pMetaLogic = m_pMetaLogic.object_dynamic_cast<IBaseOperation>();
 			try
 			{
 				res = pMetaLogic->onCheckCondition(pRuntime);
@@ -154,7 +154,7 @@ bool RDOSimulator::doOperation()
 void RDOSimulator::preProcess()
 {
 	LPRDORuntime pRuntime(static_cast<RDORuntime*>(this));
-	m_pMetaLogic.query_cast<IBaseOperation>()->onStart(pRuntime);
+	m_pMetaLogic.object_dynamic_cast<IBaseOperation>()->onStart(pRuntime);
 	onResetResult();
 }
 
@@ -164,8 +164,8 @@ std::string writeActivitiesStructureRecurse(const LPIBaseOperationContainer& pLo
 	IBaseOperationContainer::CIterator it = pLogic->begin();
 	while (it != pLogic->end())
 	{
-		LPIModelStructure pModelStructure = *it;
-		if (pModelStructure && (pModelStructure.query_cast<IRule>() || pModelStructure.query_cast<IOperation>()))
+		LPIModelStructure pModelStructure = it->object_dynamic_cast<IModelStructure>();
+		if (pModelStructure && (pModelStructure.object_dynamic_cast<IRule>() || pModelStructure.object_dynamic_cast<IOperation>()))
 		{
 			stream << counter++ << " ";
 			pModelStructure->writeModelStructure(stream);
@@ -181,8 +181,8 @@ std::string writeActivitiesStructureRecurse(const LPIBaseOperationContainer& pLo
 	it = pLogic->begin();
 	while (it != pLogic->end())
 	{
-		LPIModelStructure pModelStructure = *it;
-		if (pModelStructure && pModelStructure.query_cast<IEvent>() && !pModelStructure.query_cast<IOperation>())
+		LPIModelStructure pModelStructure = it->object_dynamic_cast<IModelStructure>();
+		if (pModelStructure && pModelStructure.object_dynamic_cast<IEvent>() && !pModelStructure.object_dynamic_cast<IOperation>())
 		{
 			stream << _counter++ << " ";
 			counter++;
@@ -194,10 +194,10 @@ std::string writeActivitiesStructureRecurse(const LPIBaseOperationContainer& pLo
 	it = pLogic->begin();
 	while (it != pLogic->end())
 	{
-		LPILogic pLogic = *it;
+		LPILogic pLogic = it->object_dynamic_cast<ILogic>();
 		if (pLogic)
 		{
-			stream << writeActivitiesStructureRecurse(pLogic, counter);
+			stream << writeActivitiesStructureRecurse(pLogic.object_dynamic_cast<IBaseOperationContainer>(), counter);
 		}
 		++it;
 	}

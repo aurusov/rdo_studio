@@ -62,14 +62,9 @@ protected:
   \class   RDOPROCQueue
   \brief   Процессный блок QUEUE
 */
-class RDOPROCQueue: public RDOPROCBlockForQueue, public IBaseOperation
+class RDOPROCQueue: public RDOPROCBlockForQueue
 {
-DEFINE_IFACTORY(RDOPROCQueue);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPROCBlockForQueue)
-	QUERY_INTERFACE       (IBaseOperation      )
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPROCQueue);
 public:
 	static std::size_t getDefaultValue();
 	static std::string getQueueParamName();
@@ -84,14 +79,9 @@ private:
   \class   RDOPROCDepart
   \brief   Процессный блок DEPART
 */
-class RDOPROCDepart: public RDOPROCBlockForQueue, public IBaseOperation
+class RDOPROCDepart: public RDOPROCBlockForQueue
 {
-DEFINE_IFACTORY(RDOPROCDepart);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPROCBlockForQueue)
-	QUERY_INTERFACE       (IBaseOperation      )
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPROCDepart);
 public:
 	static std::size_t getDefaultValue();
 	static std::string getDepartParamName();

@@ -3,8 +3,8 @@
   \file      rdortp_param.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -29,6 +29,7 @@ class RDORTPParam
 	: public RDOParam
 	, public IModelStructure
 	, public IName
+	, public virtual rdo::counter_reference
 {
 DECLARE_FACTORY(RDORTPParam);
 public:

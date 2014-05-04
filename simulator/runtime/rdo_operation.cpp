@@ -68,7 +68,7 @@ bool RDOOperation::onCheckCondition(const LPRDORuntime& pRuntime)
 
 IBaseOperation::BOResult RDOOperation::onDoOperation(const LPRDORuntime& pRuntime)
 {
-	LPIOperation newOper = RF(RDOOperation)::create(pRuntime, *this);
+	LPIOperation newOper = rdo::Factory<RDOOperation>::create(pRuntime, *this);
 	newOper->onBeforeOperationBegin(pRuntime);
 	newOper->convertBegin(pRuntime);
 
@@ -79,10 +79,10 @@ IBaseOperation::BOResult RDOOperation::onDoOperation(const LPRDORuntime& pRuntim
 		params.push_back(param->calcValue(pRuntime));
 	}
 
-	LPIEvent event(newOper);
+	LPIEvent event(newOper.object_dynamic_cast<IEvent>());
 	pRuntime->addTimePoint(
 		newOper->getNextTimeInterval(pRuntime) + pRuntime->getCurrentTime(),
-		event,
+		event.object_dynamic_cast<IBaseOperation>(),
 		boost::bind(&IEvent::onMakePlaned, event.get(), pRuntime, params)
 	);
 	newOper->onAfterOperationBegin(pRuntime);

@@ -17,6 +17,7 @@
 #include "simulator/runtime/rdo_resource.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdo_keyboard_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -31,7 +32,7 @@ class RDOKeyboard;
 */
 PREDECLARE_POINTER(RDOPattern);
 class RDOPattern
-	: public rdo::counter_reference
+	: public virtual rdo::counter_reference
 	, public RDORuntimeObject
 	, public RDOTraceableObject
 {

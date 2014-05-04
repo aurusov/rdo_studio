@@ -21,6 +21,7 @@
 #include "simulator/runtime/rdo_logic.h"
 #include "simulator/runtime/rdo_priority.h"
 #include "simulator/runtime/rdo_res_type.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -29,13 +30,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \class   RDOPROCBlock
   \brief   Базовый класс для процессных блоков (операторов) РДО
 */
-class RDOPROCBlock: public IPROCBlock, public IInit, CAST_TO_UNKNOWN
+class RDOPROCBlock: public IPROCBlock, public IBaseOperation
 {
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IPROCBlock)
-	QUERY_INTERFACE(IInit     )
-QUERY_INTERFACE_END
-
 friend class RDOPROCTransact;
 friend class RDOPROCProcess;
 friend class RDOPROCResource;
@@ -48,7 +44,7 @@ protected:
 	virtual ~RDOPROCBlock();
 
 	DECLARE_IPROCBlock;
-	DECLARE_IInit;
+	virtual bool init();
 };
 
 /*!
@@ -57,12 +53,7 @@ protected:
 */
 class RDOPROCProcess: public RDOLogicSimple, public IPROCProcess, public RDOPatternPrior
 {
-DEFINE_IFACTORY(RDOPROCProcess)
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE       (IPROCProcess   )
-	QUERY_INTERFACE_PARENT(RDOLogicSimple )
-	QUERY_INTERFACE_PARENT(RDOPatternPrior)
-QUERY_INTERFACE_END
+DECLARE_FACTORY(RDOPROCProcess)
 friend class RDOPROCBlock;
 
 public:

@@ -25,14 +25,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \class   RDOActivity
   \brief   Активность БЗ
 */
-class RDOActivity: public RDOTraceableObject, public IActivity, public IActivityTrace, CAST_TO_UNKNOWN
+class RDOActivity: public RDOTraceableObject, public IActivity, public IActivityTrace
 {
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOTraceableObject)
-	QUERY_INTERFACE(IActivity)
-	QUERY_INTERFACE(IActivityTrace)
-QUERY_INTERFACE_END
-
 protected:
 	RDOActivity(bool trace, const std::string& name);
 	virtual ~RDOActivity();
@@ -60,12 +54,6 @@ private:
 template<class T>
 class RDOActivityPattern: public RDOActivity, public IModelStructure, public IActivityPatternTrace
 {
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOActivity)
-	QUERY_INTERFACE(IModelStructure)
-	QUERY_INTERFACE(IActivityPatternTrace)
-QUERY_INTERFACE_END
-
 protected:
 	RDOActivityPattern(const rdo::intrusive_ptr<T>& pPattern, bool trace, const std::string& name);
 	virtual ~RDOActivityPattern();

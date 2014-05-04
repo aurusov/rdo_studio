@@ -45,7 +45,7 @@ LPIBaseOperation RDOOrderMeta::sort(const LPRDORuntime& pRuntime, BaseOperationL
 
 	for (const auto& operation: container)
 	{
-		LPIPriority pPattern = operation;
+		LPIPriority pPattern = operation.object_dynamic_cast<IPriority>();
 		if (pPattern)
 		{
 			LPRDOCalc pPriorCalc = pPattern->getPrior();

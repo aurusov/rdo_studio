@@ -232,15 +232,6 @@ Model::~Model()
 //	closeModel();
 }
 
-bool Model::init()
-{
-	IInit* pFrameManagerInit = dynamic_cast<IInit*>(&m_frameManager);
-	ASSERT(pFrameManagerInit);
-	pFrameManagerInit->init();
-
-	return true;
-}
-
 void Model::proc(RDOThread::RDOMessageInfo& msg)
 {
 	switch (msg.message)

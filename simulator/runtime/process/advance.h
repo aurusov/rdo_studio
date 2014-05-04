@@ -28,15 +28,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \class   RDOPROCAdvance
   \brief   Процессный блок ADVANCE
 */
-class RDOPROCAdvance: public RDOPROCBlock, public IBaseOperation, public IInternalStatisticsManager
+class RDOPROCAdvance: public RDOPROCBlock, public IInternalStatisticsManager
 {
-DEFINE_IFACTORY(RDOPROCAdvance);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPROCBlock  )
-	QUERY_INTERFACE       (IBaseOperation)
-	QUERY_INTERFACE       (IInternalStatisticsManager)
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPROCAdvance);
 protected:
 	LPRDOCalc pDelayCalc;
 
