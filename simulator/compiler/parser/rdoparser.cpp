@@ -315,18 +315,34 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 
 	if (method == Context::METHOD_OPERATOR_DOT)
 	{
-		//! Типы ресурсов
 		LPRDORTPResType pResType = findRTPResType(identifier);
 		if (pResType)
 		{
 			return FindResult(SwitchContext(pResType));
 		}
 
-		//! Ресурсы
 		LPRDORSSResource pResource = findRSSResource(identifier);
 		if (pResource)
 		{
 			return FindResult(SwitchContext(pResource));
+		}
+
+		LPRDOPATPattern pPattern = findPATPattern(identifier);
+		if (pPattern)
+		{
+			return FindResult(SwitchContext(pPattern));
+		}
+
+		LPRDOPROCProcess pProcess = findPROCProcess(identifier);
+		if (pProcess)
+		{
+			return FindResult(SwitchContext(pProcess));
+		}
+
+		LPRDOResultGroup pResultGroup = findResultGroup(identifier);
+		if (pResultGroup)
+		{
+			return FindResult(SwitchContext(pResultGroup));
 		}
 	}
 
