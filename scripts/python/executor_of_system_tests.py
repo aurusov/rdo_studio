@@ -1,9 +1,7 @@
-#!python3
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 ###############################################################################
 # Copyright (c) 2012-2013 Evgeny Proydakov <lord.tiran@gmail.com>
-###############################################################################
- # -*- coding: utf-8 -*-
 ###############################################################################
 
 import os
@@ -43,7 +41,7 @@ RDO_CONSOLE_COMPILE_LOG_FILE_NAME = 'log.txt'
 # test target type
 TARGET_CONSOLE   = 'CONSOLE'
 TAGRET_CONVERTER = 'CONVERTOR'
-TARGET_GUI       = 'uGUI'
+TARGET_GUI       = 'GUI'
 
 DEFAULT_EXIT_CODE = 0
 
@@ -81,14 +79,12 @@ def safe_exit():
 
 def get_test_files(dir):
     files = utils.get_files_list(dir)
-    
+
     test_files = []
-    
     for file in files:
         res = file.endswith(test_expansion)
         if res == True:
             test_files.append(file)
-
     return test_files
 
 ###############################################################################
@@ -96,13 +92,11 @@ def get_test_files(dir):
 def get_executables(dir):
     files = utils.get_files_list(dir)
 
-    rdo_ex = ''
-
+    rdo_ex = None
     for file in files:
         res = file.endswith(rdo_ex_substr)
         if res == True:
             rdo_ex = file
-
         if rdo_ex:
            break
 
@@ -114,10 +108,16 @@ def get_node_attribute_from_dom(dom, node_text, attribute_text):
 
     nodes = dom.getElementsByTagName(node_text)
     if not len(nodes):
-        return ''
+        return None
 
     node = nodes[0]
     attribute_text_data = node.getAttribute(attribute_text)
+
+    if not attribute_text_data:
+        return None
+
+    if len(attribute_text_data) < 1:
+        return None
 
     return attribute_text_data
 
@@ -132,14 +132,12 @@ def compare_etalons(etalons, basedir):
         res = compare.files(source_file, target_file, type)
                     
         compare_string = 'ERROR'
-                    
         if res == True:
             compare_string = 'OK'
         else:
             cycle_exit_code = APP_CODE_TERMINATION_ERROR
-
         utils.enc_print ('COMPARE:  ', etalon['source'], '  AND  ', etalon['target'], ':  ', compare_string)
-    
+
     return cycle_exit_code
 
 ###############################################################################
@@ -147,8 +145,9 @@ def compare_etalons(etalons, basedir):
 def test_console(dirname, model):
     # run rdo_console app on test model
     model_file = '' + dirname + model['name']
+    exit_code = int(model['exit_code'])
     command = (rdo_ex + ' -i ' + utils.wrap_the_string_in_quotes(model_file))
-    if len(model['script']) > 0:
+    if model['script'] and len(model['script']) > 0:
         command += ' -s ' + utils.wrap_the_string_in_quotes(dirname + model['script'])
     utils.enc_print('Run:', command, '\n')
     simulation_code = subprocess.call(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -161,20 +160,20 @@ def test_console(dirname, model):
         simulation_exit_code_string = 'OK'
     else:
         cycle_exit_code = APP_CODE_TERMINATION_ERROR
-            
+
     utils.enc_print ('CHECK SIM EXIT CODE  :', simulation_exit_code_string, '\n')
-            
-    # nornal simulation check
-    if simulation_code == RDO_CONSOLE_TERMINATION_NORMAL:
+
+    # check etalons
+    if simulation_code == exit_code and model['etalons'] and len(model['etalons']):
         try:
             # compare etalons
-            cycle_exit_code = compare_etalons(etalons, dirname)
+            cycle_exit_code = compare_etalons(model['etalons'], dirname)
         except:
             traceback.print_exc(file=sys.stdout)
             cycle_exit_code = APP_CODE_TERMINATION_ERROR
 
-    # check compile error log
-    elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_PARSE_ERROR:
+    # check error log
+    elif simulation_code == exit_code and model['log_compilation']:
         try:
             simulation_log_file = dirname + RDO_CONSOLE_COMPILE_LOG_FILE_NAME
             simulation_log_file_etalon = dirname + model['log_compilation']
@@ -200,12 +199,13 @@ def test_convertor(dirname, model):
     try:
         shutil.copytree(dirname, temp_directory_name, ignore=shutil.ignore_patterns(*IGNORE_PATTERNS))
         model_file = '' + temp_directory_name + model['name']
+        exit_code = int(model['exit_code'])
         command = (rdo_ex + ' -i ' + utils.wrap_the_string_in_quotes(model_file) + ' -c')
         utils.enc_print ('Run:', command, '\n')
         convertor_exit_code = subprocess.call(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         utils.enc_print ('CONVERT EXIT CODE :', convertor_exit_code, '\n')
         if convertor_exit_code == exit_code:
-            cycle_exit_code = compare_etalons(etalons, temp_directory_name)
+            cycle_exit_code = compare_etalons(model['etalons'], temp_directory_name)
         if cycle_exit_code != APP_CODE_TERMINATION_NORMAL:
             arc_name = dirname + text_uuid + '.zip'
             utils.enc_print('Make zip archive: ' + arc_name)
@@ -268,12 +268,11 @@ if not os.path.exists(rdo_ex):
 files = get_test_files(model_directory)
 files.sort()
 
-utils.enc_print ('\nDEBUG INFO')
 utils.enc_print ('\nFind RDO executables    :')
 utils.enc_print (rdo_ex)
 
 utils.enc_print ('\nFind test project files :')
-utils.print_list_of_line(files)
+utils.print_list_by_line(files)
 
 # parse xml and start tests
 utils.enc_print ('\nSTARTED TEST CYCLE\n')
@@ -317,7 +316,14 @@ for task in files:
         utils.enc_print ('Log compilation file :', model['log_compilation'])
         sys.stdout.flush()
 
-        etalons = []
+        try:
+            exit_code = int(model['exit_code'])
+        except:
+            bad_models.append(task)
+            traceback.print_exc(file=sys.stdout)
+            continue
+
+        model['etalons'] = []
         node_etalons = dom.getElementsByTagName('etalons')
         if len(node_etalons):
             files = node_etalons[0].getElementsByTagName('file')
@@ -326,22 +332,17 @@ for task in files:
                 etalon['source'] = file.getAttribute('source')
                 etalon['target'] = file.getAttribute('target')
                 etalon['type']   = file.getAttribute('type')
-                etalons.append(etalon)
-        try:
-            exit_code = int(model['exit_code'])
-        except:
-            traceback.print_exc(file=sys.stdout)
-            exit_code = DEFAULT_EXIT_CODE
+                model['etalons'].append(etalon)
 
-        if len(etalons):
+        if len(model['etalons']):
             utils.enc_print ('\n', 'Etalons :', '\n')
-        for etalon in etalons:
+        for etalon in model['etalons']:
             utils.enc_print ('SOURCE:  ', etalon['source'], '  TARGET:  ', etalon['target'], '  TYPE:  ',   etalon['type'])
         utils.enc_print ('')
 
         cycle_exit_code = APP_CODE_TERMINATION_ERROR
 
-        # select console target
+        # select target
         if model['target'] == TARGET_CONSOLE:
             cycle_exit_code = test_console(dirname, model)
         elif model['target'] == TAGRET_CONVERTER:
@@ -354,7 +355,7 @@ for task in files:
             G_EXIT_CODE = APP_CODE_TERMINATION_ERROR
 
 utils.enc_print ('\n', 'MODEL WITH ERRORS:')
-utils.print_list_of_line(bad_models)
+utils.print_list_by_line(bad_models)
 
 if(len(bad_models) < 1):
     utils.enc_print ('(empty)')
