@@ -539,6 +539,9 @@ void RDOPATPattern::addRelResBody(const RDOParserSrcInfo& body_name)
 	m_pCurrRelRes->m_bodySrcInfo = body_name;
 	m_pCurrRelRes->m_alreadyHaveConverter = true;
 	m_currentRelResIndex++;
+
+	popRelevantResourceContext();
+	pushRelevantResourceContext(m_pCurrRelRes);
 }
 
 void RDOPATPattern::addRelResUsage(const LPRDOPATChoiceFrom& pChoiceFrom, const LPRDOPATChoiceOrder& pChoiceOrder)
@@ -581,9 +584,6 @@ void RDOPATPattern::addRelResUsage(const LPRDOPATChoiceFrom& pChoiceFrom, const 
 			parser::g_error().error(pChoiceOrder->src_info(), rdo::format("Релевантный ресурс создается, для него нельзя использовать правило выбора '%s'", pChoiceOrder->asString().c_str()));
 		}
 	}
-
-	popRelevantResourceContext();
-	pushRelevantResourceContext(m_pCurrRelRes);
 
 	m_pCurrRelRes->m_pChoiceFrom  = pChoiceFrom;
 	m_pCurrRelRes->m_pChoiceOrder = pChoiceOrder;
@@ -763,8 +763,6 @@ void RDOPatternEvent::addRelResUsage(const LPRDOPATChoiceFrom& pChoiceFrom, cons
 	{
 		parser::g_error().error(pChoiceFrom->src_info(), rdo::format("Для релевантных ресурсов события нельзя использовать правило выбора '%s'", pChoiceOrder->asString().c_str()));
 	}
-	popRelevantResourceContext();
-	pushRelevantResourceContext(m_pCurrRelRes);
 
 	m_pCurrRelRes->m_pChoiceFrom  = pChoiceFrom;
 	m_pCurrRelRes->m_pChoiceOrder = pChoiceOrder;
