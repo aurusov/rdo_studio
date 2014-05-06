@@ -2903,25 +2903,27 @@ nochange_statement
 	;
 
 stopping_statement
-	: RDO_IDENTIF '.' RDO_Stopping '(' ')' ';'
+	: param_full_name '.' RDO_Stopping '(' ')' ';'
 	{
 		#PASS2
 		{
-			const std::string eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-			LPRDOPATPattern pPattern = PARSER->findPATPattern(eventName);
+			LPContext pPatternContext = PARSER->context();
+			ASSERT(pPatternContext);
+			PARSER->contextStack()->pop<Context>();
+			LPRDOPATPattern pPattern = pPatternContext.object_dynamic_cast<RDOPATPattern>();
 			if (!pPattern)
 			{
-				PARSER->error().error(@1, rdo::format("Попытка остановить неизвестное событие: %s", eventName.c_str()));
+				PARSER->error().error(@1, rdo::format("Попытка остановить неизвестное событие: %s", pPattern->name().c_str()));
 			}
 
 			LPRDOPatternEvent pEvent = pPattern.object_dynamic_cast<RDOPatternEvent>();
 			if (!pEvent)
 			{
-				PARSER->error().error(@1, rdo::format("Паттерн %s не является событием", eventName.c_str()));
+				PARSER->error().error(@1, rdo::format("Паттерн %s не является событием", pEvent->name().c_str()));
 			}
 
 			rdo::runtime::LPRDOCalcEventStop pCalc = pEvent->stoping();
-			pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Остановка события %s", eventName.c_str())));
+			pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Остановка события %s", pEvent->name().c_str())));
 
 			LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
 			ASSERT(pType);
@@ -2932,7 +2934,7 @@ stopping_statement
 			$$ = PARSER->stack().push(pExpression);
 		}
 	}
-	| RDO_IDENTIF '.' RDO_Stopping '(' ')' error
+	| param_full_name '.' RDO_Stopping '(' ')' error
 	{
 		#PASS2
 		{
@@ -2942,29 +2944,30 @@ stopping_statement
 	;
 
 planning_statement
-	: RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')' ';'
+	: param_full_name '.' RDO_Planning '(' arithm_list ')' ';'
 	{
 		#PASS2
 		{
-			const std::string eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-			LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
-
-			LPRDOPATPattern pPattern = PARSER->findPATPattern(eventName);
+			LPContext pPatternContext = PARSER->stack().pop<Context>($1);
+			ASSERT(pPatternContext);
+			LPRDOPATPattern pPattern = pPatternContext.object_dynamic_cast<RDOPATPattern>();
 			if (!pPattern)
 			{
-				PARSER->error().error(@1, rdo::format("Попытка запланировать неизвестное событие: %s", eventName.c_str()));
+				PARSER->error().error(@1, rdo::format("Попытка запланировать неизвестное событие: %s", pPattern->name().c_str()));
 			}
+
+			LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
 
 			LPRDOPatternEvent pEvent = pPattern.object_dynamic_cast<RDOPatternEvent>();
 			if (!pEvent)
 			{
-				PARSER->error().error(@1, rdo::format("Паттерн %s не является событием", eventName.c_str()));
+				PARSER->error().error(@1, rdo::format("Паттерн %s не является событием", pEvent->name().c_str()));
 			}
 
 			ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
 			if (arithmIt == pArithmList->getContainer().end())
 			{
-				PARSER->error().error(@1, rdo::format("Не указано время планирования события: %s", eventName.c_str()));
+				PARSER->error().error(@1, rdo::format("Не указано время планирования события: %s", pEvent->name().c_str()));
 			}
 
 			LPRDOFUNArithm pTimeArithm = *arithmIt;
@@ -2985,7 +2988,7 @@ planning_statement
 			ASSERT(pCalcTime);
 
 			rdo::runtime::LPRDOCalcEventPlan pEventPlan = pEvent->planning(pCalcTime, pParamList);
-			pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Планирование события %s в момент времени %s", eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
+			pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Планирование события %s в момент времени %s", pEvent->name().c_str(), pCalcTime->srcInfo().src_text().c_str())));
 
 			LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
 			ASSERT(pType);
@@ -2996,28 +2999,28 @@ planning_statement
 			$$ = PARSER->stack().push(pExpression);
 		}
 	}
-	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')' error
+	| param_full_name '.' RDO_Planning '(' arithm_list ')' error
 	{
 		#PASS2
 		{
 			PARSER->error().error(@7, "Не найден символ окончания инструкции - точка с запятой");
 		}
 	}
-	| RDO_IDENTIF '.' RDO_Planning '(' error
+	| param_full_name '.' RDO_Planning '(' error
 	{
 		#PASS2
 		{
 			PARSER->error().error(@5, "Ошибка в арифметическом выражении");
 		}
 	}
-	| RDO_IDENTIF '.' RDO_Planning error
+	| param_full_name '.' RDO_Planning error
 	{
 		#PASS2
 		{
 			PARSER->error().error(@4, "Ожидается открывающая скобка");
 		}
 	}
-	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list error
+	| param_full_name '.' RDO_Planning '(' arithm_list error
 	{
 		#PASS2
 		{
@@ -3027,15 +3030,17 @@ planning_statement
 	;
 
 process_input_statement
-	: RDO_IDENTIF '.' RDO_ProcessStart '(' RDO_IDENTIF ')' ';'
+	: param_full_name '.' RDO_ProcessStart '(' RDO_IDENTIF ')' ';'
 	{
 		#PASS2
 		{
-			const std::string processName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-			LPRDOPROCProcess pProcess    = PARSER->findPROCProcess(processName);
+
+			LPContext pProcessContext = PARSER->stack().pop<Context>($1);
+			ASSERT(pProcessContext);
+			LPRDOPROCProcess pProcess = pProcessContext.object_dynamic_cast<RDOPROCProcess>();
 			if (!pProcess)
 			{
-				PARSER->error().error(@1, rdo::format("Попытка запустить неизвестный процесс: %s", processName.c_str()));
+				PARSER->error().error(@1, rdo::format("Попытка запустить неизвестный процесс: %s", pProcess->name().c_str()));
 			}
 
 			LPIPROCBlock pBlock = (*(pProcess->getBlockList().begin()))->getRuntimeBlock();
@@ -3051,7 +3056,7 @@ process_input_statement
 
 			if (!pProcess->checkTransactType(relResTypeName))
 			{
-				PARSER->error().error(@1, rdo::format("Процесс %s ожидает в качестве транзактов ресурсы типа %s, а не %s", processName.c_str(), "true_resTypeName", relResTypeName.c_str()));
+				PARSER->error().error(@1, rdo::format("Процесс %s ожидает в качестве транзактов ресурсы типа %s, а не %s", pProcess->name().c_str(), "true_resTypeName", relResTypeName.c_str()));
 			}
 
 			rdo::runtime::LPRDOCalcProcessControl pCalc = rdo::Factory<rdo::runtime::RDOCalcProcessControl>::create(pBlock, pRelRes->m_relResID);
@@ -3066,7 +3071,7 @@ process_input_statement
 			$$ = PARSER->stack().push(pExpression);
 		}
 	}
-	| RDO_IDENTIF '.' RDO_ProcessStart '(' error ')' ';'
+	| param_full_name '.' RDO_ProcessStart '(' error ')' ';'
 	{
 		#PASS2
 		{
@@ -3076,15 +3081,16 @@ process_input_statement
 	;
 
 watch_start
-	: RDO_IDENTIF '.' RDO_WatchStart '(' ')' ';'
+	: param_full_name '.' RDO_WatchStart '(' ')' ';'
 	{
 		#PASS2
 		{
-			const std::string name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-			LPRDOResultGroup pResultGroup = PARSER->findResultGroup(name);
+			LPContext pResultGroupContext = PARSER->stack().pop<Context>($1);
+			ASSERT(pResultGroupContext);
+			LPRDOResultGroup pResultGroup = pResultGroupContext.object_dynamic_cast<RDOResultGroup>();
 			if (!pResultGroup)
 			{
-				PARSER->error().error(@1, rdo::format("Неизвестная группа показателей: %s", name.c_str()));
+				PARSER->error().error(@1, rdo::format("Неизвестная группа показателей: %s", pResultGroup->name().c_str()));
 			}
 
 			rdo::runtime::LPRDOCalcWatchGroupStart pCalc = rdo::Factory<rdo::runtime::RDOCalcWatchGroupStart>::create(pResultGroup->getRuntime());
@@ -3102,15 +3108,16 @@ watch_start
 	;
 
 watch_stop
-	: RDO_IDENTIF '.' RDO_WatchStop '(' ')' ';'
+	: param_full_name '.' RDO_WatchStop '(' ')' ';'
 	{
 		#PASS2
 		{
-			const std::string name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-			LPRDOResultGroup pResultGroup = PARSER->findResultGroup(name);
+			LPContext pResultGroupContext = PARSER->stack().pop<Context>($1);
+			ASSERT(pResultGroupContext);
+			LPRDOResultGroup pResultGroup = pResultGroupContext.object_dynamic_cast<RDOResultGroup>();
 			if (!pResultGroup)
 			{
-				PARSER->error().error(@1, rdo::format("Неизвестная группа показателей: %s", name.c_str()));
+				PARSER->error().error(@1, rdo::format("Неизвестная группа показателей: %s", pResultGroup->name().c_str()));
 			}
 
 			rdo::runtime::LPRDOCalcWatchGroupStop pCalc = rdo::Factory<rdo::runtime::RDOCalcWatchGroupStop>::create(pResultGroup->getRuntime());
@@ -9897,42 +9904,49 @@ member_statement
 	;
 
 set_statement
-	: RDO_IDENTIF set_increment_or_decrement_type
+	: param_full_name set_increment_or_decrement_type
 	{
 		#PASS2
 		{
-			LPRDOValue pParamName = PARSER->stack().pop<RDOValue>($1);
+			LPContext pParamContext = PARSER->stack().pop<Context>($1);
+			ASSERT(pParamContext);
+			LPRDOParam pParam = pParamContext.object_dynamic_cast<RDOParam>();
+			ASSERT(pParam);
 			rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
 
 			Context::Params params;
-			params[Context::Params::IDENTIFIER] = pParamName->value().getIdentificator();
+			params[Context::Params::IDENTIFIER] = pParam->name();
 			params[Expression::CONTEXT_PARAM_SET_EXPRESSION] = rdo::Factory<Expression>::create(
 				rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@2)),
 				rdo::Factory<rdo::runtime::RDOCalcConst>::create(1),
 				RDOParserSrcInfo(@2)
 			);
 			params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = setOperationType;
-			Context::FindResult result = PARSER->context()->find(Context::METHOD_SET, params, pParamName->src_info());
+			Context::FindResult result = PARSER->context()->find(Context::METHOD_SET, params, pParam->src_info());
 			LPExpression pExpression = result.getCreateExpression()();
-			pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format("%s%s", pParamName->value().getIdentificator().c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str())));
+			pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format("%s%s", pParam->name().c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str())));
+
 			$$ = PARSER->stack().push(pExpression);
 		}
 	}
-	| RDO_IDENTIF set_operation_type fun_arithm
+	| param_full_name set_operation_type fun_arithm
 	{
 		#PASS2
 		{
-			LPRDOValue     pParamName   = PARSER->stack().pop<RDOValue>($1);
-			LPRDOFUNArithm pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+			LPContext pParamContext = PARSER->stack().pop<Context>($1);
+			ASSERT(pParamContext);
+			LPRDOParam pParam = pParamContext.object_dynamic_cast<RDOParam>();
+			ASSERT(pParam);
 			rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
+			LPRDOFUNArithm pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 
 			Context::Params params;
-			params[Context::Params::IDENTIFIER] = pParamName->value().getIdentificator();
+			params[Context::Params::IDENTIFIER] = pParam->name();
 			params[RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM] = pRightArithm;
 			params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = setOperationType;
-			Context::FindResult result = PARSER->context()->find(Context::METHOD_SET, params, pParamName->src_info());
+			Context::FindResult result = PARSER->context()->find(Context::METHOD_SET, params, pParam->src_info());
 			LPExpression pExpression = result.getCreateExpression()();
-			pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format("%s %s %s", pParamName->value().getIdentificator().c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str(), pRightArithm->src_text().c_str())));
+			pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format("%s %s %s", pParam->name().c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str(), pRightArithm->src_text().c_str())));
 			LPRDOFUNArithm pLeftArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 			ASSERT(pLeftArithm);
 			pLeftArithm->setEqual(pRightArithm);
@@ -9940,7 +9954,7 @@ set_statement
 			$$ = PARSER->stack().push(pExpression);
 		}
 	}
-	| RDO_IDENTIF set_operation_type error
+	| param_full_name set_operation_type error
 	{
 		#PASS2
 		{
@@ -10643,6 +10657,41 @@ fun_logic
 // --------------------------------------------------------------------------------
 // -------------------- Арифметические выражения
 // --------------------------------------------------------------------------------
+param_full_name
+	: RDO_IDENTIF
+	{
+		#PASS2
+		{
+			LPRDOValue pName = PARSER->stack().pop<RDOValue>($1);
+
+			Context::Params params;
+			params[Context::Params::IDENTIFIER] = pName->value().getIdentificator();
+			Context::FindResult result = PARSER->context()->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
+			ASSERT(result.getSwitchContext());
+			LPContext pContext = result.getSwitchContext().context;
+
+			$$ = PARSER->stack().push(pContext);
+		}
+	}
+	| param_full_name '.' RDO_IDENTIF
+	{
+		#PASS2
+		{
+			LPContext pParentContext = PARSER->stack().pop<Context>($1);
+			ASSERT(pParentContext);
+			PARSER->contextStack()->push(pParentContext);
+			LPRDOValue pName = PARSER->stack().pop<RDOValue>($3);
+			Context::Params params;
+			params[Context::Params::IDENTIFIER] = pName->value().getIdentificator();
+			Context::FindResult result = pParentContext->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
+			ASSERT(result.getSwitchContext());
+			LPContext pContext = result.getSwitchContext().context;
+
+			$$ = PARSER->stack().push(pContext);
+		}
+	}
+	;
+
 fun_arithm
 	: RDO_INT_CONST
 	{
