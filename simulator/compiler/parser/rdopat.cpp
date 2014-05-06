@@ -242,12 +242,16 @@ Context::FindResult RDOPATPattern::onFindContext(const std::string& method, cons
 				return FindResult(CreateExpression(boost::bind(&contextGetRelevantResource, pRelevantResource, srcInfo)));
 			}
 		}
-		if (method == Context::METHOD_GET)
+		LPRDOParam pParam = findPATPatternParam(identifier);
+		if (pParam)
 		{
-			LPRDOParam pParam = findPATPatternParam(identifier);
-			if (pParam)
+			if (method == Context::METHOD_GET)
 			{
 				return FindResult(CreateExpression(boost::bind(&contextParameters, pParam, findPATPatternParamNum(identifier), srcInfo)));
+			}
+			if (method == Context::METHOD_OPERATOR_DOT)
+			{
+				return FindResult(SwitchContext(pParam, params));
 			}
 		}
 	}
@@ -1167,31 +1171,20 @@ RDORelevantResource::~RDORelevantResource()
 
 Context::FindResult RDORelevantResource::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
-	if (method == Context::METHOD_GET)
+	if (method == Context::METHOD_OPERATOR_DOT || method == Context::METHOD_GET)
 	{
 		const std::string paramName = params.identifier();
 
 		const std::size_t parNumb = getType()->getRTPParamNumber(paramName);
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 			return FindResult();
-		//! Проверяем использование еще не инициализированного (только для Create) параметра рел. ресурса в его же конверторе
-		LPRDORTPParam pParam = getType()->findRTPParam(paramName);
-		ASSERT(pParam);
-		//! В конверторе начала
-		if (m_currentState == RDORelevantResource::convertBegin && m_statusBegin == rdo::runtime::RDOResource::CS_Create)
+		if (method == Context::METHOD_GET)
 		{
-			if (!getParamSetList().find(paramName))
-			{
-				if (!pParam->getDefault()->defined())
-				{
-					RDOParser::s_parser()->error().error(srcInfo, rdo::format("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по умолчанию в типе ресурса", paramName.c_str()));
-				}
-			}
-		}
-		//! В конверторе конца
-		if (m_currentState == RDORelevantResource::convertEnd && m_statusEnd == rdo::runtime::RDOResource::CS_Create)
-		{
-			if (!getParamSetList().find(paramName))
+			//! Проверяем использование еще не инициализированного (только для Create) параметра рел. ресурса в его же конверторе
+			LPRDORTPParam pParam = getType()->findRTPParam(paramName);
+			ASSERT(pParam);
+			//! В конверторе начала
+			if (m_currentState == RDORelevantResource::convertBegin && m_statusBegin == rdo::runtime::RDOResource::CS_Create)
 			{
 				if (!getParamSetList().find(paramName))
 				{
@@ -1201,13 +1194,34 @@ Context::FindResult RDORelevantResource::onFindContext(const std::string& method
 					}
 				}
 			}
+			//! В конверторе конца
+			if (m_currentState == RDORelevantResource::convertEnd && m_statusEnd == rdo::runtime::RDOResource::CS_Create)
+			{
+				if (!getParamSetList().find(paramName))
+				{
+					if (!getParamSetList().find(paramName))
+					{
+						if (!pParam->getDefault()->defined())
+						{
+							RDOParser::s_parser()->error().error(srcInfo, rdo::format("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по умолчанию в типе ресурса", paramName.c_str()));
+						}
+					}
+				}
+			}
+
+			Context::Params params_;
+			params_[RDORSSResource::GET_RESOURCE] = params.get<LPExpression>(RDORSSResource::GET_RESOURCE);
+			params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = parNumb;
+
+			return pParam->find(Context::METHOD_GET, params_, srcInfo);
 		}
+		if (method == Context::METHOD_OPERATOR_DOT)
+		{
+			LPRDORTPParam pParam = getType()->findRTPParam(paramName);
+			ASSERT(pParam);
 
-		Context::Params params_;
-		params_[RDORSSResource::GET_RESOURCE] = params.get<LPExpression>(RDORSSResource::GET_RESOURCE);
-		params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = parNumb;
-
-		return pParam->find(Context::METHOD_GET, params_, srcInfo);
+			return FindResult(SwitchContext(pParam));
+		}
 	}
 
 	if (method == Context::METHOD_SET)
