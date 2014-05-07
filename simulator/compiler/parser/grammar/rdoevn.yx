@@ -1086,7 +1086,7 @@ rss_value
 			LPRDORSSResource pResource = PARSER->stack().pop<RDORSSResource>($1);
 			pResource->setIsNested(true);
 			rdo::runtime::RDOValue runtimeValue(
-				pResource->getType()->type(),
+				pResource->getType(),
 				pResource
 			);
 			LPTypeInfo pResourceTypeInfo = Factory<TypeInfo>::create(
