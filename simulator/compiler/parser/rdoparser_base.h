@@ -42,7 +42,7 @@ public:
 		sf_editor
 	};
 
-	rdoModelObjects::RDOFileType m_type;
+	rdo::model::FileType m_type;
 
 	t_bison_parse_fun m_parser_fun;
 	t_flex_lexer_fun  m_lexer_fun;
@@ -56,7 +56,7 @@ public:
 protected:
 	RDOParserItem();
 	RDOParserItem(
-		rdoModelObjects::RDOFileType type,
+		rdo::model::FileType type,
 		t_bison_parse_fun            parser_fun,
 		t_flex_lexer_fun             lexer_fun,
 		StreamFrom                   from = sf_repository

@@ -13,7 +13,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/interface/rdointerface.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
@@ -30,7 +29,7 @@ CLOSE_RDO_RUNTIME_NAMESPACE
   \interface IBaseOperation
   \brief     Интерфейс для паттернов, процессов и блоков процесса
 */
-class IBaseOperation
+class IBaseOperation: public virtual rdo::counter_reference
 {
 public:
 	//! Статуc состояния операции
@@ -94,7 +93,7 @@ public:
 	virtual BOResult onDoOperation   (const rdo::runtime::LPRDORuntime& pRuntime); \
 	virtual BOResult onContinue      (const rdo::runtime::LPRDORuntime& pRuntime);
 
-INTERFACE_PREDECLARATION(IBaseOperation);
+DECLARE_POINTER(IBaseOperation);
 
 /*!
   \typedef BaseOperationList

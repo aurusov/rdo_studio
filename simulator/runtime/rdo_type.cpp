@@ -17,6 +17,21 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
+// --------------------------------------------------------------------------------
+// -------------------- RDOType
+// --------------------------------------------------------------------------------
+RDOType::RDOType(TypeID typeID)
+	: m_typeID(typeID)
+{}
+
+RDOType::~RDOType()
+{}
+
+RDOType::TypeID RDOType::typeID() const
+{
+	return m_typeID;
+}
+
 /// @todo внимание макрос!
 
 /*!

@@ -21,6 +21,44 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // --------------------------------------------------------------------------------
+// -------------------- RDOPROCBlock
+// --------------------------------------------------------------------------------
+RDOPROCBlock::RDOPROCBlock(LPIPROCProcess pProcess)
+	: m_process(pProcess)
+{
+	LPIBaseOperation pThis(this);
+	m_process.object_dynamic_cast<IBaseOperationContainer>()->append(pThis);
+}
+
+RDOPROCBlock::~RDOPROCBlock()
+{}
+
+RDOPROCBlock::TransactIt RDOPROCBlock::transactFind(const LPTransact& pTransact)
+{
+	return std::find(m_transacts.begin(), m_transacts.end(), pTransact);
+}
+
+RDOPROCBlock::TransactIt RDOPROCBlock::transactEnd()
+{
+	return m_transacts.end();
+}
+
+void RDOPROCBlock::transactGoIn(const LPTransact& pTransact)
+{
+	m_transacts.push_back(pTransact);
+}
+
+void RDOPROCBlock::transactGoOut(const LPTransact& pTransact)
+{
+	m_transacts.remove(pTransact);
+}
+
+LPIPROCProcess RDOPROCBlock::getProcess() const
+{
+	return m_process;
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOPROCProcess
 // --------------------------------------------------------------------------------
 RDOPROCProcess::RDOPROCProcess(const std::string& name, const LPRDORuntime& pRuntime)
@@ -56,7 +94,7 @@ void RDOPROCProcess::next(const LPRDOPROCTransact& pTransact)
 		if (it != end())
 		{
 			// Берем этот блок
-			LPIPROCBlock block = *it;
+			LPIPROCBlock block = it->object_dynamic_cast<IPROCBlock>();
 			ASSERT(block);
 			// Находим перемещаемый транзакт в списке его транзактов
 			RDOPROCBlock::TransactIt it_res = block->transactFind(pTransact);
@@ -78,7 +116,7 @@ void RDOPROCProcess::next(const LPRDOPROCTransact& pTransact)
 			if (it != end())
 			{
 				// Берем этот блок
-				block = *it;
+				block = it->object_dynamic_cast<IPROCBlock>();
 				ASSERT(block);
 				pTransact->setBlock(block);
 				// Записываем в конец списка этого блока перемещаемый транзакт
@@ -116,6 +154,26 @@ RDOPROCTransact::RDOPROCTransact(const LPRDORuntime& pRuntime, const std::vector
 RDOPROCTransact::~RDOPROCTransact()
 {}
 
+LPRDOPROCResource RDOPROCTransact::getRes()
+{
+	return m_res;
+}
+
+void RDOPROCTransact::setRes(const LPRDOPROCResource& pResource)
+{
+	m_res = pResource;
+}
+
+LPIPROCBlock& RDOPROCTransact::getBlock()
+{
+	return m_block;
+}
+
+void RDOPROCTransact::setBlock(const LPIPROCBlock& block)
+{
+	m_block = block;
+}
+
 LPRDOResource RDOPROCTransact::clone(const LPRDORuntime& pRuntime) const
 {
 	LPRDOResource pResource = rdo::Factory<RDOPROCTransact>::create(pRuntime, getParamList(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
@@ -138,52 +196,16 @@ RDOPROCResource::RDOPROCResource(const LPRDORuntime& pRuntime, const std::vector
 RDOPROCResource::~RDOPROCResource()
 {}
 
+std::string RDOPROCResource::whoAreYou()
+{
+	return "procRes";
+}
+
 LPRDOResource RDOPROCResource::clone(const LPRDORuntime& pRuntime) const
 {
 	LPRDOResource pResource = rdo::Factory<RDOPROCResource>::create(pRuntime, getParamList(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
 	ASSERT(pResource);
 	return pResource;
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOPROCBlock
-// --------------------------------------------------------------------------------
-RDOPROCBlock::RDOPROCBlock(LPIPROCProcess pProcess)
-	: m_process(pProcess)
-{}
-
-bool RDOPROCBlock::init()
-{
-	if (!m_process)
-		return false;
-
-	m_process.query_cast<IBaseOperationContainer>()->append(this);
-	return true;
-}
-
-RDOPROCBlock::TransactIt RDOPROCBlock::transactFind(const LPTransact& pTransact)
-{
-	return std::find(m_transacts.begin(), m_transacts.end(), pTransact);
-}
-
-RDOPROCBlock::TransactIt RDOPROCBlock::transactEnd()
-{
-	return m_transacts.end();
-}
-
-void RDOPROCBlock::transactGoIn(const LPTransact& pTransact)
-{
-	m_transacts.push_back(pTransact);
-}
-
-void RDOPROCBlock::transactGoOut(const LPTransact& pTransact)
-{
-	m_transacts.remove(pTransact);
-}
-
-LPIPROCProcess RDOPROCBlock::getProcess() const
-{
-	return m_process;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

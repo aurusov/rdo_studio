@@ -57,7 +57,7 @@ public:
 	void incrementResourceIdReference(int id);
 
 	void freeOperationId(int id);
-	int getFreeOperationId(); 
+	int getFreeOperationId();
 	void onResourceErase(const LPRDOResource& pResource);
 
 	int getFreeEventId();
@@ -111,7 +111,5 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/simtrace.inl"
 
 #endif // _LIB_RUNTIME_SIM_TRACE_H_

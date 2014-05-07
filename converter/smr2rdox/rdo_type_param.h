@@ -3,7 +3,7 @@
   \file      rdo_type_param.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      12.02.2010
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -26,7 +26,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOTypeParam);
 class RDOTypeParam
-	: public rdo::counter_reference
+	: public virtual rdo::counter_reference
 	, public RDOParserSrcInfo
 	, public IModelStructure
 {

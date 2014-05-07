@@ -67,6 +67,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/operation/calc_arithm.inl"
-
 #endif // _LIB_RUNTIME_CALC_OPERATION_ARITHM_H_

@@ -13,6 +13,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/runtime/rdo_type.h"
+#include "simulator/runtime/rdo_model_i.h"
+#include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/type/info.h"
 // --------------------------------------------------------------------------------
 
@@ -22,7 +25,9 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- FunctionParamType
 // --------------------------------------------------------------------------------
 class FunctionParamType
-	: public RDOType
+	: public rdo::runtime::RDOType
+	, public IType
+	, public IModelStructure
 	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(FunctionParamType);
@@ -49,7 +54,9 @@ DECLARE_POINTER(FunctionParamType);
 // -------------------- FunctionType
 // --------------------------------------------------------------------------------
 class FunctionType
-	: public RDOType
+	: public rdo::runtime::RDOType
+	, public IType
+	, public IModelStructure
 	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(FunctionType);
@@ -64,7 +71,7 @@ private:
 	LPTypeInfo           m_pReturnType;
 	LPFunctionParamType  m_pParamType;
 
-	virtual const rdo::runtime::LPRDOType& type() const;
+	virtual rdo::runtime::LPRDOType type() const;
 	virtual rdo::runtime::RDOType::TypeID typeID() const;
 
 	DECLARE_IType;

@@ -3,8 +3,8 @@
   \file      rdo_logic.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -41,7 +41,7 @@ public:
 
 	LPActivity addNewActivity(const RDOParserSrcInfo& activity_src_info, const RDOParserSrcInfo& pattern_src_info)
 	{
-		LPActivity pAactivity = rdo::Factory<Activity>::create(m_pRuntimeLogic, activity_src_info, pattern_src_info);
+		LPActivity pAactivity = rdo::Factory<Activity>::create(m_pRuntimeLogic.object_dynamic_cast<IBaseOperationContainer>(), activity_src_info, pattern_src_info);
 		ASSERT(pAactivity);
 		m_activityList.push_back(pAactivity);
 		return pAactivity;
@@ -55,7 +55,7 @@ public:
 
 	bool setPrior(LPRDOFUNArithm& pPrior)
 	{
-		LPIPriority pPriority = m_pRuntimeLogic;
+		LPIPriority pPriority = m_pRuntimeLogic.object_dynamic_cast<IPriority>();
 		if (pPriority)
 		{
 			return pPriority->setPrior(pPrior->createCalc());

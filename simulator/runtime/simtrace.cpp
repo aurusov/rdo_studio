@@ -30,6 +30,21 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOSimulatorTrace
 // --------------------------------------------------------------------------------
+RDOSimulatorTrace::RDOSimulatorTrace()
+	: RDOSimulator     (             )
+	, m_tracer         (NULL         )
+	, maxOperationId   (1            )
+	, traceStartTime   (UNDEFINE_TIME)
+	, traceEndTime     (UNDEFINE_TIME)
+	, maxResourcesId   (0            )
+	, m_ieCounter      (1            )
+	, m_eventCounter   (1            )
+	, m_activityCounter(1            )
+	, m_dptCounter     (1            )
+	, memory_current   (0            )
+	, memory_max       (0            )
+{}
+
 RDOSimulatorTrace::~RDOSimulatorTrace()
 {
 	if (m_tracer)
@@ -37,6 +52,88 @@ RDOSimulatorTrace::~RDOSimulatorTrace()
 		delete m_tracer;
 		m_tracer = NULL;
 	}
+}
+
+RDOTrace* RDOSimulatorTrace::getTracer() const
+{
+	return m_tracer;
+}
+
+bool RDOSimulatorTrace::canTrace() const
+{
+	return getTracer()->canTrace();
+}
+
+double RDOSimulatorTrace::getTraceStartTime() const
+{
+	return traceStartTime;
+}
+
+void RDOSimulatorTrace::setTraceStartTime(double value)
+{
+	traceStartTime = value;
+}
+
+double RDOSimulatorTrace::getTraceEndTime() const
+{
+	return traceEndTime;
+}
+
+void RDOSimulatorTrace::setTraceEndTime(double value)
+{
+	traceEndTime = value;
+}
+
+void RDOSimulatorTrace::onNewTimeNow()
+{
+	if (timeForTrace())
+	{
+		getTracer()->startWriting();
+	}
+	else
+	{
+		getTracer()->stopWriting();
+	}
+}
+
+void RDOSimulatorTrace::memory_insert(std::size_t mem)
+{
+	memory_current += mem;
+	if (memory_current > memory_max) memory_max = memory_current;
+}
+
+void RDOSimulatorTrace::memory_remove(std::size_t mem)
+{
+	memory_current -= mem;
+}
+
+std::size_t RDOSimulatorTrace::memory_get() const
+{
+	return memory_max;
+}
+
+int RDOSimulatorTrace::getFreeEventId()
+{
+	return m_eventCounter++;
+}
+
+int RDOSimulatorTrace::getFreeActivityId()
+{
+	return m_activityCounter++;
+}
+
+int RDOSimulatorTrace::getFreeDPTId()
+{
+	return m_dptCounter++;
+}
+
+bool RDOSimulatorTrace::timeForTrace() const
+{
+	if (getTraceStartTime() != UNDEFINE_TIME && getTraceStartTime() > getCurrentTime())
+		return false;
+	if (getTraceEndTime()   != UNDEFINE_TIME && getTraceEndTime()   < getCurrentTime())
+		return false;
+	return true;
 }
 
 void RDOSimulatorTrace::copyFrom(const LPRDOSimulatorTrace& pOther)

@@ -49,8 +49,8 @@ void RDOParam::checkDefault()
 {
 	if (m_pDefault && m_pDefault->defined())
 	{
-		m_pType->type()->type_cast(m_pDefault->typeInfo()->type(), m_pDefault->src_info(), this->src_info(), m_pDefault->src_info());
-		m_pDefault = m_pType->type()->value_cast(m_pDefault, this->src_info(), m_pDefault->src_info());
+		m_pType->itype()->type_cast(m_pDefault->typeInfo()->itype(), m_pDefault->src_info(), this->src_info(), m_pDefault->src_info());
+		m_pDefault = m_pType->itype()->value_cast(m_pDefault, this->src_info(), m_pDefault->src_info());
 	}
 }
 
@@ -72,13 +72,13 @@ LPExpression contextSetParam(const rdo::runtime::LPRDOCalc& getResource, const L
 	rdo::runtime::LPRDOCalc setParamCalc = rdo::Factory<rdo::runtime::RDOSetResourceParam<setOperationType> >::create(getResource, paramID, rightValue);
 
 	//! Проверка на диапазон
-	LPRDOTypeIntRange pTypeIntRange = pTypeInfo->type().object_dynamic_cast<RDOTypeIntRange>();
+	LPRDOTypeIntRange pTypeIntRange = pTypeInfo->itype().object_dynamic_cast<RDOTypeIntRange>();
 	if (pTypeIntRange)
 	{
 		setParamCalc = rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(pTypeIntRange->range()->getMin()->value(), pTypeIntRange->range()->getMax()->value(), setParamCalc);
 	}
 
-	LPRDOTypeRealRange pTypeRealRange = pTypeInfo->type().object_dynamic_cast<RDOTypeRealRange>();
+	LPRDOTypeRealRange pTypeRealRange = pTypeInfo->itype().object_dynamic_cast<RDOTypeRealRange>();
 	if (pTypeRealRange)
 	{
 		setParamCalc = rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(pTypeRealRange->range()->getMin()->value(), pTypeRealRange->range()->getMax()->value(), setParamCalc);

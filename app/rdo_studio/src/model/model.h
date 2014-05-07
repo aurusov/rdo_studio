@@ -3,7 +3,7 @@
   \file      app/rdo_studio/src/model/model.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      20.02.2003
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -17,7 +17,6 @@
 #include <QObject>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/interface/rdointerface.h"
 #include "kernel/rdothread.h"
 #include "simulator/service/src/simulator.h"
 #include "app/rdo_studio/src/frame/frame_manager.h"
@@ -32,7 +31,6 @@ class View;
 class Model
 	: public QObject
 	, public RDOThreadGUI
-	, public IInit
 {
 Q_OBJECT
 
@@ -155,15 +153,13 @@ private:
 		ModelTemplateItem(const QString& resName);
 		ModelTemplateItem(const QString& resName, std::size_t position);
 	};
-	typedef  std::map<rdoModelObjects::RDOFileType, ModelTemplateItem>  ModelTemplate;
+	typedef  std::map<rdo::model::FileType, ModelTemplateItem>  ModelTemplate;
 	typedef  std::map<int, ModelTemplate>                               ModelTemplateList;
 	ModelTemplateList m_modelTemplates;
 
 	void show_result();
 
 	void createView();
-
-	DECLARE_IInit;
 
 private slots:
 	void onFileNew    ();

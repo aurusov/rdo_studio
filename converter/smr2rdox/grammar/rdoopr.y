@@ -252,7 +252,7 @@ opr_body
 		ASSERT(pOperations);
 		LPRDOValue pName    = CONVERTER->stack().pop<RDOValue>($2);
 		LPRDOValue pPattern = CONVERTER->stack().pop<RDOValue>($3);
-		LPRDOOPROperation pOperation = pOperations->addNewActivity(pName->src_info(), pPattern->src_info());
+		LPRDOOPROperation pOperation = pOperations->addNewActivity(pName->src_info(), pPattern->src_info()).object_dynamic_cast<RDOOPROperation>();
 		ASSERT(pOperation);
 
 		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)

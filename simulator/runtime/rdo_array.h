@@ -98,10 +98,11 @@ public:
 
 	const LPItemType& getItemType() const;
 
-private:
+protected:
 	RDOArrayType(const LPItemType& pItemType);
 	virtual ~RDOArrayType();
 
+private:
 	LPItemType  m_pItemType;
 };
 

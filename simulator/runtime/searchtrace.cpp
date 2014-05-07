@@ -22,6 +22,15 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearchTrace
 // --------------------------------------------------------------------------------
+RDODPTSearchTrace::RDODPTSearchTrace(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent)
+	: RDODPTSearch      (pRuntime, parent)
+	, RDOTraceableObject(false           )
+	, calc_cnt          (0               )
+	, calc_res_found_cnt(0               )
+{
+	traceFlag = DPT_no_trace;
+}
+
 void RDODPTSearchTrace::onSearchBegin(const LPRDORuntime& pRuntime)
 {
 	if (traceFlag != DPT_no_trace)
@@ -73,6 +82,10 @@ void RDODPTSearchTrace::onSearchResultNotFound(const LPRDORuntime& pRuntime, Tre
 // --------------------------------------------------------------------------------
 // -------------------- TreeNodeTrace
 // --------------------------------------------------------------------------------
+TreeNodeTrace::TreeNodeTrace(const LPRDORuntime& pRuntime, TreeNode* i_parent, TreeRoot* i_root, LPIDPTSearchActivity i_activity, double cost, int cnt)
+	: TreeNode(pRuntime, i_parent, i_root, i_activity, cost, cnt)
+{}
+
 void TreeNodeTrace::onSearchOpenNode(const LPRDORuntime& pRuntime)
 {
 	/// @todo использовать явный cast
@@ -110,6 +123,10 @@ TreeNode* TreeNodeTrace::createChildTreeNode()
 // --------------------------------------------------------------------------------
 // -------------------- TreeRootTrace
 // --------------------------------------------------------------------------------
+TreeRootTrace::TreeRootTrace(const LPRDORuntime& pRuntime, RDODPTSearch* pDP)
+	: TreeRoot(pRuntime, pDP)
+{}
+
 void TreeRootTrace::createRootTreeNode(const LPRDORuntime& pRuntime)
 {
 	m_rootNode = new TreeNodeTrace(pRuntime, NULL, this, NULL, 0, getNewNodeNumber());

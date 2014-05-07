@@ -83,6 +83,4 @@ private:              \
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/calc_base.inl"
-
 #endif // _LIB_RUNTIME_CALC_BASE_H_

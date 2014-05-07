@@ -43,7 +43,7 @@ public:
 	const CIterator end() const;
 	const Enums& getValues() const;
 
-private:
+protected:
 	RDOEnumType();
 	RDOEnumType(const Enums& enums);
 
@@ -52,7 +52,5 @@ private:
 DECLARE_POINTER(RDOEnumType);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/rdo_enum.inl"
 
 #endif // _LIB_RUNTIME_ENUM_H_

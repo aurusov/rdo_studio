@@ -108,6 +108,42 @@ RDOFRMSprite::RDOFRMSprite(const RDOSrcInfo& srcInfo)
 RDOFRMSprite::~RDOFRMSprite()
 {}
 
+const std::string& RDOFRMSprite::name() const
+{
+	return src_text();
+}
+
+void RDOFRMSprite::setLastXYWH(double x, double y, double width, double height)
+{
+	setLastXY(x ,y);
+	m_lastWidth  = width;
+	m_lastHeight = height;
+}
+
+void RDOFRMSprite::setLastXY(double x, double y)
+{
+	m_lastX = x;
+	m_lastY = y;
+}
+
+int RDOFRMSprite::getRuletX(const LPRDORuntime& pRuntime, std::size_t ruletID) const
+{
+	LPRDOFRMRulet pRulet = findRulet(ruletID);
+	return pRulet ? pRulet->getX()->getCalc()->calcValue(pRuntime).getInt() : 0;
+}
+
+int RDOFRMSprite::getRuletY(const LPRDORuntime& pRuntime, std::size_t ruletID) const
+{
+	LPRDOFRMRulet pRulet = findRulet(ruletID);
+	return pRulet ? pRulet->getY()->getCalc()->calcValue(pRuntime).getInt() : 0;
+}
+
+RDOFRMSprite::LPRDOFRMRulet RDOFRMSprite::findRulet(std::size_t ruletID) const
+{
+	RuletList::const_iterator it = m_ruletList.find(ruletID);
+	return it != m_ruletList.end() ? it->second : LPRDOFRMRulet(NULL);
+}
+
 RDOValue RDOFRMSprite::prepareFrame(const LPRDORuntime& pRuntime)
 {
 	return RDOFRMSprite::doCalc(pRuntime);
@@ -255,8 +291,133 @@ void RDOFRMSprite::insertRulet(const LPRDOFRMRulet& pRulet)
 }
 
 // --------------------------------------------------------------------------------
+// -------------------- RDOFRMSprite::RDOFRMPosition
+// --------------------------------------------------------------------------------
+RDOFRMSprite::RDOFRMPosition::RDOFRMPosition()
+	: RDORuntimeObject()
+	, m_type   (PT_ABSOLUTE)
+	, m_ruletID(0          )
+{}
+
+RDOFRMSprite::RDOFRMPosition::RDOFRMPosition(const LPRDOCalc& pCalc, PositionType type, int ruletID)
+	: RDORuntimeObject()
+	, m_pCalc  (pCalc  )
+	, m_type   (type   )
+	, m_ruletID(ruletID)
+{}
+
+RDOFRMSprite::RDOFRMPosition::~RDOFRMPosition()
+{}
+
+RDOFRMSprite::RDOFRMPosition::PositionType RDOFRMSprite::RDOFRMPosition::getType() const
+{
+	return m_type;
+}
+
+const LPRDOCalc& RDOFRMSprite::RDOFRMPosition::getCalc() const
+{
+	return m_pCalc;
+}
+
+int RDOFRMSprite::RDOFRMPosition::getX(const LPRDORuntime& pRuntime, const LPRDOFRMSprite& pSprite)
+{
+	RDOValue res = m_pCalc->calcValue(pRuntime);
+	switch (m_type)
+	{
+	case RDOFRMPosition::PT_DELTA  : res += pSprite->m_lastX;                        break;
+	case RDOFRMPosition::PT_GABARIT: res += pSprite->m_lastX + pSprite->m_lastWidth; break;
+	case RDOFRMPosition::PT_MULT   : res *= pSprite->m_lastX;                        break;
+	case RDOFRMPosition::PT_RULET  : res += pSprite->getRuletX(pRuntime, m_ruletID); break;
+	default                        : break;
+	}
+	return res.getInt();
+}
+
+int RDOFRMSprite::RDOFRMPosition::getY(const LPRDORuntime& pRuntime, const LPRDOFRMSprite& pSprite)
+{
+	RDOValue res = m_pCalc->calcValue(pRuntime);
+	switch (m_type)
+	{
+	case RDOFRMPosition::PT_DELTA  : res += pSprite->m_lastY;                         break;
+	case RDOFRMPosition::PT_GABARIT: res += pSprite->m_lastY + pSprite->m_lastHeight; break;
+	case RDOFRMPosition::PT_MULT   : res *= pSprite->m_lastY;                         break;
+	case RDOFRMPosition::PT_RULET  : res += pSprite->getRuletY(pRuntime, m_ruletID);  break;
+	default                        : break;
+	}
+	return res.getInt();
+}
+
+int RDOFRMSprite::RDOFRMPosition::getWidth(const LPRDORuntime& pRuntime, const LPRDOFRMSprite& pSprite)
+{
+	RDOValue res = m_pCalc->calcValue(pRuntime);
+	switch (m_type)
+	{
+	case RDOFRMPosition::PT_DELTA: res += pSprite->m_lastWidth; break;
+	case RDOFRMPosition::PT_MULT : res *= pSprite->m_lastWidth; break;
+	case RDOFRMPosition::PT_RULET: res += pSprite->getRuletX(pRuntime, m_ruletID); break;
+	default                      : break;
+	}
+	return res.getInt();
+}
+
+int RDOFRMSprite::RDOFRMPosition::getHeight(const LPRDORuntime& pRuntime, const LPRDOFRMSprite& pSprite)
+{
+	RDOValue res = m_pCalc->calcValue(pRuntime);
+	switch (m_type)
+	{
+	case RDOFRMPosition::PT_DELTA: res += pSprite->m_lastHeight; break;
+	case RDOFRMPosition::PT_MULT : res *= pSprite->m_lastHeight; break;
+	case RDOFRMPosition::PT_RULET: res += pSprite->getRuletY(pRuntime, m_ruletID); break;
+	default                      : break;
+	}
+	return res.getInt();
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMSprite::RDOFRMColor
+// --------------------------------------------------------------------------------
+RDOFRMSprite::RDOFRMColor::ColorType RDOFRMSprite::RDOFRMColor::getType() const
+{
+	return m_type;
+}
+
+void RDOFRMSprite::RDOFRMColor::setType(ColorType type)
+{
+	if (m_type == CT_NONE)
+	{
+		m_type = type;
+	}
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOFRMSprite::RDOFRMRulet
 // --------------------------------------------------------------------------------
+std::size_t RDOFRMSprite::RDOFRMRulet::getIndex() const
+{
+	return m_index;
+}
+
+const RDOFRMSprite::LPRDOFRMPosition& RDOFRMSprite::RDOFRMRulet::getX() const
+{
+	return m_pX;
+}
+
+const RDOFRMSprite::LPRDOFRMPosition& RDOFRMSprite::RDOFRMRulet::getY() const
+{
+	return m_pY;
+}
+
+RDOFRMSprite::RDOFRMRulet::RDOFRMRulet(const RDOSrcInfo& src_info, std::size_t index, const LPRDOFRMPosition& pX, const LPRDOFRMPosition& pY)
+	: m_index(index)
+	, m_pX   (pX   )
+	, m_pY   (pY   )
+{
+	setSrcInfo(src_info);
+}
+
+RDOFRMSprite::RDOFRMRulet::~RDOFRMRulet()
+{}
+
 RDOValue RDOFRMSprite::RDOFRMRulet::doCalc(const LPRDORuntime& /*pRuntime*/)
 {
 	return RDOValue();
@@ -265,6 +426,95 @@ RDOValue RDOFRMSprite::RDOFRMRulet::doCalc(const LPRDORuntime& /*pRuntime*/)
 const RDOSrcInfo& RDOFRMSprite::RDOFRMRulet::src_info() const
 {
 	return srcInfo();
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMBoundingItem
+// --------------------------------------------------------------------------------
+RDOFRMBoundingItem::RDOFRMBoundingItem(const RDOFRMSprite::LPRDOFRMPosition& pX, const RDOFRMSprite::LPRDOFRMPosition& pY, const RDOFRMSprite::LPRDOFRMPosition& pWidth, const RDOFRMSprite::LPRDOFRMPosition& pHeight)
+	: m_pX     (pX     )
+	, m_pY     (pY     )
+	, m_pWidth (pWidth )
+	, m_pHeight(pHeight)
+{}
+
+RDOFRMBoundingItem::~RDOFRMBoundingItem()
+{}
+
+int RDOFRMBoundingItem::getX(const LPRDORuntime& pRuntime, const LPRDOFRMSprite& pSprite) const
+{
+	return m_pX->getX(pRuntime, pSprite);
+}
+
+int RDOFRMBoundingItem::getY(const LPRDORuntime& pRuntime, const LPRDOFRMSprite& pSprite) const
+{
+	return m_pY->getY(pRuntime, pSprite);
+}
+
+int RDOFRMBoundingItem::getWidth(const LPRDORuntime& pRuntime, const LPRDOFRMSprite& pSprite) const
+{
+	return m_pWidth->getWidth(pRuntime, pSprite);
+}
+
+int RDOFRMBoundingItem::getHeight(const LPRDORuntime& pRuntime, const LPRDOFRMSprite& pSprite) const
+{
+	return m_pHeight->getHeight(pRuntime, pSprite);
+}
+
+int RDOFRMBoundingItem::getWidthAsX(const LPRDORuntime& pRuntime, const LPRDOFRMSprite& pSprite) const
+{
+	return m_pWidth->getX(pRuntime, pSprite);
+}
+
+int RDOFRMBoundingItem::getHeightAsY(const LPRDORuntime& pRuntime, const LPRDOFRMSprite& pSprite) const
+{
+	return m_pHeight->getY(pRuntime, pSprite);
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMColoredItem
+// --------------------------------------------------------------------------------
+RDOFRMColoredItem::RDOFRMColoredItem(const RDOFRMSprite::LPRDOFRMColor& pBgColor, const RDOFRMSprite::LPRDOFRMColor& pFgColor)
+	: m_pBgColor(pBgColor)
+	, m_pFgColor(pFgColor)
+{}
+
+RDOFRMColoredItem::~RDOFRMColoredItem()
+{}
+
+const RDOFRMSprite::LPRDOFRMColor& RDOFRMColoredItem::getBgColor() const
+{
+	return m_pBgColor;
+}
+
+const RDOFRMSprite::LPRDOFRMColor& RDOFRMColoredItem::getFgColor() const
+{
+	return m_pFgColor;
+}
+
+rdo::animation::Color RDOFRMColoredItem::getBg(const LPRDORuntime& pRuntime, const LPRDOFRMSprite& pSprite) const
+{
+	return m_pBgColor->getColor(pRuntime, pSprite);
+}
+
+rdo::animation::Color RDOFRMColoredItem::getFg(const LPRDORuntime& pRuntime, const LPRDOFRMSprite& pSprite) const
+{
+	return m_pFgColor->getColor(pRuntime, pSprite);
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMItem
+// --------------------------------------------------------------------------------
+RDOFRMItem::RDOFRMItem(const LPRDOFRMSprite& pSprite)
+	: m_pFrame(pSprite)
+{}
+
+RDOFRMItem::~RDOFRMItem()
+{}
+
+const LPRDOFRMSprite& RDOFRMItem::getFrame() const
+{
+	return m_pFrame;
 }
 
 // --------------------------------------------------------------------------------
@@ -342,6 +592,27 @@ RDOValue RDOFRMText::doCalc(const LPRDORuntime& pRuntime)
 	));
 
 	return RDOValue();
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMBitmapBase
+// --------------------------------------------------------------------------------
+RDOFRMBitmapBase::RDOFRMBitmapBase(const LPRDOFRMSprite& pSprite, const std::string& pictFilename, const std::string& maskFilename)
+	: RDOFRMItem    (pSprite     )
+	, m_pictFilename(pictFilename)
+	, m_maskFilename(maskFilename)
+{}
+
+RDOFRMBitmapBase::~RDOFRMBitmapBase()
+{}
+
+void RDOFRMBitmapBase::getBitmaps(IRDOFRMItemGetBitmap::ImageNameList& list) const
+{
+	list.push_back(m_pictFilename);
+	if (!m_maskFilename.empty())
+	{
+		list.push_back(m_maskFilename);
+	}
 }
 
 // --------------------------------------------------------------------------------

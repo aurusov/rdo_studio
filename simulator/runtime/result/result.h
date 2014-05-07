@@ -54,11 +54,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 */
 class RDOPMDResult: public RDOResultTrace, public IName
 {
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOResultTrace)
-	QUERY_INTERFACE       (IName         )
-QUERY_INTERFACE_END
-
 protected:
 	RDOPMDResult(const LPRDORuntime& pRuntime, const std::string& name, bool trace);
 	virtual ~RDOPMDResult();
@@ -77,15 +72,7 @@ private:
 */
 class RDOPMDWatchPar: public RDOPMDResult, public IResult, public IModelStructure, public INotify
 {
-DEFINE_IFACTORY(RDOPMDWatchPar);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPMDResult     )
-	QUERY_INTERFACE       (IResult          )
-	QUERY_INTERFACE       (IModelStructure  )
-	QUERY_INTERFACE       (IResultTraceValue)
-	QUERY_INTERFACE       (INotify          )
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPMDWatchPar);
 private:
 	typedef boost::accumulators::accumulator_set<
 		double,
@@ -143,14 +130,7 @@ private:
 */
 class RDOPMDWatchState: public RDOPMDResult, public IResult, public IModelStructure
 {
-DEFINE_IFACTORY(RDOPMDWatchState);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPMDResult     )
-	QUERY_INTERFACE       (IResult          )
-	QUERY_INTERFACE       (IModelStructure  )
-	QUERY_INTERFACE       (IResultTraceValue)
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPMDWatchState);
 private:
 	typedef boost::accumulators::accumulator_set<
 		double,
@@ -199,15 +179,7 @@ private:
 */
 class RDOPMDWatchQuant: public RDOPMDResult, public IResult, public IResultWatchQuant, public IModelStructure
 {
-DEFINE_IFACTORY(RDOPMDWatchQuant);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPMDResult     )
-	QUERY_INTERFACE       (IResult          )
-	QUERY_INTERFACE       (IResultTraceValue)
-	QUERY_INTERFACE       (IResultWatchQuant)
-	QUERY_INTERFACE       (IModelStructure  )
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPMDWatchQuant);
 private:
 	typedef boost::accumulators::accumulator_set<
 		double,
@@ -263,15 +235,7 @@ private:
 */
 class RDOPMDWatchValue: public RDOPMDResult, public IResult, public IResultWatchValue, public IModelStructure
 {
-DEFINE_IFACTORY(RDOPMDWatchValue);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPMDResult     )
-	QUERY_INTERFACE       (IResult          )
-	QUERY_INTERFACE       (IResultTraceValue)
-	QUERY_INTERFACE       (IResultWatchValue)
-	QUERY_INTERFACE       (IModelStructure  )
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPMDWatchValue);
 private:
 	typedef boost::accumulators::accumulator_set<
 		double,
@@ -306,15 +270,7 @@ private:
 */
 class RDOPMDGetValue: public RDOPMDResult, public IResult, public IResultGetValue, public IModelStructure
 {
-DEFINE_IFACTORY(RDOPMDGetValue);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPMDResult     )
-	QUERY_INTERFACE       (IResult          )
-	QUERY_INTERFACE       (IModelStructure  )
-	QUERY_INTERFACE       (IResultTraceValue)
-	QUERY_INTERFACE       (IResultGetValue  )
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPMDGetValue);
 private:
 	RDOPMDGetValue(const LPRDORuntime& pRuntime, const std::string& name, const LPRDOCalc& pArithm);
 	virtual ~RDOPMDGetValue();

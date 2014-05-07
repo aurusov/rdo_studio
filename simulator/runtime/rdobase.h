@@ -20,7 +20,7 @@
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/rdo_object.h"
 #include "simulator/runtime/mode.h"
-#include "simulator/runtime/rdo_runtime_interface_registrator.h"
+#include "simulator/runtime/rdo.h"
 #ifdef COMPILER_VISUAL_STUDIO
 	#ifdef RDO_MT
 		#include <afxwin.h>
@@ -146,7 +146,5 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/rdobase.inl"
 
 #endif // _LIB_RUNTIME_BASE_H_

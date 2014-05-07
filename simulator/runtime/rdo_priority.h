@@ -26,10 +26,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 */
 class RDOPatternPrior: public IPriority
 {
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IPriority)
-QUERY_INTERFACE_END
-
 protected:
 	RDOPatternPrior();
 	virtual ~RDOPatternPrior();
@@ -56,7 +52,5 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/rdo_priority.inl"
 
 #endif // _LIB_RUNTIME_PRIORITY_H_

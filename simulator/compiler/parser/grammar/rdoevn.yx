@@ -7273,11 +7273,11 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
 			}
@@ -7292,11 +7292,11 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
 			}
@@ -7311,11 +7311,11 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
 			}
@@ -7330,11 +7330,11 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
 			}
@@ -7349,7 +7349,7 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7364,11 +7364,11 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
 			}
@@ -7383,11 +7383,11 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
 			}
@@ -7402,7 +7402,7 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7419,7 +7419,7 @@ fun_seq_by_hist_body_real
 			ASSERT(pSequence);
 			RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 			ASSERT(pHeader);
-			if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
 			}
@@ -7435,7 +7435,7 @@ fun_seq_by_hist_body_real
 			ASSERT(pSequence);
 			RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 			ASSERT(pHeader);
-			if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
 			}
@@ -7451,7 +7451,7 @@ fun_seq_by_hist_body_real
 			ASSERT(pSequence);
 			RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 			ASSERT(pHeader);
-			if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
 			}
@@ -7467,7 +7467,7 @@ fun_seq_by_hist_body_real
 			ASSERT(pSequence);
 			RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 			ASSERT(pHeader);
-			if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
 			}
@@ -7493,7 +7493,7 @@ fun_seq_by_hist_body_real
 			ASSERT(pSequence);
 			RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 			ASSERT(pHeader);
-			if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
 			}
@@ -7509,7 +7509,7 @@ fun_seq_by_hist_body_real
 			ASSERT(pSequence);
 			RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 			ASSERT(pHeader);
-			if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
 			}
@@ -7533,7 +7533,7 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if (pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int)
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7546,7 +7546,7 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7559,7 +7559,7 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7572,7 +7572,7 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7585,7 +7585,7 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7598,7 +7598,7 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7665,7 +7665,7 @@ fun_seq_by_hist_body_enum
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_enum )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_enum)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7680,7 +7680,7 @@ fun_seq_by_hist_body_enum
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_enum )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_enum)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7715,7 +7715,7 @@ fun_seq_by_hist_body_enum
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_enum )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_enum)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -8918,7 +8918,7 @@ term_param
 		{
 			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($1);
 			ASSERT(pArithm);
-			if (pArithm->typeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int)
+			if (pArithm->typeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(NULL);
 				LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), "TERMINATE", pCalc);
@@ -10015,12 +10015,12 @@ set_array_item_statement
 			ASSERT(pArithmInd  );
 			ASSERT(pRightArithm);
 
-			if (!pArrayArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>())
+			if (!pArrayArithm->typeInfo()->itype().object_dynamic_cast<RDOArrayType>())
 			{
 				PARSER->error().error(@1, rdo::format("'%s' не является массивом", pParamName->value().getIdentificator().c_str()));
 			}
 
-			LPRDOType pType = pArrayArithm->typeInfo()->type();
+			LPIType pType = pArrayArithm->typeInfo()->itype();
 			ASSERT(pType);
 			LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
 			ASSERT(pArrayType);
@@ -10142,7 +10142,7 @@ init_declaration_value
 
 			LPExpression pExpression = rdo::Factory<Expression>::create(
 				pTypeInfo,
-				rdo::Factory<rdo::runtime::RDOCalcConst>::create(pTypeInfo->type()->get_default()),
+				rdo::Factory<rdo::runtime::RDOCalcConst>::create(pTypeInfo->itype()->get_default()),
 				RDOParserSrcInfo()
 			);
 			ASSERT(pExpression);
@@ -10851,7 +10851,7 @@ fun_arithm
 			ASSERT(pArithm);
 
 			rdo::runtime::LPRDOCalc pCalc;
-			if (pArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>())
+			if (pArithm->typeInfo()->itype().object_dynamic_cast<RDOArrayType>())
 			{
 				pCalc = rdo::Factory<rdo::runtime::RDOCalcArraySize>::create(pArithm->calc());
 				ASSERT(pCalc);
@@ -10883,7 +10883,7 @@ fun_arithm
 			LPRDOFUNArithm pArrayArithm = RDOFUNArithm::generateByIdentificator(pArrayValue);
 			ASSERT(pArrayArithm);
 
-			LPRDOArrayType pArrayType = pArrayArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>();
+			LPRDOArrayType pArrayType = pArrayArithm->typeInfo()->itype().object_dynamic_cast<RDOArrayType>();
 			if (!pArrayType)
 			{
 				PARSER->error().error(@1, rdo::format("'%s' не является массивом"
@@ -10891,7 +10891,7 @@ fun_arithm
 				);
 			}
 
-			LPRDORTPResType pResType = pArrayType->getItemType()->type().object_dynamic_cast<RDORTPResType>();
+			LPRDORTPResType pResType = pArrayType->getItemType()->itype().object_dynamic_cast<RDORTPResType>();
 			if (!pResType)
 			{
 				PARSER->error().error(@1, rdo::format("'%s' не является массивом ресурсов"
@@ -10952,7 +10952,7 @@ fun_arithm
 			LPRDOFUNArithm pArithmInd = PARSER->stack().pop<RDOFUNArithm>($3);
 			ASSERT(pArithmInd);
 
-			LPRDOType pType = pArithm->typeInfo()->type();
+			LPIType pType = pArithm->typeInfo()->itype();
 			ASSERT(pType);
 
 			LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();

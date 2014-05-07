@@ -14,9 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/interface/rdointerface.h"
 #include "simulator/runtime/rdo_res_type_i.h"
-#include "simulator/runtime/rdo_runtime_interface_registrator.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -27,7 +25,8 @@ CLOSE_RDO_RUNTIME_NAMESPACE
   \interface IPROCBlock
   \brief     Интерфейс IPROCBlock
 */
-class IPROCBlock
+PREDECLARE_POINTER(IPROCProcess)
+class IPROCBlock: public virtual rdo::counter_reference
 {
 public:
 	typedef  rdo::runtime::LPRDOPROCTransact  LPTransact;
@@ -40,6 +39,7 @@ public:
 	virtual void           transactGoOut(const LPTransact& pTransact) = 0;
 	virtual LPIPROCProcess getProcess   () const                      = 0;
 };
+DECLARE_POINTER(IPROCBlock)
 
 #define DECLARE_IPROCBlock \
 	virtual TransactIt     transactFind (const LPTransact& pTransact); \
@@ -52,7 +52,7 @@ public:
   \interface IPROCProcess
   \brief     Интерфейс IPROCProcess
 */
-class IPROCProcess
+class IPROCProcess: public virtual rdo::counter_reference
 {
 public:
 	virtual void  insertChild(LPIPROCProcess                         pProcess ) = 0;

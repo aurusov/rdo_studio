@@ -26,7 +26,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 */
 class RDODPTSearchRuntime: public RDODPTSearchTrace
 {
-DEFINE_IFACTORY(RDODPTSearchRuntime);
+DECLARE_FACTORY(RDODPTSearchRuntime);
 
 private:
 	RDODPTSearchRuntime(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent, const LPRDOCalc& _pCondition, const LPRDOCalc& _pTermCondition, const LPRDOCalc& _pEvaluateBy, bool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag);
@@ -43,7 +43,5 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/rdodptrtime.inl"
 
 #endif // _LIB_RUNTIME_DPTRTIME_H_

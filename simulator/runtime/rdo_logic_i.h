@@ -13,9 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/interface/rdointerface.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
-#include "simulator/runtime/rdo_runtime_interface_registrator.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
 
@@ -28,13 +26,14 @@ CLOSE_RDO_RUNTIME_NAMESPACE
   \interface ILogic
   \brief     Логика в РДО - правила логического вывода для контейнеров IBaseOperationContainer
 */
-class ILogic
+class ILogic: public virtual rdo::counter_reference
 {
 public:
 	virtual void init             (const rdo::runtime::LPRDORuntime& pRuntime      ) = 0;
 	virtual void setCondition     (const rdo::runtime::LPRDOCalc&    pCondition    ) = 0;
 	virtual void setMultithreading(bool                              multithreading) = 0;
 };
+DECLARE_POINTER(ILogic)
 
 #define DECLARE_ILogic                                                                \
 	virtual void init             (const rdo::runtime::LPRDORuntime& pRuntime      ); \
@@ -45,7 +44,7 @@ public:
   \interface IBaseOperationContainer
   \brief     Иерархические контейнеры активностей. См. паттерн "Компоновщик"
 */
-class IBaseOperationContainer
+class IBaseOperationContainer: public virtual rdo::counter_reference
 {
 public:
 	typedef  LPIBaseOperation      Item;
@@ -62,6 +61,7 @@ public:
 	virtual LPIBaseOperation& back  ()                 = 0;
 	virtual void              clear ()                 = 0;
 };
+DECLARE_POINTER(IBaseOperationContainer);
 
 #define DECLARE_IBaseOperationContainer                 \
 	virtual Iterator          begin ();                 \

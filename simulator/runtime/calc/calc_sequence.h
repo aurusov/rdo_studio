@@ -123,6 +123,6 @@ DEFINE_RANDON_DISTRIBUTION(ByHist, RandGeneratorCommonNext);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/calc_sequence.inl"
+#include "simulator/runtime/calc/calc_sequence-inl.h"
 
 #endif // _LIB_RUNTIME_CALC_SEQUENCE_H_

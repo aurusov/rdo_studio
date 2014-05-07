@@ -65,6 +65,6 @@ namespace rdo
 	} // namespace gui
 } // namespace rdo
 
-#include "ui/abstract/headers/memdc/memdc.inl"
+#include "ui/abstract/headers/memdc/memdc-inl.h"
 
 #endif // _UI_ABSTRACT_MEMDC_H_

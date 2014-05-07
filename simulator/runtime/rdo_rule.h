@@ -30,14 +30,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDORule: public IBaseOperation, public IRule, public RDOActivityPattern<RDOPatternRule>, public RDOPatternPrior
 {
 typedef RDOActivityPattern<RDOPatternRule> pattern_type;
-DEFINE_IFACTORY(RDORule);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(pattern_type)
-	QUERY_INTERFACE_PARENT(RDOPatternPrior)
-	QUERY_INTERFACE(IBaseOperation)
-	QUERY_INTERFACE(IRule)
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDORule);
 friend class RDOTrace;
 friend class RDODPTSearch;
 friend class TreeNode;

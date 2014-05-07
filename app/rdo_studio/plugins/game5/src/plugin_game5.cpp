@@ -172,7 +172,7 @@ void PluginGame5::backUpModel(rdo::gui::model::Model* pModel) const
 		for (size_t i = 0; i < RDOFileType_ENUM_SIZE; i++)
 		{
 			const QString fileFormat  = QString::fromStdString(
-					rdoModelObjects::getFileTypeString(rdoModelObjects::RDOFileType(i)));
+					rdo::model::getFileTypeString(rdo::model::FileType(i)));
 			const QString fileName    = modelFolder  + pModel->getName() + "." + fileFormat.toLower();
 			const QString newFileName = backupFolder + pModel->getName() + "." + fileFormat.toLower();
 			if (QFile::exists(fileName))

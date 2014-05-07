@@ -16,8 +16,6 @@
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/rdorss.h"
-#include "simulator/compiler/parser/type/type.h"
-
 #include "simulator/compiler/mbuilder/rdo_resources.h"
 
 #include "simulator/runtime/rdo_rule.h"
@@ -121,7 +119,7 @@ void RDODPTActivity::endParam(const YYLTYPE& param_pos)
 	}
 	if (m_pPattern->getType() == RDOPATPattern::PT_Keyboard)
 	{
-		LPIKeyboard pKeyboard = m_pActivity;
+		LPIKeyboard pKeyboard = m_pActivity.object_dynamic_cast<IKeyboard>();
 		ASSERT(pKeyboard);
 		if (!pKeyboard->hasHotKey())
 		{
@@ -135,7 +133,7 @@ void RDODPTActivity::endParam(const YYLTYPE& param_pos)
 
 bool RDODPTActivity::setPrior(LPRDOFUNArithm& pPrior)
 {
-	LPIPriority pPriorActivity = m_pActivity;
+	LPIPriority pPriorActivity = m_pActivity.object_dynamic_cast<IPriority>();
 	if (pPriorActivity)
 	{
 		return pPriorActivity->setPrior(pPrior->createCalc());
@@ -152,15 +150,15 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, const
 	switch (pattern()->getType())
 	{
 	case RDOPATPattern::PT_Rule:
-		m_pActivity = pattern()->getPatRuntime<rdo::runtime::RDOPatternRule>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = pattern()->getPatRuntime<rdo::runtime::RDOPatternRule>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name()).object_dynamic_cast<IActivity>();
 		break;
 
 	case RDOPATPattern::PT_Operation:
-		m_pActivity = pattern()->getPatRuntime<rdo::runtime::RDOPatternOperation>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = pattern()->getPatRuntime<rdo::runtime::RDOPatternOperation>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name()).object_dynamic_cast<IActivity>();
 		break;
 
 	case RDOPATPattern::PT_Keyboard:
-		m_pActivity = pattern()->getPatRuntime<rdo::runtime::RDOPatternKeyboard>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = pattern()->getPatRuntime<rdo::runtime::RDOPatternKeyboard>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name()).object_dynamic_cast<IActivity>();
 		break;
 
 	default:
@@ -181,7 +179,7 @@ void RDODPTActivityHotKey::addHotKey(const std::string& hotKey, const YYLTYPE& h
 		RDOParser::s_parser()->error().push_only(pattern()->src_info(), "См. образец");
 		RDOParser::s_parser()->error().push_done();
 	}
-	LPIKeyboard pKeyboard = m_pActivity;
+	LPIKeyboard pKeyboard = m_pActivity.object_dynamic_cast<IKeyboard>();
 	ASSERT(pKeyboard);
 	switch (pKeyboard->addHotKey(RDOParser::s_parser()->runtime(), hotKey))
 	{
@@ -234,7 +232,7 @@ RDODPTSome::RDODPTSome(const RDOParserSrcInfo& src_info, LPILogic pParent)
 	: RDOLogic<rdo::runtime::RDODPTSome, RDODPTSomeActivity>(src_info)
 {
 	RDOParser::s_parser()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = RF(rdo::runtime::RDODPTSome)::create(RDOParser::s_parser()->runtime(), pParent);
+	m_pRuntimeLogic = rdo::Factory<rdo::runtime::RDODPTSome>::create(RDOParser::s_parser()->runtime(), pParent.object_dynamic_cast<IBaseOperationContainer>()).object_dynamic_cast<ILogic>();
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
 	RDOParser::s_parser()->insertDPTSome(this);
@@ -257,7 +255,7 @@ RDODPTPrior::RDODPTPrior(const RDOParserSrcInfo& src_info, LPILogic pParent)
 	: RDOLogic<rdo::runtime::RDODPTPrior, RDODPTPriorActivity>(src_info)
 {
 	RDOParser::s_parser()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = RF(rdo::runtime::RDODPTPrior)::create(RDOParser::s_parser()->runtime(), pParent);
+	m_pRuntimeLogic = rdo::Factory<rdo::runtime::RDODPTPrior>::create(RDOParser::s_parser()->runtime(), pParent.object_dynamic_cast<IBaseOperationContainer>());
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
 	RDOParser::s_parser()->insertDPTPrior(this);
@@ -296,7 +294,7 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, const
 			RDOParser::s_parser()->error().push_done();
 		}
 	}
-	m_pActivity = RF(rdo::runtime::RDORule)::create(RDOParser::s_parser()->runtime(), pattern()->getPatRuntime<rdo::runtime::RDOPatternRule>(), true, name());
+	m_pActivity = rdo::Factory<rdo::runtime::RDORule>::create(RDOParser::s_parser()->runtime(), pattern()->getPatRuntime<rdo::runtime::RDOPatternRule>(), true, name());
 	ASSERT(m_pActivity);
 }
 
@@ -337,8 +335,8 @@ void RDODPTSearch::end()
 	rdo::runtime::LPRDOCalc pCalcCondition = m_pConditon     ? m_pConditon->getCalc()     : rdo::Factory<rdo::runtime::RDOCalcConst>::create(1).object_parent_cast<rdo::runtime::RDOCalc>();
 	rdo::runtime::LPRDOCalc pCalcTerminate = m_pTermConditon ? m_pTermConditon->getCalc() : rdo::Factory<rdo::runtime::RDOCalcConst>::create(1).object_parent_cast<rdo::runtime::RDOCalc>();
 
-	m_pRuntimeLogic = RF(rdo::runtime::RDODPTSearchRuntime)::create(RDOParser::s_parser()->runtime(),
-		m_pParent,
+	m_pRuntimeLogic = rdo::Factory<rdo::runtime::RDODPTSearchRuntime>::create(RDOParser::s_parser()->runtime(),
+		m_pParent.object_dynamic_cast<IBaseOperationContainer>(),
 		pCalcCondition,
 		pCalcTerminate,
 		m_pEvalBy->createCalc(),
@@ -352,13 +350,13 @@ void RDODPTSearch::end()
 	{
 		LPRDODPTSearchActivity pSearchActivity = getActivities().at(i);
 		ASSERT(pSearchActivity);
-		LPIDPTSearchActivity pActivity = RF(rdo::runtime::RDODPTSearchActivity)::create(
-			pSearchActivity->activity(),
+		LPIDPTSearchActivity pActivity = rdo::Factory<rdo::runtime::RDODPTSearchActivity>::create(
+			pSearchActivity->activity().object_dynamic_cast<IRule>(),
 			pSearchActivity->getValue(),
 			pSearchActivity->getRuleCost()->createCalc()
 		);
 		ASSERT(pActivity);
-		LPIDPTSearchLogic pSearchLogic = m_pRuntimeLogic;
+		LPIDPTSearchLogic pSearchLogic = m_pRuntimeLogic.object_dynamic_cast<IDPTSearchLogic>();
 		ASSERT(pSearchLogic);
 		pSearchLogic->addActivity(pActivity);
 	}

@@ -22,6 +22,12 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCTerminate
 // --------------------------------------------------------------------------------
+RDOPROCTerminate::RDOPROCTerminate(const LPIPROCProcess& pProcess, const LPRDOCalc& pCalc)
+	: RDOPROCBlock             (pProcess)
+	, m_terminatedTransactCount(0       )
+	, m_pTermCalc              (pCalc   )
+{}
+
 bool RDOPROCTerminate::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
 {
 	return !m_transacts.empty() ? true : false;

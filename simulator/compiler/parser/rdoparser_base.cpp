@@ -18,14 +18,14 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 RDOParserItem::RDOParserItem()
-	: m_type      (rdoModelObjects::PAT)
-	, m_parser_fun(NULL                )
-	, m_lexer_fun (NULL                )
-	, m_from      (sf_repository       )
+	: m_type      (rdo::model::PAT)
+	, m_parser_fun(NULL)
+	, m_lexer_fun (NULL)
+	, m_from      (sf_repository)
 {}
 
 RDOParserItem::RDOParserItem(
-		rdoModelObjects::RDOFileType type,
+		rdo::model::FileType type,
 		t_bison_parse_fun            parser_fun,
 		t_flex_lexer_fun             lexer_fun,
 		StreamFrom                   from

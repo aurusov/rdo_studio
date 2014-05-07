@@ -1225,7 +1225,7 @@ void RDOThreadSimulator::parseSMRFileInfo(rdo::converter::smr2rdox::RDOSMRFileIn
 	try
 	{
 		rdo::converter::smr2rdox::RDOParserModel converter;
-		rdo::repository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::SMR);
+		rdo::repository::RDOThreadRepository::FileInfo fileInfo(rdo::model::SMR);
 		kernel->sendMessage(kernel->repository(), RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
 		rdo::converter::smr2rdox::RDOParserModel::Result res = converter.convert(fileInfo.m_fullName, info);
 		switch (res)

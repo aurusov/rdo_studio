@@ -12,14 +12,13 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/interface/rdointerface.h"
 // --------------------------------------------------------------------------------
 
 /*!
   \interface ITrace
   \brief     Интерфейс ITrace
 */
-class ITrace
+class ITrace: public virtual rdo::counter_reference
 {
 public:
 	virtual bool traceable() const = 0;
@@ -31,6 +30,7 @@ public:
 
 	virtual std::string& traceId() const = 0;
 };
+DECLARE_POINTER(ITrace)
 
 #define DECLARE_ITrace                                           \
 	virtual bool traceable() const;                              \
@@ -44,7 +44,7 @@ public:
   \interface IResultTraceValue
   \brief     Интерфейс IResultTraceValue
 */
-class IResultTraceValue
+class IResultTraceValue: public virtual rdo::counter_reference
 {
 public:
 	virtual std::string traceValue() const = 0;
@@ -57,11 +57,12 @@ public:
   \interface IResultTrace
   \brief     Интерфейс IResultTrace
 */
-class IResultTrace
+class IResultTrace: public virtual rdo::counter_reference
 {
 public:
 	virtual void traceResult() = 0;
 };
+DECLARE_POINTER(IResultTrace);
 
 #define DECLARE_IResultTrace \
 	virtual void traceResult();

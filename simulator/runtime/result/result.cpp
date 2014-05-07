@@ -26,6 +26,7 @@
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/notify.h"
 #include "simulator/runtime/rdo_res_type_i.h"
+#include "simulator/runtime/rdo_exception.h"
 // --------------------------------------------------------------------------------
 
 #if defined( ARCHITECTURE_AMD64 )

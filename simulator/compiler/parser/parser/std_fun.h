@@ -29,7 +29,7 @@ class RDOParserSTDFUN: public RDOParserItem
 DECLARE_FACTORY(RDOParserSTDFUN);
 private:
 	RDOParserSTDFUN()
-		: RDOParserItem(rdoModelObjects::FUN, NULL, NULL)
+		: RDOParserItem(rdo::model::FUN, NULL, NULL)
 	{}
 
 	virtual void parse(const LPRDOParser& pParser);

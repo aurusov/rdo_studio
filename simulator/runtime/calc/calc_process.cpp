@@ -38,7 +38,7 @@ RDOValue RDOCalcProcessControl::doCalc(const LPRDORuntime& pRuntime)
 	{
 		pTransact->setBlock(m_Block);
 		// Записываем в конец списка этого блока перемещаемый транзакт
-		m_Block.query_cast<IPROCBlock>()->transactGoIn(pTransact);
+		m_Block.object_dynamic_cast<IPROCBlock>()->transactGoIn(pTransact);
 	}
 
 	return RDOValue();

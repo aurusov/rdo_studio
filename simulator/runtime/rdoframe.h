@@ -638,6 +638,4 @@ DECLARE_POINTER(RDOFRMFrame);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdoframe.inl"
-
 #endif // _LIB_RUNTIME_FRAME_H_

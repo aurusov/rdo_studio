@@ -3,7 +3,7 @@
   \file      rdotime.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      10.05.2009
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -42,7 +42,5 @@ private:
 };
 
 } // namespace rdo
-
-#include "utils/src/time/rdotime.inl"
 
 #endif // _UTILS_RDOTIME_H_

@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_logic.h"
+#include "simulator/runtime/rdo_priority.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -24,19 +25,12 @@ OPEN_RDO_RUNTIME_NAMESPACE
 */
 class RDODPTFree: public RDOLogicSimple, public RDOPatternPrior
 {
-DEFINE_IFACTORY(RDODPTFree);
-QUERY_INTERFACE_BEGIN
-QUERY_INTERFACE_PARENT(RDOLogic)
-QUERY_INTERFACE_PARENT(RDOPatternPrior)
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDODPTFree);
 private:
 	RDODPTFree(const LPRDORuntime& pRuntime);
 	virtual ~RDODPTFree();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "converter/smr2rdox/runtime/rdo_logic_dptfree.inl"
 
 #endif // _LIB_RUNTIME_LOGIC_DPTFREE_H_

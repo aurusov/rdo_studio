@@ -44,10 +44,11 @@ public:
 	virtual void          eraseRes(const LPRDOResource& pResource);
 	LPRDOResourceTypeList clone   (const LPRDORuntime& pRuntime) const;
 
-private:
+protected:
 	RDOResourceTypeList(std::size_t number, const LPRDORuntime& pRuntime);
 	virtual ~RDOResourceTypeList();
 
+private:
 	void insertNewResource(const LPRDORuntime& pRuntime, const LPRDOResource& pResource);
 
 	typedef  std::list<LPRDOResource> ResourceList;

@@ -66,10 +66,10 @@ void RDOPMDResultGroup::resetResult(const LPRDORuntime& pRuntime)
 			{
 				for (const LPIResult& pResult: m_resultList)
 				{
-					LPIResultGetValue pGetValue = pResult;
+					LPIResultGetValue pGetValue = pResult.object_dynamic_cast<IResultGetValue>();
 					if (pGetValue)
 					{
-						LPIName pName = pGetValue;
+						LPIName pName = pGetValue.object_dynamic_cast<IName>();
 						ASSERT(pName);
 						m_streamTable << pName->name() << "\t";
 					}
@@ -132,7 +132,7 @@ void RDOPMDResultGroup::calcStat(const LPRDORuntime& pRuntime, std::ostream& str
 			m_streamFull << textStream.str();
 		}
 
-		LPIResultGetValue pGetValue = pResult;
+		LPIResultGetValue pGetValue = pResult.object_dynamic_cast<IResultGetValue>();
 		if (pGetValue)
 		{
 			if (pGetValue->getValue().typeID() != RDOType::t_real)

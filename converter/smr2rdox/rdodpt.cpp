@@ -311,7 +311,7 @@ RDODPTFree::RDODPTFree(const RDOParserSrcInfo& src_info)
 	: RDOLogicActivity<rdo::runtime::RDODPTFree, RDODPTFreeActivity>(src_info)
 {
 	Converter::s_converter()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = RF(rdo::runtime::RDODPTFree)::create(Converter::s_converter()->runtime());
+	m_pRuntimeLogic = rdo::Factory<rdo::runtime::RDODPTFree>::create(Converter::s_converter()->runtime());
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(Converter::s_converter()->runtime());
 	Converter::s_converter()->insertDPTFree(this);
@@ -338,7 +338,7 @@ RDODPTSome::RDODPTSome(const RDOParserSrcInfo& src_info, LPILogic pParent)
 	: RDOLogicActivity<rdo::runtime::RDODPTSome, RDODPTSomeActivity>(src_info)
 {
 	Converter::s_converter()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = RF(rdo::runtime::RDODPTSome)::create(Converter::s_converter()->runtime(), pParent);
+	m_pRuntimeLogic = rdo::Factory<rdo::runtime::RDODPTSome>::create(Converter::s_converter()->runtime(), pParent.object_dynamic_cast<IBaseOperationContainer>()).object_dynamic_cast<ILogic>();
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(Converter::s_converter()->runtime());
 	Converter::s_converter()->insertDPTSome(this);
@@ -359,7 +359,7 @@ RDODPTPrior::RDODPTPrior(const RDOParserSrcInfo& src_info, LPILogic pParent)
 	: RDOLogicActivity<rdo::runtime::RDODPTPrior, RDODPTPriorActivity>(src_info)
 {
 	Converter::s_converter()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = RF(rdo::runtime::RDODPTPrior)::create(Converter::s_converter()->runtime(), pParent);
+	m_pRuntimeLogic = rdo::Factory<rdo::runtime::RDODPTPrior>::create(Converter::s_converter()->runtime(), pParent.object_dynamic_cast<IBaseOperationContainer>());
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(Converter::s_converter()->runtime());
 	Converter::s_converter()->insertDPTPrior(this);
@@ -423,8 +423,8 @@ void RDODPTSearch::end()
 	rdo::runtime::LPRDOCalc pCalcCondition = m_pConditon     ? m_pConditon->getCalc()     : rdo::Factory<rdo::runtime::RDOCalcConst>::create(1).object_parent_cast<rdo::runtime::RDOCalc>();
 	rdo::runtime::LPRDOCalc pCalcTerminate = m_pTermConditon ? m_pTermConditon->getCalc() : rdo::Factory<rdo::runtime::RDOCalcConst>::create(1).object_parent_cast<rdo::runtime::RDOCalc>();
 
-	m_pRuntimeLogic = RF(rdo::runtime::RDODPTSearchRuntime)::create(Converter::s_converter()->runtime(),
-		m_pParent,
+	m_pRuntimeLogic = rdo::Factory<rdo::runtime::RDODPTSearchRuntime>::create(Converter::s_converter()->runtime(),
+		m_pParent.object_dynamic_cast<IBaseOperationContainer>(),
 		pCalcCondition,
 		pCalcTerminate,
 		m_pEvalBy->createCalc(),
@@ -438,7 +438,7 @@ void RDODPTSearch::end()
 	{
 		LPRDODPTSearchActivity pSearchActivity = getActivities().at(i);
 		ASSERT(pSearchActivity);
-		LPIDPTSearchLogic pSearchLogic = m_pRuntimeLogic;
+		LPIDPTSearchLogic pSearchLogic = m_pRuntimeLogic.object_dynamic_cast<IDPTSearchLogic>();
 		ASSERT(pSearchLogic);
 	}
 	m_closed = true;
@@ -455,15 +455,15 @@ RDOPROCProcess::RDOPROCProcess(const RDOParserSrcInfo& info)
 	, m_closed        (false)
 {
 	Converter::s_converter()->insertPROCProcess(this);
-	m_pRuntime = RF(rdo::runtime::RDOPROCProcess)::create(info.src_text(), Converter::s_converter()->runtime());
+	m_pRuntime = rdo::Factory<rdo::runtime::RDOPROCProcess>::create(info.src_text(), Converter::s_converter()->runtime());
 	ASSERT(m_pRuntime);
-	m_pRuntime.query_cast<ILogic>()->init(Converter::s_converter()->runtime());
+	m_pRuntime.object_dynamic_cast<ILogic>()->init(Converter::s_converter()->runtime());
 }
 
 bool RDOPROCProcess::setPrior(LPRDOFUNArithm& pPrior)
 {
 	LPILogic pRuntimeLogic = getRunTime();
-	LPIPriority pPriority = pRuntimeLogic.query_cast<IPriority>();
+	LPIPriority pPriority = pRuntimeLogic.object_dynamic_cast<IPriority>();
 	if (pPriority)
 	{
 		return pPriority->setPrior(pPrior->createCalc());
@@ -610,7 +610,7 @@ void RDOPROCRelease::addResource(const std::string& name)
 RDOPROCAdvance::RDOPROCAdvance(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pTimeCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdo::runtime::RDOPROCAdvance)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pTimeCalc);
+	m_pRuntime = rdo::Factory<rdo::runtime::RDOPROCAdvance>::create(Converter::s_converter()->getLastPROCProcess()->getRunTime().object_dynamic_cast<IPROCProcess>(), pTimeCalc).object_dynamic_cast<IPROCBlock>();
 	ASSERT(m_pRuntime);
 }
 
@@ -620,7 +620,7 @@ RDOPROCAdvance::RDOPROCAdvance(const LPRDOPROCProcess& pProcess, const std::stri
 RDOPROCTerminate::RDOPROCTerminate(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdo::runtime::RDOPROCTerminate)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pCalc);
+	m_pRuntime = rdo::Factory<rdo::runtime::RDOPROCTerminate>::create(Converter::s_converter()->getLastPROCProcess()->getRunTime().object_dynamic_cast<IPROCProcess>(), pCalc).object_dynamic_cast<IPROCBlock>();
 	ASSERT(m_pRuntime);
 }
 
@@ -630,7 +630,7 @@ RDOPROCTerminate::RDOPROCTerminate(const LPRDOPROCProcess& pProcess, const std::
 RDOPROCAssign::RDOPROCAssign(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pValue)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdo::runtime::RDOPROCAssign)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pValue);
+	m_pRuntime = rdo::Factory<rdo::runtime::RDOPROCAssign>::create(Converter::s_converter()->getLastPROCProcess()->getRunTime().object_dynamic_cast<IPROCProcess>(), pValue).object_dynamic_cast<IPROCBlock>();
 	ASSERT(m_pRuntime);
 }
 

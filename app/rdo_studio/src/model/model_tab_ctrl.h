@@ -28,16 +28,16 @@ public:
 	TabCtrl(QWidget* pParent, QWidget* pView);
 	virtual ~TabCtrl();
 
-	rdoModelObjects::RDOFileType indexToType(int index) const;
-	int typeToIndex(rdoModelObjects::RDOFileType type) const;
-	bool typeSupported(rdoModelObjects::RDOFileType type) const { return typeToIndex(type) != -1; }
+	rdo::model::FileType indexToType(int index) const;
+	int typeToIndex(rdo::model::FileType type) const;
+	bool typeSupported(rdo::model::FileType type) const { return typeToIndex(type) != -1; }
 
-	rdoModelObjects::RDOFileType getCurrentRDOItem() const { return indexToType(currentIndex()); }
-	void setCurrentRDOItem(rdoModelObjects::RDOFileType type);
+	rdo::model::FileType getCurrentRDOItem() const { return indexToType(currentIndex()); }
+	void setCurrentRDOItem(rdo::model::FileType type);
 
 	context_type* getCurrentEdit() const;
 	context_type* getItemEdit(int index) const;
-	context_type* getItemEdit(rdoModelObjects::RDOFileType type) const;
+	context_type* getItemEdit(rdo::model::FileType type) const;
 
 private:
 	editor::Edit::Group m_group;

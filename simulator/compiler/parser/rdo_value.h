@@ -95,6 +95,6 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#include "simulator/compiler/parser/rdo_value.inl"
+#include "simulator/compiler/parser/rdo_value-inl.h"
 
 #endif // _RDOPARSER_VALUE_H_

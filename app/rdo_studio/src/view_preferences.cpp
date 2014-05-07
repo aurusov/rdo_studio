@@ -1280,7 +1280,7 @@ void ViewPreferences::createPreview()
 	preview_build = new Build(previewStackedWidget->currentWidget());
 	preview_build->setEditorStyle(&style_build);
 	preview_build->appendLine(new BuildEditLineInfo("Компиляция..."));
-	preview_build->appendLine(new BuildEditLineInfo(rdo::simulation::report::FileMessage("Неправильное значение параметра: 4", rdoModelObjects::PAT, 40, 0)));
+	preview_build->appendLine(new BuildEditLineInfo(rdo::simulation::report::FileMessage("Неправильное значение параметра: 4", rdo::model::PAT, 40, 0)));
 	preview_build->appendLine(new BuildEditLineInfo("найдено ошибок: 1, предупреждений: 0"));
 	preview_build->gotoNext();
 	previewStackedWidget->addWidget(preview_build);
@@ -1308,8 +1308,8 @@ void ViewPreferences::createPreview()
 	preview_find->setEditorStyle(&style_find);
 	preview_find->setKeyword("$Time");
 	preview_find->appendLine(new LogEditLineInfo("Поиск '$Time'..."));
-	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage("$Time = Равномерный(0.25, 0.75)", rdoModelObjects::PAT, 3, 0)));
-	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage("$Time = Нормальный(0.45, 0.2)", rdoModelObjects::PAT, 13, 0)));
+	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage("$Time = Равномерный(0.25, 0.75)", rdo::model::PAT, 3, 0)));
+	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage("$Time = Нормальный(0.45, 0.2)", rdo::model::PAT, 13, 0)));
 	preview_find->appendLine(new LogEditLineInfo("'2' раз было найдено."));
 	preview_find->gotoNext();
 	previewStackedWidget->addWidget(preview_find);
