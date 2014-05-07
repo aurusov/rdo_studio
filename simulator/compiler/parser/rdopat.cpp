@@ -1244,6 +1244,15 @@ Context::FindResult RDORelevantResource::onFindContext(const std::string& method
 		{
 			LPRDORTPParam pParam = getType()->findRTPParam(paramName);
 			ASSERT(pParam);
+			LPRDORTPResType paramType = pParam->getTypeInfo()->type().object_dynamic_cast<RDORTPResType>();
+			if (paramType)
+			{
+				LPRDORelevantResource pNestedRelRes =
+					RDOParser::s_parser()->getLastPATPattern()->findRelevantResource(
+						name() + '.' + pParam->name()
+				);
+				return FindResult(SwitchContext(pNestedRelRes));
+			}
 
 			return FindResult(SwitchContext(pParam));
 		}
