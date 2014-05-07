@@ -604,8 +604,7 @@ void RDOPATPattern::end()
 			/// чтобы работали вложенные релевантные ресурсы, временно сделал warning
 			parser::g_error().warning(pCurrRelRes->src_info(), rdo::format("Релевантный ресурс '%s' не используется в образце '%s'", pCurrRelRes->name().c_str(), name().c_str()));
 		}
-		else
-			m_pPatRuntime->addPreSelectRelRes(pCurrRelRes->createPreSelectRelResCalc());
+		m_pPatRuntime->addPreSelectRelRes(pCurrRelRes->createPreSelectRelResCalc());
 	}
 
 	if (m_useCommonChoice)
