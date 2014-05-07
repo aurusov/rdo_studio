@@ -2907,9 +2907,8 @@ stopping_statement
 	{
 		#PASS2
 		{
-			LPContext pPatternContext = PARSER->context();
+			LPContext pPatternContext = PARSER->stack().pop<Context>($1);
 			ASSERT(pPatternContext);
-			PARSER->contextStack()->pop<Context>();
 			LPRDOPATPattern pPattern = pPatternContext.object_dynamic_cast<RDOPATPattern>();
 			if (!pPattern)
 			{
