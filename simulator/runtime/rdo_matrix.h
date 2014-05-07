@@ -28,7 +28,7 @@ PREDECLARE_POINTER(RDOMatrixIterator);
 
 //! Элемент матрицы
 PREDECLARE_POINTER(RDOMatrixValue);
-class RDOMatrixValue: public rdo::counter_reference, public IAsString
+class RDOMatrixValue: public IAsString
 {
 DECLARE_FACTORY(RDOMatrixValue)
 public:

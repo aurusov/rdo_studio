@@ -30,7 +30,7 @@ PREDECLARE_POINTER(RDOArrayIterator);
 
 //! Элемент массива
 PREDECLARE_POINTER(RDOArrayValue);
-class RDOArrayValue: public rdo::counter_reference, public IAsString
+class RDOArrayValue: public IAsString
 {
 DECLARE_FACTORY(RDOArrayValue)
 public:

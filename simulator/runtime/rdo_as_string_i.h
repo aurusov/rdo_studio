@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/src/smart_ptr/ref_counter/counter_reference.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -22,8 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \interface IAsString
   \brief     Предоставляет метод asString()
 */
-PREDECLARE_OBJECT_INTERFACE(IAsString)
-struct IAsString
+struct IAsString: public virtual rdo::counter_reference
 {
 DECLARE_FACTORY(IAsString);
 public:
@@ -33,6 +33,7 @@ protected:
 	IAsString()          {}
 	virtual ~IAsString() {}
 };
+DECLARE_POINTER(IAsString)
 
 #define DECLARE_IAsString \
 	std::string asString() const;
