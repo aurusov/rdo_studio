@@ -587,6 +587,20 @@ void RDOPATPattern::addRelResUsage(const LPRDOPATChoiceFrom& pChoiceFrom, const 
 
 	m_pCurrRelRes->m_pChoiceFrom  = pChoiceFrom;
 	m_pCurrRelRes->m_pChoiceOrder = pChoiceOrder;
+
+	for (const auto& param: m_pCurrRelRes->getType()->getParams())
+	{
+		LPRDORTPResType paramType = param->getTypeInfo()->type().object_dynamic_cast<RDORTPResType>();
+		if (paramType)
+		{
+			if(m_pCurrRelRes->isDirect())
+			{
+				LPRDORelevantResource pNestedRelRes = findRelevantResource(m_pCurrRelRes->name() + '.' + param->name());
+				pNestedRelRes->m_pChoiceFrom = pChoiceFrom;
+				pNestedRelRes->m_pChoiceOrder = pChoiceOrder;
+			}
+		}
+	}
 }
 
 void RDOPATPattern::end()
@@ -765,6 +779,20 @@ void RDOPatternEvent::addRelResUsage(const LPRDOPATChoiceFrom& pChoiceFrom, cons
 
 	m_pCurrRelRes->m_pChoiceFrom  = pChoiceFrom;
 	m_pCurrRelRes->m_pChoiceOrder = pChoiceOrder;
+
+	for (const auto& param: m_pCurrRelRes->getType()->getParams())
+	{
+		LPRDORTPResType paramType = param->getTypeInfo()->type().object_dynamic_cast<RDORTPResType>();
+		if (paramType)
+		{
+			if(m_pCurrRelRes->isDirect())
+			{
+				LPRDORelevantResource pNestedRelRes = findRelevantResource(m_pCurrRelRes->name() + '.' + param->name());
+				pNestedRelRes->m_pChoiceFrom = pChoiceFrom;
+				pNestedRelRes->m_pChoiceOrder = pChoiceOrder;
+			}
+		}
+	}
 }
 
 rdo::runtime::LPRDOCalc RDOPATPattern::createRelRes(bool trace) const
