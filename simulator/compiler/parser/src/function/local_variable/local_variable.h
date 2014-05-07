@@ -3,7 +3,7 @@
   \file      local_variable.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      16.10.2010
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -18,6 +18,8 @@
 #include "simulator/compiler/parser/expression.h"
 #include "simulator/compiler/parser/bison_value_pair.h"
 #include "simulator/compiler/parser/type/info.h"
+#include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/context_find_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -26,7 +28,9 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- LocalVariable
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(LocalVariable);
-class LocalVariable: public rdo::counter_reference
+class LocalVariable
+	: public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(LocalVariable);
 public:
@@ -39,6 +43,7 @@ public:
 private:
 	LocalVariable(const LPRDOValue& pName, const LPExpression& pExpression);
 	virtual ~LocalVariable();
+	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 
 	LPRDOValue    m_pName;
 	LPExpression  m_pExpression;
