@@ -3,7 +3,7 @@
   \file      tracer_resource_type.h
   \author    Захаров Павел
   \date      11.03.2003
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -30,7 +30,8 @@ public:
 		PT_ENUMERATIVE,
 		PT_BOOL,
 		PT_ARRAY,
-		PT_STRING
+		PT_STRING,
+		PT_RESOURCE
 	};
 
 	ParamInfo(const ParamType type);
