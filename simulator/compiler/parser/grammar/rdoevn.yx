@@ -2907,8 +2907,11 @@ stopping_statement
 	{
 		#PASS2
 		{
-			LPContext pPatternContext = PARSER->stack().pop<Context>($1);
+			Context::LPFindResult pPatternResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pPatternResult->getSwitchContext());
+			LPContext pPatternContext = pPatternResult->getSwitchContext().context;
 			ASSERT(pPatternContext);
+
 			LPRDOPATPattern pPattern = pPatternContext.object_dynamic_cast<RDOPATPattern>();
 			if (!pPattern)
 			{
@@ -2947,8 +2950,11 @@ planning_statement
 	{
 		#PASS2
 		{
-			LPContext pPatternContext = PARSER->stack().pop<Context>($1);
+			Context::LPFindResult pPatternResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pPatternResult->getSwitchContext());
+			LPContext pPatternContext = pPatternResult->getSwitchContext().context;
 			ASSERT(pPatternContext);
+
 			LPRDOPATPattern pPattern = pPatternContext.object_dynamic_cast<RDOPATPattern>();
 			if (!pPattern)
 			{
@@ -3033,9 +3039,11 @@ process_input_statement
 	{
 		#PASS2
 		{
-
-			LPContext pProcessContext = PARSER->stack().pop<Context>($1);
+			Context::LPFindResult pProcessResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pProcessResult->getSwitchContext());
+			LPContext pProcessContext = pProcessResult->getSwitchContext().context;
 			ASSERT(pProcessContext);
+
 			LPRDOPROCProcess pProcess = pProcessContext.object_dynamic_cast<RDOPROCProcess>();
 			if (!pProcess)
 			{
@@ -3084,8 +3092,11 @@ watch_start
 	{
 		#PASS2
 		{
-			LPContext pResultGroupContext = PARSER->stack().pop<Context>($1);
+			Context::LPFindResult pResultGroupResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pResultGroupResult->getSwitchContext());
+			LPContext pResultGroupContext = pResultGroupResult->getSwitchContext().context;
 			ASSERT(pResultGroupContext);
+
 			LPRDOResultGroup pResultGroup = pResultGroupContext.object_dynamic_cast<RDOResultGroup>();
 			if (!pResultGroup)
 			{
@@ -3111,8 +3122,11 @@ watch_stop
 	{
 		#PASS2
 		{
-			LPContext pResultGroupContext = PARSER->stack().pop<Context>($1);
+			Context::LPFindResult pResultGroupResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pResultGroupResult->getSwitchContext());
+			LPContext pResultGroupContext = pResultGroupResult->getSwitchContext().context;
 			ASSERT(pResultGroupContext);
+
 			LPRDOResultGroup pResultGroup = pResultGroupContext.object_dynamic_cast<RDOResultGroup>();
 			if (!pResultGroup)
 			{
@@ -9907,8 +9921,11 @@ set_statement
 	{
 		#PASS2
 		{
-			LPContext pParamContext = PARSER->stack().pop<Context>($1);
+			Context::LPFindResult pParamResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pParamResult->getSwitchContext());
+			LPContext pParamContext = pParamResult->getSwitchContext().context;
 			ASSERT(pParamContext);
+
 			std::string name;
 			RDOParserSrcInfo srcInfo;
 			LPRDOParam pParam = pParamContext.object_dynamic_cast<RDOParam>();
@@ -9945,7 +9962,9 @@ set_statement
 	{
 		#PASS2
 		{
-			LPContext pParamContext = PARSER->stack().pop<Context>($1);
+			Context::LPFindResult pParamResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pParamResult->getSwitchContext());
+			LPContext pParamContext = pParamResult->getSwitchContext().context;
 			ASSERT(pParamContext);
 
 			std::string name;
@@ -10689,31 +10708,31 @@ param_full_name
 		#PASS2
 		{
 			LPRDOValue pName = PARSER->stack().pop<RDOValue>($1);
-
 			Context::Params params;
 			params[Context::Params::IDENTIFIER] = pName->value().getIdentificator();
 			Context::FindResult result = PARSER->context()->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
 			ASSERT(result.getSwitchContext());
 			LPContext pContext = result.getSwitchContext().context;
-
-			$$ = PARSER->stack().push(pContext);
+			Context::LPFindResult pResult(new Context::FindResult(result));
+			$$ = PARSER->stack().push(pResult);
 		}
 	}
 	| param_full_name '.' RDO_IDENTIF
 	{
 		#PASS2
 		{
-			LPContext pParentContext = PARSER->stack().pop<Context>($1);
-			ASSERT(pParentContext);
+			Context::LPFindResult pParentResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pParentResult->getSwitchContext());
+			LPContext pParentContext = pParentResult->getSwitchContext().context;
 			PARSER->contextStack()->push(pParentContext);
 			LPRDOValue pName = PARSER->stack().pop<RDOValue>($3);
+
 			Context::Params params;
 			params[Context::Params::IDENTIFIER] = pName->value().getIdentificator();
 			Context::FindResult result = pParentContext->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
-			ASSERT(result.getSwitchContext());
-			LPContext pContext = result.getSwitchContext().context;
+			Context::LPFindResult pResult(new Context::FindResult(result));
 
-			$$ = PARSER->stack().push(pContext);
+			$$ = PARSER->stack().push(pResult);
 		}
 	}
 	;
