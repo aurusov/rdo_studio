@@ -3,7 +3,7 @@
   \file      context.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      06.06.2010
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -80,7 +80,7 @@ public:
 		SwitchContext();
 	};
 
-	class FindResult
+	class FindResult: public virtual rdo::counter_reference
 	{
 	public:
 		FindResult();
@@ -96,6 +96,7 @@ public:
 		CreateExpressionFunction createExpression;
 		SwitchContext            switchContext;
 	};
+	DECLARE_POINTER(FindResult);
 
 	template <class T>
 	rdo::intrusive_ptr<T> cast();
