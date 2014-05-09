@@ -526,10 +526,8 @@ void RDOPATPattern::addRelResBody(const RDOParserSrcInfo& body_name)
 	}
 	if (findRelevantResourceNum(body_name.src_text()) != m_currentRelResIndex)
 	{
-		//const std::string rel_res_waiting = m_currentRelResIndex < m_relResList.size() ? m_relResList[m_currentRelResIndex]->name().c_str() : "";
-		//parser::g_error().error(body_name.src_info(), rdo::format("Ожидается описание релевантного ресурса '%s', вместо него найдено: %s", rel_res_waiting.c_str(), body_name.src_text().c_str()));
-		//! временная заплатка
-		m_currentRelResIndex = findRelevantResourceNum(body_name.src_text());
+		const std::string rel_res_waiting = m_currentRelResIndex < m_relResList.size() ? m_relResList[m_currentRelResIndex]->name().c_str() : "";
+		parser::g_error().error(body_name.src_info(), rdo::format("Ожидается описание релевантного ресурса '%s', вместо него найдено: %s", rel_res_waiting.c_str(), body_name.src_text().c_str()));
 	}
 	if ((*it)->m_alreadyHaveConverter)
 	{
@@ -587,20 +585,6 @@ void RDOPATPattern::addRelResUsage(const LPRDOPATChoiceFrom& pChoiceFrom, const 
 
 	m_pCurrRelRes->m_pChoiceFrom  = pChoiceFrom;
 	m_pCurrRelRes->m_pChoiceOrder = pChoiceOrder;
-
-	for (const auto& param: m_pCurrRelRes->getType()->getParams())
-	{
-		LPRDORTPResType paramType = param->getTypeInfo()->type().object_dynamic_cast<RDORTPResType>();
-		if (paramType)
-		{
-			if(m_pCurrRelRes->isDirect())
-			{
-				LPRDORelevantResource pNestedRelRes = findRelevantResource(m_pCurrRelRes->name() + '.' + param->name());
-				pNestedRelRes->m_pChoiceFrom = pChoiceFrom;
-				pNestedRelRes->m_pChoiceOrder = pChoiceOrder;
-			}
-		}
-	}
 }
 
 void RDOPATPattern::end()
@@ -614,9 +598,7 @@ void RDOPATPattern::end()
 		if (!pCurrRelRes->m_alreadyHaveConverter)
 		{
 			/// @todo А почему нельзя сделать warning ? Возможно, есть жесткое требование недопустить пустого рел. ресурса.
-			//parser::g_error().error(pCurrRelRes->src_info(), rdo::format("Релевантный ресурс '%s' не используется в образце '%s'", pCurrRelRes->name().c_str(), name().c_str()));
-			/// чтобы работали вложенные релевантные ресурсы, временно сделал warning
-			parser::g_error().warning(pCurrRelRes->src_info(), rdo::format("Релевантный ресурс '%s' не используется в образце '%s'", pCurrRelRes->name().c_str(), name().c_str()));
+			parser::g_error().error(pCurrRelRes->src_info(), rdo::format("Релевантный ресурс '%s' не используется в образце '%s'", pCurrRelRes->name().c_str(), name().c_str()));
 		}
 		m_pPatRuntime->addPreSelectRelRes(pCurrRelRes->createPreSelectRelResCalc());
 	}
@@ -707,20 +689,6 @@ void RDOPatternEvent::addRelRes(const RDOParserSrcInfo& rel_info, const RDOParse
 		}
 		pRelevantResource = rdo::Factory<RDORelevantResourceDirect>::create(rel_info, rel_res_count(), res, beg);
 		ASSERT(pRelevantResource);
-
-		for (const auto& param: res->getType()->getParams())
-		{
-			LPRDORTPResType paramType = param->getTypeInfo()->type().object_dynamic_cast<RDORTPResType>();
-			if (paramType)
-			{
-				RDOParserSrcInfo paramInfo = rel_info;
-				paramInfo.setSrcText(rel_info.src_text() + '.' + param->name());
-				RDOParserSrcInfo paramTypeInfo = type_info;
-				paramTypeInfo.setSrcText(std::to_string(res->getID()) + '.' + param->name());
-				addRelRes(paramInfo, paramTypeInfo, beg, convertor_pos);
-			}
-		}
-
 		rel_res_insert(pRelevantResource);
 	}
 	else
@@ -739,20 +707,6 @@ void RDOPatternEvent::addRelRes(const RDOParserSrcInfo& rel_info, const RDOParse
 		}
 		pRelevantResource = rdo::Factory<RDORelevantResourceByType>::create(rel_info, rel_res_count(), pResType, beg);
 		ASSERT(pRelevantResource);
-
-		for (const auto& param: pResType->getParams())
-		{
-			LPRDORTPResType paramType = param->getTypeInfo()->type().object_dynamic_cast<RDORTPResType>();
-			if (paramType)
-			{
-				RDOParserSrcInfo paramInfo = rel_info;
-				paramInfo.setSrcText(rel_info.src_text() + '.' + param->name());
-				RDOParserSrcInfo paramTypeInfo = type_info;
-				paramTypeInfo.setSrcText(paramType->src_info().src_text());
-				addRelRes(paramInfo, paramTypeInfo, beg, convertor_pos);
-			}
-		}
-
 		rel_res_insert(pRelevantResource);
 	}
 	if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Erase)
@@ -779,20 +733,6 @@ void RDOPatternEvent::addRelResUsage(const LPRDOPATChoiceFrom& pChoiceFrom, cons
 
 	m_pCurrRelRes->m_pChoiceFrom  = pChoiceFrom;
 	m_pCurrRelRes->m_pChoiceOrder = pChoiceOrder;
-
-	for (const auto& param: m_pCurrRelRes->getType()->getParams())
-	{
-		LPRDORTPResType paramType = param->getTypeInfo()->type().object_dynamic_cast<RDORTPResType>();
-		if (paramType)
-		{
-			if(m_pCurrRelRes->isDirect())
-			{
-				LPRDORelevantResource pNestedRelRes = findRelevantResource(m_pCurrRelRes->name() + '.' + param->name());
-				pNestedRelRes->m_pChoiceFrom = pChoiceFrom;
-				pNestedRelRes->m_pChoiceOrder = pChoiceOrder;
-			}
-		}
-	}
 }
 
 rdo::runtime::LPRDOCalc RDOPATPattern::createRelRes(bool trace) const
@@ -890,20 +830,6 @@ void RDOPatternRule::addRelRes(const RDOParserSrcInfo& rel_info, const RDOParser
 		}
 		pRelevantResource = rdo::Factory<RDORelevantResourceDirect>::create(rel_info, rel_res_count(), res, beg);
 		ASSERT(pRelevantResource);
-
-		for (const auto& param: res->getType()->getParams())
-		{
-			LPRDORTPResType paramType = param->getTypeInfo()->type().object_dynamic_cast<RDORTPResType>();
-			if (paramType)
-			{
-				RDOParserSrcInfo paramInfo = rel_info;
-				paramInfo.setSrcText(rel_info.src_text() + '.' + param->name());
-				RDOParserSrcInfo paramTypeInfo = type_info;
-				paramTypeInfo.setSrcText(std::to_string(res->getID()) + '.' + param->name());
-				addRelRes(paramInfo, paramTypeInfo, beg, convertor_pos);
-			}
-		}
-
 		rel_res_insert(pRelevantResource);
 	}
 	else
@@ -919,20 +845,6 @@ void RDOPatternRule::addRelRes(const RDOParserSrcInfo& rel_info, const RDOParser
 		}
 		pRelevantResource = rdo::Factory<RDORelevantResourceByType>::create(rel_info, rel_res_count(), pResType, beg);
 		ASSERT(pRelevantResource);
-
-		for (const auto& param: pResType->getParams())
-		{
-			LPRDORTPResType paramType = param->getTypeInfo()->type().object_dynamic_cast<RDORTPResType>();
-			if (paramType)
-			{
-				RDOParserSrcInfo paramInfo = rel_info;
-				paramInfo.setSrcText(rel_info.src_text() + '.' + param->name());
-				RDOParserSrcInfo paramTypeInfo = type_info;
-				paramTypeInfo.setSrcText(paramType->src_info().src_text());
-				addRelRes(paramInfo, paramTypeInfo, beg, convertor_pos);
-			}
-		}
-
 		rel_res_insert(pRelevantResource);
 	}
 	if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Erase)
@@ -1046,20 +958,6 @@ void RDOPatternOperation::addRelRes(const RDOParserSrcInfo& rel_info, const RDOP
 		}
 		pRelevantResource = rdo::Factory<RDORelevantResourceDirect>::create(rel_info, rel_res_count(), res, beg, end);
 		ASSERT(pRelevantResource);
-
-		for (const auto& param: res->getType()->getParams())
-		{
-			LPRDORTPResType paramType = param->getTypeInfo()->type().object_dynamic_cast<RDORTPResType>();
-			if (paramType)
-			{
-				RDOParserSrcInfo paramInfo = rel_info;
-				paramInfo.setSrcText(rel_info.src_text() + '.' + param->name());
-				RDOParserSrcInfo paramTypeInfo = type_info;
-				paramTypeInfo.setSrcText(std::to_string(res->getID()) + '.' + param->name());
-				addRelRes(paramInfo, paramTypeInfo, beg, end, convertor_begin_pos, convertor_end_pos);
-			}
-		}
-
 		rel_res_insert(pRelevantResource);
 	}
 	else
@@ -1082,20 +980,6 @@ void RDOPatternOperation::addRelRes(const RDOParserSrcInfo& rel_info, const RDOP
 		}
 		pRelevantResource = rdo::Factory<RDORelevantResourceByType>::create(rel_info, rel_res_count(), pResType, beg, end);
 		ASSERT(pRelevantResource);
-
-		for (const auto& param: pResType->getParams())
-		{
-			LPRDORTPResType paramType = param->getTypeInfo()->type().object_dynamic_cast<RDORTPResType>();
-			if (paramType)
-			{
-				RDOParserSrcInfo paramInfo = rel_info;
-				paramInfo.setSrcText(rel_info.src_text() + '.' + param->name());
-				RDOParserSrcInfo paramTypeInfo = type_info;
-				paramTypeInfo.setSrcText(paramType->src_info().src_text());
-				addRelRes(paramInfo, paramTypeInfo, beg, end, convertor_begin_pos, convertor_end_pos);
-			}
-		}
-
 		rel_res_insert(pRelevantResource);
 	}
 	if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Erase)
@@ -1244,15 +1128,6 @@ Context::FindResult RDORelevantResource::onFindContext(const std::string& method
 		{
 			LPRDORTPParam pParam = getType()->findRTPParam(paramName);
 			ASSERT(pParam);
-			LPRDORTPResType paramType = pParam->getTypeInfo()->type().object_dynamic_cast<RDORTPResType>();
-			if (paramType)
-			{
-				LPRDORelevantResource pNestedRelRes =
-					RDOParser::s_parser()->getLastPATPattern()->findRelevantResource(
-						name() + '.' + pParam->name()
-				);
-				return FindResult(SwitchContext(pNestedRelRes));
-			}
 
 			return FindResult(SwitchContext(pParam));
 		}
