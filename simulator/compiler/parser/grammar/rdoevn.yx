@@ -10711,9 +10711,7 @@ param_full_name
 			Context::Params params;
 			params[Context::Params::IDENTIFIER] = pName->value().getIdentificator();
 			Context::FindResult result = PARSER->context()->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
-			ASSERT(result.getSwitchContext());
-			LPContext pContext = result.getSwitchContext().context;
-			Context::LPFindResult pResult(new Context::FindResult(result));
+			Context::LPFindResult pResult = rdo::Factory<Context::FindResult>::create(result);
 			$$ = PARSER->stack().push(pResult);
 		}
 	}
@@ -10730,7 +10728,7 @@ param_full_name
 			Context::Params params;
 			params[Context::Params::IDENTIFIER] = pName->value().getIdentificator();
 			Context::FindResult result = pParentContext->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
-			Context::LPFindResult pResult(new Context::FindResult(result));
+			Context::LPFindResult pResult = rdo::Factory<Context::FindResult>::create(result);
 
 			$$ = PARSER->stack().push(pResult);
 		}

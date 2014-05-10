@@ -82,6 +82,8 @@ public:
 
 	class FindResult: public virtual rdo::counter_reference
 	{
+	DECLARE_FACTORY(FindResult);
+	
 	public:
 		FindResult();
 		explicit FindResult(const CreateExpression& createExpression);
