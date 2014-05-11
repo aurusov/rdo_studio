@@ -216,10 +216,10 @@ std::string PluginGame5GenerateSituationDialog::DPTtabText() const
 	<<	"$Evaluate_by " << evaluateBy() << "\n"
 	<<	"$Compare_tops = " << (checkBoxCopareTop->isChecked() ? "YES" : "NO") << "\n"
 	<<	"$Activities\n"
-	<<	"	Перемещение_вправо: Перемещение_фишки справа  1 value " << activityValue(MOVE_LEFT) << "\n"
-	<<	"	Перемещение_влево : Перемещение_фишки слева  -1 value " << activityValue(MOVE_RIGHT) << "\n"
-	<<	"	Перемещение_вверх : Перемещение_фишки сверху -" << gameBoard->m_tilesCountX << " value " << activityValue(MOVE_DOWN) << "\n"
-	<<	"	Перемещение_вниз  : Перемещение_фишки снизу   " << gameBoard->m_tilesCountX << " value " << activityValue(MOVE_UP) << "\n"
+	<<	"	Перемещение_вправо: Перемещение_фишки (справа,  1) value " << activityValue(MOVE_LEFT) << ";\n"
+	<<	"	Перемещение_влево : Перемещение_фишки (слева,  -1) value " << activityValue(MOVE_RIGHT) << ";\n"
+	<<	"	Перемещение_вверх : Перемещение_фишки (сверху, -" << gameBoard->m_tilesCountX << ") value " << activityValue(MOVE_DOWN) << ";\n"
+	<<	"	Перемещение_вниз  : Перемещение_фишки (снизу,   " << gameBoard->m_tilesCountX << ") value " << activityValue(MOVE_UP) << ";\n"
 	<<	"$End";
 	return DPTtabTextStream.str();
 }
