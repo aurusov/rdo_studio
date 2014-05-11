@@ -3431,15 +3431,28 @@ dp_searcht_compare
 	;
 
 dpt_search_descr_param
-	: /* empty */
-	| dpt_search_descr_param fun_arithm
+	: fun_arithm
 	{
 		#PASS2
 		{
-			LPRDOValue pConstant = PARSER->stack().pop<RDOFUNArithm>($2)->expression()->constant();
+			LPRDOValue pConstant = PARSER->stack().pop<RDOFUNArithm>($1)->expression()->constant();
 			if (!pConstant || !pConstant->defined())
 			{
-				PARSER->error().error(@2, "Параметр может быть только константой");
+				PARSER->error().error(@1, "Параметр может быть только константой");
+			}
+			LPRDOValue pValue = rdo::Factory<RDOValue>::create(pConstant);
+			ASSERT(pValue);
+			PARSER->getLastDPTSearch()->getLastActivity()->addParam(pValue);
+		}
+	}
+	| dpt_search_descr_param ',' fun_arithm
+	{
+		#PASS2
+		{
+			LPRDOValue pConstant = PARSER->stack().pop<RDOFUNArithm>($3)->expression()->constant();
+			if (!pConstant || !pConstant->defined())
+			{
+				PARSER->error().error(@3, "Параметр может быть только константой");
 			}
 			LPRDOValue pValue = rdo::Factory<RDOValue>::create(pConstant);
 			ASSERT(pValue);
@@ -3537,21 +3550,52 @@ dpt_searcht_activity
 			$$ = PARSER->stack().push(LPRDODPTActivity());
 		}
 	}
-	| dpt_searcht_activity dpt_search_name dpt_search_descr_param dpt_search_descr_value
+	| dpt_searcht_activity dpt_search_name dpt_search_descr_value ';'
 	{
 		#PASS2
 		{
 			LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTActivity>($2);
 			ASSERT(pActivity)
-			pActivity->endParam(@3);
+			pActivity->endParam(@2);
 			$$ = PARSER->stack().push(pActivity);
 		}
 	}
-	| dpt_searcht_activity dpt_search_name dpt_search_descr_param error
+	| dpt_searcht_activity dpt_search_name '(' dpt_search_descr_param ')' dpt_search_descr_value ';'
 	{
 		#PASS2
 		{
-			PARSER->error().error(@3, @4, "Ожидаются ключевые слова value before или value after и стоимость применения правила");
+			LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTActivity>($2);
+			ASSERT(pActivity)
+			pActivity->endParam(@4);
+			$$ = PARSER->stack().push(pActivity);
+		}
+	}
+	| dpt_searcht_activity dpt_search_name error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@2, @3, "Ожидается открывающая скобка или ключевые слова value before или value after и стоимость применения правила");
+		}
+	}
+	| dpt_searcht_activity dpt_search_name '(' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@3, @4, "Ошибка описания параметров образца");
+		}
+	}
+	| dpt_searcht_activity dpt_search_name '(' dpt_search_descr_param ')' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@5, @6, "Ожидается ключевые слова value before или value after и стоимость применения правила");
+		}
+	}
+	| dpt_searcht_activity dpt_search_name '(' dpt_search_descr_param ')' dpt_search_descr_value error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@6, @7, "Ожидается точка с запятой");
 		}
 	}
 	;
@@ -3855,8 +3899,7 @@ dpt_some_name
 	;
 
 dpt_some_descr_keyb
-	: /* empty */
-	| dpt_some_descr_keyb '+' RDO_STRING_CONST
+	: dpt_some_descr_keyb '+' RDO_STRING_CONST
 	{
 		#PASS2
 		{
@@ -3879,26 +3922,39 @@ dpt_some_descr_keyb
 	;
 
 dpt_some_descr_param
-	: /* empty */
-	| dpt_some_descr_param fun_arithm
+	: fun_arithm
 	{
 		#PASS2
 		{
-			LPRDOValue pConstant = PARSER->stack().pop<RDOFUNArithm>($2)->expression()->constant();
+			LPRDOValue pConstant = PARSER->stack().pop<RDOFUNArithm>($1)->expression()->constant();
 			if (!pConstant || !pConstant->defined())
 			{
-				PARSER->error().error(@2, "Параметр может быть только константой");
+				PARSER->error().error(@1, "Параметр может быть только константой");
 			}
 			LPRDOValue pValue = rdo::Factory<RDOValue>::create(pConstant);
 			ASSERT(pValue);
 			PARSER->getLastDPTSome()->getLastActivity()->addParam(pValue);
 		}
 	}
-	| dpt_some_descr_param error
+	| dpt_some_descr_param ',' fun_arithm
 	{
 		#PASS2
 		{
-			PARSER->error().error(@1, @2, "Ошибка описания параметра образца");
+			LPRDOValue pConstant = PARSER->stack().pop<RDOFUNArithm>($3)->expression()->constant();
+			if (!pConstant || !pConstant->defined())
+			{
+				PARSER->error().error(@3, "Параметр может быть только константой");
+			}
+			LPRDOValue pValue = rdo::Factory<RDOValue>::create(pConstant);
+			ASSERT(pValue);
+			PARSER->getLastDPTSome()->getLastActivity()->addParam(pValue);
+		}
+	}
+	| dpt_some_descr_param ',' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@2, @3, "Ошибка описания параметра образца");
 		}
 	}
 	;
@@ -3911,14 +3967,79 @@ dpt_some_activity
 			$$ = PARSER->stack().push(LPRDODPTActivity());
 		}
 	}
-	| dpt_some_activity dpt_some_name dpt_some_descr_keyb dpt_some_descr_param
+	| dpt_some_activity dpt_some_name ';'
 	{
 		#PASS2
 		{
 			LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTSomeActivity>($2);
 			ASSERT(pActivity);
-			pActivity->endParam(@3);
+			pActivity->endParam(@2);
 			$$ = PARSER->stack().push(pActivity);
+		}
+	}
+	| dpt_some_activity dpt_some_name '(' dpt_some_descr_param ')' ';'
+	{
+		#PASS2
+		{
+			LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTSomeActivity>($2);
+			ASSERT(pActivity);
+			pActivity->endParam(@4);
+			$$ = PARSER->stack().push(pActivity);
+		}
+	}
+	| dpt_some_activity dpt_some_name '(' dpt_some_descr_keyb ')' ';'
+	{
+		#PASS2
+		{
+			LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTSomeActivity>($2);
+			ASSERT(pActivity);
+			pActivity->endParam(@4);
+			$$ = PARSER->stack().push(pActivity);
+		}
+	}
+	| dpt_some_activity dpt_some_name '(' dpt_some_descr_keyb ',' dpt_some_descr_param ')' ';'
+	{
+		#PASS2
+		{
+			LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTSomeActivity>($2);
+			ASSERT(pActivity);
+			pActivity->endParam(@4);
+			$$ = PARSER->stack().push(pActivity);
+		}
+	}
+	| dpt_some_activity dpt_some_name error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@2, @3, "Ожидается открывающая скобка или точка с запятой");
+		}
+	}
+	| dpt_some_activity dpt_some_name '(' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@3, @4, "Ошибка описания параметров образца");
+		}
+	}
+	| dpt_some_activity dpt_some_name '(' dpt_some_descr_keyb ')' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@5, @6, "Ожидается точка с запятой");
+		}
+	}
+	| dpt_some_activity dpt_some_name '(' dpt_some_descr_param ')' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@5, @6, "Ожидается точка с запятой");
+		}
+	}
+	| dpt_some_activity dpt_some_name '(' dpt_some_descr_keyb ',' dpt_some_descr_param ')' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@7, @8, "Ожидается точка с запятой");
 		}
 	}
 	;
@@ -4183,8 +4304,7 @@ dpt_prior_name
 	;
 
 dpt_prior_descr_keyb
-	: /* empty */
-	| dpt_prior_descr_keyb '+' RDO_STRING_CONST
+	: dpt_prior_descr_keyb '+' RDO_STRING_CONST
 	{
 		#PASS2
 		{
@@ -4207,26 +4327,39 @@ dpt_prior_descr_keyb
 	;
 
 dpt_prior_descr_param
-	: /* empty */
-	| dpt_prior_descr_param fun_arithm
+	: fun_arithm
 	{
 		#PASS2
 		{
-			LPRDOValue pConstant = PARSER->stack().pop<RDOFUNArithm>($2)->expression()->constant();
+			LPRDOValue pConstant = PARSER->stack().pop<RDOFUNArithm>($1)->expression()->constant();
 			if (!pConstant || !pConstant->defined())
 			{
-				PARSER->error().error(@2, "Параметр может быть только константой");
+				PARSER->error().error(@1, "Параметр может быть только константой");
 			}
 			LPRDOValue pValue = rdo::Factory<RDOValue>::create(pConstant);
 			ASSERT(pValue);
 			PARSER->getLastDPTPrior()->getLastActivity()->addParam(pValue);
 		}
 	}
-	| dpt_prior_descr_param error
+	| dpt_prior_descr_param ',' fun_arithm
 	{
 		#PASS2
 		{
-			PARSER->error().error(@1, @2, "Ошибка описания параметра образца");
+			LPRDOValue pConstant = PARSER->stack().pop<RDOFUNArithm>($3)->expression()->constant();
+			if (!pConstant || !pConstant->defined())
+			{
+				PARSER->error().error(@3, "Параметр может быть только константой");
+			}
+			LPRDOValue pValue = rdo::Factory<RDOValue>::create(pConstant);
+			ASSERT(pValue);
+			PARSER->getLastDPTPrior()->getLastActivity()->addParam(pValue);
+		}
+	}
+	| dpt_prior_descr_param ',' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@2, @3, "Ошибка описания параметра образца");
 		}
 	}
 	;
@@ -4269,14 +4402,79 @@ dpt_prior_activity
 			$$ = PARSER->stack().push(LPRDODPTActivity());
 		}
 	}
-	| dpt_prior_activity dpt_prior_name dpt_prior_descr_keyb dpt_prior_descr_param dpt_prior_activ_prior
+	| dpt_prior_activity dpt_prior_name dpt_prior_activ_prior ';'
 	{
 		#PASS2
 		{
 			LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTActivity>($2);
 			ASSERT(pActivity);
-			pActivity->endParam(@3);
+			pActivity->endParam(@2);
 			$$ = PARSER->stack().push(pActivity);
+		}
+	}
+	| dpt_prior_activity dpt_prior_name '(' dpt_prior_descr_keyb ')' dpt_prior_activ_prior ';'
+	{
+		#PASS2
+		{
+			LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTActivity>($2);
+			ASSERT(pActivity);
+			pActivity->endParam(@4);
+			$$ = PARSER->stack().push(pActivity);
+		}
+	}
+	| dpt_prior_activity dpt_prior_name '(' dpt_prior_descr_param ')' dpt_prior_activ_prior ';'
+	{
+		#PASS2
+		{
+			LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTActivity>($2);
+			ASSERT(pActivity);
+			pActivity->endParam(@4);
+			$$ = PARSER->stack().push(pActivity);
+		}
+	}
+	| dpt_prior_activity dpt_prior_name '(' dpt_prior_descr_keyb ',' dpt_prior_descr_param ')' dpt_prior_activ_prior ';'
+	{
+		#PASS2
+		{
+			LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTActivity>($2);
+			ASSERT(pActivity);
+			pActivity->endParam(@4);
+			$$ = PARSER->stack().push(pActivity);
+		}
+	}
+	| dpt_prior_activity dpt_prior_name error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@2, @3, "Ожидается открывающая скобка, точка с запятой или описание приоритета активности");
+		}
+	}
+	| dpt_prior_activity dpt_prior_name '(' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@3, @4, "Ошибка описания параметров образца");
+		}
+	}
+	| dpt_prior_activity dpt_prior_name '(' dpt_prior_descr_keyb ')' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@5, @6, "Ожидается точка с запятой или описание приоритета активности");
+		}
+	}
+	| dpt_prior_activity dpt_prior_name '(' dpt_prior_descr_param ')' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@5, @6, "Ожидается точка с запятой или описание приоритета активности");
+		}
+	}
+	| dpt_prior_activity dpt_prior_name '(' dpt_prior_descr_keyb ',' dpt_prior_descr_param ')' error
+	{
+		#PASS2
+		{
+			PARSER->error().error(@7, @8, "Ожидается точка с запятой или описание приоритета активности");
 		}
 	}
 	;
