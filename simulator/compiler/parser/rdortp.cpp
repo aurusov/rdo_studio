@@ -163,7 +163,7 @@ LPIType RDORTPResType::type_cast(const LPIType& pFrom, const RDOParserSrcInfo& f
 	switch (pFrom.object_dynamic_cast<rdo::runtime::RDOType>()->typeID())
 	{
 	case rdo::runtime::RDOType::t_pointer:
-		{	
+		{
 			LPIType pThisRTPType(const_cast<RDORTPResType*>(this));
 
 			//! Это один и тот же тип
@@ -261,6 +261,38 @@ Context::FindResult RDORTPResType::onFindContext(const std::string& method, cons
 		ASSERT(pParam);
 		return pParam->find(Context::METHOD_GET, params_, srcInfo);
 	}
+
+	if (method == Context::METHOD_OPERATOR_DOT)
+	{
+		const std::string paramName = params.identifier();
+
+		const std::size_t parNumb = getRTPParamNumber(paramName);
+		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
+			return FindResult();
+
+		LPRDOParam pParam = findRTPParam(paramName);
+		ASSERT(pParam);
+
+		Context::Params params_;
+		params_[RDORSSResource::GET_RESOURCE] = params.get<LPExpression>(RDORSSResource::GET_RESOURCE);
+		params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = parNumb;
+
+		LPRDORTPResType pParamType =
+			pParam->getTypeInfo()->itype().object_dynamic_cast<RDORTPResType>();
+
+		if (!pParamType)
+			return FindResult(SwitchContext(pParam, params_));
+
+		Context::FindResult result = pParam->find(Context::METHOD_GET, params_, srcInfo);
+		LPExpression pNestedResource = result.getCreateExpression()();
+
+		Context::Params params__;
+		params__[RDORSSResource::GET_RESOURCE] = pNestedResource;
+
+		return FindResult(SwitchContext(pParamType, params__));
+	}
+
+
 
 	if (method == Context::METHOD_TYPE_OF)
 	{

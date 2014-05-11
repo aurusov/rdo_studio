@@ -9926,6 +9926,8 @@ set_statement
 			LPContext pParamContext = pParamResult->getSwitchContext().context;
 			ASSERT(pParamContext);
 
+			Context::Params params;
+
 			std::string name;
 			RDOParserSrcInfo srcInfo;
 			LPRDOParam pParam = pParamContext.object_dynamic_cast<RDOParam>();
@@ -9933,6 +9935,14 @@ set_statement
 			{
 				srcInfo = pParam->src_info();
 				name = pParam->name();
+				params[RDORSSResource::GET_RESOURCE] =
+					pParamResult->getSwitchContext().params.get<LPExpression>(
+						RDORSSResource::GET_RESOURCE
+				);
+				params[RDOParam::CONTEXT_PARAM_PARAM_ID] =
+					pParamResult->getSwitchContext().params.get<std::size_t>(
+						RDOParam::CONTEXT_PARAM_PARAM_ID
+				);
 			}
 			LPLocalVariable pLocVar = pParamContext.object_dynamic_cast<LocalVariable>();
 			if (pLocVar)
@@ -9943,15 +9953,13 @@ set_statement
 
 			rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
 
-			Context::Params params;
-			params[Context::Params::IDENTIFIER] = name;
 			params[Expression::CONTEXT_PARAM_SET_EXPRESSION] = rdo::Factory<Expression>::create(
 				rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@2)),
 				rdo::Factory<rdo::runtime::RDOCalcConst>::create(1),
 				RDOParserSrcInfo(@2)
 			);
 			params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = setOperationType;
-			Context::FindResult result = PARSER->context()->find(Context::METHOD_SET, params, srcInfo);
+			Context::FindResult result = pParamContext->find(Context::METHOD_SET, params, srcInfo);
 			LPExpression pExpression = result.getCreateExpression()();
 			pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format("%s%s", name.c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str())));
 
@@ -9967,6 +9975,8 @@ set_statement
 			LPContext pParamContext = pParamResult->getSwitchContext().context;
 			ASSERT(pParamContext);
 
+			Context::Params params;
+
 			std::string name;
 			RDOParserSrcInfo srcInfo;
 			LPRDOParam pParam = pParamContext.object_dynamic_cast<RDOParam>();
@@ -9974,6 +9984,14 @@ set_statement
 			{
 				srcInfo = pParam->src_info();
 				name = pParam->name();
+				params[RDORSSResource::GET_RESOURCE] =
+					pParamResult->getSwitchContext().params.get<LPExpression>(
+						RDORSSResource::GET_RESOURCE
+				);
+				params[RDOParam::CONTEXT_PARAM_PARAM_ID] =
+					pParamResult->getSwitchContext().params.get<std::size_t>(
+						RDOParam::CONTEXT_PARAM_PARAM_ID
+				);
 			}
 			LPLocalVariable pLocVar = pParamContext.object_dynamic_cast<LocalVariable>();
 			if (pLocVar)
@@ -9985,11 +10003,9 @@ set_statement
 			rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
 			LPRDOFUNArithm pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 
-			Context::Params params;
-			params[Context::Params::IDENTIFIER] = name;
 			params[RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM] = pRightArithm;
 			params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = setOperationType;
-			Context::FindResult result = PARSER->context()->find(Context::METHOD_SET, params, srcInfo);
+			Context::FindResult result = pParamContext->find(Context::METHOD_SET, params, srcInfo);
 			LPExpression pExpression = result.getCreateExpression()();
 			pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format("%s %s %s", name.c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str(), pRightArithm->src_text().c_str())));
 			LPRDOFUNArithm pLeftArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
@@ -10722,11 +10738,14 @@ param_full_name
 			Context::LPFindResult pParentResult = PARSER->stack().pop<Context::FindResult>($1);
 			ASSERT(pParentResult->getSwitchContext());
 			LPContext pParentContext = pParentResult->getSwitchContext().context;
-			PARSER->contextStack()->push(pParentContext);
 			LPRDOValue pName = PARSER->stack().pop<RDOValue>($3);
 
 			Context::Params params;
 			params[Context::Params::IDENTIFIER] = pName->value().getIdentificator();
+			params[RDORSSResource::GET_RESOURCE] =
+					pParentResult->getSwitchContext().params.get<LPExpression>(
+						RDORSSResource::GET_RESOURCE
+			);
 			Context::FindResult result = pParentContext->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
 			Context::LPFindResult pResult = rdo::Factory<Context::FindResult>::create(result);
 
