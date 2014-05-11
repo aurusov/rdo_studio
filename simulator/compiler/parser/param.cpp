@@ -30,6 +30,7 @@ RDOParam::RDOParam(const std::string& name, const LPTypeInfo& pType, const LPRDO
 	: RDOParserSrcInfo(name    )
 	, m_pType         (pType   )
 	, m_pDefault      (pDefault)
+	, m_defined       (false)
 {
 	checkDefault();
 }
@@ -38,6 +39,7 @@ RDOParam::RDOParam(const RDOParserSrcInfo& srcInfo, const LPTypeInfo& pType, con
 	: RDOParserSrcInfo(srcInfo )
 	, m_pType         (pType   )
 	, m_pDefault      (pDefault)
+	, m_defined       (false)
 {
 	checkDefault();
 }
@@ -117,6 +119,12 @@ Context::FindResult RDOParam::onFindContext(const std::string& method, const Con
 			).getCreateExpression()()->calc();
 
 		LPRDOCalc operationResult;
+
+		if (params.get<SetOperationType::Type>(Expression::CONTEXT_PARAM_SET_OPERATION_TYPE) == SetOperationType::SET)
+		{
+			LPRDOParam pThis(const_cast<RDOParam*>(this));
+			pThis->setDefined(true);
+		}
 
 		switch (params.get<SetOperationType::Type>(Expression::CONTEXT_PARAM_SET_OPERATION_TYPE))
 		{
