@@ -15,6 +15,7 @@ SET(PLUGIN_GAME5_MOC_FILES
 	src/checkable_line_edit.h
 	src/graph_edge.h
 	src/graph_node.h
+	src/multi_select_completer.h
 	src/plugin_game5.h
 	src/plugin_game5_dialog.h
 	src/plugin_game5_graph_dialog.h

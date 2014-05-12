@@ -44,6 +44,7 @@ PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* 
 
 	MultiSelectCompleter* completer = new MultiSelectCompleter(QStringList(), this);
 	lineEditCustom->setCompleter(completer);
+	connect(lineEditCustom, &QLineEdit::selectionChanged, completer, &MultiSelectCompleter::onLineEditTextChanged);
 
 	adjustSize();
 	hiddenWidget->setFixedWidth(hiddenWidget->width());
