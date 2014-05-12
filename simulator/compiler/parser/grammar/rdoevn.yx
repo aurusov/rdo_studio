@@ -10742,10 +10742,11 @@ param_full_name
 
 			Context::Params params;
 			params[Context::Params::IDENTIFIER] = pName->value().getIdentificator();
-			params[RDORSSResource::GET_RESOURCE] =
-					pParentResult->getSwitchContext().params.get<LPExpression>(
-						RDORSSResource::GET_RESOURCE
-			);
+			if (pParentResult->getSwitchContext().params.exists(RDORSSResource::GET_RESOURCE))
+				params[RDORSSResource::GET_RESOURCE] =
+						pParentResult->getSwitchContext().params.get<LPExpression>(
+							RDORSSResource::GET_RESOURCE
+				);
 			Context::FindResult result = pParentContext->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
 			Context::LPFindResult pResult = rdo::Factory<Context::FindResult>::create(result);
 
