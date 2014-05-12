@@ -37,7 +37,7 @@ Context::FindResult ContextMemory::onFindContext(const std::string& method, cons
 	{
 		LPLocalVariable pLocalVariable = m_pLocalVariableListStack->findLocalVariable(params.identifier());
 		if (pLocalVariable)
-			return FindResult(SwitchContext(pLocalVariable));
+			return FindResult(SwitchContext(pLocalVariable, params));
 	}
 
 	if (method == Context::METHOD_GET)

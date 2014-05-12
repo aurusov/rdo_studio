@@ -9930,13 +9930,12 @@ set_statement
 
 			Context::Params params;
 
-			std::string name;
+			std::string name = pParamResult->getSwitchContext().params.identifier();
 			RDOParserSrcInfo srcInfo;
 			LPRDOParam pParam = pParamContext.object_dynamic_cast<RDOParam>();
 			if (pParam)
 			{
 				srcInfo = pParam->src_info();
-				name = pParam->name();
 				params[RDORSSResource::GET_RESOURCE] =
 					pParamResult->getSwitchContext().params.get<LPExpression>(
 						RDORSSResource::GET_RESOURCE
@@ -9950,8 +9949,9 @@ set_statement
 			if (pLocVar)
 			{
 				srcInfo = pLocVar->getSrcInfo();
-				name = pLocVar->getName();
 			}
+
+			params[Context::Params::IDENTIFIER] = name;
 
 			rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
 
@@ -9979,7 +9979,7 @@ set_statement
 
 			Context::Params params;
 
-			std::string name;
+			std::string name = pParamResult->getSwitchContext().params.identifier();
 			RDOParserSrcInfo srcInfo;
 			LPRDOParam pParam = pParamContext.object_dynamic_cast<RDOParam>();
 			if (pParam)
@@ -10001,6 +10001,8 @@ set_statement
 				srcInfo = pLocVar->getSrcInfo();
 				name = pLocVar->getName();
 			}
+
+			params[Context::Params::IDENTIFIER] = name;
 
 			rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
 			LPRDOFUNArithm pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
