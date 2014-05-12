@@ -37,7 +37,6 @@ RDORSSResource::RDORSSResource(const LPRDOParser& pParser, const RDOParserSrcInf
 	, isNested        (false                                         )
 {
 	ASSERT(m_pResType);
-	pParser->insertRSSResource(LPRDORSSResource(this));
 	m_currParam = m_pResType->getParams().begin();
 	RDOParser::s_parser()->contextStack()->push(this);
 }

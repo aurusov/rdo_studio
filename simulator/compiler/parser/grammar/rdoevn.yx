@@ -921,6 +921,8 @@ rss_resource
 			{
 				PARSER->error().error(@3, rdo::format("Заданы не все параметры ресурса: '%s'", pResource->name().c_str()));
 			}
+
+			PARSER->insertRSSResource(LPRDORSSResource(pResource));
 		}
 	}
 	| RDO_IDENTIF '.' rss_trace '(' ')'
