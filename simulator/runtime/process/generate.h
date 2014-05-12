@@ -38,8 +38,9 @@ protected:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-class IInternalStatisticsManager
+class IInternalStatisticsManager: public virtual rdo::counter_reference
 {
+DECLARE_FACTORY(IInternalStatisticsManager)
 public:
 	virtual void setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics) = 0;
 
@@ -49,6 +50,7 @@ protected:
 	virtual ~IInternalStatisticsManager()
 	{}
 };
+DECLARE_POINTER(IInternalStatisticsManager)
 
 #define DECLARE_IInternalStatisticsManager \
 	virtual void setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics);
@@ -59,15 +61,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \class   RDOPROCGenerate
   \brief   Процессный блок GENERATE
 */
-class RDOPROCGenerate: public RDOPROCBlock, public IBaseOperation, public IInternalStatisticsManager
+class RDOPROCGenerate: public RDOPROCBlock, public IInternalStatisticsManager
 {
-DEFINE_IFACTORY(RDOPROCGenerate);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPROCBlock              )
-	QUERY_INTERFACE       (IBaseOperation            )
-	QUERY_INTERFACE       (IInternalStatisticsManager)
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPROCGenerate);
 public:
 	void calcNextTimeInterval(const LPRDORuntime& pRuntime);
 
@@ -88,7 +84,5 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/process/generate.inl"
 
 #endif // _LIB_RUNTIME_PROCESS_GENERATE_H_

@@ -25,12 +25,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 */
 class RDOKeyboard: public RDOOperation, public IKeyboard
 {
-DEFINE_IFACTORY(RDOKeyboard);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOOperation)
-	QUERY_INTERFACE(IKeyboard)
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOKeyboard);
 private:
 	RDOKeyboard(const LPRDORuntime& pRuntime, RDOPatternKeyboard* pattern, bool trace, const std::string& name);
 	RDOKeyboard(const LPRDORuntime& pRuntime, RDOPatternKeyboard* pattern, bool trace, const LPRDOCalc& pCondition, const std::string& name);

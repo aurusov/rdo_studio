@@ -36,10 +36,10 @@ public:
 	//! \param line    - номер строки с ошибкой
 	//! \param pos     - позиция ошибки в строке
 	//! \param type    - тип сообщения. Значение по умолчанию \b MT_ERROR
-	FileMessage(const std::string& text, rdoModelObjects::RDOFileType file, std::size_t line, std::size_t pos, Type type = MT_ERROR);
+	FileMessage(const std::string& text, rdo::model::FileType file, std::size_t line, std::size_t pos, Type type = MT_ERROR);
 
 	std::string getText() const;
-	rdoModelObjects::RDOFileType getFileType() const;
+	rdo::model::FileType getFileType() const;
 	std::size_t getLineNumber() const;
 	std::size_t getPosInLine() const;
 	Type getType () const;
@@ -48,7 +48,7 @@ public:
 
 private:
 	std::string m_text; //!< Текст сообщения
-	rdoModelObjects::RDOFileType m_file; //!< Файл с ошибкой
+	rdo::model::FileType m_file; //!< Файл с ошибкой
 	std::size_t m_line; //!< Номер строки с ошибкой
 	std::size_t m_pos; //!< Позиция ошибки в строке
 	Type m_type; //!<  Тип сообщения

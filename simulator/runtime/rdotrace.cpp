@@ -48,8 +48,63 @@ double doubleToString(double value)
 #endif
 
 // --------------------------------------------------------------------------------
+// -------------------- RDOEndL
+// --------------------------------------------------------------------------------
+void RDOEndL::onEndl()
+{}
+
+std::ostream& operator<< (std::ostream& stream, RDOEndL& rdoEndL)
+{
+	rdoEndL.onEndl();
+	return stream;
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOTrace - Формирует строки трассировки
 // --------------------------------------------------------------------------------
+RDOTrace::RDOTrace()
+	: m_isNullTracer    (true )
+	, m_canWriteToStream(false)
+{}
+
+RDOTrace::~RDOTrace()
+{}
+
+bool RDOTrace::canTrace() const
+{
+	return !isNull() && canWrite();
+}
+
+void  RDOTrace::startWriting()
+{
+	m_canWriteToStream = true;
+}
+
+void  RDOTrace::stopWriting()
+{
+	m_canWriteToStream = false;
+}
+
+bool RDOTrace::canWrite() const
+{
+	return m_canWriteToStream;
+}
+
+bool RDOTrace::isNull() const
+{
+	return m_isNullTracer;
+}
+
+std::ostream& RDOTrace::getOStream()
+{
+	return m_emptyOut;
+}
+
+RDOEndL& RDOTrace::getEOL()
+{
+	return m_emptyEndL;
+}
+
 void RDOTrace::writeSearchBegin(double currentTime, std::string decisionPointId)
 {
 	if (!canTrace())
@@ -71,9 +126,9 @@ void RDOTrace::writeSearchDecision(const LPRDORuntime& pRuntime, TreeNode* node)
 	if (!canTrace())
 		return;
 
-	LPIActivityTrace        activityTrace        = node->m_activity->rule();
-	LPIActivityPatternTrace activityPatternTrace = node->m_activity->rule();
-	LPITrace                trace                = node->m_activity;
+	LPIActivityTrace        activityTrace        = node->m_activity->rule().object_dynamic_cast<IActivityTrace>();
+	LPIActivityPatternTrace activityPatternTrace = node->m_activity->rule().object_dynamic_cast<IActivityPatternTrace>();
+	LPITrace                trace                = node->m_activity.object_dynamic_cast<ITrace>();
 	ASSERT(trace);
 	ASSERT(activityTrace);
 	ASSERT(activityPatternTrace);
@@ -113,9 +168,9 @@ void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace* node)
 	if (dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_tops || dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all)
 	{
 		const LPRDORuntime&     pRuntime             = node->m_pRuntime;
-		LPIActivityTrace        activityTrace        = node->m_currAct->rule();
-		LPIActivityPatternTrace activityPatternTrace = node->m_currAct->rule();
-		LPITrace                trace                = node->m_currAct;
+		LPIActivityTrace        activityTrace        = node->m_currAct->rule().object_dynamic_cast<IActivityTrace>();
+		LPIActivityPatternTrace activityPatternTrace = node->m_currAct->rule().object_dynamic_cast<IActivityPatternTrace>();
+		LPITrace                trace                = node->m_currAct.object_dynamic_cast<ITrace>();
 		ASSERT(trace);
 		ASSERT(activityTrace);
 		ASSERT(activityPatternTrace);
@@ -203,19 +258,19 @@ void RDOTrace::writeEvent(const LPIBaseOperation& opr, const LPRDORuntime& pRunt
 	if (!canTrace())
 		return;
 
-	LPIActivityTrace activityTrace = opr;
+	LPIActivityTrace activityTrace = opr.object_dynamic_cast<IActivityTrace>();
 	ASSERT(activityTrace);
 
 #ifdef RDOSIM_COMPATIBLE
 	getOStream() << activityTrace->traceResourcesList('\0', pRuntime) << getEOL();
 #endif
 
-	LPITrace trace = opr;
+	LPITrace trace = opr.object_dynamic_cast<ITrace>();
 	ASSERT(trace);
 
 	if (trace->traceable())
 	{
-		LPIActivityPatternTrace activityPatternTrace = opr;
+		LPIActivityPatternTrace activityPatternTrace = opr.object_dynamic_cast<IActivityPatternTrace>();
 		ASSERT(activityPatternTrace);
 
 		getOStream() << "EI " << pRuntime->getCurrentTime()
@@ -235,14 +290,14 @@ void RDOTrace::writeRule(const LPIBaseOperation& opr, const LPRDORuntime& pRunti
 	if (!canTrace())
 		return;
 
-	LPITrace         trace         = opr;
-	LPIActivityTrace activityTrace = opr;
+	LPITrace         trace         = opr.object_dynamic_cast<ITrace>();
+	LPIActivityTrace activityTrace = opr.object_dynamic_cast<IActivityTrace>();
 	ASSERT(trace);
 	ASSERT(activityTrace);
 
 	if (trace->traceable())
 	{
-		LPIActivityPatternTrace activityPatternTrace = opr;
+		LPIActivityPatternTrace activityPatternTrace = opr.object_dynamic_cast<IActivityPatternTrace>();
 		ASSERT(activityPatternTrace);
 		int operId = pRuntime->getFreeOperationId();
 		getOStream() << "ER " << pRuntime->getCurrentTime()
@@ -261,15 +316,15 @@ void RDOTrace::writeAfterOperationBegin(const LPIBaseOperation& opr, const LPRDO
 	if (!canTrace())
 		return;
 
-	LPITrace         trace         = opr;
-	LPIActivityTrace activityTrace = opr;
+	LPITrace         trace         = opr.object_dynamic_cast<ITrace>();
+	LPIActivityTrace activityTrace = opr.object_dynamic_cast<IActivityTrace>();
 	ASSERT(trace);
 	ASSERT(activityTrace);
 
 	if (trace->traceable())
 	{
-		LPIOperationTrace       operationTrace       = opr;
-		LPIActivityPatternTrace activityPatternTrace = opr;
+		LPIOperationTrace       operationTrace       = opr.object_dynamic_cast<IOperationTrace>();
+		LPIActivityPatternTrace activityPatternTrace = opr.object_dynamic_cast<IActivityPatternTrace>();
 		ASSERT(operationTrace);
 		ASSERT(activityPatternTrace);
 		getOStream() << "EB " << pRuntime->getCurrentTime()
@@ -287,15 +342,15 @@ void RDOTrace::writeAfterOperationEnd(const LPIBaseOperation& opr, const LPRDORu
 	if (!canTrace())
 		return;
 
-	LPITrace         trace         = opr;
-	LPIActivityTrace activityTrace = opr;
+	LPITrace         trace         = opr.object_dynamic_cast<ITrace>();
+	LPIActivityTrace activityTrace = opr.object_dynamic_cast<IActivityTrace>();
 	ASSERT(trace);
 	ASSERT(activityTrace);
 
 	if (trace->traceable())
 	{
-		LPIOperationTrace       operationTrace       = opr;
-		LPIActivityPatternTrace activityPatternTrace = opr;
+		LPIOperationTrace       operationTrace       = opr.object_dynamic_cast<IOperationTrace>();
+		LPIActivityPatternTrace activityPatternTrace = opr.object_dynamic_cast<IActivityPatternTrace>();
 		ASSERT(operationTrace);
 		ASSERT(activityPatternTrace);
 		getOStream() << "EF " << pRuntime->getCurrentTime()
@@ -343,10 +398,10 @@ void RDOTrace::writeStatus(const LPRDORuntime& pRuntime, const std::string& stat
 	IBaseOperationContainer::CIterator it = pRuntime->m_pMetaLogic->begin();
 	while (it != pRuntime->m_pMetaLogic->end())
 	{
-		LPIDPTSearchTraceStatistics dp_stat = (*it);
+		LPIDPTSearchTraceStatistics dp_stat = it->object_dynamic_cast<IDPTSearchTraceStatistics>();
 		if (dp_stat)
 		{
-			LPITrace dp_trace = dp_stat;
+			LPITrace dp_trace = dp_stat.object_dynamic_cast<ITrace>();
 			ASSERT(dp_trace);
 			// Информация о точке
 			getOStream() << std::endl << getEOL();
@@ -411,6 +466,53 @@ void RDOTrace::writeResult(const LPRDORuntime& pRuntime, RDOResultTrace* pok)
 	getOStream() << "V  "  << pRuntime->getCurrentTime()
 		<< " " << pok->traceId()
 		<< "  " << pok->traceValue() << std::endl << getEOL();
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOTraceableObject
+// --------------------------------------------------------------------------------
+RDOTraceableObject::RDOTraceableObject(bool trace, std::size_t id, std::string str)
+	: m_trace (trace)
+	, m_id    (id   )
+	, m_str_id(str  )
+{}
+
+RDOTraceableObject::~RDOTraceableObject()
+{}
+
+bool RDOTraceableObject::traceable() const
+{
+	return m_trace;
+}
+
+void RDOTraceableObject::setTrace(bool trace)
+{
+	m_trace = trace;
+}
+
+std::size_t RDOTraceableObject::getTraceID() const
+{
+	return m_id;
+}
+
+void RDOTraceableObject::setTraceID(std::size_t id)
+{
+	setTraceID(id, id);
+}
+
+void RDOTraceableObject::setTraceID(std::size_t id, std::size_t str_id)
+{
+	m_id     = id;
+	m_str_id = rdo::toString(str_id);
+}
+
+std::string& RDOTraceableObject::traceId() const
+{
+	if (m_str_id.empty())
+	{
+		m_str_id = rdo::toString(m_id);
+	}
+	return m_str_id;
 }
 
 // --------------------------------------------------------------------------------

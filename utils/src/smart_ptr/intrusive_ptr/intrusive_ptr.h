@@ -92,6 +92,6 @@ private:
 
 } // namespace rdo
 
-#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.inl"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr-inl.h"
 
 #endif // _UTILS_SMART_PTR_INTRUSIVE_PTR_H_

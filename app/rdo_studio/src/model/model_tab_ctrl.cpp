@@ -33,7 +33,7 @@ TabCtrl::TabCtrl(QWidget* pParent, QWidget* pView)
 	createPage(pView, "SMR");
 	createPage(pView, "PMD");
 
-	setCurrentRDOItem(rdoModelObjects::RTP);
+	setCurrentRDOItem(rdo::model::RTP);
 }
 
 TabCtrl::~TabCtrl()
@@ -56,51 +56,51 @@ void TabCtrl::createPage(QWidget* pView, const QString& name)
 	pPage->setGroup(&m_group);
 }
 
-rdoModelObjects::RDOFileType TabCtrl::indexToType(int index) const
+rdo::model::FileType TabCtrl::indexToType(int index) const
 {
 	switch (index)
 	{
-		case  0: return rdoModelObjects::RTP;
-		case  1: return rdoModelObjects::RSS;
-		case  2: return rdoModelObjects::EVN;
-		case  3: return rdoModelObjects::PAT;
-		case  4: return rdoModelObjects::DPT;
-		case  5: return rdoModelObjects::PRC;
-		case  6: return rdoModelObjects::FRM;
-		case  7: return rdoModelObjects::FUN;
-		case  8: return rdoModelObjects::SMR;
-		case  9: return rdoModelObjects::PMD;
-		default: return rdoModelObjects::PAT;
+		case  0: return rdo::model::RTP;
+		case  1: return rdo::model::RSS;
+		case  2: return rdo::model::EVN;
+		case  3: return rdo::model::PAT;
+		case  4: return rdo::model::DPT;
+		case  5: return rdo::model::PRC;
+		case  6: return rdo::model::FRM;
+		case  7: return rdo::model::FUN;
+		case  8: return rdo::model::SMR;
+		case  9: return rdo::model::PMD;
+		default: return rdo::model::PAT;
 	}
 }
 
-int TabCtrl::typeToIndex(rdoModelObjects::RDOFileType type) const
+int TabCtrl::typeToIndex(rdo::model::FileType type) const
 {
 	switch (type)
 	{
-		case rdoModelObjects::RTP: return 0;
-		case rdoModelObjects::RSS: return 1;
-		case rdoModelObjects::EVN: return 2;
-		case rdoModelObjects::PAT: return 3;
-		case rdoModelObjects::DPT: return 4;
-		case rdoModelObjects::PRC: return 5;
-		case rdoModelObjects::FRM: return 6;
-		case rdoModelObjects::FUN: return 7;
-		case rdoModelObjects::SMR: return 8;
-		case rdoModelObjects::PMD: return 9;
+		case rdo::model::RTP: return 0;
+		case rdo::model::RSS: return 1;
+		case rdo::model::EVN: return 2;
+		case rdo::model::PAT: return 3;
+		case rdo::model::DPT: return 4;
+		case rdo::model::PRC: return 5;
+		case rdo::model::FRM: return 6;
+		case rdo::model::FUN: return 7;
+		case rdo::model::SMR: return 8;
+		case rdo::model::PMD: return 9;
 		default: break;
 	}
 	return -1;
 }
 
-void TabCtrl::setCurrentRDOItem(rdoModelObjects::RDOFileType type)
+void TabCtrl::setCurrentRDOItem(rdo::model::FileType type)
 {
 	int index = typeToIndex(type);
 	if (index != -1)
 		setCurrentIndex(index);
 }
 
-TabCtrl::context_type* TabCtrl::getItemEdit(rdoModelObjects::RDOFileType type) const
+TabCtrl::context_type* TabCtrl::getItemEdit(rdo::model::FileType type) const
 {
 	int index = typeToIndex(type);
 	return index != -1

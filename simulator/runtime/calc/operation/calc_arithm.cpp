@@ -22,6 +22,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcDiv
 // --------------------------------------------------------------------------------
+RDOCalcDiv::RDOCalcDiv(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
+	: parent_type(pLeft, pRight)
+{}
+
 RDOValue RDOCalcDiv::doCalc(const LPRDORuntime& pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
@@ -36,6 +40,10 @@ RDOValue RDOCalcDiv::doCalc(const LPRDORuntime& pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcPlusEnumSafe
 // --------------------------------------------------------------------------------
+RDOCalcPlusEnumSafe::RDOCalcPlusEnumSafe(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
+	: RDOCalcPlus(pLeft, pRight)
+{}
+
 RDOValue RDOCalcPlusEnumSafe::doCalc(const LPRDORuntime& pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
@@ -45,6 +53,10 @@ RDOValue RDOCalcPlusEnumSafe::doCalc(const LPRDORuntime& pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcMultEnumSafe
 // --------------------------------------------------------------------------------
+RDOCalcMultEnumSafe::RDOCalcMultEnumSafe(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
+	: RDOCalcMult(pLeft, pRight)
+{}
+
 RDOValue RDOCalcMultEnumSafe::doCalc(const LPRDORuntime& pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();

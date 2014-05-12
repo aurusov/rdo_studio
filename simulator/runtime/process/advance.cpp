@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2012
-  \file      advance.inl
+  \file      advance-inl.h
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      12.02.2012
@@ -23,6 +23,16 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAdvance
 // --------------------------------------------------------------------------------
+RDOPROCAdvance::RDOPROCAdvance(LPIPROCProcess process, const LPRDOCalc& _pDelayCalc)
+	: RDOPROCBlock(process    )
+	, pDelayCalc  (_pDelayCalc)
+{}
+
+RDOPROCAdvance::LeaveTr::LeaveTr(const LPRDOPROCTransact& _transact, double _timeLeave)
+	: transact (_transact )
+	, timeLeave(_timeLeave)
+{}
+
 bool RDOPROCAdvance::onCheckCondition(const LPRDORuntime& pRuntime)
 {
 	if (!m_transacts.empty())

@@ -35,8 +35,6 @@ public:
 class RDOLogicDPTPrior: public RDOLogic<RDOOrderDPTPrior>
 {
 protected:
-	DEFINE_IFACTORY(RDOLogicDPTPrior);
-
 	RDOLogicDPTPrior(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent)
 		: RDOLogic<RDOOrderDPTPrior>(pRuntime, parent)
 	{}
@@ -50,18 +48,12 @@ protected:
 */
 class RDODPTPrior: public RDOLogicDPTPrior, public RDOPatternPrior
 {
-DEFINE_IFACTORY(RDODPTPrior);
-QUERY_INTERFACE_BEGIN
-QUERY_INTERFACE_PARENT(RDOLogicDPTPrior)
-QUERY_INTERFACE_PARENT(RDOPatternPrior )
-QUERY_INTERFACE_END
+DECLARE_FACTORY(RDODPTPrior);
 private:
 	RDODPTPrior(const LPRDORuntime& pRuntime, LPIBaseOperationContainer pParent = NULL);
 	virtual ~RDODPTPrior();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/rdo_logic_dptprior.inl"
 
 #endif // _LIB_RUNTIME_LOGIC_DPTPRIOR_H_

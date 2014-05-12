@@ -27,13 +27,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 */
 class RDODPTSearchTrace: public RDODPTSearch, public RDOTraceableObject, public IDPTSearchTraceStatistics
 {
-DEFINE_IFACTORY(RDODPTSearchTrace);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDODPTSearch)
-	QUERY_INTERFACE_PARENT(RDOTraceableObject)
-	QUERY_INTERFACE(IDPTSearchTraceStatistics)
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDODPTSearchTrace);
 public:
 	/*!
 	  \enum  DPT_TraceFlag
@@ -106,7 +100,5 @@ public:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/searchtrace.inl"
 
 #endif // _LIB_RUNTIME_SEARCH_TRACE_H_

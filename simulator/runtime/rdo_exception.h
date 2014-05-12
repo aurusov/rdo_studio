@@ -26,7 +26,7 @@ class RDOException
 public:
 	RDOException(const std::string& message);
 	virtual std::string getType() const = 0;
-	
+
 	const std::string& message() const;
 
 private:
@@ -89,7 +89,5 @@ public:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/rdo_exception.inl"
 
 #endif // _LIB_RUNTIME_EXCEPTION_H_

@@ -1,5 +1,4 @@
 ADD_SUBDIRECTORY(animation)
 ADD_SUBDIRECTORY(common)
-ADD_SUBDIRECTORY(interface)
 ADD_SUBDIRECTORY(real_format)
 ADD_SUBDIRECTORY(smart_ptr)

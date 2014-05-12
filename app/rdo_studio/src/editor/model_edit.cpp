@@ -608,16 +608,16 @@ void Model::onHelpContext()
 		{
 			switch(pTab->getCurrentRDOItem())
 			{
-			case rdoModelObjects::RTP: keyword = "rtp"; break;
-			case rdoModelObjects::RSS: keyword = "rss"; break;
-			case rdoModelObjects::EVN: keyword = "evn"; break;
-			case rdoModelObjects::PAT: keyword = "pat"; break;
-			case rdoModelObjects::DPT: keyword = "dpt"; break;
-			case rdoModelObjects::PRC: keyword = "prc"; break;
-			case rdoModelObjects::FRM: keyword = "frm"; break;
-			case rdoModelObjects::FUN: keyword = "fun"; break;
-			case rdoModelObjects::SMR: keyword = "smr"; break;
-			case rdoModelObjects::PMD: keyword = "pmd"; break;
+			case rdo::model::RTP: keyword = "rtp"; break;
+			case rdo::model::RSS: keyword = "rss"; break;
+			case rdo::model::EVN: keyword = "evn"; break;
+			case rdo::model::PAT: keyword = "pat"; break;
+			case rdo::model::DPT: keyword = "dpt"; break;
+			case rdo::model::PRC: keyword = "prc"; break;
+			case rdo::model::FRM: keyword = "frm"; break;
+			case rdo::model::FUN: keyword = "fun"; break;
+			case rdo::model::SMR: keyword = "smr"; break;
+			case rdo::model::PMD: keyword = "pmd"; break;
 			default:                   keyword = ""; break;
 			}
 		}

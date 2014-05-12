@@ -11,6 +11,7 @@
 #define _UTILS_SMART_PTR_COUNTER_REFERENCE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <cstddef>
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
@@ -30,7 +31,5 @@ private:
 };
 
 } // namespace rdo
-
-#include "utils/src/smart_ptr/ref_counter/counter_reference.inl"
 
 #endif // _UTILS_SMART_PTR_COUNTER_REFERENCE_H_

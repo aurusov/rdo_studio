@@ -3,8 +3,8 @@
   \file      rdortp.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -17,7 +17,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_value.h"
-#include "simulator/compiler/parser/type/runtime_wrapper_type.h"
 #include "simulator/compiler/parser/type/enum.h"
 #include "simulator/compiler/parser/rdortp_param.h"
 #include "simulator/compiler/parser/context/context.h"
@@ -39,13 +38,17 @@ PREDECLARE_POINTER(RDORSSResource);
 class RDORTPResType
 	: public RDOParserSrcInfo
 	, public boost::noncopyable
-	, public RuntimeWrapperType
+	, public rdo::runtime::RDOResourceTypeList
+	, public IType
+	, public IModelStructure
 	, public Context
 	, public IContextFind
+	, public virtual rdo::counter_reference
 {
 DECLARE_FACTORY(RDORTPResType);
 public:
 	typedef std::vector<LPRDORTPParam> ParamList;
+	typedef RDORSSResource value_type;
 
 	enum Subtype
 	{
@@ -68,8 +71,6 @@ public:
 	std::size_t getRTPParamNumber(const std::string& paramName) const;
 	const ParamList& getParams() const;
 
-	const rdo::runtime::LPIResourceType& getRuntimeResType() const;
-
 	void setSubtype(Subtype subtype);
 
 	void setupRuntimeFactory();
@@ -82,7 +83,6 @@ private:
 	RDORTPResType(const LPRDOParser& pParser, const RDOParserSrcInfo& src_info, bool permanent);
 	virtual ~RDORTPResType();
 
-	rdo::runtime::LPIResourceType m_pRuntimeResType;
 	const std::size_t m_number;
 	const bool m_permanent;
 	boost::optional<Subtype> m_subtype;
@@ -94,7 +94,7 @@ private:
 DECLARE_POINTER(RDORTPResType);
 
 //// --------------------------------------------------------------------------------
-////------------------------------ FOR FUZZY LOGIC ------------------------------	
+////------------------------------ FOR FUZZY LOGIC ------------------------------
 //// --------------------------------------------------------------------------------
 //
 //// --------------------------------------------------------------------------------
@@ -139,9 +139,9 @@ DECLARE_POINTER(RDORTPResType);
 //	{
 //		m_points.push_back(point);
 //	}
-//	double  getVal() const 
-//	{ 
-//		return m_value; 
+//	double  getVal() const
+//	{
+//		return m_value;
 //	}
 //
 //private:

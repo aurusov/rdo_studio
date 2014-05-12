@@ -334,13 +334,14 @@ std::ofstream& Application::log()
 QString Application::getFullHelpFileName(const QString& helpFileName) const
 {
 	QString result = chkHelpExist(helpFileName);
-	if (result.size() < 3)
+	if (!result.isEmpty())
 	{
-		result = QString();
-	}
-	if (chkHelpExist("assistant.exe").size() < 3)
-	{
-		result = QString();
+#ifdef OST_WINDOWS		
+		if (chkHelpExist("assistant.exe").isEmpty())
+		{
+			result = QString();
+		}
+#endif
 	}
 	return result;
 }

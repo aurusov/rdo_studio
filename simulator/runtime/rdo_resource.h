@@ -32,7 +32,7 @@ PREDECLARE_OBJECT_INTERFACE(IResourceType);
 */
 PREDECLARE_POINTER(RDOResource);
 class RDOResource
-	: public rdo::counter_reference
+	: public virtual rdo::counter_reference
 	, public RDORuntimeObject
 	, public RDOTraceableObject
 	, public boost::operators<RDOResource>

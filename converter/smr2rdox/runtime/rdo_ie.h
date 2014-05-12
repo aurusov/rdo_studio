@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_ie.h
-  \author    
-  \date      
-  \brief     
+  \author
+  \date
+  \brief
   \indent    4T
 */
 
@@ -59,13 +59,8 @@ private:
 // --------------------------------------------------------------------------------
 class RDOIrregEvent: public IBaseOperation, public RDOActivityPattern<RDOPatternIrregEvent>
 {
+DECLARE_FACTORY(RDOIrregEvent);
 typedef RDOActivityPattern<RDOPatternIrregEvent> pattern_type;
-DEFINE_IFACTORY(RDOIrregEvent);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(pattern_type)
-	QUERY_INTERFACE(IBaseOperation)
-QUERY_INTERFACE_END
-
 friend class RDOTrace;
 
 private:

@@ -29,13 +29,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOEvent: public IBaseOperation, public IEvent, public RDOActivityPattern<RDOPatternEvent>
 {
 typedef RDOActivityPattern<RDOPatternEvent> pattern_type;
-DEFINE_IFACTORY(RDOEvent);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(pattern_type)
-	QUERY_INTERFACE(IBaseOperation)
-	QUERY_INTERFACE(IEvent)
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOEvent);
 friend class RDOTrace;
 
 private:

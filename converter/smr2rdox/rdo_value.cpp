@@ -21,6 +21,36 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOValue
 // --------------------------------------------------------------------------------
+RDOValue::RDOValue(const int& value, const RDOParserSrcInfo& src_info)
+	: RDOParserSrcInfo(src_info)
+	, m_value(value)
+	, m_type (rdo::Factory<RDOType__int>::create())
+{}
+
+RDOValue::RDOValue(const std::size_t& value, const RDOParserSrcInfo& src_info)
+	: RDOParserSrcInfo(src_info)
+	, m_value(value)
+	, m_type (rdo::Factory<RDOType__int>::create())
+{}
+
+RDOValue::RDOValue(const double& value, const RDOParserSrcInfo& src_info)
+	: RDOParserSrcInfo(src_info)
+	, m_value(value )
+	, m_type (rdo::Factory<RDOType__real>::create())
+{}
+
+RDOValue::RDOValue(const std::string& value, const RDOParserSrcInfo& src_info)
+	: RDOParserSrcInfo(src_info)
+	, m_value         (value   )
+	, m_type          (rdo::Factory<RDOType__string>::create())
+{}
+
+RDOValue::RDOValue(const LPRDOValue& pValue)
+	: RDOParserSrcInfo(pValue->src_info())
+	, m_value         (pValue->m_value   )
+	, m_type          (pValue->m_type    )
+{}
+
 RDOValue::RDOValue(const rdo::runtime::RDOValue& value, const LPRDOType& type, const RDOParserSrcInfo& src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )

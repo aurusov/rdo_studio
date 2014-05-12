@@ -29,6 +29,49 @@ RDOPattern::RDOPattern(bool trace)
 	, RDOTraceableObject(trace)
 {}
 
+void RDOPattern::addPreSelectRelRes(const LPRDOCalc& pCalc)
+{
+	CalcList::iterator it = m_preSelectRelRes.begin();
+	while (it != m_preSelectRelRes.end())
+	{
+		if ((*it)->compare(pCalc))
+		{
+			return;
+		}
+		++it;
+	}
+	m_preSelectRelRes.push_back(pCalc);
+}
+
+RDOPattern::~RDOPattern()
+{}
+
+void RDOPattern::preSelectRelRes(const LPRDORuntime& pRuntime)
+{
+	runCalcs(m_preSelectRelRes, pRuntime);
+}
+
+void RDOPattern::runCalcs(CalcList& calcList, const LPRDORuntime& pRuntime)
+{
+	LPRDOMemory pLocalMemory = rdo::Factory<RDOMemory>::create();
+	pRuntime->getMemoryStack()->push(pLocalMemory);
+	for (const auto& calc: calcList)
+		calc->calcValue(pRuntime);
+	pRuntime->getMemoryStack()->pop();
+}
+
+bool RDOPattern::runCalcsBool(CalcList& calcList, const LPRDORuntime& pRuntime)
+{
+	for (const auto& calc: calcList)
+	{
+		if (!calc->calcValue(pRuntime).getAsBool())
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOPatternEvent
 // --------------------------------------------------------------------------------
@@ -39,6 +82,32 @@ RDOPatternEvent::RDOPatternEvent(bool trace)
 
 RDOPatternEvent::~RDOPatternEvent()
 {}
+
+void RDOPatternEvent::addConvertorCalc(const LPRDOCalc& pCalc)
+{
+	m_convertor.push_back(pCalc);
+}
+
+void RDOPatternEvent::addConvertorStatus(RDOResource::ConvertStatus status)
+{
+	m_convertorStatus.push_back(status);
+}
+
+void RDOPatternEvent::addEraseCalc(const LPRDOCalc& pCalc)
+{
+	m_erase.push_back(pCalc);
+}
+
+void RDOPatternEvent::convertEvent(const LPRDORuntime& pRuntime)
+{
+	preSelectRelRes(pRuntime);
+	runCalcs(m_convertor, pRuntime);
+}
+
+void RDOPatternEvent::convertErase(const LPRDORuntime& pRuntime)
+{
+	runCalcs(m_erase, pRuntime);
+}
 
 double RDOPatternEvent::getNextTimeInterval(const LPRDORuntime& pRuntime)
 {
@@ -54,7 +123,7 @@ double RDOPatternEvent::getNextTimeInterval(const LPRDORuntime& pRuntime)
 
 LPIEvent RDOPatternEvent::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const std::string& oprName)
 {
-	LPIEvent pEvent = RF(RDOEvent)::create(pRuntime, this, traceable(), oprName);
+	LPIEvent pEvent = rdo::Factory<RDOEvent>::create(pRuntime, this, traceable(), oprName);
 	ASSERT(pEvent);
 	pRuntime->addRuntimeEvent(pLogic, pEvent);
 	return pEvent;
@@ -70,9 +139,45 @@ RDOPatternRule::RDOPatternRule(bool trace)
 RDOPatternRule::~RDOPatternRule()
 {}
 
+void RDOPatternRule::addChoiceFromCalc(const LPRDOCalc& pCalc)
+{
+	m_choiceFrom.push_back(pCalc);
+}
+
+void RDOPatternRule::addConvertorCalc(const LPRDOCalc& pCalc)
+{
+	m_convertor.push_back(pCalc);
+}
+
+void RDOPatternRule::addConvertorStatus(RDOResource::ConvertStatus status)
+{
+	m_convertorStatus.push_back(status);
+}
+
+void RDOPatternRule::addEraseCalc(const LPRDOCalc& pCalc)
+{
+	m_erase.push_back(pCalc);
+}
+
+bool RDOPatternRule::choiceFrom(const LPRDORuntime& pRuntime)
+{
+	preSelectRelRes(pRuntime);
+	return runCalcsBool(m_choiceFrom, pRuntime);
+}
+
+void RDOPatternRule::convertRule(const LPRDORuntime& pRuntime)
+{
+	runCalcs(m_convertor, pRuntime);
+}
+
+void RDOPatternRule::convertErase(const LPRDORuntime& pRuntime)
+{
+	runCalcs(m_erase, pRuntime);
+}
+
 LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const std::string& _oprName)
 {
-	LPIRule pRule = RF(RDORule)::create(pRuntime, this, traceable(), _oprName);
+	LPIRule pRule = rdo::Factory<rdo::runtime::RDORule>::create(pRuntime, this, traceable(), _oprName);
 	ASSERT(pRule);
 	pRuntime->addRuntimeRule(pLogic, pRule);
 	return pRule;
@@ -80,7 +185,7 @@ LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer pLogic, const L
 
 LPIRule RDOPatternRule::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const LPRDOCalc& pCondition, const std::string& _oprName)
 {
-	LPIRule pRule = RF(RDORule)::create(pRuntime, this, traceable(), pCondition, _oprName);
+	LPIRule pRule = rdo::Factory<rdo::runtime::RDORule>::create(pRuntime, this, traceable(), pCondition, _oprName);
 	ASSERT(pRule);
 	pRuntime->addRuntimeRule(pLogic, pRule);
 	return pRule;
@@ -97,6 +202,72 @@ RDOPatternOperation::RDOPatternOperation(bool trace)
 RDOPatternOperation::~RDOPatternOperation()
 {}
 
+void RDOPatternOperation::addChoiceFromCalc(const LPRDOCalc& pCalc)
+{
+	m_choiceFrom.push_back(pCalc);
+}
+
+void RDOPatternOperation::addConvertorBeginCalc(const LPRDOCalc& pCalc)
+{
+	m_convertorBegin.push_back(pCalc);
+}
+
+void RDOPatternOperation::addConvertorBeginStatus(RDOResource::ConvertStatus status)
+{
+	m_convertorBeginStatus.push_back(status);
+}
+
+void RDOPatternOperation::addEraseBeginCalc(const LPRDOCalc& pCalc)
+{
+	m_eraseBegin.push_back(pCalc);
+}
+
+void RDOPatternOperation::addConvertorEndCalc(const LPRDOCalc& pCalc)
+{
+	m_convertorEnd.push_back(pCalc);
+}
+
+void RDOPatternOperation::addConvertorEndStatus(RDOResource::ConvertStatus status)
+{
+	m_convertorEndStatus.push_back(status);
+}
+
+void RDOPatternOperation::addEraseEndCalc(const LPRDOCalc& pCalc)
+{
+	m_eraseEnd.push_back(pCalc);
+}
+
+void RDOPatternOperation::setTime(const LPRDOCalc& pCalc)
+{
+	m_timeCalc = pCalc;
+}
+
+bool RDOPatternOperation::choiceFrom(const LPRDORuntime& pRuntime)
+{
+	preSelectRelRes(pRuntime);
+	return runCalcsBool(m_choiceFrom, pRuntime);
+}
+
+void RDOPatternOperation::convertBegin(const LPRDORuntime& pRuntime)
+{
+	runCalcs(m_convertorBegin, pRuntime);
+}
+
+void RDOPatternOperation::convertBeginErase(const LPRDORuntime& pRuntime)
+{
+	runCalcs(m_eraseBegin, pRuntime);
+}
+
+void RDOPatternOperation::convertEnd(const LPRDORuntime& pRuntime)
+{
+	runCalcs(m_convertorEnd, pRuntime);
+}
+
+void RDOPatternOperation::convertEndErase(const LPRDORuntime& pRuntime)
+{
+	runCalcs(m_eraseEnd, pRuntime);
+}
+
 double RDOPatternOperation::getNextTimeInterval(const LPRDORuntime& pRuntime)
 {
 	double time_next = m_timeCalc->calcValue(pRuntime).getDouble();
@@ -110,7 +281,7 @@ double RDOPatternOperation::getNextTimeInterval(const LPRDORuntime& pRuntime)
 
 LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const std::string& _oprName)
 {
-	LPIOperation pOperation = RF(RDOOperation)::create(pRuntime, this, traceable(), _oprName);
+	LPIOperation pOperation = rdo::Factory<RDOOperation>::create(pRuntime, this, traceable(), _oprName);
 	ASSERT(pOperation);
 	pRuntime->addRuntimeOperation(pLogic, pOperation);
 	return pOperation;
@@ -118,7 +289,7 @@ LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer pLogi
 
 LPIOperation RDOPatternOperation::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const LPRDOCalc& pCondition, const std::string& _oprName)
 {
-	LPIOperation pOperation = RF(RDOOperation)::create(pRuntime, this, traceable(), pCondition, _oprName);
+	LPIOperation pOperation = rdo::Factory<RDOOperation>::create(pRuntime, this, traceable(), pCondition, _oprName);
 	ASSERT(pOperation);
 	pRuntime->addRuntimeOperation(pLogic, pOperation);
 	return pOperation;
@@ -136,17 +307,17 @@ RDOPatternKeyboard::~RDOPatternKeyboard()
 
 LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const std::string& _oprName)
 {
-	LPIKeyboard pKeyboard = RF(RDOKeyboard)::create(pRuntime, this, traceable(), _oprName);
+	LPIKeyboard pKeyboard = rdo::Factory<RDOKeyboard>::create(pRuntime, this, traceable(), _oprName);
 	ASSERT(pKeyboard);
-	pRuntime->addRuntimeOperation(pLogic, pKeyboard);
+	pRuntime->addRuntimeOperation(pLogic, pKeyboard.object_dynamic_cast<IOperation>());
 	return pKeyboard;
 }
 
 LPIKeyboard RDOPatternKeyboard::createActivity(LPIBaseOperationContainer pLogic, const LPRDORuntime& pRuntime, const LPRDOCalc& pCondition, const std::string& _oprName)
 {
-	LPIKeyboard pKeyboard = RF(RDOKeyboard)::create(pRuntime, this, traceable(), pCondition, _oprName);
+	LPIKeyboard pKeyboard = rdo::Factory<RDOKeyboard>::create(pRuntime, this, traceable(), pCondition, _oprName);
 	ASSERT(pKeyboard);
-	pRuntime->addRuntimeOperation(pLogic, pKeyboard);
+	pRuntime->addRuntimeOperation(pLogic, pKeyboard.object_dynamic_cast<IOperation>());
 	return pKeyboard;
 }
 

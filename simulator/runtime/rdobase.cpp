@@ -50,6 +50,68 @@ RDOSimulatorBase::RDOSimulatorBase()
 	, m_cnt_choice_from   (0           )
 {}
 
+RDOSimulatorBase::~RDOSimulatorBase()
+{}
+
+void RDOSimulatorBase::setStartTime(double value)
+{
+	m_startTime = value;
+}
+
+double RDOSimulatorBase::getCurrentTime() const
+{
+	return m_currentTime;
+}
+
+RunTimeMode RDOSimulatorBase::getMode() const
+{
+	return m_mode;
+}
+
+double RDOSimulatorBase::getSpeed() const
+{
+	return m_speed;
+}
+
+double RDOSimulatorBase::getShowRate() const
+{
+	return m_showRate;
+}
+
+void RDOSimulatorBase::inc_cnt_events()
+{
+	++m_cnt_events;
+}
+
+void RDOSimulatorBase::inc_cnt_choice_from()
+{
+	++m_cnt_choice_from;
+}
+
+std::size_t RDOSimulatorBase::get_cnt_events()
+{
+	return m_cnt_events;
+}
+
+std::size_t RDOSimulatorBase::get_cnt_choice_from()
+{
+	return m_cnt_choice_from;
+}
+
+std::size_t RDOSimulatorBase::getMSec(const boost::posix_time::ptime& ptime)
+{
+	boost::posix_time::ptime startTime = boost::posix_time::time_from_string("1970-01-01 00:00:00.000");
+	return (std::size_t)( ptime - startTime ).total_milliseconds();
+}
+
+void RDOSimulatorBase::setCurrentTime(double value)
+{
+	m_currentTime = value;
+}
+
+void RDOSimulatorBase::onNewTimeNow()
+{}
+
 std::size_t RDOSimulatorBase::get_cnt_calc_arithm() const
 {
 	return OperatorType::getCalcCounter<OperatorType::OT_ARITHM>();

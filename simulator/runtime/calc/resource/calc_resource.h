@@ -112,6 +112,6 @@ protected:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/resource/calc_resource.inl"
+#include "simulator/runtime/calc/resource/calc_resource-inl.h"
 
 #endif // _LIB_RUNTIME_CALC_RESOURCE_H_

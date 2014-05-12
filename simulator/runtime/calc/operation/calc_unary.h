@@ -95,6 +95,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/operation/calc_unary.inl"
+#include "simulator/runtime/calc/operation/calc_unary-inl.h"
 
 #endif // _LIB_RUNTIME_CALC_OPERATION_UNARY_H_

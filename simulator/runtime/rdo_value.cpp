@@ -72,6 +72,7 @@ RDOValue::RDOValue(uint64_t value)
 	: m_pType(g_int)
 {
 	__get<uint64_t>() = value;
+	setUndefined(false);
 }
 #endif // ARCHITECTURES_AMD64
 
@@ -179,6 +180,22 @@ void RDOValue::deleteValue()
 	default:
 		break;
 	}
+}
+
+const LPRDOType& RDOValue::type() const
+{
+	return m_pType;
+}
+
+RDOType::TypeID RDOValue::typeID() const
+{
+	return m_pType->typeID();
+}
+
+std::ostream& operator<< (std::ostream& stream, const RDOValue& rdovalue)
+{
+	stream << rdovalue.getAsStringForTrace();
+	return stream;
 }
 
 int RDOValue::getInt() const

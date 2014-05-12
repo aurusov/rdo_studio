@@ -12,9 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/interface/rdointerface.h"
 #include "simulator/runtime/rdo_rule_i.h"
-#include "simulator/runtime/rdo_runtime_interface_registrator.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -27,7 +25,7 @@ CLOSE_RDO_RUNTIME_NAMESPACE
   \interface IDPTSearchActivity
   \brief     Интерфейс активности точки принятия решения DPTSearch
 */
-class IDPTSearchActivity
+class IDPTSearchActivity: public virtual rdo::counter_reference
 {
 public:
 	//! Время вычисления функции стоимости пути
@@ -41,6 +39,7 @@ public:
 	virtual double cost(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
 	virtual ValueTime valueTime() const = 0;
 };
+DECLARE_POINTER(IDPTSearchActivity)
 
 #define DECLARE_IDPTSearchActivity                                   \
 	virtual LPIRule& rule();                                         \

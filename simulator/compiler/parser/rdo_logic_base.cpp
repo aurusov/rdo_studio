@@ -37,7 +37,7 @@ const std::string& RDOLogicBase::name() const
 
 bool RDOLogicBase::setPrior(LPRDOFUNArithm& pPrior)
 {
-	LPIPriority pPriority = m_pRuntimeLogic;
+	LPIPriority pPriority = m_pRuntimeLogic.object_dynamic_cast<IPriority>();
 	if (pPriority)
 	{
 		return pPriority->setPrior(pPrior->createCalc());

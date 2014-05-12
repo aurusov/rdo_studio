@@ -22,8 +22,9 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- FunctionParamType
 // --------------------------------------------------------------------------------
 FunctionParamType::FunctionParamType(const ParamList& paramList, const RDOParserSrcInfo& srcInfo)
-	: RDOParserSrcInfo(srcInfo  )
-	, m_paramList     (paramList)
+	: RDOType(t_unknow)
+	, RDOParserSrcInfo(srcInfo)
+	, m_paramList(paramList)
 {
 	if (m_paramList.empty())
 	{
@@ -59,7 +60,7 @@ std::string FunctionParamType::name() const
 	return src_text();
 }
 
-LPRDOType FunctionParamType::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
+LPIType FunctionParamType::type_cast(const LPIType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	LPFunctionParamType pFromParamType = pFrom.object_dynamic_cast<FunctionParamType>();
 	if (!pFromParamType)
@@ -93,7 +94,7 @@ LPRDOValue FunctionParamType::value_cast(const LPRDOValue& /*pFrom*/, const RDOP
 	return LPRDOValue();
 }
 
-rdo::runtime::LPRDOCalc FunctionParamType::calc_cast(const rdo::runtime::LPRDOCalc& /*pCalc*/, const LPRDOType& /*pType*/) const
+rdo::runtime::LPRDOCalc FunctionParamType::calc_cast(const rdo::runtime::LPRDOCalc& /*pCalc*/, const LPIType& /*pType*/) const
 {
 	NEVER_REACH_HERE;
 	return rdo::runtime::LPRDOCalc();
@@ -115,7 +116,8 @@ void FunctionParamType::writeModelStructure(std::ostream& stream) const
 // -------------------- FunctionType
 // --------------------------------------------------------------------------------
 FunctionType::FunctionType(const LPTypeInfo& pReturnType, const LPFunctionParamType& pParamType, const RDOParserSrcInfo& srcInfo)
-	: RDOParserSrcInfo(srcInfo    )
+	: RDOType(pReturnType->typeID())
+	, RDOParserSrcInfo(srcInfo    )
 	, m_pReturnType   (pReturnType)
 	, m_pParamType    (pParamType )
 {
@@ -126,14 +128,14 @@ FunctionType::FunctionType(const LPTypeInfo& pReturnType, const LPFunctionParamT
 FunctionType::~FunctionType()
 {}
 
-const rdo::runtime::LPRDOType& FunctionType::type() const
+rdo::runtime::LPRDOType FunctionType::type() const
 {
-	return m_pReturnType->type()->type();
+	return m_pReturnType->type();
 }
 
 rdo::runtime::RDOType::TypeID FunctionType::typeID() const
 {
-	return m_pReturnType->type()->typeID();
+	return m_pReturnType->typeID();
 }
 
 const LPTypeInfo& FunctionType::returnType() const
@@ -151,10 +153,10 @@ std::string FunctionType::name() const
 	return src_text();
 }
 
-LPRDOType FunctionType::type_cast(const LPRDOType& /*pFrom*/, const RDOParserSrcInfo& /*from_src_info*/, const RDOParserSrcInfo& /*to_src_info*/, const RDOParserSrcInfo& /*src_info*/) const
+LPIType FunctionType::type_cast(const LPIType& /*pFrom*/, const RDOParserSrcInfo& /*from_src_info*/, const RDOParserSrcInfo& /*to_src_info*/, const RDOParserSrcInfo& /*src_info*/) const
 {
 	NEVER_REACH_HERE;
-	return LPRDOType();
+	return LPIType();
 }
 
 LPRDOValue FunctionType::value_cast(const LPRDOValue& /*pFrom*/, const RDOParserSrcInfo& /*to_src_info*/, const RDOParserSrcInfo& /*src_info*/) const
@@ -163,7 +165,7 @@ LPRDOValue FunctionType::value_cast(const LPRDOValue& /*pFrom*/, const RDOParser
 	return LPRDOValue();
 }
 
-rdo::runtime::LPRDOCalc FunctionType::calc_cast(const rdo::runtime::LPRDOCalc& /*pCalc*/, const LPRDOType& /*pType*/) const
+rdo::runtime::LPRDOCalc FunctionType::calc_cast(const rdo::runtime::LPRDOCalc& /*pCalc*/, const LPIType& /*pType*/) const
 {
 	NEVER_REACH_HERE;
 	return rdo::runtime::LPRDOCalc();

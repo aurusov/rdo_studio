@@ -20,7 +20,6 @@
 #include <QTreeWidget>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/interface/rdointerface.h"
 #include "app/rdo_studio/src/frame/frame_view.h"
 // --------------------------------------------------------------------------------
 
@@ -33,9 +32,7 @@ struct Frame;
 
 namespace rdo { namespace gui { namespace frame {
 
-class Manager
-	: public QObject
-	, public IInit
+class Manager: public QObject
 {
 Q_OBJECT
 
@@ -102,8 +99,6 @@ private:
 	std::size_t m_currentShowingFrame;
 	bool m_changed;
 	OnChangeFrame m_onChangeFrame;
-
-	DECLARE_IInit;
 
 private slots:
 	void onSubWindowActivated         (QMdiSubWindow* pWindow);

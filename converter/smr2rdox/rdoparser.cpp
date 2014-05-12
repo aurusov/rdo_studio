@@ -216,9 +216,9 @@ std::string Converter::getModelStructure()
 	std::size_t watching_max_length = 0;
 	for (const auto& watching: m_pRuntime->getResult())
 	{
-		LPITrace          trace     = watching;
-		LPIName           name      = trace;
-		LPIModelStructure structure = trace;
+		LPITrace          trace     = watching.object_dynamic_cast<ITrace>();
+		LPIName           name      = trace.object_dynamic_cast<IName>();
+		LPIModelStructure structure = trace.object_dynamic_cast<IModelStructure>();
 		if (trace && name && structure)
 		{
 			if (trace->traceable() && name->name().length() > watching_max_length)
@@ -229,9 +229,9 @@ std::string Converter::getModelStructure()
 	}
 	for (const auto& watching: m_pRuntime->getResult())
 	{
-		LPITrace          trace     = watching;
-		LPIName           name      = trace;
-		LPIModelStructure structure = trace;
+		LPITrace          trace     = watching.object_dynamic_cast<ITrace>();
+		LPIName           name      = trace.object_dynamic_cast<IName>();
+		LPIModelStructure structure = trace.object_dynamic_cast<IModelStructure>();
 		if (trace && name && structure)
 		{
 			if (trace->traceable())

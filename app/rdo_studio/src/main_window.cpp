@@ -423,10 +423,6 @@ void MainWindow::createInsertMenu()
 
 void MainWindow::init()
 {
-	// Кто-то должен поднять кернел и треды
-	new rdo::gui::model::Model();
-	m_pModel = g_pModel;
-
 	QSettings settings;
 	settings.beginGroup("style");
 	
@@ -477,7 +473,6 @@ void MainWindow::init()
 	QObject::connect(m_pDockBuild, &QDockWidget::visibilityChanged, this, &MainWindow::onDockVisibleChanged);
 	QObject::connect(m_pDockFind,  &QDockWidget::visibilityChanged, this, &MainWindow::onDockVisibleChanged);
 
-	updateAllStyles();
 	addDockWidget(Qt::BottomDockWidgetArea, m_pDockBuild);
 	tabifyDockWidget(m_pDockBuild, m_pDockDebug  );
 	tabifyDockWidget(m_pDockBuild, m_pDockTrace  );
@@ -512,9 +507,9 @@ void MainWindow::init()
 
 	menuView->insertSeparator(actViewSettings);
 
-	IInit* pModelInit = dynamic_cast<IInit*>(g_pModel);
-	ASSERT(pModelInit);
-	pModelInit->init();
+	new rdo::gui::model::Model();
+	m_pModel = g_pModel;
+	updateAllStyles();
 }
 
 void MainWindow::setVisible(bool visible)
@@ -654,11 +649,6 @@ void MainWindow::addSubWindow(QWidget* pWidget)
 	QMdiSubWindow* pFrame = mdiArea->addSubWindow(pWidget);
 	QObject::connect(pFrame, &QMdiSubWindow::windowStateChanged, this, &MainWindow::onSubWindowStateChanged);
 
-	IInit* pInitWidget = dynamic_cast<IInit*>(pWidget);
-	if (pInitWidget)
-	{
-		pInitWidget->init();
-	}
 	pWidget->show();
 
 	static const float sizeScale = 0.9f;

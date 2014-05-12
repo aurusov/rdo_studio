@@ -23,6 +23,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAssign
 // --------------------------------------------------------------------------------
+RDOPROCAssign::RDOPROCAssign(LPIPROCProcess pProcess, const LPRDOCalc& pCalc)
+	: RDOPROCBlock(pProcess)
+	, pAssignCalc (pCalc   )
+{}
+
 bool RDOPROCAssign::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
 {
 	return !m_transacts.empty();

@@ -37,6 +37,6 @@ public:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/operation/operation_type.inl"
+#include "simulator/runtime/calc/operation/operation_type-inl.h"
 
 #endif // _LIB_RUNTIME_CALC_OPERATION_TYPE_H_

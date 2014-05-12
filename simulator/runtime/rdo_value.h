@@ -166,8 +166,10 @@ private:
 	RDOValue onPointerUMinus() const;
 };
 
+std::ostream& operator<< (std::ostream& stream, const RDOValue& rdovalue);
+
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdo_value.inl"
+#include "simulator/runtime/rdo_value-inl.h"
 
 #endif // _LIB_RUNTIME_VALUE_H_

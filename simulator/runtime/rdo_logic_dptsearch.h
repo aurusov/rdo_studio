@@ -30,12 +30,6 @@ class TreeRoot;
 */
 class RDODPTSearch: public RDOLogicSimple, public IDPTSearchLogic, public RDOPatternPrior
 {
-QUERY_INTERFACE_BEGIN
-QUERY_INTERFACE_PARENT(RDOLogicSimple)
-QUERY_INTERFACE_PARENT(RDOPatternPrior)
-QUERY_INTERFACE(IDPTSearchLogic)
-QUERY_INTERFACE_END
-
 friend class RDOSimulator;
 friend class TreeNode;
 

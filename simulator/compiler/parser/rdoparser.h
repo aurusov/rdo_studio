@@ -200,7 +200,7 @@ public:
 	LPContextStack contextStack();
 	LPContext      context     () const;
 
-	static rdoModelObjects::RDOFileType getFileToParse();
+	static rdo::model::FileType getFileToParse();
 	static std::size_t lexer_loc_line();
 	static std::size_t lexer_loc_pos();
 	static std::string lexer_text();

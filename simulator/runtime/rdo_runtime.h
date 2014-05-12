@@ -26,7 +26,11 @@
 #include "simulator/runtime/simtrace.h"
 #include "simulator/runtime/rdo_resource.h"
 #include "simulator/runtime/rdo_res_type.h"
-#include "simulator/runtime/rdo_runtime_interface_registrator.h"
+#include "simulator/runtime/rdo_activity_i.h"
+#include "simulator/runtime/rdo_event_i.h"
+#include "simulator/runtime/rdo_rule_i.h"
+#include "simulator/runtime/rdo_operation_i.h"
+#include "simulator/runtime/result/result_i.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_memory.h"
 #include "simulator/runtime/thread_proxy_i.h"
@@ -296,6 +300,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdo_runtime.inl"
+#include "simulator/runtime/rdo_runtime-inl.h"
 
 #endif // _LIB_RUNTIME_RUNTIME_H_

@@ -3,7 +3,7 @@
   \file      atom.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      09.04.2011
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -12,7 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/type/runtime_wrapper_type.h"
+#include "simulator/runtime/rdo_type.h"
+#include "simulator/runtime/rdo_model_i.h"
+#include "simulator/compiler/parser/type/type_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -20,20 +22,16 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- ATOM_TYPE_PARSER
 // --------------------------------------------------------------------------------
-#define DEFINE_ATOM_TYPE_PARSER(Type)              \
-class RDOType__##Type: public RuntimeWrapperType   \
-{                                                  \
-private:                                           \
-typedef RuntimeWrapperType parent_type;            \
-public:                                            \
-	RDOType__##Type():                             \
-		RuntimeWrapperType(rdo::runtime::g_##Type) \
-	{}                                             \
-	virtual ~RDOType__##Type()                     \
-	{}                                             \
-	DECLARE_IType;                                 \
-	DECLARE_IModelStructure;                       \
-};                                                 \
+#define DEFINE_ATOM_TYPE_PARSER(Type)      \
+class RDOType__##Type                      \
+	: public rdo::runtime::RDOType__##Type \
+	, public IType                         \
+	, public IModelStructure               \
+{                                          \
+public:                                    \
+	DECLARE_IType;                         \
+	DECLARE_IModelStructure;               \
+};                                         \
 DECLARE_POINTER(RDOType__##Type);
 
 DEFINE_ATOM_TYPE_PARSER(unknow       );

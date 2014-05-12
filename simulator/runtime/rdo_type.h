@@ -25,7 +25,7 @@ class RDOValue;
   \brief     Базовый тип данных РДО
 */
 PREDECLARE_POINTER(RDOType);
-class RDOType: public rdo::counter_reference
+class RDOType: public virtual rdo::counter_reference
 {
 public:
 	/*!
@@ -112,7 +112,5 @@ DEFINE_ATOM_TYPE(bool);
 DEFINE_ATOM_TYPE(string);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/rdo_type.inl"
 
 #endif // _LIB_RUNTIME_TYPE_H_

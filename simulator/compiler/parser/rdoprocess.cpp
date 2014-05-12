@@ -17,8 +17,6 @@
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/rdorss.h"
-#include "simulator/compiler/parser/type/type.h"
-
 #include "simulator/compiler/mbuilder/rdo_resources.h"
 
 #include "simulator/runtime/process/rdoprocess.h"
@@ -69,15 +67,15 @@ RDOPROCProcess::RDOPROCProcess(const RDOParserSrcInfo& info, const std::string& 
 	, m_transactType  (transactType)
 {
 	RDOParser::s_parser()->insertPROCProcess(this);
-	m_pRuntime = RF(rdo::runtime::RDOPROCProcess)::create(info.src_text(), RDOParser::s_parser()->runtime());
+	m_pRuntime = rdo::Factory<rdo::runtime::RDOPROCProcess>::create(info.src_text(), RDOParser::s_parser()->runtime());
 	ASSERT(m_pRuntime);
-	m_pRuntime.query_cast<ILogic>()->init(RDOParser::s_parser()->runtime());
+	m_pRuntime.object_dynamic_cast<ILogic>()->init(RDOParser::s_parser()->runtime());
 }
 
 bool RDOPROCProcess::setPrior(LPRDOFUNArithm& pPrior)
 {
 	LPILogic pRuntimeLogic = getRunTime();
-	LPIPriority pPriority = pRuntimeLogic.query_cast<IPriority>();
+	LPIPriority pPriority = pRuntimeLogic.object_dynamic_cast<IPriority>();
 	if (pPriority)
 	{
 		return pPriority->setPrior(pPrior->createCalc());
@@ -132,7 +130,7 @@ RDOPROCOperator::~RDOPROCOperator()
 RDOPROCGenerate::RDOPROCGenerate(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pTimeCalc, const rdo::runtime::LPRDOCalc& pCreateAndGoOnTransactCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdo::runtime::RDOPROCGenerate)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pTimeCalc, pCreateAndGoOnTransactCalc);
+	m_pRuntime = rdo::Factory<rdo::runtime::RDOPROCGenerate>::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime().object_dynamic_cast<IPROCProcess>(), pTimeCalc, pCreateAndGoOnTransactCalc).object_dynamic_cast<IPROCBlock>();
 	ASSERT(m_pRuntime);
 }
 
@@ -169,7 +167,7 @@ void RDOPROCQueue::createRuntime()
 	{
 		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format("Внутренняя ошибка RDOPROCQueue: не нашли parser-ресурс '%s'", m_resourceName.c_str()));
 	}
-	m_pRuntime = RF(rdo::runtime::RDOPROCQueue)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), m_parserForRuntime);
+	m_pRuntime = rdo::Factory<rdo::runtime::RDOPROCQueue>::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime().object_dynamic_cast<IPROCProcess>(), m_parserForRuntime).object_dynamic_cast<IPROCBlock>();
 	ASSERT(m_pRuntime);
 }
 
@@ -207,7 +205,7 @@ void RDOPROCDepart::createRuntime()
 	{
 		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format("Внутренняя ошибка RDOPROCQueue: не нашли parser-ресурс '%s'", m_resourceName.c_str()));
 	}
-	m_pRuntime = RF(rdo::runtime::RDOPROCDepart)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), m_parserForRuntime);
+	m_pRuntime = rdo::Factory<rdo::runtime::RDOPROCDepart>::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime().object_dynamic_cast<IPROCProcess>(), m_parserForRuntime).object_dynamic_cast<IPROCBlock>();
 	ASSERT(m_pRuntime);
 }
 
@@ -265,7 +263,7 @@ void RDOPROCSeize::createRuntime()
 
 	if (!m_parserForRuntime.empty())
 	{
-		m_pRuntime = RF(rdo::runtime::RDOPROCSeize)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), m_parserForRuntime);
+		m_pRuntime = rdo::Factory<rdo::runtime::RDOPROCSeize>::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime().object_dynamic_cast<IPROCProcess>(), m_parserForRuntime).object_dynamic_cast<IPROCBlock>();
 		ASSERT(m_pRuntime);
 	}
 	else
@@ -319,7 +317,7 @@ void RDOPROCRelease::createRuntime()
 
 	if (!m_parserForRuntime.empty())
 	{
-		m_pRuntime = RF(rdo::runtime::RDOPROCRelease)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), m_parserForRuntime);
+		m_pRuntime = rdo::Factory<rdo::runtime::RDOPROCRelease>::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime().object_dynamic_cast<IPROCProcess>(), m_parserForRuntime).object_dynamic_cast<IPROCBlock>();
 		ASSERT(m_pRuntime);
 	}
 	else
@@ -340,7 +338,7 @@ void RDOPROCRelease::addResource(const std::string& name)
 RDOPROCAdvance::RDOPROCAdvance(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pTimeCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdo::runtime::RDOPROCAdvance)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pTimeCalc);
+	m_pRuntime = rdo::Factory<rdo::runtime::RDOPROCAdvance>::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime().object_dynamic_cast<IPROCProcess>(), pTimeCalc).object_dynamic_cast<IPROCBlock>();
 	ASSERT(m_pRuntime);
 }
 
@@ -350,7 +348,7 @@ RDOPROCAdvance::RDOPROCAdvance(const LPRDOPROCProcess& pProcess, const std::stri
 RDOPROCTerminate::RDOPROCTerminate(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdo::runtime::RDOPROCTerminate)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pCalc);
+	m_pRuntime = rdo::Factory<rdo::runtime::RDOPROCTerminate>::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime().object_dynamic_cast<IPROCProcess>(), pCalc).object_dynamic_cast<IPROCBlock>();
 	ASSERT(m_pRuntime);
 }
 
@@ -360,7 +358,7 @@ RDOPROCTerminate::RDOPROCTerminate(const LPRDOPROCProcess& pProcess, const std::
 RDOPROCAssign::RDOPROCAssign(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdo::runtime::RDOPROCAssign)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pCalc);
+	m_pRuntime = rdo::Factory<rdo::runtime::RDOPROCAssign>::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime().object_dynamic_cast<IPROCProcess>(), pCalc).object_dynamic_cast<IPROCBlock>();
 	ASSERT(m_pRuntime);
 }
 

@@ -45,6 +45,20 @@ typedef rdo::simulation::report::FileMessage RDOSyntaxMessage;
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // --------------------------------------------------------------------------------
+// -------------------- RDOResults
+// --------------------------------------------------------------------------------
+RDOResults::RDOResults()
+{}
+
+RDOResults::~RDOResults()
+{}
+
+void RDOResults::width(std::size_t w)
+{
+	getOStream().width(w);
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDORuntime
 // --------------------------------------------------------------------------------
 RDORuntime::RDORuntime(Error* pError)
@@ -76,6 +90,212 @@ void RDORuntime::init()
 void RDORuntime::deinit()
 {
 	onDestroy();
+}
+
+Notify& RDORuntime::notify()
+{
+	return m_notify;
+}
+
+Error& RDORuntime::error()
+{
+	ASSERT(m_pError);
+	return *m_pError;
+}
+
+RDOHotKey& RDORuntime::hotkey()
+{
+	return m_hotKey;
+}
+
+RDOResults& RDORuntime::getResults()
+{
+	return *m_resultList;
+}
+
+RDOResults& RDORuntime::getResultsInfo()
+{
+	return *m_resultListInfo;
+}
+
+double RDORuntime::getTimeNow()
+{
+	return getCurrentTime();
+}
+
+double RDORuntime::getSeconds()
+{
+	/// @todo использовать явный cast()
+	return (double)(time(NULL) - m_physicTime);
+}
+
+std::size_t RDORuntime::getCurrentTerm() const
+{
+	return m_currentTerm;
+}
+
+void RDORuntime::setCurrentTerm(std::size_t value)
+{
+	m_currentTerm = value;
+}
+
+LPIActivity& RDORuntime::getCurrentActivity()
+{
+	return m_currActivity;
+}
+
+void RDORuntime::setCurrentActivity(const LPIActivity& activity)
+{
+	m_currActivity = activity;
+}
+
+const RDORuntime::LPIResultList& RDORuntime::getResult() const
+{
+	return m_resultAllList;
+}
+
+void RDORuntime::addInitCalc(const LPRDOCalc& initCalc)
+{
+	m_initCalcList.push_back(initCalc);
+}
+
+RDOValue& RDORuntime::getResParamValRaw(std::size_t resID, std::size_t paramID)
+{
+	LPRDOResource pResource = getResourceByID(resID);
+	ASSERT(pResource);
+	return pResource->getParamRaw(paramID);
+}
+
+void RDORuntime::setResParamVal(std::size_t resID, std::size_t paramID, const RDOValue& value)
+{
+	LPRDOResource pResource = getResourceByID(resID);
+	ASSERT(pResource);
+	pResource->setParam(paramID, value);
+}
+
+LPRDOResource RDORuntime::getGroupFuncRes() const
+{
+	return m_groupFuncStack.back();
+}
+
+void RDORuntime::pushFuncArgument(RDOValue arg)
+{
+	m_funcStack.push_back(arg);
+}
+
+void RDORuntime::pushGroupFunc(const LPRDOResource& pResource)
+{
+	m_groupFuncStack.push_back(pResource);
+}
+
+void RDORuntime::popFuncArgument()
+{
+	m_funcStack.pop_back();
+}
+
+void RDORuntime::popGroupFunc()
+{
+	m_groupFuncStack.pop_back();
+}
+
+void RDORuntime::pushFuncTop()
+{
+	m_funcStack.push_back(RDOValue(m_currFuncTop));
+}
+
+void RDORuntime::resetFuncTop(int numArg)
+{
+	m_currFuncTop = m_funcStack.size() - numArg;
+}
+
+void RDORuntime::popFuncTop()
+{
+	m_currFuncTop = m_funcStack.back().getInt();
+	m_funcStack.pop_back();
+}
+
+LPRDOResource RDORuntime::getResourceByID(std::size_t resourceID) const
+{
+	return resourceID != std::size_t(~0) && resourceID < m_resourceListByID.size()
+		? m_resourceListByID[resourceID]
+		: LPRDOResource(NULL);
+}
+
+void RDORuntime::setPatternParameter(std::size_t paramID, const RDOValue& paramValue)
+{
+	if (m_patternParameterList.size() <= paramID)
+	{
+		m_patternParameterList.resize(paramID + 1);
+	}
+	m_patternParameterList[paramID] = paramValue;
+}
+
+RDOValue RDORuntime::getPatternParameter(std::size_t paramID) const
+{
+	ASSERT(paramID < m_patternParameterList.size());
+	return m_patternParameterList[paramID];
+}
+
+void RDORuntime::onNothingMoreToDo()
+{
+	m_whyStop = rdo::simulation::report::EC_NoMoreEvents;
+}
+
+void RDORuntime::onEndCondition()
+{
+	m_whyStop = rdo::simulation::report::EC_OK;
+}
+
+void RDORuntime::onRuntimeError()
+{
+	m_whyStop = rdo::simulation::report::EC_RunTimeError;
+}
+
+void RDORuntime::onUserBreak()
+{
+	m_whyStop = rdo::simulation::report::EC_UserBreak;
+}
+
+void RDORuntime::addResType(const LPRDOResourceTypeList& pResType)
+{
+	ASSERT(pResType);
+	ASSERT(m_resourceTypeList.size() == pResType->getTraceID() - 1);
+	m_resourceTypeList.push_back(pResType);
+}
+
+const LPRDOResourceTypeList& RDORuntime::getResType(std::size_t number) const
+{
+	ASSERT(number > 0);
+	ASSERT(number - 1 < m_resourceTypeList.size());
+	return m_resourceTypeList[number - 1];
+}
+
+const LPIThreadProxy& RDORuntime::getThreadProxy() const
+{
+	return m_pThreadProxy;
+}
+
+RDORuntime::ResList RDORuntime::getResourcesBeforeSim() const
+{
+	ResList list;
+	for (std::size_t i = 0; i < m_resourceTypeList.size(); i++)
+	{
+		ResCIterator it, end;
+		it  = m_resourceTypeList[i]->res_begin();
+		end = m_resourceTypeList[i]->res_end  ();
+		while (it != end)
+		{
+			list.push_back(*it);
+			++it;
+		}
+	}
+	return list;
+}
+
+void RDORuntime::preProcess()
+{
+	parent_type::preProcess();
+	m_physicTime = time(NULL);
 }
 
 void RDORuntime::setStudioThread(RDOThread* pStudioThread)
@@ -259,7 +479,7 @@ void RDORuntime::insertNewResource(const LPRDOResource& pResource)
 		{
 			error().push(RDOSyntaxMessage(
 				"Внутренняя ошибка: insertNewResource",
-				rdoModelObjects::PAT,
+				rdo::model::PAT,
 				0,
 				0
 			));
@@ -270,7 +490,7 @@ void RDORuntime::insertNewResource(const LPRDOResource& pResource)
 	{
 		error().push(RDOSyntaxMessage(
 			"Сработало лицензионное ограничение на количество ресурсов. Обратитесь за приобритением полной версии",
-			rdoModelObjects::PAT,
+			rdo::model::PAT,
 			0,
 			0
 		));
@@ -282,35 +502,36 @@ void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer pLogic, const LPIEven
 {
 	ASSERT(pLogic);
 	ASSERT(pEvent);
-	appendBaseOperation(pLogic, pEvent);
+	appendBaseOperation(pLogic, pEvent.object_dynamic_cast<IBaseOperation>());
 }
 
 void RDORuntime::addRuntimeRule(LPIBaseOperationContainer pLogic, const LPIRule& pRule)
 {
 	ASSERT(pLogic);
 	ASSERT(pRule );
-	appendBaseOperation(pLogic, pRule);
+	appendBaseOperation(pLogic, pRule.object_dynamic_cast<IBaseOperation>());
 }
 
 void RDORuntime::addRuntimeOperation(LPIBaseOperationContainer pLogic, const LPIOperation& pOperation)
 {
 	ASSERT(pLogic    );
 	ASSERT(pOperation);
-	appendBaseOperation(pLogic, pOperation);
+	appendBaseOperation(pLogic, pOperation.object_dynamic_cast<IBaseOperation>());
 }
 
 void RDORuntime::addRuntimeResult(const LPIResult& pResult)
 {
 	m_resultAllList.push_back(pResult);
-	LPIResultTrace resultTrace = pResult;
-	LPITrace       trace       = pResult;
+	LPIResultTrace resultTrace = pResult.object_dynamic_cast<IResultTrace>();
+	LPITrace trace = pResult.object_dynamic_cast<ITrace>();
 	if (resultTrace && trace && trace->traceable())
 	{
 		m_resultTraceList.push_back(resultTrace);
 	}
-	if (pResult.query_cast<IResultWatchValue>())
+	const LPIResultWatchValue watch = pResult.object_dynamic_cast<IResultWatchValue>();
+	if (watch)
 	{
-		m_resultWatchValueList.push_back(pResult);
+		m_resultWatchValueList.push_back(watch);
 	}
 }
 
@@ -538,6 +759,24 @@ void RDORuntime::resetPreparingFrame()
 {
 	ASSERT(m_pPreparingFrame);
 	m_pPreparingFrame = NULL;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDORuntime::BreakPoint
+// --------------------------------------------------------------------------------
+RDORuntime::BreakPoint::BreakPoint(const std::string& name, const LPRDOCalc& pCalc)
+	: m_name (name )
+	, m_pCalc(pCalc)
+{}
+
+const std::string& RDORuntime::BreakPoint::getName() const
+{
+	return m_name;
+}
+
+const LPRDOCalc& RDORuntime::BreakPoint::getCalc() const
+{
+	return m_pCalc;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
