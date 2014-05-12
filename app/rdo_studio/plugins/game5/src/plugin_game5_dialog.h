@@ -40,17 +40,17 @@ private:
 	std::string evaluateBy() const;
 	std::string activityValue(int direction) const;
 
-	std::string RTPtabText() const;
-	std::string RSStabText() const;
-	std::string PATtabText() const;
-	std::string DPTtabText() const;
-	std::string FUNtabText() const;
+	std::string modelRTP() const;
+	std::string modelRSS() const;
+	std::string modelPAT() const;
+	std::string modelDPT() const;
+	std::string modelFUN() const;
 
 	void clearAllTabs() const;
 	rdo::gui::model::Model* getCurrentModel() const;
 	void updateTabs() const;
 
-	QStringList parseFunTab() const;
+	QStringList parseModelFUN() const;
 
 private slots:
 	void callTilesOrderDialog();

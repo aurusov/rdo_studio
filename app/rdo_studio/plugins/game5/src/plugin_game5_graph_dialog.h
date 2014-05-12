@@ -51,7 +51,7 @@ private:
 		SortStruct(PluginGame5GraphDialog* pDlg) : m_pDlg(pDlg) {};
 		PluginGame5GraphDialog* m_pDlg;
 
-		bool operator() (int i, int j)
+		bool operator() (int i, int j) const
 		{
 			const int iParentOLO = m_pDlg->m_graphNodeList[i]->getParentGraphNode()->getGraphOnLevelOrder();
 			const int jParentOLO = m_pDlg->m_graphNodeList[j]->getParentGraphNode()->getGraphOnLevelOrder();

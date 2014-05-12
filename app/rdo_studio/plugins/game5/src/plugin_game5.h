@@ -38,23 +38,21 @@ public:
 	virtual void pluginStartAction (QWidget* parent);
 	virtual void pluginStopAction  (QWidget* parent);
 
-signals:
-	void onGraphDlgAction(const std::vector<unsigned int>& state);
-	void setGraphDlgActionEnabled(bool);
-
-private slots:
-	void pluginSlot();
-	void reemitGraphDlgAction();
-	void reemitGraphDlgActionEnabled();
-
 private:
 	PluginGame5GenerateSituationDialog* m_generateSituationDlg;
 	PluginGame5GraphDialog*             m_graphDlg;
 	
 	void initDialogs(QWidget* pParent);
 	void initToolBar(MainWindow* pParent) const;
-	void backUpModel(rdo::gui::model::Model* pModel) const;
-	QMenu* findPluginMenu(QWidget* pParent) const;
+
+private slots:
+	void pluginActivation();
+	void reemitGraphDlgAction();
+	void reemitGraphDlgActionEnabled();
+
+signals:
+	void onGraphDlgAction(const std::vector<unsigned int>& state);
+	void setGraphDlgActionEnabled(bool);
 };
 
 #endif // _RDO_PLUGIN_PLUGIN_GAME5_H_

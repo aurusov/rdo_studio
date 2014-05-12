@@ -135,7 +135,7 @@ SET_TARGET_PROPERTIES(plugin_game5 PROPERTIES FOLDER ${APPS_FOLDERS}/.plugins/.g
 
 ADD_DEPENDENCIES(plugin_game5 rdo_application)
 
-TARGET_LINK_LIBRARIES(plugin_game5 ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+TARGET_LINK_LIBRARIES(plugin_game5 ${Boost_LIBRARIES})
 TARGET_LINK_LIBRARIES(plugin_game5 rdo_application)
 TARGET_LINK_LIBRARIES(plugin_game5 rdo_editor)
 TARGET_LINK_LIBRARIES(plugin_game5 rdo_frame)

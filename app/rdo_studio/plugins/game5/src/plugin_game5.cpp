@@ -13,6 +13,8 @@
 #include <QMessageBox>
 #include <QBitmap>
 #include <QDir>
+#include <boost/algorithm/string.hpp>
+#include <boost/filesystem.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/plugin_game5.h"
@@ -32,6 +34,48 @@ namespace
 	const QString PLUGIN_TOOLBAR_NAME   = "toolbar" + PLUGIN_GUID;
 	const QString RDO_MENUBAR_NAME      = "menubar";
 	const size_t  RDOFileType_ENUM_SIZE = 13;
+
+	void backUpModel(rdo::gui::model::Model* pModel)
+	{
+		boost::filesystem::path modelFolder(pModel->getFullName().toStdString());
+		modelFolder.remove_leaf();
+		const QString backupFolderName = "backup" + QDateTime::currentDateTime().toString("_yyyy-MM-dd_HH.mm.ss");
+		const boost::filesystem::path backupFolder = modelFolder / backupFolderName.toStdString();
+		if (boost::filesystem::create_directory(backupFolder))
+		{
+			for (size_t i = 0; i < RDOFileType_ENUM_SIZE; i++)
+			{
+				std::string fileExtension = rdo::model::getFileTypeString(rdo::model::FileType(i));
+				boost::algorithm::to_lower(fileExtension);
+				const std::string fileName = pModel->getName().toStdString() + "." + fileExtension;
+				const boost::filesystem::path filePath = modelFolder / fileName;
+				const boost::filesystem::path backupFilePath = backupFolder / fileName;
+				if (boost::filesystem::exists(filePath))
+				{
+					boost::filesystem::copy(filePath, backupFilePath);
+				}
+			}
+		}
+	}
+
+	QMenu* findPluginMenu(QWidget* pParent)
+	{
+		QMenu* pluginMenu = pParent->findChild<QMenu*>(PLUGIN_MENU_NAME);
+		if (!pluginMenu)
+		{
+			QMenuBar* menuBar = pParent->findChild<QMenuBar*>(RDO_MENUBAR_NAME);
+			ASSERT(menuBar);
+			for (auto action: menuBar->actions())
+			{
+				if (action->text() == PLUGIN_MENU_TEXT)
+				{
+					pluginMenu = action->menu();
+					break;
+				}
+			}
+		}
+		return pluginMenu;
+	}
 } // end anonymous namespace
 
 QString PluginGame5::getPluginName() const
@@ -77,7 +121,7 @@ void PluginGame5::pluginStartAction(QWidget* pParent)
 
 	QAction* action = new QAction(getPluginName() + " ver " + getVersion(), pluginMenu);
 	action->setObjectName(PLUGIN_ACTION_NAME);
-	connect(action, &QAction::triggered, this, &PluginGame5::pluginSlot);
+	connect(action, &QAction::triggered, this, &PluginGame5::pluginActivation);
 	pluginMenu->addAction(action);
 
 	m_generateSituationDlg = NULL;
@@ -107,7 +151,7 @@ void PluginGame5::pluginStopAction(QWidget* pParent)
 	delete pluginGame5ToolBar;
 }
 
-void PluginGame5::pluginSlot()
+void PluginGame5::pluginActivation()
 {
 	QWidget* pParent = qobject_cast<QWidget*>(sender()-> //action
 	                                          parent()-> //QMenu
@@ -159,47 +203,6 @@ void PluginGame5::pluginSlot()
 	{
 		pMainWindow->actFileNew->trigger();
 	}
-}
-
-void PluginGame5::backUpModel(rdo::gui::model::Model* pModel) const
-{
-	const QString modelFullName = pModel->getFullName();
-	const QString modelFolder   = modelFullName.section(QRegExp("\\\\|/"), 0, -2) + "/";
-	const QString backupFolder  = modelFolder + "backup" + QDateTime::currentDateTime().toString("_yyyy-MM-dd_HH.mm.ss") + "/";
-	QDir makeDir;
-	if (makeDir.mkpath(backupFolder))
-	{
-		for (size_t i = 0; i < RDOFileType_ENUM_SIZE; i++)
-		{
-			const QString fileFormat  = QString::fromStdString(
-					rdo::model::getFileTypeString(rdo::model::FileType(i)));
-			const QString fileName    = modelFolder  + pModel->getName() + "." + fileFormat.toLower();
-			const QString newFileName = backupFolder + pModel->getName() + "." + fileFormat.toLower();
-			if (QFile::exists(fileName))
-			{
-				QFile::copy(fileName, newFileName);
-			}
-		}
-	}
-}
-
-QMenu* PluginGame5::findPluginMenu(QWidget* pParent) const
-{
-	QMenu* pluginMenu = pParent->findChild<QMenu*>(PLUGIN_MENU_NAME);
-	if (!pluginMenu)
-	{
-		QMenuBar* menuBar = pParent->findChild<QMenuBar*>(RDO_MENUBAR_NAME);
-		ASSERT(menuBar);
-		for (auto action: menuBar->actions())
-		{
-			if (action->text() == PLUGIN_MENU_TEXT)
-			{
-				pluginMenu = action->menu();
-				break;
-			}
-		}
-	}
-	return pluginMenu;
 }
 
 void PluginGame5::initToolBar(MainWindow* pParent) const

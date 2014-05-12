@@ -11,6 +11,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <algorithm>
+#include <boost/filesystem/path.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/main_window.h"
@@ -58,8 +59,10 @@ QString PluginGame5GraphDialog::getTraceFile() const
 {
 	MainWindow* pMainWindow = (MainWindow*)(parent());
 	rdo::gui::model::Model* pModel = pMainWindow->getModel();
-	const QString traceFile = pModel->getFullName().section('.', 0, -2) + ".trc";
-	return traceFile;
+	boost::filesystem::path traceFilePath(pModel->getFullName().toStdString());
+	traceFilePath.replace_extension(".trc");
+
+	return QString(traceFilePath.string().c_str());
 }
 
 QString PluginGame5GraphDialog::getTraceTimeStamp() const
@@ -97,7 +100,7 @@ std::vector<int> PluginGame5GraphDialog::getSolutionNodes() const
 	list.push_back(1);
 
 	int pos = 0;
-	while((pos = regExp.indexIn(solutionStr, pos))!= -1)
+	while ((pos = regExp.indexIn(solutionStr, pos))!= -1)
 	{
 		list.push_back(regExp.cap(1).toInt());
 		pos += regExp.matchedLength();
@@ -123,7 +126,7 @@ QStringList PluginGame5GraphDialog::parseTrace() const
 	const QRegExp regExp("(STN|STR)(((\\s)-?\\d{1,5}){8}((\\s)(\\s)(\\d{1,2})(\\s)(\\d{1,2})))(((\\nSRK)((\\s)\\d){4})(\\s\\d{1,2})((\\nSRK)((\\s)\\d){3})(\\s\\d{1,2}))?");
 	QStringList list;
 	int pos = 0;
-	while((pos = regExp.indexIn(trcStringShort, pos))!= -1)
+	while ((pos = regExp.indexIn(trcStringShort, pos))!= -1)
 	{
 		list << regExp.cap(2) + regExp.cap(16) + regExp.cap(21);
 		pos += regExp.matchedLength();
@@ -156,7 +159,7 @@ int PluginGame5GraphDialog::parseTraceInfo(const QString& key) const
 	const QString str = getTraceInfo(); 
 
 	int pos = 0;
-	while((pos = regExp.indexIn(str, pos))!= -1)
+	while ((pos = regExp.indexIn(str, pos))!= -1)
 	{
 		value = regExp.cap(2).toInt();
 		pos += regExp.matchedLength();
