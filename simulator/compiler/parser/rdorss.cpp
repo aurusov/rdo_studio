@@ -65,6 +65,23 @@ LPExpression contextSetTrace(const rdo::runtime::LPRDOCalc& getResource, bool tr
 
 Context::FindResult RDORSSResource::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
+	if (method == Context::METHOD_OPERATOR_DOT)
+	{
+		const std::string paramName = params.identifier();
+
+		const std::size_t parNumb = getType()->getRTPParamNumber(paramName);
+		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
+		{
+			return FindResult();
+		}
+
+		Context::Params params_;
+		params_[Context::Params::IDENTIFIER] = paramName;
+		params_[RDORSSResource::GET_RESOURCE] = createGetResourceExpression(srcInfo);
+
+		return getType()->find(Context::METHOD_OPERATOR_DOT, params_, srcInfo);
+	}
+
 	if (method == Context::METHOD_GET)
 	{
 		const std::string paramName = params.identifier();
