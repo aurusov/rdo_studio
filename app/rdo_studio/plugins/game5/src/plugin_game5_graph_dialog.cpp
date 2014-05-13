@@ -165,8 +165,6 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 	m_graphNodeList.clear();      //Очистка вектора, объекты удалены при очистке сцены
 	m_clickedNode = NULL;
 
-	GraphNode* leftNode;
-	GraphNode* rightNode;
 	std::vector<std::vector<int>> paintLevel;
 	QStringList parsingResult = parseTrace();
 	//@todo Во время парсинга разделять строку на атрибуты GraphNode и запоминать самые широкие
@@ -249,8 +247,6 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 		graphWidget->scene()->addItem(m_graphNodeList[node]);
 		m_graphNodeList[node]->setPos((SPACER_X + m_nodeWidth) * (j + 1), (paintLevel.size() - 1) * (SPACER_Y + m_nodeHeight));
 	}
-	leftNode  = m_graphNodeList[paintLevel.back().front()];
-	rightNode = m_graphNodeList[paintLevel.back().back()];
 	
 	for (int i = (int)paintLevel.size() - 2; i >= 0; i--)
 	{
@@ -309,10 +305,6 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 					graphWidget->scene()->addItem(m_graphNodeList[node]);
 					m_graphNodeList[node]->setPos(m_graphNodeList[temp]->pos().x() - (SPACER_X + m_nodeWidth) * segment, m_graphNodeList[temp]->pos().y());
 				}
-				if (leftNode->pos().x() > m_graphNodeList[paintLevel[i][unbuiltRange.firstNode]]->pos().x())
-				{
-					leftNode = m_graphNodeList[paintLevel[i][unbuiltRange.firstNode]];
-				}
 			}
 			else if (endUnbuiltRange == paintLevel[i].size())
 			{
@@ -324,10 +316,6 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 
 					graphWidget->scene()->addItem(m_graphNodeList[node]);
 					m_graphNodeList[node]->setPos(m_graphNodeList[temp]->pos().x() + (SPACER_X + m_nodeWidth) * segment, m_graphNodeList[temp]->pos().y());
-				}
-				if (rightNode->pos().x() < m_graphNodeList[paintLevel[i][endUnbuiltRange - 1]]->pos().x())
-				{
-					rightNode = m_graphNodeList[paintLevel[i][endUnbuiltRange - 1]];
 				}
 			}
 			else
@@ -359,6 +347,8 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 	}
 	PluginGame5GraphDialog::GraphInfo graphInfo = getGraphInfo();
 	graphWidget->updateGraphInfo(graphInfo.solutionCost, graphInfo.numberOfOpenNodes, graphInfo.totalNumberOfNodes);
+	graphWidget->scene()->setSceneRect(graphWidget->scene()->itemsBoundingRect());
+	graphWidget->setTransform(QTransform());
 }
 
 void PluginGame5GraphDialog::onPluginAction(const std::vector<unsigned int>& boardState)
@@ -395,7 +385,6 @@ void PluginGame5GraphDialog::quickSort(std::vector<int>& vector)
 	SortStruct sortStruct(this);
 	std::sort(vector.begin(), vector.end(), sortStruct);
 }
-
 
 PluginGame5GraphDialog::GraphInfo::GraphInfo(QString solutionCost, QString numberOfOpenNodes, QString totalNumberOfNodes)
 	: solutionCost(solutionCost)

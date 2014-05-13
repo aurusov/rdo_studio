@@ -26,6 +26,7 @@ public:
 	~GraphWidget();
 
 	void updateGraphInfo(const QString& solutionCost, const QString& numOfOpenNodes, const QString& totalNumberOfNodes);
+	void fitScene();
 
 private:
 	GraphInfo m_graphInfo;

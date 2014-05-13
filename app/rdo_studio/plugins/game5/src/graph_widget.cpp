@@ -19,9 +19,10 @@
 
 namespace
 {
-	const double MAX_FACTOR  = 10;
-	const double MIN_FACTOR  = 0.1;
-	const double SCALE_SPEED = 1/2400.;
+	const double MAX_FACTOR          = 10;
+	const double MIN_FACTOR          = 0.1;
+	const double SCALE_SPEED         = 1/2400.;
+	const double MANUAL_SCALE_FACTOR = 20 * SCALE_SPEED;
 } // end anonymous namespace
 
 GraphWidget::GraphWidget(QWidget* pParent)
@@ -57,6 +58,20 @@ void GraphWidget::updateGraphInfo(const QString& solutionCost, const QString& nu
 	m_graphInfo.update(solutionCost, numberOfOpenNodes, totalNumberOfNodes);
 }
 
+void GraphWidget::fitScene()
+{
+	fitInView(sceneRect(), Qt::KeepAspectRatio);
+	const double factor = transform().mapRect(QRectF(0, 0, 1, 1)).width();
+	if (factor > MAX_FACTOR)
+	{
+		scale(MAX_FACTOR / factor, MAX_FACTOR / factor);
+	}
+	if (factor < MIN_FACTOR)
+	{
+		scale(MIN_FACTOR / factor, MIN_FACTOR / factor);
+	}
+}
+
 void GraphWidget::wheelEvent(QWheelEvent* wEvent)
 {
 	if (wEvent->modifiers() & Qt::SHIFT)
@@ -65,7 +80,7 @@ void GraphWidget::wheelEvent(QWheelEvent* wEvent)
 	}
 	else
 	{
-			QGraphicsView::wheelEvent(wEvent);
+		QGraphicsView::wheelEvent(wEvent);
 	}
 }
 
@@ -78,6 +93,26 @@ void GraphWidget::keyPressEvent(QKeyEvent* kEvent)
 		setInteractive(false);
 		m_dragModeCtrl = true;
 	}
+	if (kEvent->modifiers() & Qt::CTRL)
+	{
+		if (kEvent->key() == Qt::Key_0)
+		{
+			setTransform(QTransform());
+		}
+		if (kEvent->key() == Qt::Key_Minus)
+		{
+			scaleView(pow(2., -MANUAL_SCALE_FACTOR));
+		}
+		if (kEvent->key() == Qt::Key_Plus)
+		{
+			scaleView(pow(2., MANUAL_SCALE_FACTOR));
+		}
+		if (kEvent->key() == Qt::Key_9)
+		{
+			fitScene();
+		}
+	}
+
 }
 
 void GraphWidget::keyReleaseEvent(QKeyEvent* kEvent)
