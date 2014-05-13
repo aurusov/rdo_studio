@@ -52,7 +52,7 @@ GraphWidget::GraphWidget(QWidget* pParent)
 GraphWidget::~GraphWidget()
 {}
 
-void GraphWidget::updateGraphInfo(int solutionCost, int numberOfOpenNodes, int totalNumberOfNodes)
+void GraphWidget::updateGraphInfo(const QString& solutionCost, const QString& numberOfOpenNodes, const QString& totalNumberOfNodes)
 {
 	m_graphInfo.update(solutionCost, numberOfOpenNodes, totalNumberOfNodes);
 }

@@ -46,6 +46,14 @@ private:
 		unsigned int range;
 	};
 
+	struct GraphInfo
+	{
+		GraphInfo(QString solutionCost, QString numberOfOpenNodes, QString totalNumberOfNodes);
+		const QString solutionCost;
+		const QString numberOfOpenNodes;
+		const QString totalNumberOfNodes;
+	};
+
 	struct SortStruct
 	{
 		SortStruct(PluginGame5GraphDialog* pDlg) : m_pDlg(pDlg) {};
@@ -74,8 +82,7 @@ private:
 	QString     getTraceFile() const;
 	QStringList parseTrace() const;
 
-	QString getTraceInfo() const;
-	int parseTraceInfo(const QString& key) const;
+	PluginGame5GraphDialog::GraphInfo getGraphInfo() const;
 };
 
 #endif // _RDO_PLUGIN_GAME5_GRAPH_DIALOG_H_

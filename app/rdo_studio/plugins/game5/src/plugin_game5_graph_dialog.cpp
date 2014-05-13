@@ -27,6 +27,10 @@ namespace
 {
 	const int SPACER_X  = 20;
 	const int SPACER_Y  = 20;
+
+	const int DPS_CO_INDEX = 4;
+	const int DPS_TO_INDEX = 5;
+	const int DPS_TT_INDEX = 6;
 } // end anonymous namespace
 
 PluginGame5GraphDialog::PluginGame5GraphDialog(QWidget * pParent)
@@ -120,7 +124,7 @@ QStringList PluginGame5GraphDialog::parseTrace() const
 	}
 
 	const int begin = trcString.indexOf("SB");
-	const int end   = trcString.indexOf("SEN", begin);
+	const int end   = trcString.indexOf(QRegExp("SEN|SES"), begin);
 	const QString trcStringShort = trcString.mid(begin, end - begin);
 
 	const QRegExp regExp("(STN|STR)(((\\s)-?\\d{1,5}){8}((\\s)(\\s)(\\d{1,2})(\\s)(\\d{1,2})))(((\\nSRK)((\\s)\\d){4})(\\s\\d{1,2})((\\nSRK)((\\s)\\d){3})(\\s\\d{1,2}))?");
@@ -135,7 +139,7 @@ QStringList PluginGame5GraphDialog::parseTrace() const
 	return list;
 }
 
-QString PluginGame5GraphDialog::getTraceInfo() const
+PluginGame5GraphDialog::GraphInfo PluginGame5GraphDialog::getGraphInfo() const
 {
 	QFile trcFile(getTraceFile());
 	QString trcString;
@@ -144,28 +148,15 @@ QString PluginGame5GraphDialog::getTraceInfo() const
 		trcString = QString(trcFile.readAll());
 	}
 
-	const int begin = trcString.indexOf("DPS_C");
+	const int begin = trcString.indexOf(QRegExp("SES|SEN"));
 	const QString trcStringShort = trcString.mid(begin);
 
+	QString solutionCost       = trcStringShort.section(' ', DPS_CO_INDEX, DPS_CO_INDEX, QString::SectionSkipEmpty);
+	QString numberOfOpenNodes  = trcStringShort.section(' ', DPS_TO_INDEX, DPS_TO_INDEX, QString::SectionSkipEmpty);
+	QString totalNumberOfNodes = trcStringShort.section(' ', DPS_TT_INDEX, DPS_TT_INDEX, QString::SectionSkipEmpty);
+
 	trcFile.close();
-	return trcStringShort;
-}
-
-int PluginGame5GraphDialog::parseTraceInfo(const QString& key) const
-{
-	const QString regExpPat = "(" + key + "\\s)(\\d{1,5})";
-	const QRegExp regExp(regExpPat);
-	int value = 0;
-	const QString str = getTraceInfo(); 
-
-	int pos = 0;
-	while ((pos = regExp.indexIn(str, pos))!= -1)
-	{
-		value = regExp.cap(2).toInt();
-		pos += regExp.matchedLength();
-	}
-
-	return value;
+	return GraphInfo(solutionCost, numberOfOpenNodes, totalNumberOfNodes);
 }
 
 void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startBoardState)
@@ -366,7 +357,8 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 			}
 		}
 	}
-	graphWidget->updateGraphInfo(parseTraceInfo("DPS_CO"), parseTraceInfo("DPS_TO"), parseTraceInfo("DPS_TT"));
+	PluginGame5GraphDialog::GraphInfo graphInfo = getGraphInfo();
+	graphWidget->updateGraphInfo(graphInfo.solutionCost, graphInfo.numberOfOpenNodes, graphInfo.totalNumberOfNodes);
 }
 
 void PluginGame5GraphDialog::onPluginAction(const std::vector<unsigned int>& boardState)
@@ -403,3 +395,10 @@ void PluginGame5GraphDialog::quickSort(std::vector<int>& vector)
 	SortStruct sortStruct(this);
 	std::sort(vector.begin(), vector.end(), sortStruct);
 }
+
+
+PluginGame5GraphDialog::GraphInfo::GraphInfo(QString solutionCost, QString numberOfOpenNodes, QString totalNumberOfNodes)
+	: solutionCost(solutionCost)
+	, numberOfOpenNodes(numberOfOpenNodes)
+	, totalNumberOfNodes(totalNumberOfNodes)
+{}

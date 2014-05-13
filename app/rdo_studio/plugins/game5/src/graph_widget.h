@@ -25,7 +25,7 @@ public:
 	 GraphWidget(QWidget* parent = 0);
 	~GraphWidget();
 
-	void updateGraphInfo(int solutionCost, int numberOfOpenNodes, int totalNumberOfNodes);
+	void updateGraphInfo(const QString& solutionCost, const QString& numOfOpenNodes, const QString& totalNumberOfNodes);
 
 private:
 	GraphInfo m_graphInfo;
