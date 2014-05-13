@@ -60,7 +60,7 @@ void GraphWidget::updateGraphInfo(const QString& solutionCost, const QString& nu
 
 void GraphWidget::fitScene()
 {
-	fitInView(sceneRect(), Qt::KeepAspectRatio);
+	fitInView(scene()->itemsBoundingRect(), Qt::KeepAspectRatio);
 	const double factor = transform().mapRect(QRectF(0, 0, 1, 1)).width();
 	if (factor > MAX_FACTOR)
 	{
