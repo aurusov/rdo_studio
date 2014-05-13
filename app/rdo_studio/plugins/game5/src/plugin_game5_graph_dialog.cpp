@@ -127,7 +127,7 @@ QStringList PluginGame5GraphDialog::parseTrace() const
 	const int end   = trcString.indexOf(QRegExp("SEN|SES"), begin);
 	const QString trcStringShort = trcString.mid(begin, end - begin);
 
-	const QRegExp regExp("(STN|STR)(((\\s)-?\\d{1,5}){8}((\\s)(\\s)(\\d{1,2})(\\s)(\\d{1,2})))(((\\nSRK)((\\s)\\d){4})(\\s\\d{1,2})((\\nSRK)((\\s)\\d){3})(\\s\\d{1,2}))?");
+	const QRegExp regExp("(STN|STR)(((\\s)-?\\d+){8}((\\s)(\\s)(\\d+)(\\s)(\\d+)))(((\\nSRK)((\\s)\\d+){4})(\\s\\d+)((\\nSRK)((\\s)\\d+){3})(\\s\\d+))");
 	QStringList list;
 	int pos = 0;
 	while ((pos = regExp.indexIn(trcStringShort, pos))!= -1)
