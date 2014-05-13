@@ -9930,7 +9930,9 @@ set_statement
 
 			Context::Params params;
 
-			std::string name = pParamResult->getSwitchContext().params.identifier();
+			std::string name;
+			if (pParamResult->getSwitchContext().params.exists(Context::Params::IDENTIFIER))
+				name = pParamResult->getSwitchContext().params.identifier();
 			RDOParserSrcInfo srcInfo;
 			LPRDOParam pParam = pParamContext.object_dynamic_cast<RDOParam>();
 			if (pParam)
@@ -9979,13 +9981,14 @@ set_statement
 
 			Context::Params params;
 
-			std::string name = pParamResult->getSwitchContext().params.identifier();
+			std::string name;
+			if (pParamResult->getSwitchContext().params.exists(Context::Params::IDENTIFIER))
+				name = pParamResult->getSwitchContext().params.identifier();
 			RDOParserSrcInfo srcInfo;
 			LPRDOParam pParam = pParamContext.object_dynamic_cast<RDOParam>();
 			if (pParam)
 			{
 				srcInfo = pParam->src_info();
-				name = pParam->name();
 				params[RDORSSResource::GET_RESOURCE] =
 					pParamResult->getSwitchContext().params.get<LPExpression>(
 						RDORSSResource::GET_RESOURCE
@@ -9999,7 +10002,6 @@ set_statement
 			if (pLocVar)
 			{
 				srcInfo = pLocVar->getSrcInfo();
-				name = pLocVar->getName();
 			}
 
 			params[Context::Params::IDENTIFIER] = name;
