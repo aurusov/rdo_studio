@@ -463,16 +463,39 @@ dp_searcht_compare
 	;
 
 dpt_search_descr_param
-	: /* empty */
+	: '*'
+	{
+		CONVERTER->getLastDPTSearch()->getLastActivity()->addParam(
+			rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "*"))
+		);
+	}
+	| fun_arithm
+	{
+		CONVERTER->getLastDPTSearch()->getLastActivity()->addParam(CONVERTER->stack().pop<RDOFUNArithm>($1)->value());
+	}
 	| dpt_search_descr_param '*'
 	{
 		CONVERTER->getLastDPTSearch()->getLastActivity()->addParam(
 			rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@2, "*"))
 		);
+
+		LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
+			@1.m_last_seek,
+			","
+		);
+		ASSERT(pCommaInsert);
+		CONVERTER->insertDocUpdate(pCommaInsert);
 	}
 	| dpt_search_descr_param fun_arithm
 	{
 		CONVERTER->getLastDPTSearch()->getLastActivity()->addParam(CONVERTER->stack().pop<RDOFUNArithm>($2)->value());
+
+		LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
+			@1.m_last_seek,
+			","
+		);
+		ASSERT(pCommaInsert);
+		CONVERTER->insertDocUpdate(pCommaInsert);
 	}
 	| dpt_search_descr_param error
 	{
@@ -533,11 +556,45 @@ dpt_searcht_activity
 	{
 		$$ = CONVERTER->stack().push(LPRDODPTActivity());
 	}
+	| dpt_searcht_activity dpt_search_name dpt_search_descr_value
+	{
+		LPRDODPTActivity pActivity = CONVERTER->stack().pop<RDODPTActivity>($2);
+		ASSERT(pActivity)
+		pActivity->endParam(@2);
+
+		LPDocUpdate pSemicolonInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_last_seek,
+			";"
+		);
+		ASSERT(pSemicolonInsert);
+		CONVERTER->insertDocUpdate(pSemicolonInsert);
+	}
 	| dpt_searcht_activity dpt_search_name dpt_search_descr_param dpt_search_descr_value
 	{
 		LPRDODPTActivity pActivity = CONVERTER->stack().pop<RDODPTActivity>($2);
 		ASSERT(pActivity)
 		pActivity->endParam(@3);
+
+		LPDocUpdate pLeftBracketInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_first_seek,
+			"("
+		);
+		ASSERT(pLeftBracketInsert);
+		CONVERTER->insertDocUpdate(pLeftBracketInsert);
+
+		LPDocUpdate pRightBracketInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_last_seek,
+			")"
+		);
+		ASSERT(pRightBracketInsert);
+		CONVERTER->insertDocUpdate(pRightBracketInsert);
+
+		LPDocUpdate pSemicolonInsert = rdo::Factory<UpdateInsert>::create(
+			@4.m_last_seek,
+			";"
+		);
+		ASSERT(pSemicolonInsert);
+		CONVERTER->insertDocUpdate(pSemicolonInsert);
 	}
 	| dpt_searcht_activity dpt_search_name dpt_search_descr_param error
 	{
@@ -731,8 +788,7 @@ dpt_some_name
 	;
 
 dpt_some_descr_keyb
-	: /* empty */
-	| dpt_some_descr_keyb '+' RDO_STRING_CONST
+	: dpt_some_descr_keyb '+' RDO_STRING_CONST
 	{
 		LPRDODPTActivityHotKey pActivityHotKey = CONVERTER->getLastDPTSome()->getLastActivity();
 		ASSERT(pActivityHotKey);
@@ -749,16 +805,39 @@ dpt_some_descr_keyb
 	;
 
 dpt_some_descr_param
-	: /* empty */
+	: '*'
+	{
+		CONVERTER->getLastDPTSome()->getLastActivity()->addParam(
+			rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "*"))
+		);
+	}
+	| fun_arithm
+	{
+		CONVERTER->getLastDPTSome()->getLastActivity()->addParam(CONVERTER->stack().pop<RDOFUNArithm>($1)->value());
+	}
 	| dpt_some_descr_param '*'
 	{
 		CONVERTER->getLastDPTSome()->getLastActivity()->addParam(
 			rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@2, "*"))
 		);
+
+		LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
+			@1.m_last_seek,
+			","
+		);
+		ASSERT(pCommaInsert);
+		CONVERTER->insertDocUpdate(pCommaInsert);
 	}
 	| dpt_some_descr_param fun_arithm
 	{
 		CONVERTER->getLastDPTSome()->getLastActivity()->addParam(CONVERTER->stack().pop<RDOFUNArithm>($2)->value());
+
+		LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
+			@1.m_last_seek,
+			","
+		);
+		ASSERT(pCommaInsert);
+		CONVERTER->insertDocUpdate(pCommaInsert);
 	}
 	| dpt_some_descr_param error
 	{
@@ -771,12 +850,89 @@ dpt_some_activity
 	{
 		$$ = CONVERTER->stack().push(LPRDODPTActivity());
 	}
+	| dpt_some_activity dpt_some_name
+	{
+		LPRDODPTActivity pActivity = CONVERTER->stack().pop<RDODPTSomeActivity>($2);
+		ASSERT(pActivity);
+		pActivity->endParam(@2);
+		$$ = CONVERTER->stack().push(pActivity);
+
+		LPDocUpdate pSemicolonInsert = rdo::Factory<UpdateInsert>::create(
+			@2.m_last_seek,
+			";"
+		);
+		ASSERT(pSemicolonInsert);
+		CONVERTER->insertDocUpdate(pSemicolonInsert);
+	}
+	| dpt_some_activity dpt_some_name dpt_some_descr_keyb
+	{
+		LPRDODPTActivity pActivity = CONVERTER->stack().pop<RDODPTSomeActivity>($2);
+		ASSERT(pActivity);
+		pActivity->endParam(@3);
+		$$ = CONVERTER->stack().push(pActivity);
+
+		LPDocUpdate pLeftBracketInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_first_seek,
+			"("
+		);
+		ASSERT(pLeftBracketInsert);
+		CONVERTER->insertDocUpdate(pLeftBracketInsert);
+
+		LPDocUpdate pRightBracketAndSemicolonInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_last_seek,
+			");"
+		);
+		ASSERT(pRightBracketAndSemicolonInsert);
+		CONVERTER->insertDocUpdate(pRightBracketAndSemicolonInsert);
+	}
+	| dpt_some_activity dpt_some_name dpt_some_descr_param
+	{
+		LPRDODPTActivity pActivity = CONVERTER->stack().pop<RDODPTSomeActivity>($2);
+		ASSERT(pActivity);
+		pActivity->endParam(@3);
+		$$ = CONVERTER->stack().push(pActivity);
+
+		LPDocUpdate pLeftBracketInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_first_seek,
+			"("
+		);
+		ASSERT(pLeftBracketInsert);
+		CONVERTER->insertDocUpdate(pLeftBracketInsert);
+
+		LPDocUpdate pRightBracketAndSemicolonInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_last_seek,
+			");"
+		);
+		ASSERT(pRightBracketAndSemicolonInsert);
+		CONVERTER->insertDocUpdate(pRightBracketAndSemicolonInsert);
+	}
 	| dpt_some_activity dpt_some_name dpt_some_descr_keyb dpt_some_descr_param
 	{
 		LPRDODPTActivity pActivity = CONVERTER->stack().pop<RDODPTSomeActivity>($2);
 		ASSERT(pActivity);
 		pActivity->endParam(@3);
 		$$ = CONVERTER->stack().push(pActivity);
+
+		LPDocUpdate pLeftBracketInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_first_seek,
+			"("
+		);
+		ASSERT(pLeftBracketInsert);
+		CONVERTER->insertDocUpdate(pLeftBracketInsert);
+
+		LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_last_seek,
+			","
+		);
+		ASSERT(pCommaInsert);
+		CONVERTER->insertDocUpdate(pCommaInsert);
+
+		LPDocUpdate pRightBracketAndSemicolonInsert = rdo::Factory<UpdateInsert>::create(
+			@4.m_last_seek,
+			");"
+		);
+		ASSERT(pRightBracketAndSemicolonInsert);
+		CONVERTER->insertDocUpdate(pRightBracketAndSemicolonInsert);
 	}
 	;
 
@@ -966,8 +1122,7 @@ dpt_prior_name
 	;
 
 dpt_prior_descr_keyb
-	: /* empty */
-	| dpt_prior_descr_keyb '+' RDO_STRING_CONST
+	: dpt_prior_descr_keyb '+' RDO_STRING_CONST
 	{
 		LPRDODPTActivityHotKey pActivityHotKey = CONVERTER->getLastDPTPrior()->getLastActivity();
 		ASSERT(pActivityHotKey);
@@ -984,16 +1139,39 @@ dpt_prior_descr_keyb
 	;
 
 dpt_prior_descr_param
-	: /* empty */
+	: '*'
+	{
+		CONVERTER->getLastDPTPrior()->getLastActivity()->addParam(
+			rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "*"))
+		);
+	}
+	| fun_arithm
+	{
+		CONVERTER->getLastDPTPrior()->getLastActivity()->addParam(CONVERTER->stack().pop<RDOFUNArithm>($1)->value());
+	}
 	| dpt_prior_descr_param '*'
 	{
 		CONVERTER->getLastDPTPrior()->getLastActivity()->addParam(
 			rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@2, "*"))
 		);
+
+		LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
+			@1.m_last_seek,
+			","
+		);
+		ASSERT(pCommaInsert);
+		CONVERTER->insertDocUpdate(pCommaInsert);
 	}
 	| dpt_prior_descr_param fun_arithm
 	{
 		CONVERTER->getLastDPTPrior()->getLastActivity()->addParam(CONVERTER->stack().pop<RDOFUNArithm>($2)->value());
+
+		LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
+			@1.m_last_seek,
+			","
+		);
+		ASSERT(pCommaInsert);
+		CONVERTER->insertDocUpdate(pCommaInsert);
 	}
 	| dpt_prior_descr_param error
 	{
@@ -1027,12 +1205,110 @@ dpt_prior_activity
 	{
 		$$ = CONVERTER->stack().push(LPRDODPTActivity());
 	}
+	| dpt_prior_activity dpt_prior_name dpt_prior_activ_prior
+	{
+		LPRDODPTActivity pActivity = CONVERTER->stack().pop<RDODPTSomeActivity>($2);
+		ASSERT(pActivity);
+		pActivity->endParam(@2);
+		$$ = CONVERTER->stack().push(pActivity);
+
+		LPDocUpdate pSemicolonInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_last_seek,
+			";"
+		);
+		ASSERT(pSemicolonInsert);
+		CONVERTER->insertDocUpdate(pSemicolonInsert);
+	}
+	| dpt_prior_activity dpt_prior_name dpt_prior_descr_keyb dpt_prior_activ_prior
+	{
+		LPRDODPTActivity pActivity = CONVERTER->stack().pop<RDODPTSomeActivity>($2);
+		ASSERT(pActivity);
+		pActivity->endParam(@3);
+		$$ = CONVERTER->stack().push(pActivity);
+
+		LPDocUpdate pLeftBracketInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_first_seek,
+			"("
+		);
+		ASSERT(pLeftBracketInsert);
+		CONVERTER->insertDocUpdate(pLeftBracketInsert);
+
+		LPDocUpdate pRightBracketInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_last_seek,
+			")"
+		);
+		ASSERT(pRightBracketInsert);
+		CONVERTER->insertDocUpdate(pRightBracketInsert);
+
+		LPDocUpdate pSemicolonInsert = rdo::Factory<UpdateInsert>::create(
+			@4.m_last_seek,
+			";"
+		);
+		ASSERT(pSemicolonInsert);
+		CONVERTER->insertDocUpdate(pSemicolonInsert);
+	}
+	| dpt_prior_activity dpt_prior_name dpt_prior_descr_param dpt_prior_activ_prior
+	{
+		LPRDODPTActivity pActivity = CONVERTER->stack().pop<RDODPTSomeActivity>($2);
+		ASSERT(pActivity);
+		pActivity->endParam(@3);
+		$$ = CONVERTER->stack().push(pActivity);
+
+		LPDocUpdate pLeftBracketInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_first_seek,
+			"("
+		);
+		ASSERT(pLeftBracketInsert);
+		CONVERTER->insertDocUpdate(pLeftBracketInsert);
+
+		LPDocUpdate pRightBracketInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_last_seek,
+			")"
+		);
+		ASSERT(pRightBracketInsert);
+		CONVERTER->insertDocUpdate(pRightBracketInsert);
+
+		LPDocUpdate pSemicolonInsert = rdo::Factory<UpdateInsert>::create(
+			@4.m_last_seek,
+			";"
+		);
+		ASSERT(pSemicolonInsert);
+		CONVERTER->insertDocUpdate(pSemicolonInsert);
+	}
 	| dpt_prior_activity dpt_prior_name dpt_prior_descr_keyb dpt_prior_descr_param dpt_prior_activ_prior
 	{
 		LPRDODPTActivity pActivity = CONVERTER->stack().pop<RDODPTSomeActivity>($2);
 		ASSERT(pActivity);
 		pActivity->endParam(@3);
 		$$ = CONVERTER->stack().push(pActivity);
+
+		LPDocUpdate pLeftBracketInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_first_seek,
+			"("
+		);
+		ASSERT(pLeftBracketInsert);
+		CONVERTER->insertDocUpdate(pLeftBracketInsert);
+
+		LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
+			@3.m_last_seek,
+			","
+		);
+		ASSERT(pCommaInsert);
+		CONVERTER->insertDocUpdate(pCommaInsert);
+
+		LPDocUpdate pRightBracketInsert = rdo::Factory<UpdateInsert>::create(
+			@4.m_last_seek,
+			")"
+		);
+		ASSERT(pRightBracketInsert);
+		CONVERTER->insertDocUpdate(pRightBracketInsert);
+
+		LPDocUpdate pSemicolonInsert = rdo::Factory<UpdateInsert>::create(
+			@5.m_last_seek,
+			";"
+		);
+		ASSERT(pSemicolonInsert);
+		CONVERTER->insertDocUpdate(pSemicolonInsert);
 	}
 	;
 
