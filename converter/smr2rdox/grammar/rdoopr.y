@@ -249,7 +249,12 @@ opr_param
 	: opr_param_atomic
 	| opr_param opr_param_atomic
 	{
-
+		LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
+			@1.m_last_seek,
+			","
+		);
+		ASSERT(pCommaInsert);
+		CONVERTER->insertDocUpdate(pCommaInsert);
 	}
 	;
 
@@ -332,6 +337,15 @@ opr_activity
 			ASSERT(pIEDelete);
 			CONVERTER->insertDocUpdate(pIEDelete);
 		}
+		else
+		{
+			LPDocUpdate pSemicolonInsert = rdo::Factory<UpdateInsert>::create(
+				@1.m_last_seek,
+				";"
+			);
+			ASSERT(pSemicolonInsert);
+			CONVERTER->insertDocUpdate(pSemicolonInsert);
+		}
 
 		pOperation->endParam(@1);
 	}
@@ -348,6 +362,22 @@ opr_activity
 			);
 			ASSERT(pIEDelete);
 			CONVERTER->insertDocUpdate(pIEDelete);
+		}
+		else
+		{
+			LPDocUpdate pLeftBracketInsert = rdo::Factory<UpdateInsert>::create(
+				@2.m_first_seek,
+				"("
+			);
+			ASSERT(pLeftBracketInsert);
+			CONVERTER->insertDocUpdate(pLeftBracketInsert);
+
+			LPDocUpdate pRightBracketAndSemicolonInsert = rdo::Factory<UpdateInsert>::create(
+				@2.m_last_seek,
+				");"
+			);
+			ASSERT(pRightBracketAndSemicolonInsert);
+			CONVERTER->insertDocUpdate(pRightBracketAndSemicolonInsert);
 		}
 
 		pOperation->endParam(@2);
@@ -366,6 +396,22 @@ opr_activity
 			ASSERT(pIEDelete);
 			CONVERTER->insertDocUpdate(pIEDelete);
 		}
+		else
+		{
+			LPDocUpdate pLeftBracketInsert = rdo::Factory<UpdateInsert>::create(
+				@2.m_first_seek,
+				"("
+			);
+			ASSERT(pLeftBracketInsert);
+			CONVERTER->insertDocUpdate(pLeftBracketInsert);
+
+			LPDocUpdate pRightBracketAndSemicolonInsert = rdo::Factory<UpdateInsert>::create(
+				@2.m_last_seek,
+				");"
+			);
+			ASSERT(pRightBracketAndSemicolonInsert);
+			CONVERTER->insertDocUpdate(pRightBracketAndSemicolonInsert);
+		}
 
 		pOperation->endParam(@2);
 	}
@@ -382,6 +428,29 @@ opr_activity
 			);
 			ASSERT(pIEDelete);
 			CONVERTER->insertDocUpdate(pIEDelete);
+		}
+		else
+		{
+			LPDocUpdate pLeftBracketInsert = rdo::Factory<UpdateInsert>::create(
+				@2.m_first_seek,
+				"("
+			);
+			ASSERT(pLeftBracketInsert);
+			CONVERTER->insertDocUpdate(pLeftBracketInsert);
+
+			LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
+				@2.m_last_seek,
+				","
+			);
+			ASSERT(pCommaInsert);
+			CONVERTER->insertDocUpdate(pCommaInsert);
+
+			LPDocUpdate pRightBracketAndSemicolonInsert = rdo::Factory<UpdateInsert>::create(
+				@3.m_last_seek,
+				");"
+			);
+			ASSERT(pRightBracketAndSemicolonInsert);
+			CONVERTER->insertDocUpdate(pRightBracketAndSemicolonInsert);
 		}
 
 		pOperation->endParam(@2);
