@@ -267,6 +267,7 @@ Context::FindResult Function::onFindContext(const std::string& method, const Con
 				{
 					Context::Params params_;
 					params_[RDORSSResource::GET_RESOURCE] = contextParameter(pParam, *paramID, srcInfo);
+					params_[Context::Params::IDENTIFIER] = identifier;
 					return FindResult(SwitchContext(resourceType, params_));
 				}
 				else

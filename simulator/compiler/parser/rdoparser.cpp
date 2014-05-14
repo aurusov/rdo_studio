@@ -318,31 +318,31 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 		LPRDORTPResType pResType = findRTPResType(identifier);
 		if (pResType)
 		{
-			return FindResult(SwitchContext(pResType));
+			return FindResult(SwitchContext(pResType, params));
 		}
 
 		LPRDORSSResource pResource = findRSSResource(identifier);
 		if (pResource)
 		{
-			return FindResult(SwitchContext(pResource));
+			return FindResult(SwitchContext(pResource, params));
 		}
 
 		LPRDOPATPattern pPattern = findPATPattern(identifier);
 		if (pPattern)
 		{
-			return FindResult(SwitchContext(pPattern));
+			return FindResult(SwitchContext(pPattern, params));
 		}
 
 		LPRDOPROCProcess pProcess = findPROCProcess(identifier);
 		if (pProcess)
 		{
-			return FindResult(SwitchContext(pProcess));
+			return FindResult(SwitchContext(pProcess, params));
 		}
 
 		LPRDOResultGroup pResultGroup = findResultGroup(identifier);
 		if (pResultGroup)
 		{
-			return FindResult(SwitchContext(pResultGroup));
+			return FindResult(SwitchContext(pResultGroup, params));
 		}
 	}
 
