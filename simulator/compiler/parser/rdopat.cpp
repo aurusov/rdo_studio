@@ -191,15 +191,6 @@ LPExpression contextParameters(const LPRDOParam& param, std::size_t paramID, con
 	);
 }
 
-LPExpression contextGetRelevantResource(const LPRDORelevantResource& relevantResource, const RDOParserSrcInfo& srcInfo)
-{
-	return rdo::Factory<Expression>::create(
-		rdo::Factory<TypeInfo>::create(relevantResource->getType(), srcInfo),
-		rdo::Factory<rdo::runtime::RDOGetResourceByRelevantResourceID>::create(relevantResource->m_relResID),
-		srcInfo
-	);
-}
-
 void pushRelevantResourceContext(const LPRDORelevantResource& pRelevantResource)
 {
 	RDOParser::s_parser()->contextStack()->push(pRelevantResource);
@@ -232,14 +223,12 @@ Context::FindResult RDOPATPattern::onFindContext(const std::string& method, cons
 		{
 			if (method == Context::METHOD_OPERATOR_DOT)
 			{
-				Context::Params params;
-				params[RDORSSResource::GET_RESOURCE] = contextGetRelevantResource(pRelevantResource, srcInfo);
 				return FindResult(SwitchContext(pRelevantResource, params));
 			}
 
 			if (method == Context::METHOD_GET)
 			{
-				return FindResult(CreateExpression(boost::bind(&contextGetRelevantResource, pRelevantResource, srcInfo)));
+				return pRelevantResource->find(Context::METHOD_GET, params, srcInfo);
 			}
 		}
 		LPRDOParam pParam = findPATPatternParam(identifier);
@@ -1079,11 +1068,31 @@ RDORelevantResource::RDORelevantResource(const RDOParserSrcInfo& src_info, const
 RDORelevantResource::~RDORelevantResource()
 {}
 
+namespace
+{
+
+LPExpression contextGetRelevantResource(const LPRDORelevantResource& relevantResource, const RDOParserSrcInfo& srcInfo)
+{
+	return rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(relevantResource->getType(), srcInfo),
+		rdo::Factory<rdo::runtime::RDOGetResourceByRelevantResourceID>::create(relevantResource->m_relResID),
+		srcInfo
+	);
+}
+
+}
+
 Context::FindResult RDORelevantResource::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	if (method == Context::METHOD_GET)
 	{
 		const std::string paramName = params.identifier();
+
+		if (paramName == name())
+		{
+			LPRDORelevantResource pThis(const_cast<RDORelevantResource*>(this));
+			return FindResult(CreateExpression(boost::bind(&contextGetRelevantResource, pThis, srcInfo)));
+		}
 
 		const std::size_t parNumb = getType()->getRTPParamNumber(paramName);
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
