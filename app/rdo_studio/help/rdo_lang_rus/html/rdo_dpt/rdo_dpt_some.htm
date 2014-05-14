@@ -24,8 +24,8 @@ $Condition <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#init_cond">&lt;у�
 $Activities <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm">&lt;описание_активности&gt;</A> { &lt;описание_активности&gt; }
 $End</PRE>
 		<DT class="syntax"><A class="syntax" name="#some_act_desc"></A><I>описание активности:</I><DT>
-		<DD><PRE class="syntax"><A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_name">&lt;имя_активности&gt;</A> : <A class="syntax" href="#dpt_some_pat">&lt;имя_образца&gt;</A> [ <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_key">&lt;код_клавиши&gt;</A> ]
-[ <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_params">&lt;значения_параметров_образца&gt;</A> ]</PRE>
+		<DD><PRE class="syntax"><A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_name">&lt;имя_активности&gt;</A> : <A class="syntax" href="#dpt_some_pat">&lt;имя_образца&gt;</A> [ ( ] [ <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_key">&lt;код_клавиши&gt;</A> , ] [ <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_params">&lt;значения_параметров_образца&gt;</A> ] [ ) ] ;</PRE>
+Все параметры активности (в том числе и код клавиши вызова) отделяются друг от друга запятыми. В том случае, если параметры отсутствуют, скобки писать не нужно.
 			<DT class="syntax"><A name="dpt_some_pat"></A><I>имя_образца</I></DT>
 			<P>При написании активности типа some допустимо использовать все существующие типы образцов.</P>
 		</DD>
@@ -35,9 +35,9 @@ $End</PRE>
 		<PRE class="samples">$Decision_point Точка_2 : some
 $Condition NoCheck
 $Activities
-  Операция_1 : Образец_14   25  *
-  Операция_2 : Образец_15   Значение_2
-  Операция_3 : Образец_16
+  Операция_1 : Образец_14   (25,  *);
+  Операция_2 : Образец_15   (Значение_2);
+  Операция_3 : Образец_16;
 $End</PRE>
 		</DIV>
 		<H4>См. также</H4>
