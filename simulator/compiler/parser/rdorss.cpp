@@ -61,6 +61,11 @@ LPExpression contextSetTrace(const rdo::runtime::LPRDOCalc& getResource, bool tr
 	);
 }
 
+LPExpression contextGetResource(const LPRDORSSResource& resource, const RDOParserSrcInfo& srcInfo)
+{
+	return resource->createGetResourceExpression(srcInfo);
+}
+
 }
 
 Context::FindResult RDORSSResource::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
@@ -85,6 +90,12 @@ Context::FindResult RDORSSResource::onFindContext(const std::string& method, con
 	if (method == Context::METHOD_GET)
 	{
 		const std::string paramName = params.identifier();
+
+		if (paramName == name())
+		{
+			LPRDORSSResource pThis(const_cast<RDORSSResource*>(this));
+			return FindResult(CreateExpression(boost::bind(&contextGetResource, pThis, srcInfo)));
+		}
 
 		const std::size_t parNumb = getType()->getRTPParamNumber(paramName);
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
