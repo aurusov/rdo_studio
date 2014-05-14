@@ -9928,32 +9928,22 @@ set_statement
 			LPContext pParamContext = pParamResult->getSwitchContext().context;
 			ASSERT(pParamContext);
 
-			Context::Params params;
+			Context::Params params = pParamResult->getSwitchContext().params;
 
 			std::string name;
-			if (pParamResult->getSwitchContext().params.exists(Context::Params::IDENTIFIER))
-				name = pParamResult->getSwitchContext().params.identifier();
-			RDOParserSrcInfo srcInfo;
+			if (params.exists(Context::Params::IDENTIFIER))
+				name = params.identifier();
+			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(name);
 			LPRDOParam pParam = pParamContext.object_dynamic_cast<RDOParam>();
 			if (pParam)
 			{
 				srcInfo = pParam->src_info();
-				params[RDORSSResource::GET_RESOURCE] =
-					pParamResult->getSwitchContext().params.get<LPExpression>(
-						RDORSSResource::GET_RESOURCE
-				);
-				params[RDOParam::CONTEXT_PARAM_PARAM_ID] =
-					pParamResult->getSwitchContext().params.get<std::size_t>(
-						RDOParam::CONTEXT_PARAM_PARAM_ID
-				);
 			}
 			LPLocalVariable pLocVar = pParamContext.object_dynamic_cast<LocalVariable>();
 			if (pLocVar)
 			{
 				srcInfo = pLocVar->getSrcInfo();
 			}
-
-			params[Context::Params::IDENTIFIER] = name;
 
 			rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
 
@@ -9979,32 +9969,22 @@ set_statement
 			LPContext pParamContext = pParamResult->getSwitchContext().context;
 			ASSERT(pParamContext);
 
-			Context::Params params;
+			Context::Params params = pParamResult->getSwitchContext().params;
 
 			std::string name;
-			if (pParamResult->getSwitchContext().params.exists(Context::Params::IDENTIFIER))
-				name = pParamResult->getSwitchContext().params.identifier();
-			RDOParserSrcInfo srcInfo;
+			if (params.exists(Context::Params::IDENTIFIER))
+				name = params.identifier();
+			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(name);
 			LPRDOParam pParam = pParamContext.object_dynamic_cast<RDOParam>();
 			if (pParam)
 			{
 				srcInfo = pParam->src_info();
-				params[RDORSSResource::GET_RESOURCE] =
-					pParamResult->getSwitchContext().params.get<LPExpression>(
-						RDORSSResource::GET_RESOURCE
-				);
-				params[RDOParam::CONTEXT_PARAM_PARAM_ID] =
-					pParamResult->getSwitchContext().params.get<std::size_t>(
-						RDOParam::CONTEXT_PARAM_PARAM_ID
-				);
 			}
 			LPLocalVariable pLocVar = pParamContext.object_dynamic_cast<LocalVariable>();
 			if (pLocVar)
 			{
 				srcInfo = pLocVar->getSrcInfo();
 			}
-
-			params[Context::Params::IDENTIFIER] = name;
 
 			rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
 			LPRDOFUNArithm pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
@@ -10746,13 +10726,8 @@ param_full_name
 			LPContext pParentContext = pParentResult->getSwitchContext().context;
 			LPRDOValue pName = PARSER->stack().pop<RDOValue>($3);
 
-			Context::Params params;
+			Context::Params params = pParentResult->getSwitchContext().params;
 			params[Context::Params::IDENTIFIER] = pName->value().getIdentificator();
-			if (pParentResult->getSwitchContext().params.exists(RDORSSResource::GET_RESOURCE))
-				params[RDORSSResource::GET_RESOURCE] =
-						pParentResult->getSwitchContext().params.get<LPExpression>(
-							RDORSSResource::GET_RESOURCE
-				);
 			Context::FindResult result = pParentContext->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
 			Context::LPFindResult pResult = rdo::Factory<Context::FindResult>::create(result);
 
@@ -10797,18 +10772,36 @@ fun_arithm
 			$$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1)));
 		}
 	}
-	| RDO_IDENTIF
+	| param_full_name
 	{
 		#PASS2
 		{
-			$$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1)));
-		}
-	}
-	| RDO_IDENTIF '.' RDO_IDENTIF
-	{
-		#PASS2
-		{
-			$$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3)));
+			Context::LPFindResult pParamResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pParamResult->getSwitchContext());
+			LPContext pParamContext = pParamResult->getSwitchContext().context;
+			ASSERT(pParamContext);
+
+			Context::Params params = pParamResult->getSwitchContext().params;
+
+			std::string name;
+			if (params.exists(Context::Params::IDENTIFIER))
+				name = params.identifier();
+			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(name);
+			LPRDOParam pParam = pParamContext.object_dynamic_cast<RDOParam>();
+			if (pParam)
+			{
+				srcInfo = pParam->src_info();
+			}
+			LPLocalVariable pLocVar = pParamContext.object_dynamic_cast<LocalVariable>();
+			if (pLocVar)
+			{
+				srcInfo = pLocVar->getSrcInfo();
+			}
+
+			Context::FindResult result = pParamContext->find(Context::METHOD_GET, params, srcInfo);
+			LPExpression pExpression = result.getCreateExpression()();
+			ASSERT(pExpression);
+ 			$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(pExpression));
 		}
 	}
 // 	| member_statement
@@ -10909,15 +10902,37 @@ fun_arithm
 			$$ = PARSER->stack().push(pArithm->uminus(info.src_pos()));
 		}
 	}
-	| RDO_IDENTIF '.' RDO_Size
+	| param_full_name '.' RDO_Size
 	{
 		#PASS2
 		{
-			LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
-			ASSERT(pValue);
+			Context::LPFindResult pParamResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pParamResult->getSwitchContext());
+			LPContext pParamContext = pParamResult->getSwitchContext().context;
+			ASSERT(pParamContext);
 
-			LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(pValue);
-			ASSERT(pArithm);
+			Context::Params params = pParamResult->getSwitchContext().params;
+
+			std::string name;
+			if (params.exists(Context::Params::IDENTIFIER))
+				name = params.identifier();
+			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(name);
+			LPRDOParam pParam = pParamContext.object_dynamic_cast<RDOParam>();
+			if (pParam)
+			{
+				srcInfo = pParam->src_info();
+			}
+			LPLocalVariable pLocVar = pParamContext.object_dynamic_cast<LocalVariable>();
+			if (pLocVar)
+			{
+				srcInfo = pLocVar->getSrcInfo();
+			}
+
+			Context::FindResult result = pParamContext->find(Context::METHOD_GET, params, srcInfo);
+			LPExpression pArithmExpression = result.getCreateExpression()();
+			ASSERT(pArithmExpression);
+
+ 			LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pArithmExpression);
 
 			rdo::runtime::LPRDOCalc pCalc;
 			if (pArithm->typeInfo()->itype().object_dynamic_cast<RDOArrayType>())
@@ -10927,7 +10942,7 @@ fun_arithm
 			}
 			else
 			{
-				PARSER->error().error(@1, rdo::format("'%s' не является массивом", pValue->value().getIdentificator().c_str()));
+				PARSER->error().error(@1, rdo::format("'%s' не является массивом", name.c_str()));
 			}
 
 			LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@1));

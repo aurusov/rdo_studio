@@ -82,7 +82,7 @@ void Function::onPushParam(const LPRDOParam& pParam)
 		RDOParser::s_parser()->error().push_only(pParamPrev->src_info(), "См. первое определение");
 		RDOParser::s_parser()->error().push_done();
 	}
-	m_paramList.push_back(pParam); 
+	m_paramList.push_back(pParam);
 }
 
 LPRDOParam Function::findParam(const std::string& paramName) const
@@ -268,6 +268,11 @@ Context::FindResult Function::onFindContext(const std::string& method, const Con
 					Context::Params params_;
 					params_[RDORSSResource::GET_RESOURCE] = contextParameter(pParam, *paramID, srcInfo);
 					return FindResult(SwitchContext(resourceType, params_));
+				}
+				else
+				{
+					LPFunction pThis(const_cast<Function*>(this));
+					return FindResult(SwitchContext(pThis, params));
 				}
 			}
 			else

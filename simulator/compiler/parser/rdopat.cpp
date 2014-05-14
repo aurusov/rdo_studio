@@ -251,7 +251,8 @@ Context::FindResult RDOPATPattern::onFindContext(const std::string& method, cons
 			}
 			if (method == Context::METHOD_OPERATOR_DOT)
 			{
-				return FindResult(SwitchContext(pParam, params));
+				LPRDOPATPattern pThis(const_cast<RDOPATPattern*>(this));
+				return FindResult(SwitchContext(pThis, params));
 			}
 		}
 	}
@@ -1159,7 +1160,7 @@ Context::FindResult RDORelevantResource::onFindContext(const std::string& method
 				resourceCalc,
 				srcInfo_
 			);
-			
+
 			Context::Params params_;
 			params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = getType()->getRTPParamNumber(params.identifier());
 			params_[RDORSSResource::GET_RESOURCE] = resourceExpression;

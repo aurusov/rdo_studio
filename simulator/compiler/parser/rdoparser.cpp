@@ -387,6 +387,46 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 		}
 	}
 
+	if (method == Context::METHOD_OPERATOR_DOT)
+	{
+		LPRDOParser pThis(const_cast<RDOParser*>(this));
+		if (identifier == "Time_now" || identifier == "time_now"
+			|| identifier == "Системное_время" || identifier == "системное_время"
+			|| identifier == "Seconds" || identifier == "seconds"
+			|| identifier == "Terminate_counter" || identifier == "terminate_counter")
+		{
+			return FindResult(SwitchContext(pThis, params));
+		}
+		//! Константы
+		LPRDOFUNConstant pConstant = findFUNConstant(identifier);
+		if (pConstant)
+		{
+			return FindResult(SwitchContext(pThis, params));
+		}
+		//! Последовательности
+		LPRDOFUNSequence pSequence = findFUNSequence(identifier);
+		if (pSequence)
+		{
+			return FindResult(SwitchContext(pThis, params));
+		}
+		//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
+		//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
+		{
+			ErrorBlockMonicker errorBlockMonicker;
+			for (const LPTypeInfo& type: m_preCastTypeList)
+			{
+				LPRDOEnumType enumType = type->itype().object_dynamic_cast<RDOEnumType>();
+				ASSERT(enumType);
+
+				std::size_t index = enumType->findEnum(identifier);
+				if (index != rdo::runtime::RDOEnumType::END)
+				{
+					return FindResult(SwitchContext(pThis, params));
+				}
+			}
+		}
+	}
+
 	return Context::FindResult();
 }
 
