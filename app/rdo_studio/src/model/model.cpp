@@ -1132,7 +1132,6 @@ void Model::updateActions()
 	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	if (!pMainWindow)
 		return;
-
 	pMainWindow->actFileNew->setEnabled(canNew());
 	pMainWindow->actFileOpen->setEnabled(canOpen());
 	pMainWindow->actFileSaveAll->setEnabled(canSave());
@@ -1216,6 +1215,7 @@ void Model::updateActions()
 		}
 	}
 	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SHOWRATE>(showRateStr);
+	emit actionUpdated();
 }
 
 void Model::update()

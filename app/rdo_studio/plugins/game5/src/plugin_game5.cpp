@@ -235,20 +235,20 @@ void PluginGame5::initToolBar(MainWindow* pParent) const
 	        m_generateSituationDlg    , &PluginGame5GenerateSituationDialog::onPluginAction);
 	connect(graphDlgAction, &QAction::triggered,
 	        this          , &PluginGame5::reemitGraphDlgAction);
-
 	connect(this      , &PluginGame5::onGraphDlgAction,
 	        m_graphDlg, &PluginGame5GraphDialog::onPluginAction);
 	connect(this          , &PluginGame5::setGraphDlgActionEnabled,
 	        graphDlgAction, &QAction::setEnabled);
+	connect(this, &PluginGame5::setGenerateSituationDlgActionEnabled,
+	        generateSituationDlgAction, &QAction::setEnabled);
+	connect(g_pModel, &rdo::gui::model::Model::actionUpdated,
+	        this    , &PluginGame5::enablePluginActions);
 }
 
 void PluginGame5::initDialogs(QWidget* pParent)
 {
 	m_generateSituationDlg = new PluginGame5GenerateSituationDialog(pParent);
 	m_graphDlg  = new PluginGame5GraphDialog(pParent);
-	
-	connect(m_generateSituationDlg, &QDialog::accepted,
-	        this                  , &PluginGame5::reemitGraphDlgActionEnabled);
 }
 
 void PluginGame5::reemitGraphDlgAction()
@@ -256,7 +256,8 @@ void PluginGame5::reemitGraphDlgAction()
 	emit onGraphDlgAction(m_generateSituationDlg->getBoardState());
 }
 
-void PluginGame5::reemitGraphDlgActionEnabled()
+void PluginGame5::enablePluginActions()
 {
-	emit setGraphDlgActionEnabled(true);
+	emit setGraphDlgActionEnabled(g_pModel->canRun());
+	emit setGenerateSituationDlgActionEnabled(g_pModel->canRun());
 }

@@ -48,11 +48,12 @@ private:
 private slots:
 	void pluginActivation();
 	void reemitGraphDlgAction();
-	void reemitGraphDlgActionEnabled();
+	void enablePluginActions();
 
 signals:
 	void onGraphDlgAction(const std::vector<unsigned int>& state);
 	void setGraphDlgActionEnabled(bool);
+	void setGenerateSituationDlgActionEnabled(bool);
 };
 
 #endif // _RDO_PLUGIN_PLUGIN_GAME5_H_

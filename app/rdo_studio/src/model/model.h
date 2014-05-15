@@ -79,6 +79,13 @@ public:
 	rdo::gui::frame::Manager& getFrameManager();
 	void onChangeFrame(std::size_t index);
 
+	bool  canNew    () const;
+	bool  canOpen   () const;
+	bool  canSave   () const;
+	bool  canClose  () const;
+	bool  canBuild  () const;
+	bool  canRun    () const;
+
 protected:
 	virtual void proc(RDOThread::RDOMessageInfo& msg);
 
@@ -100,13 +107,6 @@ private:
 	void setCanRun    (bool value);
 	void setIsRunning (bool value);
 	void updateActions();
-
-	bool  canNew    () const;
-	bool  canOpen   () const;
-	bool  canSave   () const;
-	bool  canClose  () const;
-	bool  canBuild  () const;
-	bool  canRun    () const;
 
 	boost::chrono::system_clock::time_point m_timeStart;
 	BuildState                              m_buildState;
@@ -187,6 +187,9 @@ private slots:
 	void onModelSpeedValueChanged(int value);
 
 	void onEditModifyChanged(bool value);
+
+signals:
+	void actionUpdated();
 };
 
 }}} // namespace rdo::gui::model
