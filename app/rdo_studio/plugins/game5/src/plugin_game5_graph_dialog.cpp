@@ -147,16 +147,19 @@ PluginGame5GraphDialog::GraphInfo PluginGame5GraphDialog::getGraphInfo() const
 	{
 		trcString = QString(trcFile.readAll());
 	}
+	trcFile.close();
 
 	const int begin = trcString.indexOf(QRegExp("SES|SEN"));
-	const QString trcStringShort = trcString.mid(begin);
+	if (begin >= 0)
+	{
+		const QString trcStringShort = trcString.mid(begin);
 
-	QString solutionCost       = trcStringShort.section(' ', DPS_CO_INDEX, DPS_CO_INDEX, QString::SectionSkipEmpty);
-	QString numberOfOpenNodes  = trcStringShort.section(' ', DPS_TO_INDEX, DPS_TO_INDEX, QString::SectionSkipEmpty);
-	QString totalNumberOfNodes = trcStringShort.section(' ', DPS_TT_INDEX, DPS_TT_INDEX, QString::SectionSkipEmpty);
-
-	trcFile.close();
-	return GraphInfo(solutionCost, numberOfOpenNodes, totalNumberOfNodes);
+		QString solutionCost       = trcStringShort.section(' ', DPS_CO_INDEX, DPS_CO_INDEX, QString::SectionSkipEmpty);
+		QString numberOfOpenNodes  = trcStringShort.section(' ', DPS_TO_INDEX, DPS_TO_INDEX, QString::SectionSkipEmpty);
+		QString totalNumberOfNodes = trcStringShort.section(' ', DPS_TT_INDEX, DPS_TT_INDEX, QString::SectionSkipEmpty);
+		return GraphInfo(solutionCost, numberOfOpenNodes, totalNumberOfNodes);
+	}
+	return GraphInfo();
 }
 
 void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startBoardState)

@@ -48,7 +48,7 @@ private:
 
 	struct GraphInfo
 	{
-		GraphInfo(QString solutionCost, QString numberOfOpenNodes, QString totalNumberOfNodes);
+		GraphInfo(QString solutionCost = "", QString numberOfOpenNodes = "", QString totalNumberOfNodes = "");
 		const QString solutionCost;
 		const QString numberOfOpenNodes;
 		const QString totalNumberOfNodes;
