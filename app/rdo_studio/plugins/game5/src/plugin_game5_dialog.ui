@@ -448,5 +448,38 @@
   <tabstop>checkBoxCopareTop</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>radioButtonCustom</sender>
+   <signal>clicked()</signal>
+   <receiver>lineEditCustom</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>387</x>
+     <y>140</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>427</x>
+     <y>141</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEditCustom</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>radioButtonCustom</receiver>
+   <slot>toggle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>451</x>
+     <y>141</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>389</x>
+     <y>141</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
