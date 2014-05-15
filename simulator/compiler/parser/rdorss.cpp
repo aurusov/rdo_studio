@@ -96,20 +96,6 @@ Context::FindResult RDORSSResource::onFindContext(const std::string& method, con
 			LPRDORSSResource pThis(const_cast<RDORSSResource*>(this));
 			return FindResult(CreateExpression(boost::bind(&contextGetResource, pThis, srcInfo)));
 		}
-
-		const std::size_t parNumb = getType()->getRTPParamNumber(paramName);
-		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
-		{
-			RDOParser::s_parser()->error().error(srcInfo, rdo::format("Неизвестный параметр ресурса: %s", paramName.c_str()));
-		}
-
-		Context::Params params_;
-		params_[RDORSSResource::GET_RESOURCE] = createGetResourceExpression(srcInfo);
-		params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = parNumb;
-
-		LPContext pParam = getType()->findRTPParam(paramName);
-		ASSERT(pParam);
-		return pParam->find(Context::METHOD_GET, params_, srcInfo);
 	}
 
 	if (method == "trace()")
