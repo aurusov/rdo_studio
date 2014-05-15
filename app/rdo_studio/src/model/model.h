@@ -190,6 +190,7 @@ private slots:
 
 signals:
 	void actionUpdated();
+	void stopped();
 };
 
 }}} // namespace rdo::gui::model

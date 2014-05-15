@@ -233,6 +233,8 @@ void PluginGame5::initToolBar(MainWindow* pParent) const
 
 	connect(generateSituationDlgAction, &QAction::triggered,
 	        m_generateSituationDlg    , &PluginGame5GenerateSituationDialog::onPluginAction);
+	connect(g_pModel, &rdo::gui::model::Model::stopped,
+	        this    , &PluginGame5::reemitGraphDlgAction);
 	connect(graphDlgAction, &QAction::triggered,
 	        this          , &PluginGame5::reemitGraphDlgAction);
 	connect(this      , &PluginGame5::onGraphDlgAction,

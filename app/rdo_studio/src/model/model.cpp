@@ -331,6 +331,7 @@ void Model::proc(RDOThread::RDOMessageInfo& msg)
 			));
 			setCanRun   (true );
 			setIsRunning(false);
+			emit stopped();
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_MODEL_STOP_OK:
