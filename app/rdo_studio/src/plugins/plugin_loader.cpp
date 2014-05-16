@@ -191,7 +191,7 @@ PluginInfo Loader::generatePluginInfo(PluginInterface* pluginInterface, QPluginL
 void Loader::stopPlugin(const LPPluginInfo& pluginInfo)
 {
 	PluginInterface* pluginInterface = loadPlugin(pluginInfo->getLoader());
-	if (pluginInterface)
+	if (pluginInterface && pluginInfo->isActive())
 	{
 		pluginInterface->pluginStopAction(m_pPluginsParent);
 		pluginInfo->setActive(false);
@@ -201,7 +201,7 @@ void Loader::stopPlugin(const LPPluginInfo& pluginInfo)
 void Loader::startPlugin(const LPPluginInfo& pluginInfo)
 {
 	PluginInterface* pluginInterface = loadPlugin(pluginInfo->getLoader());
-	if (pluginInterface)
+	if (pluginInterface && !pluginInfo->isActive())
 	{
 		pluginInterface->pluginStartAction(m_pPluginsParent);
 		pluginInfo->setActive(true);
