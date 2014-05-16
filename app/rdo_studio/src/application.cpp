@@ -286,7 +286,6 @@ void Application::onInit(int argc, char** argv)
 	if (!autoModel)
 	{
 		autoRun            = false;
-		m_autoExitByModel  = false;
 		m_dontCloseIfError = false;
 	}
 
