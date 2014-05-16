@@ -725,25 +725,59 @@ void RDOPatternEvent::addRelResUsage(const LPRDOPATChoiceFrom& pChoiceFrom, cons
 	m_pCurrRelRes->m_pChoiceOrder = pChoiceOrder;
 }
 
-rdo::runtime::LPRDOCalc RDOPATPattern::createRelRes(bool trace) const
+namespace
+{
+
+std::vector<rdo::runtime::LPRDOCalc> fillDefaultParams(LPRDORTPResType pType, RDOParserSrcInfo srcInfo)
 {
 	std::vector<rdo::runtime::LPRDOCalc> params_default;
-	for (const auto& param: m_pCurrRelRes->getType()->getParams())
+	for (const auto& param: pType->getParams())
 	{
-		if (!param->getDefault()->defined())
+		LPRDORTPResType pResType = param->getTypeInfo()->itype().object_dynamic_cast<RDORTPResType>();
+		if (pResType)
 		{
-			params_default.push_back(rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(0)));
-			if (!param->getDefined())
-			{
-				parser::g_error().error(m_pCurrRelRes->src_info(), rdo::format("При создании ресурса необходимо определить все его параметры. Не найдено определение параметра: %s", param->name().c_str()));
-			}
+			std::vector<rdo::runtime::LPRDOCalc> nested_default_params = fillDefaultParams(pResType, srcInfo);
+			rdo::runtime::LPRDOCalc pResCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
+				pResType->getNumber(),
+				nested_default_params,
+				false/** @todo задавать такую же трассировку, как у родительского ресурса */,
+				false/** @todo проверить, что ресурс временный */
+			);
+			ASSERT(pResCalc);
+			params_default.push_back(pResCalc);
 		}
 		else
 		{
-			params_default.push_back(rdo::Factory<rdo::runtime::RDOCalcConst>::create((param->getDefault()->value())));
+			if (!param->getDefault()->defined())
+			{
+				params_default.push_back(rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(0)));
+				if (!param->getDefined())
+				{
+					parser::g_error().error(srcInfo, rdo::format("При создании ресурса необходимо определить все его параметры. Не найдено определение параметра: %s", param->name().c_str()));
+				}
+			}
+			else
+			{
+				params_default.push_back(rdo::Factory<rdo::runtime::RDOCalcConst>::create((param->getDefault()->value())));
+			}
 		}
 	}
-	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(m_pCurrRelRes->getType()->getNumber(), params_default, trace, false/** @todo проверить, что ресурс временный */, m_pCurrRelRes->m_relResID);
+	return params_default;
+}
+
+}
+
+rdo::runtime::LPRDOCalc RDOPATPattern::createRelRes(bool trace) const
+{
+	std::vector<rdo::runtime::LPRDOCalc> params_default = fillDefaultParams(m_pCurrRelRes->getType(), m_pCurrRelRes->src_info());
+
+	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
+		m_pCurrRelRes->getType()->getNumber(),
+		params_default,
+		trace,
+		false/** @todo проверить, что ресурс временный */,
+		m_pCurrRelRes->m_relResID
+	);
 	ASSERT(pCalc);
 	rdo::runtime::RDOSrcInfo srcInfo(m_pCurrRelRes->src_info());
 	srcInfo.setSrcText(rdo::format("Создание временного ресурса %s", m_pCurrRelRes->name().c_str()));
