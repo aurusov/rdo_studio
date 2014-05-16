@@ -88,6 +88,8 @@ private:
 	QString     getTraceTimeStamp() const;
 	QString     getTraceFile() const;
 	std::vector<PluginGame5GraphDialog::GraphNodeInfo> parseTrace(const std::vector<unsigned int>& startBoardState);
+	std::vector<std::vector<GraphNode*>> generateGraphNodes(std::vector<GraphNodeInfo>& parsingResult) const;
+	void drawGraph(const std::vector<std::vector<GraphNode*>>& graph) const;
 
 	PluginGame5GraphDialog::GraphInfo getGraphInfo() const;
 };
