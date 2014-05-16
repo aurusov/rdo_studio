@@ -47,7 +47,7 @@ namespace
 
 GraphNode::GraphNode(int nodeID, GraphNode* parentGraphNode, int pathCost, int restPathCost,
                      const QString& moveDirection, int moveCost, int relevantTile, int graphLevel, int tileMoveFrom,
-                     int tileMoveTo, const std::vector<unsigned int>& boardState, int width, int height)
+                     int tileMoveTo, const std::vector<unsigned int>& boardState, bool relatedToSolutionState, int width, int height)
 	: m_pParentGraphNode      (parentGraphNode)
 	, m_boardState            (boardState     )
 	, m_nodeID                (nodeID         )
@@ -60,7 +60,7 @@ GraphNode::GraphNode(int nodeID, GraphNode* parentGraphNode, int pathCost, int r
 	, m_tileMoveFrom          (tileMoveFrom   )
 	, m_tileMoveTo            (tileMoveTo     )
 	, m_graphOnLevelOrder     (0              )
-	, m_relatedToSolutionState(false          )
+	, m_relatedToSolutionState(relatedToSolutionState)
 	, m_isChecked             (false          )
 	, m_width                 (width          )
 	, m_height                (height         )

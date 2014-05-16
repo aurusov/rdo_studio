@@ -54,33 +54,40 @@ private:
 		const QString totalNumberOfNodes;
 	};
 
-	struct SortStruct
+	struct GraphNodeInfo
 	{
-		SortStruct(PluginGame5GraphDialog* pDlg) : m_pDlg(pDlg) {};
-		PluginGame5GraphDialog* m_pDlg;
+		GraphNodeInfo(int nodeID, int parentNodeId, int pathCost, int restPathCost,
+		              const QString& moveDirection, int moveCost, int relevantTile,
+		              int graphLevel, int tileMoveFrom, int tileMoveTo,
+		              const std::vector<unsigned int>& boardState);
+		GraphNodeInfo() {};
 
-		bool operator() (int i, int j) const
-		{
-			const int iParentOLO = m_pDlg->m_graphNodeList[i]->getParentGraphNode()->getGraphOnLevelOrder();
-			const int jParentOLO = m_pDlg->m_graphNodeList[j]->getParentGraphNode()->getGraphOnLevelOrder();
-
-			return iParentOLO < jParentOLO;
-		}
+		int     m_nodeID;
+		int     m_parentNodeId;
+		int     m_pathCost;
+		int     m_restPathCost;
+		QString m_moveDirection;
+		int     m_moveCost;
+		int     m_relevantTile;
+		int     m_graphLevel;
+		int     m_tileMoveFrom;
+		int     m_tileMoveTo;
+		int     m_graphOnLevelOrder;
+		bool    m_relatedToSolutionState;
+		std::vector<unsigned int> m_boardState;
+		GraphNode* m_pNode;
 	};
 
 	QString m_traceTimeStamp;
 	GraphNode* m_clickedNode;
-	std::vector<GraphNode*> m_graphNodeList;
 	int m_nodeWidth;
 	int m_nodeHeight;
 
-	void quickSort(std::vector<int>& vector);
-
-	std::vector<int> getSolutionNodes() const;
+	std::list<int> getSolutionNodes() const;
 	void updateCheckedNode(GraphNode* node);
 	QString     getTraceTimeStamp() const;
 	QString     getTraceFile() const;
-	QStringList parseTrace() const;
+	std::vector<PluginGame5GraphDialog::GraphNodeInfo> parseTrace(const std::vector<unsigned int>& startBoardState);
 
 	PluginGame5GraphDialog::GraphInfo getGraphInfo() const;
 };

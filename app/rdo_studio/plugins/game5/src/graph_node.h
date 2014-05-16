@@ -22,9 +22,9 @@ class GraphNode: public QGraphicsObject
 {Q_OBJECT
 
 public:
-	GraphNode(int graphNode, GraphNode* parentGraphNode, int pathCost, int restPathCost,
+	GraphNode(int nodeID, GraphNode* parentGraphNode, int pathCost, int restPathCost,
 	          const QString& moveDirection, int moveCost, int relevantTile, int graphLevel, int tileMoveFrom,
-	          int tileMoveTo, const std::vector<unsigned int>& boardState, int width, int height
+	          int tileMoveTo, const std::vector<unsigned int>& boardState, bool relatedToSolutionState, int width, int height
 	);
 	~GraphNode();
 

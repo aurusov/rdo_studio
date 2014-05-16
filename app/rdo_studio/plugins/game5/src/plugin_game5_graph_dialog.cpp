@@ -31,12 +31,22 @@ namespace
 	const int DPS_CO_INDEX = 4;
 	const int DPS_TO_INDEX = 5;
 	const int DPS_TT_INDEX = 6;
+
+	bool sortingFunction(GraphNode* first, GraphNode* second)
+	{
+		const int firstParentOLO  = first ->getParentGraphNode()->getGraphOnLevelOrder();
+		const int secondParentOLO = second->getParentGraphNode()->getGraphOnLevelOrder();
+
+		return firstParentOLO < secondParentOLO;
+	}
 } // end anonymous namespace
 
 PluginGame5GraphDialog::PluginGame5GraphDialog(QWidget * pParent)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 	, m_traceTimeStamp(getTraceTimeStamp())
 	, m_clickedNode(NULL)
+	, m_nodeWidth(0)
+	, m_nodeHeight(0)
 {
 	setupUi(this);
 
@@ -81,7 +91,7 @@ QString PluginGame5GraphDialog::getTraceTimeStamp() const
 	return timeStamp;
 }
 
-std::vector<int> PluginGame5GraphDialog::getSolutionNodes() const
+std::list<int> PluginGame5GraphDialog::getSolutionNodes() const
 {
 	QFile trcFile(getTraceFile());
 	QString trcString;
@@ -100,8 +110,7 @@ std::vector<int> PluginGame5GraphDialog::getSolutionNodes() const
 	}
 
 	const QRegExp regExp("(\\d{1,5})((\\s\\d){3}\\s\\s\\d{1,2}\\s\\d{1,2})");
-	std::vector<int> list;
-	list.push_back(1);
+	std::list<int> list;
 
 	int pos = 0;
 	while ((pos = regExp.indexIn(solutionStr, pos))!= -1)
@@ -110,11 +119,16 @@ std::vector<int> PluginGame5GraphDialog::getSolutionNodes() const
 		pos += regExp.matchedLength();
 	}
 
+	if (list.size() > 0)
+	{
+		list.push_front(1);
+	}
+
 	trcFile.close();
 	return list;
 }
 
-QStringList PluginGame5GraphDialog::parseTrace() const
+std::vector<PluginGame5GraphDialog::GraphNodeInfo> PluginGame5GraphDialog::parseTrace(const std::vector<unsigned int>& startBoardState)
 {
 	QFile trcFile(getTraceFile());
 	QString trcString;
@@ -122,6 +136,7 @@ QStringList PluginGame5GraphDialog::parseTrace() const
 	{
 		trcString = QString(trcFile.readAll());
 	}
+	trcFile.close();
 
 	const int begin = trcString.indexOf("SB");
 	const int end   = trcString.indexOf(QRegExp("SEN|SES"), begin);
@@ -135,8 +150,66 @@ QStringList PluginGame5GraphDialog::parseTrace() const
 		list << regExp.cap(2) + regExp.cap(16) + regExp.cap(21);
 		pos += regExp.matchedLength();
 	}
-	trcFile.close();
-	return list;
+
+	std::vector<PluginGame5GraphDialog::GraphNodeInfo> parsingResult;
+	if (list.size() > 0)
+	{
+		parsingResult.resize(list.size() + 1);
+		parsingResult[0] = GraphNodeInfo(1, 0, 0, 0, "Начало поиска", 0, 0, 0, 0, 0, startBoardState);
+	}
+	for (const QString& string: list)
+	{
+		const int graphNodeId       = string.section(" ",  1,  1).toInt();
+		const int parentGraphNodeId = string.section(" ",  2,  2).toInt();
+		const int pathCost          = string.section(" ",  3,  3).toInt();
+		const int restPathCost      = string.section(" ",  4,  4).toInt() - pathCost;
+		const int moveDirection     = string.section(" ",  5,  5).toInt();
+		const int moveCost          = string.section(" ",  7,  7).toInt();
+
+		const int tileMoveFrom      = string.section(" ", -1, -1).toInt();
+		const int tileMoveTo        = string.section(" ", -2, -2).toInt();
+		const int relevantTile      = string.section(" ", -4, -4).toInt();
+
+		QString moveDirectionText;
+		switch (moveDirection)
+		{
+			case 1: moveDirectionText = "Вправо"; break;
+			case 2: moveDirectionText = "Влево" ; break;
+			case 3: moveDirectionText = "Вверх" ; break;
+			case 4: moveDirectionText = "Вниз"  ; break;
+		}
+
+		const int graphNodeIndex = graphNodeId - 1;
+		const int parentGraphNodeIndex = parentGraphNodeId - 1;
+
+		const int graphLevel = parsingResult[parentGraphNodeIndex].m_graphLevel + 1;
+		std::vector<unsigned int> boardState = parsingResult[parentGraphNodeIndex].m_boardState;
+		std::swap(boardState[tileMoveFrom - 1], boardState[tileMoveTo - 1]);
+
+		parsingResult[graphNodeIndex] = GraphNodeInfo(graphNodeId, parentGraphNodeId, pathCost, restPathCost,
+		                                              moveDirectionText, moveCost, relevantTile, graphLevel,
+		                                              tileMoveFrom, tileMoveTo, boardState);
+
+		const QString nodeTextLV = GraphNode::generateNodeTextLargeView(
+				graphNodeId, pathCost, restPathCost, moveCost, relevantTile, tileMoveTo, moveDirectionText);
+		const QString nodeTextMV = GraphNode::generateNodeTextMediumView(
+				graphNodeId, pathCost, restPathCost, moveCost);
+		const QString nodeTextSV = GraphNode::generateNodeTextSmallView(graphNodeId);
+
+		const QFontMetrics fontMetrics = QFontMetrics(graphWidget->scene()->font());
+		const QRect nodeRectLV = fontMetrics.boundingRect(QRect(), Qt::AlignCenter, nodeTextLV);
+		const QRect nodeRectMV = fontMetrics.boundingRect(QRect(), Qt::AlignCenter, nodeTextMV);
+		const QRect nodeRectSV = fontMetrics.boundingRect(QRect(), Qt::AlignCenter, nodeTextSV);
+		m_nodeWidth  = std::max(nodeRectLV.width() , std::max(nodeRectMV.width() , std::max(nodeRectSV.width() , m_nodeWidth )));
+		m_nodeHeight = std::max(nodeRectLV.height(), std::max(nodeRectMV.height(), std::max(nodeRectSV.height(), m_nodeHeight)));
+	}
+
+	for (int nodeId: getSolutionNodes())
+	{
+		parsingResult[nodeId - 1].m_relatedToSolutionState = true;
+	}
+
+	return parsingResult;
 }
 
 PluginGame5GraphDialog::GraphInfo PluginGame5GraphDialog::getGraphInfo() const
@@ -164,93 +237,47 @@ PluginGame5GraphDialog::GraphInfo PluginGame5GraphDialog::getGraphInfo() const
 
 void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startBoardState)
 {
-	graphWidget->scene()->clear();//@todo (*)Хранить и рисовать 2 разных объекта
-	m_graphNodeList.clear();      //Очистка вектора, объекты удалены при очистке сцены
+	graphWidget->scene()->clear();
 	m_clickedNode = NULL;
 
-	std::vector<std::vector<int>> paintLevel;
-	QStringList parsingResult = parseTrace();
-	//@todo Во время парсинга разделять строку на атрибуты GraphNode и запоминать самые широкие
-	//заодно сделать (*)
-	const QString nodeText = GraphNode::generateNodeTextLargeView(999, 999, 999, 999, 999, 999, "Начало поиска");
-	const QFontMetrics fontMetrics = QFontMetrics(graphWidget->scene()->font());
-	const QRect nodeRect = fontMetrics.boundingRect(QRect(), Qt::AlignCenter, nodeText);
-	m_nodeWidth  = nodeRect.width();
-	m_nodeHeight = nodeRect.height();
+	std::vector<std::vector<GraphNode*>> paintLevel;
+	std::vector<PluginGame5GraphDialog::GraphNodeInfo> parsingResult = parseTrace(startBoardState);
 
-	m_graphNodeList.resize(parsingResult.size() + 1);
-	m_graphNodeList[0] = new GraphNode(1, NULL, 0, 0, "Начало поиска", 0, 0, 0, 0, 0, startBoardState, m_nodeWidth, m_nodeHeight);
-	for (const auto& string: parsingResult)
+	for (PluginGame5GraphDialog::GraphNodeInfo& i: parsingResult)
 	{
-		const int graphNodeId       = string.section(" ",  1,  1).toInt();
-		const int parentGraphNodeId = string.section(" ",  2,  2).toInt();
-		const int pathCost          = string.section(" ",  3,  3).toInt();
-		const int restPathCost      = string.section(" ",  4,  4).toInt() - pathCost;
-		const int moveDirection     = string.section(" ",  5,  5).toInt();
-		const int moveCost          = string.section(" ",  7,  7).toInt();
-
-		const int tileMoveFrom      = string.section(" ", -1, -1).toInt();
-		const int tileMoveTo        = string.section(" ", -2, -2).toInt();
-		const int relevantTile      = string.section(" ", -4, -4).toInt();
-
-		QString moveDirectionText;
-		switch (moveDirection)
-		{
-			case 1: moveDirectionText = "Вправо"; break;
-			case 2: moveDirectionText = "Влево" ; break;
-			case 3: moveDirectionText = "Вверх" ; break;
-			case 4: moveDirectionText = "Вниз"  ; break;
-		}
-
-		const int graphNodeIndex = graphNodeId - 1;
-		const int parentGraphNodeIndex = parentGraphNodeId - 1;
-
-		const int graphLevel = m_graphNodeList[parentGraphNodeIndex]->getGraphLevel() + 1;
-		std::vector<unsigned int> boardState = m_graphNodeList[parentGraphNodeIndex]->getBoardState();
-		std::swap(boardState[tileMoveFrom - 1], boardState[tileMoveTo - 1]);
-
-		m_graphNodeList[graphNodeIndex] = new GraphNode(graphNodeId, m_graphNodeList[parentGraphNodeIndex],
-		                                                pathCost, restPathCost, moveDirectionText, moveCost,
-		                                                relevantTile, graphLevel, tileMoveFrom, tileMoveTo,
-		                                                boardState, m_nodeWidth, m_nodeHeight);
-	}
-
-	for (unsigned int i = 0; i < m_graphNodeList.size(); i++)
-	{
-		connect(m_graphNodeList[i], &GraphNode::clickedNode  , this, &PluginGame5GraphDialog::updateCheckedNode);
-		connect(m_graphNodeList[i], &GraphNode::doubleClicked, this, &PluginGame5GraphDialog::emitShowNodeInfoDlg);
-
-		const int nodeGraphLevel = m_graphNodeList[i]->getGraphLevel();
+		const int nodeGraphLevel = i.m_graphLevel;
 		const int currentLevel = paintLevel.size() - 1;
 		if (currentLevel < nodeGraphLevel)
 		{
-			paintLevel.push_back(std::vector<int>());
+			paintLevel.push_back(std::vector<GraphNode*>());
 		}
-		paintLevel[nodeGraphLevel].push_back(i);
+
+		GraphNode* parentNode = i.m_parentNodeId > 0 ? parsingResult[i.m_parentNodeId - 1].m_pNode : NULL;
+		GraphNode* node = new GraphNode(i.m_nodeID, parentNode, i.m_pathCost, i.m_restPathCost, i.m_moveDirection, i.m_moveCost,
+		                                i.m_relevantTile, i.m_graphLevel, i.m_tileMoveFrom, i.m_tileMoveTo, i.m_boardState,
+		                                i.m_relatedToSolutionState, m_nodeWidth, m_nodeHeight);
+		connect(node, &GraphNode::clickedNode  , this, &PluginGame5GraphDialog::updateCheckedNode);
+		connect(node, &GraphNode::doubleClicked, this, &PluginGame5GraphDialog::emitShowNodeInfoDlg);
+		paintLevel[nodeGraphLevel].push_back(node);
+		i.m_pNode = node;
 	}
 
 	for (unsigned int i = 1; i < paintLevel.size(); i++)
 	{
-		quickSort(paintLevel[i]);
+		std::sort(paintLevel[i].begin(), paintLevel[i].end(), sortingFunction);
 		for (unsigned int j = 0; j < paintLevel[i].size(); j++)
 		{
-			m_graphNodeList[paintLevel[i][j]]->setGraphOnLevelOrder(j);
+			paintLevel[i][j]->setGraphOnLevelOrder(j);
 		}
 	}
 
-	for (int nodeId: getSolutionNodes())
-	{
-		m_graphNodeList[nodeId - 1]->setRelatedToSolution(true);
-	}
-	
 	for (unsigned int j = 0; j < paintLevel.back().size(); j++)
 	{
-		const int node = paintLevel.back()[j];
-
-		graphWidget->scene()->addItem(m_graphNodeList[node]);
-		m_graphNodeList[node]->setPos((SPACER_X + m_nodeWidth) * (j + 1), (paintLevel.size() - 1) * (SPACER_Y + m_nodeHeight));
+		GraphNode* node = paintLevel.back()[j];
+		graphWidget->scene()->addItem(node);
+		node->setPos((SPACER_X + m_nodeWidth) * (j + 1), (paintLevel.size() - 1) * (SPACER_Y + m_nodeHeight));
 	}
-	
+
 	for (int i = (int)paintLevel.size() - 2; i >= 0; i--)
 	{
 		bool buildFlag   = true;
@@ -259,14 +286,14 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 		std::vector<UnbuiltRange> unbuiltRangeVector;
 		for (unsigned int j = 0; j < paintLevel[i].size(); j++)
 		{
-			const int node = paintLevel[i][j];
-			if (m_graphNodeList[node]->haveChild())
+			GraphNode* node = paintLevel[i][j];
+			if (node->haveChild())
 			{
-				graphWidget->scene()->addItem(m_graphNodeList[node]);
-				m_graphNodeList[node]->setPos(m_graphNodeList[node]->childrenMeanX(), m_graphNodeList[node]->childrenMeanY() - (SPACER_Y + m_nodeHeight));
-				for (auto childNode: m_graphNodeList[node]->getChildrenList())
+				graphWidget->scene()->addItem(node);
+				node->setPos(node->childrenMeanX(), node->childrenMeanY() - (SPACER_Y + m_nodeHeight));
+				for (GraphNode* childNode: node->getChildrenList())
 				{
-					graphWidget->scene()->addItem(new GraphEdge(*m_graphNodeList[node], *childNode));
+					graphWidget->scene()->addItem(new GraphEdge(*node, *childNode));
 				}
 
 				if (!buildFlag)
@@ -299,51 +326,51 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 			const unsigned int endUnbuiltRange = unbuiltRange.firstNode + unbuiltRange.range;
 			if (unbuiltRange.firstNode == 0)
 			{
-				const int temp = paintLevel[i][endUnbuiltRange];
+				GraphNode* leftNode = paintLevel[i][endUnbuiltRange];
 				for (unsigned int k = unbuiltRange.firstNode; k < endUnbuiltRange; k++)
 				{
-					const int node = paintLevel[i][k];
+					GraphNode* node = paintLevel[i][k];
 					const int segment = unbuiltRange.range - k + unbuiltRange.firstNode;
 
-					graphWidget->scene()->addItem(m_graphNodeList[node]);
-					m_graphNodeList[node]->setPos(m_graphNodeList[temp]->pos().x() - (SPACER_X + m_nodeWidth) * segment, m_graphNodeList[temp]->pos().y());
+					graphWidget->scene()->addItem(node);
+					node->setPos(leftNode->pos().x() - (SPACER_X + m_nodeWidth) * segment, leftNode->pos().y());
 				}
 			}
 			else if (endUnbuiltRange == paintLevel[i].size())
 			{
-				const int temp = paintLevel[i][unbuiltRange.firstNode - 1];
+				GraphNode* rightNode = paintLevel[i][unbuiltRange.firstNode - 1];
 				for (unsigned int k = unbuiltRange.firstNode; k < endUnbuiltRange; k++)
 				{
-					const int node = paintLevel[i][k];
+					GraphNode* node = paintLevel[i][k];
 					const int segment = k - unbuiltRange.firstNode + 1;
 
-					graphWidget->scene()->addItem(m_graphNodeList[node]);
-					m_graphNodeList[node]->setPos(m_graphNodeList[temp]->pos().x() + (SPACER_X + m_nodeWidth) * segment, m_graphNodeList[temp]->pos().y());
+					graphWidget->scene()->addItem(node);
+					node->setPos(rightNode->pos().x() + (SPACER_X + m_nodeWidth) * segment, rightNode->pos().y());
 				}
 			}
 			else
 			{
-				const int temp1 = paintLevel[i][unbuiltRange.firstNode - 1];
-				const int temp2 = paintLevel[i][endUnbuiltRange];
-				double deltaX =  m_graphNodeList[temp2]->pos().x() - m_graphNodeList[temp1]->pos().x();
+				GraphNode* leftNode  = paintLevel[i][unbuiltRange.firstNode - 1];
+				GraphNode* rightNode = paintLevel[i][endUnbuiltRange];
+				double deltaX =  rightNode->pos().x() - leftNode->pos().x();
 
 				if (deltaX < (unbuiltRange.range + 1) * (SPACER_X + m_nodeWidth))
 				{
 					for (unsigned int l = endUnbuiltRange; l < paintLevel[i].size(); l++)
 					{
-						const int node = paintLevel[i][l];
-						m_graphNodeList[node]->forceShift((unbuiltRange.range + 1) * (SPACER_X + m_nodeWidth) - deltaX);
+						GraphNode* node = paintLevel[i][l];
+						node->forceShift((unbuiltRange.range + 1) * (SPACER_X + m_nodeWidth) - deltaX);
 					}
-					deltaX = m_graphNodeList[temp2]->pos().x() - m_graphNodeList[temp1]->pos().x();
+					deltaX = rightNode->pos().x() - leftNode->pos().x();
 				}
 
 				for (unsigned int k = unbuiltRange.firstNode; k < endUnbuiltRange; k++)
 				{
-					const int node    = paintLevel[i][k];
+					GraphNode* node    = paintLevel[i][k];
 					const int segment = k - unbuiltRange.firstNode + 1;
 
-					graphWidget->scene()->addItem(m_graphNodeList[node]);
-					m_graphNodeList[node]->setPos(m_graphNodeList[temp1]->pos().x() + segment * deltaX/(unbuiltRange.range + 1), m_graphNodeList[temp1]->pos().y());
+					graphWidget->scene()->addItem(node);
+					node->setPos(leftNode->pos().x() + segment * deltaX/(unbuiltRange.range + 1), leftNode->pos().y());
 				}
 			}
 		}
@@ -383,14 +410,28 @@ void PluginGame5GraphDialog::emitShowNodeInfoDlg()
 	emit showNodeInfoDlg();
 }
 
-void PluginGame5GraphDialog::quickSort(std::vector<int>& vector)
-{
-	SortStruct sortStruct(this);
-	std::sort(vector.begin(), vector.end(), sortStruct);
-}
-
 PluginGame5GraphDialog::GraphInfo::GraphInfo(QString solutionCost, QString numberOfOpenNodes, QString totalNumberOfNodes)
 	: solutionCost(solutionCost)
 	, numberOfOpenNodes(numberOfOpenNodes)
 	, totalNumberOfNodes(totalNumberOfNodes)
+{}
+
+PluginGame5GraphDialog::GraphNodeInfo::GraphNodeInfo(int nodeID, int parentNodeId, int pathCost, int restPathCost,
+                                                     const QString& moveDirection, int moveCost, int relevantTile,
+                                                     int graphLevel, int tileMoveFrom, int tileMoveTo,
+                                                     const std::vector<unsigned int>& boardState)
+	: m_nodeID(nodeID)
+	, m_parentNodeId(parentNodeId)
+	, m_pathCost(pathCost)
+	, m_restPathCost(restPathCost)
+	, m_moveDirection(moveDirection)
+	, m_moveCost(moveCost)
+	, m_relevantTile(relevantTile)
+	, m_graphLevel(graphLevel)
+	, m_tileMoveFrom(tileMoveFrom)
+	, m_tileMoveTo(tileMoveTo)
+	, m_graphOnLevelOrder(0)
+	, m_relatedToSolutionState(false)
+	, m_boardState(boardState)
+	, m_pNode(NULL)
 {}
