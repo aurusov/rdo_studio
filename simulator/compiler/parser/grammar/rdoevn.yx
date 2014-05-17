@@ -9931,18 +9931,11 @@ set_statement
 			Context::Params params = pParamResult->getSwitchContext().params;
 
 			std::string name;
+			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(@1);
 			if (params.exists(Context::Params::IDENTIFIER))
+			{
 				name = params.identifier();
-			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(name);
-			LPRDOParam pParam = pParamContext.object_dynamic_cast<RDOParam>();
-			if (pParam)
-			{
-				srcInfo = pParam->src_info();
-			}
-			LPLocalVariable pLocVar = pParamContext.object_dynamic_cast<LocalVariable>();
-			if (pLocVar)
-			{
-				srcInfo = pLocVar->getSrcInfo();
+				srcInfo.setSrcText(name);
 			}
 
 			rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
@@ -9972,18 +9965,11 @@ set_statement
 			Context::Params params = pParamResult->getSwitchContext().params;
 
 			std::string name;
+			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(@1);
 			if (params.exists(Context::Params::IDENTIFIER))
+			{
 				name = params.identifier();
-			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(name);
-			LPRDOParam pParam = pParamContext.object_dynamic_cast<RDOParam>();
-			if (pParam)
-			{
-				srcInfo = pParam->src_info();
-			}
-			LPLocalVariable pLocVar = pParamContext.object_dynamic_cast<LocalVariable>();
-			if (pLocVar)
-			{
-				srcInfo = pLocVar->getSrcInfo();
+				srcInfo.setSrcText(name);
 			}
 
 			rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
@@ -10784,18 +10770,11 @@ fun_arithm
 			Context::Params params = pParamResult->getSwitchContext().params;
 
 			std::string name;
+			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(@1);
 			if (params.exists(Context::Params::IDENTIFIER))
+			{
 				name = params.identifier();
-			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(name);
-			LPRDOParam pParam = pParamContext.object_dynamic_cast<RDOParam>();
-			if (pParam)
-			{
-				srcInfo = pParam->src_info();
-			}
-			LPLocalVariable pLocVar = pParamContext.object_dynamic_cast<LocalVariable>();
-			if (pLocVar)
-			{
-				srcInfo = pLocVar->getSrcInfo();
+				srcInfo.setSrcText(name);
 			}
 
 			Context::FindResult result = pParamContext->find(Context::METHOD_GET, params, srcInfo);
@@ -10914,18 +10893,11 @@ fun_arithm
 			Context::Params params = pParamResult->getSwitchContext().params;
 
 			std::string name;
+			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(@1);
 			if (params.exists(Context::Params::IDENTIFIER))
+			{
 				name = params.identifier();
-			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(name);
-			LPRDOParam pParam = pParamContext.object_dynamic_cast<RDOParam>();
-			if (pParam)
-			{
-				srcInfo = pParam->src_info();
-			}
-			LPLocalVariable pLocVar = pParamContext.object_dynamic_cast<LocalVariable>();
-			if (pLocVar)
-			{
-				srcInfo = pLocVar->getSrcInfo();
+				srcInfo.setSrcText(name);
 			}
 
 			Context::FindResult result = pParamContext->find(Context::METHOD_GET, params, srcInfo);
