@@ -390,7 +390,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 	PluginGame5GraphDialog::GraphInfo graphInfo = getGraphInfo();
 	graphWidget->updateGraphInfo(graphInfo.solutionCost, graphInfo.numberOfOpenNodes, graphInfo.totalNumberOfNodes);
 	graphWidget->scene()->setSceneRect(graphWidget->scene()->itemsBoundingRect());
-	graphWidget->fitScene();
+	graphWidget->zoomFit();
 }
 
 void PluginGame5GraphDialog::onPluginAction(const std::vector<unsigned int>& boardState)

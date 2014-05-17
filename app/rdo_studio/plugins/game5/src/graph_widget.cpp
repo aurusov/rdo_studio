@@ -12,6 +12,8 @@
 #include "utils/src/common/warning_disable.h"
 #include <math.h>
 #include <QGridLayout>
+#include <QAction>
+#include <QMenu>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/graph_widget.h"
@@ -22,7 +24,7 @@ namespace
 	const double MAX_FACTOR          = 10;
 	const double MIN_FACTOR          = 0.1;
 	const double SCALE_SPEED         = 1/2400.;
-	const double MANUAL_SCALE_FACTOR = 20 * SCALE_SPEED;
+	const double MANUAL_SCALE_FACTOR = 40 * SCALE_SPEED;
 } // end anonymous namespace
 
 GraphWidget::GraphWidget(QWidget* pParent)
@@ -48,6 +50,33 @@ GraphWidget::GraphWidget(QWidget* pParent)
 	setViewportUpdateMode(BoundingRectViewportUpdate);
 	setRenderHint(QPainter::Antialiasing);
 	setTransformationAnchor(AnchorUnderMouse);
+	setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(this, &QWidget::customContextMenuRequested, this, &GraphWidget::callContextMenu);
+
+	zoomInAct = new QAction("Zoom In", this);
+	zoomInAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Plus));
+	zoomInAct->setStatusTip("Приблизить");
+	connect(zoomInAct, &QAction::triggered, this, &GraphWidget::zoomIn);
+
+	zoomOutAct = new QAction("Zoom Out", this);
+	zoomOutAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Minus));
+	zoomOutAct->setStatusTip("Отдалить");
+	connect(zoomOutAct, &QAction::triggered, this, &GraphWidget::zoomOut);
+
+	zoomFitAct = new QAction("Zoom Fit", this);
+	zoomFitAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_9));
+	zoomFitAct->setStatusTip("Вписать граф в окно");
+	connect(zoomFitAct, &QAction::triggered, this, &GraphWidget::zoomFit);
+
+	normalSizeAct = new QAction("Normal Size", this);
+	normalSizeAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_0));
+	normalSizeAct->setStatusTip("Вернуть масштаб 1:1");
+	connect(normalSizeAct, &QAction::triggered, this, &GraphWidget::normalSize);
+
+	addAction(zoomInAct);
+	addAction(zoomOutAct);
+	addAction(zoomFitAct);
+	addAction(normalSizeAct);
 }
 
 GraphWidget::~GraphWidget()
@@ -58,7 +87,17 @@ void GraphWidget::updateGraphInfo(const QString& solutionCost, const QString& nu
 	m_graphInfo.update(solutionCost, numberOfOpenNodes, totalNumberOfNodes);
 }
 
-void GraphWidget::fitScene()
+void GraphWidget::zoomIn()
+{
+	scaleView(pow(2., MANUAL_SCALE_FACTOR));
+}
+
+void GraphWidget::zoomOut()
+{
+	scaleView(pow(2., -MANUAL_SCALE_FACTOR));
+}
+
+void GraphWidget::zoomFit()
 {
 	fitInView(scene()->itemsBoundingRect(), Qt::KeepAspectRatio);
 	const double factor = transform().mapRect(QRectF(0, 0, 1, 1)).width();
@@ -70,6 +109,11 @@ void GraphWidget::fitScene()
 	{
 		scale(MIN_FACTOR / factor, MIN_FACTOR / factor);
 	}
+}
+
+void GraphWidget::normalSize()
+{
+	setTransform(QTransform());
 }
 
 void GraphWidget::wheelEvent(QWheelEvent* wEvent)
@@ -93,26 +137,6 @@ void GraphWidget::keyPressEvent(QKeyEvent* kEvent)
 		setInteractive(false);
 		m_dragModeCtrl = true;
 	}
-	if (kEvent->modifiers() & Qt::CTRL)
-	{
-		if (kEvent->key() == Qt::Key_0)
-		{
-			setTransform(QTransform());
-		}
-		if (kEvent->key() == Qt::Key_Minus)
-		{
-			scaleView(pow(2., -MANUAL_SCALE_FACTOR));
-		}
-		if (kEvent->key() == Qt::Key_Plus)
-		{
-			scaleView(pow(2., MANUAL_SCALE_FACTOR));
-		}
-		if (kEvent->key() == Qt::Key_9)
-		{
-			fitScene();
-		}
-	}
-
 }
 
 void GraphWidget::keyReleaseEvent(QKeyEvent* kEvent)
@@ -159,4 +183,14 @@ void GraphWidget::scaleView(double scaleFactor)
 	{
 		scale(scaleFactor, scaleFactor);
 	}
+}
+
+void GraphWidget::callContextMenu(const QPoint& pos)
+{
+	QMenu* menu = new QMenu;
+	menu->addAction(zoomInAct);
+	menu->addAction(zoomOutAct);
+	menu->addAction(zoomFitAct);
+	menu->addAction(normalSizeAct);
+	menu->exec(viewport()->mapToGlobal(pos));
 }

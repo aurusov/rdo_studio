@@ -26,12 +26,20 @@ public:
 	~GraphWidget();
 
 	void updateGraphInfo(const QString& solutionCost, const QString& numOfOpenNodes, const QString& totalNumberOfNodes);
-	void fitScene();
+	void zoomIn();
+	void zoomOut();
+	void zoomFit();
+	void normalSize();
 
 private:
 	GraphInfo m_graphInfo;
 	bool m_dragModeCtrl;
 	bool m_dragModeClick;
+
+	QAction* zoomInAct;
+	QAction* zoomOutAct;
+	QAction* zoomFitAct;
+	QAction* normalSizeAct;
 
 	virtual void wheelEvent       (QWheelEvent* wEvent);
 	virtual void keyPressEvent    (QKeyEvent*   kEvent);
@@ -40,6 +48,9 @@ private:
 	virtual void mouseReleaseEvent(QMouseEvent* mEvent);
 
 	void scaleView(double scaleFactor);
+
+private slots:
+	void callContextMenu(const QPoint &pos);
 };
 
 #endif // _RDO_PLUGIN_GAME_5_GRAPH_WIDGET_H_
