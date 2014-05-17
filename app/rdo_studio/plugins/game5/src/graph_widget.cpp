@@ -30,6 +30,7 @@ namespace
 GraphWidget::GraphWidget(QWidget* pParent)
 	: QGraphicsView(pParent)
 	, m_graphInfo(this)
+	, m_autoScale(true)
 {
 	QGraphicsScene* pScene = new QGraphicsScene(this);
 	pScene->setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -99,6 +100,7 @@ void GraphWidget::zoomOut()
 
 void GraphWidget::zoomFit()
 {
+	m_autoScale = true;
 	fitInView(scene()->itemsBoundingRect(), Qt::KeepAspectRatio);
 	const double factor = transform().mapRect(QRectF(0, 0, 1, 1)).width();
 	if (factor > MAX_FACTOR)
@@ -113,6 +115,7 @@ void GraphWidget::zoomFit()
 
 void GraphWidget::normalSize()
 {
+	m_autoScale = false;
 	setTransform(QTransform());
 }
 
@@ -178,11 +181,21 @@ void GraphWidget::mouseReleaseEvent(QMouseEvent* mEvent)
 
 void GraphWidget::scaleView(double scaleFactor)
 {
+	m_autoScale = false;
 	const double factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
 	if (MIN_FACTOR < factor && factor < MAX_FACTOR)
 	{
 		scale(scaleFactor, scaleFactor);
 	}
+}
+
+void GraphWidget::resizeEvent(QResizeEvent* event)
+{
+	if (m_autoScale)
+	{
+		zoomFit();
+	}
+	QGraphicsView::resizeEvent(event);
 }
 
 void GraphWidget::callContextMenu(const QPoint& pos)

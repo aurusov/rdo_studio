@@ -35,6 +35,7 @@ private:
 	GraphInfo m_graphInfo;
 	bool m_dragModeCtrl;
 	bool m_dragModeClick;
+	bool m_autoScale;
 
 	QAction* zoomInAct;
 	QAction* zoomOutAct;
@@ -48,6 +49,8 @@ private:
 	virtual void mouseReleaseEvent(QMouseEvent* mEvent);
 
 	void scaleView(double scaleFactor);
+
+	virtual void resizeEvent(QResizeEvent* event);
 
 private slots:
 	void callContextMenu(const QPoint &pos);
