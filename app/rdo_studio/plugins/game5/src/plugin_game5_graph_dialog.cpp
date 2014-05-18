@@ -119,7 +119,7 @@ std::list<int> PluginGame5GraphDialog::getSolutionNodes() const
 		pos += regExp.matchedLength();
 	}
 
-	if (list.size() > 0)
+	if (!list.empty())
 	{
 		list.push_front(1);
 	}
@@ -128,7 +128,7 @@ std::list<int> PluginGame5GraphDialog::getSolutionNodes() const
 	return list;
 }
 
-std::vector<PluginGame5GraphDialog::GraphNodeInfo> PluginGame5GraphDialog::parseTrace(const std::vector<unsigned int>& startBoardState)
+std::vector<GraphNodeInfo> PluginGame5GraphDialog::parseTrace(const std::vector<unsigned int>& startBoardState)
 {
 	QFile trcFile(getTraceFile());
 	QString trcString;
@@ -151,8 +151,8 @@ std::vector<PluginGame5GraphDialog::GraphNodeInfo> PluginGame5GraphDialog::parse
 		pos += regExp.matchedLength();
 	}
 
-	std::vector<PluginGame5GraphDialog::GraphNodeInfo> parsingResult;
-	if (list.size() > 0)
+	std::vector<GraphNodeInfo> parsingResult;
+	if (!list.empty())
 	{
 		parsingResult.resize(list.size() + 1);
 		parsingResult[0] = GraphNodeInfo(1, 0, 0, 0, "Начало поиска", 0, 0, 0, 0, 0, startBoardState);
@@ -212,27 +212,26 @@ std::vector<PluginGame5GraphDialog::GraphNodeInfo> PluginGame5GraphDialog::parse
 	return parsingResult;
 }
 
-std::vector<std::vector<GraphNode*>> PluginGame5GraphDialog::generateGraphNodes(
-		std::vector<PluginGame5GraphDialog::GraphNodeInfo>& parsingResult) const
+std::vector<std::vector<GraphNode*>> PluginGame5GraphDialog::generateGraphNodes(std::vector<GraphNodeInfo>& parsingResult) const
 {
+	std::vector<GraphNode*> tempStorage;
+	tempStorage.resize(parsingResult.size());
 	std::vector<std::vector<GraphNode*>> graphTree;
-	for (PluginGame5GraphDialog::GraphNodeInfo& i: parsingResult)
+	for (const GraphNodeInfo& info: parsingResult)
 	{
-		const int nodeGraphLevel = i.m_graphLevel;
+		const int nodeGraphLevel = info.m_graphLevel;
 		const int currentLevel = graphTree.size() - 1;
 		if (currentLevel < nodeGraphLevel)
 		{
 			graphTree.push_back(std::vector<GraphNode*>());
 		}
 
-		GraphNode* parentNode = i.m_parentNodeId > 0 ? parsingResult[i.m_parentNodeId - 1].m_pNode : NULL;
-		GraphNode* node = new GraphNode(i.m_nodeID, parentNode, i.m_pathCost, i.m_restPathCost, i.m_moveDirection, i.m_moveCost,
-		                                i.m_relevantTile, i.m_graphLevel, i.m_tileMoveFrom, i.m_tileMoveTo, i.m_boardState,
-		                                i.m_relatedToSolutionState, m_nodeWidth, m_nodeHeight);
+		GraphNode* parentNode = info.m_parentNodeId ? tempStorage[info.m_parentNodeId - 1] : NULL;
+		GraphNode* node = new GraphNode(info, parentNode, m_nodeWidth, m_nodeHeight);
 		connect(node, &GraphNode::clickedNode  , this, &PluginGame5GraphDialog::updateCheckedNode);
 		connect(node, &GraphNode::doubleClicked, this, &PluginGame5GraphDialog::emitShowNodeInfoDlg);
 		graphTree[nodeGraphLevel].push_back(node);
-		i.m_pNode = node;
+		tempStorage[info.m_nodeID - 1] = node;
 	}
 
 	for (unsigned int i = 1; i < graphTree.size(); i++)
@@ -383,7 +382,7 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 	graphWidget->scene()->clear();
 	m_clickedNode = NULL;
 
-	std::vector<PluginGame5GraphDialog::GraphNodeInfo> parsingResult = parseTrace(startBoardState);
+	std::vector<GraphNodeInfo> parsingResult = parseTrace(startBoardState);
 	std::vector<std::vector<GraphNode*>> graph = generateGraphNodes(parsingResult);
 	drawGraph(graph);
 
@@ -426,24 +425,4 @@ PluginGame5GraphDialog::GraphInfo::GraphInfo(QString solutionCost, QString numbe
 	: solutionCost(solutionCost)
 	, numberOfOpenNodes(numberOfOpenNodes)
 	, totalNumberOfNodes(totalNumberOfNodes)
-{}
-
-PluginGame5GraphDialog::GraphNodeInfo::GraphNodeInfo(int nodeID, int parentNodeId, int pathCost, int restPathCost,
-                                                     const QString& moveDirection, int moveCost, int relevantTile,
-                                                     int graphLevel, int tileMoveFrom, int tileMoveTo,
-                                                     const std::vector<unsigned int>& boardState)
-	: m_nodeID(nodeID)
-	, m_parentNodeId(parentNodeId)
-	, m_pathCost(pathCost)
-	, m_restPathCost(restPathCost)
-	, m_moveDirection(moveDirection)
-	, m_moveCost(moveCost)
-	, m_relevantTile(relevantTile)
-	, m_graphLevel(graphLevel)
-	, m_tileMoveFrom(tileMoveFrom)
-	, m_tileMoveTo(tileMoveTo)
-	, m_graphOnLevelOrder(0)
-	, m_relatedToSolutionState(false)
-	, m_boardState(boardState)
-	, m_pNode(NULL)
 {}

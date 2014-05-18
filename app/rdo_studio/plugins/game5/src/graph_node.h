@@ -16,16 +16,16 @@
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/graph_items_types.h"
+#include "app/rdo_studio/plugins/game5/src/graph_node_info.h"
 // --------------------------------------------------------------------------------
 
-class GraphNode: public QGraphicsObject
+class GraphNode
+	: public  QGraphicsObject
+	, private GraphNodeInfo
 {Q_OBJECT
 
 public:
-	GraphNode(int nodeID, GraphNode* parentGraphNode, int pathCost, int restPathCost,
-	          const QString& moveDirection, int moveCost, int relevantTile, int graphLevel, int tileMoveFrom,
-	          int tileMoveTo, const std::vector<unsigned int>& boardState, bool relatedToSolutionState, int width, int height
-	);
+	GraphNode(const GraphNodeInfo& info, GraphNode* parentGraphNode, int width, int height);
 	~GraphNode();
 
 	enum { Type = rdo::plugin::game5::TypeID::GRAPH_NODE };
@@ -75,20 +75,9 @@ signals:
 
 private:
 	std::list<GraphNode*> childrenList;
-
 	GraphNode* m_pParentGraphNode;
-	std::vector<unsigned int> m_boardState;
-	int     m_nodeID;
-	int     m_pathCost;
-	int     m_restPathCost;
-	QString m_moveDirection;
-	int     m_moveCost;
-	int     m_relevantTile;
-	int     m_graphLevel;
-	int     m_tileMoveFrom;
-	int     m_tileMoveTo;
+
 	int     m_graphOnLevelOrder;
-	bool    m_relatedToSolutionState;
 	bool    m_isChecked;
 	double  m_width;
 	double  m_height;

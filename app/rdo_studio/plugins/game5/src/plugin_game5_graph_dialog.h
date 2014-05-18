@@ -54,30 +54,6 @@ private:
 		const QString totalNumberOfNodes;
 	};
 
-	struct GraphNodeInfo
-	{
-		GraphNodeInfo(int nodeID, int parentNodeId, int pathCost, int restPathCost,
-		              const QString& moveDirection, int moveCost, int relevantTile,
-		              int graphLevel, int tileMoveFrom, int tileMoveTo,
-		              const std::vector<unsigned int>& boardState);
-		GraphNodeInfo() {};
-
-		int     m_nodeID;
-		int     m_parentNodeId;
-		int     m_pathCost;
-		int     m_restPathCost;
-		QString m_moveDirection;
-		int     m_moveCost;
-		int     m_relevantTile;
-		int     m_graphLevel;
-		int     m_tileMoveFrom;
-		int     m_tileMoveTo;
-		int     m_graphOnLevelOrder;
-		bool    m_relatedToSolutionState;
-		std::vector<unsigned int> m_boardState;
-		GraphNode* m_pNode;
-	};
-
 	QString m_traceTimeStamp;
 	GraphNode* m_clickedNode;
 	int m_nodeWidth;
@@ -87,7 +63,7 @@ private:
 	void updateCheckedNode(GraphNode* node);
 	QString     getTraceTimeStamp() const;
 	QString     getTraceFile() const;
-	std::vector<PluginGame5GraphDialog::GraphNodeInfo> parseTrace(const std::vector<unsigned int>& startBoardState);
+	std::vector<GraphNodeInfo> parseTrace(const std::vector<unsigned int>& startBoardState);
 	std::vector<std::vector<GraphNode*>> generateGraphNodes(std::vector<GraphNodeInfo>& parsingResult) const;
 	void drawGraph(const std::vector<std::vector<GraphNode*>>& graph) const;
 

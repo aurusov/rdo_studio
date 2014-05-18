@@ -62,6 +62,8 @@ SET(GRAPH_FILES
 	src/graph_items_types.h
 	src/graph_node.h
 	src/graph_node.cpp
+	src/graph_node_info.h
+	src/graph_node_info.cpp
 	src/graph_widget.h
 	src/graph_widget.cpp
 )

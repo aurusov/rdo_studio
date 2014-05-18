@@ -45,25 +45,13 @@ namespace
 	const double LEVEL_OF_LOWER_DETAIL = 0.6;
 } // end anonymous namespace
 
-GraphNode::GraphNode(int nodeID, GraphNode* parentGraphNode, int pathCost, int restPathCost,
-                     const QString& moveDirection, int moveCost, int relevantTile, int graphLevel, int tileMoveFrom,
-                     int tileMoveTo, const std::vector<unsigned int>& boardState, bool relatedToSolutionState, int width, int height)
-	: m_pParentGraphNode      (parentGraphNode)
-	, m_boardState            (boardState     )
-	, m_nodeID                (nodeID         )
-	, m_pathCost              (pathCost       )
-	, m_restPathCost          (restPathCost   )
-	, m_moveDirection         (moveDirection  )
-	, m_moveCost              (moveCost       )
-	, m_relevantTile          (relevantTile   )
-	, m_graphLevel            (graphLevel     )
-	, m_tileMoveFrom          (tileMoveFrom   )
-	, m_tileMoveTo            (tileMoveTo     )
-	, m_graphOnLevelOrder     (0              )
-	, m_relatedToSolutionState(relatedToSolutionState)
-	, m_isChecked             (false          )
-	, m_width                 (width          )
-	, m_height                (height         )
+GraphNode::GraphNode(const GraphNodeInfo& info, GraphNode* parentGraphNode, int width, int height)
+	: GraphNodeInfo      (info           )
+	, m_pParentGraphNode (parentGraphNode)
+	, m_graphOnLevelOrder(0              )
+	, m_isChecked        (false          )
+	, m_width            (width          )
+	, m_height           (height         )
 {
 	setFlag(ItemIsMovable);
 	setFlag(ItemSendsGeometryChanges);
