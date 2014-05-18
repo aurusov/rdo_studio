@@ -11,6 +11,7 @@
 #define _LIB_RUNTIME_SIM_TRACE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <set>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/rdo_simulator.h"
@@ -53,6 +54,7 @@ public:
 	void memory_remove(std::size_t mem);
 	std::size_t memory_get() const;
 
+	void registerResourceId(std::size_t id);
 	std::size_t getResourceId();
 	void incrementResourceIdReference(int id);
 
@@ -86,8 +88,8 @@ private:
 	double traceEndTime;
 
 	std::size_t maxResourcesId;
+	std::set<std::size_t> registeredResourcesId;
 
-	std::list<std::size_t> freeResourcesIds;
 	typedef std::map<int, int> MAPII;
 	MAPII resourcesIdsRefs;
 	std::list<int> freeOperationsIds;

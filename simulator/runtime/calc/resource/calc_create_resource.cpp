@@ -52,19 +52,13 @@ RDOValue RDOCalcCreateResource::doCalc(const LPRDORuntime& pRuntime)
 		paramValueList.push_back(calc->calcValue(pRuntime));
 	}
 
-	std::size_t resID;
-	if (m_resourceID.is_initialized())
-	{
-		resID = *m_resourceID;
-		pRuntime->getResourceId();
-	}
-	else
-	{
-		resID = pRuntime->getResourceId();
-	}
+	const std::size_t resourceID = m_resourceID.is_initialized()
+		? m_resourceID.get()
+		: pRuntime->getResourceId();
+	pRuntime->registerResourceId(resourceID);
 
 	LPRDOResource pResource = resourceType.interface_cast<IResourceType>()->createRes(
-		pRuntime, resID, paramValueList, m_traceFlag, m_permanentFlag
+		pRuntime, resourceID, paramValueList, m_traceFlag, m_permanentFlag
 	);
 	ASSERT(pResource);
 

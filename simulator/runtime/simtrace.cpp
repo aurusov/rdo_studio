@@ -8,6 +8,8 @@
 */
 
 // ----------------------------------------------------------------------- PLATFORM
+#include <set>
+
 #include "utils/src/common/platform.h"
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
@@ -140,7 +142,7 @@ void RDOSimulatorTrace::copyFrom(const LPRDOSimulatorTrace& pOther)
 {
 	ASSERT(pOther);
 
-	freeResourcesIds = pOther->freeResourcesIds;
+	registeredResourcesId    = pOther->registeredResourcesId;
 	maxResourcesId   = pOther->maxResourcesId;
 }
 
@@ -148,28 +150,30 @@ void RDOSimulatorTrace::rdoInit()
 {
 	maxResourcesId = 0;
 	maxOperationId = 1;
+	registeredResourcesId.clear();
 //	ASSERT(m_tracer != NULL);
 	RDOSimulator::rdoInit();
 }
 
+void RDOSimulatorTrace::registerResourceId(std::size_t id)
+{
+	ASSERT(registeredResourcesId.find(id) == registeredResourcesId.end());
+	registeredResourcesId.insert(id);
+	maxResourcesId++;
+}
+
 std::size_t RDOSimulatorTrace::getResourceId()
 {
-	if (freeResourcesIds.empty())
-	{
-		return maxResourcesId++;
-	}
-	else
-	{
 #ifdef _DEBUG
-		for (const auto& id: freeResourcesIds)
+		for (const auto& id: registeredResourcesId)
 		{
-			TRACE1("getFreeResourceId: %d\n", id);
+			TRACE1("getRegisteredResourcesId: %d\n", id);
 		}
 #endif
-		const std::size_t id = freeResourcesIds.back();
-		freeResourcesIds.pop_back();
-		return id;
-	}
+
+	while (registeredResourcesId.find(maxResourcesId) != registeredResourcesId.end())
+		maxResourcesId++;
+	return maxResourcesId;
 }
 
 void RDOSimulatorTrace::eraseFreeResourceId(std::size_t id)
@@ -180,7 +184,7 @@ void RDOSimulatorTrace::eraseFreeResourceId(std::size_t id)
 		if(--(*it).second >= 1) return;
 		resourcesIdsRefs.erase(it);
 	}
-	freeResourcesIds.push_back(id);
+	registeredResourcesId.erase(id);
 }
 
 void RDOSimulatorTrace::incrementResourceIdReference(int id)
