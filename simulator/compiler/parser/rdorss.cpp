@@ -214,6 +214,7 @@ rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
 		paramList.push_back(param.param()->calc());
 
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
+		getID(),
 		getType()->getNumber(),
 		paramList,
 		getTrace(),

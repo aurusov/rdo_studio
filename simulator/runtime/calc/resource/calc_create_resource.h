@@ -13,6 +13,7 @@
 #define _LIB_RUNTIME_CALC_RESOURCE_CREATE_RESOURCE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/optional.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_res_type_i.h"
@@ -28,7 +29,9 @@ DECLARE_FACTORY(RDOCalcCreateResource)
 private:
 	//! relResID == ~0 для ресурсов, создаваемых при инициализации модели
 	RDOCalcCreateResource(std::size_t resourceTypeID, const std::vector<LPRDOCalc>& rParamCalcList, bool traceFlag, bool permanentFlag, std::size_t relResID = ~0);
+	RDOCalcCreateResource(std::size_t resourceID, std::size_t resourceTypeID, const std::vector<LPRDOCalc>& rParamCalcList, bool traceFlag, bool permanentFlag, std::size_t relResID = ~0);
 
+	boost::optional<std::size_t> m_resourceID;
 	std::size_t m_resourceTypeID;
 	std::vector<LPRDOCalc> m_paramCalcList;
 	bool m_traceFlag;
