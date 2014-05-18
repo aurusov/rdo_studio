@@ -60,21 +60,12 @@ RDOValue::RDOValue(int value)
 	setUndefined(false);
 }
 
-RDOValue::RDOValue(uint32_t value)
+RDOValue::RDOValue(std::size_t value)
 	: m_pType(g_int)
 {
-	__get<uint32_t>() = value;
+        __get<std::size_t>() = value;
 	setUndefined(false);
 }
-
-#ifdef ARCHITECTURE_AMD64
-RDOValue::RDOValue(uint64_t value)
-	: m_pType(g_int)
-{
-	__get<uint64_t>() = value;
-	setUndefined(false);
-}
-#endif // ARCHITECTURES_AMD64
 
 RDOValue::RDOValue(double value)
 	: m_pType(g_real)
