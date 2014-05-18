@@ -34,8 +34,7 @@ PluginGame5GraphNodeInfoDialog::PluginGame5GraphNodeInfoDialog(QWidget* pParent)
 }
 
 PluginGame5GraphNodeInfoDialog::~PluginGame5GraphNodeInfoDialog()
-{
-}
+{}
 
 void PluginGame5GraphNodeInfoDialog::updateDlg(GraphNode* node)
 {
@@ -67,6 +66,7 @@ void PluginGame5GraphNodeInfoDialog::updateDlg(GraphNode* node)
 	buttonPrev->setEnabled(node->getParentGraphNode() != NULL);
 
 	gameBoard->setTilesPositon(node->getBoardState());
+	setFixedSize(sizeHint());
 }
 
 void PluginGame5GraphNodeInfoDialog::nextNode()
