@@ -151,6 +151,7 @@ void RDOKernel::idle()
 // -autorun -autoexit "C:\rdo\rdo_cdrom_1\RAO-cd-rom-1\bin\RAO-explorer\Data\Russian\Models\Barber\Source\Barber.rdox"
 // -autorun -autoexit "C:\rdo\rdo_cdrom_1\RAO-cd-rom-1\bin\RAO-explorer\Data\Russian\Models\Heidel\Source\Heidel.rdox"
 
+#ifdef RDO_MT
 class CheckThreadID
 {
 protected:
@@ -161,6 +162,7 @@ public:
 	{}
 	bool operator() ( RDOThread* thread ) { return thread->getID() == thread_id; }
 };
+#endif
 
 void RDOKernel::registration( RDOThread* thread )
 {
