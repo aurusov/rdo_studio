@@ -214,11 +214,12 @@ rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
 		paramList.push_back(param.param()->calc());
 
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
-		getID(),
 		getType()->getNumber(),
 		paramList,
 		getTrace(),
-		getType()->isPermanent()
+		getType()->isPermanent(),
+		~0,
+		getID()
 	);
 	ASSERT(pCalc);
 	rdo::runtime::RDOSrcInfo srcInfo(src_info());

@@ -28,8 +28,13 @@ class RDOCalcCreateResource: public RDOCalc
 DECLARE_FACTORY(RDOCalcCreateResource)
 private:
 	//! relResID == ~0 для ресурсов, создаваемых при инициализации модели
-	RDOCalcCreateResource(std::size_t resourceTypeID, const std::vector<LPRDOCalc>& rParamCalcList, bool traceFlag, bool permanentFlag, std::size_t relResID = ~0);
-	RDOCalcCreateResource(std::size_t resourceID, std::size_t resourceTypeID, const std::vector<LPRDOCalc>& rParamCalcList, bool traceFlag, bool permanentFlag, std::size_t relResID = ~0);
+	RDOCalcCreateResource(
+		std::size_t resourceTypeID,
+		const std::vector<LPRDOCalc>& rParamCalcList,
+		bool traceFlag, bool permanentFlag,
+		std::size_t relResID = ~0,
+		boost::optional<std::size_t> resourceID = boost::optional<std::size_t>()
+	);
 
 	boost::optional<std::size_t> m_resourceID;
 	std::size_t m_resourceTypeID;
