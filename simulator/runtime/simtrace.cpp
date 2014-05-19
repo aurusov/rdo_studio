@@ -38,7 +38,6 @@ RDOSimulatorTrace::RDOSimulatorTrace()
 	, maxOperationId   (1            )
 	, traceStartTime   (UNDEFINE_TIME)
 	, traceEndTime     (UNDEFINE_TIME)
-	, maxResourcesId   (0            )
 	, m_ieCounter      (1            )
 	, m_eventCounter   (1            )
 	, m_activityCounter(1            )
@@ -143,12 +142,10 @@ void RDOSimulatorTrace::copyFrom(const LPRDOSimulatorTrace& pOther)
 	ASSERT(pOther);
 
 	registeredResourcesId    = pOther->registeredResourcesId;
-	maxResourcesId   = pOther->maxResourcesId;
 }
 
 void RDOSimulatorTrace::rdoInit()
 {
-	maxResourcesId = 0;
 	maxOperationId = 1;
 	registeredResourcesId.clear();
 //	ASSERT(m_tracer != NULL);
@@ -159,7 +156,6 @@ void RDOSimulatorTrace::registerResourceId(std::size_t id)
 {
 	ASSERT(registeredResourcesId.find(id) == registeredResourcesId.end());
 	registeredResourcesId.insert(id);
-	maxResourcesId++;
 }
 
 std::size_t RDOSimulatorTrace::getResourceId()
@@ -171,9 +167,14 @@ std::size_t RDOSimulatorTrace::getResourceId()
 		}
 #endif
 
-	while (registeredResourcesId.find(maxResourcesId) != registeredResourcesId.end())
-		maxResourcesId++;
-	return maxResourcesId;
+	std::size_t id = 0;
+	std::set<std::size_t>::iterator it = registeredResourcesId.begin();
+	while (it != registeredResourcesId.end() && *it == id)
+	{
+		++it;
+		++id;
+	}
+	return id;
 }
 
 void RDOSimulatorTrace::eraseFreeResourceId(std::size_t id)

@@ -87,7 +87,6 @@ private:
 	double traceStartTime;
 	double traceEndTime;
 
-	std::size_t maxResourcesId;
 	std::set<std::size_t> registeredResourcesId;
 
 	typedef std::map<int, int> MAPII;
