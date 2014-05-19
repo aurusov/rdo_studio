@@ -208,6 +208,12 @@ void Loader::startPlugin(const LPPluginInfo& pluginInfo)
 	}
 }
 
+void Loader::dispatchCommand(const LPPluginInfo& pluginInfo, const std::string& commandLine)
+{
+	PluginInterface* pluginInterface = loadPlugin(pluginInfo->getLoader());
+	pluginInterface->executeCommand(commandLine);
+}
+
 void Loader::startAutoloadedPlugins()
 {
 	for (const LPPluginInfo& pluginInfo: *m_pMergedPluginInfoList)
@@ -231,4 +237,10 @@ void Loader::init(QWidget* pParent)
 	ASSERT(!m_pPluginsParent);
 	ASSERT(pParent);
 	m_pPluginsParent = pParent;
+}
+
+void Loader::consoleCommand(const std::string& params)
+{
+	startPlugin(m_pMergedPluginInfoList->back());
+	dispatchCommand(m_pMergedPluginInfoList->back(), params);
 }

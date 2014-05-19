@@ -216,6 +216,7 @@ void Application::onInit(int argc, char** argv)
 		("autorun", "auto run model")
 		("autoexit", "auto exit after simulation stoped")
 		("dont_close_if_error", "don't close application if model error detected")
+		("game5_testcase", po::value<std::string>(), "start game5 plugin with [arg] game board state")
 	;
 
 	po::variables_map vm;
@@ -292,6 +293,11 @@ void Application::onInit(int argc, char** argv)
 	if (autoRun)
 	{
 		g_pModel->runModel();
+	}
+
+	if (vm.count("game5_testcase"))
+	{
+		m_pluginLoader.consoleCommand(vm["game5_testcase"].as<std::string>());
 	}
 }
 
