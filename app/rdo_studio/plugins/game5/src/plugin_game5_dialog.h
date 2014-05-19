@@ -40,11 +40,11 @@ private:
 	std::string evaluateBy() const;
 	std::string activityValue(int direction) const;
 
-	std::string modelRTP() const;
-	std::string modelRSS() const;
-	std::string modelPAT() const;
-	std::string modelDPT() const;
-	std::string modelFUN() const;
+	QString modelRTP() const;
+	QString modelRSS() const;
+	QString modelPAT() const;
+	QString modelDPT() const;
+	QString modelFUN() const;
 
 	void clearAllTabs() const;
 	rdo::gui::model::Model* getCurrentModel() const;
