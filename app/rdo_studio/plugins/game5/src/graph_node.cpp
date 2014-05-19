@@ -28,15 +28,15 @@ namespace
 		QFont newFont(baseFont);
 		if (baseFont.pixelSize() != -1)
 		{
-			newFont.setPixelSize(baseFont.pixelSize() * multiplier);
+			newFont.setPixelSize((int)(baseFont.pixelSize() * multiplier));
 		}
 		if (baseFont.pointSize() != -1)
 		{
-			newFont.setPointSize(baseFont.pointSize() * multiplier);
+			newFont.setPointSize((int)(baseFont.pointSize() * multiplier));
 		}
 		if (baseFont.pointSizeF() != -1)
 		{
-			newFont.setPointSizeF(baseFont.pointSizeF() * multiplier);
+			newFont.setPointSizeF((int)(baseFont.pointSizeF() * multiplier));
 		}
 		return newFont;
 	}
