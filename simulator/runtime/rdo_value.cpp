@@ -1020,9 +1020,48 @@ RDOValue RDOValue::clone() const
 std::string RDOValue::onPointerAsString() const
 {
 	ASSERT(typeID() == RDOType::t_pointer);
-	LPIAsString asString = getPointer<IAsString>();
-	if (asString)
-		return asString->asString();
+
+	LPRDOArrayType pThisArrayType = m_pType.object_dynamic_cast<RDOArrayType>();
+	if (pThisArrayType)
+	{
+		LPRDOArrayValue pValue = getPointer<RDOArrayValue>();
+		ASSERT(pValue);
+		return pValue->asString();
+	}
+
+	LPRDOArrayIterator pThisArrayIterator = m_pType.object_dynamic_cast<RDOArrayIterator>();
+	if (pThisArrayIterator)
+	{
+		return pThisArrayIterator->asString();
+	}
+
+	LPRDOMatrixType pThisMatrixType = m_pType.object_dynamic_cast<RDOMatrixType>();
+	if (pThisMatrixType)
+	{
+		LPRDOMatrixValue pValue = getPointer<RDOMatrixValue>();
+		ASSERT(pValue);
+		return pValue->asString();
+	}
+
+	LPRDOMatrixIterator pThisMatrixIterator = m_pType.object_dynamic_cast<RDOMatrixIterator>();
+	if (pThisMatrixIterator)
+	{
+		return pThisMatrixIterator->asString();
+	}
+
+	LPRDOResourceTypeList pThisResource = m_pType.object_dynamic_cast<RDOResourceTypeList>();
+	if (pThisResource)
+	{
+		return "nested_resource";
+	}
+
+	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	//if (pThisFuzzyType)
+	//{
+	//	LPFuzzySet pValue = getPointer<FuzzySet>();
+	//	ASSERT(pValue);
+	//	return pValue->getAsString();
+	//}
 
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод getAsString()");
 }
