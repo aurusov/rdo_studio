@@ -27,7 +27,7 @@ public:
 	              const std::vector<unsigned int>& boardState);
 	GraphNodeInfo(const GraphNodeInfo& other);
 	GraphNodeInfo();
-	~GraphNodeInfo();
+	virtual ~GraphNodeInfo();
 
 	int     m_nodeID;
 	int     m_parentNodeId;
