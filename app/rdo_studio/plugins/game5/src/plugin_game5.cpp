@@ -17,11 +17,13 @@
 #include <boost/filesystem.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/plugins/game5/src/plugin_game5.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/tracer/tracer.h"
 #include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/model/model_tab_ctrl.h"
+#include "app/rdo_studio/src/tracer/tracer.h"
+#include "app/rdo_studio/plugins/game5/src/board.h"
+#include "app/rdo_studio/plugins/game5/src/plugin_game5.h"
+#include "app/rdo_studio/plugins/game5/src/plugin_game5_model_generator.h"
 #include "utils/src/common/model_objects.h"
 // --------------------------------------------------------------------------------
 
@@ -149,6 +151,37 @@ void PluginGame5::pluginStopAction(QWidget* pParent)
 	QToolBar* pluginGame5ToolBar = pParent->findChild<QToolBar*>(PLUGIN_TOOLBAR_NAME);
 	ASSERT(pluginGame5ToolBar);
 	delete pluginGame5ToolBar;
+}
+
+void PluginGame5::executeCommand(const std::string& commandLine)
+{
+	if (g_pModel && g_pApp)
+	{
+		if (g_pModel->getTab())
+		{
+			QStringList positionList = QString::fromStdString(commandLine).split(' ', QString::SkipEmptyParts);
+			std::vector<unsigned int> newState;
+			for (const auto& position: positionList)
+			{
+				newState.push_back(position.toInt());
+			}
+			Board gameBoard;
+			gameBoard.setTilesPositon(newState);
+
+			for (int i = 0; i < g_pModel->getTab()->tabBar()->count(); i++)
+			{
+				g_pModel->getTab()->getItemEdit(i)->clearAll();
+			}
+			g_pModel->getTab()->getItemEdit(rdo::model::RTP)->appendText(PluginGame5ModelGenerator::modelRTP(gameBoard));
+			g_pModel->getTab()->getItemEdit(rdo::model::RSS)->appendText(PluginGame5ModelGenerator::modelRSS(gameBoard));
+			g_pModel->getTab()->getItemEdit(rdo::model::PAT)->appendText(PluginGame5ModelGenerator::modelPAT());
+			g_pModel->getTab()->getItemEdit(rdo::model::DPT)->appendText(PluginGame5ModelGenerator::modelDPT(gameBoard));
+			g_pModel->getTab()->getItemEdit(rdo::model::FUN)->appendText(PluginGame5ModelGenerator::modelFUN(gameBoard));
+
+			g_pModel->saveModel();
+			g_pApp->quit();
+		}
+	}
 }
 
 void PluginGame5::pluginActivation()

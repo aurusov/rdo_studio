@@ -30,6 +30,7 @@ public:
 
 	virtual void pluginStartAction(QWidget* parent) = 0;
 	virtual void pluginStopAction (QWidget* parent) = 0;
+	virtual void executeCommand   (const std::string& commandLine) = 0;
 };
 
 Q_DECLARE_INTERFACE(PluginInterface, "RDO_PLUGIN_INTERFACE");
