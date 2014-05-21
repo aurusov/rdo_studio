@@ -149,6 +149,10 @@ void PluginGame5::pluginStopAction(QWidget* pParent)
 	QToolBar* pluginGame5ToolBar = pParent->findChild<QToolBar*>(PLUGIN_TOOLBAR_NAME);
 	ASSERT(pluginGame5ToolBar);
 	delete pluginGame5ToolBar;
+	disconnect(g_pModel, &rdo::gui::model::Model::stopped,
+	           this    , &PluginGame5::reemitGraphDlgAction);
+	disconnect(g_pModel, &rdo::gui::model::Model::actionUpdated,
+	           this    , &PluginGame5::enablePluginActions);
 }
 
 void PluginGame5::pluginActivation()
