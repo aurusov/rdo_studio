@@ -384,7 +384,10 @@ void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startB
 
 	std::vector<GraphNodeInfo> parsingResult = parseTrace(startBoardState);
 	std::vector<std::vector<GraphNode*>> graph = generateGraphNodes(parsingResult);
-	drawGraph(graph);
+	if (!graph.empty())
+	{
+		drawGraph(graph);
+	}
 
 	PluginGame5GraphDialog::GraphInfo graphInfo = getGraphInfo();
 	graphWidget->updateGraphInfo(graphInfo.solutionCost, graphInfo.numberOfOpenNodes, graphInfo.totalNumberOfNodes);
