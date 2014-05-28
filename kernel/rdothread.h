@@ -265,7 +265,7 @@ public:
 			, param  (_param  )
 		{}
 		RDOMessageInfo(const RDOMessageInfo& copy)
-			: from   (copy.from   )
+		: from   (copy.from   )
 			, message(copy.message)
 			, param  (copy.param  )
 		{}
@@ -275,8 +275,8 @@ public:
 	};
 
 	std::string getName() const { return thread_name; }
-	std::size_t getID() const { return thread_id; }
 #ifdef RDO_MT
+	std::size_t getID() const { return thread_id; }
 	bool isGUI() const { return thread_fun ? false : true; }
 	CEvent* getDestroyEvent() const { return thread_destroy; }
 #endif
@@ -350,10 +350,10 @@ protected:
 	bool broadcast_waiting; // Без мутекса, т.к. меняется только в одной треде
 	bool was_start; // Без мутекса, т.к. меняется только в одной треде
 	bool was_close;
-#endif
-	const std::string thread_name;
 	int thread_id;
 	int idle_cnt;
+#endif
+	const std::string thread_name;
 
 	typedef std::vector<RDOTreadMessage> NotifieList;
 
@@ -448,7 +448,7 @@ protected:
 	RDOThread(const std::string& _thread_name);
 #endif
 	// Удаляет объкты функция треды. kernel удаляется через статический метод
-	virtual ~RDOThread();                                                                          
+	virtual ~RDOThread();
 
 	// Надо обязательно вызвать из конструктора объекта, чтобы настроить правильно this для виртуальных функций,
 	void after_constructor();

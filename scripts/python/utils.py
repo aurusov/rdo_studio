@@ -20,9 +20,9 @@ def enc_print(*args):
             sys.stdout.write(str(arg))
         flag = True
     sys.stdout.write('\n')
-        
 
-def print_list_of_line(list):
+
+def print_list_by_line(list):
     for string in list:
         enc_print (string)
 

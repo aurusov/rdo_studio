@@ -34,10 +34,7 @@ public:
 	RDOValue(const RDOValue& rdovalue);
 	RDOValue(const LPRDOType& pType);
 	RDOValue(int value);
-	RDOValue(uint32_t value);
-#ifdef ARCHITECTURE_AMD64
-	RDOValue(uint64_t value);
-#endif // ARCHITECTURES_AMD64
+	RDOValue(std::size_t value);
 	RDOValue(double value);
 	RDOValue(bool value);
 	RDOValue(const LPRDOEnumType& pEnum);

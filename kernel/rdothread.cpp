@@ -49,20 +49,17 @@ RDOThread::RDOThread(const std::string& _thread_name, RDOThreadFun _thread_fun)
 	, broadcast_waiting(false       )
 	, was_start        (false       )
 	, was_close        (false       )
+#if defined(COMPILER_VISUAL_STUDIO) || defined(COMPILER_MINGW)
+	, thread_id(::GetCurrentThreadId())
+#elif defined(COMPILER_GCC)
+	, thread_id(pthread_self())
+#else
+	#error Unknown compiler
+#endif // COMPILER_VISUAL_STUDIO
+	, idle_cnt(0)
 #else // not RDO_MT
 RDOThread::RDOThread(const std::string& _thread_name)
 	: thread_name(_thread_name          )
-#ifdef COMPILER_VISUAL_STUDIO
-	, thread_id  (::GetCurrentThreadId())
-#endif // COMPILER_VISUAL_STUDIO
-#ifdef COMPILER_GCC
-	#ifdef COMPILER_MINGW
-	, thread_id  (::GetCurrentThreadId())
-	#else
-	, thread_id  (pthread_self()        )
-	#endif // COMPILER_MINGW
-#endif // COMPILER_GCC
-	, idle_cnt   (0                     )
 #endif // RDO_MT
 {
 #ifdef TR_TRACE
