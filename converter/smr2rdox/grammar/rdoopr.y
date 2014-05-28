@@ -247,6 +247,9 @@ opr_keyb
 
 opr_param
 	: opr_param_atomic
+	{
+		$$ = 0;
+	}
 	| opr_param opr_param_atomic
 	{
 		LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
@@ -255,6 +258,8 @@ opr_param
 		);
 		ASSERT(pCommaInsert);
 		CONVERTER->insertDocUpdate(pCommaInsert);
+
+		$$ = $1 + 1;
 	}
 	;
 
@@ -391,7 +396,7 @@ opr_activity
 		{
 			LPDocUpdate pIEDelete = rdo::Factory<UpdateDelete>::create(
 				@1.m_first_seek,
-				@2.m_last_seek
+				@2.m_last_seek + $2
 			);
 			ASSERT(pIEDelete);
 			CONVERTER->insertDocUpdate(pIEDelete);
@@ -424,7 +429,7 @@ opr_activity
 		{
 			LPDocUpdate pIEDelete = rdo::Factory<UpdateDelete>::create(
 				@1.m_first_seek,
-				@3.m_last_seek
+				@3.m_last_seek + $3
 			);
 			ASSERT(pIEDelete);
 			CONVERTER->insertDocUpdate(pIEDelete);
