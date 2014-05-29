@@ -921,8 +921,6 @@ rss_resource
 			{
 				PARSER->error().error(@3, rdo::format("Заданы не все параметры ресурса: '%s'", pResource->name().c_str()));
 			}
-
-			PARSER->insertRSSResource(LPRDORSSResource(pResource));
 		}
 	}
 	| RDO_IDENTIF '.' rss_trace '(' ')'
@@ -992,6 +990,7 @@ rss_constructor_name
 				PARSER->error().error(@1, rdo::format("Неизвестный тип ресурса: %s", pType->value().getIdentificator().c_str()));
 			}
 			LPRDORSSResource pResource = pResType->createRes(PARSER, RDOParserSrcInfo());
+			PARSER->insertRSSResource(LPRDORSSResource(pResource));
 			$$ = PARSER->stack().push(pResource);
 		}
 	}
