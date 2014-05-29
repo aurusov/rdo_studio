@@ -179,6 +179,9 @@ void RDORSSResource::addParam(const LPRDOValue& pParam)
 			LPRDORSSResource pResourceValue = pAddParamValue->value().getPointerByType<RDORTPResType>();
 			ASSERT(pResourceValue);
 
+			pResourceValue->setSrcInfo(pParam->src_info());
+			pResourceValue->setSrcText(std::to_string(getID()) + '_' + (*m_currParam)->name());
+
 			rdo::runtime::LPRDOCalc pCalc = pResourceValue->createCalc();
 
 			pAddParam = rdo::Factory<Expression>::create(
