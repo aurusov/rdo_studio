@@ -701,7 +701,8 @@ void RDOPatternEvent::addRelRes(const RDOParserSrcInfo& rel_info, const RDOParse
 	}
 	if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Erase)
 	{
-		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name());
+		std::size_t num = pRelevantResource->getType()->getNumberOfNestedResources();
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name(), num);
 		ASSERT(pCalc);
 		rdo::runtime::RDOSrcInfo srcInfo(rel_info);
 		srcInfo.setSrcText(rdo::format("Удаление временного ресурса %s", rel_info.src_text().c_str()));
@@ -873,7 +874,8 @@ void RDOPatternRule::addRelRes(const RDOParserSrcInfo& rel_info, const RDOParser
 	}
 	if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Erase)
 	{
-		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name());
+		std::size_t num = pRelevantResource->getType()->getNumberOfNestedResources();
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name(), num);
 		ASSERT(pCalc);
 		rdo::runtime::RDOSrcInfo srcInfo(rel_info);
 		srcInfo.setSrcText(rdo::format("Удаление временного ресурса %s", rel_info.src_text().c_str()));
@@ -1008,7 +1010,8 @@ void RDOPatternOperation::addRelRes(const RDOParserSrcInfo& rel_info, const RDOP
 	}
 	if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Erase)
 	{
-		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name());
+		std::size_t num = pRelevantResource->getType()->getNumberOfNestedResources();
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name(), num);
 		ASSERT(pCalc);
 		rdo::runtime::RDOSrcInfo srcInfo(rel_info);
 		srcInfo.setSrcText(rdo::format("Удаление временного ресурса %s", rel_info.src_text().c_str()));
@@ -1017,7 +1020,8 @@ void RDOPatternOperation::addRelRes(const RDOParserSrcInfo& rel_info, const RDOP
 	}
 	if (pRelevantResource->m_statusEnd == rdo::runtime::RDOResource::CS_Erase)
 	{
-		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name());
+		std::size_t num = pRelevantResource->getType()->getNumberOfNestedResources();
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name(), num);
 		ASSERT(pCalc);
 		rdo::runtime::RDOSrcInfo srcInfo(rel_info);
 		srcInfo.setSrcText(rdo::format("Удаление временного ресурса %s", rel_info.src_text().c_str()));

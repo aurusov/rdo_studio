@@ -41,14 +41,19 @@ RDOValue RDOGetResourceByRelevantResourceID::doCalc(const LPRDORuntime& pRuntime
 // --------------------------------------------------------------------------------
 // -------------------- RDOEraseResRelCalc
 // --------------------------------------------------------------------------------
-RDOEraseResRelCalc::RDOEraseResRelCalc(std::size_t relResID, const std::string& relResName)
-	: m_relResID  (relResID  )
-	, m_relResName(relResName)
+RDOEraseResRelCalc::RDOEraseResRelCalc(std::size_t relResID, const std::string& relResName, const std::size_t& numberOfNestedRes)
+	: m_relResID         (relResID  )
+	, m_relResName       (relResName)
+	, m_numberOfNestedRes(numberOfNestedRes)
 {}
 
 RDOValue RDOEraseResRelCalc::doCalc(const LPRDORuntime& pRuntime)
 {
-	pRuntime->onEraseRes(pRuntime->getCurrentActivity()->getResByRelRes(m_relResID), this);
+	std::size_t resId = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
+	for(std::size_t id = 0; id < m_numberOfNestedRes + 1; ++id)
+	{
+		pRuntime->onEraseRes(resId - id, this);
+	}
 	return RDOValue();
 }
 

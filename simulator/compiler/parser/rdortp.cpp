@@ -334,6 +334,22 @@ void RDORTPResType::setupRuntimeFactory()
 	setFactoryMethod(create);
 }
 
+
+std::size_t RDORTPResType::getNumberOfNestedResources()
+{
+	std::size_t num = 0;
+	for (const auto& param: getParams())
+	{
+		LPRDORTPResType paramType = param->getTypeInfo()->itype().object_dynamic_cast<RDORTPResType>();
+		if (paramType)
+		{
+			++num;
+			num += paramType->getNumberOfNestedResources();
+		}
+	}
+	return num;
+}
+
 /*
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности нечеткого терма
