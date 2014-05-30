@@ -163,6 +163,9 @@ def test_console(dirname, model):
 
     utils.enc_print ('CHECK SIM EXIT CODE  :', simulation_exit_code_string, '\n')
 
+    if simulation_code != exit_code:
+        return cycle_exit_code
+
     # check etalons
     if simulation_code == exit_code and model['etalons'] and len(model['etalons']):
         try:
