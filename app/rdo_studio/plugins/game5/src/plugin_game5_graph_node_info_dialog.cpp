@@ -66,7 +66,11 @@ void PluginGame5GraphNodeInfoDialog::updateDlg(GraphNode* node)
 	buttonPrev->setEnabled(node->getParentGraphNode() != NULL);
 
 	gameBoard->setTilesPositon(node->getBoardState());
-	setFixedSize(sizeHint());
+
+	if (size().width() < sizeHint().width())
+	{
+		setFixedSize(sizeHint());
+	}
 }
 
 void PluginGame5GraphNodeInfoDialog::nextNode()
