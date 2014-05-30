@@ -163,7 +163,7 @@ def test_console(dirname, model):
 
     utils.enc_print ('CHECK SIM EXIT CODE  :', simulation_exit_code_string, '\n')
 
-    if simulation_code != exit_code:
+    if cycle_exit_code == APP_CODE_TERMINATION_ERROR:
         return cycle_exit_code
 
     # check etalons
@@ -174,6 +174,9 @@ def test_console(dirname, model):
         except:
             traceback.print_exc(file=sys.stdout)
             cycle_exit_code = APP_CODE_TERMINATION_ERROR
+
+    if cycle_exit_code == APP_CODE_TERMINATION_ERROR:
+        return cycle_exit_code
 
     # check error log
     elif simulation_code == exit_code and model['log_compilation']:
