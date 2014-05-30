@@ -198,30 +198,34 @@ void Loader::stopPlugin(const LPPluginInfo& pluginInfo)
 	}
 }
 
-void Loader::startPlugin(const LPPluginInfo& pluginInfo)
+void Loader::startPlugin(const LPPluginInfo& pluginInfo, const std::string& commandLine)
 {
 	PluginInterface* pluginInterface = loadPlugin(pluginInfo->getLoader());
 	if (pluginInterface && !pluginInfo->isActive())
 	{
-		pluginInterface->pluginStartAction(m_pPluginsParent);
+		pluginInterface->pluginStartAction(m_pPluginsParent, commandLine);
 		pluginInfo->setActive(true);
 	}
 }
 
-void Loader::dispatchCommand(const LPPluginInfo& pluginInfo, const std::string& commandLine)
+void Loader::autoStartPlugins(const std::map<int, std::string>& options)
 {
-	PluginInterface* pluginInterface = loadPlugin(pluginInfo->getLoader());
-	pluginInterface->executeCommand(commandLine);
-}
-
-void Loader::startAutoloadedPlugins()
-{
+	int index = 0;
 	for (const LPPluginInfo& pluginInfo: *m_pMergedPluginInfoList)
 	{
-		if (pluginInfo->getAutoload() && pluginInfo->isAvailable())
+		if (options.count(index))
 		{
-			startPlugin(pluginInfo);
+			startPlugin(pluginInfo, options.at(index));
 		}
+		else
+		{
+			if (pluginInfo->getAutoload() && pluginInfo->isAvailable())
+			{
+				startPlugin(pluginInfo);
+			}
+		}
+
+		index++;
 	}
 }
 
@@ -237,10 +241,4 @@ void Loader::init(QWidget* pParent)
 	ASSERT(!m_pPluginsParent);
 	ASSERT(pParent);
 	m_pPluginsParent = pParent;
-}
-
-void Loader::consoleCommand(const std::string& params)
-{
-	startPlugin(m_pMergedPluginInfoList->back());
-	dispatchCommand(m_pMergedPluginInfoList->back(), params);
 }

@@ -35,9 +35,8 @@ public:
 	virtual QString getAuthor    () const;
 	virtual QString getVersion   () const;
 
-	virtual void pluginStartAction(QWidget* parent);
+	virtual void pluginStartAction(QWidget* parent, const std::string& commandLine);
 	virtual void pluginStopAction (QWidget* parent);
-	virtual void executeCommand   (const std::string& commandLine);
 
 private:
 	PluginGame5GenerateSituationDialog* m_generateSituationDlg;
@@ -46,6 +45,7 @@ private:
 	void initDialogs(QWidget* pParent);
 	void initToolBar(MainWindow* pParent) const;
 
+	void executeCommand(const std::string& commandLine);
 private slots:
 	void pluginActivation();
 	void reemitGraphDlgAction();

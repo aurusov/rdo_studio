@@ -28,9 +28,8 @@ public:
 	virtual QString getAuthor    () const = 0;
 	virtual QString getVersion   () const = 0;
 
-	virtual void pluginStartAction(QWidget* parent) = 0;
+	virtual void pluginStartAction(QWidget* parent,  const std::string& commandLine) = 0;
 	virtual void pluginStopAction (QWidget* parent) = 0;
-	virtual void executeCommand   (const std::string& commandLine) = 0;
 };
 
 Q_DECLARE_INTERFACE(PluginInterface, "RDO_PLUGIN_INTERFACE");

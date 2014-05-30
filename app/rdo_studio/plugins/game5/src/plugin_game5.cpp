@@ -101,7 +101,7 @@ QUuid PluginGame5::getGUID()  const
 	return pluginGUID;
 }
 
-void PluginGame5::pluginStartAction(QWidget* pParent)
+void PluginGame5::pluginStartAction(QWidget* pParent, const std::string& commandLine)
 {
 	if (!g_pApp)
 	{
@@ -109,6 +109,11 @@ void PluginGame5::pluginStartAction(QWidget* pParent)
 		g_pModel  = g_pApp->getMainWndUI()->getModel();
 		g_pTracer = g_pApp->getTracer();
 		kernel    = g_pApp->getKernel();
+	}
+
+	if (!commandLine.empty())
+	{
+		executeCommand(commandLine);
 	}
 
 	QMenu* pluginMenu = findPluginMenu(pParent);
@@ -155,33 +160,33 @@ void PluginGame5::pluginStopAction(QWidget* pParent)
 
 void PluginGame5::executeCommand(const std::string& commandLine)
 {
-	if (g_pModel && g_pApp)
+	if (!g_pModel || !g_pApp)
+		return;
+
+	if (!g_pModel->getTab())
+		return;
+
+	QStringList positionList = QString::fromStdString(commandLine).split(' ', QString::SkipEmptyParts);
+	std::vector<unsigned int> newState;
+	for (const auto& position: positionList)
 	{
-		if (g_pModel->getTab())
-		{
-			QStringList positionList = QString::fromStdString(commandLine).split(' ', QString::SkipEmptyParts);
-			std::vector<unsigned int> newState;
-			for (const auto& position: positionList)
-			{
-				newState.push_back(position.toInt());
-			}
-			Board gameBoard;
-			gameBoard.setTilesPositon(newState);
-
-			for (int i = 0; i < g_pModel->getTab()->tabBar()->count(); i++)
-			{
-				g_pModel->getTab()->getItemEdit(i)->clearAll();
-			}
-			g_pModel->getTab()->getItemEdit(rdo::model::RTP)->appendText(PluginGame5ModelGenerator::modelRTP(gameBoard));
-			g_pModel->getTab()->getItemEdit(rdo::model::RSS)->appendText(PluginGame5ModelGenerator::modelRSS(gameBoard));
-			g_pModel->getTab()->getItemEdit(rdo::model::PAT)->appendText(PluginGame5ModelGenerator::modelPAT());
-			g_pModel->getTab()->getItemEdit(rdo::model::DPT)->appendText(PluginGame5ModelGenerator::modelDPT(gameBoard));
-			g_pModel->getTab()->getItemEdit(rdo::model::FUN)->appendText(PluginGame5ModelGenerator::modelFUN(gameBoard));
-
-			g_pModel->saveModel();
-			g_pApp->quit();
-		}
+		newState.push_back(position.toInt());
 	}
+	Board board;
+	board.setTilesPositon(newState);
+
+	for (int i = 0; i < g_pModel->getTab()->tabBar()->count(); i++)
+	{
+		g_pModel->getTab()->getItemEdit(i)->clearAll();
+	}
+	g_pModel->getTab()->getItemEdit(rdo::model::RTP)->appendText(PluginGame5ModelGenerator::modelRTP(board));
+	g_pModel->getTab()->getItemEdit(rdo::model::RSS)->appendText(PluginGame5ModelGenerator::modelRSS(board));
+	g_pModel->getTab()->getItemEdit(rdo::model::PAT)->appendText(PluginGame5ModelGenerator::modelPAT());
+	g_pModel->getTab()->getItemEdit(rdo::model::DPT)->appendText(PluginGame5ModelGenerator::modelDPT(board));
+	g_pModel->getTab()->getItemEdit(rdo::model::FUN)->appendText(PluginGame5ModelGenerator::modelFUN(board));
+
+	g_pModel->saveModel();
+	g_pApp->quit();
 }
 
 void PluginGame5::pluginActivation()
