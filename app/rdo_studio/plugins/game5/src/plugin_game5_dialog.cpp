@@ -91,7 +91,7 @@ void PluginGame5GenerateSituationDialog::onClickHide(bool state)
 void PluginGame5GenerateSituationDialog::onClickOk()
 {
 	rdo::gui::model::Model* pModel = getCurrentModel();
-	updateTabs();
+	generateModel();
 	pModel->runModel();
 	done(Accepted);
 }
@@ -195,7 +195,7 @@ void PluginGame5GenerateSituationDialog::callTilesOrderDialog()
 	dlg.exec();
 }
 
-void PluginGame5GenerateSituationDialog::updateTabs() const
+void PluginGame5GenerateSituationDialog::generateModel() const
 {
 	rdo::gui::model::Model* pModel = getCurrentModel();
 	if (pModel->getTab())

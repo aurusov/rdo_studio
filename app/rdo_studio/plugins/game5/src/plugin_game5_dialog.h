@@ -48,7 +48,7 @@ private:
 
 	void clearAllTabs() const;
 	rdo::gui::model::Model* getCurrentModel() const;
-	void updateTabs() const;
+	void generateModel() const;
 
 	QStringList parseModelFUN() const;
 
