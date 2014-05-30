@@ -45,7 +45,7 @@ GraphNodeInfo::GraphNodeInfo(const GraphNodeInfo& other)
 	, m_tileMoveFrom(other.m_tileMoveFrom)
 	, m_tileMoveTo(other.m_tileMoveTo)
 	, m_relatedToSolutionState(other.m_relatedToSolutionState)
-    , m_boardState(other.m_boardState)
+	, m_boardState(other.m_boardState)
 {}
 
 GraphNodeInfo::GraphNodeInfo()
