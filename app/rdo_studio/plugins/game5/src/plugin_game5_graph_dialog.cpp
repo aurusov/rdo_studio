@@ -212,10 +212,15 @@ std::vector<GraphNodeInfo> PluginGame5GraphDialog::parseTrace(const std::vector<
 	return parsingResult;
 }
 
-std::vector<std::vector<GraphNode*>> PluginGame5GraphDialog::generateGraphNodes(std::vector<GraphNodeInfo>& parsingResult) const
+std::vector<std::vector<GraphNode*> > PluginGame5GraphDialog::generateGraphNodes(std::vector<GraphNodeInfo>& parsingResult) const
 {
 	std::vector<GraphNode*> tempStorage;
 	tempStorage.resize(parsingResult.size());
+	for (GraphNode* temp: tempStorage)
+	{
+		temp = NULL;
+	}
+
 	std::vector<std::vector<GraphNode*>> graphTree;
 	for (const GraphNodeInfo& info: parsingResult)
 	{
@@ -226,7 +231,13 @@ std::vector<std::vector<GraphNode*>> PluginGame5GraphDialog::generateGraphNodes(
 			graphTree.push_back(std::vector<GraphNode*>());
 		}
 
-		GraphNode* parentNode = info.m_parentNodeId ? tempStorage[info.m_parentNodeId - 1] : NULL;
+		GraphNode* parentNode = NULL;
+		if (info.m_parentNodeId)
+		{
+			ASSERT(tempStorage[info.m_parentNodeId - 1]);
+			parentNode = tempStorage[info.m_parentNodeId - 1];
+		}
+
 		GraphNode* node = new GraphNode(info, parentNode, m_nodeWidth, m_nodeHeight);
 		connect(node, &GraphNode::clickedNode  , this, &PluginGame5GraphDialog::updateCheckedNode);
 		connect(node, &GraphNode::doubleClicked, this, &PluginGame5GraphDialog::emitShowNodeInfoDlg);
