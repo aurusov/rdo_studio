@@ -18,8 +18,6 @@
 class PluginGame5ModelGenerator
 {
 public:
-	PluginGame5ModelGenerator();
-
 	static QString modelRTP(const Board& gameBoard);
 	static QString modelRSS(const Board& gameBoard);
 	static QString modelPAT();

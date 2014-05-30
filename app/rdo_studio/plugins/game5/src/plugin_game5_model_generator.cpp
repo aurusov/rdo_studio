@@ -16,9 +16,6 @@
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_model_generator.h"
 // --------------------------------------------------------------------------------
 
-PluginGame5ModelGenerator::PluginGame5ModelGenerator()
-{}
-
 QString PluginGame5ModelGenerator::modelRTP(const Board& gameBoard)
 {
 	std::stringstream RTPtabTextStream;
