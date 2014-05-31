@@ -1090,6 +1090,17 @@ bool RDOValue::onPointerEqual(const RDOValue& rdovalue) const
 		}
 	}
 
+	LPRDOResourceTypeList pThisResourceType = m_pType.object_dynamic_cast<RDOResourceTypeList>();
+	if (pThisResourceType)
+	{
+		LPRDOResource pThisResource = getPointerByType<RDOResourceTypeList>();
+		LPRDOResource pOtherResource = rdovalue.getPointerByType<RDOResourceTypeList>();
+		if (pThisResource && pOtherResource)
+		{
+			return pThisResource == pOtherResource;
+		}
+	}
+
 	throw RDOValueException("Для rdo::runtime::RDOValue не определен метод onPointerEqual()");
 }
 
