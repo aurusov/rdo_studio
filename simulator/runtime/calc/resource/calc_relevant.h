@@ -41,11 +41,10 @@ public:
 	const std::string& getName() const;
 
 private:
-	RDOEraseResRelCalc(std::size_t relResID, const std::string& relResName, const std::size_t& numberOfNestedRes = 0);
+	RDOEraseResRelCalc(std::size_t relResID, const std::string& relResName);
 
 	std::size_t m_relResID;
 	std::string m_relResName;
-	std::size_t m_numberOfNestedRes;
 
 	DECLARE_ICalc;
 };

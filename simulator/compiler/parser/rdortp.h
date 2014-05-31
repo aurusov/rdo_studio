@@ -77,8 +77,6 @@ public:
 
 	void writeModelStructure(std::ostream& stream) const;
 
-	std::size_t getNumberOfNestedResources();
-
 	DECLARE_IType;
 
 private:
