@@ -255,4 +255,17 @@ std::string RDOResource::traceTypeId()
 	return m_typeId.empty() ? (m_typeId = getTypeId()) : m_typeId;
 }
 
+void RDOResource::onDestroy(const LPRDORuntime& pRuntime, const LPRDOEraseResRelCalc& pCalc)
+{
+	for (auto& param: m_paramList)
+	{
+		if(param.type().object_dynamic_cast<RDOResourceTypeList>())
+		{
+			LPRDOResource pNestedResource = param.getPointerByType<RDOResourceTypeList>();
+			pNestedResource->onDestroy(pRuntime, pCalc);
+		}
+	}
+	pRuntime->onEraseRes(getTraceID(), pCalc);
+}
+
 CLOSE_RDO_RUNTIME_NAMESPACE
