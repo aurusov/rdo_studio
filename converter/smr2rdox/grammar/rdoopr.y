@@ -252,14 +252,16 @@ opr_param
 	}
 	| opr_param opr_param_atomic
 	{
+		const std::string comma(",");
+
 		LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
 			@1.m_last_seek,
-			","
+			comma
 		);
 		ASSERT(pCommaInsert);
 		CONVERTER->insertDocUpdate(pCommaInsert);
 
-		$$ = $1 + 1;
+		$$ = $1 + comma.length();
 	}
 	;
 
