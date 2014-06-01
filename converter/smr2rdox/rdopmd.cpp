@@ -3,8 +3,8 @@
   \file      rdopmd.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -98,7 +98,9 @@ RDOPMDWatchPar::RDOPMDWatchPar(const RDOParserSrcInfo& src_info, bool trace, con
 		Converter::s_converter()->error().push_only(pParam->getType()->src_info(), "См. тип параметра");
 		Converter::s_converter()->error().push_done();
 	}
-	endOfCreation(rdo::Factory<rdo::runtime::RDOPMDWatchPar>::create(Converter::s_converter()->runtime(), src_text(), trace, res_src_info.src_text(), par_src_info.src_text(), pResource->getID(), pResource->getType()->getRTPParamNumber(par_src_info.src_text())));
+	
+	rdo::runtime::LPRDOCalcConst pResID = rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(pResource->getID()));
+	endOfCreation(rdo::Factory<rdo::runtime::RDOPMDWatchPar>::create(Converter::s_converter()->runtime(), src_text(), trace, res_src_info.src_text(), par_src_info.src_text(), pResID, pResource->getType()->getRTPParamNumber(par_src_info.src_text())));
 }
 
 // --------------------------------------------------------------------------------

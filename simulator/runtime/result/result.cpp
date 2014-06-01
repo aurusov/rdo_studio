@@ -120,12 +120,12 @@ void RDOPMDResult::printLeft(std::ostream& stream, const std::string& txt)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchPar
 // --------------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& /*resName*/, const std::string& /*parName*/, std::size_t resourceID, std::size_t paramID)
+RDOPMDWatchPar::RDOPMDWatchPar(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& /*resName*/, const std::string& /*parName*/, const LPRDOCalc& getResourceID, std::size_t paramID)
 	: RDOPMDResult  (pRuntime, name, trace)
-	, m_resourceID  (resourceID           )
 	, m_paramID     (paramID              )
 	, m_wasFinalCalc(false                )
 {
+	m_resourceID = getResourceID->calcValue(pRuntime).getUInt();
 	pRuntime->notify().connect(this, Notify::RO_BEFOREDELETE);
 }
 

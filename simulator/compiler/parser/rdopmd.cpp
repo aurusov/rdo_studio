@@ -179,7 +179,9 @@ void RDOPMDWatchPar::init(bool trace, const RDOParserSrcInfo& res_src_info, cons
 		RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), "См. тип параметра");
 		RDOParser::s_parser()->error().push_done();
 	}
-	endOfCreation(rdo::Factory<rdo::runtime::RDOPMDWatchPar>::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_src_info.src_text(), par_src_info.src_text(), pResource->getID(), pResource->getType()->getRTPParamNumber(par_src_info.src_text())));
+
+	rdo::runtime::LPRDOCalcConst pResID = rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(pResource->getID()));
+	endOfCreation(rdo::Factory<rdo::runtime::RDOPMDWatchPar>::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_src_info.src_text(), par_src_info.src_text(), pResID, pResource->getType()->getRTPParamNumber(par_src_info.src_text())));
 }
 
 // --------------------------------------------------------------------------------
