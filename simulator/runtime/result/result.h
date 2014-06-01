@@ -87,7 +87,7 @@ private:
 		double
 	> acc_type;
 
-	RDOPMDWatchPar(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& resName, const std::string& parName, const LPRDOCalc& getResourceID, std::size_t paramID);
+	RDOPMDWatchPar(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& resName, const std::string& parName, const LPRDOCalc& pResourceCalc, std::size_t paramID);
 	virtual ~RDOPMDWatchPar();
 
 	struct CurrentValue
@@ -109,6 +109,7 @@ private:
 	};
 
 	LPRDOResource m_pResource;
+	LPRDOCalc m_pResourceCalc;
 	std::size_t m_resourceID;
 	std::size_t m_paramID;
 	CurrentValue m_currentValue;

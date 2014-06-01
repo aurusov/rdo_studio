@@ -120,12 +120,12 @@ void RDOPMDResult::printLeft(std::ostream& stream, const std::string& txt)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchPar
 // --------------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& /*resName*/, const std::string& /*parName*/, const LPRDOCalc& getResourceID, std::size_t paramID)
-	: RDOPMDResult  (pRuntime, name, trace)
-	, m_paramID     (paramID              )
-	, m_wasFinalCalc(false                )
+RDOPMDWatchPar::RDOPMDWatchPar(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& /*resName*/, const std::string& /*parName*/, const LPRDOCalc& pResourceCalc, std::size_t paramID)
+	: RDOPMDResult   (pRuntime, name, trace)
+	, m_pResourceCalc(pResourceCalc        )
+	, m_paramID      (paramID              )
+	, m_wasFinalCalc (false                )
 {
-	m_resourceID = getResourceID->calcValue(pRuntime).getUInt();
 	pRuntime->notify().connect(this, Notify::RO_BEFOREDELETE);
 }
 
@@ -150,8 +150,9 @@ void RDOPMDWatchPar::resetResult(const LPRDORuntime& pRuntime)
 {
 	ASSERT(pRuntime);
 
-	m_pResource = pRuntime->getResourceByID(m_resourceID);
+	m_pResource = m_pResourceCalc->calcValue(pRuntime).getPointerByType<RDOResourceTypeList>();
 	ASSERT(m_pResource);
+	m_resourceID = m_pResource->getTraceID();
 
 	m_currentValue = m_pResource->getParam(m_paramID);
 	m_timePrev     = m_timeBegin = m_timeErase = pRuntime->getCurrentTime();

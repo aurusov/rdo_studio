@@ -8122,35 +8122,45 @@ pmd_result_watch_value_begin
 	;
 
 pmd_result
-	: RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' RDO_IDENTIF
+	: RDO_IDENTIF_COLON pmd_trace RDO_watch_par param_full_name
 	{
 		#PASS2
 		{
 			LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(PARSER->stack().pop<RDOValue>($1)->src_info());
 			ASSERT(pResult);
-			pResult->init($2 != 0, PARSER->stack().pop<RDOValue>($4)->src_info(), PARSER->stack().pop<RDOValue>($6)->src_info());
+
+			Context::LPFindResult pParamResult = PARSER->stack().pop<Context::FindResult>($4);
+			ASSERT(pParamResult->getSwitchContext());
+			LPContext pParamContext = pParamResult->getSwitchContext().context;
+			ASSERT(pParamContext);
+
+			Context::Params params = pParamResult->getSwitchContext().params;
+
+			LPRDORTPResType pType = pParamContext.object_dynamic_cast<RDORTPResType>();
+			if (pType)
+			{
+				PARSER->error().error(@4, "Невозможно наблюдать за параметром типа ресурса");
+			}
+			LPRDORTPParam pParam = pParamContext.object_dynamic_cast<RDORTPParam>();
+			if (!pParam)
+			{
+				PARSER->error().error(@4, "Ожидается имя параметра");
+			}
+
+			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(@4);
+			srcInfo.setSrcText(params.identifier());
+			pParam->setSrcInfo(srcInfo);
+			pResult->checkParam(pParam);
+
+			pResult->initFromParam($2 != 0, pParam, params.get<LPExpression>(RDORSSResource::GET_RESOURCE)->calc(), params.get<std::size_t>(RDOParam::CONTEXT_PARAM_PARAM_ID));
 			$$ = PARSER->stack().push(pResult);
-		}
-	}
-	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' error
-	{
-		#PASS2
-		{
-			PARSER->error().error(@5, @6, "Ожидается имя параметра");
-		}
-	}
-	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF error
-	{
-		#PASS2
-		{
-			PARSER->error().error(@4, "Ожидается '.'");
 		}
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par error
 	{
 		#PASS2
 		{
-			PARSER->error().error(@3, @4, "После ключевого слова watch_par ожидается имя ресурса");
+			PARSER->error().error(@3, @4, "Синтаксическая ошибка в имени параметра");
 		}
 	}
 	| RDO_IDENTIF_COLON pmd_trace error
