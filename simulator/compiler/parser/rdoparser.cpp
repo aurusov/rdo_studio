@@ -243,45 +243,6 @@ LPExpression contextTerminateCounter(const RDOParserSrcInfo& srcInfo)
 	);
 }
 
-LPExpression contextGetResource(const LPRDORSSResource& resource, const RDOParserSrcInfo& srcInfo)
-{
-	return resource->createGetResourceExpression(srcInfo);
-}
-
-LPExpression contextConstant(const LPRDOFUNConstant& constant, const RDOParserSrcInfo& srcInfo)
-{
-	return rdo::Factory<Expression>::create(
-		constant->getTypeInfo(),
-		rdo::Factory<rdo::runtime::RDOCalcGetConst>::create(constant->getNumber()),
-		srcInfo
-	);
-}
-
-LPExpression contextSequence(const std::string& name, const RDOParserSrcInfo& srcInfo)
-{
-	LPRDOFUNParams pParams = rdo::Factory<RDOFUNParams>::create(
-		rdo::Factory<ArithmContainer>::create()
-	);
-	LPRDOFUNArithm pArithm = pParams->createSeqCall(name);
-	pArithm->setSrcInfo(srcInfo);
-
-	return rdo::Factory<Expression>::create(
-		pArithm->typeInfo(),
-		pArithm->calc(),
-		srcInfo
-	);
-}
-
-LPExpression contextUnknownEnum(const rdo::runtime::LPRDOEnumType& enumType, std::size_t index, const RDOParserSrcInfo& srcInfo)
-{
-	LPTypeInfo typeInfo = rdo::Factory<TypeInfo>::delegate<RDOType__identificator>(srcInfo);
-	return rdo::Factory<Expression>::create(
-		typeInfo,
-		rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(enumType->getValues()[index], typeInfo->type())),
-		srcInfo
-	);
-}
-
 }
 
 Context::FindResult RDOParser::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
@@ -301,6 +262,18 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 		else if (identifier == "Terminate_counter" || identifier == "terminate_counter")
 		{
 			return FindResult(CreateExpression(boost::bind(&contextTerminateCounter, srcInfo)));
+		}
+	}
+
+	if (method == Context::METHOD_OPERATOR_DOT)
+	{
+		LPRDOParser pThis(const_cast<RDOParser*>(this));
+		if (identifier == "Time_now" || identifier == "time_now"
+			|| identifier == "Системное_время" || identifier == "системное_время"
+			|| identifier == "Seconds" || identifier == "seconds"
+			|| identifier == "Terminate_counter" || identifier == "terminate_counter")
+		{
+			return FindResult(SwitchContext(pThis, params));
 		}
 	}
 
@@ -344,29 +317,17 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 		{
 			return FindResult(SwitchContext(pResultGroup, params));
 		}
-	}
 
-	if (method == Context::METHOD_GET)
-	{
-		//! Ресурсы
-		LPRDORSSResource pResource = findRSSResource(identifier);
-		if (pResource)
-		{
-			return FindResult(CreateExpression(boost::bind(&contextGetResource, pResource, srcInfo)));
-		}
-
-		//! Константы
 		LPRDOFUNConstant pConstant = findFUNConstant(identifier);
 		if (pConstant)
 		{
-			return FindResult(CreateExpression(boost::bind(&contextConstant, pConstant, srcInfo)));
+			return FindResult(SwitchContext(pConstant, params));
 		}
 
-		//! Последовательности
 		LPRDOFUNSequence pSequence = findFUNSequence(identifier);
 		if (pSequence)
 		{
-			return FindResult(CreateExpression(boost::bind(&contextSequence, identifier, srcInfo)));
+			return FindResult(SwitchContext(pSequence, params));
 		}
 
 		//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
@@ -381,50 +342,11 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 				std::size_t index = enumType->findEnum(identifier);
 				if (index != rdo::runtime::RDOEnumType::END)
 				{
-					return FindResult(CreateExpression(boost::bind(&contextUnknownEnum, enumType, index, srcInfo)));
+					return FindResult(SwitchContext(enumType, params));
 				}
 			}
 		}
-	}
-
-	if (method == Context::METHOD_OPERATOR_DOT)
-	{
-		LPRDOParser pThis(const_cast<RDOParser*>(this));
-		if (identifier == "Time_now" || identifier == "time_now"
-			|| identifier == "Системное_время" || identifier == "системное_время"
-			|| identifier == "Seconds" || identifier == "seconds"
-			|| identifier == "Terminate_counter" || identifier == "terminate_counter")
-		{
-			return FindResult(SwitchContext(pThis, params));
-		}
-		//! Константы
-		LPRDOFUNConstant pConstant = findFUNConstant(identifier);
-		if (pConstant)
-		{
-			return FindResult(SwitchContext(pThis, params));
-		}
-		//! Последовательности
-		LPRDOFUNSequence pSequence = findFUNSequence(identifier);
-		if (pSequence)
-		{
-			return FindResult(SwitchContext(pThis, params));
-		}
-		//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
-		//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
-		{
-			ErrorBlockMonicker errorBlockMonicker;
-			for (const LPTypeInfo& type: m_preCastTypeList)
-			{
-				LPRDOEnumType enumType = type->itype().object_dynamic_cast<RDOEnumType>();
-				ASSERT(enumType);
-
-				std::size_t index = enumType->findEnum(identifier);
-				if (index != rdo::runtime::RDOEnumType::END)
-				{
-					return FindResult(SwitchContext(pThis, params));
-				}
-			}
-		}
+		
 	}
 
 	return Context::FindResult();

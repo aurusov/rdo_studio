@@ -666,6 +666,30 @@ RDOFUNConstant::RDOFUNConstant(const RDOParserSrcInfo& srcInfo, const LPTypeInfo
 RDOFUNConstant::~RDOFUNConstant()
 {}
 
+namespace
+{
+
+LPExpression contextConstant(const LPTypeInfo pTypeInfo, const int& number, const RDOParserSrcInfo& srcInfo)
+{
+	return rdo::Factory<Expression>::create(
+		pTypeInfo,
+		rdo::Factory<rdo::runtime::RDOCalcGetConst>::create(number),
+		srcInfo
+	);
+}
+
+}
+
+Context::FindResult RDOFUNConstant::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+{
+	if (method == Context::METHOD_GET)
+	{
+		return FindResult(CreateExpression(boost::bind(&contextConstant, getTypeInfo(), getNumber(), srcInfo)));
+	}
+
+	return FindResult();
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- ArithmContainer
 // --------------------------------------------------------------------------------
@@ -888,6 +912,36 @@ void RDOFUNSequence::initCalcSrcInfo()
 		m_pInitCalc->setSrcInfo(srcInfo);
 	}
 	m_pNextCalc->setSrcInfo(m_pHeader->src_info());
+}
+
+namespace
+{
+
+LPExpression contextSequence(const std::string& name, const RDOParserSrcInfo& srcInfo)
+{
+	LPRDOFUNParams pParams = rdo::Factory<RDOFUNParams>::create(
+		rdo::Factory<ArithmContainer>::create()
+	);
+	LPRDOFUNArithm pArithm = pParams->createSeqCall(name);
+	pArithm->setSrcInfo(srcInfo);
+
+	return rdo::Factory<Expression>::create(
+		pArithm->typeInfo(),
+		pArithm->calc(),
+		srcInfo
+	);
+}
+
+}
+
+Context::FindResult RDOFUNSequence::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+{
+	if (method == Context::METHOD_GET)
+	{
+		return FindResult(CreateExpression(boost::bind(&contextSequence, name(), srcInfo)));
+	}
+
+	return FindResult();
 }
 
 // --------------------------------------------------------------------------------

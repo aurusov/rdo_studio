@@ -2,14 +2,15 @@
   \copyright (c) RDO-Team, 2011
   \file      enum.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/type/enum.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -183,6 +184,33 @@ void RDOEnumType::add(const LPRDOValue& pNext)
 		parser::g_error().error(pNext->src_info(), rdo::format("Значение перечислимого типа уже существует: %s", pNext->src_text().c_str()));
 	}
 	rdo::runtime::RDOEnumType::add(pNext->value().getAsString());
+}
+
+namespace
+{
+
+LPExpression contextUnknownEnum(const RDOEnumType::EnumItem& enumValue, std::size_t index, const RDOParserSrcInfo& srcInfo)
+{
+	LPTypeInfo typeInfo = rdo::Factory<TypeInfo>::delegate<RDOType__identificator>(srcInfo);
+	return rdo::Factory<Expression>::create(
+		typeInfo,
+		rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(enumValue, typeInfo->type())),
+		srcInfo
+	);
+}
+
+}
+
+Context::FindResult RDOEnumType::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+{
+	if (method == Context::METHOD_GET)
+	{
+		std::size_t index = findEnum(params.identifier());
+		EnumItem enumValue = getValues()[index];
+		return FindResult(CreateExpression(boost::bind(&contextUnknownEnum, enumValue, index, srcInfo)));
+	}
+
+	return FindResult();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

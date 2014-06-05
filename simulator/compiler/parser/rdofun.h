@@ -209,6 +209,8 @@ private:
 	virtual ~RDOFUNConstant();
 
 	int m_number;
+
+	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDOFUNConstant);
 
@@ -270,8 +272,10 @@ private:
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOFUNSequence);
 class RDOFUNSequence
-	: public rdo::counter_reference
+	: public virtual rdo::counter_reference
 	, public RDOParserSrcInfo
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDOFUNSequence);
 public:
@@ -312,6 +316,8 @@ protected:
 
 	void initResult     ();
 	void initCalcSrcInfo();
+
+	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 
 // --------------------------------------------------------------------------------
