@@ -216,9 +216,11 @@ std::vector<std::vector<GraphNode*> > PluginGame5GraphDialog::generateGraphNodes
 {
 	std::vector<GraphNode*> tempStorage;
 	tempStorage.resize(parsingResult.size());
-	for (GraphNode* temp: tempStorage)
+	auto it = tempStorage.begin();
+	while (it != tempStorage.end())
 	{
-		temp = NULL;
+		*it = NULL;
+		++it;
 	}
 
 	std::vector<std::vector<GraphNode*>> graphTree;
