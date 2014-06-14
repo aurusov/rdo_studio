@@ -32,8 +32,8 @@ public:
 
 	const LPPluginInfoList& getPluginInfoList     () const;
 	void                    stopPlugin            (const LPPluginInfo& pluginInfo);
-	void                    startPlugin           (const LPPluginInfo& pluginInfo);
-	void                    startAutoloadedPlugins();
+	void                    startPlugin           (const LPPluginInfo& pluginInfo, const std::string& commandLine = "");
+	void                    autoStartPlugins(const std::map<int, std::string>& options);
 	void                    setPluginInfoList     (const PluginInfoList& value) const;
 	void                    init                  (QWidget* pParent);
 

@@ -191,31 +191,41 @@ PluginInfo Loader::generatePluginInfo(PluginInterface* pluginInterface, QPluginL
 void Loader::stopPlugin(const LPPluginInfo& pluginInfo)
 {
 	PluginInterface* pluginInterface = loadPlugin(pluginInfo->getLoader());
-	if (pluginInterface)
+	if (pluginInterface && pluginInfo->isActive())
 	{
 		pluginInterface->pluginStopAction(m_pPluginsParent);
 		pluginInfo->setActive(false);
 	}
 }
 
-void Loader::startPlugin(const LPPluginInfo& pluginInfo)
+void Loader::startPlugin(const LPPluginInfo& pluginInfo, const std::string& commandLine)
 {
 	PluginInterface* pluginInterface = loadPlugin(pluginInfo->getLoader());
-	if (pluginInterface)
+	if (pluginInterface && !pluginInfo->isActive())
 	{
-		pluginInterface->pluginStartAction(m_pPluginsParent);
+		pluginInterface->pluginStartAction(m_pPluginsParent, commandLine);
 		pluginInfo->setActive(true);
 	}
 }
 
-void Loader::startAutoloadedPlugins()
+void Loader::autoStartPlugins(const std::map<int, std::string>& options)
 {
+	int index = 0;
 	for (const LPPluginInfo& pluginInfo: *m_pMergedPluginInfoList)
 	{
-		if (pluginInfo->getAutoload() && pluginInfo->isAvailable())
+		if (options.count(index))
 		{
-			startPlugin(pluginInfo);
+			startPlugin(pluginInfo, options.at(index));
 		}
+		else
+		{
+			if (pluginInfo->getAutoload() && pluginInfo->isAvailable())
+			{
+				startPlugin(pluginInfo);
+			}
+		}
+
+		index++;
 	}
 }
 

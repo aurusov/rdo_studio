@@ -27,6 +27,8 @@ SET(PLUGIN_GAME5_MOC_FILES
 SET(SRC_FILES
 	src/plugin_game5.h
 	src/plugin_game5.cpp
+	src/plugin_game5_model_generator.h
+	src/plugin_game5_model_generator.cpp
 )
 
 SET(COMPLETER_FILES

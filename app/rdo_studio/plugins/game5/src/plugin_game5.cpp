@@ -17,11 +17,13 @@
 #include <boost/filesystem.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/plugins/game5/src/plugin_game5.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/tracer/tracer.h"
 #include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/model/model_tab_ctrl.h"
+#include "app/rdo_studio/src/tracer/tracer.h"
+#include "app/rdo_studio/plugins/game5/src/board.h"
+#include "app/rdo_studio/plugins/game5/src/plugin_game5.h"
+#include "app/rdo_studio/plugins/game5/src/plugin_game5_model_generator.h"
 #include "utils/src/common/model_objects.h"
 // --------------------------------------------------------------------------------
 
@@ -99,7 +101,7 @@ QUuid PluginGame5::getGUID()  const
 	return pluginGUID;
 }
 
-void PluginGame5::pluginStartAction(QWidget* pParent)
+void PluginGame5::pluginStartAction(QWidget* pParent, const std::string& commandLine)
 {
 	if (!g_pApp)
 	{
@@ -107,6 +109,11 @@ void PluginGame5::pluginStartAction(QWidget* pParent)
 		g_pModel  = g_pApp->getMainWndUI()->getModel();
 		g_pTracer = g_pApp->getTracer();
 		kernel    = g_pApp->getKernel();
+	}
+
+	if (!commandLine.empty())
+	{
+		executeCommand(commandLine);
 	}
 
 	QMenu* pluginMenu = findPluginMenu(pParent);
@@ -153,6 +160,37 @@ void PluginGame5::pluginStopAction(QWidget* pParent)
 	           this    , &PluginGame5::reemitGraphDlgAction);
 	disconnect(g_pModel, &rdo::gui::model::Model::actionUpdated,
 	           this    , &PluginGame5::enablePluginActions);
+}
+
+void PluginGame5::executeCommand(const std::string& commandLine)
+{
+	if (!g_pModel || !g_pApp)
+		return;
+
+	if (!g_pModel->getTab())
+		return;
+
+	QStringList positionList = QString::fromStdString(commandLine).split(' ', QString::SkipEmptyParts);
+	std::vector<unsigned int> newState;
+	for (const auto& position: positionList)
+	{
+		newState.push_back(position.toInt());
+	}
+	Board board;
+	board.setTilesPositon(newState);
+
+	for (int i = 0; i < g_pModel->getTab()->tabBar()->count(); i++)
+	{
+		g_pModel->getTab()->getItemEdit(i)->clearAll();
+	}
+	g_pModel->getTab()->getItemEdit(rdo::model::RTP)->appendText(PluginGame5ModelGenerator::modelRTP(board));
+	g_pModel->getTab()->getItemEdit(rdo::model::RSS)->appendText(PluginGame5ModelGenerator::modelRSS(board));
+	g_pModel->getTab()->getItemEdit(rdo::model::PAT)->appendText(PluginGame5ModelGenerator::modelPAT());
+	g_pModel->getTab()->getItemEdit(rdo::model::DPT)->appendText(PluginGame5ModelGenerator::modelDPT(board));
+	g_pModel->getTab()->getItemEdit(rdo::model::FUN)->appendText(PluginGame5ModelGenerator::modelFUN(board));
+
+	g_pModel->saveModel();
+	g_pApp->quit();
 }
 
 void PluginGame5::pluginActivation()

@@ -86,6 +86,8 @@ public:
 	bool  canBuild  () const;
 	bool  canRun    () const;
 
+	bool saveModel () const;
+
 protected:
 	virtual void proc(RDOThread::RDOMessageInfo& msg);
 
@@ -126,7 +128,6 @@ private:
 	QString                                 m_name;
 
 	bool newModel  (const QString& modelName, const QString& modelPath, std::size_t templateIndex);
-	bool saveModel () const;
 	bool buildModel();
 	bool stopModel () const;
 

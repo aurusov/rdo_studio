@@ -20,7 +20,7 @@ PluginGame5GraphNodeInfoDialog::PluginGame5GraphNodeInfoDialog(QWidget* pParent)
 	, m_pNode(NULL)
 {
 	setupUi(this);
-	gameBoard->init(true);
+	gameBoard->setTilesDisabled(true);
 
 	buttonNext->setIcon(style()->standardIcon(QStyle::SP_ArrowForward));
 	buttonPrev->setIcon(style()->standardIcon(QStyle::SP_ArrowBack));
