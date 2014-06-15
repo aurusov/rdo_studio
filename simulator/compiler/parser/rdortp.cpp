@@ -31,9 +31,10 @@ rdo::runtime::LPRDOResource createSimpleResource(
 	std::size_t resource_id,
 	std::size_t type_id,
 	bool trace,
-	bool temporary)
+	bool temporary,
+	bool isNested)
 {
-	return rdo::Factory<rdo::runtime::RDOResource>::create(runtime, params, type, resource_id, type_id, trace, temporary);
+	return rdo::Factory<rdo::runtime::RDOResource>::create(runtime, params, type, resource_id, type_id, trace, temporary, isNested);
 }
 
 rdo::runtime::LPRDOPROCResource createProcessResource(
@@ -320,7 +321,7 @@ void RDORTPResType::setupRuntimeFactory()
 	switch (subtype)
 	{
 	case RT_SIMPLE:
-		create = boost::bind(&createSimpleResource, _1, _2, _3, _4, _5, _6, _7);
+		create = boost::bind(&createSimpleResource, _1, _2, _3, _4, _5, _6, _7, _8);
 		break;
 	case RT_PROCESS_RESOURCE:
 		create = boost::bind(&createProcessResource, _1, _2, _3, _4, _5, _6, _7);

@@ -32,6 +32,7 @@ private:
 		std::size_t resourceTypeID,
 		const std::vector<LPRDOCalc>& rParamCalcList,
 		bool traceFlag, bool permanentFlag,
+		bool isNested = 0,
 		std::size_t relResID = ~0,
 		boost::optional<std::size_t> resourceID = boost::optional<std::size_t>()
 	);
@@ -42,6 +43,7 @@ private:
 	bool m_traceFlag;
 	bool m_permanentFlag;
 	std::size_t m_relResID;
+	bool m_isNested;
 
 	DECLARE_ICalc;
 };

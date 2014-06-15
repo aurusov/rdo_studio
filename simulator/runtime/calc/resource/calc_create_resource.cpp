@@ -28,12 +28,14 @@ RDOCalcCreateResource::RDOCalcCreateResource(
 	const std::vector<LPRDOCalc>& rParamCalcList,
 	bool traceFlag,
 	bool permanentFlag,
+	bool isNested,
 	std::size_t relResID,
 	boost::optional<std::size_t> resourceID
 )
 	: m_resourceTypeID(resourceTypeID)
 	, m_traceFlag     (traceFlag     )
 	, m_permanentFlag (permanentFlag )
+	, m_isNested      (isNested      )
 	, m_relResID      (relResID      )
 	, m_resourceID    (resourceID    )
 {
@@ -58,7 +60,7 @@ RDOValue RDOCalcCreateResource::doCalc(const LPRDORuntime& pRuntime)
 	pRuntime->registerResourceId(resourceID);
 
 	LPRDOResource pResource = resourceType.interface_cast<IResourceType>()->createRes(
-		pRuntime, resourceID, paramValueList, m_traceFlag, m_permanentFlag
+		pRuntime, resourceID, paramValueList, m_traceFlag, m_permanentFlag, m_isNested
 	);
 	ASSERT(pResource);
 

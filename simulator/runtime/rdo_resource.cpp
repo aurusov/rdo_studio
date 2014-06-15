@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOResource
 // --------------------------------------------------------------------------------
-RDOResource::RDOResource(const LPRDORuntime& /*pRuntime*/, const ParamList& paramList, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool temporary)
+RDOResource::RDOResource(const LPRDORuntime& /*pRuntime*/, const ParamList& paramList, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool temporary, bool isNested)
 	: RDORuntimeObject   (                                      )
 	, RDOTraceableObject (trace, resID, rdo::toString(resID + 1))
 	, m_temporary        (temporary                             )
@@ -29,6 +29,7 @@ RDOResource::RDOResource(const LPRDORuntime& /*pRuntime*/, const ParamList& para
 	, m_type             (typeID                                )
 	, m_referenceCount   (0                                     )
 	, m_resType          (pResType                              )
+	, m_isNested         (isNested                              )
 {
 	appendParams(paramList.begin(), paramList.end());
 }
@@ -44,6 +45,7 @@ RDOResource::RDOResource(const LPRDORuntime& /*pRuntime*/, const RDOResource& co
 	, m_referenceCount   (0                )
 	, m_resType          (copy.m_resType   )
 	, m_typeId           (copy.m_typeId    )
+	, m_isNested         (copy.m_isNested    )
 {
 	appendParams(copy.m_paramList.begin(), copy.m_paramList.end());
 /// @todo посмотреть history и принять решение о комментарии
@@ -74,7 +76,7 @@ LPRDOResource RDOResource::clone(const LPRDORuntime& pRuntime) const
 {
 	const LPRDOResourceTypeList& resourceType = pRuntime->getResType(m_type);
 	ASSERT(resourceType);
-	LPRDOResource pResource = rdo::Factory<RDOResource>::create(pRuntime, m_paramList, resourceType.interface_cast<IResourceType>(), getTraceID(), m_type, traceable(), m_temporary);
+	LPRDOResource pResource = rdo::Factory<RDOResource>::create(pRuntime, m_paramList, resourceType.interface_cast<IResourceType>(), getTraceID(), m_type, traceable(), m_temporary, m_isNested);
 	ASSERT(pResource);
 	return pResource;
 }
@@ -266,6 +268,11 @@ void RDOResource::onDestroy(const LPRDORuntime& pRuntime, const LPRDOEraseResRel
 		}
 	}
 	pRuntime->onEraseRes(getTraceID(), pCalc);
+}
+
+bool RDOResource::isNested()
+{
+	return m_isNested;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

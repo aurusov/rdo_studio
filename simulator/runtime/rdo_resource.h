@@ -56,7 +56,7 @@ public:
 	typedef  std::vector<RDOValue>      ParamList;
 	typedef  ParamList::const_iterator  ParamCIt;
 
-	RDOResource(const LPRDORuntime& pRuntime, const ParamList& paramList, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool temporary);
+	RDOResource(const LPRDORuntime& pRuntime, const ParamList& paramList, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool temporary, bool isNested = 0);
 	RDOResource(const LPRDORuntime& pRuntime, const RDOResource& copy);
 	virtual ~RDOResource();
 
@@ -85,10 +85,12 @@ public:
 	void incRef();
 	void decRef();
 	void onDestroy(const LPRDORuntime& pRuntime, const LPRDOEraseResRelCalc& pCalc);
+	bool isNested();
 
 protected:
 	ParamList m_paramList;
 	bool m_temporary;
+	bool m_isNested;
 	ConvertStatus m_state;
 
 private:

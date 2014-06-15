@@ -221,6 +221,7 @@ rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
 		paramList,
 		getTrace(),
 		getType()->isPermanent(),
+		isNested,
 		~0,
 		getID()
 	);
