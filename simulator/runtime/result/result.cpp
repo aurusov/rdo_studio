@@ -509,7 +509,7 @@ void RDOPMDWatchValue::calcStat(const LPRDORuntime& /*pRuntime*/, std::ostream& 
 
 void RDOPMDWatchValue::checkResourceErased(const LPRDOResource& pResource)
 {
-	if (!pResource->checkType(m_rtpID))
+	if (!pResource->checkType(m_rtpID) || pResource->isNested())
 	{
 		return;
 	}
