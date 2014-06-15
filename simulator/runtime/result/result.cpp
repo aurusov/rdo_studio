@@ -353,6 +353,9 @@ std::size_t RDOPMDWatchQuant::calcCurrentQuant(const LPRDORuntime& pRuntime) con
 		if (*it == 0)
 			continue;
 
+		if ((*it)->isNested())
+			continue;
+
 		pRuntime->pushGroupFunc(*it);
 		if (m_pLogicCalc->calcValue(pRuntime).getAsBool())
 		{
