@@ -55,7 +55,7 @@ private:
 	ResourceList m_resourceList;
 	Create       m_create;
 
-	virtual LPRDOResource createRes(const LPRDORuntime& pRuntime, std::size_t resID, const std::vector<RDOValue>& paramsCalcs, bool traceFlag, bool permanentFlag, bool isNested);
+	virtual LPRDOResource createRes(const LPRDORuntime& pRuntime, std::size_t resID, const std::vector<RDOValue>& paramsCalcs, bool traceFlag, bool permanentFlag, bool isNested = 0);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

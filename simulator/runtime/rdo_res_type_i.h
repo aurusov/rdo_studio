@@ -33,7 +33,7 @@ struct IResourceType: public rdo::RefCounter<IResourceType>
 {
 DECLARE_FACTORY(IResourceType);
 public:
-	virtual rdo::runtime::LPRDOResource createRes(const LPRDORuntime& pRuntime, std::size_t resID, const std::vector<RDOValue>& paramsCalcs, bool traceFlag, bool permanentFlag, bool isNested) = 0;
+	virtual rdo::runtime::LPRDOResource createRes(const LPRDORuntime& pRuntime, std::size_t resID, const std::vector<RDOValue>& paramsCalcs, bool traceFlag, bool permanentFlag, bool isNested = 0) = 0;
 
 	typedef  std::list<rdo::runtime::LPRDOResource>  ResList;
 	typedef  ResList::const_iterator  ResCIterator;
@@ -52,7 +52,7 @@ protected:
 };
 
 #define DECLARE_IResourceType \
-	rdo::runtime::LPRDOResource createRes(const LPRDORuntime& pRuntime, std::size_t resID, const std::vector<RDOValue>& paramsCalcs, bool traceFlag, bool permanentFlag, bool isNested);
+	rdo::runtime::LPRDOResource createRes(const LPRDORuntime& pRuntime, std::size_t resID, const std::vector<RDOValue>& paramsCalcs, bool traceFlag, bool permanentFlag, bool isNested = 0);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
