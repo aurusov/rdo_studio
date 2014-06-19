@@ -43,7 +43,7 @@ public:
 private:
 	LocalVariable(const LPRDOValue& pName, const LPExpression& pExpression);
 	virtual ~LocalVariable();
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 
 	LPRDOValue    m_pName;
 	LPExpression  m_pExpression;

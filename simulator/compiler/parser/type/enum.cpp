@@ -201,16 +201,16 @@ LPExpression contextUnknownEnum(const RDOEnumType::EnumItem& enumValue, std::siz
 
 }
 
-Context::FindResult RDOEnumType::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult RDOEnumType::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	if (method == Context::METHOD_GET)
 	{
 		std::size_t index = findEnum(params.identifier());
 		EnumItem enumValue = getValues()[index];
-		return FindResult(CreateExpression(boost::bind(&contextUnknownEnum, enumValue, index, srcInfo)));
+		return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextUnknownEnum, enumValue, index, srcInfo)));
 	}
 
-	return FindResult();
+	return rdo::Factory<FindResult>::create();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

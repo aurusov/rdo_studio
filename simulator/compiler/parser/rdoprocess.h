@@ -100,7 +100,7 @@ private:
 	std::string m_name;
 	LPRDORTPResType m_transactType;
 
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 
 // --------------------------------------------------------------------------------

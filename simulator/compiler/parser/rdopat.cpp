@@ -206,10 +206,10 @@ void popRelevantResourceContext()
 
 }
 
-Context::FindResult RDOPATPattern::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult RDOPATPattern::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
-	Context::FindResult result = m_pContextMemory->onFindContext(method, params, srcInfo);
-	if (result.getCreateExpression())
+	Context::LPFindResult result = m_pContextMemory->onFindContext(method, params, srcInfo);
+	if (result->getCreateExpression())
 	{
 		return result;
 	}
@@ -223,7 +223,7 @@ Context::FindResult RDOPATPattern::onFindContext(const std::string& method, cons
 		{
 			if (method == Context::METHOD_OPERATOR_DOT)
 			{
-				return FindResult(SwitchContext(pRelevantResource, params));
+				return rdo::Factory<FindResult>::create(SwitchContext(pRelevantResource, params));
 			}
 
 			if (method == Context::METHOD_GET)
@@ -236,17 +236,17 @@ Context::FindResult RDOPATPattern::onFindContext(const std::string& method, cons
 		{
 			if (method == Context::METHOD_GET)
 			{
-				return FindResult(CreateExpression(boost::bind(&contextParameters, pParam, findPATPatternParamNum(identifier), srcInfo)));
+				return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextParameters, pParam, findPATPatternParamNum(identifier), srcInfo)));
 			}
 			if (method == Context::METHOD_OPERATOR_DOT)
 			{
 				LPRDOPATPattern pThis(const_cast<RDOPATPattern*>(this));
-				return FindResult(SwitchContext(pThis, params));
+				return rdo::Factory<FindResult>::create(SwitchContext(pThis, params));
 			}
 		}
 	}
 
-	return FindResult();
+	return rdo::Factory<FindResult>::create();
 }
 
 std::string RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus value)
@@ -1118,7 +1118,7 @@ LPExpression contextGetRelevantResource(const LPRDORelevantResource& relevantRes
 
 }
 
-Context::FindResult RDORelevantResource::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult RDORelevantResource::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	if (method == Context::METHOD_GET)
 	{
@@ -1127,12 +1127,12 @@ Context::FindResult RDORelevantResource::onFindContext(const std::string& method
 		if (paramName == name())
 		{
 			LPRDORelevantResource pThis(const_cast<RDORelevantResource*>(this));
-			return FindResult(CreateExpression(boost::bind(&contextGetRelevantResource, pThis, srcInfo)));
+			return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextGetRelevantResource, pThis, srcInfo)));
 		}
 
 		const std::size_t parNumb = getType()->getRTPParamNumber(paramName);
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
-			return FindResult();
+			return rdo::Factory<FindResult>::create();
 		//! Проверяем использование еще не инициализированного (только для Create) параметра рел. ресурса в его же конверторе
 		LPRDORTPParam pParam = getType()->findRTPParam(paramName);
 		ASSERT(pParam);
@@ -1172,7 +1172,7 @@ Context::FindResult RDORelevantResource::onFindContext(const std::string& method
 
 		const std::size_t parNumb = getType()->getRTPParamNumber(paramName);
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
-			return FindResult();
+			return rdo::Factory<FindResult>::create();
 
 		RDOParserSrcInfo srcInfo_(srcInfo);
 		srcInfo_.setSrcText(rdo::format("%s.%s", src_text().c_str(), params.identifier().c_str()));
@@ -1220,7 +1220,7 @@ Context::FindResult RDORelevantResource::onFindContext(const std::string& method
 		}
 	}
 
-	return FindResult();
+	return rdo::Factory<FindResult>::create();
 }
 
 rdo::runtime::LPRDOCalc RDORelevantResource::getChoiceCalc()

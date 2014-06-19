@@ -148,7 +148,7 @@ private:
 	void addChoiceFromCalc(const rdo::runtime::LPRDOCalc& pCalc);
 	LPRDORelevantResource findRelRes(const std::string& identifier, const RDOParserSrcInfo& srcInfo) const;
 
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDOPATPattern);
 
@@ -330,7 +330,7 @@ protected:
 	rdo::runtime::RDOSelectResourceCalc::Type getSelectType() const;
 
 private:
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDORelevantResource);
 

@@ -110,9 +110,9 @@ bool RDOPROCProcess::checkTransactType(const std::string& name) const
 	return (name == m_transactType->name());
 }
 
-Context::FindResult RDOPROCProcess::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult RDOPROCProcess::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
-	return FindResult();
+	return rdo::Factory<FindResult>::create();
 }
 
 // --------------------------------------------------------------------------------

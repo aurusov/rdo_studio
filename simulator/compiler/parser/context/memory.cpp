@@ -31,13 +31,13 @@ LPLocalVariableListStack ContextMemory::getLocalMemory()
 	return m_pLocalVariableListStack;
 }
 
-Context::FindResult ContextMemory::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult ContextMemory::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	if (method == Context::METHOD_OPERATOR_DOT)
 	{
 		LPLocalVariable pLocalVariable = m_pLocalVariableListStack->findLocalVariable(params.identifier());
 		if (pLocalVariable)
-			return FindResult(SwitchContext(pLocalVariable, params));
+			return rdo::Factory<FindResult>::create(SwitchContext(pLocalVariable, params));
 	}
 
 	if (method == Context::METHOD_GET)
@@ -54,7 +54,7 @@ Context::FindResult ContextMemory::onFindContext(const std::string& method, cons
 			return pLocalVariable->find(Context::METHOD_SET, params, srcInfo);
 	}
 
-	return FindResult();
+	return rdo::Factory<FindResult>::create();
 }
 
 void ContextMemory::push()

@@ -234,7 +234,7 @@ LPExpression contextParameter(const LPRDOParam& param, std::size_t paramID, cons
 
 }
 
-Context::FindResult Function::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult Function::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	if (method == Context::METHOD_GET || method == Context::METHOD_SET || method == Context::METHOD_OPERATOR_DOT)
 	{
@@ -258,7 +258,7 @@ Context::FindResult Function::onFindContext(const std::string& method, const Con
 
 			if (method == Context::METHOD_GET)
 			{
-				return FindResult(CreateExpression(boost::bind(&contextParameter, pParam, *paramID, srcInfo)));
+				return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextParameter, pParam, *paramID, srcInfo)));
 			}
 			else if (method == Context::METHOD_OPERATOR_DOT)
 			{
@@ -268,12 +268,12 @@ Context::FindResult Function::onFindContext(const std::string& method, const Con
 					Context::Params params_;
 					params_[RDORSSResource::GET_RESOURCE] = contextParameter(pParam, *paramID, srcInfo);
 					params_[Context::Params::IDENTIFIER] = identifier;
-					return FindResult(SwitchContext(resourceType, params_));
+					return rdo::Factory<FindResult>::create(SwitchContext(resourceType, params_));
 				}
 				else
 				{
 					LPFunction pThis(const_cast<Function*>(this));
-					return FindResult(SwitchContext(pThis, params));
+					return rdo::Factory<FindResult>::create(SwitchContext(pThis, params));
 				}
 			}
 			else
@@ -284,7 +284,7 @@ Context::FindResult Function::onFindContext(const std::string& method, const Con
 		}
 	}
 
-	return FindResult();
+	return rdo::Factory<FindResult>::create();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

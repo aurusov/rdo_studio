@@ -108,7 +108,7 @@ private:
 	std::size_t m_currParam;
 	LPRDOPATPattern m_pPattern;
 
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDODPTActivity);
 
@@ -164,7 +164,7 @@ private:
 	RDODPTSome(const RDOParserSrcInfo& src_info, LPILogic pParent = NULL);
 	virtual ~RDODPTSome();
 
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDODPTSome);
 
@@ -182,7 +182,7 @@ private:
 	RDODPTPrior(const RDOParserSrcInfo& src_info, LPILogic pParent = NULL);
 	virtual ~RDODPTPrior();
 
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDODPTPrior);
 
@@ -235,7 +235,7 @@ private:
 	bool m_closed;
 	rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag m_trace;
 
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDODPTSearch);
 

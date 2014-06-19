@@ -83,7 +83,7 @@ public:
 	class FindResult: public virtual rdo::counter_reference
 	{
 	DECLARE_FACTORY(FindResult);
-	
+
 	public:
 		FindResult();
 		explicit FindResult(const CreateExpression& createExpression);
@@ -106,7 +106,7 @@ public:
 	template <class T>
 	rdo::interface_ptr<T> interface_cast();
 
-	FindResult find(const std::string& method, const Params& params, const RDOParserSrcInfo& srcInfo) const;
+	LPFindResult find(const std::string& method, const Params& params, const RDOParserSrcInfo& srcInfo) const;
 
 protected:
 	Context();

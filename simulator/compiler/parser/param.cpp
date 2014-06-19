@@ -96,13 +96,13 @@ LPExpression contextSetParam(const rdo::runtime::LPRDOCalc& getResource, const L
 
 }
 
-Context::FindResult RDOParam::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult RDOParam::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	if (method == Context::METHOD_GET)
 	{
 			LPExpression resource = params.get<LPExpression>(RDORSSResource::GET_RESOURCE);
 			const std::size_t paramID = params.get<std::size_t>(RDOParam::CONTEXT_PARAM_PARAM_ID);
-			return FindResult(CreateExpression(boost::bind(&contextGetParam, resource->calc(), paramID, getTypeInfo(), srcInfo)));
+			return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextGetParam, resource->calc(), paramID, getTypeInfo(), srcInfo)));
 	}
 
 	if (method == Context::METHOD_SET)
@@ -114,9 +114,9 @@ Context::FindResult RDOParam::onFindContext(const std::string& method, const Con
 				? params.get<LPExpression>(Expression::CONTEXT_PARAM_SET_EXPRESSION)->calc()
 				: params.get<LPRDOFUNArithm>(RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM)->createCalc(getTypeInfo());
 
-		const LPRDOCalc paramValue = FindResult(CreateExpression
+		const LPRDOCalc paramValue = rdo::Factory<FindResult>::create(CreateExpression
 			(boost::bind(&contextGetParam, resource->calc(), paramID, getTypeInfo(), srcInfo))
-			).getCreateExpression()()->calc();
+			)->getCreateExpression()()->calc();
 
 		LPRDOCalc operationResult;
 
@@ -129,7 +129,7 @@ Context::FindResult RDOParam::onFindContext(const std::string& method, const Con
 		switch (params.get<SetOperationType::Type>(Expression::CONTEXT_PARAM_SET_OPERATION_TYPE))
 		{
 		case SetOperationType::NOCHANGE   :
-			return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::NOCHANGE>, resource->calc(), getTypeInfo(), paramID, rightValue, srcInfo)));
+			return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextSetParam<SetOperationType::NOCHANGE>, resource->calc(), getTypeInfo(), paramID, rightValue, srcInfo)));
 		case SetOperationType::SET        :
 			operationResult = rightValue;
 			break;
@@ -153,9 +153,9 @@ Context::FindResult RDOParam::onFindContext(const std::string& method, const Con
 			break;
 		}
 		ASSERT(operationResult);
-		return FindResult(CreateExpression(boost::bind(&contextSetParam<SetOperationType::SET>, resource->calc(), getTypeInfo(), paramID, operationResult, srcInfo)));
+		return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextSetParam<SetOperationType::SET>, resource->calc(), getTypeInfo(), paramID, operationResult, srcInfo)));
 	}
-	return FindResult();
+	return rdo::Factory<FindResult>::create();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

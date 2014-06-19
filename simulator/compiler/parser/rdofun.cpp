@@ -259,10 +259,10 @@ LPRDOFUNArithm RDOFUNArithm::generateByIdentificator(const LPRDOValue& pValue)
 
 	Context::Params params;
 	params[Context::Params::IDENTIFIER] = pValue->value().getIdentificator();
-	Context::FindResult result = pContext->find(Context::METHOD_GET, params, pValue->src_info());
-	ASSERT(result.getCreateExpression());
+	Context::LPFindResult result = pContext->find(Context::METHOD_GET, params, pValue->src_info());
+	ASSERT(result->getCreateExpression());
 
-	LPExpression pExpression = result.getCreateExpression()();
+	LPExpression pExpression = result->getCreateExpression()();
 	ASSERT(pExpression);
 
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
@@ -281,16 +281,16 @@ LPRDOFUNArithm RDOFUNArithm::generateByIdentificator(const LPRDOValue& pValue1, 
 
 	Context::Params params;
 	params[Context::Params::IDENTIFIER] = pValue1->value().getIdentificator();
-	Context::FindResult result = pContext->find(Context::METHOD_OPERATOR_DOT, params, pValue1->src_info());
-	ASSERT(result.getSwitchContext());
+	Context::LPFindResult result = pContext->find(Context::METHOD_OPERATOR_DOT, params, pValue1->src_info());
+	ASSERT(result->getSwitchContext());
 
-	params = result.getSwitchContext().params;
+	params = result->getSwitchContext().params;
 	ASSERT(!params.exists(Context::Params::IDENTIFIER));
 	params[Context::Params::IDENTIFIER] = pValue2->value().getIdentificator();
-	result = result.getSwitchContext().context->find(Context::METHOD_GET, params, pValue2->src_info());
-	ASSERT(result.getCreateExpression());
+	result = result->getSwitchContext().context->find(Context::METHOD_GET, params, pValue2->src_info());
+	ASSERT(result->getCreateExpression());
 
-	LPExpression pExpression = result.getCreateExpression()();
+	LPExpression pExpression = result->getCreateExpression()();
 	ASSERT(pExpression);
 
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
@@ -680,14 +680,14 @@ LPExpression contextConstant(const LPTypeInfo pTypeInfo, const int& number, cons
 
 }
 
-Context::FindResult RDOFUNConstant::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult RDOFUNConstant::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	if (method == Context::METHOD_GET)
 	{
-		return FindResult(CreateExpression(boost::bind(&contextConstant, getTypeInfo(), getNumber(), srcInfo)));
+		return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextConstant, getTypeInfo(), getNumber(), srcInfo)));
 	}
 
-	return FindResult();
+	return rdo::Factory<FindResult>::create();
 }
 
 // --------------------------------------------------------------------------------
@@ -934,14 +934,14 @@ LPExpression contextSequence(const std::string& name, const RDOParserSrcInfo& sr
 
 }
 
-Context::FindResult RDOFUNSequence::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult RDOFUNSequence::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	if (method == Context::METHOD_GET)
 	{
-		return FindResult(CreateExpression(boost::bind(&contextSequence, name(), srcInfo)));
+		return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextSequence, name(), srcInfo)));
 	}
 
-	return FindResult();
+	return rdo::Factory<FindResult>::create();
 }
 
 // --------------------------------------------------------------------------------
@@ -1724,7 +1724,7 @@ void RDOFUNGroup::end()
 	RDOParser::s_parser()->contextStack()->pop<RDOFUNGroup>();
 }
 
-Context::FindResult RDOFUNGroup::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult RDOFUNGroup::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	//! Тип ресурса внутри групповой функции
 	if (method == Context::METHOD_OPERATOR_DOT)
@@ -1737,11 +1737,11 @@ Context::FindResult RDOFUNGroup::onFindContext(const std::string& method, const 
 				rdo::Factory<rdo::runtime::RDOCalcGetGroupFunctionResource>::create(),
 				srcInfo
 			);
-			return FindResult(SwitchContext(getResType(), params));
+			return rdo::Factory<FindResult>::create(SwitchContext(getResType(), params));
 		}
 	}
 
-	return FindResult();
+	return rdo::Factory<FindResult>::create();
 }
 
 // --------------------------------------------------------------------------------
@@ -1810,7 +1810,7 @@ namespace
 	}
 }
 
-Context::FindResult RDOFUNSelect::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult RDOFUNSelect::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	if (method == "select()")
 	{
@@ -1886,7 +1886,7 @@ Context::FindResult RDOFUNSelect::onFindContext(const std::string& method, const
 		}
 		ASSERT(selectCalc);
 		ASSERT(selectType);
-		return FindResult(CreateExpression(boost::bind(&getSelectExpression,
+		return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&getSelectExpression,
 			LPRDOFUNSelect(const_cast<RDOFUNSelect*>(this)), selectCalc,selectType, srcInfo)));
 	}
 

@@ -642,10 +642,10 @@ type_declaration
 
 		Context::Params params;
 		params[Context::Params::IDENTIFIER] = pValue->value().getIdentificator();
-		Context::FindResult result = pContext->find(Context::METHOD_TYPE_OF, params, pValue->src_info());
-		ASSERT(result.getCreateExpression());
+		Context::LPFindResult result = pContext->find(Context::METHOD_TYPE_OF, params, pValue->src_info());
+		ASSERT(result->getCreateExpression());
 
-		LPExpression pExpression = result.getCreateExpression()();
+		LPExpression pExpression = result->getCreateExpression()();
 		ASSERT(pExpression);
 		$$ = PARSER->stack().push(pExpression->typeInfo());
 	}
@@ -933,14 +933,14 @@ rss_resource
 
 			Context::Params params;
 			params[Context::Params::IDENTIFIER] = pName->value().getIdentificator();
-			Context::FindResult result = PARSER->context()->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
-			ASSERT(result.getSwitchContext());
+			Context::LPFindResult result = PARSER->context()->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
+			ASSERT(result->getSwitchContext());
 
 			Context::Params traceParams;
 			traceParams["traceValue"] = traceValue;
-			result = result.getSwitchContext().context->find("trace()", traceParams, pName->src_info());
+			result = result->getSwitchContext().context->find("trace()", traceParams, pName->src_info());
 
-			LPExpression pExpression = result.getCreateExpression()();
+			LPExpression pExpression = result->getCreateExpression()();
 			ASSERT(pExpression);
 
 			rdo::runtime::LPRDOCalc pCalc = pExpression->calc();
@@ -9955,8 +9955,8 @@ set_statement
 				RDOParserSrcInfo(@2)
 			);
 			params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = setOperationType;
-			Context::FindResult result = pParamContext->find(Context::METHOD_SET, params, srcInfo);
-			LPExpression pExpression = result.getCreateExpression()();
+			Context::LPFindResult result = pParamContext->find(Context::METHOD_SET, params, srcInfo);
+			LPExpression pExpression = result->getCreateExpression()();
 			pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format("%s%s", name.c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str())));
 
 			$$ = PARSER->stack().push(pExpression);
@@ -9986,8 +9986,8 @@ set_statement
 
 			params[RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM] = pRightArithm;
 			params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = setOperationType;
-			Context::FindResult result = pParamContext->find(Context::METHOD_SET, params, srcInfo);
-			LPExpression pExpression = result.getCreateExpression()();
+			Context::LPFindResult result = pParamContext->find(Context::METHOD_SET, params, srcInfo);
+			LPExpression pExpression = result->getCreateExpression()();
 			pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format("%s %s %s", name.c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str(), pRightArithm->src_text().c_str())));
 			LPRDOFUNArithm pLeftArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 			ASSERT(pLeftArithm);
@@ -10083,8 +10083,8 @@ set_array_item_statement
 			params[Context::Params::IDENTIFIER] = pParamName->value().getIdentificator();
 			params[Expression::CONTEXT_PARAM_SET_EXPRESSION] = setExpression;
 			params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = rdo::runtime::SetOperationType::SET;
-			Context::FindResult result = PARSER->context()->find(Context::METHOD_SET, params, pParamName->src_info());
-			$$ = PARSER->stack().push(result.getCreateExpression()());
+			Context::LPFindResult result = PARSER->context()->find(Context::METHOD_SET, params, pParamName->src_info());
+			$$ = PARSER->stack().push(result->getCreateExpression()());
 		}
 	}
 	;
@@ -10707,9 +10707,8 @@ param_full_name
 			LPRDOValue pName = PARSER->stack().pop<RDOValue>($1);
 			Context::Params params;
 			params[Context::Params::IDENTIFIER] = pName->value().getIdentificator();
-			Context::FindResult result = PARSER->context()->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
-			Context::LPFindResult pResult = rdo::Factory<Context::FindResult>::create(result);
-			$$ = PARSER->stack().push(pResult);
+			Context::LPFindResult result = PARSER->context()->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
+			$$ = PARSER->stack().push(result);
 		}
 	}
 	| param_full_name '.' RDO_IDENTIF
@@ -10723,10 +10722,9 @@ param_full_name
 
 			Context::Params params = pParentResult->getSwitchContext().params;
 			params[Context::Params::IDENTIFIER] = pName->value().getIdentificator();
-			Context::FindResult result = pParentContext->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
-			Context::LPFindResult pResult = rdo::Factory<Context::FindResult>::create(result);
-
-			$$ = PARSER->stack().push(pResult);
+			Context::LPFindResult result = pParentContext->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
+			
+			$$ = PARSER->stack().push(result);
 		}
 	}
 	;
@@ -10786,8 +10784,8 @@ fun_arithm
 				srcInfo.setSrcText(name);
 			}
 
-			Context::FindResult result = pParamContext->find(Context::METHOD_GET, params, srcInfo);
-			LPExpression pExpression = result.getCreateExpression()();
+			Context::LPFindResult result = pParamContext->find(Context::METHOD_GET, params, srcInfo);
+			LPExpression pExpression = result->getCreateExpression()();
 			ASSERT(pExpression);
  			$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(pExpression));
 		}
@@ -10909,8 +10907,8 @@ fun_arithm
 				srcInfo.setSrcText(name);
 			}
 
-			Context::FindResult result = pParamContext->find(Context::METHOD_GET, params, srcInfo);
-			LPExpression pArithmExpression = result.getCreateExpression()();
+			Context::LPFindResult result = pParamContext->find(Context::METHOD_GET, params, srcInfo);
+			LPExpression pArithmExpression = result->getCreateExpression()();
 			ASSERT(pArithmExpression);
 
  			LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pArithmExpression);
@@ -11361,8 +11359,8 @@ fun_select_logic
 			Context::Params params;
 			params["FunGroupType"] = (RDOFUNGroupLogic::FunGroupType)$3;
 			params["GroupLogic"] = pLogic;
-			Context::FindResult result = PARSER->context()->find("select()", params, srcInfo);
-			LPExpression pExpression = result.getCreateExpression()();
+			Context::LPFindResult result = PARSER->context()->find("select()", params, srcInfo);
+			LPExpression pExpression = result->getCreateExpression()();
 			ASSERT(pExpression);
 			LPRDOFUNLogic pLogicSelect = rdo::Factory<RDOFUNLogic>::create(pExpression, false);
 			ASSERT(pLogicSelect);
@@ -11395,8 +11393,8 @@ fun_select_logic
 
 			Context::Params params;
 			params["FunGroupType"] = RDOFUNGroupLogic::fgt_empty;
-			Context::FindResult result = PARSER->context()->find("select()", params, srcInfo);
-			LPExpression pExpression = result.getCreateExpression()();
+			Context::LPFindResult result = PARSER->context()->find("select()", params, srcInfo);
+			LPExpression pExpression = result->getCreateExpression()();
 			ASSERT(pExpression);
 			LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pExpression, false);
 			ASSERT(pLogic);
@@ -11446,8 +11444,8 @@ fun_select_arithm
 
 			Context::Params params;
 			params["FunGroupType"] = RDOFUNGroupLogic::fgt_size;
-			Context::FindResult result = PARSER->context()->find("select()", params, srcInfo);
-			LPExpression pExpression = result.getCreateExpression()();
+			Context::LPFindResult result = PARSER->context()->find("select()", params, srcInfo);
+			LPExpression pExpression = result->getCreateExpression()();
 			ASSERT(pExpression);
 			LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 			ASSERT(pArithm);
@@ -11480,8 +11478,8 @@ fun_select_arithm
 
 			Context::Params params;
 			params["FunGroupType"] = RDOFUNGroupLogic::fgt_array;
-			Context::FindResult result = PARSER->context()->find("select()", params, srcInfo);
-			LPExpression pExpression = result.getCreateExpression()();
+			Context::LPFindResult result = PARSER->context()->find("select()", params, srcInfo);
+			LPExpression pExpression = result->getCreateExpression()();
 			ASSERT(pExpression);
 			LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 			ASSERT(pArithm);

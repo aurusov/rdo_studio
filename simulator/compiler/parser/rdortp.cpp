@@ -242,7 +242,7 @@ LPExpression contextTypeOfResourceType(const LPRDORTPResType& resourceType, cons
 
 }
 
-Context::FindResult RDORTPResType::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult RDORTPResType::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	if (method == Context::METHOD_GET)
 	{
@@ -269,7 +269,7 @@ Context::FindResult RDORTPResType::onFindContext(const std::string& method, cons
 
 		const std::size_t parNumb = getRTPParamNumber(paramName);
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
-			return FindResult();
+			return rdo::Factory<FindResult>::create();
 
 		LPRDOParam pParam = findRTPParam(paramName);
 		ASSERT(pParam);
@@ -283,15 +283,15 @@ Context::FindResult RDORTPResType::onFindContext(const std::string& method, cons
 			pParam->getTypeInfo()->itype().object_dynamic_cast<RDORTPResType>();
 
 		if (!pParamType)
-			return FindResult(SwitchContext(pParam, params_));
+			return rdo::Factory<FindResult>::create(SwitchContext(pParam, params_));
 
-		Context::FindResult result = pParam->find(Context::METHOD_GET, params_, srcInfo);
-		LPExpression pNestedResource = result.getCreateExpression()();
+		Context::LPFindResult result = pParam->find(Context::METHOD_GET, params_, srcInfo);
+		LPExpression pNestedResource = result->getCreateExpression()();
 
 		Context::Params params__;
 		params__[RDORSSResource::GET_RESOURCE] = pNestedResource;
 
-		return FindResult(SwitchContext(pParamType, params__));
+		return rdo::Factory<FindResult>::create(SwitchContext(pParamType, params__));
 	}
 
 
@@ -299,10 +299,10 @@ Context::FindResult RDORTPResType::onFindContext(const std::string& method, cons
 	if (method == Context::METHOD_TYPE_OF)
 	{
 		LPRDORTPResType pThis(const_cast<RDORTPResType*>(this));
-		return FindResult(CreateExpression(boost::bind(&contextTypeOfResourceType, pThis, srcInfo)));
+		return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextTypeOfResourceType, pThis, srcInfo)));
 	}
 
-	return FindResult();
+	return rdo::Factory<FindResult>::create();
 }
 
 void RDORTPResType::setSubtype(Subtype type)

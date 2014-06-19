@@ -91,12 +91,12 @@ LPExpression contextSetLocalVariable(const LPLocalVariable& pLocalVariable, cons
 
 }
 
-Context::FindResult LocalVariable::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult LocalVariable::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	if (method == Context::METHOD_GET)
 	{
 		LPLocalVariable pThis(const_cast<LocalVariable*>(this));
-		return FindResult(CreateExpression(boost::bind(&contextGetLocalVariable, pThis, srcInfo)));
+		return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextGetLocalVariable, pThis, srcInfo)));
 	}
 
 	if (method == Context::METHOD_SET)
@@ -105,9 +105,9 @@ Context::FindResult LocalVariable::onFindContext(const std::string& method, cons
 
 		using namespace rdo::runtime;
 
-		const LPRDOCalc localVariableValue = FindResult(CreateExpression
+		const LPRDOCalc localVariableValue = rdo::Factory<FindResult>::create(CreateExpression
 			(boost::bind(&contextGetLocalVariable, pThis, srcInfo))
-			).getCreateExpression()()->calc();
+			)->getCreateExpression()()->calc();
 
 		const LPRDOCalc rightValue = params.exists(Expression::CONTEXT_PARAM_SET_EXPRESSION)
 			? params.get<LPExpression>(Expression::CONTEXT_PARAM_SET_EXPRESSION)->calc()
@@ -144,10 +144,10 @@ Context::FindResult LocalVariable::onFindContext(const std::string& method, cons
 		}
 
 		ASSERT(operationResult);
-		return FindResult(CreateExpression(boost::bind(&contextSetLocalVariable, pThis, operationResult, srcInfo)));
+		return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextSetLocalVariable, pThis, operationResult, srcInfo)));
 	}
 
-	return FindResult();
+	return rdo::Factory<FindResult>::create();
 }
 
 // --------------------------------------------------------------------------------

@@ -110,7 +110,7 @@ private:
 	RDORTPResType::ParamList::const_iterator m_currParam;
 	rdo::runtime::LPRDOCalc m_traceCalc;
 
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDORSSResource);
 

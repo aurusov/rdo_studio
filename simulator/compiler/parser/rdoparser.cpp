@@ -245,7 +245,7 @@ LPExpression contextTerminateCounter(const RDOParserSrcInfo& srcInfo)
 
 }
 
-Context::FindResult RDOParser::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult RDOParser::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	const std::string identifier = params.identifier();
 
@@ -253,15 +253,15 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 	{
 		if (identifier == "Time_now" || identifier == "time_now" || identifier == "Системное_время" || identifier == "системное_время")
 		{
-			return FindResult(CreateExpression(boost::bind(&contextTimeNow, srcInfo)));
+			return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextTimeNow, srcInfo)));
 		}
 		else if (identifier == "Seconds" || identifier == "seconds")
 		{
-			return FindResult(CreateExpression(boost::bind(&contextSeconds, srcInfo)));
+			return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextSeconds, srcInfo)));
 		}
 		else if (identifier == "Terminate_counter" || identifier == "terminate_counter")
 		{
-			return FindResult(CreateExpression(boost::bind(&contextTerminateCounter, srcInfo)));
+			return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextTerminateCounter, srcInfo)));
 		}
 	}
 
@@ -273,7 +273,7 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 			|| identifier == "Seconds" || identifier == "seconds"
 			|| identifier == "Terminate_counter" || identifier == "terminate_counter")
 		{
-			return FindResult(SwitchContext(pThis, params));
+			return rdo::Factory<FindResult>::create(SwitchContext(pThis, params));
 		}
 	}
 
@@ -291,43 +291,43 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 		LPRDORTPResType pResType = findRTPResType(identifier);
 		if (pResType)
 		{
-			return FindResult(SwitchContext(pResType, params));
+			return rdo::Factory<FindResult>::create(SwitchContext(pResType, params));
 		}
 
 		LPRDORSSResource pResource = findRSSResource(identifier);
 		if (pResource)
 		{
-			return FindResult(SwitchContext(pResource, params));
+			return rdo::Factory<FindResult>::create(SwitchContext(pResource, params));
 		}
 
 		LPRDOPATPattern pPattern = findPATPattern(identifier);
 		if (pPattern)
 		{
-			return FindResult(SwitchContext(pPattern, params));
+			return rdo::Factory<FindResult>::create(SwitchContext(pPattern, params));
 		}
 
 		LPRDOPROCProcess pProcess = findPROCProcess(identifier);
 		if (pProcess)
 		{
-			return FindResult(SwitchContext(pProcess, params));
+			return rdo::Factory<FindResult>::create(SwitchContext(pProcess, params));
 		}
 
 		LPRDOResultGroup pResultGroup = findResultGroup(identifier);
 		if (pResultGroup)
 		{
-			return FindResult(SwitchContext(pResultGroup, params));
+			return rdo::Factory<FindResult>::create(SwitchContext(pResultGroup, params));
 		}
 
 		LPRDOFUNConstant pConstant = findFUNConstant(identifier);
 		if (pConstant)
 		{
-			return FindResult(SwitchContext(pConstant, params));
+			return rdo::Factory<FindResult>::create(SwitchContext(pConstant, params));
 		}
 
 		LPRDOFUNSequence pSequence = findFUNSequence(identifier);
 		if (pSequence)
 		{
-			return FindResult(SwitchContext(pSequence, params));
+			return rdo::Factory<FindResult>::create(SwitchContext(pSequence, params));
 		}
 
 		//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
@@ -342,14 +342,14 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 				std::size_t index = enumType->findEnum(identifier);
 				if (index != rdo::runtime::RDOEnumType::END)
 				{
-					return FindResult(SwitchContext(enumType, params));
+					return rdo::Factory<FindResult>::create(SwitchContext(enumType, params));
 				}
 			}
 		}
 		
 	}
 
-	return Context::FindResult();
+	return rdo::Factory<Context::FindResult>::create();
 }
 
 bool RDOParser::isCurrentDPTSearch()

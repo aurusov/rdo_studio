@@ -210,7 +210,7 @@ private:
 
 	int m_number;
 
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDOFUNConstant);
 
@@ -317,7 +317,7 @@ protected:
 	void initResult     ();
 	void initCalcSrcInfo();
 
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 
 // --------------------------------------------------------------------------------
@@ -645,7 +645,7 @@ protected:
 	RDOFUNGroup(const RDOParserSrcInfo& res_info);
 	virtual ~RDOFUNGroup();
 
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 
 private:
 	void init(const RDOParserSrcInfo& res_info);
@@ -698,7 +698,7 @@ private:
 
 	rdo::runtime::LPRDOFunCalcSelect m_pCalcSelect;
 
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDOFUNSelect);
 

@@ -52,7 +52,7 @@ protected:
 	//! @todo Для передачи значения по умолчанию алгоритмической функции. В идеале, это надо переложить на конвертор.
 	void setDefaultCalc(const rdo::runtime::LPRDOCalc& pDefaultValue);
 
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 
 private:
 	LPFunctionType           m_pFunctionType;
