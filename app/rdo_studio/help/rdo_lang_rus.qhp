@@ -24,6 +24,7 @@
 					</section>
 					<section title="Ресурсы" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources.htm">
 						<section title="Неопределенное значение параметра ресурса" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources_undefined.htm"/>
+						<section title="Вложенные ресурсы" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources_nested.htm"/>
 					</section>
 					<section title="Типы данных. Соотствие типов" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
 					<section title="Типы ресурсов" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
