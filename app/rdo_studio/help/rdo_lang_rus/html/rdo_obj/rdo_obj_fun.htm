@@ -17,7 +17,7 @@ function toggle_display(e)
 <BODY>
 	<DIV>
 		<H1>ФУНКЦИИ</H1>
-		<P><B>Описание функции</B> следует за описанием констант в <A href="rdo_obj_const_fun_sec.htm">объекте символьных констант, функций и последовательностей</A> (с расширением <FONT class="syntax">.fun</FONT>) и имеет следующий формат:</P>
+		<P><B>Описание функции</B> следует за описанием констант в <A href="rdo_obj_const_fun_seq.htm">объекте символьных констант, функций и последовательностей</A> (с расширением <FONT class="syntax">.fun</FONT>) и имеет следующий формат:</P>
 		<PRE class="syntax">$Function <A class="syntax" href="#fun_name">&lt;имя_функции&gt;</A> : <A class="syntax" href="#val_type">&lt;тип_значения_функции&gt;</A>
 $Type = <A class="syntax" href="#fun_type">&lt;тип_функции&gt;</A>
 $Parameters
@@ -27,7 +27,7 @@ $Body <A class="syntax" href="#body">&lt;тело_функции&gt;</A> $End</P
 			<DT class="syntax"><A name="fun_name"></A><I>имя_функции</I></DT>
 			<DD class="syntax">Имя функции представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех функций и не должны совпадать с ранее определенными именами.</DD>
 			<DT class="syntax"><A name="val_type"></A><I>тип_значения_функции</I></DT>
-			<DD class="syntax">Тип значения функции - это один из возможных в языке <A href="../rdo_base/rdo_base_types.htm">типов данных</A> и описанных ранее <A href="../rdo_base/rdo_base_res_types.htm">типов ресурсов</A>. При описании типов значений функции возможны ссылки на <A href="../rdo_base/rdo_base_res_types.htm#param_type">типы параметров ресурсов</A> и <A href="rdo_obj_const_fun_sec.htm#const_type">типы символьных констант</A>. Значения по умолчанию также могут быть указаны при описании типа значения функции, однако они не используются, за исключением функций типа список.</DD>
+			<DD class="syntax">Тип значения функции - это один из возможных в языке <A href="../rdo_base/rdo_base_types.htm">типов данных</A> и описанных ранее <A href="../rdo_base/rdo_base_res_types.htm">типов ресурсов</A>. При описании типов значений функции возможны ссылки на <A href="../rdo_base/rdo_base_res_types.htm#param_type">типы параметров ресурсов</A> и <A href="rdo_obj_const.htm#const_type">типы символьных констант</A>. Значения по умолчанию также могут быть указаны при описании типа значения функции, однако они не используются, за исключением функций типа список.</DD>
 			<DT class="syntax"><A name="fun_type"></A><I>тип_функции</I></DT>
 			<DD class="syntax">В данной версии языка определены функции следующих типов:
 				<TABLE class="visible">
@@ -57,7 +57,7 @@ $Body <A class="syntax" href="#body">&lt;тело_функции&gt;</A> $End</P
 					<DT class="syntax"><A name="param_name"></A><I>имя_параметра_функции</I></DT>
 					<DD class="syntax">Имя параметра функции представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех параметров и не должны совпадать с ранее определенными именами.</DD>
 					<DT class="syntax"><A name="param_type"></A><I>тип_параметра</I></DT>
-					<DD class="syntax">Тип параметра функции - это один из возможных в языке <A href="../rdo_base/rdo_base_types.htm">типов данных</A> и описанных ранее <A href="../rdo_base/rdo_base_res_types.htm">типов ресурсов</A>. При описании типов параметров функции возможны ссылки на <A href="../rdo_base/rdo_base_res_types.htm#param_type">типы параметров ресурсов</A> и <A href="rdo_obj_const_fun_sec.htm#const_type">типы символьных констант</A>. Значения по умолчанию не задают.</DD>
+					<DD class="syntax">Тип параметра функции - это один из возможных в языке <A href="../rdo_base/rdo_base_types.htm">типов данных</A> и описанных ранее <A href="../rdo_base/rdo_base_res_types.htm">типов ресурсов</A>. При описании типов параметров функции возможны ссылки на <A href="../rdo_base/rdo_base_res_types.htm#param_type">типы параметров ресурсов</A> и <A href="rdo_obj_const.htm#const_type">типы символьных констант</A>. Значения по умолчанию не задают.</DD>
 				</DL>
 			</DD>
 			<BR>
@@ -222,7 +222,8 @@ $End
 		</DL>
 		<H4>См. также</H4>
 		<P><A href="../rdo_base/rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
-		<P><A href="rdo_obj_const_fun_sec.htm">Описание символьных констант, функций и последовательностей</A></P>
+		<P><A href="rdo_obj_const_fun_seq.htm">Описание символьных констант, функций и последовательностей</A></P>
+		<P><A href="rdo_obj_const.htm">Синтаксис констант</A></P>
 		<P><A href="rdo_obj_sec/rdo_obj_sec.htm">Синтаксис последовательности</A></P>
 	</DIV>
 	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
