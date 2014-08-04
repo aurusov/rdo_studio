@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>Глобальные переменные и стандартные функции</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </HEAD>
 <BODY>
 	<DIV>
@@ -292,13 +295,13 @@
 			</TR>
 		</TABLE>
 		<H4>Примеры</H4>
-		<PRE class="samples">Exist(Заявки : Заявки.Состояние = ожидает)</PRE>
-		<PRE class="samples">Not_Exist(Тип_1 : NoCheck)</PRE>
-		<PRE class="samples">Not_For_All(Станок : Станок.Количество &gt; 3 and
-            Станок.Состояние = свободен)</PRE>
-		<PRE class="samples">Select(Заявка: Заявка.Время_прихода &gt;= 480 and
-       Заявка.Состояние = в_очереди).For_All(Заявка.Время_в_очереди &gt; 20)</PRE>
-       <PRE class="samples">array<Заявки> Z = Select(Заявки: Заявки.Время_прихода &gt;= 300).getArray();</PRE>
+		<PRE class="samples"><code class="rdo">Exist(Заявки : Заявки.Состояние = ожидает)</code></PRE>
+		<PRE class="samples"><code class="rdo">Not_Exist(Тип_1 : NoCheck)</code></PRE>
+		<PRE class="samples"><code class="rdo">Not_For_All(Станок : Станок.Количество &gt; 3 and
+            Станок.Состояние = свободен)</code></PRE>
+		<PRE class="samples"><code class="rdo">Select(Заявка: Заявка.Время_прихода &gt;= 480 and
+       Заявка.Состояние = в_очереди).For_All(Заявка.Время_в_очереди &gt; 20)</code></PRE>
+       <PRE class="samples"><code class="rdo">array<Заявки> Z = Select(Заявки: Заявки.Время_прихода &gt;= 300).getArray();</code></PRE>
 		<H4>См. также</H4>
 		<P><A href="rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
 	</DIV>

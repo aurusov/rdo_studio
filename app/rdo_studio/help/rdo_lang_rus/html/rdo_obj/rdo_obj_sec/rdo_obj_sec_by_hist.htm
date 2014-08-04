@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>Гистограммное распределение</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <SCRIPT>
 function toggle_display(e)
 {
@@ -45,7 +48,7 @@ $Body <A class="syntax" href="#body">&lt;тело_последовательно
 		</DL>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
 		<DIV style="display:none" id="v1">
-		<PRE class="samples">
+		<PRE class="samples"><code class="rdo">
 $Sequence Последовательность_5 : real
 $Type = by_hist 11111
 $Body
@@ -75,10 +78,10 @@ $Body
   Значение_4  0.20
   Значение_5  0.34
 $End
-</PRE>
+</code></PRE>
 		<P>Вызовы последовательностей:</P>
-		<PRE class="samples">
-Последовательность_6</PRE>
+		<PRE class="samples"><code class="rdo">
+Последовательность_6</code></PRE>
 		</DIV>
 		<H4>Примечания</H4>
 		<P class="remarks">Значение последовательности типа <FONT class="syntax">by_hist</FONT> вычисляется следующим образом. В начале в соответствии с относительными частотами определяется интервал гистограммы, затем конкретное значение получается как равномерно распределенное на этом интервале число. Для последовательностей с перечислимыми значениями по относительной частоте сразу определяется значение.</P>

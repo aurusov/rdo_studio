@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>ОПИСАНИЕ ТОЧКИ ПРИНЯТИЯ РЕШЕНИЙ ТИПА SOME</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <SCRIPT>
 function toggle_display(e)
 {
@@ -32,13 +35,13 @@ $End</PRE>
 		<P>Для точек типа <FONT class="syntax">some</FONT> алгоритм проверяет <A href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_block_end">активности</A> в порядке их записи в точке принятия решений. Найдя первую активность, <A href="../rdo_obj/rdo_obj_pat.htm">предусловия</A> которой выполняются, он планирует соответствующее событие (событие начала действия или событие выполнения правила), после чего обработка этой и других точек завершается. Если же не найдено ни одной активности, для которой выполнены предусловия, анализируется следующая точка принятия решений.</P>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
 		<DIV style="display:none" id="v1">
-		<PRE class="samples">$Decision_point Точка_2 : some
+		<PRE class="samples"><code class="rdo">$Decision_point Точка_2 : some
 $Condition NoCheck
 $Activities
   Операция_1 : Образец_14   25  *
   Операция_2 : Образец_15   Значение_2
   Операция_3 : Образец_16
-$End</PRE>
+$End</code></PRE>
 		</DIV>
 		<H4>См. также</H4>
 		<P><A href="rdo_dpt_search.htm">Точка принятия решений типа search</A></P>

@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>Символьные константы</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </HEAD>
 <BODY>
 	<DIV>
@@ -24,7 +27,7 @@ $End
 					<DT class="syntax"><A name="def_val"></A><I>значение_константы</I></DT>
 					<DD class="syntax">Значение символьной константы задается целой или вещественной <A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">численной константой</A> либо именем значения в соответствии с типом константы.</DD>
 					<H4>Примеры</H4>
-					<PRE class="samples">$Constant
+					<PRE class="samples"><code class="rdo">$Constant
   Константа_1 : integer = 10
   Константа_2 : real = 3.14159
   Константа_3 : integer [0..1000] = 0
@@ -35,7 +38,7 @@ $End
   Константа_8 : such_as Тип_1.Параметр_5 = Занят
   Константа_9 : (Значение_1, Значение_2, Значение_3,
                  Значение_4, Значение_5) = Значение_1
-$End</PRE>
+$End</code></PRE>
 					<H4>Примечания</H4>
 					<P class="remarks">Значение символьной константы может быть изменено перед началом прогона в объекте прогона. Если при описании константы указан диапазон возможных значений, то проверяется нахождение нового значения в диапазоне допустимых.</P>
 				</DL>

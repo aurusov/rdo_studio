@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>Треугольный закон</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </HEAD>
 <BODY>
 	<DIV>
@@ -45,14 +48,14 @@ $End</PRE>
 				</DD>
 			</DL>
 		<H4>Примеры</H4>
-		<PRE class="samples">
+		<PRE class="samples"><code class="rdo">
 $Sequence Последовательность_4 : real [0.0..10.0]
 $Type = triangular
-$End</PRE>
+$End</code></PRE>
 		<P>Вызовы последовательностей:</P>
-		<PRE class="samples">
+		<PRE class="samples"><code class="rdo">
 Последовательность_4(2.0, 5, 7 + 1/2.0)
-</PRE>
+</code></PRE>
 		<H4>Примечание</H4>
 		<P class="remarks">Вычисление значений последовательности происходит следующим образом. Сначала вычисляются значения параметров, если параметры имеются.</P>
 		<P class="remarks">Значения последовательности типа <FONT class="syntax">triangular</FONT> вычисляются на основе генератора псевдослучайных чисел как распределенные вещественные числа по треугольному закону с заданными границами интервала распределния и точкой под вершиной треугольника. Если тип значения последовательности целый, то целое значение получается из вещественного отбрасыванием дробной части.</P>

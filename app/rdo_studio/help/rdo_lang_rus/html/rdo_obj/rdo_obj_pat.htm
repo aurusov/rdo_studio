@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>Описание образцов</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <SCRIPT>
 function toggle_display(e)
 {
@@ -176,7 +179,7 @@ $End</PRE>
 		</DL>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
 		<DIV style="display:none" id="v1">
-		<PRE class="samples">$Pattern Образец_1 : operation
+		<PRE class="samples"><code class="rdo">$Pattern Образец_1 : operation
 $Parameters
   Количество : integer = 10
 $Relevant_resources
@@ -269,7 +272,7 @@ $Body
     Convert_rule
       Параметр_4 set Функция_1(Рел_ресурс_2.Параметр_2, 0.2);
       Параметр_5 set Свободен;
-$End</PRE>
+$End</code></PRE>
 	</DIV>
 	<H4>См. также</H4>
 	<P><A href="../rdo_base/rdo_base_res_types.htm">Типы ресурсов</A></P>

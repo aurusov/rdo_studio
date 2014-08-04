@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>Описание ресурсов</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </HEAD>
 <BODY>
 	<DIV>
@@ -43,7 +46,7 @@ $End</PRE>
 		<H4>Примечания</H4>
 		<P class="remarks">При использовании цепочных ссылок значение по умолчанию принимается равным ближайшему из указанных в цепочке. Поэтому в ниже рассмотренном примере последний параметр ресурса &quot;Ресурс_2&quot; при такой записи получит начальное значение &quot;Занят&quot;, установленное для параметра &quot;Параметр_9&quot;, а не &quot;Свободен&quot;, установленное для параметра &quot;Параметр_5&quot;, а параметр &quot;Параметр_8&quot; получит значение &quot;Свободен&quot;.</P>
 		<H4>Примеры</H4>
-		<PRE class="samples">$Resources
+		<PRE class="samples"><code class="rdo">$Resources
   Ресурс_1 = Тип_1(0, 5.25, 100, 0.0, Занят, 20, 10., Свободен, Погрузка, Занят);
   Ресурс_2 = Тип_1(*, 5.25, *, 0.0, *, 10, 10., *, *, *);
   Ресурс_2.trace();
@@ -56,7 +59,7 @@ $End</PRE>
     Тип_2(0, 0.0)
     );
 $End
-</PRE>
+</code></PRE>
 	<H4>См. также</H4>
 	<P><A href="rdo_base_alpha.htm">Алфавит</A></P>
 	<P><A href="rdo_base_types.htm">Типы данных. Соответствие типов</A></P>

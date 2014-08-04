@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>ОПИСАНИЕ ТОЧКИ ПРИНЯТИЯ РЕШЕНИЙ ТИПА PRIOR</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <SCRIPT>
 function toggle_display(e)
 {
@@ -43,7 +46,7 @@ $End</PRE>
 			</DL>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
 		<DIV style="display:none" id="v1">
-		<PRE class="samples">$Decision_point Точка_1 : search trace
+		<PRE class="samples"><code class="rdo">$Decision_point Точка_1 : search trace
 $Condition
   Ресурс_1.Параметр_1=0 and Exist(Тип_1 : Тип_1.Параметр_3 = Значение_2) and
   Ресурс_5.Параметр_7 &lt;&gt; 0
@@ -55,7 +58,7 @@ $Activities
   Правило_2 : Образец_8    Значение_5    value after Ресурс_1.Параметр_4
   Правило_3 : Образец_9    value before  рел_Ресурс_2.Параметр_4 *
                              IAbs(рел_Ресурс_2.Параметр_5) * 2
-$End</PRE>
+$End</code></PRE>
 		</DIV>
 		<H4>См. также</H4>
 		<P><A href="rdo_dpt_some.htm">Точка принятия решений типа some</A></P>

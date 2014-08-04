@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>Кадры анимации</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <SCRIPT>
 function toggle_display(e)
 {
@@ -35,13 +38,13 @@ $End</PRE>
 						<DL class="syntax">
 							<DD class="syntax">
 								<H4>Примеры</H4>
-								<PRE class="samples">&lt;0   0   0&gt;   - черный
+								<PRE class="samples"><code class="rdo">&lt;0   0   0&gt;   - черный
 &lt;255 0   0&gt;   - красный
 &lt;0   255 0&gt;   - зеленый
 &lt;0   0   255&gt; - синий
 &lt;255 255 0&gt;   - желтый
 &lt;255 255 255&gt; - белый
-&lt;127 127 127&gt; - серый</PRE>
+&lt;127 127 127&gt; - серый</code></PRE>
 							</DD>
 						</DL>
 						<P>Цвет фона является необязательным параметром. Если он не задан, используется значение по умолчанию, равное &lt;0 100 0&gt; (это значение соответствует темно-зеленому цвету).</P>
@@ -58,7 +61,7 @@ $End</PRE>
 			</DD>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Пример</H4></A>
 		<DIV style="display:none" id="v1">
-		<PRE class="samples">$Frame Кадр_1
+		<PRE class="samples"><code class="rdo">$Frame Кадр_1
 $Back_picture = <0 255 255> animbg
 
    triang(Система1.X_коорд1, Система1.Y_коорд1,
@@ -83,7 +86,7 @@ $Back_picture = <0 255 255> animbg
       ellipse(Система2.X_коорд2 - 30, 0, 60, Система2.Y_коорд2 * 2, <0  255  255>, <0  0  255>);
    }
 
-$End</PRE>
+$End</code></PRE>
 	</DIV>
 	<H4>См. также</H4>
 	<P><A href="rdo_obj_pat.htm">Описание образцов</A></P>

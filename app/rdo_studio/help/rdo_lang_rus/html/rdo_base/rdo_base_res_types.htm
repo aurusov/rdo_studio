@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>Типы ресурсов</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </HEAD>
 <BODY>
 	<DIV>
@@ -50,7 +53,7 @@ $End</PRE>
 		<H4>Примечания</H4>
 		<P class="remarks">При описании сложных систем часто возникает так называемая проблема представления. Она состоит в том, что не существует единственного описания, и разработчик должен выбирать тот или иной вариант на основе своего опыта, интуиции и т.д. Различные варианты описания могут отличаться эффективностью моделирования, наглядностью, удобством формулирования образцов и т.п.</P>
 		<H4>Примеры</H4>
-		<PRE class="samples">$Resource_type Тип_1 : permanent
+		<PRE class="samples"><code class="rdo">$Resource_type Тип_1 : permanent
 $Parameters
   Параметр_1 :  integer = 10
   Параметр_2 :  real
@@ -70,7 +73,7 @@ $Parameters
   Параметр_1 :  Тип_1
   Параметр_2 :  such_as Тип_1.Параметр_1
 $End
-</PRE>
+</code></PRE>
 	<H4>См. также</H4>
 	<P><A href="rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
 	<P><A href="rdo_base_resources.htm">Описание ресурсов</A></P>
