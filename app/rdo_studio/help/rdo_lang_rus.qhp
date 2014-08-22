@@ -557,6 +557,8 @@
 			<file>rdo_lang_rus/images/*</file>
 			<file>shared/styles/styles.css</file>
 			<file>shared/scripts/navbar.js</file>
+			<file>shared/scripts/highlight.pack.js</file>
+			<file>shared/styles/highlight.styles/googlecode.css</file>
 		</files>
 	</filterSection>
 </QtHelpProject>
