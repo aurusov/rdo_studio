@@ -18,7 +18,7 @@
 		<P>Функция f(x) примет вид:</P>
 		<P><I>f(x) = main*EXP(-main*X)</I></P><BR>
 		<P>Для алгоритма необходима функция распределения вероятности - интергал функции плотности распределения.</P>
-		<P>f(x) – экспонента, F(x) – тоже. Обратная функция – логорифм.</P>
+		<P>f(x) – экспонента, F(x) – тоже. Обратная функция – логарифм.</P>
 		<P><I>Fobr = -log(BaseDistribution01)</I></P><BR>
 		<P>Форма распределения у нас есть. Теперь нужно привести ее к конкретному значению main.</P>
 		<P><I>Fobr = -main*log(BaseDistribution01)</I></P><BR><BR>
@@ -29,6 +29,11 @@ inline double RandGeneratorExponential::next(double math)
     return -log(u01()) * math;
 }
 </PRE>
+		<H4>См. также</H4>
+		<P><A href="rdo_theory.htm">Основные теоретические сведения</A></P>
+		<P><A href="rdo_theory_principles.htm">Принципы генерации псевдослучайных чисел</A></P>
+		<P><A href="rdo_theory_generator_seed.htm">База генератора</A></P>
+		<P><A href="rdo_theory_seq.htm">Законы распределения</A></P>
 	</DIV>
 	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
 </BODY>

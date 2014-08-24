@@ -71,11 +71,10 @@
 					</section>
 				</section>
 				<section title="Теория" ref="rdo_lang_rus/html/rdo_theory/rdo_theory.htm">
-					<section title="Последовательности" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq.htm">
-						<section title="База генератора" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_base.htm"/>
-						<section title="Базовое распределение" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_basedistribution.htm"/>
-						<section title="Обратная функция" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_inverse.htm"/>
-					</section>
+					<section title="Принципы генерации псевдослучайных чисел" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_principles.htm"/>
+					<section title="База генератора" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_generator_seed.htm"/>
+					<section title="Законы распределения" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq.htm"/>
+					<section title="Метод обратного преобразования" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_inverse.htm"/>
 				</section>
 			</section>
 		</toc>
