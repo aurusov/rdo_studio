@@ -959,7 +959,7 @@ rss_resource
 	;
 
 rss_constructor_call
-	: rss_constructor_name '(' rss_opt_value_list ')'
+	: rss_constructor_name rss_opt_value_list ')'
 	{
 		#PASS2
 		{
@@ -968,7 +968,7 @@ rss_constructor_call
 
 			if (!pResource->defined())
 			{
-				PARSER->error().error(@3, rdo::format("Заданы не все параметры ресурса: '%s'", pResource->name().c_str()));
+				PARSER->error().error(@2, rdo::format("Заданы не все параметры ресурса: '%s'", pResource->name().c_str()));
 			}
 			pResource->end();
 			$$ = PARSER->stack().push(pResource);
@@ -977,7 +977,7 @@ rss_constructor_call
 	;
 
 rss_constructor_name
-	: RDO_IDENTIF
+	: RDO_IDENTIF '('
 	{
 		#PASS2
 		{
@@ -10501,6 +10501,10 @@ param_value_default
 	{
 		$$ = $2;
 	}
+	| '=' rss_constructor_call
+	{
+		PARSER->error().error(@2, "Для вложенных ресурсов нельзя задавать значение по умолчанию");
+	}
 	| '=' error
 	{
 		RDOParserSrcInfo src_info(@1, @2, true);
@@ -10723,7 +10727,7 @@ param_full_name
 			Context::Params params = pParentResult->getSwitchContext().params;
 			params[Context::Params::IDENTIFIER] = pName->value().getIdentificator();
 			Context::LPFindResult result = pParentContext->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
-			
+
 			$$ = PARSER->stack().push(result);
 		}
 	}
