@@ -80,7 +80,7 @@
 						<section title="Экспоненциальное распределение" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_exponential.htm"/>
 					</section>
 					<section title="Метод обратного преобразования" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_inverse.htm"/>
-					<section title="Оценка_качества_распределения" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_estimation.htm"/>
+					<section title="Оценка качества распределения" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_estimation.htm"/>
 				</section>
 			</section>
 		</toc>
