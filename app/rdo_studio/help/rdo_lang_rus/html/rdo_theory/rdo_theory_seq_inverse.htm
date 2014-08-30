@@ -23,7 +23,7 @@
 		<P style="text-indent: 2em;"><I>	F_inv = -ln(1 - F(x)) / lambda</I></P>
 		<P>Теперь форма распределения приводится к необходимому виду масштабированием и/или смещением:</P>
 		<P style="text-indent: 2em;"><I>	F_inv = -(factor / lambda) * ln(1 - base_uniform())</I></P><BR>
-		<P>Ниже приведен пример функции на языке C, выполняющей данные преобразования.</P>
+		<A name="exponential_distribution"></A><P>Ниже приведен пример функции на языке C, выполняющей данные преобразования.</P>
 		<PRE><code class="c">
 static double exp_distr(double lambda, double factor)
 {
@@ -35,6 +35,7 @@ static double exp_distr(double lambda, double factor)
 		<P><A href="rdo_theory_principles.htm">Принципы генерации псевдослучайных чисел</A></P>
 		<P><A href="rdo_theory_generator_seed.htm">База генератора</A></P>
 		<P><A href="rdo_theory_seq.htm">Законы распределения</A></P>
+		<P><A href="rdo_theory_estimation.htm">Оценка качества распределения</A></P>
 	</DIV>
 	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
 </BODY>
