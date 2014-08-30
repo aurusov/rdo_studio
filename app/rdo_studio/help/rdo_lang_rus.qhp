@@ -73,8 +73,14 @@
 				<section title="Теория" ref="rdo_lang_rus/html/rdo_theory/rdo_theory.htm">
 					<section title="Принципы генерации псевдослучайных чисел" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_principles.htm"/>
 					<section title="База генератора" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_generator_seed.htm"/>
-					<section title="Законы распределения" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq.htm"/>
+					<section title="Законы распределения" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq.htm">
+						<section title="Нормальное распределение" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_normal.htm"/>
+						<section title="Равномерное распределение" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_uniform.htm"/>
+						<section title="Треугольное распределение" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_triangular.htm"/>
+						<section title="Экспоненциальное распределение" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_exponential.htm"/>
+					</section>
 					<section title="Метод обратного преобразования" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_inverse.htm"/>
+					<section title="Оценка_качества_распределения" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_estimation.htm"/>
 				</section>
 			</section>
 		</toc>
@@ -554,6 +560,10 @@
 			<file>rdo_lang_rus/html/rdo_theory/*</file>
 			<file>rdo_lang_rus/html/*</file>
 			<file>rdo_lang_rus/images/*</file>
+			<file>rdo_lang_rus/images/uniform_distribution/*</file>
+			<file>rdo_lang_rus/images/normal_distribution/*</file>
+			<file>rdo_lang_rus/images/exponential_distribution/*</file>
+			<file>rdo_lang_rus/images/triangular_distribution/*</file>
 			<file>shared/styles/styles.css</file>
 			<file>shared/scripts/navbar.js</file>
 			<file>shared/scripts/highlight.pack.js</file>
