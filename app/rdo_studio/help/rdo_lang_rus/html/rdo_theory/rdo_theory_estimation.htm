@@ -15,18 +15,18 @@
 		<P>В качестве примера будет проведена оценка качества генератора псевдослучайного экспоненциального распределения с интенсивностью 1, базовое распределение для которого было получено в разделе "<A href="rdo_theory_principles.htm#base_uniform_distribution">Принципы генерации псевдослучайных чисел</A>", а преобразование к экспоненциальному выполнено в разделе "<A href="rdo_theory_seq_inverse.htm#exponential_distribution">Метод обратного преобразования</A>".</P>
 		<P>Полный код генератора приведен ниже.</P>
 		<PRE><code class="c">
-#include &lt;stdio.h&gt;
-#include &lt;limits.h&gt;
-#include &lt;math.h&gt;
+#include &lt;iostream&gt;
+#include &lt;climits&gt;
+#include &lt;cmath&gt;
 
-#define SEED 123456789
-#define MAGIC 69069
+static const unsigned long seed_init = 123456789;
+static const int magic = 69069;
 
 static unsigned long seed;
 
 static double base_uniform()
 {
-	seed = seed * MAGIC + 1;
+	seed = seed * magic + 1;
 	return (double) seed / ULONG_MAX;
 }
 
@@ -37,10 +37,9 @@ static double exp_distr(double lambda, double factor)
 
 int main(void)
 {
-	int i;
-	seed = SEED;
-	for (i = 0; i &lt; 10000; ++i) {
-		printf("%f\n", exp_distr(1, 1));
+	seed = seed_init;
+	for (int i = 0; i &lt; 10000; ++i) {
+		std::cout &lt;&lt; exp_distr(1, 1) &lt;&lt; std::endl;
 	}
 	return 0;
 }
@@ -61,7 +60,7 @@ pyplot.show()
 		<P>В результате будет построена гистограмма, имеющая следующий вид:</P>
 		<P class="image"><IMG align="left" src="../../images/hist_exp.png"></P><BR style="clear:both;"/><BR>
 		<P>И следующие параметры:</P>
-		<PRE><code>length = 10000 , min = 0.0 , max = 9.741674 , mean = 1.0147890824 , stddev = 1.01067526347</code></PRE>
+		<PRE><code>length =  10000 , min =  4.62252e-07 , max =  9.74167 , mean =  1.0147809955 , stddev 1.0106752669</code></PRE>
 		<P>Визуальная оценка в данном случае показывает, что форма распределения достаточно близка к ожидаемой, и подобный генератор вполне может использоваться, например, в моделировании.</P>
 		<P>Полученные значения математического ожидания и стандартного отклонения также близки к теоретическим (в данном случае 1 и 1 соответственно):</P>
 		<H4>См. также</H4>
