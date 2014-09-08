@@ -14,20 +14,19 @@
 		<P>Одним из простейших методов оценки является графический. В данном метода строится, например, гистограмма распределения элементов полученной последовательности, и зрительно оценивается её соответствие ожидаемому распределению.</P>
 		<P>В качестве примера будет проведена оценка качества генератора псевдослучайного экспоненциального распределения с интенсивностью 1, базовое распределение для которого было получено в разделе "<A href="rdo_theory_principles.htm#base_uniform_distribution">Принципы генерации псевдослучайных чисел</A>", а преобразование к экспоненциальному выполнено в разделе "<A href="rdo_theory_seq_inverse.htm#exponential_distribution">Метод обратного преобразования</A>".</P>
 		<P>Полный код генератора приведен ниже.</P>
-		<PRE><code class="c">
-#include &lt;iostream&gt;
+		<PRE><code class="c++">#include &lt;iostream&gt;
 #include &lt;climits&gt;
 #include &lt;cmath&gt;
 
-static const unsigned long seed_init = 123456789;
+static const unsigned int seed_init = 123456789;
 static const int magic = 69069;
 
-static unsigned long seed;
+static unsigned int seed;
 
 static double base_uniform()
 {
 	seed = seed * magic + 1;
-	return (double) seed / ULONG_MAX;
+	return (double) seed / UINT_MAX;
 }
 
 static double exp_distr(double lambda, double factor)
@@ -42,21 +41,18 @@ int main(void)
 		std::cout &lt;&lt; exp_distr(1, 1) &lt;&lt; std::endl;
 	}
 	return 0;
-}
-		</code></PRE>
+}</code></PRE>
 		<P>Выходными данными программы являются 10000 псевдослучайных чисел, распределенных по экспоненциальному закону.</P>
 		<P>Для получения гистограммы выходные данные генератора сохраняются в файл:</P>
 		<PRE><code class="shell">./rng_exp.o > data.csv</code></PRE>
 		<P>А затем, с помощью расширения NumPy для python строится гистограмма. Код программы приведен ниже.</P>
-		<PRE><code class="python">
-import numpy as np
+		<PRE><code class="python">import numpy as np
 from matplotlib import pyplot
 
 a = np.genfromtxt('data.csv')
 print "length =", a.size, ", min =", min(a), ", max =", max(a), ", mean =", a.mean(), ", stddev =", a.std()
 pyplot.hist(a, bins=40)
-pyplot.show()
-		</code></PRE>
+pyplot.show()</code></PRE>
 		<P>В результате будет построена гистограмма, имеющая следующий вид:</P>
 		<P class="image"><IMG align="left" src="../../images/hist_exp.png"></P><BR style="clear:both;"/><BR>
 		<P>И следующие параметры:</P>
