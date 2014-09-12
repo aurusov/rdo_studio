@@ -221,8 +221,8 @@
 		</TABLE>
 		<A name="log"></A>
 		<P>Кроме стандартных арифметических функций в языке определены четыре стандартные функции, значением которых является ИСТИНА или ЛОЖЬ. Синтаксис вызова этих функций следующий:</P>
-		<PRE class="syntax">&lt;имя_функции&gt; ( &lt;имя_типа_ресурсов&gt; :
-(&lt;логическое_выражение&gt; | NoCheck) )</PRE>
+		<PRE class="syntax"><code class="rdo">&lt;имя_функции&gt; ( &lt;имя_типа_ресурсов&gt; :
+(&lt;логическое_выражение&gt; | NoCheck) )</code></PRE>
 		<P><B>Стандартные логические функции</B> используются в <A href="rdo_base_equations.htm">логических выражениях</A>. Ниже приведены их имена и способы вычисления их значений:</P>
 		<TABLE class="visible">
 			<TR valign="top">
@@ -249,8 +249,8 @@
 		<P>Если вместо логического выражения указано зарезервированное слово <A name="nocheck"></A><FONT class="syntax">NoCheck</FONT>, то рассматриваются все ресурсы указанного типа. В этом случае функция <FONT class="syntax">Exist</FONT> определяет, существует ли хотя бы один ресурс указанного типа, функция <FONT class="syntax">For_All</FONT> всегда выдает значение ИСТИНА (даже если нет ни одного ресурса указанного типа), а функция <FONT class="syntax">Not_For_All</FONT> всегда выдает значение ЛОЖЬ.</P>
 		<A name="select"></A>
 		<P>В языке определена еще одна стандартная функция, позволяющая работать со <B>списком ресурсов</B>. Она позволяет отобрать только часть ресурсов указанного типа и проверить их состояния. Синтаксис:</P>
-		<PRE class="syntax">Select( &lt;имя_типа_ресурсов&gt;:
-(&lt;логическое_выражение&gt; | NoCheck) ).&lt;метод_списка&gt;</PRE>
+		<PRE class="syntax"><code class="rdo">Select( &lt;имя_типа_ресурсов&gt;:
+(&lt;логическое_выражение&gt; | NoCheck) ).&lt;метод_списка&gt;</code></PRE>
 		<P>Список методов приведен в таблице:</P>
 		<TABLE class="visible">
 			<TR valign="top">
@@ -260,37 +260,37 @@
 			</TR>
 			<TR valign="top"><A name="select_exist"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Exist</FONT></TD>
-				<TD class="visible" width="70%">Описание аналогично <A href="rdo_base_std_var_func.htm#exist">приведённому</A>, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax">Exist( &lt;логическое_выражение&gt; | NoCheck )</PRE></TD>
+				<TD class="visible" width="70%">Описание аналогично <A href="rdo_base_std_var_func.htm#exist">приведённому</A>, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax"><code class="rdo">Exist( &lt;логическое_выражение&gt; | NoCheck )</code></PRE></TD>
 				<TD class="visible" width="10%">Логическое</TD>
 			</TR>
 			<TR valign="top"><A name="select_not_exist"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Not_Exist</FONT></TD>
-				<TD class="visible" width="70%">Описание аналогично <A href="rdo_base_std_var_func.htm#not_exist">приведённому</A>, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax">Not_Exist( &lt;логическое_выражение&gt; | NoCheck )</PRE></TD>
+				<TD class="visible" width="70%">Описание аналогично <A href="rdo_base_std_var_func.htm#not_exist">приведённому</A>, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax"><code class="rdo">Not_Exist( &lt;логическое_выражение&gt; | NoCheck )</code></PRE></TD>
 				<TD class="visible" width="10%">Логическое</TD>
 			</TR>
 			<TR valign="top"><A name="select_for_all"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">For_All</FONT></TD>
-				<TD class="visible" width="70%">Описание аналогично приведённому, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax">For_All( &lt;логическое_выражение&gt; | NoCheck )</PRE></TD>
+				<TD class="visible" width="70%">Описание аналогично приведённому, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax"><code class="rdo">For_All( &lt;логическое_выражение&gt; | NoCheck )</code></PRE></TD>
 				<TD class="visible" width="10%">Логическое</TD>
 			</TR>
 			<TR valign="top"><A name="select_not_for_all"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Not_For_All</FONT></TD>
-				<TD class="visible" width="70%">Описание аналогично приведённому, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax">Not_For_All( &lt;логическое_выражение&gt; | NoCheck )</PRE></TD>
+				<TD class="visible" width="70%">Описание аналогично приведённому, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax"><code class="rdo">Not_For_All( &lt;логическое_выражение&gt; | NoCheck )</code></PRE></TD>
 				<TD class="visible" width="10%">Логическое</TD>
 			</TR>
 			<TR valign="top"><A name="select_empty"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Empty</FONT></TD>
-				<TD class="visible" width="70%">Возвращает значение ИСТИНА, если список отобранных ресурсов пуст, в противном случае - ЛОЖЬ. Формат использования: <PRE class="syntax">Empty()</PRE></TD>
+				<TD class="visible" width="70%">Возвращает значение ИСТИНА, если список отобранных ресурсов пуст, в противном случае - ЛОЖЬ. Формат использования: <PRE class="syntax"><code class="rdo">Empty()</code></PRE></TD>
 				<TD class="visible" width="10%">Логическое</TD>
 			</TR>
 			<TR valign="top"><A name="select_size"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Size</FONT></TD>
-				<TD class="visible" width="70%">Возвращает размер списка ресурсов, целое число. Если список пуст, то вовращается ноль. Формат использования: <PRE class="syntax">Size()</PRE></TD>
+				<TD class="visible" width="70%">Возвращает размер списка ресурсов, целое число. Если список пуст, то вовращается ноль. Формат использования: <PRE class="syntax"><code class="rdo">Size()</code></PRE></TD>
 				<TD class="visible" width="10%">Арифметическое</TD>
 			</TR>
 			<TR valign="top"><A name="select_array"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">getArray</FONT></TD>
-				<TD class="visible" width="70%"><b>Работает только в системе анимации.</b> Возвращает массив с отобранными ресурсами, тип массива соответствует типу ресурса. Если список ресурсов пуст, возвращаемый массив также имеет нулевой размер. Формат использования: <PRE class="syntax">getArray() | get_array()</PRE>
+				<TD class="visible" width="70%"><b>Работает только в системе анимации.</b> Возвращает массив с отобранными ресурсами, тип массива соответствует типу ресурса. Если список ресурсов пуст, возвращаемый массив также имеет нулевой размер. Формат использования: <PRE class="syntax"><code class="rdo">getArray() | get_array()</code></PRE>
 				<TD class="visible" width="10%">Арифметическое</TD>
 			</TR>
 		</TABLE>

@@ -12,14 +12,14 @@
 		<H1>ОПИСАНИЕ РЕСУРСОВ</H1>
 		<P><B>Ресурсы</B> определяют начальное состояние глобальной базы данных <A href="../rdo_terms.htm">модели</A> и описываются в отдельном <A href="../rdo_terms.htm#object">объекте</A> (с расширением <FONT class="syntax">.rss</FONT>).</P>
 		<P>Объект ресурсов имеет следующий формат:</P>
-		<PRE class="syntax">$Resources
+		<PRE class="syntax"><code class="rdo">$Resources
 <A class="syntax" href="#res_desc">&lt;описание_ресурса&gt;</A> [ <A class="syntax" href="#trace_call">&lt;вызов_метода_трассировки&gt;</A> ]
 { &lt;описание_ресурса&gt; [ &lt;вызов_метода_трассировки&gt; ] }
-$End</PRE>
+$End</code></PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="res_desc"></A><I>описание_ресурса</I></DT>
 			<DD class="syntax">Описание каждого ресурса имеет следующий формат:<BR>
-				<PRE class="syntax"><A class="syntax" href="#res_name">&lt;имя_ресурса&gt;</A> = <A class="syntax" href="#type_name">&lt;имя_типа_ресурса&gt;</A>(<A class="syntax" href="#start_val">&lt;начальные_значения_параметров&gt;</A>);</PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#res_name">&lt;имя_ресурса&gt;</A> = <A class="syntax" href="#type_name">&lt;имя_типа_ресурса&gt;</A>(<A class="syntax" href="#start_val">&lt;начальные_значения_параметров&gt;</A>);</code></PRE>
 				<DL class="syntax">
 						<DT class="syntax"><A name="type_name"></A><I>имя_типа_ресурса</I></DT>
 						<DD class="syntax">Имя типа ресурса - это имя одного из типов ресурсов, описанных в <A href="rdo_base_res_types.htm">объекте типов</A>.</DD>
@@ -34,7 +34,7 @@ $End</PRE>
 			</DD>
 			<DT class="syntax"><A name="trace_call"></A><I>вызов_метода_трассировки</I></DT>
 			<DD class="syntax">Вызов метода трассировки может отсутствовать. В этом случае трассировка для ресурса по умолчанию отключена.<BR>Вызов метода трассировки имеет следующий формат:<BR>
-				<PRE class="syntax"> <A class="syntax" href="#trace_res_name">&lt;имя_ресурса&gt;</A>.<A class="syntax" href="#trace_val">&lt;признак_трассировки&gt;</A>();</PRE>
+				<PRE class="syntax"><code class="rdo"> <A class="syntax" href="#trace_res_name">&lt;имя_ресурса&gt;</A>.<A class="syntax" href="#trace_val">&lt;признак_трассировки&gt;</A>();</code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="trace_res_name"></A><I>имя_ресурса</I></DT>
 					<DD class="syntax">Имя ресурса - это имя одного из уже описанных ресурсов, для которого вызывается метод.</DD>

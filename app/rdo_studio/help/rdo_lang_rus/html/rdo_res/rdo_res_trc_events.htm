@@ -11,7 +11,7 @@
 	<DIV>
 		<H1>ТРАССИРОВКА СОБЫТИЙ</H1>
 		<P><B>Информация о событии</B> располагается на отдельной строке, которая имеет следующий формат:</P>
-		<PRE class="syntax">E<A class="syntax" href="#ev_type">&lt;тип_события&gt;</A> <A class="syntax" href="#ev_time">&lt;время&gt;</A> <A class="syntax" href="#ev_info">&lt;информация_о_событии&gt;</A></PRE>
+		<PRE class="syntax"><code class="rdo">E<A class="syntax" href="#ev_type">&lt;тип_события&gt;</A> <A class="syntax" href="#ev_time">&lt;время&gt;</A> <A class="syntax" href="#ev_info">&lt;информация_о_событии&gt;</A></code></PRE>
 		<P>Строка трассировки события начинается символом "E".</P>
 		<DL class="syntax">
 			<DT class="syntax"><A name="ev_type"></A><I>тип_события</I></DT>
@@ -71,8 +71,8 @@
 					</TR>
 				</TABLE>
 				<P><BR><A name="start_end"></A><B>Для событий начала и окончания действий</B> информация о событии имеет следующий формат:</P>
-				<PRE class="syntax"><A class="syntax" href="#ev_num">&lt;номер_действия&gt;</A> <A class="syntax" href="#ev_opr_num">&lt;номер_операции&gt;</A> <A class="syntax" href="#ev_pat_num">&lt;номер_образца&gt;</A>
-<A class="syntax" href="#ev_rel_res_num">&lt;количество_релевантных_ресурсов&gt;</A> <A class="syntax" href="#ev_rel_res_list">&lt;список_номеров&gt;</A></PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#ev_num">&lt;номер_действия&gt;</A> <A class="syntax" href="#ev_opr_num">&lt;номер_операции&gt;</A> <A class="syntax" href="#ev_pat_num">&lt;номер_образца&gt;</A>
+<A class="syntax" href="#ev_rel_res_num">&lt;количество_релевантных_ресурсов&gt;</A> <A class="syntax" href="#ev_rel_res_list">&lt;список_номеров&gt;</A></code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="ev_num"></A><I>номер_действия</I></DT>
 					<DD class="syntax">Номер действия - это внутренний номер, который имеет действие в имитаторе. Этот номер необходим, чтобы связать события начала и окончания одного и того же действия, другой полезной информации он не несет.</DD>
@@ -82,11 +82,11 @@
 					<DD class="syntax">Количество <A href="../rdo_obj/rdo_obj_pat.htm#rel_res_desc">релевантных ресурсов</A> действия и список их номеров.</DD>
 				</DL>
 				<P><BR><A name="ir_ev"></A><B>Для событий и нерегулярных событий</B> информация о событиях имеет следующий формат:</P>
-				<PRE class="syntax">&lt;номер_события&gt; &lt;номер_образца&gt;
-&lt;количество_релевантных_ресурсов&gt; &lt;список_номеров&gt;</PRE>
+				<PRE class="syntax"><code class="rdo">&lt;номер_события&gt; &lt;номер_образца&gt;
+&lt;количество_релевантных_ресурсов&gt; &lt;список_номеров&gt;</code></PRE>
 				<P><BR><A name="rule"></A><B>Для продукционных правил</B> информация о событии имеет следующий формат:</P>
-				<PRE class="syntax">&lt;номер_действия&gt; &lt;номер_правила&gt; &lt;номер_образца&gt;
-&lt;количество_релевантных_ресурсов&gt; &lt;список_номеров&gt;</PRE>
+				<PRE class="syntax"><code class="rdo">&lt;номер_действия&gt; &lt;номер_правила&gt; &lt;номер_образца&gt;
+&lt;количество_релевантных_ресурсов&gt; &lt;список_номеров&gt;</code></PRE>
 			</DD>
 		</DL>
 		<H4>См. также</H4>

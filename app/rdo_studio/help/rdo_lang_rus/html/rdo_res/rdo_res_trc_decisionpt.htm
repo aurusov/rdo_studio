@@ -13,25 +13,25 @@
 		<P>Статистика по поиску на графе для каждой точки принятия решений типа <A href="../rdo_dpt/rdo_dpt_search.htm">search</A> приводится в <A href="rdo_res_trc.htm#graph_stat">конце объекта трассировки</A>.</P>
 		<P><B>Трассировка процесса поиска на графе</B> в точке принятия решений типа <FONT class="syntax">search</FONT> позволяет полностью восстановить картину поиска и полученный граф.</P>
 		<P>Формат трассировки имеет следующий вид:</P>
-		<PRE class="syntax"><A class="syntax" href="#start_search">&lt;начало_поиска&gt;</A>
+		<PRE class="syntax"><code class="rdo"><A class="syntax" href="#start_search">&lt;начало_поиска&gt;</A>
 [ <A class="syntax" href="#search_info">&lt;информация_о_поиске&gt;</A> ]
 [ <A class="syntax" href="#decision">&lt;решение&gt;</A> ]
-<A class="syntax" href="#end_search">&lt;окончание_поиска&gt;</A></PRE>
+<A class="syntax" href="#end_search">&lt;окончание_поиска&gt;</A></code></PRE>
 		<P>Трассировка начала и окончания поиска и трассировка решения присутствуют в <A href="rdo_res_trc.htm">объекте трассировки</A>, если в <A href="../rdo_obj/rdo_obj_dpt.htm">описании точки принятия решений</A> указан любой <A href="rdo_res_trace_descr.htm#dpt_trace">признак трассировки</A> кроме <FONT class="syntax">no_trace</FONT>.</P>
 		<DL class="syntax">
 			<DT class="syntax"><A name="sb"></A><A name="start_search"></A><I>начало_поиска</I></DT>
 			<DD class="syntax">Формат информации о начале поиска следующий:
-				<PRE class="syntax">SB &lt;модельное_время&gt; &lt;номер_точки_принятия_решения&gt;</PRE>
+				<PRE class="syntax"><code class="rdo">SB &lt;модельное_время&gt; &lt;номер_точки_принятия_решения&gt;</code></PRE>
 			</DD>
 			<DT class="syntax"><A name="search_info"></A><I>информация_о_поиске</I></DT>
 			<DD class="syntax">Информация о поиске включает данные о вершинах графа поиска, порожденных в процессе поиска. Она выводится в <A href="rdo_res_trc.htm">объект трассировки</A> если <A href="rdo_res_trace_descr.htm#dpt_trace">признак трассировки</A> для данной точки принятия решений есть <FONT class="syntax">trace_tops</FONT> или <FONT class="syntax">trace_all</FONT> и состоит из блоков следующего вида:
-				<PRE class="syntax"><A class="syntax" href="#trace_open">&lt;трассировка_раскрываемой_вершины&gt;</A>
-{ <A class="syntax" href="#new_top">&lt;порожденная_вершина&gt;</A> [ <A class="syntax" href="#trace_res">&lt;трассировка_измененных_ресурсов&gt;</A> ] }</PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#trace_open">&lt;трассировка_раскрываемой_вершины&gt;</A>
+{ <A class="syntax" href="#new_top">&lt;порожденная_вершина&gt;</A> [ <A class="syntax" href="#trace_res">&lt;трассировка_измененных_ресурсов&gt;</A> ] }</code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="so"></A><A name="trace_open"></A><I>трассировка_раскрываемой_вершины</I></DT>
 					<DD class="syntax">Трассировка раскрываемой вершины имеет следующий формат:
-						<PRE class="syntax">SO <A class="syntax" href="#open_top_num">&lt;номер_вершины&gt;</A> <A class="syntax" href="#open_top_parent">&lt;номер_родителя&gt;</A> <A class="syntax" href="#open_top_route">&lt;стоимость_пути&gt;</A>
-<A class="syntax" href="#open_top_eval_val">&lt;значение_оценочной_функции&gt;</A></PRE>
+						<PRE class="syntax"><code class="rdo">SO <A class="syntax" href="#open_top_num">&lt;номер_вершины&gt;</A> <A class="syntax" href="#open_top_parent">&lt;номер_родителя&gt;</A> <A class="syntax" href="#open_top_route">&lt;стоимость_пути&gt;</A>
+<A class="syntax" href="#open_top_eval_val">&lt;значение_оценочной_функции&gt;</A></code></PRE>
 						<DL class="syntax">
 							<DT class="syntax"><A name="open_top_num"></A><I>номер_вершины</I></DT>
 							<DD class="syntax">Номер раскрываемой вершины в графе поиска.</DD>
@@ -46,10 +46,10 @@
 					</DD>
 					<DT class="syntax"><A name="new_top"></A><I>порожденная_вершина</I></DT>
 					<DD class="syntax">Информация о преемнике имеет следующий формат:
-						<PRE class="syntax">ST<A class="syntax" href="#new_top_feat">&lt;признак_вершины&gt;</A> &lt;номер_вершины&gt; &lt;номер_вершины-родителя&gt;
+						<PRE class="syntax"><code class="rdo">ST<A class="syntax" href="#new_top_feat">&lt;признак_вершины&gt;</A> &lt;номер_вершины&gt; &lt;номер_вершины-родителя&gt;
 &lt;фактическая_стоимость_пройденного_пути_g&gt; &lt;оценочная_стоимость_полного_пути_f&gt;
 &lt;номер_правила&gt; &lt;номер_образца&gt; &lt;стоимость_применения_правила&gt;
-&lt;количество_релевантных_ресурсов&gt; &lt;номера_релевантных_ресурсов&gt;</PRE>
+&lt;количество_релевантных_ресурсов&gt; &lt;номера_релевантных_ресурсов&gt;</code></PRE>
 						<DL class="syntax">
 							<DT class="syntax"><A name="new_top_feat"></A><I>признак_вершины</I></DT>
 							<DD class="syntax">Признак вершины может быть следующим:
@@ -80,17 +80,17 @@
 			</DD>
 			<DT class="syntax"><A name="sd"></A><A name="decision"></A><I>решение</I></DT>
 			<DD class="syntax">Трассировка решения имеет формат:
-				<PRE class="syntax">SD
+				<PRE class="syntax"><code class="rdo">SD
 { &lt;номер_вершины&gt; &lt;номер_активности&gt; &lt;номер_образца&gt;
-&lt;количество_релевантных_ресурсов&gt; &lt;номера_релевантных_ресурсов&gt; }</PRE>
+&lt;количество_релевантных_ресурсов&gt; &lt;номера_релевантных_ресурсов&gt; }</code></PRE>
 				<P>Она состоит из строк, содержащих информацию о том какие правила были применены к исходной вершине графа (исходному состоянию системы) для перехода в целевое состояние. Правила указываются в порядке их применения. Номер вершины позволяет более подробно проанализировать решение на основе информации о поиске.</P>
 			</DD>
 			<DT class="syntax"><A name="end_search"></A><I>окончание_поиска</I></DT>
 			<DD class="syntax">Трассировка окончания поиска имеет формат:
-				<PRE class="syntax">SE<A class="syntax" href="#end_feat">&lt;признак&gt;</A> &lt;модельное_время&gt; <A class="syntax" href="#search_time">&lt;время_счета&gt;</A> <A class="syntax" href="#memory">&lt;объем_памяти_для_поиска&gt;</A>
+				<PRE class="syntax"><code class="rdo">SE<A class="syntax" href="#end_feat">&lt;признак&gt;</A> &lt;модельное_время&gt; <A class="syntax" href="#search_time">&lt;время_счета&gt;</A> <A class="syntax" href="#memory">&lt;объем_памяти_для_поиска&gt;</A>
 <A class="syntax" href="#decision_cost">&lt;значение_стоимости_решения&gt;</A> &lt;количество_раскрытых_вершин&gt;
 &lt;количество_вершин_в_графе&gt; &lt;количество_включавшихся_в_граф_вершин&gt;
-&lt;количество_порожденных_вершин&gt;</PRE>
+&lt;количество_порожденных_вершин&gt;</code></PRE>
 				<P>Она содержит признак завершения процесса поиска и статистическую информацию о полученном графе и затраченных ресурсах.</P>
 				<DL class="syntax">
 					<DT class="syntax"><A name="end_feat"></A><I>признак</I></DT>

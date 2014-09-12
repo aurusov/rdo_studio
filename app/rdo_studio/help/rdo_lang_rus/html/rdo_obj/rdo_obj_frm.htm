@@ -22,16 +22,16 @@ function toggle_display(e)
 		<H1>КАДРЫ АНИМАЦИИ</H1>
 		<P><B>Описание кадров</B> производится в отдельном <A href="../rdo_terms.htm#object">объекте</A>, который является исходным для системы отображения. Этот объект имеет расширение <FONT class="syntax">.frm</FONT>. <A name="frame"></A>Кадр представляет собой прямоугольную область экрана, в которой производится отображение. Он состоит из фоновой картинки и переменных элементов (элементов отображения или спрайтов), состав, форма, размеры и расположение которых определяются состоянием системы и, следовательно, могут изменяться во время просмотра кадра.</P>
 		<P>Описание кадра имеет следующий формат:</P>
-		<PRE class="syntax">$Frame <A class="syntax" href="#frm_name">&lt;имя_кадра&gt;</A>
+		<PRE class="syntax"><code class="rdo">$Frame <A class="syntax" href="#frm_name">&lt;имя_кадра&gt;</A>
 $Back_picture = <A class="syntax" href="#back_desc">&lt;описание_фоновой_картинки&gt;</A>
 [ <A class="syntax" href="#elem_desc">&lt;описание_элементов_отображения&gt;</A> ]
-$End</PRE>
+$End</code></PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="frm_name"></A><I>имя_кадра</I></DT>
 			<DD class="syntax">Имя кадра представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех кадров и не должны совпадать с ранее определенными именами.</DD>
 			<DT class="syntax"><A name="back_desc"></A><I>описание_фоновой_картинки</I></DT>
 			<DD class="syntax">Описание фоновой картинки имеет следующий формат:
-				<PRE class="syntax">[ <A class="syntax" href="#back_color">&lt;цвет_фона&gt;</A> ] (<A class="syntax" href="#frm_dim">&lt;размеры_кадра&gt;</A> | <A class="syntax" href="#frm_file">&lt;имя_файла_фона&gt;</A>)</PRE>
+				<PRE class="syntax"><code class="rdo">[ <A class="syntax" href="#back_color">&lt;цвет_фона&gt;</A> ] (<A class="syntax" href="#frm_dim">&lt;размеры_кадра&gt;</A> | <A class="syntax" href="#frm_file">&lt;имя_файла_фона&gt;</A>)</code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="back_color"></A><I>цвет_фона</I></DT>
 					<DD class="syntax">Цвет фона задает цвет части <A href="#frame">кадра</A>, которая находится за пределами фоновой картинки. Цвет задается тремя <A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">численными константами</A> целого типа, разделенными пробелами и заключенными в угловые скобки. Каждое число должно находиться в диапазоне 0..255, оно задает интенсивность одной из трех цветовых составляющих: первое - красной, второе - зеленой и третье - синей.

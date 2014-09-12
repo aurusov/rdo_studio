@@ -11,14 +11,14 @@
 	<DIV>
 		<H1>СИМВОЛЬНЫЕ КОНСТАНТЫ</H1>
 		<P>Константы описываются в <A href="../rdo_terms.htm#object">объекте</A> (с расширением <FONT class="syntax">.fun</FONT>), который определяет символьные константы, функции и последовательности. Константы должны быть описаны до функций и последовательностей. Описание констант имеет следующий формат:</P>
-		<PRE class="syntax">$Constant
+		<PRE class="syntax"><code class="rdo"><code class="rdo">$Constant
 <A class="syntax" href="#const_desc">&lt;описание_константы&gt;</A> { &lt;описание_константы&gt; }
 $End
-</PRE>
+</code></code></PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="const_desc"></A><I>описание_константы</I></DT>
 			<DD class="syntax">Описание константы имеет формат:<BR>
-				<PRE class="syntax"><A class="syntax" href="#const_name">&lt;имя_константы&gt;</A> : <A class="syntax" href="#const_type">&lt;тип_константы&gt;</A> = <A class="syntax" href="#def_val">&lt;значение_константы&gt;</A></PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#const_name">&lt;имя_константы&gt;</A> : <A class="syntax" href="#const_type">&lt;тип_константы&gt;</A> = <A class="syntax" href="#def_val">&lt;значение_константы&gt;</A></code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="const_name"></A><I>имя_константы</I></DT>
 					<DD class="syntax">Имя константы представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех констант и не должны совпадать с <A href="../rdo_lex_div/rdo_lex_div_res_words.htm">зарезервированными словами</A>, именами <A href="../rdo_base/rdo_base_res_types.htm">типов ресурсов</A> и <A href="../rdo_base/rdo_base_res_types.htm#param_desc">именами параметров</A>, <A href="../rdo_base/rdo_base_resources.htm#res_name">именами ресурсов</A>.</DD>

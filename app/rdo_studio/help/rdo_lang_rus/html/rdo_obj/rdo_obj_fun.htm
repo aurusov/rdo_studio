@@ -21,11 +21,11 @@ function toggle_display(e)
 	<DIV>
 		<H1>ФУНКЦИИ</H1>
 		<P><B>Описание функции</B> следует за описанием констант в <A href="rdo_obj_const_fun_seq.htm">объекте символьных констант, функций и последовательностей</A> (с расширением <FONT class="syntax">.fun</FONT>) и имеет следующий формат:</P>
-		<PRE class="syntax">$Function <A class="syntax" href="#fun_name">&lt;имя_функции&gt;</A> : <A class="syntax" href="#val_type">&lt;тип_значения_функции&gt;</A>
+		<PRE class="syntax"><code class="rdo">$Function <A class="syntax" href="#fun_name">&lt;имя_функции&gt;</A> : <A class="syntax" href="#val_type">&lt;тип_значения_функции&gt;</A>
 $Type = <A class="syntax" href="#fun_type">&lt;тип_функции&gt;</A>
 $Parameters
 <A class="syntax" href="#param_desc">&lt;описание_параметра_функции&gt;</A> { &lt;описание_параметра_функции&gt; }
-$Body <A class="syntax" href="#body">&lt;тело_функции&gt;</A> $End</PRE>
+$Body <A class="syntax" href="#body">&lt;тело_функции&gt;</A> $End</code></PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="fun_name"></A><I>имя_функции</I></DT>
 			<DD class="syntax">Имя функции представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех функций и не должны совпадать с ранее определенными именами.</DD>
@@ -55,7 +55,7 @@ $Body <A class="syntax" href="#body">&lt;тело_функции&gt;</A> $End</P
 			</DD>
 			<DT class="syntax"><A name="param_desc"></A><I>описание_параметра_функции</I></DT>
 			<DD class="syntax">Описание параметра функции имеет следующий формат:<BR>
-				<PRE class="syntax"><A class="syntax" href="#param_name">&lt;имя_параметра_функции&gt;</A> : <A class="syntax" href="#param_type">&lt;тип_параметра&gt;</A></PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#param_name">&lt;имя_параметра_функции&gt;</A> : <A class="syntax" href="#param_type">&lt;тип_параметра&gt;</A></code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="param_name"></A><I>имя_параметра_функции</I></DT>
 					<DD class="syntax">Имя параметра функции представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех параметров и не должны совпадать с ранее определенными именами.</DD>
@@ -65,7 +65,7 @@ $Body <A class="syntax" href="#body">&lt;тело_функции&gt;</A> $End</P
 			</DD>
 			<BR>
 			<P><BR><A name="call"></A><B>Обращение к функции</B> имеет следующий формат:</P>
-			<PRE class="syntax">&lt;имя_функции&gt; ( <A class="syntax" href="#call_expr">&lt;выражение&gt;</A> { , &lt;выражение&gt; } )</PRE>
+			<PRE class="syntax"><code class="rdo">&lt;имя_функции&gt; ( <A class="syntax" href="#call_expr">&lt;выражение&gt;</A> { , &lt;выражение&gt; } )</code></PRE>
 			<DL class="syntax">
 				<DT class="syntax"><A name="call_expr"></A><I>выражение</I></DT>
 				<DD class="syntax">После имени функции в скобках через запятую записывают <A href="../rdo_base/rdo_base_equations.htm#arith_expr">арифметические выражения</A> для вычисления значений параметров. Порядок следования выражений определяется порядком следования параметров в описании функции. Тип арифметического выражения должен соответствовать типу параметра. Для вещественных параметров допустимо выражение целого типа.</DD>
@@ -74,8 +74,8 @@ $Body <A class="syntax" href="#body">&lt;тело_функции&gt;</A> $End</P
 			<DT class="syntax"><A name="body"></A><I>тело_функции</I></DT>
 			<DD class="syntax">Синтаксис тела функции зависит от типа функции.
 				<P><BR>Для <B>функции типа список</B> описание тела имеет следующий формат:</P>
-				<PRE class="syntax"><A class="syntax" href="#list_param_val">&lt;значения_параметров&gt;</A> = <A class="syntax" href="#list_fun_val">&lt;значение_функции&gt;</A>
-{ &lt;значения_параметров&gt; = &lt;значение_функции&gt; }</PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#list_param_val">&lt;значения_параметров&gt;</A> = <A class="syntax" href="#list_fun_val">&lt;значение_функции&gt;</A>
+{ &lt;значения_параметров&gt; = &lt;значение_функции&gt; }</code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="list_param_val"></A><I>значения_параметров</I></DT>
 					<DD class="syntax">Значения параметров функции разделяют по крайней мере одним <A href="../rdo_lex_div/rdo_lex_div_intro.htm">разделителем</A>. Порядок следования значений параметров определяется порядком следования описаний параметров функции. Значение параметра задают целой или вещественной <A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">численной константой</A> либо именем значения в соответствии с типом параметра.</DD>
@@ -168,7 +168,7 @@ $End</code></PRE>
 				</DIV>
 				</DL>
 				<P><BR>Тело <A name="alg"></A><B>алгоритмической функции</B> имеет следующий формат:</P>
-				<PRE class="syntax"><A class="syntax" href="#list_opereations">&lt;процедура&gt;</A>;{&lt;процедура&gt;;}</PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#list_opereations">&lt;процедура&gt;</A>;{&lt;процедура&gt;;}</code></PRE>
 				<DD class="syntax"><A name="list_opereations"></A><I>процедура</I></DD>
 				<DL class="syntax">
 				    <DD class="syntax">Тело функции представляет собой последовательность <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедур</A>. Значение функции должно быть возвращено <A href="../rdo_base/rdo_base_proc_lang.htm#operator_return">оператором return</A>.</DD>

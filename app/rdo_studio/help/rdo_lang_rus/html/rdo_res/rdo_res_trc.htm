@@ -11,7 +11,7 @@
 	<DIV>
 		<H1>ОБЪЕКТ ТРАССИРОВКИ</H1>
 		<P><B>Объект трассировки</B> (с расширением <FONT class="syntax">.trc</FONT>) создается РДО-имитатором, если в <A href="../rdo_obj/rdo_obj_smr.htm">объекте прогона</A> присутствует дескриптор, задающий имя объекта трассировки. Объект имеет следующий формат:</P>
-		<PRE class="syntax">Results_file   = <A class="syntax" href="#res_obj_name">&lt;имя_объекта_результатов&gt;</A>.pmv <A class="syntax" href="#creation_date">&lt;дата_создания&gt;</A>
+		<PRE class="syntax"><code class="rdo">Results_file   = <A class="syntax" href="#res_obj_name">&lt;имя_объекта_результатов&gt;</A>.pmv <A class="syntax" href="#creation_date">&lt;дата_создания&gt;</A>
 Run_file       = <A class="syntax" href="#smr_name">&lt;имя_прогона&gt;</A>.smr
 Model_name     = <A class="syntax" href="#model_name">&lt;имя_модели&gt;</A>
 Resource_file  = <A class="syntax" href="#res_name">&lt;имя_объекта_ресурсов&gt;</A>.rss
@@ -28,7 +28,7 @@ $Tracing
 
 $Status = <A class="syntax" href="#end_status">&lt;статус_окончания_моделирования&gt;</A> &lt;модельное_время_окончания&gt;
 { <A class="syntax" href="#graph_stat">&lt;статистика_по_поиску_на_графе&gt;</A> }
-<A name="dps_mm"></A>DPS_MM &lt;объем_использованной_памяти&gt;</PRE>
+<A name="dps_mm"></A>DPS_MM &lt;объем_использованной_памяти&gt;</code></PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="res_obj_name"></A><I>имя_объекта_результатов</I></DT>
 			<DD class="syntax">Имя <A href="rdo_res_pmv.htm">объекта результатов</A>, созданного РДО-имитатором.</DD>
@@ -42,7 +42,7 @@ $Status = <A class="syntax" href="#end_status">&lt;статус_окончани
 			<DD class="syntax">Список изменений содержит имена и заданные в объекте прогона новые значения <A href="../rdo_obj/rdo_obj_smr.htm#const_new">символьных констант</A>, <A href="../rdo_obj/rdo_obj_smr.htm#res_param_new">параметров ресурсов</A> и <A href="../rdo_obj/rdo_obj_smr.htm#seed_new">баз генераторов последовательностей</A>.</DD>
 			<DT class="syntax"><A name="watching"></A><I>описание_трассируемого_показателя</I></DT>
 			<DD class="syntax">Описание трассируемого показателя приводится только для тех показателей, для которых в <A href="../rdo_obj/rdo_obj_pmd.htm">объекте описания показателей</A> задан признак трассировки <FONT class="syntax">trace</FONT>. Описание трассируемого показателя имеет формат:
-				<PRE class="syntax"><A class="syntax" href="#whatch_name">&lt;имя_показателя&gt;</A> <A class="syntax" href="#whatch_num">&lt;номер_показателя&gt;</A> <A class="syntax" href="#whatch_type">&lt;вид_показателя&gt;</A></PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#whatch_name">&lt;имя_показателя&gt;</A> <A class="syntax" href="#whatch_num">&lt;номер_показателя&gt;</A> <A class="syntax" href="#whatch_type">&lt;вид_показателя&gt;</A></code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="whatch_name"></A><I>имя_показателя</I></DT>
 					<DD class="syntax">Имя показателя - это одно из имен, заданных в <A href="../rdo_obj/rdo_obj_pmd.htm">объекте описания показателей</A>.</DD>
@@ -79,7 +79,7 @@ $Status = <A class="syntax" href="#end_status">&lt;статус_окончани
 			</DD>
 			<DT class="syntax"><A name="graph_stat"></A><I>статистика_по_поиску_на_графе</I></DT>
 			<DD class="syntax">Статистика по поиску на графе для каждой точки принятия решений типа <A href="../rdo_obj/rdo_obj_dpt.htm#dpt_type">search</A> имеет следующий формат:
-				<PRE class="syntax"><A name="dps_c"></A>DPS_C  &lt;номер_точки&gt; &lt;количество_активаций&gt; &lt;количество_успешных&gt;
+				<PRE class="syntax"><code class="rdo"><A name="dps_c"></A>DPS_C  &lt;номер_точки&gt; &lt;количество_активаций&gt; &lt;количество_успешных&gt;
 <A name="dps_tm"></A>DPS_TM &lt;среднее_время_поиска&gt; &lt;минимальное_время_поиска&gt;
   &lt;максимальное_время_поиска&gt;
 <A name="dps_me"></A>DPS_ME &lt;средний_объем_памяти&gt; &lt;минимальный_объем_памяти&gt;
@@ -97,7 +97,7 @@ $Status = <A class="syntax" href="#end_status">&lt;статус_окончани
   &lt;максимальное_количество_включенных_в_граф_вершин&gt;
 <A name="dps_tg"></A>DPS_TG &lt;среднее_количество_порожденных_вершин&gt;
   &lt;минимальное_количество_порожденных_вершин&gt;
-  &lt;максимальное_количество_порожденных_вершин&gt;</PRE>
+  &lt;максимальное_количество_порожденных_вершин&gt;</code></PRE>
 					<P>Она содержит номер точки принятия решений, количество активаций данной точки и количество успешных завершений поиска с нахождением решения. Кроме этого статистика содержит средние по всем активациям поиска, минимальные и максимальные значения таких характеристик процесса поиска, как время поиска (в секундах), количество использованной для построения графа поиска памяти (в байтах), стоимость найденного решения, количество раскрытых вершин, количество вершин в построенном графе, количество включавшихся в граф вершин (вершины, соответствующие одному и тому же состоянию системы, могут включаться в граф неоднократно, если порождается вершина с меньшей стоимостью пути), общее количество порожденных вершин-преемников в процессе поиска. Значения этих характеристик для каждой активации поиска отдельно находятся в <A href="rdo_res_trc_decisionpt.htm#end_search">трассировке окончания поиска</A>.</P>
 					<DL class="syntax">
 						<DD class="syntax"><H4>Примеры</H4><PRE class="samples"><code class="rdo">DPS_C  1  1  1
