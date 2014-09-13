@@ -24,7 +24,7 @@ function toggle_display(e)
 		<DL class="syntax">
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Пример</H4></A>
 		<DIV style="display:none" id="v1">
-		<PRE class="samples"><code class="rdo">$Resources
+		<PRE class="syntax"><code class="rdo">$Resources
 	Парикмахерская = Парикмахерские(#, 0, 0);
 	Парикмахерская.trace();
 $End
@@ -47,7 +47,7 @@ $End
 		</DIV>
 		</DL>
 		<P>В данном примере значение параметра "состояние_парикмахера" является неопределенным. Соответственно, при попытке его использованния в Choice_from система моделирования понимает, что не может использовать его при проверке условия, так как значение этого параметра не является достоверным. Для того, чтобы работа продолжилась, необходимо явно инициализировать параметр ресурса:</P>
-		<PRE class="samples"><code class="rdo">$Pattern Образец_прихода_парикмахера : event
+		<PRE class="syntax"><code class="rdo">$Pattern Образец_прихода_парикмахера : event
 $Relevant_resources
 	_Парикмахерская: Парикмахерская Keep
 $Body

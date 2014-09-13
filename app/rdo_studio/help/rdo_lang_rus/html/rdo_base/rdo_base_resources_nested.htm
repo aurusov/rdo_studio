@@ -24,7 +24,7 @@
     <DT class="syntax"><A name="param_type"></A><I>имя_типа_ресурса</I></DT>
           <DD class="syntax">Имя типа ресурса - это имя одного из типов ресурсов, описанных ранее. Задание значения по умолчанию для параметра типа ресурса невозможно.</DD>
 		<H4>Пример</H4>
-		<PRE class="samples"><code class="rdo">
+		<PRE class="syntax"><code class="rdo">
 $Resource_type CPU_Type: permanent
 $Parameters
   number_of_cores:  integer
@@ -66,7 +66,7 @@ $End
     <H4>Создание вложенных ресурсов</H4>
 		<P>Создание вложенных ресурсов осуществляется как определение значения соответствующего параметра родительского ресурса. В этом случае вместо начального значения параметра приводится конструктор вложенного ресурса с начальными значениями его параметров. Если вложенный ресурс тоже имеет ресурсы в качестве своих параметров, их создание описывается аналогично.</P>
 		<H4>Пример</H4>
-		<PRE class="samples"><code class="rdo">
+		<PRE class="syntax"><code class="rdo">
 $Resources
   Laptop_1 = Laptop(
     CPU_Type(4, 3700),
@@ -85,7 +85,7 @@ $End
     <H4>Доступ к параметрам вложенных ресурсов</H4>
 		<P>Доступ к параметрам ресурса произвольного уровня вложенности осуществляется через оператор 'точка'('.').</P>
 		<H4>Пример<H4>
-		<PRE class="samples"><code class="rdo">
+		<PRE class="syntax"><code class="rdo">
 $Pattern Choosing_laptop_pattern : operation trace
 $Relevant_resources
   _Client : Clients Keep Erase

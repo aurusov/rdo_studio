@@ -88,7 +88,7 @@ $Body <A class="syntax" href="#body">&lt;тело_функции&gt;</A> $End</c
 					<DD class="syntax"></DD>
 					<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
 					<DIV style="display:none" id="v1">
-					<PRE class="samples"><code class="rdo">$Function Список_1 : such_as Константа_9 = Значение_2
+					<PRE class="syntax"><code class="rdo">$Function Список_1 : such_as Константа_9 = Значение_2
 $Type = list
 $Parameters
   Параметр_1 : such_as Константа_5
@@ -104,7 +104,7 @@ $Body
 $End</code></PRE>
 					</DIV>
 					<P>Вызовы функций и получаемые значения:</P>
-					<PRE class="samples"><code class="rdo">Список_1(Занят, 40 + 1) = Значение_1
+					<PRE class="syntax"><code class="rdo">Список_1(Занят, 40 + 1) = Значение_1
 Список_1(Погрузка, 22)  = Значение_5
 Список_1(Свободен, 4)   = Значение_2  (по умолчанию)</code></PRE>
 				</DL>
@@ -116,7 +116,7 @@ $End</code></PRE>
 					<A href="" class="ref" onclick="return toggle_display(v2);"><H4>Примеры</H4></A>
 					<DIV style="display:none" id="v2">
 					<P>Комментарии в теле функций даны для пояснения порядка следования значений.</P>
-					<PRE class="samples"><code class="rdo">$Function Таблица_1 : such_as Константа_9
+					<PRE class="syntax"><code class="rdo">$Function Таблица_1 : such_as Константа_9
 $Type = table
 $Parameters
   Параметр_1 : integer [1..8]
@@ -158,7 +158,7 @@ $Body
   { 2 }             0.10       0.43       0.95       0.74       0.27
 $End</code></PRE>
 					<P>Вызовы функций и получаемые значения:</P>
-					<PRE class="samples"><code class="rdo">Таблица_1(2) = Значение_5
+					<PRE class="syntax"><code class="rdo">Таблица_1(2) = Значение_5
 Таблица_1(2 * 5 - 4) = Значение_2
 Таблица_2(Значение_4, 2) = 39
 Таблица_2(Значение_5, 1) = 6
@@ -179,7 +179,7 @@ $End</code></PRE>
 					<DD class="syntax"></DD>
 					<A href="" class="ref" onclick="return toggle_display(v3);"><H4>Примеры</H4></A>
 					<DIV style="display:none" id="v3">
-					<PRE class="samples"><code class="rdo">$Function Функция_1 : real
+					<PRE class="syntax"><code class="rdo">$Function Функция_1 : real
 $Type = algorithmic
 $Parameters
     Параметр_1 : integer
@@ -209,7 +209,7 @@ $Body
 $End
 </code></PRE>
 					<P>Вызовы функций и получаемые значения:</P>
-					<PRE class="samples"><code class="rdo">Функция_1(2, 10.0 / 2) = 10.0
+					<PRE class="syntax"><code class="rdo">Функция_1(2, 10.0 / 2) = 10.0
 Функция_1(8, 1.0 * 3 - 1.0) = 3.0
 Функция_2(5.64) = Зеленый
 Функция_2(12.6) = Желтый

@@ -295,13 +295,13 @@
 			</TR>
 		</TABLE>
 		<H4>Примеры</H4>
-		<PRE class="samples"><code class="rdo">Exist(Заявки : Заявки.Состояние = ожидает)</code></PRE>
-		<PRE class="samples"><code class="rdo">Not_Exist(Тип_1 : NoCheck)</code></PRE>
-		<PRE class="samples"><code class="rdo">Not_For_All(Станок : Станок.Количество &gt; 3 and
+		<PRE class="syntax"><code class="rdo">Exist(Заявки : Заявки.Состояние = ожидает)</code></PRE>
+		<PRE class="syntax"><code class="rdo">Not_Exist(Тип_1 : NoCheck)</code></PRE>
+		<PRE class="syntax"><code class="rdo">Not_For_All(Станок : Станок.Количество &gt; 3 and
             Станок.Состояние = свободен)</code></PRE>
-		<PRE class="samples"><code class="rdo">Select(Заявка: Заявка.Время_прихода &gt;= 480 and
+		<PRE class="syntax"><code class="rdo">Select(Заявка: Заявка.Время_прихода &gt;= 480 and
        Заявка.Состояние = в_очереди).For_All(Заявка.Время_в_очереди &gt; 20)</code></PRE>
-       <PRE class="samples"><code class="rdo">array<Заявки> Z = Select(Заявки: Заявки.Время_прихода &gt;= 300).getArray();</code></PRE>
+       <PRE class="syntax"><code class="rdo">array<Заявки> Z = Select(Заявки: Заявки.Время_прихода &gt;= 300).getArray();</code></PRE>
 		<H4>См. также</H4>
 		<P><A href="rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
 	</DIV>

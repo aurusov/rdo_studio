@@ -22,21 +22,21 @@
 		</UL>
 		<P>Для целых и вещественных типов возможно задание <A name="diap"></A><B>диапазона допустимых значений</B>. Диапазон указывают за зарезервированным словом <FONT class="syntax">integer</FONT> или <FONT class="syntax">real</FONT> в квадратных скобках. Границы диапазона представляют собой численные константы вещественного или целого типа, их разделяют двумя точками.</P>
 		<H4>Примеры</H4>
-		<PRE class="samples"><code class="rdo">integer [1..100]</code></PRE>
-		<PRE class="samples"><code class="rdo">real [0.0..50.7]</code></PRE>
+		<PRE class="syntax"><code class="rdo">integer [1..100]</code></PRE>
+		<PRE class="syntax"><code class="rdo">real [0.0..50.7]</code></PRE>
 		<P><A name="diap_check"></A>Если диапазон указан, то при присвоении значения проверяется нахождение значения объекта в диапазоне допустимых, и в случае выхода за границы выдается собщение об ошибке как на этапе компиляции модели, так и во время прогона.</P>
 		<P><A name="enum"></A><B>Перечислимые типы</B> задают указанием всех возможных значений. Имена всех возможных значений перечислимого типа указывают в круглых скобках через запятую. Максимальное количество имен значений равно 256, значение перечислимого типа хранится как байт. Имя значения перечислимого типа - это <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>.</P>
 		<H4>Примеры</H4>
-		<PRE class="samples"><code class="rdo">(Свободен, Занят, Погрузка, Разгрузка)</code></PRE>
-		<PRE class="samples"><code class="rdo">(Первый, Второй, Третий, Седьмой)</code></PRE>
+		<PRE class="syntax"><code class="rdo">(Свободен, Занят, Погрузка, Разгрузка)</code></PRE>
+		<PRE class="syntax"><code class="rdo">(Первый, Второй, Третий, Седьмой)</code></PRE>
 		<P>Если несколько различных объектов программы имеют одинаковый тип, то нет необходимости повторять описание типа. Вместо этого можно воспользоваться <B>ссылкой на ранее описанный тип</B>. <A name="ref"></A>Ссылка имеет следующий формат:</P>
 		<PRE class="syntax"><code class="rdo">such_as &lt;имя_ранее_описанного_объекта&gt;</code></PRE>
 		<P>Ссылки возможны на типы ранее <A href="../rdo_obj/rdo_obj_const.htm">описанных констант</A> и параметров ресурсов, представленных в <A href="rdo_base_res_types.htm">объекте типов ресурсов</A>. Допустимы цепочные ссылки, т.е. ссылки на объект, тип которого также описан ссылкой.</P>
 		<H4>Примеры</H4>
-		<PRE class="samples"><code class="rdo">wood_kind  : such_as a_trunk.wood_kind</code></PRE>
-		<PRE class="samples"><code class="rdo">quality    : such_as a_trunk.quality</code></PRE>
-		<PRE class="samples"><code class="rdo">diameter_b : such_as a_trunk.diameter_a</code></PRE>
-		<PRE class="samples"><code class="rdo">diameter_e : such_as diameter_b</code></PRE>
+		<PRE class="syntax"><code class="rdo">wood_kind  : such_as a_trunk.wood_kind</code></PRE>
+		<PRE class="syntax"><code class="rdo">quality    : such_as a_trunk.quality</code></PRE>
+		<PRE class="syntax"><code class="rdo">diameter_b : such_as a_trunk.diameter_a</code></PRE>
+		<PRE class="syntax"><code class="rdo">diameter_e : such_as diameter_b</code></PRE>
 		<P><A name="type_comp"></A>В языке используют следующие соглашения о <B>соответствии типов</B>. Целый тип всегда соответствует целому, а вещественный - вещественному независимо от диапазона допустимых значений, если он задан. Перечислимые типы считаются соответствующими только если один из них описан ссылкой на тип другого либо если они оба описаны ссылкой на тип третьего.</P>
 		<H4>См. также</H4>
 		<P><A href="rdo_base_equations.htm">Арифметические и логические выражения</A></P>

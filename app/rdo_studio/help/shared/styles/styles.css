@@ -46,8 +46,6 @@ p.image { margin-bottom: 1.5em; text-align: center }
 
 pre { padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; font-weight: normal; color: #000000; font-family: "courier new", "courier", "fixedsys", monospace }
 
-pre.samples { margin-top: .1em; margin-bottom: .1em; font-weight: normal; color: #660000; font-family: "courier new", "courier", "fixedsys", monospace; font-size: 100% }
-
 pre.syntax {margin-top: .1em; margin-bottom: .1em; font-weight: normal; color: #000000; font-family: "courier new", "courier", "fixedsys", monospace; font-size: 100% }
 
 table { margin-top: -1.2em; margin-bottom: .6em; margin-left: -1.2em; width: 100% }
