@@ -9520,9 +9520,11 @@ smr_main
 	{
 		#PASS2
 		{
-			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($5);
-			ASSERT(pArithm);
-			PARSER->getSMR()->setResParValue(PARSER->stack().pop<RDOValue>($1)->src_info(), PARSER->stack().pop<RDOValue>($3)->src_info(), pArithm);
+			PARSER->error().error(@1, @3, "Невозможно изменить параметр ресурса до запуска модели");
+			// TODO вернуть возможность изменить параметр ресурса во вкладке SMR
+			// LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($5);
+			// ASSERT(pArithm);
+			// PARSER->getSMR()->setResParValue(PARSER->stack().pop<RDOValue>($1)->src_info(), PARSER->stack().pop<RDOValue>($3)->src_info(), pArithm);
 		}
 	}
 	| RDO_IDENTIF '.' RDO_Seed '=' RDO_INT_CONST
