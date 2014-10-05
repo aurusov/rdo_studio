@@ -9715,7 +9715,6 @@ statement
 		}
 	}
 	| nochange_statement
-//	| member_statement ';'
 	| process_input_statement
 	| stopping_statement
 	| planning_statement
@@ -9880,49 +9879,6 @@ empty_statement
 		#PASS2
 		{
 			PARSER->error().error(@1, "Ошибка в инструкции");
-		}
-	}
-	;
-
-member_statement_parent
-	: RDO_IDENTIF
-	{
-		#PASS2
-		{
-			LPRDOValue pIdentificator = PARSER->stack().pop<RDOValue>($1);
-			ASSERT(pIdentificator);
-
-			LPContext pCurrentContext = PARSER->context();
-			ASSERT(pCurrentContext);
-
-			LPContext pContext = pCurrentContext->find(pIdentificator);
-			if (!pContext)
-			{
-				PARSER->error().error(@1, rdo::format("Неизвестный идентификатор: %s", pIdentificator->value().getIdentificator().c_str()));
-			}
-
-			$$ = PARSER->stack().push(pContext);
-		}
-	}
-	;
-
-member_statement
-	: member_statement_parent '.' RDO_IDENTIF
-	{
-		#PASS2
-		{
-			LPContext  pContext       = PARSER->stack().pop<Context>($1);
-			LPRDOValue pIdentificator = PARSER->stack().pop<RDOValue>($3);
-			ASSERT(pContext      );
-			ASSERT(pIdentificator);
-
-			LPExpression pExpression = pContext->create(pIdentificator);
-			if (!pExpression)
-			{
-				PARSER->error().error(@3, rdo::format("Неизвестный идентификатор: %s", pIdentificator->value().getIdentificator().c_str()));
-			}
-
-			$$ = PARSER->stack().push(pExpression);
 		}
 	}
 	;
@@ -10794,15 +10750,6 @@ fun_arithm
  			$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(pExpression));
 		}
 	}
-// 	| member_statement
-// 	{
-// 		#PASS2
-// 		{
-// 			LPExpression pExpression = PARSER->stack().pop<Expression>($1);
-// 			ASSERT(pExpression);
-// 			$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(pExpression));
-// 		}
-// 	}
 	| '*'
 	{
 		#PASS2
