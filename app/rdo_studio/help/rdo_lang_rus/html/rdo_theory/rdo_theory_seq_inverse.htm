@@ -24,7 +24,7 @@
 		<P>Теперь форма распределения приводится к необходимому виду масштабированием и/или смещением:</P>
 		<P style="text-indent: 2em;"><I>	F_inv = -(factor / lambda) * ln(1 - base_uniform())</I></P><BR>
 		<A name="exponential_distribution"></A><P>Ниже приведен пример функции на языке C++, выполняющей данные преобразования.</P>
-		<PRE><code class="c++">static double exp_distr(double lambda, double factor)
+		<PRE><code class="cpp">static double exp_distr(double lambda, double factor)
 {
 	return -1 * log(1 - base_uniform()) / lambda * factor;
 }</code></PRE>
