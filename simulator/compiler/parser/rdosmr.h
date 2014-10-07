@@ -70,6 +70,8 @@ public:
 	void setSeed         (const RDOParserSrcInfo& seq_info, int base);
 	void insertBreakPoint(const RDOParserSrcInfo& src_info, LPRDOFUNLogic& pLogic);
 
+	std::vector<rdo::runtime::LPRDOCalc> getCalcList() const { return m_SMRCalcList; }
+
 private:
 	RDOSMR();
 
@@ -95,6 +97,10 @@ private:
 	YYLTYPE                             m_traceEndTime_pos;
 	LPRDOFUNLogic                       m_pTerminateIf;
 	BreakPointList                      m_breakPointList;
+
+	void addCalc(const rdo::runtime::LPRDOCalc pCalc) { m_SMRCalcList.push_back(pCalc); }
+
+	std::vector<rdo::runtime::LPRDOCalc> m_SMRCalcList;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

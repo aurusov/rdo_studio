@@ -346,7 +346,7 @@ Context::LPFindResult RDOParser::onFindContext(const std::string& method, const 
 				}
 			}
 		}
-		
+
 	}
 
 	return rdo::Factory<Context::FindResult>::create();
@@ -531,6 +531,12 @@ void RDOParser::runRSSPost()
 
 void RDOParser::runSMRPost()
 {
+	//! Калки, созданные в SMR
+	const std::vector<rdo::runtime::LPRDOCalc> calcList = m_pSMR->getCalcList();
+	for (const rdo::runtime::LPRDOCalc& initCalc: calcList)
+	{
+		runtime()->addInitCalc(initCalc);
+	}
 	//! Планирование событий, описанных в SMR
 	for (const LPRDOPATPattern& pattern: getPATPatterns())
 	{
