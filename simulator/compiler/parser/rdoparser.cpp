@@ -532,11 +532,8 @@ void RDOParser::runRSSPost()
 void RDOParser::runSMRPost()
 {
 	//! Калки, созданные в SMR
-	const std::vector<rdo::runtime::LPRDOCalc> calcList = m_pSMR->getCalcList();
-	for (const rdo::runtime::LPRDOCalc& initCalc: calcList)
-	{
-		runtime()->addInitCalc(initCalc);
-	}
+	for (const auto& calc: m_pSMR->getCalcList())
+		runtime()->addInitCalc(calc);
 	//! Планирование событий, описанных в SMR
 	for (const LPRDOPATPattern& pattern: getPATPatterns())
 	{
