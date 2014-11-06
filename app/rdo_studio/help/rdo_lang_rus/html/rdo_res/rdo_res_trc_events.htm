@@ -71,22 +71,26 @@
 					</TR>
 				</TABLE>
 				<P><BR><A name="start_end"></A><B>Для событий начала и окончания действий</B> информация о событии имеет следующий формат:</P>
-				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#ev_num">&lt;номер_действия&gt;</A> <A class="syntax" href="#ev_opr_num">&lt;номер_операции&gt;</A> <A class="syntax" href="#ev_pat_num">&lt;номер_образца&gt;</A>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#ev_num">&lt;номер_действия&gt;</A> <A class="syntax" href="#ev_opr_num">&lt;номер_активности&gt;</A> <A class="syntax" href="#ev_pat_num">&lt;номер_образца&gt;</A>
 <A class="syntax" href="#ev_rel_res_num">&lt;количество_релевантных_ресурсов&gt;</A> <A class="syntax" href="#ev_rel_res_list">&lt;список_номеров&gt;</A></code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="ev_num"></A><I>номер_действия</I></DT>
 					<DD class="syntax">Номер действия - это внутренний номер, который имеет действие в имитаторе. Этот номер необходим, чтобы связать события начала и окончания одного и того же действия, другой полезной информации он не несет.</DD>
-					<DT class="syntax"><A name="ev_opr_num"></A><A name="ev_pat_num"></A><I>номер_операции, номер_образца</I></DT>
-					<DD class="syntax">Эти два поля содержат номер <A href="../rdo_obj/rdo_obj_dpt.htm">точки принятия решения</A>, которая выполнялась в действии, и номер <A href="../rdo_obj/rdo_obj_pat.htm">образца</A> этой точки.</DD>
+					<DT class="syntax"><A name="ev_opr_num"></A><A name="ev_pat_num"></A><I>номер_активности, номер_образца</I></DT>
+					<DD class="syntax">Эти два поля содержат номер <A href="../rdo_obj/rdo_obj_dpt.htm#act_block">активности</A>, которая выполнялась в действии, и номер <A href="../rdo_obj/rdo_obj_pat.htm">образца</A>, соответствующего этой активности.</DD>
 					<DT class="syntax"><A name="ev_rel_res_num"></A><A name="ev_rel_res_list"></A><I>количество_релевантных_ресурсов, список_номеров</I></DT>
 					<DD class="syntax">Количество <A href="../rdo_obj/rdo_obj_pat.htm#rel_res_desc">релевантных ресурсов</A> действия и список их номеров.</DD>
 				</DL>
 				<P><BR><A name="ir_ev"></A><B>Для событий и нерегулярных событий</B> информация о событиях имеет следующий формат:</P>
 				<PRE class="syntax"><code class="rdo">&lt;номер_события&gt; &lt;номер_образца&gt;
 &lt;количество_релевантных_ресурсов&gt; &lt;список_номеров&gt;</code></PRE>
+				<DL class="syntax"><DT class="syntax"></A><I>номер_события, номер_образца</I></DT>
+				<DD class="syntax">Для обыкновенных событий номер события и номер образца совпадают.</DD></DL>
 				<P><BR><A name="rule"></A><B>Для продукционных правил</B> информация о событии имеет следующий формат:</P>
-				<PRE class="syntax"><code class="rdo">&lt;номер_действия&gt; &lt;номер_правила&gt; &lt;номер_образца&gt;
+				<PRE class="syntax"><code class="rdo">&lt;номер_действия&gt; &lt;номер_активности&gt; &lt;номер_образца&gt;
 &lt;количество_релевантных_ресурсов&gt; &lt;список_номеров&gt;</code></PRE>
+				<DL class="syntax"><DT class="syntax"><I>номер_действия</I></DT>
+				<DD class="syntax">В текущей версии РДО поле <I>номер_действия</I> для продукционных правил рудиментарно и всегда равно единице.</DD></DL>
 			</DD>
 		</DL>
 		<H4>См. также</H4>
