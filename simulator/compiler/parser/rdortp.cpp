@@ -31,9 +31,10 @@ rdo::runtime::LPRDOResource createSimpleResource(
 	std::size_t resource_id,
 	std::size_t type_id,
 	bool trace,
-	bool temporary)
+	bool temporary,
+	bool isNested)
 {
-	return rdo::Factory<rdo::runtime::RDOResource>::create(runtime, params, type, resource_id, type_id, trace, temporary);
+	return rdo::Factory<rdo::runtime::RDOResource>::create(runtime, params, type, resource_id, type_id, trace, temporary, isNested);
 }
 
 rdo::runtime::LPRDOPROCResource createProcessResource(
@@ -163,7 +164,7 @@ LPIType RDORTPResType::type_cast(const LPIType& pFrom, const RDOParserSrcInfo& f
 	switch (pFrom.object_dynamic_cast<rdo::runtime::RDOType>()->typeID())
 	{
 	case rdo::runtime::RDOType::t_pointer:
-		{	
+		{
 			LPIType pThisRTPType(const_cast<RDORTPResType*>(this));
 
 			//! Это один и тот же тип
@@ -241,7 +242,7 @@ LPExpression contextTypeOfResourceType(const LPRDORTPResType& resourceType, cons
 
 }
 
-Context::FindResult RDORTPResType::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult RDORTPResType::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	if (method == Context::METHOD_GET)
 	{
@@ -262,13 +263,46 @@ Context::FindResult RDORTPResType::onFindContext(const std::string& method, cons
 		return pParam->find(Context::METHOD_GET, params_, srcInfo);
 	}
 
+	if (method == Context::METHOD_OPERATOR_DOT)
+	{
+		const std::string paramName = params.identifier();
+
+		const std::size_t parNumb = getRTPParamNumber(paramName);
+		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
+			return rdo::Factory<FindResult>::create();
+
+		LPRDOParam pParam = findRTPParam(paramName);
+		ASSERT(pParam);
+
+		Context::Params params_;
+		params_[RDORSSResource::GET_RESOURCE] = params.get<LPExpression>(RDORSSResource::GET_RESOURCE);
+		params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = parNumb;
+		params_[Context::Params::IDENTIFIER] = paramName;
+
+		LPRDORTPResType pParamType =
+			pParam->getTypeInfo()->itype().object_dynamic_cast<RDORTPResType>();
+
+		if (!pParamType)
+			return rdo::Factory<FindResult>::create(SwitchContext(pParam, params_));
+
+		Context::LPFindResult result = pParam->find(Context::METHOD_GET, params_, srcInfo);
+		LPExpression pNestedResource = result->getCreateExpression()();
+
+		Context::Params params__;
+		params__[RDORSSResource::GET_RESOURCE] = pNestedResource;
+
+		return rdo::Factory<FindResult>::create(SwitchContext(pParamType, params__));
+	}
+
+
+
 	if (method == Context::METHOD_TYPE_OF)
 	{
 		LPRDORTPResType pThis(const_cast<RDORTPResType*>(this));
-		return FindResult(CreateExpression(boost::bind(&contextTypeOfResourceType, pThis, srcInfo)));
+		return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextTypeOfResourceType, pThis, srcInfo)));
 	}
 
-	return FindResult();
+	return rdo::Factory<FindResult>::create();
 }
 
 void RDORTPResType::setSubtype(Subtype type)
@@ -287,7 +321,7 @@ void RDORTPResType::setupRuntimeFactory()
 	switch (subtype)
 	{
 	case RT_SIMPLE:
-		create = boost::bind(&createSimpleResource, _1, _2, _3, _4, _5, _6, _7);
+		create = boost::bind(&createSimpleResource, _1, _2, _3, _4, _5, _6, _7, _8);
 		break;
 	case RT_PROCESS_RESOURCE:
 		create = boost::bind(&createProcessResource, _1, _2, _3, _4, _5, _6, _7);

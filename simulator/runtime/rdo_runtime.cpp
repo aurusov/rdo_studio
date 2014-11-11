@@ -536,7 +536,7 @@ void RDORuntime::addRuntimeResult(const LPIResult& pResult)
 }
 
 void RDORuntime::addRuntimeFrame(const LPRDOFRMFrame& pFrame)
-{ 
+{
 	m_frameList.push_back(pFrame);
 }
 

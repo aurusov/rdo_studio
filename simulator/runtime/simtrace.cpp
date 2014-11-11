@@ -8,6 +8,8 @@
 */
 
 // ----------------------------------------------------------------------- PLATFORM
+#include <set>
+
 #include "utils/src/common/platform.h"
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
@@ -36,7 +38,6 @@ RDOSimulatorTrace::RDOSimulatorTrace()
 	, maxOperationId   (1            )
 	, traceStartTime   (UNDEFINE_TIME)
 	, traceEndTime     (UNDEFINE_TIME)
-	, maxResourcesId   (0            )
 	, m_ieCounter      (1            )
 	, m_eventCounter   (1            )
 	, m_activityCounter(1            )
@@ -140,36 +141,40 @@ void RDOSimulatorTrace::copyFrom(const LPRDOSimulatorTrace& pOther)
 {
 	ASSERT(pOther);
 
-	freeResourcesIds = pOther->freeResourcesIds;
-	maxResourcesId   = pOther->maxResourcesId;
+	registeredResourcesId    = pOther->registeredResourcesId;
 }
 
 void RDOSimulatorTrace::rdoInit()
 {
-	maxResourcesId = 0;
 	maxOperationId = 1;
+	registeredResourcesId.clear();
 //	ASSERT(m_tracer != NULL);
 	RDOSimulator::rdoInit();
 }
 
+void RDOSimulatorTrace::registerResourceId(std::size_t id)
+{
+	ASSERT(registeredResourcesId.find(id) == registeredResourcesId.end());
+	registeredResourcesId.insert(id);
+}
+
 std::size_t RDOSimulatorTrace::getResourceId()
 {
-	if (freeResourcesIds.empty())
-	{
-		return maxResourcesId++;
-	}
-	else
-	{
 #ifdef _DEBUG
-		for (const auto& id: freeResourcesIds)
+		for (const auto& id: registeredResourcesId)
 		{
-			TRACE1("getFreeResourceId: %d\n", id);
+			TRACE1("getRegisteredResourcesId: %d\n", id);
 		}
 #endif
-		const std::size_t id = freeResourcesIds.back();
-		freeResourcesIds.pop_back();
-		return id;
+
+	std::size_t id = 0;
+	std::set<std::size_t>::iterator it = registeredResourcesId.begin();
+	while (it != registeredResourcesId.end() && *it == id)
+	{
+		++it;
+		++id;
 	}
+	return id;
 }
 
 void RDOSimulatorTrace::eraseFreeResourceId(std::size_t id)
@@ -180,7 +185,7 @@ void RDOSimulatorTrace::eraseFreeResourceId(std::size_t id)
 		if(--(*it).second >= 1) return;
 		resourcesIdsRefs.erase(it);
 	}
-	freeResourcesIds.push_back(id);
+	registeredResourcesId.erase(id);
 }
 
 void RDOSimulatorTrace::incrementResourceIdReference(int id)

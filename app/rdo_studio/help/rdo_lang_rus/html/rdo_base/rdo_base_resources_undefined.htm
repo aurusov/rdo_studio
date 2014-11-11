@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>Неопределенное значение параметра ресурса</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <SCRIPT>
 function toggle_display(e)
 {
@@ -21,7 +24,7 @@ function toggle_display(e)
 		<DL class="syntax">
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Пример</H4></A>
 		<DIV style="display:none" id="v1">
-		<PRE class="samples">$Resources
+		<PRE class="syntax"><code class="rdo">$Resources
 	Парикмахерская = Парикмахерские(#, 0, 0);
 	Парикмахерская.trace();
 $End
@@ -40,11 +43,11 @@ _Парикмахерская
 		состояние_парикмахера  = Свободен;
 		количество_обслуженных++;
 $End
-		</PRE>
+		</code></PRE>
 		</DIV>
 		</DL>
 		<P>В данном примере значение параметра "состояние_парикмахера" является неопределенным. Соответственно, при попытке его использованния в Choice_from система моделирования понимает, что не может использовать его при проверке условия, так как значение этого параметра не является достоверным. Для того, чтобы работа продолжилась, необходимо явно инициализировать параметр ресурса:</P>
-		<PRE class="samples">$Pattern Образец_прихода_парикмахера : event
+		<PRE class="syntax"><code class="rdo">$Pattern Образец_прихода_парикмахера : event
 $Relevant_resources
 	_Парикмахерская: Парикмахерская Keep
 $Body
@@ -53,7 +56,7 @@ _Парикмахерская
 		состояние_парикмахера = Свободен;
 $End
 
-		</PRE>
+		</code></PRE>
 		<P>После наступления события, описанного выше, параметра ресурса "состояние_парикмахера" будет проинициализирован, что означает, что мы можем быть уверенны в достоверности его значения, и условие в Choice_from начнет проверяться.</P>
 	</DIV>
 	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>

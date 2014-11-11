@@ -1,63 +1,62 @@
 <HTML>
 <HEAD>
-<TITLE>Последовательности</TITLE>
+<TITLE>Законы распределения</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </HEAD>
 <BODY>
 	<DIV>
-		<H1>ПОСЛЕДОВАТЕЛЬНОСТИ</H1>
+		<H1>ЗАКОНЫ РАСПРЕДЕЛЕНИЯ</H1>
 		<P>В рамках имитационного моделирования постоянно приходится сталкиваться со случайными величинами. Как правило, это величины, связанные с временами (периоды прихода заказов, время обработки заказов), реже – с количествами.</P>
-		<P>Слово "последовательность" появляется в контексте случайных чисел из-за того, что первоначальный сбор статистических данных (например, запись в блокнот интервалов между приходами заявок) или получение псевдослучайных чисел представляет собой набор чисел, которые можно выстроить одно за другим. Т.е. последовательно их записать -> последовательность.</P>
-		<P>Термины "генератор псевдослучайных чисел" и "датчик псевдослучайных чисел" следует считать синонимами.</P><BR>
-		<P>Большинство случайных величин подчиняется законам распределения. Основные:</P>
-					<TABLE class="visible" cols="2"">
+		<P>Последовательности псевдослучайных чисел задаются законами распределения, т.е. некоторыми функциями, позволяющими определить вероятность возникновения того или иного числа в последовательности. Основными характеристиками распределений являются:</P>
+		<P><A href="http://ru.wikipedia.org/wiki/Функция_распределения"><B>Функция распределения F(x)</B></A>. Функция распределения показывает вероятность того, что случайная величина X примет значение меньше либо равное x.</P>
+		<P><A href="http://ru.wikipedia.org/wiki/Плотность_вероятности"><B>Плотность вероятности f(x)</B></A>. Интеграл плотности вероятности на интервале от a до b отражает вероятность того, что случайная величина X попадет в этот интервал.</P>
+		<P>Связь между плотностью вероятности и функцией распределения выражается следующей формулой:</P>
+		<P class="image"><IMG align="left" src="../../images/cdf_from_pdf.png"></P><BR style="clear:both;"/>
+		<P><A href="http://ru.wikipedia.org/wiki/Математическое_ожидание"><B>Математическое ожидание M</B></A>. Математическое ожидание это среднее значение случайной величины.</P>
+		<P>Зная плотность распределения, математическое ожидание можно получить по следующей формуле:</P>
+		<P class="image"><IMG align="left" src="../../images/expected_value_from_pdf.png"></P><BR style="clear:both;"/>
+		<P><A href="http://ru.wikipedia.org/wiki/Дисперсия_случайной_величины"><B>Дисперсия D</B></A>. Дисперсия это мера отклонения случайной величины от математического ожидания.</P>
+		<P>Дисперсию можно вычислить, зная математическое ожидание и плотность распределения:</P>
+		<P class="image"><IMG align="left" src="../../images/variance_from_pdf_and_expected_value.png"></P><BR style="clear:both;"/><BR>
+		<P><A href="http://ru.wikipedia.org/wiki/Носитель_меры"><B>Область определения меры</B>.</A> Это область, на которой плотность распределения может принимать ненулевые значения, т.е. область, которой может принадлежать значение случайной величины.</P>
+		<P>Ниже приведены наиболее часто встречающиеся законы распределения:</P>
+					<TABLE class="visible" cols="2">
 				<TR valign="top">
 					<TH align="left" width="20%">Закон распределения</TH>
-					<TH align="left" width="40%">Ссылки</TH>
-					<TH align="left" width="40%"> </TH>
+					<TH align="left" width="80%" colspan="2">Ссылки</TH>
 				</TR>
 				<TR valign="top">
 					<TD class="visible" NOWRAP width="20%">Нормальный</TD>
 					<TD class="visible" width="40%"><A href="../rdo_obj/rdo_obj_sec/rdo_obj_sec_normal.htm">Синтаксис в РДО</A></TD>
-					<TD class="visible" width="40%"><A href="http://ru.wikipedia.org/wiki/Нормальное_распределение">Теория из Википедия</A></TD>
+					<TD class="visible" width="40%"><A href="rdo_theory_seq_normal.htm">Характеристики закона</A></TD>
 				</TR>
 				<TR valign="top">
 					<TD class="visible" NOWRAP width="20%">Равномерный</TD>
 					<TD class="visible" width="40%"><A href="../rdo_obj/rdo_obj_sec/rdo_obj_sec_uniform.htm">Синтаксис в РДО</A></TD>
-					<TD class="visible" width="40%"><A href="http://ru.wikipedia.org/wiki/Непрерывное_равномерное_распределение">Теория из Википедия</A></TD>
+					<TD class="visible" width="40%"><A href="rdo_theory_seq_uniform.htm">Характеристики закона</A></TD>
 				</TR>
 				<TR valign="top">
 					<TD class="visible" NOWRAP width="20%">Треугольный</TD>
 					<TD class="visible" width="40%"><A href="../rdo_obj/rdo_obj_sec/rdo_obj_sec_triang.htm">Синтаксис в РДО</A></TD>
-					<TD class="visible" width="40%"><A href="http://en.wikipedia.org/wiki/Triangular_distribution">Теория из Википедия</A></TD>
+					<TD class="visible" width="40%"><A href="rdo_theory_seq_triangular.htm">Характеристики закона</A></TD>
 				</TR>
 				<TR valign="top">
 					<TD class="visible" NOWRAP width="20%">Экспоненциальный</TD>
 					<TD class="visible" width="40%"><A href="../rdo_obj/rdo_obj_sec/rdo_obj_sec_exponen.htm">Синтаксис в РДО</A></TD>
-					<TD class="visible" width="40%"><A href="http://ru.wikipedia.org/wiki/Экспоненциальное_распределение">Теория из Википедия</A></TD>
+					<TD class="visible" width="40%"><A href="rdo_theory_seq_exponential.htm">Характеристики закона</A></TD></TD>
 				</TR>
 			</TABLE>
 		<P>Язык РДО может работать с каждым из них.</P><BR>
-		<H2>Разделы</H2>
-			<TABLE class="build" cols="2"">
-				<TR valign="top">
-					<TH align="left" width="15%">Разделы</TH>
-					<TH align="left" width="85%">Описание</TH>
-				</TR>
-				<TR valign="top">
-					<TD class="visible" NOWRAP width="15%"><FONT class="syntax"><A href="rdo_theory_seq_base.htm">База генератора</A></FONT></TD>
-					<TD class="visible" width="85%">Здесь рассказано о смысле использования базы генератора</TD>
-				</TR>
-				<TR valign="top">
-					<TD class="visible" NOWRAP width="15%"><FONT class="syntax"><A href="rdo_theory_seq_basedistribution.htm">Базовое распределение</A></FONT></TD>
-					<TD class="visible" width="85%">Здесь рассказано о том, как получаются базовое равномерное распределение</TD>
-				</TR>
-				<TR valign="top">
-					<TD class="visible" NOWRAP width="15%"><FONT class="syntax"><A href="rdo_theory_seq_inverse.htm">Обратная функция</A></FONT></TD>
-					<TD class="visible" width="85%">Здесь рассказано о том, как получаются распределения заданной формы</TD>
-				</TR>
-			</TABLE>
+		<H4>См. также</H4>
+		<P><A href="rdo_theory.htm">Основные теоретические сведения</A></P>
+		<P><A href="rdo_theory_principles.htm">Принципы генерации псевдослучайных чисел</A></P>
+		<P><A href="rdo_theory_generator_seed.htm">База генератора</A></P>
+		<P><A href="rdo_theory_seq_inverse.htm">Метод обратного преобразования</A></P>
+		<P><A href="rdo_theory_estimation.htm">Оценка качества распределения</A></P>
 	</DIV>
 	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
 </BODY>

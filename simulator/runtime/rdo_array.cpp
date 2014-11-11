@@ -71,7 +71,7 @@ void RDOArrayValue::erase(const LPRDOArrayIterator& pFirst, const LPRDOArrayIter
 	m_container.erase(pFirst->getIterator(), pLast->getIterator());
 }
 
-std::string RDOArrayValue::getAsString() const
+std::string RDOArrayValue::asString() const
 {
 	std::string result("[");
 	for (Container::const_iterator item = m_container.begin(); item != m_container.end(); ++item)
@@ -185,6 +185,11 @@ bool RDOArrayIterator::equal(const LPRDOArrayIterator& pIterator) const
 LPRDOArrayIterator RDOArrayIterator::clone() const
 {
 	return rdo::Factory<RDOArrayIterator>::create(*this);
+}
+
+std::string RDOArrayIterator::asString() const
+{
+	return getValue().getAsString();
 }
 
 // --------------------------------------------------------------------------------

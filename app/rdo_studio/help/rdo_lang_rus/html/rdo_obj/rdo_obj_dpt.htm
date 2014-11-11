@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>Описание точек принятия решений</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <SCRIPT>
 function toggle_display(e)
 {
@@ -20,22 +23,22 @@ function toggle_display(e)
 		<P><B>Точки принятия решений</B> описываются в отдельном <A href="../rdo_terms.htm#object">объекте</A> (с расширением <FONT class="syntax">.dpt</FONT>).</P>
 		<P>Точки принятия решений в РДО являются строительными блоками Базы Знаний моделей. В точках принятия решений происходит инстанцирование <A href="#dpt_act_desc">активностей</A> из описанных раннее <A href="rdo_obj_pat.htm">образцов</A> путем задания их параметров.</P>
 		<P>Описание точек принятия решений имеет следующий формат:</P>
-		<PRE class="syntax"><A class="syntax" href="#dpt_desc">&lt;описание_точки_принятия_решений&gt;</A> { &lt;описание_точки_принятия_решений&gt; }</PRE>
+		<PRE class="syntax"><code class="rdo"><A class="syntax" href="#dpt_desc">&lt;описание_точки_принятия_решений&gt;</A> { &lt;описание_точки_принятия_решений&gt; }</code></PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="dpt_desc"></A><I>описание_точки_принятия_решений</I></DT>
 			<DD class="syntax">Описание каждой точки принятия решений имеет следующий формат:
-				<PRE class="syntax"><A class="syntax" href="#dpt_headline">&lt;заголовок_точки_принятия_решений&gt;</A>
-<A class="syntax" href="#dpt_act_block">&lt;блок_активностей&gt;</A></PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#dpt_headline">&lt;заголовок_точки_принятия_решений&gt;</A>
+<A class="syntax" href="#dpt_act_block">&lt;блок_активностей&gt;</A></code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="dpt_headline"></A><I>заголовок_точки_принятия_решений</I></DT>
 					<DD class="syntax">Заголовок точки принятия решений в общем случае имеет следующий формат:
-						<PRE class="syntax">$Decision_point <A class="syntax" href="#dpt_name">&lt;имя_точки&gt;</A> : <A class="syntax" href="#dpt_type">&lt;тип_точки&gt;</A> [ <A class="syntax" href="#sign_of_the_trace">&lt;признак_трассировки&gt;</A> ]
+						<PRE class="syntax"><code class="rdo">$Decision_point <A class="syntax" href="#dpt_name">&lt;имя_точки&gt;</A> : <A class="syntax" href="#dpt_type">&lt;тип_точки&gt;</A> [ <A class="syntax" href="#sign_of_the_trace">&lt;признак_трассировки&gt;</A> ]
 [ $Parent <A class="syntax" href="#dpt_parent_name">&lt;имя_родительской_точки&gt;</A> ]
 [ $Condition <A class="syntax" href="#init_cond">&lt;условие_активизации_точки&gt;</A> ]
 [ $Priority <A class="syntax" href="#dpt_priority">&lt;приоритет_точки&gt;</A> ]
 [ $Term_condition <A class="syntax" href="../rdo_dpt/rdo_dpt_search.htm">&lt;терминальное_условие&gt;</A>
   $Evaluate_by <A class="syntax" href="../rdo_dpt/rdo_dpt_search.htm">&lt;оценка_стоимости_оставшегося_пути_на_графе&gt;</A>
-  $Compare_tops = <A class="syntax" href="../rdo_dpt/rdo_dpt_search.htm">&lt;признак_сравнения_вершин&gt;</A> ]</PRE>
+  $Compare_tops = <A class="syntax" href="../rdo_dpt/rdo_dpt_search.htm">&lt;признак_сравнения_вершин&gt;</A> ]</code></PRE>
 						<DL class="syntax">
 							<DT class="syntax"><A name="dpt_name"></A><I>имя_точки</I></DT>
 							<DD class="syntax">Имя точки принятия решений представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех точек принятия решений и не должны совпадать с ранее определенными именами.</DD>
@@ -59,7 +62,7 @@ function toggle_display(e)
 									</TR>
 								</TABLE>
 							</DD>
-							<DT class="syntax"><A name ="sign_of_the_trace"><I>признак_трассировки</I></DT>
+							<DT class="syntax"><A name ="sign_of_the_trace"></A><I>признак_трассировки</I></DT>
 							<DD class="syntax">Точка принятия решений может иметь признак трассировки (подробнее смотри описание <A class="syntax" href="../rdo_res/rdo_res_trace_descr.htm">&lt;трассировка состояния объектов РДО&gt;</A>).
 							<DT class="syntax"><A name="dpt_parent_name"></A><I>имя_родительской_точки</I></DT>
 							<DD class="syntax">
@@ -77,17 +80,17 @@ function toggle_display(e)
 				<DL class="syntax">
 					<DT class="syntax"><A name="act_block"></A><A name="dpt_act_block"></A><A name="dpt_act_block_end"></A><I>блок_активностей</I></DT>
 					<DD class="syntax">Блок активностей имеет следующий формат:
-						<PRE class="syntax">$Activities <A class="syntax" href="#dpt_act_desc">&lt;описание_активности&gt;</A> { &lt;описание_активности&gt; }
-$End</PRE>
+						<PRE class="syntax"><code class="rdo">$Activities <A class="syntax" href="#dpt_act_desc">&lt;описание_активности&gt;</A> { &lt;описание_активности&gt; }
+$End</code></PRE>
 						<DL class="syntax">
 							<DT>Активности вместе с <A href="rdo_pat_type/rdo_pat_type_event.htm">событиями</A> определяют содержимое базы знаний программы (<A href="../rdo_terms.htm">модели</A>).</DT>
 							<DT class="syntax"><A name="dpt_act_desc"></A><I>описание_активности</I></DT>
 							<DD class="syntax">Описание каждой активности зависит от типа точки и в общем случае 
 								имеет следующий формат:
-								<PRE class="syntax"><A class="syntax" href="#dpt_act_name">&lt;имя_активности&gt;</A> : <A class="syntax" href="#dpt_act_pat">&lt;имя_образца&gt;</A> [ <A class="syntax" href="#dpt_act_key">&lt;код_клавиши&gt;</A> ]
+								<PRE class="syntax"><code class="rdo"><A class="syntax" href="#dpt_act_name">&lt;имя_активности&gt;</A> : <A class="syntax" href="#dpt_act_pat">&lt;имя_образца&gt;</A> [ <A class="syntax" href="#dpt_act_key">&lt;код_клавиши&gt;</A> ]
 [ <A class="syntax" href="#dpt_act_params">&lt;значения_параметров_образца&gt;</A> ]
 [ <A class="syntax" href="../rdo_dpt/rdo_dpt_prior.htm">&lt;приоритет_активности&gt;</A> ]
-[ (value before | value after) <A class="syntax" href="../rdo_dpt/rdo_dpt_search.htm">&lt;стоимость_применения_правила&gt;</A> ]</PRE>
+[ (value before | value after) <A class="syntax" href="../rdo_dpt/rdo_dpt_search.htm">&lt;стоимость_применения_правила&gt;</A> ]</code></PRE>
 								<DL class="syntax">
 									<DT class="syntax"><A name="dpt_act_name"></A><I>имя_активности</I></DT>
 									<DD class="syntax">Имя активности - это любое <A href="../rdo_lex_div/rdo_lex_div_names.htm">допустимое в языке имя</A>, не совпадающее с ранее определенными именами.</DD>
@@ -107,7 +110,7 @@ $End</PRE>
 		</DL>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
 		<DIV style="display:none" id="v1">
-		<PRE class="samples">$Decision_point Точка_1 : search trace_stat
+		<PRE class="syntax"><code class="rdo">$Decision_point Точка_1 : search trace_stat
 $Condition
   Ресурс_1.Параметр_1=0 and Exist(Тип_1 : Тип_1.Параметр_3 = Значение_2) and
   Ресурс_5.Параметр_7 &lt;&gt; 0
@@ -135,7 +138,7 @@ $Activities
   Операция_1 : Образец_14   25  *
   Операция_2 : Образец_15   Значение_2
   Операция_3 : Образец_16
-$End</PRE>
+$End</code></PRE>
 		</DIV>
 		<H4>См. также</H4>
 		<P><A href="../rdo_base/rdo_base_resources.htm">Описание ресурсов</A></P>
