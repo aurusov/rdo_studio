@@ -17,6 +17,7 @@
 #include <QTextCodec>
 #include <QSettings>
 #include <QMessageBox>
+#include <QRegExp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/file/rdofile.h"
@@ -31,6 +32,43 @@
 #include "app/rdo_studio/src/dialog/file_association_dialog.h"
 #include "app/rdo_studio/src/tracer/tracer.h"
 // --------------------------------------------------------------------------------
+
+
+namespace
+{
+	typedef std::map<int, std::string> PluginOptionType;
+
+	int validateKeyByPrefix(const std::string& key, const std::string& prefix)
+	{
+		QRegExp re(QString::fromStdString(prefix) + "(\\d+)");
+
+		if (re.indexIn(QString::fromStdString(key), 0) != -1)
+		{
+			return re.cap(1).toInt();
+		}
+		else
+		{
+			return -1;
+		}
+	}
+
+	PluginOptionType getPluginsOptions(const boost::program_options::variables_map& vm,
+	                                   const std::string& prefix)
+	{
+		PluginOptionType pluginOptions;
+		namespace po = boost::program_options;
+		for (const po::variables_map::value_type& pair: vm)
+		{
+			const std::string& key = pair.first;
+			int postfix = validateKeyByPrefix(key, prefix);
+			if (postfix != -1)
+			{
+				pluginOptions.insert(std::make_pair(postfix, pair.second.as<std::string>()));
+			}
+		}
+		return pluginOptions;
+	}
+} // end anonymous namespace
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioApp
@@ -154,7 +192,6 @@ Application::Application(int& argc, char** argv)
 	m_pMainFrame->show();
 
 	m_pluginLoader.init(m_pMainFrame);
-	m_pluginLoader.startAutoloadedPlugins();
 
 #ifdef RDO_MT
 	kernel->thread_studio = m_pStudioGUI;
@@ -216,6 +253,8 @@ void Application::onInit(int argc, char** argv)
 		("autorun", "auto run model")
 		("autoexit", "auto exit after simulation stoped")
 		("dont_close_if_error", "don't close application if model error detected")
+		("plugin_list", "display all plugins")
+		("plugin*", po::value<std::string>(), "start # plugin from list with [arg] as options, e.g. --plugin1=\"--help\"")
 	;
 
 	po::variables_map vm;
@@ -286,7 +325,6 @@ void Application::onInit(int argc, char** argv)
 	if (!autoModel)
 	{
 		autoRun            = false;
-		m_autoExitByModel  = false;
 		m_dontCloseIfError = false;
 	}
 
@@ -294,6 +332,22 @@ void Application::onInit(int argc, char** argv)
 	{
 		g_pModel->runModel();
 	}
+
+	if (vm.count("plugin_list"))
+	{
+		std::stringstream stream;
+		int index = 0;
+		for (const LPPluginInfo& pluginInfo: *(m_pluginLoader.getPluginInfoList()))
+		{
+			stream << index++ << " " << pluginInfo->getName().toStdString()
+			       << " ver. " << pluginInfo->getVersion().toStdString()
+			       << (pluginInfo->isAvailable() ? " available" : " not available");
+		}
+		rdo::locale::cout(stream.str());
+		quit();
+	}
+
+	m_pluginLoader.autoStartPlugins(getPluginsOptions(vm, "plugin"));
 }
 
 RDOKernel* Application::getKernel() const

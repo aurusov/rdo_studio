@@ -28,15 +28,15 @@ namespace
 		QFont newFont(baseFont);
 		if (baseFont.pixelSize() != -1)
 		{
-			newFont.setPixelSize(baseFont.pixelSize() * multiplier);
+			newFont.setPixelSize((int)(baseFont.pixelSize() * multiplier));
 		}
 		if (baseFont.pointSize() != -1)
 		{
-			newFont.setPointSize(baseFont.pointSize() * multiplier);
+			newFont.setPointSize((int)(baseFont.pointSize() * multiplier));
 		}
 		if (baseFont.pointSizeF() != -1)
 		{
-			newFont.setPointSizeF(baseFont.pointSizeF() * multiplier);
+			newFont.setPointSizeF((int)(baseFont.pointSizeF() * multiplier));
 		}
 		return newFont;
 	}
@@ -45,25 +45,13 @@ namespace
 	const double LEVEL_OF_LOWER_DETAIL = 0.6;
 } // end anonymous namespace
 
-GraphNode::GraphNode(int nodeID, GraphNode* parentGraphNode, int pathCost, int restPathCost,
-                     const QString& moveDirection, int moveCost, int relevantTile, int graphLevel, int tileMoveFrom,
-                     int tileMoveTo, const std::vector<unsigned int>& boardState, int width, int height)
-	: m_pParentGraphNode      (parentGraphNode)
-	, m_boardState            (boardState     )
-	, m_nodeID                (nodeID         )
-	, m_pathCost              (pathCost       )
-	, m_restPathCost          (restPathCost   )
-	, m_moveDirection         (moveDirection  )
-	, m_moveCost              (moveCost       )
-	, m_relevantTile          (relevantTile   )
-	, m_graphLevel            (graphLevel     )
-	, m_tileMoveFrom          (tileMoveFrom   )
-	, m_tileMoveTo            (tileMoveTo     )
-	, m_graphOnLevelOrder     (0              )
-	, m_relatedToSolutionState(false          )
-	, m_isChecked             (false          )
-	, m_width                 (width          )
-	, m_height                (height         )
+GraphNode::GraphNode(const GraphNodeInfo& info, GraphNode* parentGraphNode, int width, int height)
+	: GraphNodeInfo      (info           )
+	, m_pParentGraphNode (parentGraphNode)
+	, m_graphOnLevelOrder(0              )
+	, m_isChecked        (false          )
+	, m_width            (width          )
+	, m_height           (height         )
 {
 	setFlag(ItemIsMovable);
 	setFlag(ItemSendsGeometryChanges);
