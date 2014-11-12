@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>ОПИСАНИЕ ТОЧКИ ПРИНЯТИЯ РЕШЕНИЙ ТИПА SEARCH</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <SCRIPT>
 function toggle_display(e)
 {
@@ -20,13 +23,13 @@ function toggle_display(e)
 	<H1>ТОЧКА ПРИНЯТИЯ РЕШЕНИЙ ТИПА SEARCH</H1>
 		<P>Точки принятия решений типа search реализуют поиск решения на графе состояний</P>
 		<P>Описание имеет следующий формат:</P>
-		<PRE class="syntax">$Decision_point <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_name">&lt;имя_точки&gt;</A> : search [ <A class="syntax" href="../rdo_res/rdo_res_trace_descr.htm#dpt_trace">&lt;признак_трассировки&gt;</A> ]
+		<PRE class="syntax"><code class="rdo">$Decision_point <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_name">&lt;имя_точки&gt;</A> : search [ <A class="syntax" href="../rdo_res/rdo_res_trace_descr.htm#dpt_trace">&lt;признак_трассировки&gt;</A> ]
 $Condition <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#init_cond">&lt;условие_активизации_точки&gt;</A>
 $Term_condition <A class="syntax" href="#term_cond">&lt;терминальное_условие&gt;</A>
 $Evaluate_by <A class="syntax" href="#rest_eval">&lt;оценка_стоимости_оставшегося_пути_на_графе&gt;</A>
 $Compare_tops = <A class="syntax" href="#comp_feat">&lt;признак_сравнения_вершин&gt;</A>
 $Activities <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm">&lt;описание_активности&gt;</A> { &lt;описание_активности&gt; }
-$End</PRE>
+$End</code></PRE>
 <DL class="syntax">
 					<DT class="syntax"><A name="term_cond"></A><I>терминальное_условие</I></DT>
 					<DD class="syntax">Терминальное условие поиска - это <A href="../rdo_base/rdo_base_equations.htm">логическое выражение</A>. Когда алгоритм поиска на графе выбирает очередную вершину для раскрытия, проверяется, не удовлетворяет ли состояние системы, соответствующее этой вершине, терминальному условию. Если удовлетворяет, то это означает, что решение найдено и процесс поиска прекращается.</DD>
@@ -35,9 +38,9 @@ $End</PRE>
 					<DT class="syntax"><A name="comp_feat"></A><I>признак_сравнения_вершин</I></DT>
 					<DD class="syntax">Признак сравнения вершин задается зарезервированным словом <FONT class="syntax">YES</FONT>, если необходимо сравнивать каждую вновь порожденную в процессе поиска вершину с вершинами, уже находящимися в графе, и зарезервированным словом <FONT class="syntax">NO</FONT>, если сравнивать не нужно. Необходимость в сравнении вершин зависит от конкретной задачи, решаемой поиском на графе.</DD>
 		<DT class="syntax"><A class="syntax" name="search_act_desc"></A><I>описание_активности</I></DT>
-		<PRE class="syntax"><A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_name">&lt;имя_активности&gt;</A> : <A class="syntax" href="#dpt_search_pat">&lt;имя_образца&gt;</A> [ <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_key">&lt;код_клавиши&gt;</A> ]
+		<PRE class="syntax"><code class="rdo"><A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_name">&lt;имя_активности&gt;</A> : <A class="syntax" href="#dpt_search_pat">&lt;имя_образца&gt;</A> [ <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_key">&lt;код_клавиши&gt;</A> ]
 [ <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_params">&lt;значения_параметров_образца&gt;</A> ]
-[ (value before | value after) <A class="syntax" href="#dpt_search_cost">&lt;стоимость_применения_правила&gt;</A> ]</PRE>
+[ (value before | value after) <A class="syntax" href="#dpt_search_cost">&lt;стоимость_применения_правила&gt;</A> ]</code></PRE>
 			<DL><DT class="syntax"><A name="dpt_search_pat"></A><I>имя_образца</I></DT>
 			<DD>Для точки принятия решений типа search допустимо использование только образцов типа <A href="../rdo_obj/rdo_pat_type/rdo_pat_type_rule.htm">rule</A>, при выполнении которых ресурсы не создаются и не уничтожаются, то есть статусы конверторов релевантных ресурсов которых не содержат Create или Erase. Использование образцов других типов не допускается.</DD>
 			<DT class="syntax"><A name="dpt_act_cost"></A><I>стоимость_применения_правила</I></DT>
@@ -47,7 +50,7 @@ $End</PRE>
 	
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
 		<DIV style="display:none" id="v1">
-		<PRE class="samples">$Decision_point Точка_1 : search trace
+		<PRE class="syntax"><code class="rdo">$Decision_point Точка_1 : search trace
 $Condition
   Ресурс_1.Параметр_1=0 and Exist(Тип_1 : Тип_1.Параметр_3 = Значение_2) and
   Ресурс_5.Параметр_7 &lt;&gt; 0
@@ -59,7 +62,7 @@ $Activities
   Правило_2 : Образец_8    Значение_5    value after Ресурс_1.Параметр_4
   Правило_3 : Образец_9    value before  рел_Ресурс_2.Параметр_4 *
                              IAbs(рел_Ресурс_2.Параметр_5) * 2
-$End</PRE>
+$End</code></PRE>
 		</DIV>
 		<H4>См. также</H4>
 		<P><A href="rdo_dpt_some.htm">Точка принятия решений типа some</A></P>

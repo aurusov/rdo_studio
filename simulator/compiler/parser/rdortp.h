@@ -89,7 +89,7 @@ private:
 	ParamList m_params;
 
 	virtual runtime::RDOType::TypeID typeID() const;
-	virtual FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDORTPResType);
 

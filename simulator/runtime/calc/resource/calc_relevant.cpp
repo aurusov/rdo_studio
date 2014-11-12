@@ -48,7 +48,9 @@ RDOEraseResRelCalc::RDOEraseResRelCalc(std::size_t relResID, const std::string& 
 
 RDOValue RDOEraseResRelCalc::doCalc(const LPRDORuntime& pRuntime)
 {
-	pRuntime->onEraseRes(pRuntime->getCurrentActivity()->getResByRelRes(m_relResID), this);
+	std::size_t resId = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
+	LPRDOResource pResource = pRuntime->getResourceByID(resId);
+	pResource->onDestroy(pRuntime, this);
 	return RDOValue();
 }
 

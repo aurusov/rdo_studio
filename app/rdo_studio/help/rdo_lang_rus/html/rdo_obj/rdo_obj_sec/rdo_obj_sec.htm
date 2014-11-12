@@ -2,21 +2,24 @@
 <HEAD>
 <TITLE>Последовательности</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </HEAD>
 <BODY>
 	<DIV>
 		<H1>ПОСЛЕДОВАТЕЛЬНОСТИ</H1>
 		<P><B>Последовательности</B> отличаются от <A href="../rdo_obj_fun.htm">функций</A> тем, что выдаваемое ими значение не вычисляется на основе значений их параметров с использованием определенного алгоритма, а определяется генератором псевдослучайных чисел с соответствующим распределением либо выбирается из числа значений, заданных при описании последовательности.</P>
-		<P>Описание последовательности  следует за описанием констант в <A href="../rdo_obj_const_fun_sec.htm">объекте символьных констант, функций и последовательностей</A> (с расширением <FONT class="syntax">.fun</FONT>) и в общем случае имеет вид:</P>
-		<PRE class="syntax">$Sequence <A class="syntax" href="#sec_name">&lt;имя_последовательности&gt;</A> : <A class="syntax" href="#val_type">&lt;тип_значения_последовательности&gt;</A>
+		<P>Описание последовательности  следует за описанием констант в <A href="../rdo_obj_const_fun_seq.htm">объекте символьных констант, функций и последовательностей</A> (с расширением <FONT class="syntax">.fun</FONT>) и в общем случае имеет вид:</P>
+		<PRE class="syntax"><code class="rdo">$Sequence <A class="syntax" href="#sec_name">&lt;имя_последовательности&gt;</A> : <A class="syntax" href="#val_type">&lt;тип_значения_последовательности&gt;</A>
 $Type = <A class="syntax" href="#sec_type">&lt;тип_последовательности&gt;</A> <A class="syntax" href="#seed_val">&lt;значение_базы_генератора&gt;</A>
-$Body <A class="syntax" href="#body">&lt;тело_последовательности&gt;</A> $End</PRE>
+$Body <A class="syntax" href="#body">&lt;тело_последовательности&gt;</A> $End</code></PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="sec_name"></A><I>имя_последовательности</I></DT>
 			<DD class="syntax">Имя последовательности представляет собой <A href="../../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех последовательностей и не должны совпадать с ранее определенными именами.</DD>
 			<DT class="syntax"><A name="val_type"></A><I>тип_значения_последовательности</I></DT>
-			<DD class="syntax">Тип значения последовательности - это один из возможных в языке <A href="../../rdo_base/rdo_base_types.htm">типов данных</A>. При описании типов значений последовательности возможны ссылки на <A href="../../rdo_base/rdo_base_res_types.htm#param_type">типы параметров ресурсов</A> и <A href="../rdo_obj_const_fun_sec.htm#const_type">типы символьных констант</A>.</DD>
+			<DD class="syntax">Тип значения последовательности - это один из возможных в языке <A href="../../rdo_base/rdo_base_types.htm">типов данных</A>. При описании типов значений последовательности возможны ссылки на <A href="../../rdo_base/rdo_base_res_types.htm#param_type">типы параметров ресурсов</A> и <A href="../rdo_obj_const.htm#const_type">типы символьных констант</A>.</DD>
 			<DT class="syntax"><A name="sec_type"></A><I>тип_последовательности</I></DT>
 			<DD class="syntax">В данной версии языка определены последовательности следующих типов:
 				<TABLE class="visible" cols="2">
@@ -55,7 +58,8 @@ $Body <A class="syntax" href="#body">&lt;тело_последовательно
 			<BR>
 		<H4>См. также</H4>
 		<P><A href="../../rdo_base/rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
-		<P><A href="../rdo_obj_const_fun_sec.htm">Описание символьных констант, функций и последовательностей</A></P>
+		<P><A href="../rdo_obj_const_fun_seq.htm">Описание символьных констант, функций и последовательностей</A></P>
+		<P><A href="../rdo_obj_const.htm">Синтаксис констант</A></P>
 		<P><A href="../rdo_obj_fun.htm">Синтаксис функции</A></P>
 	</DIV>
 	<BR><SCRIPT src="../../../../shared/scripts/navbar.js"></SCRIPT>

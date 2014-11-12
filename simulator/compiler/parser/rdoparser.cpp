@@ -3,8 +3,8 @@
   \file      rdoparser.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -243,48 +243,9 @@ LPExpression contextTerminateCounter(const RDOParserSrcInfo& srcInfo)
 	);
 }
 
-LPExpression contextGetResource(const LPRDORSSResource& resource, const RDOParserSrcInfo& srcInfo)
-{
-	return resource->createGetResourceExpression(srcInfo);
 }
 
-LPExpression contextConstant(const LPRDOFUNConstant& constant, const RDOParserSrcInfo& srcInfo)
-{
-	return rdo::Factory<Expression>::create(
-		constant->getTypeInfo(),
-		rdo::Factory<rdo::runtime::RDOCalcGetConst>::create(constant->getNumber()),
-		srcInfo
-	);
-}
-
-LPExpression contextSequence(const std::string& name, const RDOParserSrcInfo& srcInfo)
-{
-	LPRDOFUNParams pParams = rdo::Factory<RDOFUNParams>::create(
-		rdo::Factory<ArithmContainer>::create()
-	);
-	LPRDOFUNArithm pArithm = pParams->createSeqCall(name);
-	pArithm->setSrcInfo(srcInfo);
-
-	return rdo::Factory<Expression>::create(
-		pArithm->typeInfo(),
-		pArithm->calc(),
-		srcInfo
-	);
-}
-
-LPExpression contextUnknownEnum(const rdo::runtime::LPRDOEnumType& enumType, std::size_t index, const RDOParserSrcInfo& srcInfo)
-{
-	LPTypeInfo typeInfo = rdo::Factory<TypeInfo>::delegate<RDOType__identificator>(srcInfo);
-	return rdo::Factory<Expression>::create(
-		typeInfo,
-		rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(enumType->getValues()[index], typeInfo->type())),
-		srcInfo
-	);
-}
-
-}
-
-Context::FindResult RDOParser::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult RDOParser::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	const std::string identifier = params.identifier();
 
@@ -292,15 +253,27 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 	{
 		if (identifier == "Time_now" || identifier == "time_now" || identifier == "Системное_время" || identifier == "системное_время")
 		{
-			return FindResult(CreateExpression(boost::bind(&contextTimeNow, srcInfo)));
+			return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextTimeNow, srcInfo)));
 		}
 		else if (identifier == "Seconds" || identifier == "seconds")
 		{
-			return FindResult(CreateExpression(boost::bind(&contextSeconds, srcInfo)));
+			return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextSeconds, srcInfo)));
 		}
 		else if (identifier == "Terminate_counter" || identifier == "terminate_counter")
 		{
-			return FindResult(CreateExpression(boost::bind(&contextTerminateCounter, srcInfo)));
+			return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextTerminateCounter, srcInfo)));
+		}
+	}
+
+	if (method == Context::METHOD_OPERATOR_DOT)
+	{
+		LPRDOParser pThis(const_cast<RDOParser*>(this));
+		if (identifier == "Time_now" || identifier == "time_now"
+			|| identifier == "Системное_время" || identifier == "системное_время"
+			|| identifier == "Seconds" || identifier == "seconds"
+			|| identifier == "Terminate_counter" || identifier == "terminate_counter")
+		{
+			return rdo::Factory<FindResult>::create(SwitchContext(pThis, params));
 		}
 	}
 
@@ -315,42 +288,46 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 
 	if (method == Context::METHOD_OPERATOR_DOT)
 	{
-		//! Типы ресурсов
 		LPRDORTPResType pResType = findRTPResType(identifier);
 		if (pResType)
 		{
-			return FindResult(SwitchContext(pResType));
+			return rdo::Factory<FindResult>::create(SwitchContext(pResType, params));
 		}
 
-		//! Ресурсы
 		LPRDORSSResource pResource = findRSSResource(identifier);
 		if (pResource)
 		{
-			return FindResult(SwitchContext(pResource));
+			return rdo::Factory<FindResult>::create(SwitchContext(pResource, params));
 		}
-	}
 
-	if (method == Context::METHOD_GET)
-	{
-		//! Ресурсы
-		LPRDORSSResource pResource = findRSSResource(identifier);
-		if (pResource)
+		LPRDOPATPattern pPattern = findPATPattern(identifier);
+		if (pPattern)
 		{
-			return FindResult(CreateExpression(boost::bind(&contextGetResource, pResource, srcInfo)));
+			return rdo::Factory<FindResult>::create(SwitchContext(pPattern, params));
 		}
 
-		//! Константы
+		LPRDOPROCProcess pProcess = findPROCProcess(identifier);
+		if (pProcess)
+		{
+			return rdo::Factory<FindResult>::create(SwitchContext(pProcess, params));
+		}
+
+		LPRDOResultGroup pResultGroup = findResultGroup(identifier);
+		if (pResultGroup)
+		{
+			return rdo::Factory<FindResult>::create(SwitchContext(pResultGroup, params));
+		}
+
 		LPRDOFUNConstant pConstant = findFUNConstant(identifier);
 		if (pConstant)
 		{
-			return FindResult(CreateExpression(boost::bind(&contextConstant, pConstant, srcInfo)));
+			return rdo::Factory<FindResult>::create(SwitchContext(pConstant, params));
 		}
 
-		//! Последовательности
 		LPRDOFUNSequence pSequence = findFUNSequence(identifier);
 		if (pSequence)
 		{
-			return FindResult(CreateExpression(boost::bind(&contextSequence, identifier, srcInfo)));
+			return rdo::Factory<FindResult>::create(SwitchContext(pSequence, params));
 		}
 
 		//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
@@ -365,13 +342,14 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 				std::size_t index = enumType->findEnum(identifier);
 				if (index != rdo::runtime::RDOEnumType::END)
 				{
-					return FindResult(CreateExpression(boost::bind(&contextUnknownEnum, enumType, index, srcInfo)));
+					return rdo::Factory<FindResult>::create(SwitchContext(enumType, params));
 				}
 			}
 		}
+
 	}
 
-	return Context::FindResult();
+	return rdo::Factory<Context::FindResult>::create();
 }
 
 bool RDOParser::isCurrentDPTSearch()
@@ -534,10 +512,13 @@ void RDOParser::runRSSPost()
 			if (rss->getType() == rtp)
 			{
 #endif
-				const std::vector<rdo::runtime::LPRDOCalc> calcList = rss->createCalc();
-				for (const rdo::runtime::LPRDOCalc& calc: calcList)
+				if (!rss->getIsNested())
 				{
-					runtime()->addInitCalc(calc);
+					const std::vector<rdo::runtime::LPRDOCalc> calcList = rss->createCalcList();
+					for (const rdo::runtime::LPRDOCalc& calc: calcList)
+					{
+						runtime()->addInitCalc(calc);
+					}
 				}
 #ifdef RDOSIM_COMPATIBLE
 			}
@@ -550,6 +531,9 @@ void RDOParser::runRSSPost()
 
 void RDOParser::runSMRPost()
 {
+	//! Калки, созданные в SMR
+	for (const auto& calc: m_pSMR->getCalcList())
+		runtime()->addInitCalc(calc);
 	//! Планирование событий, описанных в SMR
 	for (const LPRDOPATPattern& pattern: getPATPatterns())
 	{

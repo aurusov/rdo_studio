@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>Описание образцов</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <SCRIPT>
 function toggle_display(e)
 {
@@ -18,13 +21,13 @@ function toggle_display(e)
 	<DIV>
 		<H1>ОПИСАНИЕ ОБРАЗЦОВ</H1>
 		<P><B>Образцы</B> представляют собой шаблоны, по которым в <A href="../rdo_terms.htm">модели</A> заводятся <A href="rdo_obj_dpt.htm">активности</A> <A href="rdo_obj_dpt.htm">точкек принятия решений</A>. Подобно тому, как <A href="../rdo_base/rdo_base_res_types.htm">типы ресурсов</A> определяют структуру базы данных программы, образцы определяют структуру её базы знаний. Они представляют собой знания о функционировании моделируемой системы (знания о предметной области), записанные в виде модифицированных продукционных правил в соответствии с синтаксисом языка. Описание всех образцов содержится в <A href="../rdo_terms.htm#object">объекте</A> образцов (с расширением <FONT class="syntax">.pat</FONT>). <FONT style="color: FF0000">На основании одного образца в системе может быть заведено несколько активностей, но <B>самостоятельного значения образцы не имеют</B>. Имитатор в процессе моделирования обрабатывает именно активности, а не образцы, поэтому если какой-либо образец был описан в объекте образцов, но ни разу не упоминался в активностях, то он никогда не будет использован.</FONT> Описание образца имеет следующий формат:</P>
-		<PRE class="syntax">$Pattern <A class="syntax" href="#pat_name">&lt;имя_образца&gt;</A> : <A class="syntax" href="#pat_type">&lt;тип_образца&gt;</A> [ <A class="syntax" href="../rdo_res/rdo_res_trace_descr.htm">&lt;признак_трассировки&gt;</A> ]
+		<PRE class="syntax"><code class="rdo">$Pattern <A class="syntax" href="#pat_name">&lt;имя_образца&gt;</A> : <A class="syntax" href="#pat_type">&lt;тип_образца&gt;</A> [ <A class="syntax" href="../rdo_res/rdo_res_trace_descr.htm">&lt;признак_трассировки&gt;</A> ]
 [ $Parameters <A class="syntax" href="#param_desc">&lt;описание_параметров_образца&gt;</A> ]
 $Relevant_resources <A class="syntax" href="#rel_res_desc">&lt;описание_релевантных_ресурсов_образца&gt;</A>
 [ <A class="syntax" href="#pat_choice_type" style="color: FF0000">&lt;способ_выбора&gt;</A> ]
 $Time = <A class="syntax" href="#time_expr">&lt;выражение_времени&gt;</A>
 $Body <A class="syntax" href="#pattern_body">&lt;тело_образца&gt;</A>
-$End</PRE>
+$End</code></PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="pat_name"></A><I>имя_образца</I></DT>
 			<DD class="syntax">Имя образца представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех образцов и не должны совпадать с ранее определенными именами.</DD>
@@ -58,13 +61,13 @@ $End</PRE>
 			</DD>
 			<DT class="syntax"><A name="param_desc"></A><I>описание_параметров_образца</I></DT>
 			<DD class="syntax">Описание параметров образца имеет следующий формат:
-				<PRE class="syntax"><A class="syntax" href="#param_name">&lt;имя_параметра&gt;</A> : <A class="syntax" href="#param_type">&lt;тип_параметра&gt;</A> [ = <A class="syntax" href="#param_def_val">&lt;значение_по_умолчанию&gt;</A> ]
-{ &lt;имя_параметра&gt; : &lt;тип_параметра&gt; [ = &lt;значение_по_умолчанию&gt; ] }</PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#param_name">&lt;имя_параметра&gt;</A> : <A class="syntax" href="#param_type">&lt;тип_параметра&gt;</A> [ = <A class="syntax" href="#param_def_val">&lt;значение_по_умолчанию&gt;</A> ]
+{ &lt;имя_параметра&gt; : &lt;тип_параметра&gt; [ = &lt;значение_по_умолчанию&gt; ] }</code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="param_name"></A><I>имя_параметра</I></DT>
 					<DD class="syntax">Имя параметра образца представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех параметров и не должны совпадать с ранее определенными именами. Имя параметра может совпадать с именем параметра другого образца.</DD>
 					<DT class="syntax"><A name="param_type"></A><I>тип_параметра</I></DT>
-					<DD class="syntax">Тип параметра - это один из возможных <A href="../rdo_base/rdo_base_types.htm">типов данных</A>. При описании типов параметров образца возможны ссылки на <A href="../rdo_base/rdo_base_res_types.htm#param_type">типы параметров ресурсов</A> и <A href="rdo_obj_const_fun_sec.htm#const_type">типы символьных констант</A>.</DD>
+					<DD class="syntax">Тип параметра - это один из возможных <A href="../rdo_base/rdo_base_types.htm">типов данных</A>. При описании типов параметров образца возможны ссылки на <A href="../rdo_base/rdo_base_res_types.htm#param_type">типы параметров ресурсов</A> и <A href="rdo_obj_const.htm#const_type">типы символьных констант</A>.</DD>
 					<DT class="syntax"><A name="param_def_val"></A><I>значение_по_умолчанию</I></DT>
 					<DD class="syntax">Для параметра любого типа может быть задано значение по умолчанию. Это значение указывают после знака равенства целой или вещественной <A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">численной константой</A>, либо именем значения для перечислимого параметра. При указании типа ссылкой также возможно задание значения по умолчанию. При этом задаваемое значение может отличаться от значения по умолчанию того параметра, на тип которого производится ссылка.</DD>
 				</DL>
@@ -72,10 +75,10 @@ $End</PRE>
 			</DD>
 			<DT class="syntax"><A name="rel_res_desc"></A><I>описание_релевантных_ресурсов_образца</I></DT>
 			<DD class="syntax">Описание релевантных ресурсов для образцов типа <A href="#pat_type">операция</A> и <A href="#pat_type">клавиатурная операция</A> имеет следующий формат:
-				<PRE class="syntax"><A class="syntax" href="#rel_res_name">&lt;имя_релевантного_ресурса&gt;</A> : <A class="syntax" href="#rel_res_describer">&lt;описатель&gt;</A>
-<A class="syntax" href="#conv_beg_stat">&lt;статус_конвертора_начала&gt;</A> <A class="syntax" href="#conv_end_stat">&lt;статус_конвертора_конца&gt;</A></PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#rel_res_name">&lt;имя_релевантного_ресурса&gt;</A> : <A class="syntax" href="#rel_res_describer">&lt;описатель&gt;</A>
+<A class="syntax" href="#conv_beg_stat">&lt;статус_конвертора_начала&gt;</A> <A class="syntax" href="#conv_end_stat">&lt;статус_конвертора_конца&gt;</A></code></PRE>
 				<P>Описание релевантных ресурсов образца для образцов типа <A href="#pat_type">событие</A>, <A href="#pat_type">нерегулярное событие</A> и <A href="#pat_type">продукционное правило</A> имеет следующий формат:</P>
-				<PRE class="syntax"><A class="syntax" href="#rel_res_name">&lt;имя_релевантного_ресурса&gt;</A> : <A class="syntax" href="#rel_res_describer">&lt;описатель&gt;</A> <A class="syntax" href="#conv_stat">&lt;статус_конвертора&gt;</A></PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#rel_res_name">&lt;имя_релевантного_ресурса&gt;</A> : <A class="syntax" href="#rel_res_describer">&lt;описатель&gt;</A> <A class="syntax" href="#conv_stat">&lt;статус_конвертора&gt;</A></code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="rel_res_name"></A><I>имя_релевантного_ресурса</I></DT>
 					<DD class="syntax">Имя релевантного ресурса образца представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех релевантных ресурсов и не должны совпадать с ранее определенными именами. Имя релевантного ресурса может совпадать с именем релевантного ресурса другого образца.</DD>
@@ -176,7 +179,7 @@ $End</PRE>
 		</DL>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
 		<DIV style="display:none" id="v1">
-		<PRE class="samples">$Pattern Образец_1 : operation
+		<PRE class="syntax"><code class="rdo">$Pattern Образец_1 : operation
 $Parameters
   Количество : integer = 10
 $Relevant_resources
@@ -269,12 +272,12 @@ $Body
     Convert_rule
       Параметр_4 set Функция_1(Рел_ресурс_2.Параметр_2, 0.2);
       Параметр_5 set Свободен;
-$End</PRE>
+$End</code></PRE>
 	</DIV>
 	<H4>См. также</H4>
 	<P><A href="../rdo_base/rdo_base_res_types.htm">Типы ресурсов</A></P>
 	<P><A href="../rdo_base/rdo_base_resources.htm">Описание ресурсов</A></P>
-	<P><A href="rdo_obj_const_fun_sec.htm">Описание символьных констант, функций и последовательностей</A></P>
+	<P><A href="rdo_obj_const_fun_seq.htm">Описание символьных констант, функций и последовательностей</A></P>
 	<P><A href="rdo_obj_dpt.htm">Описание точек принятия решений</A></P>
 	<P><A href="../rdo_res/rdo_res_trc.htm">Объект трассировки</A></P>
 	</DIV>

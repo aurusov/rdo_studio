@@ -195,4 +195,4 @@ IF(MSVC) # options for windows #
 	SOURCE_GROUP(".src\\.resources" FILES
 		${RESOURCES_IMAGE_FILES}
 	)
-ENDIF(MSVC)
+ENDIF()

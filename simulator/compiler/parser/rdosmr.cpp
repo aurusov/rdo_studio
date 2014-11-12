@@ -3,8 +3,8 @@
   \file      rdosmr.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -124,7 +124,7 @@ void RDOSMR::setConstValue(const RDOParserSrcInfo& const_info, LPRDOFUNArithm& p
 	ASSERT(pArithm);
 	pArithm->checkParamType(pConstant->getTypeInfo());
 	rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(pConstant->getTypeInfo());
-	RDOParser::s_parser()->runtime()->addInitCalc(rdo::Factory<rdo::runtime::RDOCalcSetConst>::create(pConstant->getNumber(), pCalc));
+	this->addCalc(rdo::Factory<rdo::runtime::RDOCalcSetConst>::create(pConstant->getNumber(), pCalc));
 	RDOParser::s_parser()->insertChanges(pConstant->src_text(), pArithm->src_text());
 }
 
@@ -147,7 +147,7 @@ void RDOSMR::setResParValue(const RDOParserSrcInfo& res_info, const RDOParserSrc
 	pArithm->checkParamType(pParam->getTypeInfo());
 	const std::size_t parNumb = pResource->getType()->getRTPParamNumber(par_info.src_text());
 	rdo::runtime::LPRDOCalc pCalc   = pArithm->createCalc(pParam->getTypeInfo());
-	RDOParser::s_parser()->runtime()->addInitCalc(rdo::Factory<rdo::runtime::RDOSetResourceParamCalc>::create(pResource->getID(), parNumb, pCalc));
+	this->addCalc(rdo::Factory<rdo::runtime::RDOSetResourceParamCalc>::create(pResource->getID(), parNumb, pCalc));
 	RDOParser::s_parser()->insertChanges(res_info.src_text() + "." + par_info.src_text(), pArithm->src_text());
 }
 

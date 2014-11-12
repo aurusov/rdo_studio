@@ -60,21 +60,12 @@ RDOValue::RDOValue(int value)
 	setUndefined(false);
 }
 
-RDOValue::RDOValue(uint32_t value)
+RDOValue::RDOValue(std::size_t value)
 	: m_pType(g_int)
 {
-	__get<uint32_t>() = value;
+        __get<std::size_t>() = value;
 	setUndefined(false);
 }
-
-#ifdef ARCHITECTURE_AMD64
-RDOValue::RDOValue(uint64_t value)
-	: m_pType(g_int)
-{
-	__get<uint64_t>() = value;
-	setUndefined(false);
-}
-#endif // ARCHITECTURES_AMD64
 
 RDOValue::RDOValue(double value)
 	: m_pType(g_real)
@@ -1026,13 +1017,13 @@ std::string RDOValue::onPointerAsString() const
 	{
 		LPRDOArrayValue pValue = getPointer<RDOArrayValue>();
 		ASSERT(pValue);
-		return pValue->getAsString();
+		return pValue->asString();
 	}
 
 	LPRDOArrayIterator pThisArrayIterator = m_pType.object_dynamic_cast<RDOArrayIterator>();
 	if (pThisArrayIterator)
 	{
-		return pThisArrayIterator->getValue().getAsString();
+		return pThisArrayIterator->asString();
 	}
 
 	LPRDOMatrixType pThisMatrixType = m_pType.object_dynamic_cast<RDOMatrixType>();
@@ -1040,13 +1031,19 @@ std::string RDOValue::onPointerAsString() const
 	{
 		LPRDOMatrixValue pValue = getPointer<RDOMatrixValue>();
 		ASSERT(pValue);
-		return pValue->getAsString();
+		return pValue->asString();
 	}
 
 	LPRDOMatrixIterator pThisMatrixIterator = m_pType.object_dynamic_cast<RDOMatrixIterator>();
 	if (pThisMatrixIterator)
 	{
-		return pThisMatrixIterator->getValue().getAsString();
+		return pThisMatrixIterator->asString();
+	}
+
+	LPRDOResourceTypeList pThisResource = m_pType.object_dynamic_cast<RDOResourceTypeList>();
+	if (pThisResource)
+	{
+		return "nested_resource";
 	}
 
 	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
@@ -1081,6 +1078,17 @@ bool RDOValue::onPointerEqual(const RDOValue& rdovalue) const
 		if (pValueMatrixIterator)
 		{
 			return pThisMatrixIterator->equal(pValueMatrixIterator);
+		}
+	}
+
+	LPRDOResourceTypeList pThisResourceType = m_pType.object_dynamic_cast<RDOResourceTypeList>();
+	if (pThisResourceType)
+	{
+		LPRDOResource pThisResource = getPointerByType<RDOResourceTypeList>();
+		LPRDOResource pOtherResource = rdovalue.getPointerByType<RDOResourceTypeList>();
+		if (pThisResource && pOtherResource)
+		{
+			return pThisResource == pOtherResource;
 		}
 	}
 

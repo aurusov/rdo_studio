@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>Операторы и инструкции процедурного программирования</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <SCRIPT>
 function toggle_display(e)
 {
@@ -30,9 +33,9 @@ function toggle_display(e)
 			<P> Данные операторы можно использовать при описании алгоритмических зависимостей в теле образцов и функций для составления <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедур</A>. Все операторы являются <A href="../rdo_lex_div/rdo_lex_div_res_words.htm">зарезервированными словами</A>.</P>
 			<h2>Условный оператор</h2>
 			<P><A name="operator_if"></A><B>Описание условного оператора</B> имеет следующий формат:</P>
-			<PRE class="syntax">if (<A class="syntax" href="#log_cond">&lt;условие&gt;</A>)
+			<PRE class="syntax"><code class="rdo">if (<A class="syntax" href="#log_cond">&lt;условие&gt;</A>)
   <A class="syntax" href="#proc_list_1">&lt;первая_ветвь_исполнения&gt;</A>;
-{else <A class="syntax" href="#proc_list_2">&lt;вторая_ветвь_исполнения&gt;</A>;}</PRE>
+{else <A class="syntax" href="#proc_list_2">&lt;вторая_ветвь_исполнения&gt;</A>;}</code></PRE>
 			<DL class="syntax">
 				<DT class="syntax"><A name="log_cond"></A><I>условие</I></DT>
 				<DD class="syntax">Логическое выражение, определяющее выполнение первой ветви <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедур</A> условного оператора</DD>
@@ -61,11 +64,11 @@ else
 			</DL>
 			<h2>Операторы объявления и инициализации локальной переменной</h2>
 			<P>Для <A name="operator_declare"></A><B>объявления локальной переменной</B>  необходимо указать ее тип и имя:</P>
-			<PRE class="syntax"> <A class="syntax" href="#type_var">&lt;тип_переменной&gt;</A> <A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A></PRE>
+			<PRE class="syntax"><code class="rdo"> <A class="syntax" href="#type_var">&lt;тип_переменной&gt;</A> <A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A></code></PRE>
 			<P><A name="operator_init"></A><B>Инициализовать локальную переменную</B> можно следующим образом:</P>
-			<PRE class="syntax"> <A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A> = <A class="syntax" href="#var_equation">&lt;значение&gt;</A></PRE>
+			<PRE class="syntax"><code class="rdo"> <A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A> = <A class="syntax" href="#var_equation">&lt;значение&gt;</A></code></PRE>
 			<P> Два данных оператора можно использовать в одной процедуре, сводя ее к такой конструкции, создающей новую переменную:</P>
-			<PRE class="syntax"> <A class="syntax" href="#type_var">&lt;тип_переменной&gt;</A> <A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A> = <A class="syntax" href="#var_equation">&lt;значение&gt;</A>;</PRE>
+			<PRE class="syntax"><code class="rdo"> <A class="syntax" href="#type_var">&lt;тип_переменной&gt;</A> <A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A> = <A class="syntax" href="#var_equation">&lt;значение&gt;</A>;</code></PRE>
 			<DL class="syntax">
 				<DT class="syntax"><A name="type_var"></A><I>тип_переменной</I></DT>
 				<DD class="syntax">Тип переменной - это один из возможных в языке <A href="rdo_base_types.htm">типов данных</A>.</DD>
@@ -90,8 +93,8 @@ k = 1.01;
 			</DL>
 				<h2>Оператор цикла</h2>
 			<P><A name="operator_for"></A><B>Описание оператора цикла</B> имеет следующий формат:</P>
-			<PRE class="syntax">for ( <A class="syntax" href="#def_cycle_var">&lt;определение_циклической_переменной&gt;</A>; <A class="syntax" href="#cycle_log_cond">&lt;логическое выражение&gt;</A>;<A class="syntax" href="#cycle_statement"> &lt;выражение&gt;</A>)
-			<A class="syntax" href="#cycle_body">&lt;тело_цикла&gt;</A></PRE>
+			<PRE class="syntax"><code class="rdo">for ( <A class="syntax" href="#def_cycle_var">&lt;определение_циклической_переменной&gt;</A>; <A class="syntax" href="#cycle_log_cond">&lt;логическое выражение&gt;</A>;<A class="syntax" href="#cycle_statement"> &lt;выражение&gt;</A>)
+			<A class="syntax" href="#cycle_body">&lt;тело_цикла&gt;</A></code></PRE>
 			<DL class="syntax">
 				<DT class="syntax"><A name="def_cycle_var"></A><I>определение_циклической_переменной</I></DT>
 				<DD class="syntax">Определить циклическую переменную можно оператором присваивания начального значения уже объявленной циклической переменной или оператором объявления локальной циклической переменной с инициализирующим значением.</DD>
@@ -154,7 +157,7 @@ for (integer i=2;i<4;i++)
 				</DIV>
 			</DL>
 			<h2>Оператор возврата значения</h2>
-			<P><A name="operator_return"></A>Оператор <B>return</B> прекращает выполнение <A href="../rdo_obj/rdo_obj_fun.htm#body>тела</A> <A href="../rdo_obj/rdo_obj_fun.htm#alg">алгоритмической функции</A> или <A href="../rdo_obj/rdo_obj_frm.htm">кадра анимации</A>. В случае использования в функции, он возвращает значение <A href="rdo_base_equations.htm">выражения</A>, указанного после него. Тип выражения должен соответствовать типу значения функции. В случае использования в анимации, выражение не указывается.</P>
+			<P><A name="operator_return"></A>Оператор <B>return</B> прекращает выполнение <A href="../rdo_obj/rdo_obj_fun.htm#body">тела</A> <A href="../rdo_obj/rdo_obj_fun.htm#alg">алгоритмической функции</A> или <A href="../rdo_obj/rdo_obj_frm.htm">кадра анимации</A>. В случае использования в функции, он возвращает значение <A href="rdo_base_equations.htm">выражения</A>, указанного после него. Тип выражения должен соответствовать типу значения функции. В случае использования в анимации, выражение не указывается.</P>
 			<DL class="syntax">
 				<DD class="syntax"></DD>
 				<A href="" class="ref" onclick="return toggle_display(v5);"><H4>Примеры</H4></A>

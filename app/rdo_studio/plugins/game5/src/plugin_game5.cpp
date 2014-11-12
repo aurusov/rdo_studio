@@ -17,6 +17,8 @@
 #include <boost/filesystem.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/src/locale/rdolocale.h"
+#include "utils/src/common/model_objects.h"
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/model/model_tab_ctrl.h"
@@ -24,7 +26,6 @@
 #include "app/rdo_studio/plugins/game5/src/board.h"
 #include "app/rdo_studio/plugins/game5/src/plugin_game5.h"
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_model_generator.h"
-#include "utils/src/common/model_objects.h"
 // --------------------------------------------------------------------------------
 
 namespace
@@ -39,24 +40,42 @@ namespace
 
 	void backUpModel(rdo::gui::model::Model* pModel)
 	{
-		boost::filesystem::path modelFolder(pModel->getFullName().toStdString());
+		boost::filesystem::path modelFolder(pModel->getFullName().toStdWString());
 		modelFolder.remove_leaf();
 		const QString backupFolderName = "backup" + QDateTime::currentDateTime().toString("_yyyy-MM-dd_HH.mm.ss");
 		const boost::filesystem::path backupFolder = modelFolder / backupFolderName.toStdString();
-		if (boost::filesystem::create_directory(backupFolder))
+		try
 		{
-			for (size_t i = 0; i < RDOFileType_ENUM_SIZE; i++)
+			if (boost::filesystem::create_directory(backupFolder))
 			{
-				std::string fileExtension = rdo::model::getFileTypeString(rdo::model::FileType(i));
-				boost::algorithm::to_lower(fileExtension);
-				const std::string fileName = pModel->getName().toStdString() + "." + fileExtension;
-				const boost::filesystem::path filePath = modelFolder / fileName;
-				const boost::filesystem::path backupFilePath = backupFolder / fileName;
-				if (boost::filesystem::exists(filePath))
+				for (size_t i = 0; i < RDOFileType_ENUM_SIZE; i++)
 				{
-					boost::filesystem::copy(filePath, backupFilePath);
+					std::string fileExtension = rdo::model::getFileTypeString(rdo::model::FileType(i));
+					boost::algorithm::to_lower(fileExtension);
+					const std::string fileName = pModel->getName().toStdString() + "." + fileExtension;
+					const boost::filesystem::path filePath = modelFolder / fileName;
+					const boost::filesystem::path backupFilePath = backupFolder / fileName;
+					if (boost::filesystem::exists(filePath))
+					{
+						boost::filesystem::copy(filePath, backupFilePath);
+					}
 				}
 			}
+		}
+		catch (const boost::filesystem::filesystem_error& error)
+		{
+			const std::string system_what = error.boost::system::system_error::what();
+			const std::string system_what_utf = 
+#if defined(OST_WINDOWS)
+				rdo::locale::convertFromCLocale(system_what, rdo::locale::get().system());
+#elif defined(OST_LINUX)
+				system_what;
+#endif
+			QString what = error.what();
+			what.replace(QString::fromStdString(system_what), QString::fromStdString(system_what_utf));
+			QMessageBox::critical(g_pApp->getMainWnd(),
+				"RAO-Studio",
+				QString("Ошибка создания резервной копии модели: ") + what);
 		}
 	}
 

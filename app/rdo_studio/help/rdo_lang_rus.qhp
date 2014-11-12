@@ -9,8 +9,8 @@
 				<section title="Основные понятия" ref="rdo_lang_rus/html/rdo_terms.htm"/>
 				<section title="Базовые конструкции языка" ref="rdo_lang_rus/html/rdo_base/rdo_base_intro.htm">
 					<section title="Алфавит" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+					<section title="Типы данных" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
 					<section title="Арифметические и логические выражения" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
-					<section title="Глобальные переменные и стандартные функции" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
 					<section title="Лексемы и разделители" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_intro.htm">
 						<section title="Зарезервированные слова" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_res_words.htm"/>
 						<section title="Имена" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_names.htm"/>
@@ -19,43 +19,46 @@
 						<section title="Строковые константы" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_string_const.htm"/>
 						<section title="Численные константы" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_numeric_const.htm"/>
 					</section>
+					<section title="Глобальные переменные и стандартные функции" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
 					<section title="Процедурное программирование" ref="rdo_lang_rus/html/rdo_base/rdo_base_proc_lang.htm">
 						<section title="Инструкции используемые в образцах" ref="rdo_lang_rus/html/rdo_base/rdo_base_instr.htm"/>
 					</section>
+				</section>
+				<section title="Объекты языка" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_intro.htm">
+					<section title="Типы ресурсов" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
 					<section title="Ресурсы" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources.htm">
 						<section title="Неопределенное значение параметра ресурса" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources_undefined.htm"/>
+						<section title="Вложенные ресурсы" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources_nested.htm"/>
 					</section>
-					<section title="Типы данных. Соотствие типов" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
-					<section title="Типы ресурсов" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
-				</section>
-				<section title="Конструкции языка" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_intro.htm">
-					<section title="Кадры анимации" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm">
-						<section title="Элементы отображения" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm_elem.htm"/>
-					</section>
-					<section title="Константы" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const_fun_sec.htm"/>
 					<section title="Образцы" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm">
 						<section title="Операция" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_opr.htm"/>
 						<section title="Продукционное правило" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_rule.htm"/>
 						<section title="Клавиатурная операция" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_keyboard.htm"/>
 						<section title="События" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_event.htm"/>
 					</section>
-					<section title="Объект описания показателей" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
-					<section title="Объект прогона" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
-					<section title="Последовательности" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec.htm">
-						<section title="Гистограммное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_by_hist.htm"/>
-						<section title="Нормальное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_normal.htm"/>
-						<section title="Перечислимые значения" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_enum.htm"/>
-						<section title="Равноемерное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_uniform.htm"/>
-						<section title="Треугольное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_triang.htm"/>
-						<section title="Экспоненциальное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_exponen.htm"/>
-					</section>
-					<section title="Процессы обслуживания" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm"/>
 					<section title="Точки принятия решений" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm">
 						<section title="Some" ref="rdo_lang_rus/html/rdo_dpt/rdo_dpt_some.htm"/>
 						<section title="Search" ref="rdo_lang_rus/html/rdo_dpt/rdo_dpt_search.htm"/>
 						<section title="Prior" ref="rdo_lang_rus/html/rdo_dpt/rdo_dpt_prior.htm"/>
 					</section>
-					<section title="Функции" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+					<section title="Константы, функции и последовательности" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const_fun_seq.htm">
+						<section title="Константы" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const.htm"/>
+						<section title="Функции" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+						<section title="Последовательности" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec.htm">
+							<section title="Гистограммное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_by_hist.htm"/>
+							<section title="Нормальное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_normal.htm"/>
+							<section title="Перечислимые значения" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_enum.htm"/>
+							<section title="Равномерное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_uniform.htm"/>
+							<section title="Треугольное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_triang.htm"/>
+							<section title="Экспоненциальное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_exponen.htm"/>
+						</section>
+					</section>
+					<section title="Кадры анимации" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm">
+						<section title="Элементы отображения" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm_elem.htm"/>
+					</section>
+					<section title="Объект описания показателей" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
+					<section title="Объект прогона" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+					<section title="Процессы обслуживания" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm"/>
 				</section>
 				<section title="Результаты моделирования" ref="rdo_lang_rus/html/rdo_res/rdo_res_intro.htm">
 					<section title="Объект результатов" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
@@ -68,11 +71,16 @@
 					</section>
 				</section>
 				<section title="Теория" ref="rdo_lang_rus/html/rdo_theory/rdo_theory.htm">
-					<section title="Последовательности" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq.htm">
-						<section title="База генератора" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_base.htm"/>
-						<section title="Базовое распределение" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_basedistribution.htm"/>
-						<section title="Обратная функция" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_inverse.htm"/>
+					<section title="Принципы генерации псевдослучайных чисел" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_principles.htm"/>
+					<section title="База генератора" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_generator_seed.htm"/>
+					<section title="Законы распределения" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq.htm">
+						<section title="Нормальное распределение" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_normal.htm"/>
+						<section title="Равномерное распределение" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_uniform.htm"/>
+						<section title="Треугольное распределение" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_triangular.htm"/>
+						<section title="Экспоненциальное распределение" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_exponential.htm"/>
 					</section>
+					<section title="Метод обратного преобразования" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_inverse.htm"/>
+					<section title="Оценка качества распределения" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_estimation.htm"/>
 				</section>
 			</section>
 		</toc>
@@ -95,10 +103,10 @@
 			<keyword name="$Changes" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
 			<keyword name="$Compare_tops" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
 			<keyword name="$Condition" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
-			<keyword name="$Constant" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const_fun_sec.htm"/>
+			<keyword name="$Constant" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const.htm"/>
 			<keyword name="$Decision_point" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
 			<keyword name="$End" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
-			<keyword name="$End" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const_fun_sec.htm"/>
+			<keyword name="$End" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const.htm"/>
 			<keyword name="$End" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources.htm"/>
 			<keyword name="$End" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
 			<keyword name="$End" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec.htm"/>
@@ -234,7 +242,7 @@
 			<keyword name="Frame_number" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
 			<keyword name="FRM" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
 			<keyword name="from" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
-			<keyword name="FUN" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const_fun_sec.htm"/>
+			<keyword name="FUN" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const.htm"/>
 			<keyword name="FUN" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
 			<keyword name="FUN" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec.htm"/>
 			<keyword name="GENERATE" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm"/>
@@ -392,6 +400,7 @@
 			<keyword name="блок активностей" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
 			<keyword name="вещественный тип" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
 			<keyword name="вид ресурсов" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
+			<keyword name="вложенные ресурсы" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources_nested.htm"/>
 			<keyword name="выражение времени" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
 			<keyword name="выражения арифметические" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
 			<keyword name="выражения логические" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
@@ -419,7 +428,7 @@
 			<keyword name="конвертор" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
 			<keyword name="константы" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_string_const.htm"/>
 			<keyword name="константы" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_numeric_const.htm"/>
-			<keyword name="константы" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const_fun_sec.htm"/>
+			<keyword name="константы" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const.htm"/>
 			<keyword name="лексема" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_intro.htm"/>
 			<keyword name="логические выражения" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
 			<keyword name="множество отображения" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
@@ -435,7 +444,7 @@
 			<keyword name="обращение к функции" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
 			<keyword name="объект" ref="rdo_lang_rus/html/rdo_terms.htm"/>
 			<keyword name="объект кадры анимации" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
-			<keyword name="объект константы, функции и последовательности" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const_fun_sec.htm"/>
+			<keyword name="объект константы, функции и последовательности" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const_fun_seq.htm"/>
 			<keyword name="объект образцы операций" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
 			<keyword name="объект прогон" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
 			<keyword name="объект результаты" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
@@ -449,7 +458,7 @@
 			<keyword name="операции" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_opr.htm"/>
 			<keyword name="операции" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
 			<keyword name="операция" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_opr.htm"/>
-			<keyword name="описание константы" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const_fun_sec.htm"/>
+			<keyword name="описание константы" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const.htm"/>
 			<keyword name="описание процессов обслужывания" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm"/>
 			<keyword name="параметр образца" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
 			<keyword name="параметр ресурса" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
@@ -551,8 +560,14 @@
 			<file>rdo_lang_rus/html/rdo_theory/*</file>
 			<file>rdo_lang_rus/html/*</file>
 			<file>rdo_lang_rus/images/*</file>
+			<file>rdo_lang_rus/images/uniform_distribution/*</file>
+			<file>rdo_lang_rus/images/normal_distribution/*</file>
+			<file>rdo_lang_rus/images/exponential_distribution/*</file>
+			<file>rdo_lang_rus/images/triangular_distribution/*</file>
 			<file>shared/styles/styles.css</file>
 			<file>shared/scripts/navbar.js</file>
+			<file>shared/scripts/highlight.pack.js</file>
+			<file>shared/styles/highlight.styles/googlecode.css</file>
 		</files>
 	</filterSection>
 </QtHelpProject>
