@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
 	if (optionsController.convertQuery())
 	{
 		bool converted = false;
-		while(!converted)
+		while (!converted)
 		{
 			converted = pAppController->converted();
 			boost::this_thread::sleep(boost::posix_time::milliseconds(500));

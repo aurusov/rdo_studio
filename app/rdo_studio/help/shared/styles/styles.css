@@ -40,15 +40,13 @@ p.build { margin-top: .1em; margin-bottom: .1em; font-size: 90%; text-align: lef
 
 p.samples { margin-top: .6em; margin-bottom: .6em; color: #660000; font-family: "courier new", "courier", "fixedsys", monospace; font-size: 80%; text-align: left }
 
-p.remarks { margin-top: .1em; margin-bottom: .1em; font-size: 90%; text-align: justify }
+p.remarks { padding: .6em; font-size: 100%; text-align: justify; background: #F0F0F0 }
 
 p.image { margin-bottom: 1.5em; text-align: center }
 
-pre { padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; font-weight: bold; color: #000000; font-family: "courier new", "courier", "fixedsys", monospace }
+pre { padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; font-weight: normal; color: #000000; font-family: "courier new", "courier", "fixedsys", monospace }
 
-pre.samples { margin-top: .1em; margin-bottom: .1em; font-weight: normal; color: #660000; font-family: "courier new", "courier", "fixedsys", monospace; font-size: 100% }
-
-pre.syntax { padding: .2em .5em .2em .5em; margin-top: .6em; margin-bottom: .6em; font-weight: bold; background: #e5e5e5; color: #000000; font-family: "courier new", "courier", "fixedsys", monospace; font-size: 110% }
+pre.syntax {margin-top: .1em; margin-bottom: .1em; font-weight: normal; color: #000000; font-family: "courier new", "courier", "fixedsys", monospace; font-size: 100% }
 
 table { margin-top: -1.2em; margin-bottom: .6em; margin-left: -1.2em; width: 100% }
 
@@ -60,7 +58,7 @@ table.build { padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; width: 90% }
 
 table.image { padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; width: 10% }
 
-th { padding: 4px 8px; background: #dddddd; text-align: left; font-size: 75%; vertical-align: middle; }
+th { padding: 4px 8px; background: #F0F0F0; text-align: left; font-size: 75%; vertical-align: middle; }
 
 th.progon { padding: 4px 8px; background: #dddddd; text-align: center; font-size: 75%; vertical-align: middle; }
 
@@ -72,13 +70,13 @@ td.visible { padding: 4px 8px; background: #ffffff; vertical-align: top; font-si
 
 td.image   { padding: 4px 8px; background: #ffffff; vertical-align: center; text-align: center }
 
-td.syntax { padding: .2em .5em .2em .5em; font-weight: bold; font-size: 80%; text-align: justify; background: #e5e5e5; color: #000000; font-family: "courier new", "courier", "fixedsys", monospace }
+td.syntax { padding: .2em .5em .2em .5em; font-weight: normal; font-size: 80%; text-align: justify; background: #F0F0F0; color: #000000; font-family: "courier new", "courier", "fixedsys", monospace }
 
 td.navigation { padding-top: 2px; padding-left: 2px; padding-bottom: 2px; padding-right: 2px; margin: 0px 0px 0px 0px; background: #C7E1FF }
 
 td.progon { padding: 4px 8px; background: #ffffff; vertical-align: center; font-size: 75%; text-align: center }
 
-font.syntax { font-weight: bold; color: #000000; font-family: "courier new", "courier", "fixedsys", monospace; font-size: 110% }
+font.syntax { font-weight: normal; color: #000000; font-family: "courier new", "courier", "fixedsys", monospace; font-size: 110% }
 
 font.navigation { font-weight: bold; color: #230170; font-family: verdana, arial, helvetica, sans-serif; font-size: 100% }
 
@@ -90,13 +88,13 @@ a:link { color: #0052B0; text-decoration: underline; font-weight: bold }
 
 a:visited { color: #968055; text-decoration: underline; font-weight: bold }
 
-a:active { color: #CC9900F; text-decoration: underline; font-weight: bold }
+a:active { color: #CC9900; text-decoration: underline; font-weight: bold }
 
 a:hover { color: #CC9900; text-decoration: underline; font-weight: bold }
 
 a.syntax { font-family: "courier new", "courier", "fixedsys", monospace }
 
-a.syntax:link { color: #0052B0; text-decoration: none; font-weight: bold }
+a.syntax:link { color: #0052B0; text-decoration: none; font-weight: normal }
 
 a.syntax:visited { color: #0052B0; text-decoration: none }
 
@@ -115,3 +113,5 @@ a.reserved:active { color: #0052B0; text-decoration: none }
 a.reserved:hover { color: #0052B0; text-decoration: none }
 
 a.ref { text-decoration: none; font-family: "Arial"; }
+
+code { margin-top: .1em; margin-bottom: .1em; font-weight: normal; color: #660000; font-family: "courier new", "courier", "fixedsys", monospace; font-size: 100% }

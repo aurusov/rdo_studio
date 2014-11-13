@@ -20,7 +20,7 @@ PluginGame5GraphNodeInfoDialog::PluginGame5GraphNodeInfoDialog(QWidget* pParent)
 	, m_pNode(NULL)
 {
 	setupUi(this);
-	gameBoard->init(true);
+	gameBoard->setTilesDisabled(true);
 
 	buttonNext->setIcon(style()->standardIcon(QStyle::SP_ArrowForward));
 	buttonPrev->setIcon(style()->standardIcon(QStyle::SP_ArrowBack));
@@ -34,8 +34,7 @@ PluginGame5GraphNodeInfoDialog::PluginGame5GraphNodeInfoDialog(QWidget* pParent)
 }
 
 PluginGame5GraphNodeInfoDialog::~PluginGame5GraphNodeInfoDialog()
-{
-}
+{}
 
 void PluginGame5GraphNodeInfoDialog::updateDlg(GraphNode* node)
 {
@@ -67,6 +66,11 @@ void PluginGame5GraphNodeInfoDialog::updateDlg(GraphNode* node)
 	buttonPrev->setEnabled(node->getParentGraphNode() != NULL);
 
 	gameBoard->setTilesPositon(node->getBoardState());
+
+	if (size().width() < sizeHint().width())
+	{
+		setFixedSize(sizeHint());
+	}
 }
 
 void PluginGame5GraphNodeInfoDialog::nextNode()

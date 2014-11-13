@@ -4,8 +4,8 @@
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Романов Ярослав (robot.xet@gmail.com)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -21,6 +21,7 @@
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
 #include "simulator/runtime/rdo_object.h"
+#include "simulator/runtime/rdo_as_string_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -37,6 +38,7 @@ class RDORSSResource
 	, public boost::noncopyable
 	, public Context
 	, public IContextFind
+	, public rdo::runtime::IAsString
 {
 DECLARE_FACTORY(RDORSSResource);
 public:
@@ -45,28 +47,28 @@ public:
 	class Param
 	{
 	public:
-		explicit Param(const LPRDOValue& pValue)
+		explicit Param(const LPExpression& pValue)
 			: m_pValue(pValue)
 		{}
 
-		const LPRDOValue& param() const
+		const LPExpression& param() const
 		{
 			return m_pValue;
 		}
 
-		LPRDOValue& param()
+		LPExpression& param()
 		{
 			return m_pValue;
 		}
 
 	private:
-		//! \todo использовать RDOCalc вместо RDOValue
-		LPRDOValue m_pValue;
+		LPExpression m_pValue;
 	};
 	typedef std::vector<Param> ParamList;
 	static const std::size_t UNDEFINED_ID = std::size_t(~0);
 
-	virtual std::vector<rdo::runtime::LPRDOCalc> createCalc() const;
+	virtual rdo::runtime::LPRDOCalc createCalc() const;
+	virtual std::vector<rdo::runtime::LPRDOCalc> createCalcList() const;
 
 	const std::string& name() const { return src_info().src_text(); }
 	LPRDORTPResType getType() const { return m_pResType; }
@@ -80,6 +82,8 @@ public:
 	void setTrace(bool value) { trace = value; }
 	bool defined() const;
 	void end();
+	void setIsNested(bool nested) { isNested = nested; }
+	bool getIsNested() { return isNested; }
 
 	void writeModelStructure(std::ostream& stream) const;
 
@@ -90,6 +94,8 @@ public:
 		m_traceCalc = pTraceCalc;
 	}
 
+	DECLARE_IAsString;
+
 protected:
 	RDORSSResource(const LPRDOParser& pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, std::size_t id = UNDEFINED_ID);
 	virtual ~RDORSSResource();
@@ -98,12 +104,13 @@ protected:
 	std::size_t m_id; //! in system
 	ParamList m_paramList;
 	bool trace;
+	bool isNested;
 
 private:
 	RDORTPResType::ParamList::const_iterator m_currParam;
 	rdo::runtime::LPRDOCalc m_traceCalc;
 
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDORSSResource);
 

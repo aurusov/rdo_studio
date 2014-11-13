@@ -15,6 +15,8 @@
 #include "utils/src/smart_ptr/factory/factory.h"
 #include "simulator/runtime/rdo_enum.h"
 #include "simulator/compiler/parser/rdo_value.h"
+#include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/context_find_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -28,6 +30,8 @@ class RDOEnumType
 	: public rdo::runtime::RDOEnumType
 	, public IType
 	, public IModelStructure
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDOEnumType);
 public:
@@ -48,6 +52,8 @@ public:
 private:
 	RDOEnumType();
 	virtual ~RDOEnumType();
+
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

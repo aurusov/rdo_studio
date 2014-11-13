@@ -1017,13 +1017,13 @@ std::string RDOValue::onPointerAsString() const
 	{
 		LPRDOArrayValue pValue = getPointer<RDOArrayValue>();
 		ASSERT(pValue);
-		return pValue->getAsString();
+		return pValue->asString();
 	}
 
 	LPRDOArrayIterator pThisArrayIterator = m_pType.object_dynamic_cast<RDOArrayIterator>();
 	if (pThisArrayIterator)
 	{
-		return pThisArrayIterator->getValue().getAsString();
+		return pThisArrayIterator->asString();
 	}
 
 	LPRDOMatrixType pThisMatrixType = m_pType.object_dynamic_cast<RDOMatrixType>();
@@ -1031,13 +1031,19 @@ std::string RDOValue::onPointerAsString() const
 	{
 		LPRDOMatrixValue pValue = getPointer<RDOMatrixValue>();
 		ASSERT(pValue);
-		return pValue->getAsString();
+		return pValue->asString();
 	}
 
 	LPRDOMatrixIterator pThisMatrixIterator = m_pType.object_dynamic_cast<RDOMatrixIterator>();
 	if (pThisMatrixIterator)
 	{
-		return pThisMatrixIterator->getValue().getAsString();
+		return pThisMatrixIterator->asString();
+	}
+
+	LPRDOResourceTypeList pThisResource = m_pType.object_dynamic_cast<RDOResourceTypeList>();
+	if (pThisResource)
+	{
+		return "nested_resource";
 	}
 
 	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
@@ -1072,6 +1078,17 @@ bool RDOValue::onPointerEqual(const RDOValue& rdovalue) const
 		if (pValueMatrixIterator)
 		{
 			return pThisMatrixIterator->equal(pValueMatrixIterator);
+		}
+	}
+
+	LPRDOResourceTypeList pThisResourceType = m_pType.object_dynamic_cast<RDOResourceTypeList>();
+	if (pThisResourceType)
+	{
+		LPRDOResource pThisResource = getPointerByType<RDOResourceTypeList>();
+		LPRDOResource pOtherResource = rdovalue.getPointerByType<RDOResourceTypeList>();
+		if (pThisResource && pOtherResource)
+		{
+			return pThisResource == pOtherResource;
 		}
 	}
 

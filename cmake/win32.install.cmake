@@ -34,9 +34,9 @@ SET(CONFIG_PLUGINS_PLATFORM_D
 	${DLL_D_PLUGINS_QMINIMAL}
 )
 
-FIND_FILE(DLL_ICUUC                   icuuc51.dll              PATHS ${QT_LIBRARY_DIR})
-FIND_FILE(DLL_ICUIN                   icuin51.dll              PATHS ${QT_LIBRARY_DIR})
-FIND_FILE(DLL_ICUDT                   icudt51.dll              PATHS ${QT_LIBRARY_DIR})
+FIND_FILE(DLL_ICUUC                   icuuc52.dll              PATHS ${QT_LIBRARY_DIR})
+FIND_FILE(DLL_ICUIN                   icuin52.dll              PATHS ${QT_LIBRARY_DIR})
+FIND_FILE(DLL_ICUDT                   icudt52.dll              PATHS ${QT_LIBRARY_DIR})
 
 FIND_FILE(DLL_R_QT_CORE               Qt5Core.dll              PATHS ${QT_LIBRARY_DIR})
 FIND_FILE(DLL_D_QT_CORE               Qt5Cored.dll             PATHS ${QT_LIBRARY_DIR})

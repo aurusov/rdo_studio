@@ -20,6 +20,7 @@
 #include "simulator/runtime/rdo_object.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdo_as_string_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -29,7 +30,7 @@ PREDECLARE_POINTER(RDOArrayIterator);
 
 //! Элемент массива
 PREDECLARE_POINTER(RDOArrayValue);
-class RDOArrayValue: public rdo::counter_reference
+class RDOArrayValue: public IAsString
 {
 DECLARE_FACTORY(RDOArrayValue)
 public:
@@ -44,12 +45,13 @@ public:
 	void  erase(const LPRDOArrayIterator& pFirst, const LPRDOArrayIterator& pLast);
 
 	std::size_t size() const;
-	std::string getAsString() const;
 
 	const RDOValue& getItem(const RDOValue& index) const;
 	void            setItem(const RDOValue& index, const RDOValue& item);
 
 	LPRDOArrayValue clone() const;
+
+	DECLARE_IAsString;
 
 private:
 	RDOArrayValue(const LPRDOArrayType&  pType );
@@ -61,7 +63,7 @@ private:
 };
 
 //! Итератор массива
-class RDOArrayIterator: public RDOType
+class RDOArrayIterator: public RDOType, public IAsString
 {
 DECLARE_FACTORY(RDOArrayIterator)
 public:
@@ -74,6 +76,8 @@ public:
 	LPRDOArrayIterator next();
 	bool equal(const LPRDOArrayIterator& pIterator) const;
 	LPRDOArrayIterator clone() const;
+
+	DECLARE_IAsString;
 
 private:
 	RDOArrayIterator(const LPRDOArrayIterator& pIterator);

@@ -15,6 +15,7 @@ SET(PLUGIN_GAME5_MOC_FILES
 	src/checkable_line_edit.h
 	src/graph_edge.h
 	src/graph_node.h
+	src/multi_select_completer.h
 	src/plugin_game5.h
 	src/plugin_game5_dialog.h
 	src/plugin_game5_graph_dialog.h
@@ -26,6 +27,8 @@ SET(PLUGIN_GAME5_MOC_FILES
 SET(SRC_FILES
 	src/plugin_game5.h
 	src/plugin_game5.cpp
+	src/plugin_game5_model_generator.h
+	src/plugin_game5_model_generator.cpp
 )
 
 SET(COMPLETER_FILES
@@ -61,6 +64,8 @@ SET(GRAPH_FILES
 	src/graph_items_types.h
 	src/graph_node.h
 	src/graph_node.cpp
+	src/graph_node_info.h
+	src/graph_node_info.cpp
 	src/graph_widget.h
 	src/graph_widget.cpp
 )
@@ -134,7 +139,7 @@ SET_TARGET_PROPERTIES(plugin_game5 PROPERTIES FOLDER ${APPS_FOLDERS}/.plugins/.g
 
 ADD_DEPENDENCIES(plugin_game5 rdo_application)
 
-TARGET_LINK_LIBRARIES(plugin_game5 ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+TARGET_LINK_LIBRARIES(plugin_game5 ${Boost_LIBRARIES})
 TARGET_LINK_LIBRARIES(plugin_game5 rdo_application)
 TARGET_LINK_LIBRARIES(plugin_game5 rdo_editor)
 TARGET_LINK_LIBRARIES(plugin_game5 rdo_frame)
@@ -190,4 +195,4 @@ IF(MSVC) # options for windows #
 	SOURCE_GROUP(".src\\.resources" FILES
 		${RESOURCES_IMAGE_FILES}
 	)
-ENDIF(MSVC)
+ENDIF()

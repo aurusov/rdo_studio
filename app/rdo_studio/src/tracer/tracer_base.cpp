@@ -3,7 +3,7 @@
   \file      tracer_base.cpp
   \author    Захаров Павел
   \date      01.04.2003
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/range/algorithm/find.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/tracer_base.h"
 #include "app/rdo_studio/src/tracer/tracer_resource_type.h"
@@ -57,7 +58,7 @@ ParamInfo* TracerBase::getParamType(std::istream& stream)
 	{
 		parType = ParamInfo::PT_ENUMERATIVE;
 	}
-	if (parTypeName == "I")
+	else if (parTypeName == "I")
 	{
 		parType = ParamInfo::PT_INTEGER;
 	}
@@ -77,6 +78,31 @@ ParamInfo* TracerBase::getParamType(std::istream& stream)
 	{
 		parType = ParamInfo::PT_STRING;
 	}
+	else
+	{
+		int i;
+		try
+		{
+			//тип ресурса сначала пишет в поток его ID
+			i = boost::lexical_cast<int>(parTypeName);
+		}
+		catch (const boost::bad_lexical_cast &)
+		{
+			//do nothing?
+		}
+		if (i)
+		{
+			parType = ParamInfo::PT_RESOURCE;
+			//потом его имя
+			stream >> parTypeName;
+			//потом число его параметров
+			stream >> parTypeName;
+			int n = boost::lexical_cast<int>(parTypeName);
+			for (i = 0; i < n; ++i)
+				getParam(stream);
+		}
+	}
+
 	ASSERT(parType.is_initialized());
 
 	ParamInfo* pParam = new ParamInfo(parType.get());

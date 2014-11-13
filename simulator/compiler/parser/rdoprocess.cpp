@@ -110,6 +110,11 @@ bool RDOPROCProcess::checkTransactType(const std::string& name) const
 	return (name == m_transactType->name());
 }
 
+Context::LPFindResult RDOPROCProcess::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+{
+	return rdo::Factory<FindResult>::create();
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCOperator
 // --------------------------------------------------------------------------------
@@ -199,8 +204,8 @@ void RDOPROCDepart::createRuntime()
 		//! "длина_очереди"
 		const std::string rtp_param_name = rdo::runtime::RDOPROCDepart::getDepartParamName();
 		m_parserForRuntime.Id_res = pResource->getID();
-		m_parserForRuntime.Id_param = rtp.m_params[rtp_param_name].id(); 
-	}	
+		m_parserForRuntime.Id_param = rtp.m_params[rtp_param_name].id();
+	}
 	else
 	{
 		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format("Внутренняя ошибка RDOPROCQueue: не нашли parser-ресурс '%s'", m_resourceName.c_str()));
@@ -252,7 +257,7 @@ void RDOPROCSeize::createRuntime()
 			}
 			rdo::runtime::parser_for_Seize bbb;
 			bbb.Id_res   = pResource->getID();
-			bbb.Id_param = rtp.m_params[rtp_param_name].id(); 
+			bbb.Id_param = rtp.m_params[rtp_param_name].id();
 			m_parserForRuntime.push_back(bbb);
 		}
 		else
@@ -306,7 +311,7 @@ void RDOPROCRelease::createRuntime()
 			}
 			rdo::runtime::parser_for_Seize bbb;
 			bbb.Id_res   = pResource->getID();
-			bbb.Id_param = rtp.m_params[rtp_param_name].id(); 
+			bbb.Id_param = rtp.m_params[rtp_param_name].id();
 			m_parserForRuntime.push_back(bbb);
 		}
 		else
