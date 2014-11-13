@@ -83,10 +83,10 @@ QString PluginGame5ModelGenerator::modelDPT(const Board& gameBoard, const std::s
 		<< "$Evaluate_by " << evaluateBy << std::endl
 		<< "$Compare_tops = " << (compareTops ? "YES" : "NO") << std::endl
 		<< "$Activities" << std::endl
-		<< "	Перемещение_вправо: Перемещение_фишки справа  1 value " << activityValueLeft << std::endl
-		<< "	Перемещение_влево : Перемещение_фишки слева  -1 value " << activityValueRight << std::endl
-		<< "	Перемещение_вверх : Перемещение_фишки сверху -" << gameBoard.m_tilesCountX << " value " << activityValueDown << std::endl
-		<< "	Перемещение_вниз  : Перемещение_фишки снизу   " << gameBoard.m_tilesCountX << " value " << activityValueUp << std::endl
+		<< "	Перемещение_вправо: Перемещение_фишки (справа,  1) value " << activityValueLeft << ";" << std::endl
+		<< "	Перемещение_влево : Перемещение_фишки (слева,  -1) value " << activityValueRight << ";" << std::endl
+		<< "	Перемещение_вверх : Перемещение_фишки (сверху, -" << gameBoard.m_tilesCountX << ") value " << activityValueDown << ";" << std::endl
+		<< "	Перемещение_вниз  : Перемещение_фишки (снизу,   " << gameBoard.m_tilesCountX << ") value " << activityValueUp << ";" << std::endl
 		<< "$End";
 	return QString::fromStdString(DPTtabTextStream.str());
 }
