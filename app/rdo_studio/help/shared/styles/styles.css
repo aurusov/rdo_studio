@@ -40,7 +40,7 @@ p.build { margin-top: .1em; margin-bottom: .1em; font-size: 90%; text-align: lef
 
 p.samples { margin-top: .6em; margin-bottom: .6em; color: #660000; font-family: "courier new", "courier", "fixedsys", monospace; font-size: 80%; text-align: left }
 
-p.remarks { margin-top: .1em; margin-bottom: .1em; font-size: 90%; text-align: justify }
+p.remarks { padding: .6em; font-size: 100%; text-align: justify; background: #F0F0F0 }
 
 p.image { margin-bottom: 1.5em; text-align: center }
 

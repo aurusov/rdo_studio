@@ -221,8 +221,7 @@
 		</TABLE>
 		<A name="log"></A>
 		<P>Кроме стандартных арифметических функций в языке определены четыре стандартные функции, значением которых является ИСТИНА или ЛОЖЬ. Синтаксис вызова этих функций следующий:</P>
-		<PRE class="syntax"><code class="rdo">&lt;имя_функции&gt; ( &lt;имя_типа_ресурсов&gt; :
-(&lt;логическое_выражение&gt; | NoCheck) )</code></PRE>
+		<PRE class="syntax"><code class="rdo"><имя_функции>(<имя_типа_ресурсов>: (<логическое_выражение> | NoCheck))</code></PRE>
 		<P><B>Стандартные логические функции</B> используются в <A href="rdo_base_equations.htm">логических выражениях</A>. Ниже приведены их имена и способы вычисления их значений:</P>
 		<TABLE class="visible">
 			<TR valign="top">
@@ -249,8 +248,7 @@
 		<P>Если вместо логического выражения указано зарезервированное слово <A name="nocheck"></A><FONT class="syntax">NoCheck</FONT>, то рассматриваются все ресурсы указанного типа. В этом случае функция <FONT class="syntax">Exist</FONT> определяет, существует ли хотя бы один ресурс указанного типа, функция <FONT class="syntax">For_All</FONT> всегда выдает значение ИСТИНА (даже если нет ни одного ресурса указанного типа), а функция <FONT class="syntax">Not_For_All</FONT> всегда выдает значение ЛОЖЬ.</P>
 		<A name="select"></A>
 		<P>В языке определена еще одна стандартная функция, позволяющая работать со <B>списком ресурсов</B>. Она позволяет отобрать только часть ресурсов указанного типа и проверить их состояния. Синтаксис:</P>
-		<PRE class="syntax"><code class="rdo">Select( &lt;имя_типа_ресурсов&gt;:
-(&lt;логическое_выражение&gt; | NoCheck) ).&lt;метод_списка&gt;</code></PRE>
+		<PRE class="syntax"><code class="rdo">Select(<имя_типа_ресурсов>: (<логическое_выражение> | NoCheck)).<метод_списка></code></PRE>
 		<P>Список методов приведен в таблице:</P>
 		<TABLE class="visible">
 			<TR valign="top">
@@ -297,11 +295,9 @@
 		<H4>Примеры</H4>
 		<PRE class="syntax"><code class="rdo">Exist(Заявки : Заявки.Состояние = ожидает)</code></PRE>
 		<PRE class="syntax"><code class="rdo">Not_Exist(Тип_1 : NoCheck)</code></PRE>
-		<PRE class="syntax"><code class="rdo">Not_For_All(Станок : Станок.Количество &gt; 3 and
-            Станок.Состояние = свободен)</code></PRE>
-		<PRE class="syntax"><code class="rdo">Select(Заявка: Заявка.Время_прихода &gt;= 480 and
-       Заявка.Состояние = в_очереди).For_All(Заявка.Время_в_очереди &gt; 20)</code></PRE>
-       <PRE class="syntax"><code class="rdo">array<Заявки> Z = Select(Заявки: Заявки.Время_прихода &gt;= 300).getArray();</code></PRE>
+		<PRE class="syntax"><code class="rdo">Not_For_All(Станок : Станок.Количество &gt; 3 and Станок.Состояние = свободен)</code></PRE>
+		<PRE class="syntax"><code class="rdo">Select(Заявка: Заявка.Время_прихода &gt;= 480 and Заявка.Состояние = в_очереди).For_All(Заявка.Время_в_очереди &gt; 20)</code></PRE>
+    <PRE class="syntax"><code class="rdo">array<Заявки> Z = Select(Заявки: Заявки.Время_прихода &gt;= 300).getArray();</code></PRE>
 		<H4>См. также</H4>
 		<P><A href="rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
 	</DIV>
