@@ -35,7 +35,7 @@ void RDOResourceTypeList::setFactoryMethod(const Create& create)
 	m_create = create;
 }
 
-LPRDOResource RDOResourceTypeList::createRes(const LPRDORuntime& pRuntime, std::size_t resID, const std::vector<RDOValue>& paramsCalcs, bool traceFlag, bool permanentFlag)
+LPRDOResource RDOResourceTypeList::createRes(const LPRDORuntime& pRuntime, std::size_t resID, const std::vector<RDOValue>& paramsCalcs, bool traceFlag, bool permanentFlag, bool isNested)
 {
 	ASSERT(m_create);
 
@@ -44,7 +44,7 @@ LPRDOResource RDOResourceTypeList::createRes(const LPRDORuntime& pRuntime, std::
 	LPIResourceType pIResType = pThis.interface_cast<IResourceType>();
 	ASSERT(pIResType);
 
-	LPRDOResource resource = m_create(pRuntime, paramsCalcs, pIResType, resID, getTraceID(), traceFlag, permanentFlag);
+	LPRDOResource resource = m_create(pRuntime, paramsCalcs, pIResType, resID, getTraceID(), traceFlag, permanentFlag, isNested);
 	insertNewResource(pRuntime, resource);
 
 	return resource;

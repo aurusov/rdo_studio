@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/calc/resource/calc_resource.h"
 #include "simulator/runtime/result/result.h"
 #include "simulator/runtime/result/result_group.h"
 #include "simulator/compiler/parser/rdopmd.h"
@@ -172,14 +173,47 @@ void RDOPMDWatchPar::init(bool trace, const RDOParserSrcInfo& res_src_info, cons
 		RDOParser::s_parser()->error().push_only(pResource->getType()->src_info(), "См. тип ресурса");
 		RDOParser::s_parser()->error().push_done();
 	}
+	checkParam(pParam);
+
+	rdo::runtime::LPRDOCalc pResCalc =
+		rdo::Factory<rdo::runtime::RDOCalcGetResourceByID>::create(pResource->getID());
+	endOfCreation(rdo::Factory<rdo::runtime::RDOPMDWatchPar>::create(
+		RDOParser::s_parser()->runtime(),
+		src_text(),
+		trace,
+		res_src_info.src_text(),
+		par_src_info.src_text(),
+		pResCalc,
+		pResource->getType()->getRTPParamNumber(par_src_info.src_text())
+		));
+}
+
+void RDOPMDWatchPar::initFromParam(bool trace, const LPRDORTPParam& pParam, const rdo::runtime::LPRDOCalc& pResCalc, const std::size_t paramNum)
+{
+	const std::string resName;
+	endOfCreation(rdo::Factory<rdo::runtime::RDOPMDWatchPar>::create(
+		RDOParser::s_parser()->runtime(),
+		src_text(),
+		trace,
+		resName,
+		pParam->src_info().src_text(),
+		pResCalc,
+		paramNum
+		));
+}
+
+void RDOPMDWatchPar::checkParam(const LPRDORTPParam& pParam)
+{
 	const rdo::runtime::RDOType::TypeID typeID = pParam->getTypeInfo()->typeID();
 	if (typeID != rdo::runtime::RDOType::t_int && typeID != rdo::runtime::RDOType::t_real)
 	{
-		RDOParser::s_parser()->error().push_only(par_src_info, "Наблюдать можно только за параметром целого или вещественного типа");
+		RDOParser::s_parser()->error().push_only(
+			pParam->src_info(),
+			"Наблюдать можно только за параметром целого или вещественного типа"
+		);
 		RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), "См. тип параметра");
 		RDOParser::s_parser()->error().push_done();
 	}
-	endOfCreation(rdo::Factory<rdo::runtime::RDOPMDWatchPar>::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_src_info.src_text(), par_src_info.src_text(), pResource->getID(), pResource->getType()->getRTPParamNumber(par_src_info.src_text())));
 }
 
 // --------------------------------------------------------------------------------

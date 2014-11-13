@@ -3,8 +3,8 @@
   \file      rdopmd.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -78,6 +78,8 @@ class RDOPMDWatchPar: public RDOPMDResult
 DECLARE_FACTORY(RDOPMDWatchPar);
 public:
 	void init(bool trace, const RDOParserSrcInfo& res_src_info, const RDOParserSrcInfo& par_src_info);
+	void initFromParam(bool trace, const LPRDORTPParam& pParam, const rdo::runtime::LPRDOCalc& pResCalc, const std::size_t paramNum);
+	void checkParam(const LPRDORTPParam& pParam);
 
 private:
 	RDOPMDWatchPar(const RDOParserSrcInfo& src_info);

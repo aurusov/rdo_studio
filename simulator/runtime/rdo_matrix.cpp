@@ -71,7 +71,7 @@ void RDOMatrixValue::erase(const LPRDOMatrixIterator& pFirst, const LPRDOMatrixI
 	m_container.erase(pFirst->getIterator(), pLast->getIterator());
 }
 
-std::string RDOMatrixValue::getAsString() const
+std::string RDOMatrixValue::asString() const
 {
 	std::string result("[");
 	for (Container::const_iterator item = m_container.begin(); item != m_container.end(); ++item)
@@ -172,6 +172,11 @@ bool RDOMatrixIterator::equal(const LPRDOMatrixIterator& pIterator) const
 LPRDOMatrixIterator RDOMatrixIterator::clone() const
 {
 	return rdo::Factory<RDOMatrixIterator>::create(*this);
+}
+
+std::string RDOMatrixIterator::asString() const
+{
+	return getValue().getAsString();
 }
 
 // --------------------------------------------------------------------------------

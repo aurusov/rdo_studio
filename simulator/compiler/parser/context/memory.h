@@ -50,7 +50,7 @@ private:
 	LPLocalVariableListStack m_pLocalVariableListStack;
 
 	DECLARE_IContextMemory;
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(ContextMemory);
 

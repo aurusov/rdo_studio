@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>Описание процессов обслуживания</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <SCRIPT>
 function toggle_display(e)
 {
@@ -19,10 +22,10 @@ function toggle_display(e)
 		<H1>ОПИСАНИЕ ПРОЦЕССОВ ОБСЛУЖИВАНИЯ</H1>
 		<P><A name="rdo_proc"></A><B>Процессы обслуживания</B> описываются в отдельном <A href="../rdo_terms.htm#object">объекте</A> (с расширением <FONT class="syntax">.prc</FONT>).</P>
 		<P>За основу описания <B>процесса</B> взят синтаксис языка GPSS. Каждый процесс имеет следующий формат:</P>
-		<PRE class="syntax">
+		<PRE class="syntax"><code class="rdo">
 $Process <A class="syntax" href="#process_name">&lt;имя_процесса&gt;</A> &lt; <A class="syntax" href="#transact_name">&lt;имя_транзактов&gt;</A> &gt;
 { <A class="syntax" href="#process_block">&lt;процессный_блок&gt;</A> }
-$End</PRE>
+$End</code></PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="process_name"></A><I>имя_процесса</I></DT>
 			<DD class="syntax">Имя процесса представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех процессов и не должны совпадать с ранее определенными именами.</DD>
@@ -30,24 +33,24 @@ $End</PRE>
 			<DD class="syntax">Имя транзактов - это имя типа ресурсов, который должны иметь транзакты, обрабатываемые в данном процессе обслуживания.</DD>
 			<DT class="syntax"><A name="process_block"></A><I>процессный_блок</I></DT>
 			<DD class="syntax">Процессный блок имеет формат:
-				<PRE class="syntax"><A class="syntax" href="#proc_operator">&lt;процессный_оператор&gt;</A>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#proc_operator">&lt;процессный_оператор&gt;</A>
 | <A class="syntax" href="../rdo_base/rdo_base_proc_lang.htm#statement_planning">&lt;инструкция_планирования_событий&gt;</A>
-| <A class="syntax" href="../rdo_base/rdo_base_proc_lang.htm#statement_stop">&lt;инструкция_планирования_событий&gt;</A></PRE>
+| <A class="syntax" href="../rdo_base/rdo_base_proc_lang.htm#statement_stop">&lt;инструкция_планирования_событий&gt;</A></code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="proc_operator"></A><I>процессный_оператор</I></DT>
 					<DD class="syntax">Процессный оператор имеет формат:
-						<PRE class="syntax"><A class="syntax" href="#generate">&lt;оператор_создания_транзактов&gt;</A>
+						<PRE class="syntax"><code class="rdo"><A class="syntax" href="#generate">&lt;оператор_создания_транзактов&gt;</A>
 | <A class="syntax" href="#seize">&lt;оператор_захвата_ресурса&gt;</A>
 | <A class="syntax" href="#release">&lt;оператор_освобождения_ресурса&gt;</A>
 | <A class="syntax" href="#advance">&lt;оператор_продвижения_модельного_времени&gt;</A>
 | <A class="syntax" href="#queue">&lt;оператор_постановки_в_очередь&gt;</A>
 | <A class="syntax" href="#depart">&lt;оператор_выхода_из_очереди&gt;</A>
 | <A class="syntax" href="#assign">&lt;оператор_модификации_ресурса&gt;</A>
-| <A class="syntax" href="#terminate">&lt;оператор_удаления_транзактов&gt;</A></PRE>
+| <A class="syntax" href="#terminate">&lt;оператор_удаления_транзактов&gt;</A></code></PRE>
 						<DL class="syntax">
 							<DT class="syntax"><A name="generate"></A><I>оператор_создания_транзактов</I></DT>
 							<DD class="syntax">Оператор создания транзактов имеет следующий формат:
-								<PRE class="syntax">GENERATE <A class="syntax" href="#gen_arifm">&lt;выражение_времени&gt;</A></PRE> 
+								<PRE class="syntax"><code class="rdo">GENERATE <A class="syntax" href="#gen_arifm">&lt;выражение_времени&gt;</A></code></PRE> 
 								<DL class="syntax">
 									<DT class="syntax"><A name="gen_arifm"></A><I>выражение_времени</I></DT>
 									<DD class="syntax">Выражение времени представляет собой <A href="../rdo_base/rdo_base_equations.htm">арифметическое выражение</A> целого или вещественного типа, по которому рассчитывается интервал времени между создаваемыми транзактами.</DD>
@@ -55,7 +58,7 @@ $End</PRE>
 							</DD>
 							<DT class="syntax"><A name="seize"></A><I>оператор_захвата_ресурса</I></DT>
 							<DD class="syntax">При поступлении транзакта в этот оператор, происходит захват указанного ресурса. Другими словами, он описывает начало операции обслуживания. Оператор имеет следующий формат:
-								<PRE class="syntax">SEIZE <A class="syntax" href="#res_name_seize">&lt;имя_ресурса&gt;</A> {, <A class="syntax">&lt;имя_ресурса&gt;</A>}</PRE> 
+								<PRE class="syntax"><code class="rdo">SEIZE <A class="syntax" href="#res_name_seize">&lt;имя_ресурса&gt;</A> {, <A class="syntax">&lt;имя_ресурса&gt;</A>}</code></PRE> 
 								<DL class="syntax">
 									<DT class="syntax"><A name="res_name_seize"></A><I>имя_ресурса</I></DT>
 									<DD class="syntax">
@@ -67,7 +70,7 @@ $End</PRE>
 							</DD>
 							<DT class="syntax"><A name="release"></A><I>оператор_освобождения_ресурса</I></DT>
 							<DD class="syntax">Предназначен для освобождения ресурса в момент поступления в него транзакта. Другими словами, он описывает окончания операции обслуживания. Работает в паре с <FONT class="syntax">SEIZE</FONT>. Оператор имеет следующий формат:
-								<PRE class="syntax">RELEASE <A class="syntax" href="#res_name_release">&lt;имя_ресурса&gt;</A> {, <A class="syntax">&lt;имя_ресурса&gt;</A>}</PRE> 
+								<PRE class="syntax"><code class="rdo">RELEASE <A class="syntax" href="#res_name_release">&lt;имя_ресурса&gt;</A> {, <A class="syntax">&lt;имя_ресурса&gt;</A>}</code></PRE> 
 								<DL class="syntax">
 									<DT class="syntax"><A name="res_name_release"></A><I>имя_ресурса</I></DT>
 									<DD class="syntax">
@@ -78,7 +81,7 @@ $End</PRE>
 							</DD>
 							<DT class="syntax"><A name="advance"></A><I>оператор_продвижения_модельного_времени</I></DT>
 							<DD class="syntax">Оператор осуществляет задержку в продвижении транзакта в течение некоторого интервала времени. Другими словами, с его помощью моделируется операция обслуживания. Формат оператора:
-								<PRE class="syntax">ADVANCE <A class="syntax" href="#adv_arifm">&lt;выражение_времени&gt;</A></PRE> 
+								<PRE class="syntax"><code class="rdo">ADVANCE <A class="syntax" href="#adv_arifm">&lt;выражение_времени&gt;</A></code></PRE> 
 								<DL class="syntax">
 									<DT class="syntax"><A  name="adv_arifm"></A><I>выражение_времени</I></DT>
 									<DD class="syntax">Выражение времени представляет собой <A href="../rdo_base/rdo_base_equations.htm">арифметическое выражение</A> целого или вещественного типа, по которому рассчитывается длительность задержки транзакта в блоке.</DD>
@@ -86,7 +89,7 @@ $End</PRE>
 							</DD>
 							<DT class="syntax"><A name="queue"></A><I>оператор_постановки_в_очередь</I></DT>
 							<DD class="syntax">При поступлении транзакта увеличивает длину соответствующей очереди на единицу. Он имеет следующий формат:
-								<PRE class="syntax">QUEUE <A class="syntax" href="#queue">&lt;очередь&gt;</A> </PRE> 
+								<PRE class="syntax"><code class="rdo">QUEUE <A class="syntax" href="#queue">&lt;очередь&gt;</A> </code></PRE> 
 								<DL class="syntax">
 									<DT class="syntax""><A name="queue"></A><I>очередь</I></DT>
 									<DD class="syntax">
@@ -99,7 +102,7 @@ $End</PRE>
 							</DD>
 							<DT class="syntax"><A name="depart"></A><I>оператор_выхода_из_очереди</I></DT>
 							<DD class="syntax">При поступлении транзакта уменьшает длину соответствующей очереди на единицу. Работает в паре с <FONT class="syntax">QUEUE</FONT>. Имеет следующий формат:
-								<PRE class="syntax">DEPART <A class="syntax" href="#depart">&lt;очередь&gt;</A> </PRE> 
+								<PRE class="syntax"><code class="rdo">DEPART <A class="syntax" href="#depart">&lt;очередь&gt;</A> </code></PRE> 
 								<DL class="syntax">
 									<DT class="syntax""><A name="depart"></A><I>очередь</I></DT>
 									<DD class="syntax">
@@ -110,13 +113,13 @@ $End</PRE>
 							</DD>
 							<DT class="syntax"><A name="assign"></A><I>оператор_модификации_ресурса</I></DT>
 							<DD class="syntax">Изменяет значение параметра ресурса на заданное. Имеет следующий формат:
-								<PRE class="syntax">ASSIGN <A class="syntax" href="#res_name_assign">&lt;имя_ресурса&gt;</A>.<A class="syntax" href="#par_name">&lt;имя_параметра&gt;</A> = <A class="syntax" href="#ass_arifm">&lt;арифметическое_выражение&gt;</A></PRE>
+								<PRE class="syntax"><code class="rdo">ASSIGN <A class="syntax" href="#res_name_assign">&lt;имя_ресурса&gt;</A>.<A class="syntax" href="#par_name">&lt;имя_параметра&gt;</A> = <A class="syntax" href="#ass_arifm">&lt;арифметическое_выражение&gt;</A></code></PRE>
 								<DL class="syntax">
 									<DT class="syntax"><A name="res_name_assign"></A><I>имя_ресурса</I></DT>
 									<DD class="syntax"><A href="../rdo_base/rdo_base_resources.htm#res_name">Имя</A> изменяемого ресурса.</DD>
 								</DL>
 								<DL class="syntax">
-									<DT class="syntax""><A name="par_name"></A><I>имя_параметра</I></DT>
+									<DT class="syntax"><A name="par_name"></A><I>имя_параметра</I></DT>
 									<DD class="syntax"><A href="../rdo_base/rdo_base_res_types.htm#param_name">Имя</A> изменяемого параметра.</DD>
 								</DL>
 								<DL class="syntax">
@@ -126,7 +129,7 @@ $End</PRE>
 							</DD>
 							<DT class="syntax"><A name="terminate"></A><I>оператор_удаления_транзактов</I></DT>
 							<DD class="syntax">Удаляет пришедший в него транзакт и увеличивает значение терминального счетчика <FONT class="syntax">Terminate_counter</FONT> (в отличии от языка GPSS, в котором похожий оператор его уменьшал). Имеет следующий формат:
-								<PRE class="syntax">TERMINATE <A class="syntax" href="#term_arifm">&lt;дельта&gt;</A> </PRE>
+								<PRE class="syntax"><code class="rdo">TERMINATE <A class="syntax" href="#term_arifm">&lt;дельта&gt;</A> </code></PRE>
 								<DL class="syntax">
 									<DT class="syntax"><A name="term_arifm"></A><I>дельта</I></DT>
 									<DD class="syntax">Дельта представляет собой <A href="../rdo_base/rdo_base_equations.htm">арифметическое выражение</A> целого типа, по которому рассчитывается приращение значения <A href="../rdo_base/rdo_base_std_var_func.htm#terminate_counter">терминального счетчика</A>. Это может понадобиться для того, чтобы связать <A href="rdo_obj_smr.htm#term_cond">остановку моделирования</A> с числом удаленных транзактов.</DD>
@@ -142,8 +145,8 @@ $End</PRE>
 		</DL class="syntax">
 			<DT class="syntax">ГПС имеет два станка с ЧПУ, зону приемки заготовок и зону готовых изделий. Заготовки прибывают каждые 150 секунд (экспоненциальное распределение) и последовательно обрабатываются на двух станках. Роботу требуется 8±1 секунд, чтобы захватить или отпустить компоненты, и 6 секунд, чтобы переместить их из зоны приемки к первому станку. Время обработки на первом станке распределено по нормальному закону со средним в 60 секунд и стандартным отклонением в 10 секунд. На перемещение от первого станка ко второму роботу требуется 7 секунд. Время обработки на втором станке составляет 100 секунд (экспоненциальное распределение). Чтобы переместить компоненты от второго станка в зону готовых изделий, роботу требуется 5 секунд.</DT>
 		</DL>
-		<PRE class="samples">
 <H4>Закладка DPT:</H4>
+<PRE class="syntax"><code class="rdo">
 $Process процесс_обслуживания <транзакты>
 // Появление заготовок в системе каждые 150 секунд по экспоненциальному закону
     GENERATE Интервал_прихода_заготовок(150)
@@ -156,29 +159,29 @@ $Process процесс_обслуживания <транзакты>
     ADVANCE  Время_захвата(8,1)
     RELEASES Робот
 // Обработка на первом станке
-    QUEUE    ВхНакСт1
-    SEIZES   Станок1
-    DEPART   ВхНакСт1
+    QUEUE    ВхНакСт_1
+    SEIZES   Станок_1
+    DEPART   ВхНакСт_1
     ADVANCE  Обработка_на_станке_1(60,10)
-    RELEASES Станок1 
+    RELEASES Станок_1
 // Перемещение заготовки от перового станка ко второму
-    QUEUE    ВыхНакСт1
+    QUEUE    ВыхНакСт_1
     SEIZES   Робот
-    DEPART   ВыхНакСт1
+    DEPART   ВыхНакСт_1
     ADVANCE  Время_захвата(8,1)
     ADVANCE  7
     ADVANCE  Время_захвата(8,1)
-    RELEASES Робот 
+    RELEASES Робот
 // Обработка на втором станке
-    QUEUE    ВхНакСт2
-    SEIZES   Станок2
-    DEPART   ВхНакСт2
+    QUEUE    ВхНакСт_2
+    SEIZES   Станок_2
+    DEPART   ВхНакСт_2
     ADVANCE  Обработка_на_станке_2(90,100,110)
-    RELEASES Станок2 
+    RELEASES Станок_2
 // Перемещение заготовки от второго станка в зону готовых деталей
-    QUEUE    ВыхНакСт2
+    QUEUE    ВыхНакСт_2
     SEIZES   Робот
-    DEPART   ВыхНакСт2
+    DEPART   ВыхНакСт_2
     ADVANCE  Время_захвата(8,1)
     ADVANCE  5
     ADVANCE  Время_захвата(8,1)
@@ -188,8 +191,9 @@ $Process процесс_обслуживания <транзакты>
 // Удаление транзактов
     TERMINATE 1
 $End
-
+</code></PRE>
 <H4>Закладка FUN:</H4>
+<PRE class="syntax"><code class="rdo">
 $Sequence Интервал_прихода_заготовок : real
 $Type = exponential 12347
 $End
@@ -209,8 +213,9 @@ $End
 $Sequence Обработка_на_станке_2 : real
 $Type = triangular 12345
 $End
-
+</code></PRE>
 <H4>Закладка SMR:</H4>
+<PRE class="syntax"><code class="rdo">
 Model_name     = mymodel2
 Resource_file  = mymodel2
 OprIev_file    = mymodel2
@@ -218,14 +223,15 @@ Statistic_file = mymodel2
 Results_file   = mymodel2
 Trace_file     = mymodel2
 Terminate_if Terminate_counter >= 20
-
+</code></PRE>
 <H4>Закладка PMD:</H4>
+<PRE class="syntax"><code class="rdo">
 $Results
     Занятость_Робота  : watch_state Робот.Состояние   = Занят
-    Занятость_Станка_1: watch_state Станок1.Состояние = Занят
-    Занятость_Станка_2: watch_state Станок2.Состояние = Занят
+    Занятость_Станка_1: watch_state Станок_1.Состояние = Занят
+    Занятость_Станка_2: watch_state Станок_2.Состояние = Занят
 $End
-</PRE>
+</code></PRE>
 	</DIV>
 	</DIV>
 	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>

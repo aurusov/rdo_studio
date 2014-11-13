@@ -3,7 +3,7 @@
   \file      tracer_resource.cpp
   \author    Захаров Павел
   \date      11.03.2003
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -180,6 +180,10 @@ void Resource::setParams(std::string& line, Time* const pTime, const int eventIn
 				newValue = m_pResourceType->getParamInfo(i)->addStringValue(nextValue);
 				break;
 
+			case ParamInfo::PT_RESOURCE:
+				newValue = 0;
+				break;
+				
 			default:
 				newValue = boost::lexical_cast<double>(nextValue);
 				break;

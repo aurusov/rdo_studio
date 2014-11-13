@@ -20,6 +20,7 @@
 #include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/model/model_tab_ctrl.h"
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_dialog.h"
+#include "app/rdo_studio/plugins/game5/src/plugin_game5_model_generator.h"
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_tiles_order_dialog.h"
 #include "app/rdo_studio/plugins/game5/src/multi_select_completer.h"
 // --------------------------------------------------------------------------------
@@ -33,17 +34,16 @@ namespace
 		MOVE_RIGHT,
 		MOVE_LEFT
 	};
-	const std::size_t HOLE_NUMBER = 0;
 } // end anonymous namespace
 
 PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* pParent)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 {
 	setupUi(this);
-	gameBoard->init();
 
 	MultiSelectCompleter* completer = new MultiSelectCompleter(QStringList(), this);
 	lineEditCustom->setCompleter(completer);
+	connect(lineEditCustom, &QLineEdit::selectionChanged, completer, &MultiSelectCompleter::onLineEditTextChanged);
 
 	adjustSize();
 	hiddenWidget->setFixedWidth(hiddenWidget->width());
@@ -59,7 +59,7 @@ PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* 
 	rdo::gui::model::Model* pModel = getCurrentModel();
 	clearAllTabs();
 	pModel->getTab()->getItemEdit(rdo::model::FUN)->clearAll();
-	pModel->getTab()->getItemEdit(rdo::model::FUN)->appendText(QString::fromStdString(FUNtabText()));
+	pModel->getTab()->getItemEdit(rdo::model::FUN)->appendText(modelFUN());
 
 	connect(buttonHide        , &QPushButton::toggled, this, &PluginGame5GenerateSituationDialog::onClickHide         );
 	connect(buttonSetLineup   , &QPushButton::clicked, this, &PluginGame5GenerateSituationDialog::callTilesOrderDialog);
@@ -91,7 +91,7 @@ void PluginGame5GenerateSituationDialog::onClickHide(bool state)
 void PluginGame5GenerateSituationDialog::onClickOk()
 {
 	rdo::gui::model::Model* pModel = getCurrentModel();
-	updateTabs();
+	generateModel();
 	pModel->runModel();
 	done(Accepted);
 }
@@ -150,175 +150,30 @@ std::string PluginGame5GenerateSituationDialog::activityValue(int direction) con
 	return string.toStdString();
 }
 
-std::string PluginGame5GenerateSituationDialog::RTPtabText() const
+QString PluginGame5GenerateSituationDialog::modelRTP() const
 {
-	std::stringstream RTPtabTextStream; 
-	RTPtabTextStream
-	<<	"$Resource_type Фишка : permanent\n"
-	<<	"$Parameters\n"
-	<<	"	Номер          : integer[1.." << gameBoard->getQuantityOfTiles()     << "]\n"
-	<<	"	Местоположение : integer[1.." << gameBoard->getQuantityOfTiles() + 1 << "]\n"
-	<<	"$End\n"
-	<<	"\n"
-	<<	"$Resource_type Дырка_t : permanent\n"
-	<<	"$Parameters\n"
-	<<	"\t	Место: integer[1.." << gameBoard->getQuantityOfTiles() + 1 << "]\n"
-	<<	"$End\n";
-	return RTPtabTextStream.str();
+	return PluginGame5ModelGenerator::modelRTP(*gameBoard);
 }
 
-std::string PluginGame5GenerateSituationDialog::RSStabText() const
+QString PluginGame5GenerateSituationDialog::modelRSS() const
 {
-	std::stringstream RSStabTextStream; 
-	RSStabTextStream
-	<<	"$Resources\n";
-	for (int i = 1; i < gameBoard->getQuantityOfTiles() + 1; i++)
-	{
-		RSStabTextStream << "\tФишка" << i <<" = Фишка(" << i << ", " << gameBoard->getTilePosition(i) << ");\n";
-	}
-	RSStabTextStream << "\tДырка = Дырка_t(" << gameBoard->getTilePosition(HOLE_NUMBER) << ");\n";
-	RSStabTextStream <<	"$End\n";
-	return RSStabTextStream.str();
+	return PluginGame5ModelGenerator::modelRSS(*gameBoard);
 }
 
-std::string PluginGame5GenerateSituationDialog::PATtabText() const
+QString PluginGame5GenerateSituationDialog::modelPAT() const
 {
-	std::stringstream PATtabTextStream; 
-	PATtabTextStream
-	<<	"$Pattern Перемещение_фишки : rule\n"
-	<<	"$Parameters\n"
-	<<	"	Куда_перемещать: such_as Место_дырки\n"
-	<<	"	На_сколько_перемещать: integer\n"
-	<<	"$Relevant_resources\n"
-	<<	"	_Фишка: Фишка   Keep\n"
-	<<	"	_Дырка: Дырка_t Keep\n"
-	<<	"$Body\n"
-	<<	"	_Фишка:\n"
-	<<	"		Choice from Где_дырка(_Фишка.Местоположение) == Куда_перемещать\n"
-	<<	"		first\n"
-	<<	"			Convert_rule Местоположение = _Фишка.Местоположение + На_сколько_перемещать;\n"
-	<<	"	_Дырка:\n"
-	<<	"		Choice NoCheck\n"
-	<<	"		first\n"
-	<<	"			Convert_rule Место = _Дырка.Место - На_сколько_перемещать;\n"
-	<<	"$End\n";
-	return PATtabTextStream.str();
+	return PluginGame5ModelGenerator::modelPAT();
 }
 
-std::string PluginGame5GenerateSituationDialog::DPTtabText() const
+QString PluginGame5GenerateSituationDialog::modelDPT() const
 {
-	std::stringstream DPTtabTextStream; 
-	DPTtabTextStream
-	<<	"$Decision_point Расстановка_фишек : search trace_all\n"
-	<<	"$Condition Exist(Фишка: Фишка.Номер <> Фишка.Местоположение)\n"
-	<<	"$Term_condition\n"
-	<<	"	For_All(Фишка: Фишка.Номер == Фишка.Местоположение)\n"
-	<<	"$Evaluate_by " << evaluateBy() << "\n"
-	<<	"$Compare_tops = " << (checkBoxCopareTop->isChecked() ? "YES" : "NO") << "\n"
-	<<	"$Activities\n"
-	<<	"	Перемещение_вправо: Перемещение_фишки (справа,  1) value " << activityValue(MOVE_LEFT) << ";\n"
-	<<	"	Перемещение_влево : Перемещение_фишки (слева,  -1) value " << activityValue(MOVE_RIGHT) << ";\n"
-	<<	"	Перемещение_вверх : Перемещение_фишки (сверху, -" << gameBoard->m_tilesCountX << ") value " << activityValue(MOVE_DOWN) << ";\n"
-	<<	"	Перемещение_вниз  : Перемещение_фишки (снизу,   " << gameBoard->m_tilesCountX << ") value " << activityValue(MOVE_UP) << ";\n"
-	<<	"$End";
-	return DPTtabTextStream.str();
+	return PluginGame5ModelGenerator::modelDPT(*gameBoard, evaluateBy(), checkBoxCopareTop->isChecked(), activityValue(MOVE_LEFT),
+	                                           activityValue(MOVE_RIGHT), activityValue(MOVE_DOWN), activityValue(MOVE_UP));
 }
 
-std::string PluginGame5GenerateSituationDialog::FUNtabText() const
+QString PluginGame5GenerateSituationDialog::modelFUN() const
 {
-	std::stringstream FUNtabTextStream; 
-	FUNtabTextStream
-	<<	"$Constant\n"
-	<<	"	Место_дырки: (справа, слева, сверху, снизу, дырки_рядом_нет) = дырки_рядом_нет\n"
-	<<	"	Длина_поля : integer = " << gameBoard->m_tilesCountX << "\n"
-	<<	"$End\n"
-	<<	"\n"
-	<<	"$Function Ряд: integer\n"
-	<<	"$Type = algorithmic\n"
-	<<	"$Parameters\n"
-	<<	"	Местоположение: integer\n"
-	<<	"$Body\n"
-	<<	"	return (Местоположение - 1)/Длина_поля + 1;\n"
-	<<	"$End\n"
-	<<	"\n"
-	<<	"$Function Остаток_от_деления : integer\n"
-	<<	"$Type = algorithmic\n"
-	<<	"$Parameters\n"
-	<<	"	Делимое   : integer\n"
-	<<	"	Делитель  : integer\n"
-	<<	"$Body\n"
-	<<	"	integer Целая_часть  = Делимое/Делитель;\n"
-	<<	"	integer Макс_делимое = Делитель * int(Целая_часть);\n"
-	<<	"	return Делимое -  Макс_делимое;\n"
-	<<	"$End\n"
-	<<	"\n"
-	<<	"$Function Столбец: integer\n"
-	<<	"$Type = algorithmic\n"
-	<<	"$Parameters\n"
-	<<	"	Местоположение: integer\n"
-	<<	"$Body\n"
-	<<	"	return Остаток_от_деления(Местоположение - 1,Длина_поля) + 1;\n"
-	<<	"$End\n"
-	<<	"\n"
-	<<	"$Function Где_дырка : such_as Место_дырки\n"
-	<<	"$Type = algorithmic\n"
-	<<	"$Parameters\n"
-	<<	"	_Место: such_as Фишка.Местоположение\n"
-	<<	"$Body\n"
-	<<	"	if (Столбец(_Место) == Столбец(Дырка.Место) and Ряд(_Место) == Ряд(Дырка.Место)+ 1) return сверху;\n"
-	<<	"	if (Столбец(_Место) == Столбец(Дырка.Место) and Ряд(_Место) == Ряд(Дырка.Место)- 1) return снизу;\n"
-	<<	"	if (Ряд(_Место) == Ряд(Дырка.Место) and Столбец(_Место) == Столбец(Дырка.Место)- 1) return справа;\n"
-	<<	"	if (Ряд(_Место) == Ряд(Дырка.Место) and Столбец(_Место) == Столбец(Дырка.Место)+ 1) return слева;\n"
-	<<	"	return дырки_рядом_нет;\n"
-	<<	"$End\n"
-	<<	"\n"
-	<<	"$Function Фишка_на_месте : integer\n"
-	<<	"$Type = algorithmic\n"
-	<<	"$Parameters\n"
-	<<	"	_Номер: such_as Фишка.Номер\n"
-	<<	"	_Место: such_as Фишка.Местоположение\n"
-	<<	"$Body\n"
-	<<	"	if (_Номер == _Место) return 1;\n"
-	<<	"	else                  return 0;\n"
-	<<	"$End\n"
-	<<	"\n"
-	<<	"$Function Кол_во_фишек_не_на_месте : integer\n"
-	<<	"$Type = algorithmic\n"
-	<<	"$Parameters\n"
-	<<	"$Body\n"
-	<<	"	return " << gameBoard->getQuantityOfTiles() << " - (Фишка_на_месте(Фишка1.Номер, Фишка1.Местоположение)+\n";
-	for (int i = 2; i < gameBoard->getQuantityOfTiles(); i++)
-	{
-		FUNtabTextStream
-	<<	"	            Фишка_на_месте(Фишка" << i <<".Номер, Фишка" << i <<".Местоположение)+\n";
-	}
-	FUNtabTextStream
-	<<	"	            Фишка_на_месте(Фишка" << gameBoard->getQuantityOfTiles() <<".Номер, Фишка" << gameBoard->getQuantityOfTiles() <<".Местоположение));\n"
-	<<	"$End\n"
-	<<	"\n"
-	<<	"$Function Расстояние_фишки_до_места : integer\n"
-	<<	"$Type = algorithmic\n"
-	<<	"$Parameters\n"
-	<<	"	Откуда: integer\n"
-	<<	"	Куда  : integer\n"
-	<<	"$Body\n"
-	<<	"	return Abs(Ряд(Откуда)-Ряд(Куда)) + Abs(Столбец(Откуда)-Столбец(Куда));\n"
-	<<	"$End\n"
-	<<	"\n"
-	<<	"$Function Расстояния_фишек_до_мест : integer\n"
-	<<	"$Type = algorithmic\n"
-	<<	"$Parameters\n"
-	<<	"$Body\n"
-	<<	"	return Расстояние_фишки_до_места(Фишка1.Номер, Фишка1.Местоположение)+\n";
-	for (int i = 2; i < gameBoard->getQuantityOfTiles(); i++)
-	{
-		FUNtabTextStream
-	<<	"	       Расстояние_фишки_до_места(Фишка" << i << ".Номер, Фишка" << i << ".Местоположение)+\n";
-	}
-	FUNtabTextStream
-	<<	"	       Расстояние_фишки_до_места(Фишка" << gameBoard->getQuantityOfTiles() << ".Номер, Фишка" << gameBoard->getQuantityOfTiles() << ".Местоположение);\n"
-	<<	"$End";
-	return FUNtabTextStream.str();
+	return PluginGame5ModelGenerator::modelFUN(*gameBoard);
 }
 
 void PluginGame5GenerateSituationDialog::clearAllTabs() const
@@ -340,29 +195,29 @@ void PluginGame5GenerateSituationDialog::callTilesOrderDialog()
 	dlg.exec();
 }
 
-void PluginGame5GenerateSituationDialog::updateTabs() const
+void PluginGame5GenerateSituationDialog::generateModel() const
 {
 	rdo::gui::model::Model* pModel = getCurrentModel();
 	if (pModel->getTab())
 	{
 		clearAllTabs();
 
-		pModel->getTab()->getItemEdit(rdo::model::RTP)->appendText(QString::fromStdString(RTPtabText()));
-		pModel->getTab()->getItemEdit(rdo::model::RSS)->appendText(QString::fromStdString(RSStabText()));
-		pModel->getTab()->getItemEdit(rdo::model::PAT)->appendText(QString::fromStdString(PATtabText()));
-		pModel->getTab()->getItemEdit(rdo::model::DPT)->appendText(QString::fromStdString(DPTtabText()));
+		pModel->getTab()->getItemEdit(rdo::model::RTP)->appendText(modelRTP());
+		pModel->getTab()->getItemEdit(rdo::model::RSS)->appendText(modelRSS());
+		pModel->getTab()->getItemEdit(rdo::model::PAT)->appendText(modelPAT());
+		pModel->getTab()->getItemEdit(rdo::model::DPT)->appendText(modelDPT());
 	}
 }
 
 void PluginGame5GenerateSituationDialog::onPluginAction()
 {
-	QStringList funList = parseFunTab();
+	QStringList funList = parseModelFUN();
 	QStringListModel* stringModel = (QStringListModel*)lineEditCustom->completer()->model();
 	stringModel->setStringList(funList);
 	exec();
 }
 
-QStringList PluginGame5GenerateSituationDialog::parseFunTab() const
+QStringList PluginGame5GenerateSituationDialog::parseModelFUN() const
 {
 	rdo::gui::model::Model* pModel = getCurrentModel();
 	std::stringstream txtStream;
@@ -372,7 +227,7 @@ QStringList PluginGame5GenerateSituationDialog::parseFunTab() const
 
 	QStringList list;
 	int pos = 0;
-	while((pos = regExp.indexIn(tabStr, pos))!= -1)
+	while ((pos = regExp.indexIn(tabStr, pos))!= -1)
 	{
 		list << regExp.cap(3);
 		pos += regExp.matchedLength();

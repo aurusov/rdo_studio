@@ -148,7 +148,7 @@ private:
 	void addChoiceFromCalc(const rdo::runtime::LPRDOCalc& pCalc);
 	LPRDORelevantResource findRelRes(const std::string& identifier, const RDOParserSrcInfo& srcInfo) const;
 
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDOPATPattern);
 
@@ -321,44 +321,6 @@ public:
 
 	virtual bool isDirect() const = 0;
 
-	class ParamSetList
-	{
-	public:
-		void reset()
-		{
-			m_list.clear();
-		}
-		void insert(const LPRDORTPParam& param)
-		{
-			m_list.push_back(param);
-		}
-		bool find(const std::string& name) const
-		{
-			for (const auto& param: m_list)
-			{
-				if (param->name() == name)
-					return true;
-			}
-			return false;
-		}
-		bool empty() const
-		{
-			return m_list.empty();
-		}
-	private:
-		typedef std::vector<LPRDORTPParam> List;
-
-		List m_list;
-	};
-	const ParamSetList& getParamSetList() const
-	{
-		return m_paramSetList;
-	}
-	ParamSetList& getParamSetList()
-	{
-		return m_paramSetList;
-	}
-
 protected:
 	RDORelevantResource(const RDOParserSrcInfo& src_info, const int relResID, const rdo::runtime::RDOResource::ConvertStatus statusBegin, const rdo::runtime::RDOResource::ConvertStatus statusEnd);
 	virtual ~RDORelevantResource();
@@ -368,9 +330,7 @@ protected:
 	rdo::runtime::RDOSelectResourceCalc::Type getSelectType() const;
 
 private:
-	ParamSetList m_paramSetList;
-
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDORelevantResource);
 

@@ -219,7 +219,7 @@ public:
 	const RDOResType& getType() const { return m_rtp; }
 	int getID() const { return m_id; }
 
-	typedef std::map<std::string, parser::LPRDOValue> Params;
+	typedef std::map<std::string, parser::LPExpression> Params;
 
 	Params::const_iterator begin() const { return m_params.begin(); }
 	Params::const_iterator end() const { return m_params.end(); }
@@ -300,7 +300,7 @@ public:
 			return false;
 		if (!mbuilderRSS.fillParserResourceParams(parserRSS))
 			return false;
-
+		parser::RDOParser::s_parser()->insertRSSResource(parser::LPRDORSSResource(parserRSS));
 		parserRSS->setTrace(true);
 		parserRSS->end();
 
@@ -326,6 +326,7 @@ public:
 			return false;
 		if (!mbuilderRSSPrevIt->fillParserResourceParams(parserRSSNew))
 			return false;
+		parser::RDOParser::s_parser()->insertRSSResource(parser::LPRDORSSResource(parserRSSNew));
 		parserRSSNew->setTrace(parserRSSPrev->getTrace());
 		mbuilderRSSNew.m_exist = true;
 		m_list.push_back(mbuilderRSSNew);

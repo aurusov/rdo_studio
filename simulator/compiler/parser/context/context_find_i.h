@@ -3,7 +3,7 @@
   \file      context_find_i.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      03.03.2011
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -25,14 +25,14 @@ struct IContextFind: public rdo::RefCounter<IContextFind>
 {
 DECLARE_FACTORY(IContextFind)
 public:
-	virtual Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const = 0;
+	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const = 0;
 
 protected:
 	         IContextFind();
 	virtual ~IContextFind();
 };
 #define DECLARE_IContextFind \
-	Context::FindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+	Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 
 CLOSE_RDO_PARSER_NAMESPACE
 

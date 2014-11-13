@@ -125,21 +125,21 @@ SET_TARGET_PROPERTIES(scintilla PROPERTIES FOLDER ${THIRDPARTY_FOLDERS})
 
 IF(MSVC) # options for windows #
 
-SOURCE_GROUP(".include" FILES
-    ${HEADERS_INCLUDE}
-    )
+	SOURCE_GROUP(".include" FILES
+		${HEADERS_INCLUDE}
+	)
 
-SOURCE_GROUP(".lexlib" FILES
-    ${LEXLIB_FILES}
-    )
+	SOURCE_GROUP(".lexlib" FILES
+		${LEXLIB_FILES}
+	)
 
-SOURCE_GROUP(".src" FILES
-    ${SCINTILLA_SRC}
-    )
+	SOURCE_GROUP(".src" FILES
+		${SCINTILLA_SRC}
+	)
 
-SOURCE_GROUP(".qt" FILES
-    ${QT_BINDS}
-    ${MOC_SOURCES}
-    )  
+	SOURCE_GROUP(".qt" FILES
+		${QT_BINDS}
+		${MOC_SOURCES}
+	)
 
-ENDIF(MSVC)
+ENDIF()
