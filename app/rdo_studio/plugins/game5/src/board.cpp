@@ -45,25 +45,28 @@ Board::Board(QWidget* pParent)
 		border-color: black; \
 		align: center; \
 	");
-}
 
-Board::~Board()
-{
-}
-
-void Board::init(bool disabledMode)
-{
 	tiles.resize(m_tilesCountX * m_tilesCountY);
 
 	for (int index = 0; index < m_tilesCountX * m_tilesCountY; index++)
 	{
 		tiles[index] = new PlacedTile(index, this);
 		tiles[index]->setFixedSize(m_tileSize,m_tileSize);
-		tiles[index]->setDisabled(disabledMode);
 		connect(tiles[index], &Tile::tileClicked, this, &Board::clickOnTile);
 	}
 	tiles[HOLE_NUMBER]->setVisible(false);
 	buildCorrectOrder();
+}
+
+Board::~Board()
+{}
+
+void Board::setTilesDisabled(bool value)
+{
+	for (PlacedTile* tile: tiles)
+	{
+		tile->setDisabled(value);
+	}
 }
 
 void Board::clickOnTile(int number)
@@ -152,6 +155,11 @@ bool Board::orderIsSolvable(const std::vector<unsigned int>& tilesPosition) cons
 int Board::getTilePosition(int index) const
 {
 	return tiles[index]->getPosition() + 1;
+}
+
+int Board::getHolePosition() const
+{
+	return getTilePosition(HOLE_NUMBER);
 }
 
 int Board::getQuantityOfTiles() const

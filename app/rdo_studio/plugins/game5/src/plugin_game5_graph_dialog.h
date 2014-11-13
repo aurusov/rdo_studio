@@ -46,36 +46,28 @@ private:
 		unsigned int range;
 	};
 
-	struct SortStruct
+	struct GraphInfo
 	{
-		SortStruct(PluginGame5GraphDialog* pDlg) : m_pDlg(pDlg) {};
-		PluginGame5GraphDialog* m_pDlg;
-
-		bool operator() (int i, int j)
-		{
-			const int iParentOLO = m_pDlg->m_graphNodeList[i]->getParentGraphNode()->getGraphOnLevelOrder();
-			const int jParentOLO = m_pDlg->m_graphNodeList[j]->getParentGraphNode()->getGraphOnLevelOrder();
-
-			return iParentOLO < jParentOLO;
-		}
+		GraphInfo(QString solutionCost = "", QString numberOfOpenNodes = "", QString totalNumberOfNodes = "");
+		const QString solutionCost;
+		const QString numberOfOpenNodes;
+		const QString totalNumberOfNodes;
 	};
 
 	QString m_traceTimeStamp;
 	GraphNode* m_clickedNode;
-	std::vector<GraphNode*> m_graphNodeList;
 	int m_nodeWidth;
 	int m_nodeHeight;
 
-	void quickSort(std::vector<int>& vector);
-
-	std::vector<int> getSolutionNodes() const;
+	std::list<int> getSolutionNodes() const;
 	void updateCheckedNode(GraphNode* node);
 	QString     getTraceTimeStamp() const;
 	QString     getTraceFile() const;
-	QStringList parseTrace() const;
+	std::vector<GraphNodeInfo> parseTrace(const std::vector<unsigned int>& startBoardState);
+	std::vector<std::vector<GraphNode*>> generateGraphNodes(std::vector<GraphNodeInfo>& parsingResult) const;
+	void drawGraph(const std::vector<std::vector<GraphNode*>>& graph) const;
 
-	QString getTraceInfo() const;
-	int parseTraceInfo(const QString& key) const;
+	PluginGame5GraphDialog::GraphInfo getGraphInfo() const;
 };
 
 #endif // _RDO_PLUGIN_GAME5_GRAPH_DIALOG_H_

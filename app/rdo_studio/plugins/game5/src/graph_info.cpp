@@ -41,9 +41,9 @@ GraphInfo::GraphInfo(QWidget* parent)
 GraphInfo::~GraphInfo()
 {}
 
-void GraphInfo::update(int solutionCost, int numOfOpenNodes, int totalNumOfNodes)
+void GraphInfo::update(const QString& solutionCost, const QString& numOfOpenNodes, const QString& totalNumOfNodes)
 {
-	m_solutionCostValue->setText(QString::number(solutionCost));
-	m_numberOfOpenNodesValue->setText(QString::number(numOfOpenNodes));
-	m_totalNumberOfNodesValue->setText(QString::number(totalNumOfNodes));
+	m_solutionCostValue->setText(solutionCost);
+	m_numberOfOpenNodesValue->setText(numOfOpenNodes);
+	m_totalNumberOfNodesValue->setText(totalNumOfNodes);
 }

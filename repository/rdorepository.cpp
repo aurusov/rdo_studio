@@ -441,7 +441,7 @@ bool RDOThreadRepository::createRDOX(const boost::filesystem::path& fileName)
 	if (!ofs.good())
 		return false;
 
-	boost::property_tree::xml_writer_settings<char> settings('\t', 1);
+	boost::property_tree::xml_writer_settings<std::string> settings('\t', 1);
 	boost::property_tree::write_xml(ofs, pt, settings);
 	return true;
 }
