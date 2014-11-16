@@ -43,15 +43,17 @@ namespace
 
 	const double LEVEL_OF_LOW_DETAIL   = 0.8;
 	const double LEVEL_OF_LOWER_DETAIL = 0.6;
+    const double WIDTH_MARGIN = 4;
+    const double HEIGHT_MARGIN = 4;
 } // end anonymous namespace
 
 GraphNode::GraphNode(const GraphNodeInfo& info, GraphNode* parentGraphNode, int width, int height)
-	: GraphNodeInfo      (info           )
-	, m_pParentGraphNode (parentGraphNode)
-	, m_graphOnLevelOrder(0              )
-	, m_isChecked        (false          )
-	, m_width            (width          )
-	, m_height           (height         )
+    : GraphNodeInfo      (info)
+    , m_pParentGraphNode (parentGraphNode)
+    , m_graphOnLevelOrder(0)
+    , m_isChecked        (false)
+    , m_width            (width + WIDTH_MARGIN)
+    , m_height           (height + HEIGHT_MARGIN)
 {
 	setFlag(ItemIsMovable);
 	setFlag(ItemSendsGeometryChanges);
@@ -76,7 +78,7 @@ QRectF GraphNode::boundingRect() const
 void GraphNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget* /*widget*/)
 {
 	QFont sceneFont = painter->font();
-	QRect nodeRect(-m_width / 2, -m_height / 2, m_width, m_height);
+	QRect nodeRect(-m_width / 2., -m_height / 2., m_width, m_height);
 	painter->setPen(QPen(Qt::black, 0));
 	if (m_isChecked)
 	{
