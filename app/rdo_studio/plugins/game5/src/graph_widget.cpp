@@ -22,7 +22,7 @@
 namespace
 {
 	const double MAX_FACTOR          = 10;
-	const double MIN_FACTOR          = 0.1;
+	const double MIN_FACTOR          = 0.01;
 	const double SCALE_SPEED         = 1/2400.;
 	const double MANUAL_SCALE_FACTOR = 40 * SCALE_SPEED;
 } // end anonymous namespace
