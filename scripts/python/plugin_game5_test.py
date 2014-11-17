@@ -97,3 +97,6 @@ command = (rdo_ex + ' -platform minimal --plugin0=' + utils.wrap_the_string_in_q
 utils.enc_print('Run: ', command)
 simulation_code = subprocess.call(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 utils.enc_print ('EXIT CODE: ', simulation_code)
+
+utils.enc_print ('PYTHON EXIT CODE :', simulation_code)
+sys.exit(simulation_code)
