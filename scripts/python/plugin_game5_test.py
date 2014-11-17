@@ -65,14 +65,18 @@ def delete_model_data(model_path):
 ###############################################################################
 
 # parse console options
+utils.enc_print ('preparse')
 parser = argparse.ArgumentParser(description = 'rdo executor of plugin tests')
 parser.add_argument('-ad', action = 'store', dest = 'app_directory',   default = app_directory,   help = 'application directory')
 parser.add_argument('-mp', action = 'store', dest = 'model_path', default = model_path, help = 'model directory')
 
 args = parser.parse_args()
+utils.enc_print ('postparse')
 
 app_directory   = '' + args.app_directory
 model_path = '' + args.model_path
+
+utils.enc_print (app_directory, model_path)
 
 rdo_ex = get_executables(app_directory)
 
