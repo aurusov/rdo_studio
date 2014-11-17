@@ -23,6 +23,8 @@ app_directory      = '.'
 model_path         = '.\plugin_test.rdox'
 build_dir_substr   = 'build'
 rdo_ex_substr      = 'rdo_studio'
+test_expansion     = '.rtestx'
+project_expansion  = '.rdox'
 
 if sys.platform == 'win32':
 	rdo_ex_substr += '.exe'
@@ -51,13 +53,22 @@ def get_executables(dir):
 def delete_model_data(model_path):
 	dir = os.path.dirname(model_path)
 	files = utils.get_files_list(dir)
-	
 	utils.enc_print ('\nFound and deleted model data:')
 
-	for file in files:
-		if model_path != file:	
-			utils.enc_print(file)
-			os.remove(file)
+	deleted = 0	
+	for file in os.listdir(dir):
+		file_path = os.path.join(dir, file)
+		if (os.path.isfile(file_path)):
+			if (not file_path.endswith(test_expansion) and not file_path.endswith(project_expansion)):
+				utils.enc_print(file_path)
+				os.remove(file_path)
+				deleted = deleted + 1
+	
+	if deleted == 0:
+		utils.enc_print('nothing deleted')
+		
+	utils.enc_print('\n')
+
 ###############################################################################
 
 ###############################################################################
@@ -97,7 +108,7 @@ utils.enc_print (model_path)
 delete_model_data(model_path)
 
 plugin_arg = '1 0 2 4 5 3'
-command = (rdo_ex + ' -platform minimal --plugin0=' + utils.wrap_the_string_in_quotes(plugin_arg) + ' -i ' + utils.wrap_the_string_in_quotes(model_path))
+command = (rdo_ex + ' -platform minimal --plugin0=' + utils.wrap_the_string_in_quotes(plugin_arg) + ' -i ' + model_path)
 utils.enc_print('Run: ', command)
 simulation_code = subprocess.call(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 utils.enc_print ('EXIT CODE: ', simulation_code)
