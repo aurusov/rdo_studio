@@ -13,6 +13,7 @@
 #include <math.h>
 #include <QGridLayout>
 #include <QAction>
+#include <QShortcut>
 #include <QMenu>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -55,12 +56,18 @@ GraphWidget::GraphWidget(QWidget* pParent)
 	connect(this, &QWidget::customContextMenuRequested, this, &GraphWidget::callContextMenu);
 
 	zoomInAct = new QAction("Zoom In", this);
-	zoomInAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Plus));
+	QShortcut* ctrlPlusShortcut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Plus), this);
+	connect(ctrlPlusShortcut, &QShortcut::activated, zoomInAct, &QAction::trigger);
+	QShortcut* ctrlEqualShortcut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Equal), this);
+	connect(ctrlEqualShortcut, &QShortcut::activated, zoomInAct, &QAction::trigger);
 	zoomInAct->setStatusTip("Приблизить");
 	connect(zoomInAct, &QAction::triggered, this, &GraphWidget::zoomIn);
 
 	zoomOutAct = new QAction("Zoom Out", this);
-	zoomOutAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Minus));
+	QShortcut* ctrlMinusShortcut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Minus), this);
+	connect(ctrlMinusShortcut, &QShortcut::activated, zoomOutAct, &QAction::trigger);
+	QShortcut* ctrlUnderscoreShortcut = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Underscore), this);
+	connect(ctrlUnderscoreShortcut, &QShortcut::activated, zoomOutAct, &QAction::trigger);
 	zoomOutAct->setStatusTip("Отдалить");
 	connect(zoomOutAct, &QAction::triggered, this, &GraphWidget::zoomOut);
 
