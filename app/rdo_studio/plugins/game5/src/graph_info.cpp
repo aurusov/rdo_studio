@@ -35,7 +35,7 @@ GraphInfo::GraphInfo(QWidget* parent)
 	graphInfoLayout->setWidget(2, QFormLayout::LabelRole, m_totalNumberOfNodesLabel);
 	graphInfoLayout->setWidget(2, QFormLayout::FieldRole, m_totalNumberOfNodesValue);
 
-	setStyleSheet("background-color: rgba(255, 255, 255, 40);");
+	setStyleSheet("GraphInfo: {background-color: rgba(255, 255, 255, 60)}; QLabel: {background-color: rgba(255, 255, 255, 0)};");
 }
 
 GraphInfo::~GraphInfo()

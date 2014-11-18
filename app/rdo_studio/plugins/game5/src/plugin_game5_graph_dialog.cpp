@@ -200,8 +200,8 @@ std::vector<GraphNodeInfo> PluginGame5GraphDialog::parseTrace(const std::vector<
 		const QRect nodeRectLV = fontMetrics.boundingRect(QRect(), Qt::AlignCenter, nodeTextLV);
 		const QRect nodeRectMV = fontMetrics.boundingRect(QRect(), Qt::AlignCenter, nodeTextMV);
 		const QRect nodeRectSV = fontMetrics.boundingRect(QRect(), Qt::AlignCenter, nodeTextSV);
-		m_nodeWidth  = std::max(nodeRectLV.width() , std::max(nodeRectMV.width() , std::max(nodeRectSV.width() , m_nodeWidth ))) + 1;
-		m_nodeHeight = std::max(nodeRectLV.height(), std::max(nodeRectMV.height(), std::max(nodeRectSV.height(), m_nodeHeight))) + 1;
+		m_nodeWidth  = std::max(nodeRectLV.width() , std::max(nodeRectMV.width() , std::max(nodeRectSV.width() , m_nodeWidth )));
+		m_nodeHeight = std::max(nodeRectLV.height(), std::max(nodeRectMV.height(), std::max(nodeRectSV.height(), m_nodeHeight)));
 	}
 
 	for (int nodeId: getSolutionNodes())

@@ -547,7 +547,7 @@ void Application::setupFileAssociation()
 		if (pos != -1)
 		{
 			openCommand.remove(pos, appParam.length());
-			if (openCommand != appFullName)
+			if (openCommand != appFullName && qApp->platformName() != QString("minimal"))
 			{
 				FileAssociationDialog dlg(g_pApp->getMainWndUI());
 				mustBeRegistered = dlg.exec() == QDialog::Accepted;
