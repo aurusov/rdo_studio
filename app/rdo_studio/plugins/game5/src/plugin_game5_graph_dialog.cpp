@@ -42,7 +42,7 @@ namespace
 } // end anonymous namespace
 
 PluginGame5GraphDialog::PluginGame5GraphDialog(QWidget * pParent)
-	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
+    : QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowMaximizeButtonHint| Qt::WindowCloseButtonHint)
 	, m_traceTimeStamp(getTraceTimeStamp())
 	, m_clickedNode(NULL)
 	, m_nodeWidth(0)
