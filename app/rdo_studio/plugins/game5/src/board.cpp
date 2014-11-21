@@ -180,19 +180,22 @@ std::vector<unsigned int> Board::getBoardState() const
 
 void Board::setTilesPositon(const std::vector<unsigned int>& newState)
 {
-	for (unsigned int positionIndex = 0; positionIndex < newState.size(); positionIndex++)
+	for (unsigned int positionIndex = 0; positionIndex < newState.size() &&
+			positionIndex < getBoardState().size(); positionIndex++)
 	{
 		unsigned int currentStateIndex = getBoardState()[positionIndex];
-		if (newState[positionIndex] != currentStateIndex)
-			swapTiles(newState[positionIndex], currentStateIndex);
+		swapTiles(newState[positionIndex], currentStateIndex);
 	}
 }
 
 void Board::swapTiles(int first, int second)
 {
-	const unsigned int firstPosition = tiles[first]->getPosition();
-	moveTile(tiles[first], tiles[second]->getPosition());
-	moveTile(tiles[second], firstPosition);
+	if (first != second)
+	{
+		const unsigned int firstPosition = tiles[first]->getPosition();
+		moveTile(tiles[first], tiles[second]->getPosition());
+		moveTile(tiles[second], firstPosition);
+	}
 }
 
 void Board::moveTile(PlacedTile* tile, unsigned int place)

@@ -116,7 +116,6 @@ private:
 	{
 		boost::filesystem::path m_fileName;
 		boost::filesystem::path m_extension;
-		bool m_described;
 		bool m_mustExist;
 		bool m_deleteIfEmpty;
 		bool m_readOnly;
@@ -131,7 +130,6 @@ private:
 		void resetname()
 		{
 			m_fileName  = boost::filesystem::path();
-			m_described = false;
 			m_mustExist = true;
 		}
 	};
@@ -173,7 +171,7 @@ private:
 	void setName(const boost::filesystem::path& name);
 	void createRDOX();
 
-	void loadFile(const boost::filesystem::path& fileName, std::ostream& stream, bool described, bool mustExist, bool& reanOnly) const;
+	void loadFile(const boost::filesystem::path& fileName, std::ostream& stream, bool mustExist, bool& reanOnly) const;
 	void saveFile(const boost::filesystem::path& fileName, const std::stringstream& stream, bool deleteIfEmpty = false) const;
 
 	bool createFile(const boost::filesystem::path& name, boost::filesystem::ofstream& stream) const;
@@ -200,7 +198,6 @@ protected:
 	boost::filesystem::path getFileExtName(rdo::model::FileType type) const;
 	boost::filesystem::path getFullFileName(rdo::model::FileType type) const;
 	bool isReadOnly(rdo::model::FileType type) const;
-	bool isDescribed(rdo::model::FileType type) const;
 	bool isMustExist(rdo::model::FileType type) const;
 	bool isDeleteIfEmpty(rdo::model::FileType type) const;
 
