@@ -76,22 +76,21 @@ def delete_model_data(model_path):
 ###############################################################################
 
 # parse console options
-utils.enc_print ('preparse')
 parser = argparse.ArgumentParser(description = 'rdo executor of plugin tests')
 parser.add_argument('-ad', action = 'store', dest = 'app_directory',   default = app_directory,   help = 'application directory')
 parser.add_argument('-mp', action = 'store', dest = 'model_path', default = model_path, help = 'model directory')
 
 args = parser.parse_args()
-utils.enc_print ('postparse')
 
 app_directory   = '' + args.app_directory
 model_path = '' + args.model_path
 
-utils.enc_print (app_directory, model_path)
+utils.enc_print("App directory:", os.path.abspath(app_directory))
+utils.enc_print("Test project file path:", os.path.abspath(model_path))
 
 rdo_ex = get_executables(app_directory)
 
-if not os.path.exists(rdo_ex):
+if rdo_ex is None:
 	utils.enc_print ('Critical error! Build app not found.')
 	sys.exit(APP_CODE_TERMINATION_ERROR)
 	
@@ -101,9 +100,6 @@ if not os.path.exists(model_path):
 	
 utils.enc_print ('\nFind RDO executable:')
 utils.enc_print (rdo_ex)
-
-utils.enc_print ('\nFind test project file:')
-utils.enc_print (model_path)
 
 delete_model_data(model_path)
 
