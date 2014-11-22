@@ -26,7 +26,7 @@ function toggle_display(e)
 				<LI><A href="#operator_declare">оператор объявления</A> и <A href="#operator_init">инициализации локальных переменных</A>;</LI>
 				<LI><A href="#operator_for">оператор цикла</A> - <FONT class="syntax"><B>for</B></FONT>;</LI>
 				<LI><A href="#operator_break">оператор прерывания</A> - <FONT class="syntax"><B>break</B></FONT>;</LI>
-				<LI><A href="#operator_return">оператор возврата значения</A> - <FONT class="syntax"><B>return</B></FONT>;</LI> 
+				<LI><A href="#operator_return">оператор возврата значения</A> - <FONT class="syntax"><B>return</B></FONT>;</LI>
 				<LI><A href="#operator_area">оператор выделения области локальной памяти</A> - <FONT class="syntax"><B>{...}</B></FONT>;</LI>
 				<LI><A href="#operator_call">оператор вызова подпрограммы</A>;</LI>
 			</UL>
@@ -49,13 +49,13 @@ function toggle_display(e)
 				<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
 				<DIV style="display:none" id="v1">
 				<P>Вычисление наибольшего из двух чисел:</P>
-<pre><code>if (A > B)
+<pre><code class="rdo">if (A &gt; B)
     return A;
 else
     return B;
 </code></pre>
 				<P>Проверка состояния канала:</P>
-<pre><code>if (СМО.состояние_канала == Свободен)
+<pre><code class="rdo">if (СМО.состояние_канала == Свободен)
     return true;
 else
     return false;
@@ -82,12 +82,12 @@ else
 				<A href="" class="ref" onclick="return toggle_display(v2);"><H4>Примеры</H4></A>
 				<DIV style="display:none" id="v2">
 				<PRE name="sample_3" class="samples">
-{
-integer i;
-bool Condition = false;
-real k;
-k = 1.01;
-}
+<code class="rdo">{
+    integer i;
+    bool Condition = false;
+    real k;
+    k = 1.01;
+}</code>
 				</PRE>
 				</DIV>
 			</DL>
@@ -120,16 +120,16 @@ k = 1.01;
 				<DIV style="display:none" id="v3">
 				<P>Пример функции <B><I>вычисления факториала числа</I></B>:</P>
 				<PRE name="sample_4" class="samples">
-$Function Factorial : integer
+<code class="rdo">$Function Factorial : integer
 $Type = algorithmic
 $Parameters
-argument: integer  
+argument: integer
 $Body
-	integer s=1;
-	for (integer i=1;i&lsaquo;=argument;i++)
-	s*=i;
-	return s;
-$End	  
+    integer s=1;
+    for (integer i = 1; i &lsaquo;= argument; i++)
+    s *= i;
+    return s;
+$End</code>
 				</PRE>
 				</DIV>
 			</DL>
@@ -141,18 +141,18 @@ $End
 				<DIV style="display:none" id="v4">
 				<P>Пример вложенного цикла, считающего сумму из квадратов чисел 1-30,кубов чисел 1-20 и четвертых степеней 1-10:</P>
 				<PRE name="sample_5" class="samples">
-real s=0;
-for (integer i=2;i<4;i++)
+<code class="rdo">real s = 0;
+for (integer i = 2; i &lt; 4; i++)
 {
-  for(integer j=1;j<30;j++)
+  for(integer j = 1; j &lt; 30; j++)
   {
-	if ((i==3 and j>20) or (i==4 and j>10))
-	  break;// Для кубов, если число дойдет до 20,
-			// то вложенный цикл остановится и степень сменится на 4.
-			// Для четвертых степеней суммирование остановится на 10.
-	s+=IntPower(j,i);
+    if ((i == 3 and j &gt; 20) or (i == 4 and j &gt; 10))
+      break; // Для кубов, если число дойдет до 20,
+             // то вложенный цикл остановится и степень сменится на 4.
+             // Для четвертых степеней суммирование остановится на 10.
+    s += IntPower(j, i);
   }
-}
+}</code>
 				</PRE>
 				</DIV>
 			</DL>
@@ -163,27 +163,27 @@ for (integer i=2;i<4;i++)
 				<A href="" class="ref" onclick="return toggle_display(v5);"><H4>Примеры</H4></A>
 				<DIV style="display:none" id="v5">
 				<PRE name="sample_6" class="samples">
-return true;
+<code class="rdo">return true;
 return i*i;
 return Factorial(5);
 return 5;
-return argument;
+return argument;</code>
 				</PRE>
 				<P>Пример функции, меняющей состояние канала</P>
 				<PRE name="sample_7" class="samples">
-$Function fun_test : such_as Тестовый_тип_СМО.состояние_канала
+<code class="rdo">$Function fun_test : such_as Тестовый_тип_СМО.состояние_канала
 $Type = algorithmic
 $Parameters
-СМО	:	Тестовый_тип_СМО
+СМО	: Тестовый_тип_СМО
 $Body
-if(СМО.состояние_канала == Свободен )
+if(СМО.состояние_канала == Свободен)
   return Занят;
 else
   return Свободен;
-$End
+$End</code>
 				</PRE>
 				</DIV>
-			</DL>  
+			</DL>
 			<h2>Оператор выделения области локальной памяти</h2>
 			<P><A name="operator_area"></A><B>Выделить локальную область памяти</B> можно с помощью <A href= "../rdo_lex_div/rdo_lex_div_spesial_symbols.htm">спецсимволов</A> &quot;{&quot; и &quot;}&quot;. Данный оператор позволяет выделить пространство имен для локальных переменных, что подразумевает возможность использования одноименных переменных в разных областях локальной памяти. Все <A href="#operator_declare">объявленные</A> внутри этой области переменные будут доступны лишь в ней, и не будут вызывать конфликтов <A href="../rdo_lex_div/rdo_lex_div_names.htm">имен</A> с переменными, объявленными в других локальных областях. Однако переменные, объявленные в объемлющей, по отношению к данной, области памяти будут также доступны в этой области и могут вызвать конфликты имен. Этот оператор можно использовать как в <A href = "../rdo_obj/rdo_obj_pat.htm">образцах</A>, так и в <A href = "../rdo_obj/rdo_obj_fun.htm">функциях</A>. </P>
 			<DL class="syntax">
@@ -191,15 +191,15 @@ $End
 				<A href="" class="ref" onclick="return toggle_display(v6);"><H4>Примеры</H4></A>
 				<DIV style="display:none" id="v6">
 				<PRE name="sample_8" class="samples">
-$body
+<code class="rdo">$Body
 bool b;
 {
-integer i;//нет ошибки
-real k;//нет ошибки
-bool b;//ошибка - конфликт имен
+    integer i; //нет ошибки
+    real k; //нет ошибки
+    bool b; //ошибка - конфликт имен
 }
-integer i;//нет ошибки
-real k;//нет ошибки
+integer i; //нет ошибки
+real k; //нет ошибки</code>
 				</PRE>
 				</DIV>
 			</DL>
@@ -211,25 +211,25 @@ real k;//нет ошибки
 				<DIV style="display:none" id="v7">
 				<P>Цикл в примере выполнится 4 раза</P>
 				<PRE name="sample_9" class="samples">
-integer i;
-real a=1.0;
-bool b=true;
-for (i=1;b;i++)
+<code class="rdo">integer i;
+real a = 1.0;
+bool b = true;
+for (i = 1; b; i++)
 {
-a/=i;
-if (a<0.1)
-b=false;
-}
+    a /= i;
+    if (a &lt; 0.1)
+        b = false;
+}</code>
 				</PRE>
 				<P>Цикл в примере будет выполняться бесконечно, т.к. условный оператор не входит в тело цикла</P>
 				<PRE name="sample_10" class="samples">
-integer i;
-real a=1.0;
-bool b=true;
-for (i=1;b;i++)
-a/=i;
-if (a<0.1)
-b=false;
+<code class="rdo">integer i;
+real a = 1.0;
+bool b = true;
+for (i = 1; b; i++)
+    a /= i;
+    if (a &lt; 0.1) //идентация обманчива!
+        b = false;</code>
 				</PRE>
 				</DIV>
 			</DL>
