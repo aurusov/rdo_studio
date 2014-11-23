@@ -147,7 +147,7 @@ void SyntaxFold(unsigned int startPos, int length, int initStyle, WordList *[], 
 	char    chNext       = styler[startPos];
 	int     styleNext    = styler.StyleAt(startPos);
 	int     style        = initStyle;
-	tstring str;
+	std::string str;
 	for (unsigned int i = startPos; i < endPos; i++)
 	{
 		char ch       = chNext;

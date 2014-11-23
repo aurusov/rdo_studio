@@ -21,7 +21,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOLexer
 // --------------------------------------------------------------------------------
-RDOLexer::RDOLexer(CREF(LPRDOParser) pParser, PTR(std::istream) yyin, PTR(std::ostream) yyout)
+RDOLexer::RDOLexer(const LPRDOParser& pParser, std::istream* yyin, std::ostream* yyout)
 	: yyFlexLexer(yyin, yyout)
 	, m_lpval    (NULL       )
 	, m_lploc    (NULL       )
@@ -32,15 +32,15 @@ RDOLexer::RDOLexer(CREF(LPRDOParser) pParser, PTR(std::istream) yyin, PTR(std::o
 	, m_array_param_cnt(0    )
 {}
 
-CREF(LPRDOParser) RDOLexer::parser() const
+const LPRDOParser& RDOLexer::parser() const
 {
 	return m_pParser;
 }
 
 #ifdef YY_INTERACTIVE
-int RDOLexer::LexerInput(PTR(char) buf, int /* max_size */)
+int RDOLexer::LexerInput(char* buf, int /* max_size */)
 #else
-int RDOLexer::LexerInput(PTR(char) buf, int max_size)
+int RDOLexer::LexerInput(char* buf, int max_size)
 #endif
 {
 	if (m_yyin->eof() || m_yyin->fail())
@@ -70,7 +70,7 @@ int RDOLexer::LexerInput(PTR(char) buf, int max_size)
 #endif
 }
 
-void RDOLexer::LexerOutput(CPTR(char) buf, int size)
+void RDOLexer::LexerOutput(const char* buf, int size)
 {
 	(void) m_yyout->write(buf, size);
 }
@@ -83,6 +83,76 @@ void RDOLexer::LexerError(const char msg[])
 {
 	std::cerr << msg << '\n';
 	exit(YY_EXIT_FAILURE);
+}
+
+void RDOLexer::loc_init()
+{
+	if (m_lploc)
+	{
+		m_lploc->m_first_line = 0;
+		m_lploc->m_first_pos  = 0;
+		m_lploc->m_last_line  = 0;
+		m_lploc->m_last_pos   = 0;
+		m_lploc->m_first_seek = 0;
+		m_lploc->m_last_seek  = 0;
+	}
+}
+
+void RDOLexer::loc_action()
+{
+	if (m_lploc)
+	{
+		m_lploc->m_first_line = m_lploc->m_last_line;
+		m_lploc->m_first_pos  = m_lploc->m_last_pos;
+		m_lploc->m_first_seek = m_lploc->m_last_seek;
+		for (int i = 0; i < YYLeng(); i++)
+		{
+			switch (YYText()[i])
+			{
+			case '\n': 
+				m_lploc->m_last_line++;
+				m_lploc->m_last_pos = 0;
+				break;
+			case '\r':
+				m_lploc->m_last_pos = 0;
+				break;
+			default:
+				m_lploc->m_last_pos++;
+				break;
+			}
+
+			m_lploc->m_last_seek++;
+		}
+	}
+}
+
+void RDOLexer::loc_delta_pos(int value)
+{
+	if (m_lploc)
+	{
+		m_lploc->m_first_pos += value;
+		m_lploc->m_last_pos  += value;
+	}
+}
+
+void RDOLexer::setvalue(int value)
+{
+	*m_lpval = value;
+}
+
+void RDOLexer::enumBegin()
+{
+	m_enumEmpty = false;
+}
+
+void RDOLexer::enumReset()
+{
+	m_enumEmpty = true;
+}
+
+bool RDOLexer::enumEmpty()
+{
+	return m_enumEmpty;
 }
 
 extern "C"

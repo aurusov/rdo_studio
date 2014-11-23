@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2012
-  \file      advance.inl
+  \file      advance-inl.h
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      12.02.2012
@@ -13,8 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/process/advance.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/calc/resource/calc_relevant.h"
@@ -25,7 +23,17 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAdvance
 // --------------------------------------------------------------------------------
-rbool RDOPROCAdvance::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+RDOPROCAdvance::RDOPROCAdvance(LPIPROCProcess process, const LPRDOCalc& _pDelayCalc)
+	: RDOPROCBlock(process    )
+	, pDelayCalc  (_pDelayCalc)
+{}
+
+RDOPROCAdvance::LeaveTr::LeaveTr(const LPRDOPROCTransact& _transact, double _timeLeave)
+	: transact (_transact )
+	, timeLeave(_timeLeave)
+{}
+
+bool RDOPROCAdvance::onCheckCondition(const LPRDORuntime& pRuntime)
 {
 	if (!m_transacts.empty())
 	{
@@ -50,7 +58,7 @@ rbool RDOPROCAdvance::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 	return false;
 }
 
-IBaseOperation::BOResult RDOPROCAdvance::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCAdvance::onDoOperation(const LPRDORuntime& pRuntime)
 {
 	if (m_transacts.empty())
 		return IBaseOperation::BOR_cant_run;
@@ -72,17 +80,13 @@ IBaseOperation::BOResult RDOPROCAdvance::onDoOperation(CREF(LPRDORuntime) pRunti
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCAdvance::onStart(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPROCAdvance::onStart(const LPRDORuntime& /*pRuntime*/)
+{}
 
-void RDOPROCAdvance::onStop(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPROCAdvance::onStop(const LPRDORuntime& /*pRuntime*/)
+{}
 
-void RDOPROCAdvance::onMakePlaned(CREF(LPRDORuntime) pRuntime)
+void RDOPROCAdvance::onMakePlaned(const LPRDORuntime& pRuntime)
 {
 	if (leave_list.empty())
 		return;
@@ -104,13 +108,12 @@ void RDOPROCAdvance::onMakePlaned(CREF(LPRDORuntime) pRuntime)
 	}
 }
 
-IBaseOperation::BOResult RDOPROCAdvance::onContinue(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCAdvance::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
-void RDOPROCAdvance::setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics)
+void RDOPROCAdvance::setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics)
 {
 	m_pStatistics = pStatistics;
 }

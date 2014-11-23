@@ -28,9 +28,9 @@ class RDOParserCorbaRTP: public RDOParserRDOItem
 DECLARE_FACTORY(RDOParserCorbaRTP);
 private:
 	RDOParserCorbaRTP()
-		: RDOParserRDOItem(rdoModelObjects::RTP, NULL, NULL, NULL)
+		: RDOParserRDOItem(rdo::model::RTP, NULL, NULL, NULL)
 	{}
-	virtual void parse(CREF(LPRDOParser) pParser);
+	virtual void parse(const LPRDOParser& pParser);
 };
 
 // --------------------------------------------------------------------------------
@@ -41,9 +41,9 @@ class RDOParserCorbaRSS: public RDOParserRDOItem
 DECLARE_FACTORY(RDOParserCorbaRSS);
 private:
 	RDOParserCorbaRSS()
-		: RDOParserRDOItem(rdoModelObjects::RSS, NULL, NULL, NULL)
+		: RDOParserRDOItem(rdo::model::RSS, NULL, NULL, NULL)
 	{}
-	virtual void parse(CREF(LPRDOParser) pParser);
+	virtual void parse(const LPRDOParser& pParser);
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

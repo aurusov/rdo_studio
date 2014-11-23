@@ -3,8 +3,8 @@
   \file      rdopmd.y
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -14,6 +14,7 @@
 %}
 
 %pure-parser
+%param {void* lexer}
 
 %token RDO_Resource_type				257
 %token RDO_permanent					258
@@ -80,7 +81,7 @@
 %token RDO_set							319
 %token RDO_IDENTIF_NoChange_NoChange	320
 %token RDO_Operations					321
-	
+
 %token RDO_Results						322
 %token RDO_watch_par					323
 %token RDO_watch_state					324
@@ -622,7 +623,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
 		ASSERT(pFunParams);
-		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @3);
 		pFunParams->setSrcText(funName + "()");
@@ -634,7 +635,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = CONVERTER->stack().pop<RDOFUNParams>($3);
 		ASSERT(pFunParams);
-		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
 		pFunParams->setSrcText(funName + "(" + pFunParams->src_text() + ")");

@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/type/function_type.h"
 #include "simulator/compiler/parser/rdo_value.h"
@@ -22,9 +21,10 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- FunctionParamType
 // --------------------------------------------------------------------------------
-FunctionParamType::FunctionParamType(CREF(ParamList) paramList, CREF(RDOParserSrcInfo) srcInfo)
-	: RDOParserSrcInfo(srcInfo  )
-	, m_paramList     (paramList)
+FunctionParamType::FunctionParamType(const ParamList& paramList, const RDOParserSrcInfo& srcInfo)
+	: RDOType(t_unknow)
+	, RDOParserSrcInfo(srcInfo)
+	, m_paramList(paramList)
 {
 	if (m_paramList.empty())
 	{
@@ -37,12 +37,12 @@ FunctionParamType::FunctionParamType(CREF(ParamList) paramList, CREF(RDOParserSr
 FunctionParamType::~FunctionParamType()
 {}
 
-CREF(FunctionParamType::ParamList) FunctionParamType::paramList() const
+const FunctionParamType::ParamList& FunctionParamType::paramList() const
 {
 	return m_paramList;
 }
 
-CREF(rdo::runtime::LPRDOType) FunctionParamType::type() const
+const rdo::runtime::LPRDOType& FunctionParamType::type() const
 {
 	NEVER_REACH_HERE;
 	static rdo::runtime::LPRDOType s_Type;
@@ -55,12 +55,12 @@ rdo::runtime::RDOType::TypeID FunctionParamType::typeID() const
 	return rdo::runtime::RDOType::t_unknow;
 }
 
-tstring FunctionParamType::name() const
+std::string FunctionParamType::name() const
 {
 	return src_text();
 }
 
-LPRDOType FunctionParamType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPIType FunctionParamType::type_cast(const LPIType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	LPFunctionParamType pFromParamType = pFrom.object_dynamic_cast<FunctionParamType>();
 	if (!pFromParamType)
@@ -79,22 +79,22 @@ LPRDOType FunctionParamType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcI
 	}
 
 	ParamList::const_iterator paramFromIt = pFromParamType->paramList().begin();
-	BOOST_FOREACH(const LPTypeInfo& pParamType, paramList())
+	for (const LPTypeInfo& pParamType: paramList())
 	{
 		pParamType->type_cast(*paramFromIt, src_info);
 		++paramFromIt;
 	}
 
-	return const_cast<PTR(FunctionParamType)>(this);
+	return const_cast<FunctionParamType*>(this);
 }
 
-LPRDOValue FunctionParamType::value_cast(CREF(LPRDOValue) /*pFrom*/, CREF(RDOParserSrcInfo) /*to_src_info*/, CREF(RDOParserSrcInfo) /*src_info*/) const
+LPRDOValue FunctionParamType::value_cast(const LPRDOValue& /*pFrom*/, const RDOParserSrcInfo& /*to_src_info*/, const RDOParserSrcInfo& /*src_info*/) const
 {
 	NEVER_REACH_HERE;
 	return LPRDOValue();
 }
 
-rdo::runtime::LPRDOCalc FunctionParamType::calc_cast(CREF(rdo::runtime::LPRDOCalc) /*pCalc*/, CREF(LPRDOType) /*pType*/) const
+rdo::runtime::LPRDOCalc FunctionParamType::calc_cast(const rdo::runtime::LPRDOCalc& /*pCalc*/, const LPIType& /*pType*/) const
 {
 	NEVER_REACH_HERE;
 	return rdo::runtime::LPRDOCalc();
@@ -115,8 +115,9 @@ void FunctionParamType::writeModelStructure(std::ostream& stream) const
 // --------------------------------------------------------------------------------
 // -------------------- FunctionType
 // --------------------------------------------------------------------------------
-FunctionType::FunctionType(CREF(LPTypeInfo) pReturnType, CREF(LPFunctionParamType) pParamType, CREF(RDOParserSrcInfo) srcInfo)
-	: RDOParserSrcInfo(srcInfo    )
+FunctionType::FunctionType(const LPTypeInfo& pReturnType, const LPFunctionParamType& pParamType, const RDOParserSrcInfo& srcInfo)
+	: RDOType(pReturnType->typeID())
+	, RDOParserSrcInfo(srcInfo    )
 	, m_pReturnType   (pReturnType)
 	, m_pParamType    (pParamType )
 {
@@ -127,44 +128,44 @@ FunctionType::FunctionType(CREF(LPTypeInfo) pReturnType, CREF(LPFunctionParamTyp
 FunctionType::~FunctionType()
 {}
 
-CREF(rdo::runtime::LPRDOType) FunctionType::type() const
+rdo::runtime::LPRDOType FunctionType::type() const
 {
-	return m_pReturnType->type()->type();
+	return m_pReturnType->type();
 }
 
 rdo::runtime::RDOType::TypeID FunctionType::typeID() const
 {
-	return m_pReturnType->type()->typeID();
+	return m_pReturnType->typeID();
 }
 
-CREF(LPTypeInfo) FunctionType::returnType() const
+const LPTypeInfo& FunctionType::returnType() const
 {
 	return m_pReturnType;
 }
 
-CREF(LPFunctionParamType) FunctionType::paramType() const
+const LPFunctionParamType& FunctionType::paramType() const
 {
 	return m_pParamType;
 }
 
-tstring FunctionType::name() const
+std::string FunctionType::name() const
 {
 	return src_text();
 }
 
-LPRDOType FunctionType::type_cast(CREF(LPRDOType) /*pFrom*/, CREF(RDOParserSrcInfo) /*from_src_info*/, CREF(RDOParserSrcInfo) /*to_src_info*/, CREF(RDOParserSrcInfo) /*src_info*/) const
+LPIType FunctionType::type_cast(const LPIType& /*pFrom*/, const RDOParserSrcInfo& /*from_src_info*/, const RDOParserSrcInfo& /*to_src_info*/, const RDOParserSrcInfo& /*src_info*/) const
 {
 	NEVER_REACH_HERE;
-	return LPRDOType();
+	return LPIType();
 }
 
-LPRDOValue FunctionType::value_cast(CREF(LPRDOValue) /*pFrom*/, CREF(RDOParserSrcInfo) /*to_src_info*/, CREF(RDOParserSrcInfo) /*src_info*/) const
+LPRDOValue FunctionType::value_cast(const LPRDOValue& /*pFrom*/, const RDOParserSrcInfo& /*to_src_info*/, const RDOParserSrcInfo& /*src_info*/) const
 {
 	NEVER_REACH_HERE;
 	return LPRDOValue();
 }
 
-rdo::runtime::LPRDOCalc FunctionType::calc_cast(CREF(rdo::runtime::LPRDOCalc) /*pCalc*/, CREF(LPRDOType) /*pType*/) const
+rdo::runtime::LPRDOCalc FunctionType::calc_cast(const rdo::runtime::LPRDOCalc& /*pCalc*/, const LPIType& /*pType*/) const
 {
 	NEVER_REACH_HERE;
 	return rdo::runtime::LPRDOCalc();

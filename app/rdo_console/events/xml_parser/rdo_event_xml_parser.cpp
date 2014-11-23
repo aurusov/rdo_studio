@@ -9,7 +9,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <stdexcept>
-#include <boost/foreach.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_console/events/xml_parser/rdo_event_xml_parser.h"
@@ -17,7 +16,7 @@
 
 namespace rdo {
 
-bool event_xml_parser::register_parser(CREF(tstring) name, boost::shared_ptr<event_xml_reader> reader)
+bool event_xml_parser::register_parser(const std::string& name, boost::shared_ptr<event_xml_reader> reader)
 {
 	if (m_parsers.find(name) == m_parsers.end())
 	{
@@ -27,18 +26,18 @@ bool event_xml_parser::register_parser(CREF(tstring) name, boost::shared_ptr<eve
 	return false;
 }
 
-void event_xml_parser::parse(REF(std::istream) stream, REF(event_container) list) const
+void event_xml_parser::parse(std::istream& stream, event_container& list) const
 {
 	list.clear();
 
 	boost::property_tree::ptree pt;
 	boost::property_tree::read_xml(stream, pt);
 
-	BOOST_FOREACH(const boost::property_tree::ptree::value_type& v, pt.get_child("rscript.events"))
+	for (const boost::property_tree::ptree::value_type& v: pt.get_child("rscript.events"))
 	{
 		const boost::property_tree::ptree& node = v.second;
 
-		const tstring event_type = node.get<tstring>("<xmlattr>.type", "");
+		const std::string event_type = node.get<std::string>("<xmlattr>.type", "");
 		parsers::const_iterator it = m_parsers.find(event_type);
 		if (it != m_parsers.end())
 		{

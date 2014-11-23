@@ -19,26 +19,28 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Создание локальной переменной
-CALC(RDOCalcCreateLocalVariable)
+PREDECLARE_POINTER(RDOCalcCreateLocalVariable);
+class RDOCalcCreateLocalVariable: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcCreateLocalVariable)
 private:
-	RDOCalcCreateLocalVariable(CREF(tstring) name, CREF(LPRDOCalc) pValueCalc);
+	RDOCalcCreateLocalVariable(const std::string& name, const LPRDOCalc& pValueCalc);
 
-	tstring    m_name;
+	std::string m_name;
 	LPRDOCalc  m_pValueCalc;
 
 	DECLARE_ICalc;
 };
 
 //! Получение значения локальной переменной
-CALC(RDOCalcGetLocalVariable)
+PREDECLARE_POINTER(RDOCalcGetLocalVariable);
+class RDOCalcGetLocalVariable: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetLocalVariable)
 private:
-	RDOCalcGetLocalVariable(CREF(tstring) name);
+	RDOCalcGetLocalVariable(const std::string& name);
 
-	tstring m_name;
+	std::string m_name;
 
 	DECLARE_ICalc;
 };
@@ -48,23 +50,24 @@ class RDOCalcSetLocalVariable: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcSetLocalVariable)
 private:
-	RDOCalcSetLocalVariable(CREF(tstring) name, LPRDOCalc pCalc = NULL);
+	RDOCalcSetLocalVariable(const std::string& name, LPRDOCalc pCalc = NULL);
 	virtual ~RDOCalcSetLocalVariable();
 
-	tstring   m_name;
+	std::string m_name;
 	LPRDOCalc m_pCalc;
 
 	DECLARE_ICalc;
 };
 
 //! Список локальных переменных
-CALC(RDOCalcLocalVariableList)
+PREDECLARE_POINTER(RDOCalcLocalVariableList);
+class RDOCalcLocalVariableList: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcLocalVariableList)
 public:
 	typedef std::vector<LPRDOCalc> CalcLocalVariableList;
 
-	void addCalcLocalVariable(CREF(LPRDOCalc) pCalc);
+	void addCalcLocalVariable(const LPRDOCalc& pCalc);
 
 private:
 	RDOCalcLocalVariableList();

@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>Объект описания показателей</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <SCRIPT>
 function toggle_display(e)
 {
@@ -18,14 +21,14 @@ function toggle_display(e)
 	<DIV>
 		<H1>ОБЪЕКТ ОПИСАНИЯ ПОКАЗАТЕЛЕЙ</H1>
 		<P><B>Показатели</B>, которые требуется собрать в процессе прогона модели, описываются в отдельном <A href="../rdo_terms.htm#object">объекте</A> (с расширением <FONT class="syntax">.pmd</FONT>) следующего формата:</P>
-		<PRE class="syntax">$Results
+		<PRE class="syntax"><code class="rdo">$Results
 <A class="syntax" href="#pmd_desc">&lt;описание_показателя&gt;</A> { &lt;описание_показателя&gt; }
-$End</PRE>
+$End</code></PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="pmd_desc"></A><I>описание_показателя</I></DT>
 			<DD class="syntax">В свою очередь описание отдельного показателя имеет формат:
-				<PRE class="syntax"><A class="syntax" href="#pmd_name">&lt;имя_показателя&gt;</A> : <A class="syntax" href="../rdo_res/rdo_res_trace_descr.htm">&lt;признак_трассировки&gt;</A> <A class="syntax" href="#pmd_type">&lt;вид_показателя&gt;</A>
-  <A class="syntax" href="#pmd_descriptor">&lt;описатель&gt;</A></PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#pmd_name">&lt;имя_показателя&gt;</A> : <A class="syntax" href="../rdo_res/rdo_res_trace_descr.htm">&lt;признак_трассировки&gt;</A> <A class="syntax" href="#pmd_type">&lt;вид_показателя&gt;</A>
+  <A class="syntax" href="#pmd_descriptor">&lt;описатель&gt;</A></code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="pmd_name"></A><I>имя_показателя</I></DT>
 					<DD class="syntax">Имя показателя представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех показателей и не должны совпадать с ранее определенными именами.</DD>
@@ -63,11 +66,11 @@ $End</PRE>
 					</DD>
 					<DT class="syntax"><A name="pmd_descriptor"></A><I>описатель</I></DT>
 					<DD class="syntax">Формат описателя зависит от вида показателя. Ниже приведены форматы описателей для всех видов показателей с необходимыми пояснениями.
-						<PRE class="syntax">watch_par &lt;имя_параметра_ресурса&gt;</PRE>
+						<PRE class="syntax"><code class="rdo">watch_par &lt;имя_параметра_ресурса&gt;</code></PRE>
 						<P><A href="../rdo_base/rdo_base_res_types.htm#param_desc">Параметр ресурса</A> должен быть целого или вещественного типа. В процессе прогона наблюдаются изменения значения указанного параметра и по окончании выводится статистическая информация о значении параметра в течение прогона.</P><BR>
-						<PRE class="syntax"><A name="ws"></A>watch_state &lt;логическое_выражение&gt;</PRE>
+						<PRE class="syntax"><code class="rdo"><A name="ws"></A>watch_state &lt;логическое_выражение&gt;</code></PRE>
 						<P>В процессе прогона наблюдаются изменения значения указанного <A href="../rdo_base/rdo_base_equations.htm">логического выражения</A> и по окончании выводится статистическая информация о времени, в течение которого это выражение было истинным. Этот показатель дает возможность собирать статистику о времени пребывания системы в некотором состоянии, описанном логическим выражением.</P><BR>
-						<PRE class="syntax">watch_quant <A class="syntax" href="#wq_type_name">&lt;имя_типа&gt;</A> [ NoCheck | <A class="syntax" href="#wq_log_expr">&lt;логическое_выражение&gt;</A> ]</PRE>
+						<PRE class="syntax"><code class="rdo">watch_quant <A class="syntax" href="#wq_type_name">&lt;имя_типа&gt;</A> [ NoCheck | <A class="syntax" href="#wq_log_expr">&lt;логическое_выражение&gt;</A> ]</code></PRE>
 						<DL class="syntax">
 							<DT class="syntax"><A name="wq_type_name"></A><I>имя_типа</I></DT>
 							<DD class="syntax">Имя типа - это имя одного из типов временных ресурсов, описанных в <A href="../rdo_base/rdo_base_res_types.htm">объекте типов</A>.</DD>
@@ -78,8 +81,8 @@ $End</PRE>
 						</DL>
 						<P>Если необходимо наблюдать количество ресурсов данного типа независимо от состояния, то вместо логического выражения указывается зарезервированное слово <FONT class="syntax"><A name="nchk_1"></A>NoCheck</FONT>.</P>
 						<P>В процессе прогона наблюдаются изменения количества временных ресурсов указанного типа в системе, состояние которых удовлетворяет условию, и по окончании выводится статистическая информация о количестве в течение прогона.</P><BR>
-						<PRE class="syntax">watch_value <A class="syntax" href="#wv_type_name">&lt;имя_типа&gt;</A> [ NoCheck | <A class="syntax" href="#wv_log_expr">&lt;логическое_выражение&gt;</A> ]
-  <A class="syntax" href="#wv_arith_expr">&lt;арифметическое_выражение&gt;</A></PRE>
+						<PRE class="syntax"><code class="rdo">watch_value <A class="syntax" href="#wv_type_name">&lt;имя_типа&gt;</A> [ NoCheck | <A class="syntax" href="#wv_log_expr">&lt;логическое_выражение&gt;</A> ]
+  <A class="syntax" href="#wv_arith_expr">&lt;арифметическое_выражение&gt;</A></code></PRE>
 						<DL class="syntax">
 							<DT class="syntax"><A name="wv_type_name"></A><I>имя_типа</I></DT>
 							<DD class="syntax">Имя типа - это имя одного из типов временных ресурсов, описанных в <A href="../rdo_base/rdo_base_res_types.htm">объекте типов</A>.</DD>
@@ -94,7 +97,7 @@ $End</PRE>
 						</DL>
 						<P>Если состояние не имеет значения, то вместо логического выражения указывают зарезервированное слово <FONT class="syntax"><A name="nchk_2"></A>NoCheck</FONT>.</P>
 						<P>В процессе прогона собирается статистическая информация о значении указанного арифметического выражения в момент уничтожения какого-либо ресурса указанного типа, состояние которого удовлетворяет условию.</P><BR>
-						<PRE class="syntax"><A name="gw"></A>get_value &lt;арифметическое_выражение&gt;</PRE>
+						<PRE class="syntax"><code class="rdo"><A name="gw"></A>get_value &lt;арифметическое_выражение&gt;</code></PRE>
 						<P>В объект результатов выводится значение <A href="../rdo_base/rdo_base_equations.htm">арифметического выражения</A>, вычисленное в момент окончания прогона.</P>
 					</DD>
 				</DL>
@@ -102,7 +105,7 @@ $End</PRE>
 		</DL>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
 		<DIV style="display:none" id="v1">
-		<PRE class="samples">$Results
+		<PRE class="syntax"><code class="rdo">$Results
   Показатель_1 :  trace watch_state Ресурс_2.Параметр_5 = Занят
   Показатель_2 :  watch_state Ресурс_2.Параметр_5 = Занят and
                               Ресурс_1.Параметр_1 &gt; 10
@@ -115,7 +118,7 @@ $End</PRE>
                               Тип_2.Время_поступления
   Показатель_9 :  get_value Ресурс_1.Параметр_1 * Time_now
   Показатель_10 : get_value Time_now
-$End</PRE>
+$End</code></PRE>
 	</DIV>
 	<H4>См. также</H4>
 	<P><A href="../rdo_base/rdo_base_res_types.htm">Типы ресурсов</A></P>

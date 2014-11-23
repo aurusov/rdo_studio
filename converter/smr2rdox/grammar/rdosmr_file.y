@@ -3,8 +3,8 @@
   \file      rdosmr_file.y
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -14,6 +14,7 @@
 %}
 
 %pure-parser
+%param {void* lexer}
 
 %token RDO_Resource_type				257
 %token RDO_permanent					258
@@ -80,7 +81,7 @@
 %token RDO_set							319
 %token RDO_IDENTIF_NoChange_NoChange	320
 %token RDO_Operations					321
-	
+
 %token RDO_Results						322
 %token RDO_watch_par					323
 %token RDO_watch_state					324
@@ -211,7 +212,7 @@ smr_main
 	;
 
 smr_model
-	: RDO_Model_name '=' RDO_IDENTIF 
+	: RDO_Model_name '=' RDO_IDENTIF
 	{
 		LPRDOSMR pSMR = rdo::Factory<RDOSMR>::create(CONVERTER->stack().pop<RDOValue>($3)->value().getIdentificator());
 		ASSERT(pSMR);
@@ -316,8 +317,8 @@ smr_descr
 	| smr_descr RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
 	{
 #ifdef CORBA_ENABLE
-		tstring alias = CONVERTER->stack().pop<RDOValue>($3)->value().getIdentificator();
-		tstring model = CONVERTER->stack().pop<RDOValue>($5)->value().getIdentificator();
+		const std::string alias = CONVERTER->stack().pop<RDOValue>($3)->value().getIdentificator();
+		const std::string model = CONVERTER->stack().pop<RDOValue>($5)->value().getIdentificator();
 		LPRDOSMR pSMR = CONVERTER->getSMR();
 		ASSERT(pSMR);
 		pSMR->setExternalModelName(alias, model);

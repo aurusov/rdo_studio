@@ -32,15 +32,15 @@ public:
 		RK_WATCHVALUE
 	};
 
-	CREF(QString) getName() const;
-	Kind          getKind() const;
-	int           getID  () const;
+	const QString& getName() const;
+	Kind           getKind() const;
+	int            getID  () const;
 
-	virtual void getCaptions(std::vector<tstring>& captions, const int valueCount) const;
-	void setValue(tstring& line, Time* const time, const int eventIndex);
+	virtual void getCaptions(std::vector<std::string>& captions, const int valueCount) const;
+	void setValue(std::string& line, Time* const time, const int eventIndex);
 
 private:
-	Result(CREF(QString) name, Kind kind, int id);
+	Result(const QString& name, Kind kind, int id);
 	virtual ~Result();
 
 	QString  m_name;

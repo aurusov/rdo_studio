@@ -21,11 +21,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOMatrixValue
 // --------------------------------------------------------------------------------
-RDOMatrixValue::RDOMatrixValue(CREF(LPRDOMatrixType) pType)
+RDOMatrixValue::RDOMatrixValue(const LPRDOMatrixType& pType)
 	: m_pMatrixType(pType)
 {}
 
-RDOMatrixValue::RDOMatrixValue(CREF(LPRDOMatrixValue) pValue)
+RDOMatrixValue::RDOMatrixValue(const LPRDOMatrixValue& pValue)
 	: m_container  (pValue->m_container  )
 	, m_pMatrixType(pValue->m_pMatrixType)
 {}
@@ -33,13 +33,13 @@ RDOMatrixValue::RDOMatrixValue(CREF(LPRDOMatrixValue) pValue)
 RDOMatrixValue::~RDOMatrixValue()
 {}
 
-CREF(LPRDOMatrixType) RDOMatrixValue::type() const
+const LPRDOMatrixType& RDOMatrixValue::type() const
 {
 	ASSERT(m_pMatrixType);
 	return m_pMatrixType;
 }
 
-void RDOMatrixValue::push_back(CREF(RDOValue) item)
+void RDOMatrixValue::push_back(const RDOValue& item)
 {
 	m_container.push_back(item);
 }
@@ -54,7 +54,7 @@ LPRDOMatrixIterator RDOMatrixValue::end()
 	return rdo::Factory<RDOMatrixIterator>::create(m_container.end());
 }
 
-void RDOMatrixValue::insert(CREF(LPRDOMatrixIterator) pWhere, CREF(LPRDOMatrixIterator) pFromFirst, CREF(LPRDOMatrixIterator) pFromLast)
+void RDOMatrixValue::insert(const LPRDOMatrixIterator& pWhere, const LPRDOMatrixIterator& pFromFirst, const LPRDOMatrixIterator& pFromLast)
 {
 	ASSERT(pWhere    );
 	ASSERT(pFromFirst);
@@ -63,7 +63,7 @@ void RDOMatrixValue::insert(CREF(LPRDOMatrixIterator) pWhere, CREF(LPRDOMatrixIt
 	m_container.insert(pWhere->getIterator(), pFromFirst->getIterator(), pFromLast->getIterator());
 }
 
-void RDOMatrixValue::erase(CREF(LPRDOMatrixIterator) pFirst, CREF(LPRDOMatrixIterator) pLast)
+void RDOMatrixValue::erase(const LPRDOMatrixIterator& pFirst, const LPRDOMatrixIterator& pLast)
 {
 	ASSERT(pFirst)
 	ASSERT(pLast );
@@ -71,31 +71,31 @@ void RDOMatrixValue::erase(CREF(LPRDOMatrixIterator) pFirst, CREF(LPRDOMatrixIte
 	m_container.erase(pFirst->getIterator(), pLast->getIterator());
 }
 
-tstring RDOMatrixValue::getAsString() const
+std::string RDOMatrixValue::asString() const
 {
-	tstring result("[");
-	STL_FOR_ALL_CONST(m_container, it)
+	std::string result("[");
+	for (Container::const_iterator item = m_container.begin(); item != m_container.end(); ++item)
 	{
-		if (it == m_container.begin())
+		if (item == m_container.begin())
 		{
-			result = rdo::format("%s%s", result.c_str(), it->getAsString().c_str());
+			result = rdo::format("%s%s", result.c_str(), item->getAsString().c_str());
 		}
 		else
 		{
-			result = rdo::format("%s, %s", result.c_str(), it->getAsString().c_str());
+			result = rdo::format("%s, %s", result.c_str(), item->getAsString().c_str());
 		}
 	}
 	return rdo::format("%s]", result.c_str());
 }
 
-ruint RDOMatrixValue::size() const
+std::size_t RDOMatrixValue::size() const
 {
 	return m_container.size();
 }
 
-CREF(RDOValue) RDOMatrixValue::getItem(CREF(RDOValue) index) const
+const RDOValue& RDOMatrixValue::getItem(const RDOValue& index) const
 {
-	ruint ind = index.getUInt();
+	std::size_t ind = index.getUInt();
 	if (ind >= m_container.size())
 	{
 		throw RDORuntimeException("Выход за пределы матрицы");
@@ -103,9 +103,9 @@ CREF(RDOValue) RDOMatrixValue::getItem(CREF(RDOValue) index) const
 	return m_container[ind];
 }
 
-void RDOMatrixValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item)
+void RDOMatrixValue::setItem(const RDOValue& index, const RDOValue& item)
 {
-	ruint ind = index.getUInt();
+	std::size_t ind = index.getUInt();
 	if (ind >= m_container.size())
 	{
 		throw RDORuntimeException("Выход за пределы матрицы");
@@ -116,17 +116,17 @@ void RDOMatrixValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item)
 // --------------------------------------------------------------------------------
 // -------------------- RDOMatrixIterator
 // --------------------------------------------------------------------------------
-RDOMatrixIterator::RDOMatrixIterator(CREF(LPRDOMatrixIterator) pIterator)
+RDOMatrixIterator::RDOMatrixIterator(const LPRDOMatrixIterator& pIterator)
 	: RDOType   (RDOType::t_pointer   )
 	, m_iterator(pIterator->m_iterator)
 {}
 
-RDOMatrixIterator::RDOMatrixIterator(CREF(RDOMatrixIterator) iterator)
+RDOMatrixIterator::RDOMatrixIterator(const RDOMatrixIterator& iterator)
 	: RDOType   (RDOType::t_pointer )
 	, m_iterator(iterator.m_iterator)
 {}
 
-RDOMatrixIterator::RDOMatrixIterator(CREF(Iterator) iterator)
+RDOMatrixIterator::RDOMatrixIterator(const Iterator& iterator)
 	: RDOType   (RDOType::t_pointer)
 	, m_iterator(iterator          )
 {}
@@ -139,18 +139,18 @@ RDOMatrixIterator::Iterator RDOMatrixIterator::getIterator() const
 	return m_iterator;
 }
 
-CREF(RDOValue) RDOMatrixIterator::getValue() const
+const RDOValue& RDOMatrixIterator::getValue() const
 {
 	return *m_iterator;
 }
 
-LPRDOMatrixIterator RDOMatrixIterator::preInc(rsint delta)
+LPRDOMatrixIterator RDOMatrixIterator::preInc(int delta)
 {
 	m_iterator += delta;
 	return LPRDOMatrixIterator(this);
 }
 
-LPRDOMatrixIterator RDOMatrixIterator::postInc(rsint delta)
+LPRDOMatrixIterator RDOMatrixIterator::postInc(int delta)
 {
 	LPRDOMatrixIterator pPrev = rdo::Factory<RDOMatrixIterator>::create(m_iterator);
 	ASSERT(pPrev);
@@ -163,7 +163,7 @@ LPRDOMatrixIterator RDOMatrixIterator::next()
 	return preInc(1);
 }
 
-rbool RDOMatrixIterator::equal(CREF(LPRDOMatrixIterator) pIterator) const
+bool RDOMatrixIterator::equal(const LPRDOMatrixIterator& pIterator) const
 {
 	ASSERT(pIterator);
 	return m_iterator == pIterator->m_iterator;
@@ -174,10 +174,15 @@ LPRDOMatrixIterator RDOMatrixIterator::clone() const
 	return rdo::Factory<RDOMatrixIterator>::create(*this);
 }
 
+std::string RDOMatrixIterator::asString() const
+{
+	return getValue().getAsString();
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOMatrixType
 // --------------------------------------------------------------------------------
-RDOMatrixType::RDOMatrixType(CREF(LPItemType) pItemType)
+RDOMatrixType::RDOMatrixType(const LPItemType& pItemType)
 	: RDOType    (RDOType::t_pointer)
 	, m_pItemType(pItemType         )
 {}
@@ -185,7 +190,7 @@ RDOMatrixType::RDOMatrixType(CREF(LPItemType) pItemType)
 RDOMatrixType::~RDOMatrixType()
 {}
 
-CREF(RDOMatrixType::LPItemType) RDOMatrixType::getItemType() const
+const RDOMatrixType::LPItemType& RDOMatrixType::getItemType() const
 {
 	return m_pItemType;
 }

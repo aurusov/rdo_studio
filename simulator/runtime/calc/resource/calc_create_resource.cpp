@@ -24,30 +24,47 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOCalcCreateResource
 // --------------------------------------------------------------------------------
 RDOCalcCreateResource::RDOCalcCreateResource(
-	ruint resourceTypeID,
-	CREF(std::vector<RDOValue>) rParamsCalcs,
-	rbool traceFlag,
-	rbool permanentFlag,
-	ruint relResID
+	std::size_t resourceTypeID,
+	const std::vector<LPRDOCalc>& rParamCalcList,
+	bool traceFlag,
+	bool permanentFlag,
+	bool isNested,
+	std::size_t relResID,
+	boost::optional<std::size_t> resourceID
 )
 	: m_resourceTypeID(resourceTypeID)
 	, m_traceFlag     (traceFlag     )
 	, m_permanentFlag (permanentFlag )
+	, m_isNested      (isNested      )
 	, m_relResID      (relResID      )
+	, m_resourceID    (resourceID    )
 {
-	m_paramsCalcs.insert(m_paramsCalcs.begin(), rParamsCalcs.begin(), rParamsCalcs.end());
+	m_paramCalcList.insert(m_paramCalcList.begin(), rParamCalcList.begin(), rParamCalcList.end());
 	// попытка создавать постоянные ресурсы динамически
 	ASSERT(m_relResID == ~0 || (m_relResID != ~0 && !m_permanentFlag));
 }
 
-RDOValue RDOCalcCreateResource::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcCreateResource::doCalc(const LPRDORuntime& pRuntime)
 {
 	const LPRDOResourceTypeList& resourceType = pRuntime->getResType(m_resourceTypeID);
+	std::vector<RDOValue> paramValueList;
 
-	LPRDOResource pResource = resourceType.interface_cast<IResourceType>()->createRes(pRuntime, pRuntime->getResourceId(), m_paramsCalcs, m_traceFlag, m_permanentFlag);
+	for (const auto& calc : m_paramCalcList)
+	{
+		paramValueList.push_back(calc->calcValue(pRuntime));
+	}
+
+	const std::size_t resourceID = m_resourceID.is_initialized()
+		? m_resourceID.get()
+		: pRuntime->getResourceId();
+	pRuntime->registerResourceId(resourceID);
+
+	LPRDOResource pResource = resourceType.interface_cast<IResourceType>()->createRes(
+		pRuntime, resourceID, paramValueList, m_traceFlag, m_permanentFlag, m_isNested
+	);
 	ASSERT(pResource);
 
-	if (m_relResID != ruint(~0))
+	if (m_relResID != std::size_t(~0))
 	{
 		pRuntime->getCurrentActivity()->setRelRes(m_relResID, pResource->getTraceID());
 	}

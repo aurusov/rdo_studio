@@ -11,7 +11,6 @@
 #include "app/rdo_studio/pch/tracer_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
-#include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
 #include <QProcess>
 #include <QTextStream>
@@ -79,12 +78,12 @@ ChartTree::ChartTree(QWidget* pParent)
 ChartTree::~ChartTree()
 {}
 
-LPChartTreeItem ChartTree::getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const
+LPChartTreeItem ChartTree::getIfItemIsDrawable(const QTreeWidgetItem* pCtrlItem) const
 {
 	LPChartTreeItem pRes;
 	if (pCtrlItem)
 	{
-		PTR(ChartTreeItem) pItem = const_cast<PTR(ChartTreeItem)>(pCtrlItem->data(0, Qt::UserRole).value<CPTR(ChartTreeItem)>());
+		ChartTreeItem* pItem = const_cast<ChartTreeItem*>(pCtrlItem->data(0, Qt::UserRole).value<const ChartTreeItem*>());
 		pRes = pItem && pItem->isDrawable()
 			? pItem
 			: NULL;
@@ -92,7 +91,7 @@ LPChartTreeItem ChartTree::getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) 
 	return pRes;
 }
 
-void ChartTree::doDragDrop(CREF(LPSerie) pSerie)
+void ChartTree::doDragDrop(const LPSerie& pSerie)
 {
 	quintptr address=(quintptr)pSerie.get();
 	QByteArray serieData(QString::number(address).toLatin1());
@@ -105,14 +104,14 @@ void ChartTree::doDragDrop(CREF(LPSerie) pSerie)
 	drag->exec();
 }
 
-void ChartTree::setModelName(CREF(QString) modelName)
+void ChartTree::setModelName(const QString& modelName)
 {
 	m_root->getCtrlItem().setText(0, QString("Модель : %1").arg(modelName));
 }
 
-void ChartTree::createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) item, CREF(QString) name, IconType iconType)
+void ChartTree::createItem(const LPChartTreeItem& parent, const LPChartTreeItem& item, const QString& name, IconType iconType)
 {
-	PTR(QTreeWidgetItem) pCtrlItem = new QTreeWidgetItem(&parent->getCtrlItem());
+	QTreeWidgetItem* pCtrlItem = new QTreeWidgetItem(&parent->getCtrlItem());
 	pCtrlItem->setText(0, name);
 	pCtrlItem->setIcon(0, m_iconList[iconType]);
 	//! @todo smart_ptr
@@ -121,13 +120,13 @@ void ChartTree::createItem(CREF(LPChartTreeItem) parent, CREF(LPChartTreeItem) i
 	item->setCtrlItem(pCtrlItem);
 }
 
-void ChartTree::addResourceType(CREF(LPResourceType) pRTP)
+void ChartTree::addResourceType(const LPResourceType& pRTP)
 {
 	ASSERT(pRTP);
 	createItem(m_rootRTP, pRTP, pRTP->getName(), IT_SUB_ROOT_2);
 }
 
-void ChartTree::addResource(CREF(LPResource) pRSS)
+void ChartTree::addResource(const LPResource& pRSS)
 {
 	LPResourceType pRTP = pRSS->getType();
 	ASSERT(pRTP);
@@ -144,7 +143,7 @@ void ChartTree::addResource(CREF(LPResource) pRSS)
 	updateResource(pRSS);
 }
 
-void ChartTree::updateResource(CREF(LPResource) pRSS)
+void ChartTree::updateResource(const LPResource& pRSS)
 {
 	if (pRSS->isErased())
 	{
@@ -156,26 +155,26 @@ void ChartTree::updateResource(CREF(LPResource) pRSS)
 	}
 }
 
-void ChartTree::addPattern(CREF(LPPattern) pPAT)
+void ChartTree::addPattern(const LPPattern& pPAT)
 {
 	ASSERT(pPAT);
 	createItem(m_rootPAT, pPAT, pPAT->getName(), IT_SUB_ROOT_2);
 }
 
-void ChartTree::addOperation(CREF(LPOperationBase) pOPR)
+void ChartTree::addOperation(const LPOperationBase& pOPR)
 {
 	createItem(pOPR->getPattern(), pOPR, pOPR->getName(), IT_VALUE);
 }
 
-void ChartTree::addResult(CREF(LPResult) pPMV)
+void ChartTree::addResult(const LPResult& pPMV)
 {
 	createItem(m_rootPMV, pPMV, pPMV->getName(), IT_VALUE);
 }
 
-void ChartTree::deleteChildren(CREF(LPChartTreeItem) pParent)
+void ChartTree::deleteChildren(const LPChartTreeItem& pParent)
 {
-	QList<PTR(QTreeWidgetItem)> children = pParent->getCtrlItem().takeChildren();
-	BOOST_FOREACH(PTR(QTreeWidgetItem) item, children)
+	QList<QTreeWidgetItem*> children = pParent->getCtrlItem().takeChildren();
+	for (QTreeWidgetItem* item: children)
 	{
 		pParent->getCtrlItem().removeChild(item);
 	}
@@ -189,7 +188,7 @@ void ChartTree::clear()
 	m_root->getCtrlItem().setText(0, "Модель");
 }
 
-void ChartTree::createChart(PTR(QTreeWidgetItem) pCtrlItem) const
+void ChartTree::createChart(QTreeWidgetItem* pCtrlItem) const
 {
 	LPSerie pSerie = getIfItemIsDrawable(pCtrlItem).object_dynamic_cast<Serie>();
 	if (pSerie)
@@ -198,7 +197,7 @@ void ChartTree::createChart(PTR(QTreeWidgetItem) pCtrlItem) const
 	}
 }
 
-bool ChartTree::activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const
+bool ChartTree::activateExistingChart(QTreeWidgetItem* pCtrlItem) const
 {
 	LPSerie pSerie = getIfItemIsDrawable(pCtrlItem).object_dynamic_cast<Serie>();
 	if (pSerie)
@@ -208,9 +207,9 @@ bool ChartTree::activateExistingChart(PTR(QTreeWidgetItem) pCtrlItem) const
 	return false;
 }
 
-PTR(QTreeWidgetItem) ChartTree::getSelected() const
+QTreeWidgetItem* ChartTree::getSelected() const
 {
-	QList<PTR(QTreeWidgetItem)> selected = selectedItems();
+	QList<QTreeWidgetItem*> selected = selectedItems();
 	return selected.size() == 1
 		? selected.front()
 		: NULL;
@@ -264,7 +263,7 @@ void ChartTree::onChartExport()
 	if (data.open(QIODevice::Text | QFile::WriteOnly | QFile::Truncate)) 
 	{
 		QTextStream stream(&data);
-		BOOST_FOREACH(CREF(Serie::ExportData::value_type) exportItem, exportData)
+		for (const Serie::ExportData::value_type& exportItem: exportData)
 		{
 			stream << exportItem << endl;
 		}

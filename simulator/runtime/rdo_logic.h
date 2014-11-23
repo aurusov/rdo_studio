@@ -19,7 +19,6 @@
 #endif
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo.h"
-#include "simulator/runtime/rdo_runtime_interface_registrator.h"
 #include "simulator/runtime/rdo_logic_i.h"
 // --------------------------------------------------------------------------------
 
@@ -31,36 +30,30 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \brief   Базовый класс для логик РДО
 */
 template <class Order>
-class RDOLogic: public IBaseOperation, public IBaseOperationContainer, public ILogic, CAST_TO_UNKNOWN
+class RDOLogic: public IBaseOperation, public IBaseOperationContainer, public ILogic
 {
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IBaseOperation)
-	QUERY_INTERFACE(IBaseOperationContainer)
-	QUERY_INTERFACE(ILogic)
-QUERY_INTERFACE_END
-
 public:
 	typedef  BaseOperationList                  ChildList;
 	typedef  BaseOperationList::iterator        Iterator;
 	typedef  BaseOperationList::const_iterator  CIterator;
 
 protected:
-	RDOLogic(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent = NULL);
+	RDOLogic(const LPRDORuntime& pRuntime, LPIBaseOperationContainer pParent = NULL);
 	virtual ~RDOLogic();
 
 	DECLARE_IBaseOperationContainer;
 
-	LPRDOCalc                 m_pCondition;
-	rbool                     m_lastCondition;
-	ChildList                 m_childList;
-	LPIBaseOperation          m_pFirst;
+	LPRDOCalc m_pCondition;
+	bool m_lastCondition;
+	ChildList m_childList;
+	LPIBaseOperation m_pFirst;
 	LPIBaseOperationContainer m_pParent;
-	rbool                     m_multithreading;
+	bool m_multithreading;
 
 private:
-	rbool checkSelfCondition(CREF(LPRDORuntime) pRuntime);
-	void  start             (CREF(LPRDORuntime) pRuntime);
-	void  stop              (CREF(LPRDORuntime) pRuntime);
+	bool checkSelfCondition(const LPRDORuntime& pRuntime);
+	void start(const LPRDORuntime& pRuntime);
+	void stop(const LPRDORuntime& pRuntime);
 
 	DECLARE_IBaseOperation;
 	DECLARE_ILogic;
@@ -73,7 +66,7 @@ private:
 class RDOOrderSimple
 {
 public:
-	static LPIBaseOperation sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container);
+	static LPIBaseOperation sort(const LPRDORuntime& pRuntime, BaseOperationList& container);
 };
 
 /*!
@@ -83,7 +76,7 @@ public:
 class RDOOrderMeta
 {
 public:
-	static LPIBaseOperation sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container);
+	static LPIBaseOperation sort(const LPRDORuntime& pRuntime, BaseOperationList& container);
 };
 
 /*!
@@ -94,9 +87,7 @@ public:
 class RDOLogicSimple: public RDOLogic<RDOOrderSimple>
 {
 protected:
-	DEFINE_IFACTORY(RDOLogicSimple);
-
-	RDOLogicSimple(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent)
+	RDOLogicSimple(const LPRDORuntime& pRuntime, LPIBaseOperationContainer pParent)
 		: RDOLogic<RDOOrderSimple>(pRuntime, pParent)
 	{}
 	virtual ~RDOLogicSimple()
@@ -109,9 +100,8 @@ protected:
 */
 class RDOLogicMeta: public RDOLogic<RDOOrderMeta>
 {
+DECLARE_FACTORY(RDOLogicMeta);
 protected:
-	DEFINE_IFACTORY(RDOLogicMeta);
-
 	RDOLogicMeta()
 		: RDOLogic<RDOOrderMeta>(NULL)
 	{}
@@ -121,6 +111,6 @@ protected:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdo_logic.inl"
+#include "simulator/runtime/rdo_logic-inl.h"
 
 #endif // _LIB_RUNTIME_LOGIC_H_

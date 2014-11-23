@@ -13,11 +13,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <vector>
-#include "utils/src/common/warning_enable.h"
-// ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/warning_disable.h"
 #include "ui_plugin_game5_graph_dialog.h"
 #include "utils/src/common/warning_enable.h"
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/graph_node.h"
 // --------------------------------------------------------------------------------
 
@@ -31,10 +29,10 @@ public:
 	PluginGame5GraphDialog(QWidget* parent);
 	~PluginGame5GraphDialog();
 
-	void updateGraph(const QString& startBoardState);
+	void updateGraph(const std::vector<unsigned int>& startBoardState);
 
 public slots:
-	void onPluginAction(QString boardState);
+	void onPluginAction(const std::vector<unsigned int>& boardState);
 	void emitShowNodeInfoDlg();
 
 signals:
@@ -48,33 +46,28 @@ private:
 		unsigned int range;
 	};
 
-	struct SortStruct
+	struct GraphInfo
 	{
-		SortStruct(PluginGame5GraphDialog* pDlg) : m_pDlg(pDlg) {};
-		PluginGame5GraphDialog* m_pDlg;
-
-		bool operator() (int i, int j)
-		{
-			int iParentOLO = m_pDlg->m_graph[i]->getParentGraphNode()->getGraphOnLevelOrder();
-			int jParentOLO = m_pDlg->m_graph[j]->getParentGraphNode()->getGraphOnLevelOrder();
-
-			return iParentOLO < jParentOLO;
-		}
+		GraphInfo(QString solutionCost = "", QString numberOfOpenNodes = "", QString totalNumberOfNodes = "");
+		const QString solutionCost;
+		const QString numberOfOpenNodes;
+		const QString totalNumberOfNodes;
 	};
-	void quickSort(std::vector<int>& vector);
 
 	QString m_traceTimeStamp;
 	GraphNode* m_clickedNode;
-	std::vector<GraphNode*> m_graph;
+	int m_nodeWidth;
+	int m_nodeHeight;
 
-	std::vector<int> getSolutionNodes();
+	std::list<int> getSolutionNodes() const;
 	void updateCheckedNode(GraphNode* node);
-	QString     getTraceTimeStamp();
-	QString     getTraceFile();
-	QStringList parseTrace();
+	QString     getTraceTimeStamp() const;
+	QString     getTraceFile() const;
+	std::vector<GraphNodeInfo> parseTrace(const std::vector<unsigned int>& startBoardState);
+	std::vector<std::vector<GraphNode*>> generateGraphNodes(std::vector<GraphNodeInfo>& parsingResult) const;
+	void drawGraph(const std::vector<std::vector<GraphNode*>>& graph) const;
 
-	QString getTraceInfo();
-	int parseTraceInfo(const QString& key);
+	PluginGame5GraphDialog::GraphInfo getGraphInfo() const;
 };
 
 #endif // _RDO_PLUGIN_GAME5_GRAPH_DIALOG_H_

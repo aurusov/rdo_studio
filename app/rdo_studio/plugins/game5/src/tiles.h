@@ -18,8 +18,8 @@
 // --------------------------------------------------------------------------------
 
 class Tile: public QPushButton
-{
-Q_OBJECT
+{Q_OBJECT
+
 public:
 	Tile(int number, QWidget* pParent);
 	virtual ~Tile();
@@ -27,11 +27,11 @@ public:
 signals:
 	void tileClicked(int number);
 
-private slots:
-	void reemitClicked();
-
 private:
 	int tileNumber;
+
+private slots:
+	void reemitClicked();
 };
 
 #endif // _RDO_PLUGIN_GAME_5_TILES_H_

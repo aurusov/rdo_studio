@@ -28,7 +28,7 @@ namespace rdo
 		typedef  MemDC<QPainter, QPixmap>  QtMemDC;
 
 		template <>
-		inline rbool MemDC<QPainter, QPixmap>::onCreate()
+		inline bool MemDC<QPainter, QPixmap>::onCreate()
 		{
 			m_pBitmap.reset(new QPixmap(m_width, m_height));
 			m_pDC.reset(new QPainter);
@@ -36,7 +36,7 @@ namespace rdo
 		}
 
 		template <>
-		inline rbool MemDC<QPainter, QPixmap>::resize(ruint width, ruint height)
+		inline bool MemDC<QPainter, QPixmap>::resize(std::size_t width, std::size_t height)
 		{
 			if (width == 0 || height == 0)
 				return false;

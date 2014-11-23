@@ -3,8 +3,8 @@
   \file      rdortp.y
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -14,6 +14,7 @@
 %}
 
 %pure-parser
+%param {void* lexer}
 
 %token RDO_Resource_type				257
 %token RDO_permanent					258
@@ -259,9 +260,9 @@ rtp_header
 	: RDO_Resource_type RDO_IDENTIF_COLON rtp_vid_res
 	{
 		LEXER->enumReset();
-		LPRDOValue       pTypeName = CONVERTER->stack().pop<RDOValue>($2);
-		tstring          name      = pTypeName->value().getIdentificator();
-		LPRDORTPResType  _rtp      = CONVERTER->findRTPResType(name);
+		LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($2);
+		const std::string name = pTypeName->value().getIdentificator();
+		LPRDORTPResType _rtp = CONVERTER->findRTPResType(name);
 		if (_rtp)
 		{
 			CONVERTER->error().push_only(pTypeName->src_info(), rdo::format("Тип ресурса уже существует: %s", name.c_str()));
@@ -275,25 +276,25 @@ rtp_header
 	|	RDO_Resource_type RDO_IDENTIF_COLON RDO_IDENTIF_COLON rtp_vid_res
 	{
 		LEXER->enumReset();
-		LPRDOValue       pTypeName = CONVERTER->stack().pop<RDOValue>($2);
-		tstring          name      = pTypeName->value().getIdentificator();
-		LPRDORTPResType  _rtp      = CONVERTER->findRTPResType(name);
+		LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($2);
+		std::string name = pTypeName->value().getIdentificator();
+		LPRDORTPResType _rtp = CONVERTER->findRTPResType(name);
 		if (_rtp)
 		{
 			CONVERTER->error().push_only(pTypeName->src_info(), rdo::format("Тип ресурса уже существует: %s", name.c_str()));
 			CONVERTER->error().push_only(_rtp->src_info(), "См. первое определение");
 			CONVERTER->error().push_done();
 		}
-		LPRDOValue       pPrntTypeName = CONVERTER->stack().pop<RDOValue>($3);
-		tstring          prnt_name     = pPrntTypeName->value().getIdentificator();
-		LPRDORTPResType  _rtp_prnt     = CONVERTER->findRTPResType(prnt_name);
+		LPRDOValue pPrntTypeName = CONVERTER->stack().pop<RDOValue>($3);
+		const std::string prnt_name = pPrntTypeName->value().getIdentificator();
+		LPRDORTPResType _rtp_prnt = CONVERTER->findRTPResType(prnt_name);
 
 		if (_rtp_prnt)
 		{
 			LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(CONVERTER, pTypeName->src_info(), $4 != 0);
 			ASSERT(pResourceType);
-			ruint t_ind   = 0;
-			ruint col_par = _rtp_prnt->getParams().size();
+			std::size_t t_ind = 0;
+			std::size_t col_par = _rtp_prnt->getParams().size();
 			while (t_ind < col_par)
 			{
 				pResourceType->addParam(_rtp_prnt->getParams()[t_ind]);
@@ -319,7 +320,7 @@ rtp_header
 	}
 	| RDO_Resource_type error
 	{
-		tstring str(LEXER->YYText());
+		const std::string str(LEXER->YYText());
 		CONVERTER->error().error(@2, rdo::format("Ошибка в описании имени типа ресурса: %s", str.c_str()));
 	}
 	;
@@ -384,7 +385,7 @@ rtp_param
 	{
 		if (CONVERTER->lexer_loc_line() == @1.m_last_line)
 		{
-			tstring str(LEXER->YYText());
+			const std::string str(LEXER->YYText());
 			CONVERTER->error().error(@2, rdo::format("Неверный тип параметра: %s", str.c_str()));
 		}
 		else
@@ -634,8 +635,8 @@ param_type_enum_list
 param_type_such_as
 	: RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF
 	{
-		tstring type  = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
-		tstring param = CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator();
+		const std::string type = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string param = CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator();
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(type);
 		if (!pResType)
 		{
@@ -654,7 +655,7 @@ param_type_such_as
 	}
 	| RDO_such_as RDO_IDENTIF
 	{
-		tstring constName = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string constName = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDOFUNConstant pConstant = CONVERTER->findFUNConstant(constName);
 		if (!pConstant)
 		{
@@ -668,7 +669,7 @@ param_type_such_as
 	}
 	| RDO_such_as RDO_IDENTIF '.' error
 	{
-		tstring type = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string type = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(type);
 		if (!pResType)
 		{

@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/application_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/view_preferences.h"
 #include "app/rdo_studio/src/application.h"
@@ -88,7 +87,7 @@ ViewPreferences::ViewPreferences(QWidget* pParent)
 	//Вкладка "Стиль и цвет"
 	stackedWidget->setCurrentWidget(pageRoot);
 
-	PTR(QPalette) palette = new QPalette();
+	QPalette* palette = new QPalette();
 	palette->setColor(QPalette::Foreground, Qt::gray);
 	previewStackedWidget->setPalette(*palette);
 
@@ -213,10 +212,8 @@ void ViewPreferences::onApplyButton()
 	buttonApply->setEnabled(false);
 }
 
-void ViewPreferences::onCheckInput(const QString& text)
+void ViewPreferences::onCheckInput(const QString& /*text*/)
 {
-	UNUSED(text);
-
 	bool check = tabSizeLineEdit->text().toInt() >= 1 &&
 		indentSizeLineEdit->text().toInt() >= 1 &&
 		horzIndentLineEdit->text().toInt() >= 1 &&
@@ -245,10 +242,8 @@ void ViewPreferences::onCodeCompUse(int state)
 	checkAllData();
 }
 
-void ViewPreferences::onCodeCompShowFullList(bool state)
+void ViewPreferences::onCodeCompShowFullList(bool /*state*/)
 {
-	UNUSED(state);
-
 	if(radioButtonFullList->isChecked())
 		style_editor.autoComplete.showFullList = true;
 	if(radioButtonNearestWords->isChecked())
@@ -292,10 +287,8 @@ void ViewPreferences::onAutoIndent(int state)
 	checkAllData();
 }
 
-void ViewPreferences::onEraseWithTab(bool state)
+void ViewPreferences::onEraseWithTab(bool /*state*/)
 {
-	UNUSED(state);
-
 	if(eraseWithTabRadioButton->isChecked())
 		style_editor.tab.backspaceUntabs = true;
 	if(eraseWithIndentRadioButton->isChecked())
@@ -377,9 +370,8 @@ void ViewPreferences::onSwitchPreviewComboBox(int index)
 	previewStackedWidget->setCurrentIndex(switchPreviewComboBox->itemData(index, Qt::UserRole).toInt() - 1);
 }
 
-void ViewPreferences::onFontSize(int index)
+void ViewPreferences::onFontSize(int /*index*/)
 {
-	UNUSED(index);
 	int size = fontSizeComboBox->currentText().toInt();
 	switch(getStyleItem()->type)
 	{
@@ -425,11 +417,9 @@ void ViewPreferences::onFontSize(int index)
 	updatePreview();
 }
 
-void ViewPreferences::onFontType(int index)
+void ViewPreferences::onFontType(int /*index*/)
 {
-	UNUSED(index);
-
-	tstring name = fontComboBox->currentFont().family().toStdString();
+	std::string name = fontComboBox->currentFont().family().toStdString();
 
 	switch(getStyleItem()->type)
 	{
@@ -477,7 +467,7 @@ void ViewPreferences::onFontType(int index)
 
 void ViewPreferences::onFontBold(int state)
 {
-	PTR(StyleProperty) prop = getStyleProperty();
+	StyleProperty* prop = getStyleProperty();
 	if (prop && &prop->font_style != &null_font_style)
 	{
 		prop->font_style = static_cast<StyleFont::style>(prop->font_style & ~StyleFont::BOLD);
@@ -491,7 +481,7 @@ void ViewPreferences::onFontBold(int state)
 
 void ViewPreferences::onFontItalic(int state)
 {
-	PTR(StyleProperty) prop = getStyleProperty();
+	StyleProperty* prop = getStyleProperty();
 	if (prop && &prop->font_style != &null_font_style)
 	{
 		prop->font_style = static_cast<StyleFont::style>(prop->font_style & ~StyleFont::ITALIC);
@@ -505,7 +495,7 @@ void ViewPreferences::onFontItalic(int state)
 
 void ViewPreferences::onFontUnderline(int state)
 {
-	PTR(StyleProperty) prop = getStyleProperty();
+	StyleProperty* prop = getStyleProperty();
 	if (prop && &prop->font_style != &null_font_style)
 	{
 		prop->font_style = static_cast<StyleFont::style>(prop->font_style & ~StyleFont::UNDERLINE);
@@ -519,14 +509,14 @@ void ViewPreferences::onFontUnderline(int state)
 
 void ViewPreferences::onHorzScroll(int state)
 {
-	PTR(StyleItem) item = getStyleItem();
+	StyleItem* item = getStyleItem();
 	item->horzscrollbar = state == Qt::Checked ? true : false;
 	updatePreview();
 }
 
 void ViewPreferences::onWordWrap(int state)
 {
-	PTR(StyleItem) item = getStyleItem();
+	StyleItem* item = getStyleItem();
 	item->wordwrap = state == Qt::Checked ? true : false;
 		
 	switch(item->type)
@@ -581,28 +571,28 @@ void ViewPreferences::onWordWrap(int state)
 
 void ViewPreferences::onBookmark(int index)
 {
-	PTR(StyleItem) item = getStyleItem();
+	StyleItem* item = getStyleItem();
 	item->bookmarkstyle = static_cast<EditStyle::Bookmark>(index);
 	updatePreview();
 }
 
 void ViewPreferences::onFold(int index)
 {
-	PTR(StyleItem) item = getStyleItem();
+	StyleItem* item = getStyleItem();
 	item->foldstyle = static_cast<ModelStyle::Fold>(index);
 	updatePreview();
 }
 
 void ViewPreferences::onComment(int state)
 {
-	PTR(StyleItem) item = getStyleItem();
+	StyleItem* item = getStyleItem();
 	item->commentfold = state ? true : false;
 	updatePreview();
 }
 
 void ViewPreferences::onWarning(int state)
 {
-	PTR(StyleItem) item = getStyleItem();
+	StyleItem* item = getStyleItem();
 	item->warning = state ? true : false;
 	updatePreview();
 }
@@ -622,7 +612,7 @@ void ViewPreferences::onVertIndent(const QString& text)
 void ViewPreferences::onFgColor(int index)
 {
 	QColor color = qvariant_cast<QColor>(fgColorComboBox->itemData(index, Qt::UserRole));
-	PTR(StyleProperty) prop = getStyleProperty();
+	StyleProperty* prop = getStyleProperty();
 	if (&prop->fg_color != &null_fg_color)
 	{
 		prop->fg_color = color;
@@ -650,7 +640,7 @@ void ViewPreferences::onFgColor(int index)
 void ViewPreferences::onBgColor(int index)
 {
 	QColor color = qvariant_cast<QColor>(bgColorComboBox->itemData(index, Qt::UserRole));
-	PTR(StyleProperty) prop = getStyleProperty();
+	StyleProperty* prop = getStyleProperty();
 	if (&prop->bg_color != &null_bg_color)
 	{
 		prop->bg_color = color;
@@ -711,16 +701,14 @@ void ViewPreferences::onBgColorSelected(const QColor& color)
 	onBgColor(bgColorComboBox->findData(color, Qt::UserRole));
 }
 
-void ViewPreferences::onTitleSize(int index)
+void ViewPreferences::onTitleSize(int /*index*/)
 {
-	UNUSED(index);
 	style_chart.pFontsTicks.titleFontSize = titleComboBox->currentText().toInt();
 	updatePreview();
 }
 
-void ViewPreferences::onLegendSize(int index)
+void ViewPreferences::onLegendSize(int /*index*/)
 {
-	UNUSED(index);
 	style_chart.pFontsTicks.legendFontSize = legendComboBox->currentText().toInt();
 	updatePreview();
 }
@@ -1038,7 +1026,7 @@ void ViewPreferences::updateDialog()
 
 void ViewPreferences::updateStyleTab()
 {
-	PTR(StyleProperty) prop = getStyleProperty();
+	StyleProperty* prop = getStyleProperty();
 	QString fontName = QString::fromStdString(prop->item->font_name);
 	if (!fontName.isEmpty())
 	{
@@ -1211,7 +1199,7 @@ void ViewPreferences::updateStyleTab()
 	updateTheme();
 }
 
-void ViewPreferences::updateThemeComboBox(PTR(StyleProperty) prop)
+void ViewPreferences::updateThemeComboBox(StyleProperty* prop)
 {
 	themeComboBox->clear();
 	switch(prop->item->type)
@@ -1292,7 +1280,7 @@ void ViewPreferences::createPreview()
 	preview_build = new Build(previewStackedWidget->currentWidget());
 	preview_build->setEditorStyle(&style_build);
 	preview_build->appendLine(new BuildEditLineInfo("Компиляция..."));
-	preview_build->appendLine(new BuildEditLineInfo(rdo::simulation::report::FileMessage("Неправильное значение параметра: 4", rdoModelObjects::PAT, 40, 0)));
+	preview_build->appendLine(new BuildEditLineInfo(rdo::simulation::report::FileMessage("Неправильное значение параметра: 4", rdo::model::PAT, 40, 0)));
 	preview_build->appendLine(new BuildEditLineInfo("найдено ошибок: 1, предупреждений: 0"));
 	preview_build->gotoNext();
 	previewStackedWidget->addWidget(preview_build);
@@ -1320,14 +1308,14 @@ void ViewPreferences::createPreview()
 	preview_find->setEditorStyle(&style_find);
 	preview_find->setKeyword("$Time");
 	preview_find->appendLine(new LogEditLineInfo("Поиск '$Time'..."));
-	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage("$Time = Равномерный(0.25, 0.75)", rdoModelObjects::PAT, 3, 0)));
-	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage("$Time = Нормальный(0.45, 0.2)", rdoModelObjects::PAT, 13, 0)));
+	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage("$Time = Равномерный(0.25, 0.75)", rdo::model::PAT, 3, 0)));
+	preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage("$Time = Нормальный(0.45, 0.2)", rdo::model::PAT, 13, 0)));
 	preview_find->appendLine(new LogEditLineInfo("'2' раз было найдено."));
 	preview_find->gotoNext();
 	previewStackedWidget->addWidget(preview_find);
 
 	preview_chart_doc = new ChartDoc(true);
-	PTR(ChartViewMainWnd) pViewQt = new ChartViewMainWnd(NULL, preview_chart_doc, true);
+	ChartViewMainWnd* pViewQt = new ChartViewMainWnd(NULL, preview_chart_doc, true);
 	preview_chart = &pViewQt->view();
 	preview_chart_doc->attachView(preview_chart);
 	preview_chart_doc->setTitle(QString("график 1"));
@@ -1571,9 +1559,9 @@ void ViewPreferences::createTree()
 	treeWidget->setCurrentItem(m_pRoot);
 }
 
-PTR(QTreeWidgetItem) ViewPreferences::createTreeItem(PTR(QTreeWidgetItem) parent, CREF(QString) name, ItemType itemType)
+QTreeWidgetItem* ViewPreferences::createTreeItem(QTreeWidgetItem* parent, const QString& name, ItemType itemType)
 {
-	PTR(QTreeWidgetItem) item = new QTreeWidgetItem(parent);
+	QTreeWidgetItem* item = new QTreeWidgetItem(parent);
 	item->setText(0, name);
 	item->setData(0, Qt::UserRole, QVariant(itemType));
 	return item;
@@ -1614,10 +1602,10 @@ void ViewPreferences::insertColor(const QColor& color, const QString& colorName,
 	colorBox->setItemIcon(colorBox->findText(colorName), QIcon(pixmap));
 }
 
-PTR(ViewPreferences::StyleProperty) ViewPreferences::getStyleProperty()
+ViewPreferences::StyleProperty* ViewPreferences::getStyleProperty()
 {
-	PTR(StyleItem) item = getStyleItem();
-	BOOST_FOREACH(StyleProperty* prop, item->properties)
+	StyleItem* item = getStyleItem();
+	for (StyleProperty* prop: item->properties)
 	{
 		if(prop->identificator == treeWidget->currentItem()->data(0, Qt::UserRole).toInt())
 			return prop;
@@ -1625,11 +1613,11 @@ PTR(ViewPreferences::StyleProperty) ViewPreferences::getStyleProperty()
 	return NULL;
 }
 
-PTR(ViewPreferences::StyleItem) ViewPreferences::getStyleItem()
+ViewPreferences::StyleItem* ViewPreferences::getStyleItem()
 {
 	if(treeWidget->currentItem()->data(0, Qt::UserRole).toInt() == IT_ROOT)
 	{
-		BOOST_FOREACH(StyleItem* item, style_list)
+		for (StyleItem* item: style_list)
 		{
 			if(item->type == treeWidget->currentItem()->data(0, Qt::UserRole).toInt())
 				return item;
@@ -1638,14 +1626,14 @@ PTR(ViewPreferences::StyleItem) ViewPreferences::getStyleItem()
 
 	if(treeWidget->currentItem()->parent()->data(0, Qt::UserRole).toInt() == IT_ROOT)
 	{
-		BOOST_FOREACH(StyleItem* item, style_list)
+		for (StyleItem* item: style_list)
 		{
 			if(item->type == treeWidget->currentItem()->data(0, Qt::UserRole).toInt())
 			return item;
 		}
 	}
 
-	BOOST_FOREACH(StyleItem* item, style_list)
+	for (StyleItem* item: style_list)
 	{
 		if(item->type == treeWidget->currentItem()->parent()->data(0, Qt::UserRole).toInt())
 			return item;
@@ -1717,7 +1705,7 @@ void ViewPreferences::deletePlugin()
 {
 	onStopPlugin();
 	const std::vector<int> rows = selectedRows();
-	for(int i = rows.size()-1; i >= 0; i--)
+	for (int i = rows.size()-1; i >= 0; i--)
 	{
 		const int current = rows[i];
 		{
@@ -1738,7 +1726,7 @@ void ViewPreferences::deletePlugin()
 void ViewPreferences::onStartPlugin()
 {
 	const std::vector<int> rows = selectedRows();
-	for(int i = rows.size()-1; i >= 0; i--)
+	for (int i = rows.size()-1; i >= 0; i--)
 	{
 		const int current = rows[i];
 		const LPPluginInfo pluginInfo = getPluginInfoFromTable(current);
@@ -1754,7 +1742,7 @@ void ViewPreferences::onStartPlugin()
 void ViewPreferences::onStopPlugin()
 {
 	const std::vector<int> rows = selectedRows();
-	for(int i = rows.size()-1; i >= 0; i--)
+	for (int i = rows.size()-1; i >= 0; i--)
 	{
 		const int current  = rows[i];
 		const LPPluginInfo pluginInfo = getPluginInfoFromTable(current);
@@ -1784,7 +1772,7 @@ void ViewPreferences::populateRow(const LPPluginInfo& plgInfo)
 
 void ViewPreferences::fillPluginInfoTable()
 {
-	BOOST_FOREACH(const LPPluginInfo& pluginInfo, *m_pPluginInfoList)
+	for (const LPPluginInfo& pluginInfo: *m_pPluginInfoList)
 	{
 		populateRow(pluginInfo);
 	}
@@ -1795,7 +1783,7 @@ void ViewPreferences::updateButtonsState()
 	bool allActive      = true;
 	bool allInactive    = true;
 	bool allUnavailable = true;
-	for(int i = rows.size()-1; i >= 0; i--)
+	for (int i = rows.size()-1; i >= 0; i--)
 	{
 		const int current = rows[i];
 		const LPPluginInfo pluginInfo = getPluginInfoFromTable(current);
@@ -1814,7 +1802,7 @@ void ViewPreferences::updateButtonsState()
 ViewPreferences::IntVector ViewPreferences::selectedRows() const
 {
 	std::vector<int> sortedRows;
-	BOOST_FOREACH(const QModelIndex& index, pluginInfoTable->selectionModel()->selectedRows())
+	for (const QModelIndex& index: pluginInfoTable->selectionModel()->selectedRows())
 	{
 		sortedRows.push_back(index.row()); 
 	}

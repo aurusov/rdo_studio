@@ -20,23 +20,23 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearchActivity
 // --------------------------------------------------------------------------------
-RDODPTSearchActivity::RDODPTSearchActivity(CREF(LPIRule) rule, ValueTime valueTime, CREF(LPRDOCalc) pCost)
+RDODPTSearchActivity::RDODPTSearchActivity(const LPIRule& rule, ValueTime valueTime, const LPRDOCalc& pCost)
 	: RDOTraceableObject(false    )
 	, m_rule            (rule     )
 	, m_pCost           (pCost    )
 	, m_valueTime       (valueTime)
 {
-	LPITrace trace = m_rule;
+	LPITrace trace = m_rule.object_dynamic_cast<ITrace>();
 	ASSERT(trace);
 	setTraceID(trace->getTraceID());
 }
 
-REF(LPIRule) RDODPTSearchActivity::rule()
+LPIRule& RDODPTSearchActivity::rule()
 {
 	return m_rule;
 }
 
-double RDODPTSearchActivity::cost(CREF(LPRDORuntime) pRuntime)
+double RDODPTSearchActivity::cost(const LPRDORuntime& pRuntime)
 {
 	return m_pCost->calcValue(pRuntime).getDouble();
 }

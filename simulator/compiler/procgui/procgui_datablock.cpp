@@ -20,7 +20,7 @@ OPEN_COMPILER_GUI_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlock
 // --------------------------------------------------------------------------------
-RPShapeDataBlock::RPShapeDataBlock(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name)
+RPShapeDataBlock::RPShapeDataBlock(RPShapeDataBlock::zakonRaspr zakon, const std::string& name)
 	: m_zakon(zakon)
 	, m_name (name )
 {}
@@ -48,19 +48,19 @@ void RPShapeDataBlock::setMax(double max)
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlockCreate
 // --------------------------------------------------------------------------------
-RPShapeDataBlockCreate::RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name)
+RPShapeDataBlockCreate::RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, const std::string& name)
 	: RPShapeDataBlock(zakon, name)
 {}
 
 RPShapeDataBlockCreate::~RPShapeDataBlockCreate()
 {}
 
-void RPShapeDataBlockCreate::setAmount(boost::optional<ruint> amount)
+void RPShapeDataBlockCreate::setAmount(boost::optional<std::size_t> amount)
 {
 	m_amount = amount;
 }
 
-void RPShapeDataBlockCreate::setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics)
+void RPShapeDataBlockCreate::setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics)
 {
 	m_pStatistics = pStatistics;
 }
@@ -68,7 +68,7 @@ void RPShapeDataBlockCreate::setStatistics(CREF(rdo::runtime::LPIInternalStatist
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlockTerminate
 // --------------------------------------------------------------------------------
-RPShapeDataBlockTerminate::RPShapeDataBlockTerminate(CREF(tstring) name)
+RPShapeDataBlockTerminate::RPShapeDataBlockTerminate(const std::string& name)
 	:m_name(name)
 {}
 
@@ -80,7 +80,7 @@ void RPShapeDataBlockTerminate::setTermInc(int term_inc)
 	m_term_inc = term_inc;
 }
 
-void RPShapeDataBlockTerminate::setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics)
+void RPShapeDataBlockTerminate::setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics)
 {
 	m_pStatistics = pStatistics;
 }
@@ -88,7 +88,7 @@ void RPShapeDataBlockTerminate::setStatistics(CREF(rdo::runtime::LPIInternalStat
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlockProcess
 // --------------------------------------------------------------------------------
-RPShapeDataBlockProcess::RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name)
+RPShapeDataBlockProcess::RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, const std::string& name)
 	: RPShapeDataBlock(zakon,name)
 {}
 
@@ -100,24 +100,24 @@ void RPShapeDataBlockProcess::addAction(RPShapeDataBlockProcess::Action action)
 	m_actionList.push_back(action);
 }
 
-void RPShapeDataBlockProcess::addRes(CREF(tstring) resName)
+void RPShapeDataBlockProcess::addRes(const std::string& resName)
 {
 	ASSERT(std::find(m_resNameList.begin(), m_resNameList.end(), resName) == m_resNameList.end());
 
 	m_resNameList.push_back(resName);
 }
 
-CREF(RPShapeDataBlockProcess::ActionList) RPShapeDataBlockProcess::getActionList() const
+const RPShapeDataBlockProcess::ActionList& RPShapeDataBlockProcess::getActionList() const
 {
 	return m_actionList;
 }
 
-CREF(RPShapeDataBlockProcess::ResNameList) RPShapeDataBlockProcess::getResNameList() const
+const RPShapeDataBlockProcess::ResNameList& RPShapeDataBlockProcess::getResNameList() const
 {
 	return m_resNameList;
 }
 
-void RPShapeDataBlockProcess::setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics)
+void RPShapeDataBlockProcess::setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics)
 {
 	m_pStatistics = pStatistics;
 }

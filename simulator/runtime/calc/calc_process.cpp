@@ -22,15 +22,15 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcProcessControl
 // --------------------------------------------------------------------------------
-RDOCalcProcessControl::RDOCalcProcessControl(LPIPROCBlock pBlock, rsint relResNum)
+RDOCalcProcessControl::RDOCalcProcessControl(LPIPROCBlock pBlock, int relResNum)
 	: m_Block    (pBlock   )
 	, m_relResNum(relResNum)
 {}
 
-RDOValue RDOCalcProcessControl::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcProcessControl::doCalc(const LPRDORuntime& pRuntime)
 {
 	//по m_relResNum нужно найти ресурс (m_Transact) и передать его в процесс
-	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResNum);
+	const std::size_t resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResNum);
 	LPRDOResource pResource = pRuntime->getResourceByID(resID);
 	/// @todo проверить, можно ли перенести проверку в парсер, чтобы сделать object_static_cast вместо object_dynamic_cast
 	LPRDOPROCTransact pTransact = pResource.object_dynamic_cast<RDOPROCTransact>();
@@ -38,7 +38,7 @@ RDOValue RDOCalcProcessControl::doCalc(CREF(LPRDORuntime) pRuntime)
 	{
 		pTransact->setBlock(m_Block);
 		// Записываем в конец списка этого блока перемещаемый транзакт
-		m_Block.query_cast<IPROCBlock>()->transactGoIn(pTransact);
+		m_Block.object_dynamic_cast<IPROCBlock>()->transactGoIn(pTransact);
 	}
 
 	return RDOValue();
@@ -47,7 +47,7 @@ RDOValue RDOCalcProcessControl::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcProcAssign
 // --------------------------------------------------------------------------------
-RDOCalcProcAssign::RDOCalcProcAssign(CREF(LPRDOCalc) pCalc, ruint res, ruint param)
+RDOCalcProcAssign::RDOCalcProcAssign(const LPRDOCalc& pCalc, std::size_t res, std::size_t param)
 	: m_pCalc(pCalc)
 	, m_res  (res  )
 	, m_param(param)
@@ -57,7 +57,7 @@ RDOCalcProcAssign::RDOCalcProcAssign(CREF(LPRDOCalc) pCalc, ruint res, ruint par
 	ASSERT(m_param != ~0);
 }
 
-RDOValue RDOCalcProcAssign::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcProcAssign::doCalc(const LPRDORuntime& pRuntime)
 {
 	LPRDOResource pRes = pRuntime->getResourceByID(m_res);
 	ASSERT(pRes);
@@ -72,7 +72,7 @@ RDOValue RDOCalcProcAssign::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetTermNow
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcGetTermNow::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcGetTermNow::doCalc(const LPRDORuntime& pRuntime)
 {
 	return pRuntime->getCurrentTerm();
 }

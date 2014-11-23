@@ -13,8 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/process/generate.h"
 #include "simulator/runtime/calc/calc_base.h"
 // --------------------------------------------------------------------------------
@@ -24,12 +22,21 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCGenerate
 // --------------------------------------------------------------------------------
-void RDOPROCGenerate::onStart(CREF(LPRDORuntime) pRuntime)
+RDOPROCGenerate::RDOPROCGenerate(LPIPROCProcess process, const LPRDOCalc& pTime, const LPRDOCalc& pCreateAndGoOnTransactCalc, boost::optional<std::size_t> maxCreateTransactCount)
+	: RDOPROCBlock                (process                   )
+	, timeNext                    (0.0                       )
+	, m_pTimeCalc                 (pTime                     )
+	, m_pCreateAndGoOnTransactCalc(pCreateAndGoOnTransactCalc)
+	, m_maxCreateTransactCount    (maxCreateTransactCount    )
+	, m_createdTransactCount      (0                         )
+{}
+
+void RDOPROCGenerate::onStart(const LPRDORuntime& pRuntime)
 {
 	calcNextTimeInterval(pRuntime);
 }
 
-rbool RDOPROCGenerate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCGenerate::onCheckCondition(const LPRDORuntime& pRuntime)
 {
 	if (m_maxCreateTransactCount && m_createdTransactCount >= m_maxCreateTransactCount.get())
 	{
@@ -39,13 +46,12 @@ rbool RDOPROCGenerate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 	return pRuntime->getCurrentTime() >= timeNext ? true : false;
 }
 
-IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCGenerate::calcNextTimeInterval(CREF(LPRDORuntime) pRuntime)
+void RDOPROCGenerate::calcNextTimeInterval(const LPRDORuntime& pRuntime)
 {
 	timeNext = m_pTimeCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime();
 	pRuntime->addTimePoint(
@@ -55,31 +61,24 @@ void RDOPROCGenerate::calcNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 	);
 }
 
-void RDOPROCGenerate::onStop(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPROCGenerate::onStop(const LPRDORuntime& /*pRuntime*/)
+{}
 
-void RDOPROCGenerate::onMakePlaned(CREF(LPRDORuntime) pRuntime)
+void RDOPROCGenerate::onMakePlaned(const LPRDORuntime& pRuntime)
 {
 	++m_createdTransactCount;
 
 	if (m_pStatistics)
 		m_pStatistics->setTransCount(m_createdTransactCount);
 
-	struct Pair
-	{
-		typedef  RDOResourceTypeList  Type;
-		typedef  RDOPROCTransact      Value;
-	};
-
-	LPRDOPROCTransact pTransact = m_pCreateAndGoOnTransactCalc->calcValue(pRuntime).getPointerByType<Pair>();
+	LPRDOPROCTransact pTransact = m_pCreateAndGoOnTransactCalc->calcValue(pRuntime).
+			getPointerByType<RDOPROCTransact, RDOResourceTypeList>();
 	ASSERT(pTransact);
 
 	pTransact->setBlock(this);
 	pTransact->next();
 
-	PTR(RDOTrace) tracer = pRuntime->getTracer();
+	RDOTrace* tracer = pRuntime->getTracer();
 	if (!tracer->isNull())
 	{
 		tracer->getOStream() << pTransact->traceResourceState('\0', pRuntime) << tracer->getEOL();
@@ -88,13 +87,12 @@ void RDOPROCGenerate::onMakePlaned(CREF(LPRDORuntime) pRuntime)
 	calcNextTimeInterval(pRuntime);
 }
 
-IBaseOperation::BOResult RDOPROCGenerate::onContinue(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCGenerate::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
-void RDOPROCGenerate::setStatistics(CREF(LPIInternalStatistics) pStatistics)
+void RDOPROCGenerate::setStatistics(const LPIInternalStatistics& pStatistics)
 {
 	m_pStatistics = pStatistics;
 }

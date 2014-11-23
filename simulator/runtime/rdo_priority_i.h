@@ -12,7 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/interface/rdointerface.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
@@ -27,15 +26,16 @@ CLOSE_RDO_RUNTIME_NAMESPACE
   \interface IPriority
   \brief     Интерфейс IPriority
 */
-class IPriority
+class IPriority: public virtual rdo::counter_reference
 {
 public:
-	virtual rdo::runtime::LPRDOCalc getPrior()                                   = 0;
-	virtual rbool                   setPrior(CREF(rdo::runtime::LPRDOCalc) pPrior) = 0;
+	virtual rdo::runtime::LPRDOCalc getPrior()                   = 0;
+	virtual bool setPrior(const rdo::runtime::LPRDOCalc& pPrior) = 0;
 };
+DECLARE_POINTER(IPriority)
 
 #define DECLARE_IPriority                       \
 	virtual rdo::runtime::LPRDOCalc getPrior(); \
-	virtual rbool                   setPrior(CREF(rdo::runtime::LPRDOCalc) pPrior);
+	virtual bool setPrior(const rdo::runtime::LPRDOCalc& pPrior);
 
 #endif // _LIB_RUNTIME_PRIORITY_I_H_

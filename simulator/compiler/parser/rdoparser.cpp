@@ -3,8 +3,8 @@
   \file      rdoparser.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -12,7 +12,6 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/calc_pattern.h"
 #include "simulator/runtime/rdo_pattern.h"
@@ -47,12 +46,12 @@ void RDOParser::insert##NAME(LPRDO##NAME value) \
 
 #define DECLARE_PARSER_OBJECT_CONTAINER(NAME) \
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(NAME) \
-const LPRDO##NAME RDOParser::find##NAME(CREF(tstring) name) const \
+const LPRDO##NAME RDOParser::find##NAME(const std::string& name) const \
 { \
 	NAME##List::const_iterator it = std::find_if(m_all##NAME.begin(), m_all##NAME.end(), compareName<RDO##NAME>(name)); \
 	return it != m_all##NAME.end() ? *it : LPRDO##NAME(NULL); \
 } \
-rbool RDOParser::remove##NAME(const LPRDO##NAME item) \
+bool RDOParser::remove##NAME(const LPRDO##NAME item) \
 { \
 	NAME##List::iterator it = std::find(m_all##NAME.begin(), m_all##NAME.end(), item); \
 	if (it == m_all##NAME.end()) \
@@ -79,22 +78,22 @@ DECLARE_PARSER_OBJECT_CONTAINER(PROCProcess   );
 
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(FUNGroup);
 
-rdoModelObjects::RDOFileType RDOParser::getFileToParse()
+rdo::model::FileType RDOParser::getFileToParse()
 {
-	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->m_type : rdoModelObjects::PAT;
+	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->m_type : rdo::model::PAT;
 }
 
-ruint RDOParser::lexer_loc_line()
+std::size_t RDOParser::lexer_loc_line()
 {
 	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->lexer_loc_line() : ~0;
 }
 
-ruint RDOParser::lexer_loc_pos()
+std::size_t RDOParser::lexer_loc_pos()
 {
 	return !s_parserStack.empty() && s_parserStack.back()->m_parser_item ? s_parserStack.back()->m_parser_item->lexer_loc_pos() : 0;
 }
 
-tstring RDOParser::lexer_text()
+std::string RDOParser::lexer_text()
 {
 	LPRDOParserRDOItem pParserItem = !s_parserStack.empty()
 		? s_parserStack.back()->m_parser_item.object_dynamic_cast<RDOParserRDOItem>()
@@ -102,7 +101,7 @@ tstring RDOParser::lexer_text()
 
 	return pParserItem
 		? pParserItem->text()
-		: tstring();
+		: std::string();
 }
 
 LPRDOParser RDOParser::s_parser()
@@ -115,31 +114,31 @@ RDOParser::RDOParser()
 	, m_parser_item(NULL )
 {
 	m_compilers.push_back(rdo::Factory<RDOParserSTDFUN> ::create());
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::SMR, evn_preparse_parse, evn_preparse_lex));
 
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RTP, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RTP, evnparse, evnerror, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RSS, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RSS, evnparse, evnerror, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, evnparse, evnerror, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::RTP, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::RTP, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::RSS, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::RSS, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::PRC, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::PRC, evnparse, evnlex));
 #ifdef CORBA_ENABLE
 	m_compilers.push_back(rdo::Factory<RDOParserCorbaRTP>::create());
 	m_compilers.push_back(rdo::Factory<RDOParserCorbaRSS>::create());
 #endif
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FUN, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FUN, evnparse, evnerror, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::EVN, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::EVN, evnparse, evnerror, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PAT, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PAT, evnparse, evnerror, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::DPT, evnparse, evnerror, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FRM, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::FRM, evnparse, evnerror, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PMD, evn_preparse_parse, evn_preparse_error, evn_preparse_lex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PMD, evnparse, evnerror, evnlex));
-	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, evnparse, evnerror, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::FUN, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::FUN, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::EVN, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::EVN, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::PAT, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::PAT, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::DPT, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::DPT, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::FRM, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::FRM, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::PMD, evn_preparse_parse, evn_preparse_lex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::PMD, evnparse, evnlex));
+	m_compilers.push_back(rdo::Factory<RDOParserRDOItem>::create(rdo::model::SMR, evnparse, evnlex));
 }
 
 RDOParser::~RDOParser()
@@ -244,48 +243,9 @@ LPExpression contextTerminateCounter(const RDOParserSrcInfo& srcInfo)
 	);
 }
 
-LPExpression contextGetResource(const LPRDORSSResource& resource, const RDOParserSrcInfo& srcInfo)
-{
-	return resource->createGetResourceExpression(srcInfo);
 }
 
-LPExpression contextConstant(const LPRDOFUNConstant& constant, const RDOParserSrcInfo& srcInfo)
-{
-	return rdo::Factory<Expression>::create(
-		constant->getTypeInfo(),
-		rdo::Factory<rdo::runtime::RDOCalcGetConst>::create(constant->getNumber()),
-		srcInfo
-	);
-}
-
-LPExpression contextSequence(const std::string& name, const RDOParserSrcInfo& srcInfo)
-{
-	LPRDOFUNParams pParams = rdo::Factory<RDOFUNParams>::create(
-		rdo::Factory<ArithmContainer>::create()
-	);
-	LPRDOFUNArithm pArithm = pParams->createSeqCall(name);
-	pArithm->setSrcInfo(srcInfo);
-
-	return rdo::Factory<Expression>::create(
-		pArithm->typeInfo(),
-		pArithm->calc(),
-		srcInfo
-	);
-}
-
-LPExpression contextUnknownEnum(const rdo::runtime::LPRDOEnumType& enumType, ruint index, const RDOParserSrcInfo& srcInfo)
-{
-	LPTypeInfo typeInfo = rdo::Factory<TypeInfo>::delegate<RDOType__identificator>(srcInfo);
-	return rdo::Factory<Expression>::create(
-		typeInfo,
-		rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(enumType->getValues()[index], typeInfo->type()->type())),
-		srcInfo
-	);
-}
-
-}
-
-Context::FindResult RDOParser::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult RDOParser::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	const std::string identifier = params.identifier();
 
@@ -293,15 +253,27 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 	{
 		if (identifier == "Time_now" || identifier == "time_now" || identifier == "Системное_время" || identifier == "системное_время")
 		{
-			return FindResult(CreateExpression(boost::bind(&contextTimeNow, srcInfo)));
+			return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextTimeNow, srcInfo)));
 		}
 		else if (identifier == "Seconds" || identifier == "seconds")
 		{
-			return FindResult(CreateExpression(boost::bind(&contextSeconds, srcInfo)));
+			return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextSeconds, srcInfo)));
 		}
 		else if (identifier == "Terminate_counter" || identifier == "terminate_counter")
 		{
-			return FindResult(CreateExpression(boost::bind(&contextTerminateCounter, srcInfo)));
+			return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextTerminateCounter, srcInfo)));
+		}
+	}
+
+	if (method == Context::METHOD_OPERATOR_DOT)
+	{
+		LPRDOParser pThis(const_cast<RDOParser*>(this));
+		if (identifier == "Time_now" || identifier == "time_now"
+			|| identifier == "Системное_время" || identifier == "системное_время"
+			|| identifier == "Seconds" || identifier == "seconds"
+			|| identifier == "Terminate_counter" || identifier == "terminate_counter")
+		{
+			return rdo::Factory<FindResult>::create(SwitchContext(pThis, params));
 		}
 	}
 
@@ -316,105 +288,110 @@ Context::FindResult RDOParser::onFindContext(const std::string& method, const Co
 
 	if (method == Context::METHOD_OPERATOR_DOT)
 	{
-		//! Типы ресурсов
 		LPRDORTPResType pResType = findRTPResType(identifier);
 		if (pResType)
 		{
-			return FindResult(SwitchContext(pResType));
+			return rdo::Factory<FindResult>::create(SwitchContext(pResType, params));
 		}
 
-		//! Ресурсы
 		LPRDORSSResource pResource = findRSSResource(identifier);
 		if (pResource)
 		{
-			return FindResult(SwitchContext(pResource));
+			return rdo::Factory<FindResult>::create(SwitchContext(pResource, params));
 		}
-	}
 
-	if (method == Context::METHOD_GET)
-	{
-		//! Ресурсы
-		LPRDORSSResource pResource = findRSSResource(identifier);
-		if (pResource)
+		LPRDOPATPattern pPattern = findPATPattern(identifier);
+		if (pPattern)
 		{
-			return FindResult(CreateExpression(boost::bind(&contextGetResource, pResource, srcInfo)));
+			return rdo::Factory<FindResult>::create(SwitchContext(pPattern, params));
 		}
 
-		//! Константы
+		LPRDOPROCProcess pProcess = findPROCProcess(identifier);
+		if (pProcess)
+		{
+			return rdo::Factory<FindResult>::create(SwitchContext(pProcess, params));
+		}
+
+		LPRDOResultGroup pResultGroup = findResultGroup(identifier);
+		if (pResultGroup)
+		{
+			return rdo::Factory<FindResult>::create(SwitchContext(pResultGroup, params));
+		}
+
 		LPRDOFUNConstant pConstant = findFUNConstant(identifier);
 		if (pConstant)
 		{
-			return FindResult(CreateExpression(boost::bind(&contextConstant, pConstant, srcInfo)));
+			return rdo::Factory<FindResult>::create(SwitchContext(pConstant, params));
 		}
 
-		//! Последовательности
 		LPRDOFUNSequence pSequence = findFUNSequence(identifier);
 		if (pSequence)
 		{
-			return FindResult(CreateExpression(boost::bind(&contextSequence, identifier, srcInfo)));
+			return rdo::Factory<FindResult>::create(SwitchContext(pSequence, params));
 		}
 
 		//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
 		//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
 		{
 			ErrorBlockMonicker errorBlockMonicker;
-			BOOST_FOREACH(const LPTypeInfo& type, m_preCastTypeList)
+			for (const LPTypeInfo& type: m_preCastTypeList)
 			{
-				LPRDOEnumType enumType = type->type().object_dynamic_cast<RDOEnumType>();
+				LPRDOEnumType enumType = type->itype().object_dynamic_cast<RDOEnumType>();
 				ASSERT(enumType);
 
-				ruint index = enumType->getEnums()->findEnum(identifier);
+				std::size_t index = enumType->findEnum(identifier);
 				if (index != rdo::runtime::RDOEnumType::END)
 				{
-					return FindResult(CreateExpression(boost::bind(&contextUnknownEnum, enumType->getEnums(), index, srcInfo)));
+					return rdo::Factory<FindResult>::create(SwitchContext(enumType, params));
 				}
 			}
 		}
+
 	}
 
-	return Context::FindResult();
+	return rdo::Factory<Context::FindResult>::create();
 }
 
-rbool RDOParser::isCurrentDPTSearch()
+bool RDOParser::isCurrentDPTSearch()
 {
 	return getLastDPTSearch() && !getLastDPTSearch()->closed() ? true : false;
 }
 
-rbool RDOParser::isCurrentDPTPrior()
+bool RDOParser::isCurrentDPTPrior()
 {
 	return getLastDPTPrior() ? true : false;
 }
 
-void RDOParser::insertChanges(CREF(tstring) name, CREF(tstring) value)
+void RDOParser::insertChanges(const std::string& name, const std::string& value)
 {
 	m_changes.push_back(Changes(name, value));
 }
 
-tstring RDOParser::getChanges() const
+std::string RDOParser::getChanges() const
 {
 	std::stringstream stream;
 	stream << "$Changes" << std::endl;
-	ruint changes_max_length = 0;
-	STL_FOR_ALL_CONST(m_changes, change_it)
+	std::size_t changes_max_length = 0;
+	for (const auto& change: m_changes)
 	{
-		if (change_it->m_name.length() > changes_max_length)
+		if (change.m_name.length() > changes_max_length)
 		{
-			changes_max_length = change_it->m_name.length();
+			changes_max_length = change.m_name.length();
 		}
 	}
-	STL_FOR_ALL_CONST(m_changes, change_it)
+	for (const auto& change: m_changes)
 	{
-		stream << "  " << change_it->m_name;
-		for (ruint i = change_it->m_name.length(); i < changes_max_length; i++)
+		stream << "  " << change.m_name;
+		for (std::size_t i = change.m_name.length(); i < changes_max_length; i++)
 		{
 			stream << " ";
 		}
-		stream << "  = " << change_it->m_value << std::endl;
+		stream << "  = " << change.m_value << std::endl;
 	}
 	return stream.str();
 }
 
-tstring RDOParser::getModelStructure()
+std::string RDOParser::getModelStructure()
 {
 	std::stringstream modelStructure;
 
@@ -423,34 +400,34 @@ tstring RDOParser::getModelStructure()
 
 	// RTP
 	modelStructure << std::endl << std::endl << "$Resource_type" << std::endl;
-	STL_FOR_ALL_CONST(m_allRTPResType, rtp_it)
+	for (const auto& rtp: m_allRTPResType)
 	{
-		(*rtp_it)->writeModelStructure(modelStructure);
+		rtp->writeModelStructure(modelStructure);
 	}
 
 	// RSS
 	modelStructure << std::endl << "$Resources" << std::endl;
-	STL_FOR_ALL_CONST(m_allRSSResource, rss_it)
+	for (const auto& rss: m_allRSSResource)
 	{
-		(*rss_it)->writeModelStructure(modelStructure);
+		rss->writeModelStructure(modelStructure);
 	}
 
 	// PAT
 	modelStructure << std::endl << "$Pattern" << std::endl;
-	STL_FOR_ALL_CONST(m_allPATPattern, pat_it)
+	for (const auto& pat: m_allPATPattern)
 	{
-		(*pat_it)->writeModelStructure(modelStructure);
+		pat->writeModelStructure(modelStructure);
 	}
 
 	// OPR/DPT
-	ruint counter = 1;
+	std::size_t counter = 1;
 	modelStructure << std::endl << "$Activities" << std::endl;
 	modelStructure << m_pRuntime->writeActivitiesStructure(counter);
 
 	// DPT only
-	for (ruint i = 0; i < m_allDPTSearch.size(); i++)
+	for (std::size_t i = 0; i < m_allDPTSearch.size(); i++)
 	{
-		for (ruint j = 0; j < m_allDPTSearch.at(i)->getActivities().size(); j++)
+		for (std::size_t j = 0; j < m_allDPTSearch.at(i)->getActivities().size(); j++)
 		{
 			LPRDODPTSearchActivity pSearchActivity = m_allDPTSearch.at(i)->getActivities().at(j);
 			ASSERT(pSearchActivity);
@@ -460,12 +437,12 @@ tstring RDOParser::getModelStructure()
 
 	// PMD
 	modelStructure << std::endl << "$Watching" << std::endl;
-	ruint watching_max_length = 0;
-	STL_FOR_ALL_CONST(m_pRuntime->getResult(), watching_it)
+	std::size_t watching_max_length = 0;
+	for (const auto& watching: m_pRuntime->getResult())
 	{
-		LPITrace          trace     = *watching_it;
-		LPIName           name      = trace;
-		LPIModelStructure structure = trace;
+		LPITrace          trace     = watching.object_dynamic_cast<ITrace>();
+		LPIName           name      = trace.object_dynamic_cast<IName>();
+		LPIModelStructure structure = trace.object_dynamic_cast<IModelStructure>();
 		if (trace && name && structure)
 		{
 			if (trace->traceable() && name->name().length() > watching_max_length)
@@ -474,17 +451,17 @@ tstring RDOParser::getModelStructure()
 			}
 		}
 	}
-	STL_FOR_ALL_CONST(m_pRuntime->getResult(), watching_it)
+	for (const auto& watching: m_pRuntime->getResult())
 	{
-		LPITrace          trace     = *watching_it;
-		LPIName           name      = trace;
-		LPIModelStructure structure = trace;
+		LPITrace          trace     = watching.object_dynamic_cast<ITrace>();
+		LPIName           name      = trace.object_dynamic_cast<IName>();
+		LPIModelStructure structure = trace.object_dynamic_cast<IModelStructure>();
 		if (trace && name && structure)
 		{
 			if (trace->traceable())
 			{
 				modelStructure << "  " << name->name();
-				for (ruint i = name->name().length(); i < watching_max_length + 2; i++)
+				for (std::size_t i = name->name().length(); i < watching_max_length + 2; i++)
 					modelStructure << " ";
 
 				structure->writeModelStructure(modelStructure);
@@ -497,7 +474,7 @@ tstring RDOParser::getModelStructure()
 
 void RDOParser::parse()
 {
-	BOOST_FOREACH(const LPRDOParserItem& compiler, m_compilers)
+	for (const LPRDOParserItem& compiler: m_compilers)
 	{
 		m_parser_item = compiler;
 		m_parser_item->parse(this);
@@ -506,9 +483,9 @@ void RDOParser::parse()
 	runRTPPost();
 }
 
-void RDOParser::parse(REF(std::istream) stream)
+void RDOParser::parse(std::istream& stream)
 {
-	BOOST_FOREACH(const LPRDOParserItem& compiler, m_compilers)
+	for (const LPRDOParserItem& compiler: m_compilers)
 	{
 		m_parser_item = compiler;
 		m_parser_item->parse(this, stream);
@@ -526,19 +503,22 @@ void RDOParser::runRSSPost()
 {
 	//! В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
 #ifdef RDOSIM_COMPATIBLE
-	STL_FOR_ALL_CONST(getRTPResTypes(), rtp_it)
+	for (const auto& rtp: getRTPResTypes())
 	{
 #endif
-		STL_FOR_ALL_CONST(getRSSResources(), rss_it)
+		for (const auto& rss: getRSSResources())
 		{
 #ifdef RDOSIM_COMPATIBLE
-			if ((*rss_it)->getType() == *rtp_it)
+			if (rss->getType() == rtp)
 			{
 #endif
-				const std::vector<rdo::runtime::LPRDOCalc> calcList = (*rss_it)->createCalc();
-				BOOST_FOREACH(const rdo::runtime::LPRDOCalc& calc, calcList)
+				if (!rss->getIsNested())
 				{
-					runtime()->addInitCalc(calc);
+					const std::vector<rdo::runtime::LPRDOCalc> calcList = rss->createCalcList();
+					for (const rdo::runtime::LPRDOCalc& calc: calcList)
+					{
+						runtime()->addInitCalc(calc);
+					}
 				}
 #ifdef RDOSIM_COMPATIBLE
 			}
@@ -551,8 +531,11 @@ void RDOParser::runRSSPost()
 
 void RDOParser::runSMRPost()
 {
+	//! Калки, созданные в SMR
+	for (const auto& calc: m_pSMR->getCalcList())
+		runtime()->addInitCalc(calc);
 	//! Планирование событий, описанных в SMR
-	BOOST_FOREACH(const LPRDOPATPattern& pattern, getPATPatterns())
+	for (const LPRDOPATPattern& pattern: getPATPatterns())
 	{
 		LPRDOPatternEvent event = pattern.object_dynamic_cast<RDOPatternEvent>();
 		if (!event)
@@ -568,13 +551,13 @@ void RDOParser::runSMRPost()
 
 void RDOParser::runRTPPost()
 {
-	BOOST_FOREACH(const LPRDORTPResType& type, getRTPResTypes())
+	for (const LPRDORTPResType& type: getRTPResTypes())
 	{
 		type->setupRuntimeFactory();
 	}
 }
 
-void RDOParser::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
+void RDOParser::checkFunctionName(const RDOParserSrcInfo& src_info)
 {
 	LPRDOFUNConstant pConstant = findFUNConstant(src_info.src_text());
 	if (pConstant)
@@ -600,12 +583,12 @@ void RDOParser::checkFunctionName(CREF(RDOParserSrcInfo) src_info)
 	}
 }
 
-void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
+void RDOParser::checkActivityName(const RDOParserSrcInfo& src_info)
 {
-	STL_FOR_ALL_CONST(getDPTSearchs(), it_search)
+	for (const auto& search: getDPTSearchs())
 	{
-		RDODPTSearch::ActivityList::const_iterator it_search_act = std::find_if((*it_search)->getActivities().begin(), (*it_search)->getActivities().end(), compareName<RDODPTSearchActivity>(src_info.src_text()));
-		if (it_search_act != (*it_search)->getActivities().end())
+		RDODPTSearch::ActivityList::const_iterator it_search_act = std::find_if(search->getActivities().begin(), search->getActivities().end(), compareName<RDODPTSearchActivity>(src_info.src_text()));
+		if (it_search_act != search->getActivities().end())
 		{
 			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
 			error().push_only((*it_search_act)->src_info(), "См. первое определение");
@@ -613,20 +596,20 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 //			error("Activity name: " + *_name + " already defined");
 		}
 	}
-	STL_FOR_ALL_CONST(getDPTSomes(), it_some)
+	for (const auto& some: getDPTSomes())
 	{
-		RDODPTSome::ActivityList::const_iterator it_some_act = std::find_if((*it_some)->getActivities().begin(), (*it_some)->getActivities().end(), compareName<RDODPTSomeActivity>(src_info.src_text()));
-		if (it_some_act != (*it_some)->getActivities().end())
+		RDODPTSome::ActivityList::const_iterator it_some_act = std::find_if(some->getActivities().begin(), some->getActivities().end(), compareName<RDODPTSomeActivity>(src_info.src_text()));
+		if (it_some_act != some->getActivities().end())
 		{
 			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
 			error().push_only((*it_some_act)->src_info(), "См. первое определение");
 			error().push_done();
 		}
 	}
-	STL_FOR_ALL_CONST(getDPTPriors(), it_prior)
+	for (const auto& prior: getDPTPriors())
 	{
-		RDODPTPrior::ActivityList::const_iterator it_prior_act = std::find_if((*it_prior)->getActivities().begin(), (*it_prior)->getActivities().end(), compareName<RDODPTPriorActivity>(src_info.src_text()));
-		if (it_prior_act != (*it_prior)->getActivities().end())
+		RDODPTPrior::ActivityList::const_iterator it_prior_act = std::find_if(prior->getActivities().begin(), prior->getActivities().end(), compareName<RDODPTPriorActivity>(src_info.src_text()));
+		if (it_prior_act != prior->getActivities().end())
 		{
 			error().push_only(src_info, rdo::format("Активность '%s' уже существует", src_info.src_text().c_str()));
 			error().push_only((*it_prior_act)->src_info(), "См. первое определение");
@@ -635,7 +618,7 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 	}
 }
 
-void RDOParser::checkDPTName(CREF(RDOParserSrcInfo) src_info)
+void RDOParser::checkDPTName(const RDOParserSrcInfo& src_info)
 {
 	if (src_info.src_text().empty())
 	{

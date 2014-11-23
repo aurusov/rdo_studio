@@ -12,9 +12,10 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
 SET(PLUGIN_GAME5_MOC_FILES
 	src/board.h
-	src/combobox_delegate.h
-	src/cost_setup_table.h
+	src/checkable_line_edit.h
+	src/graph_edge.h
 	src/graph_node.h
+	src/multi_select_completer.h
 	src/plugin_game5.h
 	src/plugin_game5_dialog.h
 	src/plugin_game5_graph_dialog.h
@@ -26,6 +27,8 @@ SET(PLUGIN_GAME5_MOC_FILES
 SET(SRC_FILES
 	src/plugin_game5.h
 	src/plugin_game5.cpp
+	src/plugin_game5_model_generator.h
+	src/plugin_game5_model_generator.cpp
 )
 
 SET(COMPLETER_FILES
@@ -47,21 +50,22 @@ SET(DIALOGS_FILES
 SET(GAME_BOARD_FILES
 	src/board.h
 	src/board.cpp
-	src/combobox_delegate.h
-	src/combobox_delegate.cpp
-	src/cost_setup_table.h
-	src/cost_setup_table.cpp
+	src/checkable_line_edit.h
+	src/checkable_line_edit.cpp
 	src/tiles.h
 	src/tiles.cpp
 )
 
 SET(GRAPH_FILES
-	src/graph_info.h
-	src/graph_info.cpp
 	src/graph_edge.h
 	src/graph_edge.cpp
+	src/graph_info.h
+	src/graph_info.cpp
+	src/graph_items_types.h
 	src/graph_node.h
 	src/graph_node.cpp
+	src/graph_node_info.h
+	src/graph_node_info.cpp
 	src/graph_widget.h
 	src/graph_widget.cpp
 )
@@ -116,18 +120,26 @@ ADD_LIBRARY(plugin_game5 SHARED
 	${GENERATED_QRC_FILES}
 )
 
-FOREACH(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
-	string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
+IF(MSVC)
+	FOREACH(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
+		string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
+		SET_TARGET_PROPERTIES(plugin_game5 PROPERTIES
+			RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CONFIG_DIRECTORY_${OUTPUTCONFIG}}/plugins
+		)
+	ENDFOREACH()
+ELSE()
 	SET_TARGET_PROPERTIES(plugin_game5 PROPERTIES
-		RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CONFIG_DIRECTORY_${OUTPUTCONFIG}}/plugins
+		LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/plugins"
+		ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/plugins"
+		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/plugins"
 	)
-ENDFOREACH()
+ENDIF()
 
 SET_TARGET_PROPERTIES(plugin_game5 PROPERTIES FOLDER ${APPS_FOLDERS}/.plugins/.game5)
 
 ADD_DEPENDENCIES(plugin_game5 rdo_application)
 
-TARGET_LINK_LIBRARIES(plugin_game5 ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+TARGET_LINK_LIBRARIES(plugin_game5 ${Boost_LIBRARIES})
 TARGET_LINK_LIBRARIES(plugin_game5 rdo_application)
 TARGET_LINK_LIBRARIES(plugin_game5 rdo_editor)
 TARGET_LINK_LIBRARIES(plugin_game5 rdo_frame)
@@ -183,4 +195,4 @@ IF(MSVC) # options for windows #
 	SOURCE_GROUP(".src\\.resources" FILES
 		${RESOURCES_IMAGE_FILES}
 	)
-ENDIF(MSVC)
+ENDIF()

@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- TreeRoot
 // --------------------------------------------------------------------------------
-TreeRoot::TreeRoot(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP)
+TreeRoot::TreeRoot(const LPRDORuntime& pRuntime, RDODPTSearch* pDP)
 	: m_dp                (pDP     )
 	, m_rootNode          (NULL    )
 	, m_targetNode        (NULL    )
@@ -37,10 +37,39 @@ TreeRoot::TreeRoot(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP)
 	m_ptime = boost::posix_time::microsec_clock::local_time();
 }
 
+TreeRoot::~TreeRoot()
+{}
+
+int TreeRoot::getNodesCound() const
+{
+	return m_nodesCount;
+}
+
+int TreeRoot::getNewNodeNumber()
+{
+	return ++m_nodesCount;
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- TreeNode
 // --------------------------------------------------------------------------------
-TreeNode::TreeNode(CREF(LPRDORuntime) pRuntime, PTR(TreeNode) pParent, PTR(TreeRoot) pRoot, LPIDPTSearchActivity pActivity, double cost, int cnt)
+/*!
+  \fn      bool compareNodes(const TreeNode* tn1, const TreeNode* tn2)
+  \brief   функция сравнения вершин графа для сортировки списка OPEN
+*/
+bool compareNodes(const TreeNode* tn1, const TreeNode* tn2)
+{
+	if (fabs(tn1->m_costRest - tn2->m_costRest) > 0.0000001)
+	{
+		return (tn1->m_costRest < tn2->m_costRest);
+	}
+	else
+	{
+		return (tn1->m_number < tn2->m_number);
+	}
+}
+
+TreeNode::TreeNode(const LPRDORuntime& pRuntime, TreeNode* pParent, TreeRoot* pRoot, LPIDPTSearchActivity pActivity, double cost, int cnt)
 	: m_pRuntime     (pRuntime )
 	, m_parent       (pParent  )
 	, m_root         (pRoot    )
@@ -252,7 +281,7 @@ void TreeNode::ExpandChildren()
 	std::sort(m_root->m_OPEN.begin(), m_root->m_OPEN.end(), compareNodes);
 }
 
-TreeNode::NodeFoundInfo TreeNode::CheckIfExistBetter(CREF(LPRDORuntime) pChildRuntime, double useCost, TreeNode** loser)
+TreeNode::NodeFoundInfo TreeNode::CheckIfExistBetter(const LPRDORuntime& pChildRuntime, double useCost, TreeNode** loser)
 {
 	ASSERT(pChildRuntime);
 
@@ -294,5 +323,17 @@ TreeNode* TreeNode::createChildTreeNode()
 	m_root->m_sizeof_dpt += sizeof(TreeNode);
 	return new TreeNode(m_pChildRuntime, this, m_root, m_currAct, m_costPath, m_root->getNewNodeNumber());
 }
+
+void TreeNode::onSearchOpenNode(const LPRDORuntime& /*pRuntime*/)
+{}
+
+void TreeNode::onSearchNodeInfoDeleted(const LPRDORuntime& /*pRuntime*/)
+{}
+
+void TreeNode::onSearchNodeInfoReplaced(const LPRDORuntime& /*pRuntime*/)
+{}
+
+void TreeNode::onSearchNodeInfoNew(const LPRDORuntime& /*pRuntime*/)
+{}
 
 CLOSE_RDO_RUNTIME_NAMESPACE

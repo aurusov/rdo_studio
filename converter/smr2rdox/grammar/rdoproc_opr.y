@@ -3,8 +3,8 @@
   \file      rdoproc_opr.y
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -14,6 +14,7 @@
 %}
 
 %pure-parser
+%param {void* lexer}
 
 %token RDO_Resource_type				257
 %token RDO_permanent					258
@@ -80,7 +81,7 @@
 %token RDO_set							319
 %token RDO_IDENTIF_NoChange_NoChange	320
 %token RDO_Operations					321
-	
+
 %token RDO_Results						322
 %token RDO_watch_par					323
 %token RDO_watch_state					324
@@ -397,7 +398,7 @@ dpt_process_line
 dpt_queue_param
 	: RDO_IDENTIF
 	{
-		tstring res_name = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string res_name = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		TRACE1("%s _good\n", res_name.c_str());
 		LPRDOPROCQueue pQueue = rdo::Factory<RDOPROCQueue>::create(CONVERTER->getLastPROCProcess(), "QUEUE");
 		ASSERT(pQueue);
@@ -413,14 +414,14 @@ dpt_queue_param
 dpt_depart_param
 	: RDO_IDENTIF
 	{
-		tstring res_name = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string res_name = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		TRACE1("%s _good\n", res_name.c_str());
 		LPRDOPROCDepart pDepart = rdo::Factory<RDOPROCDepart>::create(CONVERTER->getLastPROCProcess(), "DEPART");
 		ASSERT(pDepart);
 		pDepart->setResource(res_name);
 		$$ = CONVERTER->stack().push(pDepart);
 	}
-	| RDO_IDENTIF error 
+	| RDO_IDENTIF error
 	{
 		CONVERTER->error().error(@1, "Ошибка в имени ресурса");
 	}
@@ -460,8 +461,8 @@ dpt_term_param
 dpt_seize_param
 	: RDO_IDENTIF
 	{
-		tstring        res_name = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
-		LPRDOPROCSeize pSeize   = rdo::Factory<RDOPROCSeize>::create(CONVERTER->getLastPROCProcess(), "SEIZE");
+		const std::string res_name = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
+		LPRDOPROCSeize pSeize = rdo::Factory<RDOPROCSeize>::create(CONVERTER->getLastPROCProcess(), "SEIZE");
 		ASSERT(pSeize);
 		pSeize->addResource(res_name);
 		$$ = CONVERTER->stack().push(pSeize);
@@ -470,7 +471,7 @@ dpt_seize_param
 	{
 		LPRDOPROCSeize pSeize = CONVERTER->stack().pop<RDOPROCSeize>($1);
 		ASSERT(pSeize);
-		tstring res_name = CONVERTER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
+		const std::string res_name = CONVERTER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
 		pSeize->addResource(res_name);
 		$$ = CONVERTER->stack().push(pSeize);
 	}
@@ -483,7 +484,7 @@ dpt_seize_param
 dpt_release_param
 	: RDO_IDENTIF
 	{
-		tstring          res_name = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
+		const std::string res_name = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 		LPRDOPROCRelease pRelease = rdo::Factory<RDOPROCRelease>::create(CONVERTER->getLastPROCProcess(), "RELEASE");
 		ASSERT(pRelease);
 		pRelease->addResource(res_name);
@@ -493,7 +494,7 @@ dpt_release_param
 	{
 		LPRDOPROCRelease pRelease = CONVERTER->stack().pop<RDOPROCRelease>($1);
 		ASSERT(pRelease);
-		tstring res_name = CONVERTER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
+		const std::string res_name = CONVERTER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
 		pRelease->addResource(res_name);
 		$$ = CONVERTER->stack().push(pRelease);
 	}
@@ -748,7 +749,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
 		ASSERT(pFunParams);
-		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @3);
 		pFunParams->setSrcText(funName + "()");
@@ -760,7 +761,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = CONVERTER->stack().pop<RDOFUNParams>($3);
 		ASSERT(pFunParams);
-		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
 		pFunParams->setSrcText(funName + "(" + pFunParams->src_text() + ")");

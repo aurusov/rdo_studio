@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/interface/rdointerface.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/namespace.h"
 #include "simulator/runtime/rdo_value.h"
@@ -29,42 +28,44 @@ CLOSE_RDO_RUNTIME_NAMESPACE
   \interface IOperation
   \brief     Интерфейс модифицированного продукционного правила
 */
-class IOperation
+class IOperation: public virtual rdo::counter_reference
 {
 public:
-	virtual void   onBeforeChoiceFrom    (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual rbool  choiceFrom            (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual void   onBeforeOperationBegin(CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual void   convertBegin          (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual void   onAfterOperationBegin (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual void   onBeforeOperationEnd  (CREF(rdo::runtime::LPRDORuntime) pRuntime, const std::vector<rdo::runtime::RDOValue>& params) = 0;
-	virtual void   convertEnd            (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual void   onAfterOperationEnd   (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
-	virtual double getNextTimeInterval   (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
+	virtual void   onBeforeChoiceFrom    (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+	virtual bool   choiceFrom            (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+	virtual void   onBeforeOperationBegin(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+	virtual void   convertBegin          (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+	virtual void   onAfterOperationBegin (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+	virtual void   onBeforeOperationEnd  (const rdo::runtime::LPRDORuntime& pRuntime, const std::vector<rdo::runtime::RDOValue>& params) = 0;
+	virtual void   convertEnd            (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+	virtual void   onAfterOperationEnd   (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+	virtual double getNextTimeInterval   (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
 };
+DECLARE_POINTER(IOperation)
 
 #define DECLARE_IOperation \
-	virtual void   onBeforeChoiceFrom    (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual rbool  choiceFrom            (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual void   onBeforeOperationBegin(CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual void   convertBegin          (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual void   onAfterOperationBegin (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual void   onBeforeOperationEnd  (CREF(rdo::runtime::LPRDORuntime) pRuntime, const std::vector<rdo::runtime::RDOValue>& params); \
-	virtual void   convertEnd            (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual void   onAfterOperationEnd   (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual double getNextTimeInterval   (CREF(rdo::runtime::LPRDORuntime) pRuntime)
+	virtual void   onBeforeChoiceFrom    (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual bool   choiceFrom            (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual void   onBeforeOperationBegin(const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual void   convertBegin          (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual void   onAfterOperationBegin (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual void   onBeforeOperationEnd  (const rdo::runtime::LPRDORuntime& pRuntime, const std::vector<rdo::runtime::RDOValue>& params); \
+	virtual void   convertEnd            (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual void   onAfterOperationEnd   (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual double getNextTimeInterval   (const rdo::runtime::LPRDORuntime& pRuntime)
 
 /*!
   \interface IOperationTrace
   \brief     Интерфейс IOperationTrace
 */
-class IOperationTrace
+class IOperationTrace: public virtual rdo::counter_reference
 {
 public:
-	virtual tstring traceOperId() const = 0;
+	virtual std::string traceOperId() const = 0;
 };
+DECLARE_POINTER(IOperationTrace)
 
 #define DECLARE_IOperationTrace \
-	virtual tstring traceOperId() const;
+	virtual std::string traceOperId() const;
 
 #endif // _LIB_RUNTIME_OPERATION_I_H_

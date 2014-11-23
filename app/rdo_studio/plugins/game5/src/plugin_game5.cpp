@@ -13,136 +13,215 @@
 #include <QMessageBox>
 #include <QBitmap>
 #include <QDir>
-#include <boost/foreach.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/filesystem.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/plugins/game5/src/plugin_game5.h"
+#include "utils/src/locale/rdolocale.h"
+#include "utils/src/common/model_objects.h"
 #include "app/rdo_studio/src/application.h"
-#include "app/rdo_studio/src/tracer/tracer.h"
 #include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/model/model_tab_ctrl.h"
-#include "utils/src/common/model_objects.h"
+#include "app/rdo_studio/src/tracer/tracer.h"
+#include "app/rdo_studio/plugins/game5/src/board.h"
+#include "app/rdo_studio/plugins/game5/src/plugin_game5.h"
+#include "app/rdo_studio/plugins/game5/src/plugin_game5_model_generator.h"
 // --------------------------------------------------------------------------------
 
-QString PluginGame5::getPluginName()
+namespace
+{
+	const QString PLUGIN_GUID           = "{5315750C-964B-4ed2-96FE-21FC6226942B}";
+	const QString PLUGIN_ACTION_NAME    = "action" + PLUGIN_GUID;
+	const QString PLUGIN_MENU_NAME      = "createdMenu";
+	const QString PLUGIN_MENU_TEXT      = "Плагины";
+	const QString PLUGIN_TOOLBAR_NAME   = "toolbar" + PLUGIN_GUID;
+	const QString RDO_MENUBAR_NAME      = "menubar";
+	const size_t  RDOFileType_ENUM_SIZE = 13;
+
+	void backUpModel(rdo::gui::model::Model* pModel)
+	{
+		boost::filesystem::path modelFolder(pModel->getFullName().toStdWString());
+		modelFolder.remove_leaf();
+		const QString backupFolderName = "backup" + QDateTime::currentDateTime().toString("_yyyy-MM-dd_HH.mm.ss");
+		const boost::filesystem::path backupFolder = modelFolder / backupFolderName.toStdString();
+		try
+		{
+			if (boost::filesystem::create_directory(backupFolder))
+			{
+				for (size_t i = 0; i < RDOFileType_ENUM_SIZE; i++)
+				{
+					std::string fileExtension = rdo::model::getFileTypeString(rdo::model::FileType(i));
+					boost::algorithm::to_lower(fileExtension);
+					const std::string fileName = pModel->getName().toStdString() + "." + fileExtension;
+					const boost::filesystem::path filePath = modelFolder / fileName;
+					const boost::filesystem::path backupFilePath = backupFolder / fileName;
+					if (boost::filesystem::exists(filePath))
+					{
+						boost::filesystem::copy(filePath, backupFilePath);
+					}
+				}
+			}
+		}
+		catch (const boost::filesystem::filesystem_error& error)
+		{
+			const std::string system_what = error.boost::system::system_error::what();
+			const std::string system_what_utf = 
+#if defined(OST_WINDOWS)
+				rdo::locale::convertFromCLocale(system_what, rdo::locale::get().system());
+#elif defined(OST_LINUX)
+				system_what;
+#endif
+			QString what = error.what();
+			what.replace(QString::fromStdString(system_what), QString::fromStdString(system_what_utf));
+			QMessageBox::critical(g_pApp->getMainWnd(),
+				"RAO-Studio",
+				QString("Ошибка создания резервной копии модели: ") + what);
+		}
+	}
+
+	QMenu* findPluginMenu(QWidget* pParent)
+	{
+		QMenu* pluginMenu = pParent->findChild<QMenu*>(PLUGIN_MENU_NAME);
+		if (!pluginMenu)
+		{
+			QMenuBar* menuBar = pParent->findChild<QMenuBar*>(RDO_MENUBAR_NAME);
+			ASSERT(menuBar);
+			for (auto action: menuBar->actions())
+			{
+				if (action->text() == PLUGIN_MENU_TEXT)
+				{
+					pluginMenu = action->menu();
+					break;
+				}
+			}
+		}
+		return pluginMenu;
+	}
+} // end anonymous namespace
+
+QString PluginGame5::getPluginName() const
 {
 	return "game5_debug";
 }
 
-QString PluginGame5::getAuthor()
+QString PluginGame5::getAuthor() const
 {
 	return "Chernov";
 }
 
-QString PluginGame5::getVersion()
+QString PluginGame5::getVersion() const
 {
-	return "0.2.0";
+	return "0.2.1";
 }
 
-QUuid PluginGame5::getGUID()
+QUuid PluginGame5::getGUID()  const
 {
-	QUuid pluginGUID("{5315750C-964B-4ed2-96FE-21FC6226942B}");
+	QUuid pluginGUID(PLUGIN_GUID);
 	return pluginGUID;
 }
 
-void PluginGame5::pluginStartAction(QWidget* pParent)
+void PluginGame5::pluginStartAction(QWidget* pParent, const std::string& commandLine)
 {
 	if (!g_pApp)
 	{
-		g_pApp = static_cast<Application*>(qApp);
+		g_pApp    = static_cast<Application*>(qApp);
 		g_pModel  = g_pApp->getMainWndUI()->getModel();
 		g_pTracer = g_pApp->getTracer();
 		kernel    = g_pApp->getKernel();
 	}
-	QMenu* menu = pParent->findChild<QMenu*>("createdMenu");
-	if (!menu)
+
+	if (!commandLine.empty())
 	{
-		QMenuBar* menuBar = pParent->findChild<QMenuBar*>("menubar");
-		if (menuBar)
-		{
-			QMenu* defMenu = NULL;
-			BOOST_FOREACH(QAction* action, menuBar->actions())
-			{
-				if (action->text() == "Плагины")
-				{
-					defMenu = action->menu();
-					break;
-				}
-			}
-			if (defMenu)
-			{
-				menu = defMenu;
-			}
-			else
-			{
-				menu = new QMenu("Плагины", pParent);
-				menu->setObjectName("createdMenu");
-			}
-			menuBar->addMenu(menu);
-		}
-		else
-		{
-			QMessageBox::warning(pParent, "Plugin " + getPluginName() + " ver " + getVersion(),
-			                     "Не найдено меню");
-		}
+		executeCommand(commandLine);
 	}
-	if (menu)
+
+	QMenu* pluginMenu = findPluginMenu(pParent);
+	if (!pluginMenu)
 	{
-		QAction* action = new QAction(getPluginName() + " ver " + getVersion(), menu);
-		action->setObjectName("createdAction");
-		connect(action, &QAction::triggered, this, &PluginGame5::pluginSlot);
-		menu->addAction(action);
+		pluginMenu = new QMenu(PLUGIN_MENU_TEXT, pParent);
+		pluginMenu->setObjectName(PLUGIN_MENU_NAME);
 	}
-	genSitDlg = NULL;
-	graphDlg  = NULL;
+	QMenuBar* menuBar = pParent->findChild<QMenuBar*>(RDO_MENUBAR_NAME);
+	ASSERT(menuBar);
+	menuBar->addMenu(pluginMenu);
+
+	QAction* action = new QAction(getPluginName() + " ver " + getVersion(), pluginMenu);
+	action->setObjectName(PLUGIN_ACTION_NAME);
+	connect(action, &QAction::triggered, this, &PluginGame5::pluginActivation);
+	pluginMenu->addAction(action);
+
+	m_generateSituationDlg = NULL;
+	m_graphDlg = NULL;
 }
 
 void PluginGame5::pluginStopAction(QWidget* pParent)
 {
-	QMenu* pluginMenu = pParent->findChild<QMenu*>("createdMenu");
-	QAction* pluignAction = NULL;
-	if (pluginMenu)
-	{
-		pluignAction = pluginMenu->findChild<QAction*>("createdAction");
-	}
-	else
-	{
-		QMenuBar* menuBar = pParent->findChild<QMenuBar*>("menuBar");
-		bool defined = false;
-		BOOST_FOREACH(QAction* action, menuBar->actions())
-		{
-			if (!defined && action->text() == "Плагины")
-			{
-				defined = true;
-				pluginMenu = action->menu();
-				pluignAction = pluginMenu->findChild<QAction*>("createdAction");
-			}
-		}
-	}
-	if (pluignAction)
-	{
-		delete pluignAction;
-	}
+	QMenu* pluginMenu = findPluginMenu(pParent);
+	ASSERT(pluginMenu);
+
+	QAction* pluignAction = pluginMenu->findChild<QAction*>(PLUGIN_ACTION_NAME);
+	ASSERT(pluignAction);
+	delete pluignAction;
+
 	if (pluginMenu->isEmpty())
 	{
 		delete pluginMenu;
 	}
-	if (genSitDlg)
+
+	ASSERT(m_generateSituationDlg);
+	delete m_generateSituationDlg;
+	ASSERT(m_graphDlg);
+	delete m_graphDlg;
+	QToolBar* pluginGame5ToolBar = pParent->findChild<QToolBar*>(PLUGIN_TOOLBAR_NAME);
+	ASSERT(pluginGame5ToolBar);
+	delete pluginGame5ToolBar;
+	if (g_pApp->getMainWndUI())
 	{
-		delete genSitDlg;
-	}
-	if (graphDlg)
-	{
-		delete graphDlg;
-	}
-	QToolBar* pluginGame5ToolBar = pParent->findChild<QToolBar*>("pluginGame5ToolBar");
-	if (pluginGame5ToolBar)
-	{
-		delete pluginGame5ToolBar;
+		rdo::gui::model::Model* pModel = g_pApp->getMainWndUI()->getModel();
+		if (pModel)
+		{
+			disconnect(pModel, &rdo::gui::model::Model::stopped,
+			           this  , &PluginGame5::reemitGraphDlgAction);
+			disconnect(pModel, &rdo::gui::model::Model::actionUpdated,
+			           this  , &PluginGame5::enablePluginActions);
+		}
 	}
 }
 
-void PluginGame5::pluginSlot()
+void PluginGame5::executeCommand(const std::string& commandLine)
+{
+	if (!g_pApp || !g_pApp->getMainWndUI() || !g_pApp->getMainWndUI()->getModel())
+		return;
+
+	rdo::gui::model::Model* pModel = g_pApp->getMainWndUI()->getModel();
+
+	if (!pModel->getTab())
+		return;
+
+	QStringList positionList = QString::fromStdString(commandLine).split(' ', QString::SkipEmptyParts);
+	std::vector<unsigned int> newState;
+	for (const auto& position: positionList)
+	{
+		newState.push_back(position.toInt());
+	}
+	Board board;
+	board.setTilesPositon(newState);
+
+	for (int i = 0; i < pModel->getTab()->tabBar()->count(); i++)
+	{
+		pModel->getTab()->getItemEdit(i)->clearAll();
+	}
+	pModel->getTab()->getItemEdit(rdo::model::RTP)->appendText(PluginGame5ModelGenerator::modelRTP(board));
+	pModel->getTab()->getItemEdit(rdo::model::RSS)->appendText(PluginGame5ModelGenerator::modelRSS(board));
+	pModel->getTab()->getItemEdit(rdo::model::PAT)->appendText(PluginGame5ModelGenerator::modelPAT());
+	pModel->getTab()->getItemEdit(rdo::model::DPT)->appendText(PluginGame5ModelGenerator::modelDPT(board));
+	pModel->getTab()->getItemEdit(rdo::model::FUN)->appendText(PluginGame5ModelGenerator::modelFUN(board));
+
+	pModel->saveModel();
+	g_pApp->quit();
+}
+
+void PluginGame5::pluginActivation()
 {
 	QWidget* pParent = qobject_cast<QWidget*>(sender()-> //action
 	                                          parent()-> //QMenu
@@ -151,13 +230,13 @@ void PluginGame5::pluginSlot()
 	if (pMainWindow->getModel()->getTab())
 	{
 		bool canStart = true;
-		if(pMainWindow->getModel()->isModify())
+		if (pMainWindow->getModel()->isModify())
 		{
-			int ret = QMessageBox::question(g_pApp->getMainWnd(),
-			                                "RAO-Studio",
-			                                "Модель была изменена!\nХотите сохранить изменения?",
-			                                QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel,
-			                                QMessageBox::Save
+			const int ret = QMessageBox::question(g_pApp->getMainWnd(),
+			                                      "RAO-Studio",
+			                                      "Модель будет перезаписана!\nНесохраненные изменения будут потеряны\nХотите сохранить изменения?",
+			                                      QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel,
+			                                      QMessageBox::Save
 			);
 			switch (ret)
 			{
@@ -170,12 +249,11 @@ void PluginGame5::pluginSlot()
 		{
 			if (!pMainWindow->getModel()->isEmpty())
 			{
-				int ret = QMessageBox::warning(g_pApp->getMainWnd(),
-				                               "RAO-Studio",
-				                               "Текущая модель будет перезаписана!",
-				                               QMessageBox::Ok | QMessageBox::Cancel,
-				                               QMessageBox::Ok
-				);
+				const int ret = QMessageBox::warning(g_pApp->getMainWnd(),
+				                                     "RAO-Studio",
+				                                     "Модель будет перезаписана!",
+				                                     QMessageBox::Ok | QMessageBox::Cancel,
+				                                     QMessageBox::Ok);
 				if (ret == QMessageBox::Cancel)
 				{
 					canStart = false;
@@ -187,8 +265,8 @@ void PluginGame5::pluginSlot()
 			backUpModel(pMainWindow->getModel());
 			initDialogs(pParent);
 			initToolBar(pMainWindow);
-			QAction* senderAct = qobject_cast<QAction*>(sender());
-			senderAct->setEnabled(false);
+			QAction* senderAction = qobject_cast<QAction*>(sender());
+			senderAction->setEnabled(false);
 		}
 	}
 	else
@@ -197,78 +275,68 @@ void PluginGame5::pluginSlot()
 	}
 }
 
-void PluginGame5::backUpModel(rdo::gui::model::Model* pModel)
-{
-	QString modelFullName = pModel->getFullName();
-	QString modelFolder   = modelFullName.section(QRegExp("\\\\|/"), 0, -2) + "/";
-	QString backupFolder  = modelFolder + "backup" + QDateTime::currentDateTime().toString("_yyyy-MM-dd_HH.mm.ss") + "/";
-	QDir makeDir;
-	if (makeDir.mkpath(backupFolder))
-	{
-		for (int i = 0; i < 13; i++)
-		{
-			QString fileFormat = QString::fromStdString(getFileTypeString(rdoModelObjects::RDOFileType(i)));
-			QString fileName     = modelFolder + pModel->getName() + ".";
-			        fileName    += fileFormat.toLower();
-			QString newFileName  = backupFolder + pModel->getName() + ".";
-			        newFileName += fileFormat.toLower();
-			if (QFile::exists(fileName))
-			{
-				QFile::copy(fileName, newFileName);
-			}
-		}
-	}
-}
-
-void PluginGame5::initToolBar(MainWindow* pParent)
+void PluginGame5::initToolBar(MainWindow* pParent) const
 {
 	QToolBar* pluginToolBar = new QToolBar(pParent);
-	pluginToolBar->setObjectName("pluginGame5ToolBar");
+	pluginToolBar->setObjectName(PLUGIN_TOOLBAR_NAME);
 
-	QAction* pluginGraphDlgAction    = new QAction(pParent);
-	QAction* pluginGenerateDlgAction = new QAction(pParent);
+	QAction* graphDlgAction             = new QAction(pParent);
+	QAction* generateSituationDlgAction = new QAction(pParent);
 
-	pluginGenerateDlgAction->setObjectName("pluginGenerateDlgAction");
-	pluginGenerateDlgAction->setText("Расставить фишки");
+	generateSituationDlgAction->setText("Расставить фишки");
 	QPixmap pluginGenerateDlgActionPixmap(":/res/images/gen_sit_dialog.png");
-	pluginGenerateDlgAction->setIcon(QIcon(pluginGenerateDlgActionPixmap));
+	generateSituationDlgAction->setIcon(QIcon(pluginGenerateDlgActionPixmap));
 
-	pluginGraphDlgAction->setObjectName("pluginGraphDlgAction");
-	pluginGraphDlgAction->setText("Построить граф");
+	graphDlgAction->setText("Построить граф");
 	QPixmap graphDlgPixmapD(":/res/images/graph_dialog_d.png");
 	QPixmap graphDlgPixmap (":/res/images/graph_dialog.png");
 	QIcon graphDlgIcon(graphDlgPixmap);
 	graphDlgIcon.addPixmap(graphDlgPixmapD, QIcon::Disabled);
-	pluginGraphDlgAction->setIcon(graphDlgIcon);
-	pluginGraphDlgAction->setEnabled(false);
+	graphDlgAction->setIcon(graphDlgIcon);
+	graphDlgAction->setEnabled(false);
 
-	pluginToolBar->addAction(pluginGenerateDlgAction);
-	pluginToolBar->addAction(pluginGraphDlgAction);
+	pluginToolBar->addAction(generateSituationDlgAction);
+	pluginToolBar->addAction(graphDlgAction);
 	pluginToolBar->setIconSize(QSize(16, 15));
 
-	pParent->addToolBar(Qt::TopToolBarArea,pluginToolBar);
+	pParent->addToolBar(Qt::TopToolBarArea, pluginToolBar);
 
-	connect(pluginGenerateDlgAction , &QAction::triggered, genSitDlg, &PluginGame5GenerateSituationDialog::onPluginAction);
-	connect(pluginGraphDlgAction    , &QAction::triggered, this     , &PluginGame5::reemitGraphDlgAction);
+	rdo::gui::model::Model* pModel = g_pApp->getMainWndUI()->getModel();
 
-	connect(this, &PluginGame5::onGraphDlgAction        , graphDlg            , &PluginGame5GraphDialog::onPluginAction);
-	connect(this, &PluginGame5::setGraphDlgActionEnabled, pluginGraphDlgAction, &QAction::setEnabled);
+	connect(generateSituationDlgAction, &QAction::triggered,
+	        m_generateSituationDlg    , &PluginGame5GenerateSituationDialog::onPluginAction);
+	connect(pModel, &rdo::gui::model::Model::stopped,
+	        this    , &PluginGame5::reemitGraphDlgAction);
+	connect(graphDlgAction, &QAction::triggered,
+	        this          , &PluginGame5::reemitGraphDlgAction);
+	connect(this      , &PluginGame5::onGraphDlgAction,
+	        m_graphDlg, &PluginGame5GraphDialog::onPluginAction);
+	connect(this          , &PluginGame5::setGraphDlgActionEnabled,
+	        graphDlgAction, &QAction::setEnabled);
+	connect(this, &PluginGame5::setGenerateSituationDlgActionEnabled,
+	        generateSituationDlgAction, &QAction::setEnabled);
+	connect(pModel, &rdo::gui::model::Model::actionUpdated,
+	        this    , &PluginGame5::enablePluginActions);
 }
 
 void PluginGame5::initDialogs(QWidget* pParent)
 {
-	genSitDlg = new PluginGame5GenerateSituationDialog(pParent);
-	graphDlg  = new PluginGame5GraphDialog(pParent);
-	
-	connect(genSitDlg, &QDialog::accepted, this, &PluginGame5::reemitGraphDlgActionEnabled);
+	m_generateSituationDlg = new PluginGame5GenerateSituationDialog(pParent);
+	m_graphDlg  = new PluginGame5GraphDialog(pParent);
 }
 
 void PluginGame5::reemitGraphDlgAction()
 {
-	emit onGraphDlgAction(genSitDlg->getBoardState());
+	emit onGraphDlgAction(m_generateSituationDlg->getBoardState());
 }
 
-void PluginGame5::reemitGraphDlgActionEnabled()
+void PluginGame5::enablePluginActions()
 {
-	emit setGraphDlgActionEnabled(true);
+	if (!g_pApp || !g_pApp->getMainWndUI() || !g_pApp->getMainWndUI()->getModel())
+		return;
+
+	rdo::gui::model::Model* pModel = g_pApp->getMainWndUI()->getModel();
+
+	emit setGraphDlgActionEnabled(pModel->canRun());
+	emit setGenerateSituationDlgActionEnabled(pModel->canRun());
 }

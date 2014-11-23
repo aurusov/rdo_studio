@@ -38,40 +38,31 @@ class RDOOperation
 	, public IOperationTrace
 {
 typedef RDOActivityPattern<RDOPatternOperation> pattern_type;
-DEFINE_IFACTORY(RDOOperation);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(pattern_type)
-	QUERY_INTERFACE_PARENT(RDOPatternPrior)
-	QUERY_INTERFACE(IBaseOperation)
-	QUERY_INTERFACE(IOperation)
-	QUERY_INTERFACE(IEvent)
-	QUERY_INTERFACE(IOperationTrace)
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOOperation);
 friend class RDOTrace;
 friend class RDOSimulatorTrace;
 friend class RDOSimulator;
 
 protected:
-	RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(tstring) name);
-	RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name);
+	RDOOperation(const LPRDORuntime& pRuntime, const LPRDOPatternOperation& pPattern, bool trace, const std::string& name);
+	RDOOperation(const LPRDORuntime& pRuntime, const LPRDOPatternOperation& pPattern, bool trace, const LPRDOCalc& pCondition, const std::string& name);
 	virtual ~RDOOperation();
 	DECLARE_IOperation;
 
 private:
-	RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(RDOOperation) originForClone);
+	RDOOperation(const LPRDORuntime& pRuntime, const RDOOperation& originForClone);
 
 	typedef std::vector<LPIOperation> CloneList;
 
 	CloneList m_cloneList;
-	rbool     m_haveAdditionalCondition;
+	bool m_haveAdditionalCondition;
 	LPRDOCalc m_pAdditionalCondition;
-	int       m_operId;
+	int m_operId;
 
-	virtual void onMakePlaned(CREF(LPRDORuntime) pRuntime, const std::vector<RDOValue>& params);
+	virtual void onMakePlaned(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& params);
 
-	void incrementRelevantResourceReference(CREF(LPRDORuntime) pRuntime);
-	void decrementRelevantResourceReference(CREF(LPRDORuntime) pRuntime);
+	void incrementRelevantResourceReference(const LPRDORuntime& pRuntime);
+	void decrementRelevantResourceReference(const LPRDORuntime& pRuntime);
 
 	DECLARE_IBaseOperation;
 	DECLARE_IOperationTrace;

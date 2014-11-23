@@ -12,8 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
-#include "utils/src/common/rdotypes.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
@@ -26,7 +24,8 @@ class RDOValue;
   \class     RDOType
   \brief     Базовый тип данных РДО
 */
-OBJECT(RDOType)
+PREDECLARE_POINTER(RDOType);
+class RDOType: public virtual rdo::counter_reference
 {
 public:
 	/*!
@@ -113,7 +112,5 @@ DEFINE_ATOM_TYPE(bool);
 DEFINE_ATOM_TYPE(string);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/rdo_type.inl"
 
 #endif // _LIB_RUNTIME_TYPE_H_

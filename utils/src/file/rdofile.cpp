@@ -32,12 +32,12 @@
 
 namespace rdo {
 
-rbool File::create(CREF(boost::filesystem::path) name)
+bool File::create(const boost::filesystem::path& name)
 {
 	return create(name, "");
 }
 
-rbool File::create(CREF(boost::filesystem::path) name, CREF(tstring) content)
+bool File::create(const boost::filesystem::path& name, const std::string& content)
 {
 	boost::filesystem::fstream file(name, std::ios::out | std::ios::binary);
 	file << content << std::endl;
@@ -45,12 +45,12 @@ rbool File::create(CREF(boost::filesystem::path) name, CREF(tstring) content)
 	return true;
 }
 
-rbool File::exist(CREF(boost::filesystem::path) name)
+bool File::exist(const boost::filesystem::path& name)
 {
 	return boost::filesystem::exists(name);
 }
 
-rbool File::read_only(CREF(boost::filesystem::path) name)
+bool File::read_only(const boost::filesystem::path& name)
 {
 #ifdef COMPILER_VISUAL_STUDIO
 	return _waccess(name.wstring().c_str(), 04) == 0 && _waccess(name.wstring().c_str(), 06) == -1;
@@ -62,12 +62,12 @@ rbool File::read_only(CREF(boost::filesystem::path) name)
 #endif // COMPILER_GCC
 }
 
-rbool File::unlink(CREF(boost::filesystem::path) name)
+bool File::unlink(const boost::filesystem::path& name)
 {
 	return boost::filesystem::remove(name);
 }
 
-rbool File::splitpath(CREF(boost::filesystem::path) from, REF(boost::filesystem::path) fileDir, REF(boost::filesystem::path) fileName, REF(boost::filesystem::path) fileExt)
+bool File::splitpath(const boost::filesystem::path& from, boost::filesystem::path& fileDir, boost::filesystem::path& fileName, boost::filesystem::path& fileExt)
 {
 	boost::filesystem::path parentDir(from.parent_path());
 	boost::filesystem::path rootName      = parentDir.root_name();
@@ -87,14 +87,14 @@ rbool File::splitpath(CREF(boost::filesystem::path) from, REF(boost::filesystem:
 boost::filesystem::path File::getTempFileName()
 {
 #ifdef COMPILER_VISUAL_STUDIO
-	const ruint BUFSIZE = 4096;
-	tchar lpPathBuffer[BUFSIZE];
+	const std::size_t BUFSIZE = 4096;
+	char lpPathBuffer[BUFSIZE];
 
 	if (::GetTempPath(BUFSIZE, lpPathBuffer) == 0)
 	{
 		return boost::filesystem::path();
 	}
-	tchar szTempName[MAX_PATH];
+	char szTempName[MAX_PATH];
 	if (::GetTempFileName(lpPathBuffer, NULL, 0, szTempName) == 0)
 	{
 		return boost::filesystem::path();
@@ -111,7 +111,7 @@ boost::filesystem::path File::getTempFileName()
 #endif // COMPILER_GCC
 }
 
-boost::filesystem::path File::extractFilePath(CREF(boost::filesystem::path) name)
+boost::filesystem::path File::extractFilePath(const boost::filesystem::path& name)
 {
 	boost::filesystem::path parentPath = boost::filesystem::path(name).make_preferred().parent_path();
 	return parentPath.empty()
@@ -119,7 +119,7 @@ boost::filesystem::path File::extractFilePath(CREF(boost::filesystem::path) name
 		: parentPath / boost::filesystem::path("/").make_preferred();
 }
 
-rbool File::trimLeft(CREF(boost::filesystem::path) name)
+bool File::trimLeft(const boost::filesystem::path& name)
 {
 	boost::filesystem::ifstream inputStream(name, std::ios::binary);
 	std::stringstream sstream;
@@ -129,7 +129,7 @@ rbool File::trimLeft(CREF(boost::filesystem::path) name)
 		return false;
 	}
 
-	rbool empty = true;
+	bool empty = true;
 	while (!inputStream.eof())
 	{
 		char byte;
@@ -162,7 +162,7 @@ rbool File::trimLeft(CREF(boost::filesystem::path) name)
 		boost::filesystem::ofstream outStream(name, std::ios::binary);
 		outStream << sstream.str();
 	}
-	catch (CREF(boost::system::error_code))
+	catch (const boost::system::error_code&)
 	{
 		return false;
 	}

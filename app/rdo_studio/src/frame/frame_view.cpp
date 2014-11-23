@@ -12,7 +12,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 #include <QLayout>
 #include <QPainter>
 #include "utils/src/common/warning_enable.h"
@@ -50,7 +49,7 @@ bool Content::valid() const
 	return m_memDC.valid();
 }
 
-void Content::init(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList)
+void Content::init(const rdo::animation::Frame* const pFrame, const rdo::gui::BitmapList& bitmapList)
 {
 	ASSERT(pFrame);
 
@@ -68,8 +67,8 @@ void Content::init(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapLis
 	}
 	if (!imageFound)
 	{
-		size.setWidth ((ruint)pFrame->m_size.m_width );
-		size.setHeight((ruint)pFrame->m_size.m_height);
+		size.setWidth((std::size_t)pFrame->m_size.m_width);
+		size.setHeight((std::size_t)pFrame->m_size.m_height);
 	}
 
 	QColor bgColor;
@@ -86,7 +85,7 @@ void Content::init(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapLis
 	init(size);
 }
 
-void Content::init(CREF(QSize) size)
+void Content::init(const QSize& size)
 {
 	m_memDC.resize(size.width(), size.height());
 	setMinimumSize(size);
@@ -94,7 +93,7 @@ void Content::init(CREF(QSize) size)
 
 void Content::updateFont()
 {
-	PTR(FrameStyle) pStyle = &g_pApp->getStyle()->style_frame;
+	FrameStyle* pStyle = &g_pApp->getStyle()->style_frame;
 	ASSERT(pStyle);
 
 	m_font = QFont(pStyle->font.name.c_str());
@@ -104,7 +103,7 @@ void Content::updateFont()
 	m_font.setPointSize(pStyle->font.size);
 }
 
-void Content::setBGColor(CREF(QColor) color)
+void Content::setBGColor(const QColor& color)
 {
 	m_bgColor = color;
 }
@@ -117,8 +116,6 @@ void Content::resizeEvent(QResizeEvent* pEvent)
 
 void Content::paintEvent(QPaintEvent* pEvent)
 {
-	UNUSED(pEvent);
-
 	QPainter painter(this);
 	onDraw(painter);
 
@@ -130,8 +127,8 @@ void Content::mousePressEvent(QMouseEvent* pEvent)
 	ASSERT(pEvent);
 	if (pEvent->button() == Qt::LeftButton)
 	{
-		ruint index = g_pModel->getFrameManager().findFrameIndex(this);
-		if (index != ruint(~0))
+		std::size_t index = g_pModel->getFrameManager().findFrameIndex(this);
+		if (index != std::size_t(~0))
 		{
 			g_pModel->getFrameManager().areaDown(index, pEvent->pos());
 		}
@@ -140,7 +137,7 @@ void Content::mousePressEvent(QMouseEvent* pEvent)
 	parent_type::mousePressEvent(pEvent);
 }
 
-void Content::onDraw(REF(QPainter) painter)
+void Content::onDraw(QPainter& painter)
 {
 	if (valid())
 	{
@@ -162,10 +159,10 @@ void Content::onDraw(REF(QPainter) painter)
 }
 
 void Content::update(
-	CPTRC(rdo::animation::Frame)         pFrame,
-	 CREF(rdo::gui::BitmapList)          bitmapList,
-	  REF(rdo::gui::BitmapList)          bitmapGeneratedList,
-	  REF(rdo::gui::animation::AreaList) areaList
+	const rdo::animation::Frame* const pFrame,
+	const rdo::gui::BitmapList& bitmapList,
+	rdo::gui::BitmapList& bitmapGeneratedList,
+	rdo::gui::animation::AreaList& areaList
 )
 {
 	ASSERT(pFrame);
@@ -181,21 +178,21 @@ void Content::update(
 
 	m_memDC.dc().setFont(m_font);
 
-	BOOST_FOREACH(PTR(rdo::animation::FrameItem) pCurrElement, pFrame->m_elements)
+	for (rdo::animation::FrameItem* pCurrElement: pFrame->m_elements)
 	{
 		ASSERT(pCurrElement);
 		switch (pCurrElement->getType())
 		{
-		case rdo::animation::FrameItem::FIT_TEXT   : elementText     (static_cast<PTR(rdo::animation::TextElement     )>(pCurrElement)); break;
-		case rdo::animation::FrameItem::FIT_RECT   : elementRect     (static_cast<PTR(rdo::animation::RectElement     )>(pCurrElement)); break;
-		case rdo::animation::FrameItem::FIT_R_RECT : elementRoundRect(static_cast<PTR(rdo::animation::RoundRectElement)>(pCurrElement)); break;
-		case rdo::animation::FrameItem::FIT_LINE   : elementLine     (static_cast<PTR(rdo::animation::LineElement     )>(pCurrElement)); break;
-		case rdo::animation::FrameItem::FIT_TRIANG : elementTriang   (static_cast<PTR(rdo::animation::TriangElement   )>(pCurrElement)); break;
-		case rdo::animation::FrameItem::FIT_CIRCLE : elementCircle   (static_cast<PTR(rdo::animation::CircleElement   )>(pCurrElement)); break;
-		case rdo::animation::FrameItem::FIT_ELLIPSE: elementEllipse  (static_cast<PTR(rdo::animation::EllipseElement  )>(pCurrElement)); break;
-		case rdo::animation::FrameItem::FIT_BMP    : elementBMP      (static_cast<PTR(rdo::animation::BmpElement      )>(pCurrElement), bitmapList, bitmapGeneratedList); break;
-		case rdo::animation::FrameItem::FIT_S_BMP  : elementSBMP     (static_cast<PTR(rdo::animation::ScaledBmpElement)>(pCurrElement), bitmapList, bitmapGeneratedList); break;
-		case rdo::animation::FrameItem::FIT_ACTIVE : elementActive   (static_cast<PTR(rdo::animation::ActiveElement   )>(pCurrElement), areaList); break;
+		case rdo::animation::FrameItem::FIT_TEXT   : elementText     (static_cast<rdo::animation::TextElement*>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_RECT   : elementRect     (static_cast<rdo::animation::RectElement*>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_R_RECT : elementRoundRect(static_cast<rdo::animation::RoundRectElement*>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_LINE   : elementLine     (static_cast<rdo::animation::LineElement*>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_TRIANG : elementTriang   (static_cast<rdo::animation::TriangElement*>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_CIRCLE : elementCircle   (static_cast<rdo::animation::CircleElement*>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_ELLIPSE: elementEllipse  (static_cast<rdo::animation::EllipseElement*>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_BMP    : elementBMP      (static_cast<rdo::animation::BmpElement*>(pCurrElement), bitmapList, bitmapGeneratedList); break;
+		case rdo::animation::FrameItem::FIT_S_BMP  : elementSBMP     (static_cast<rdo::animation::ScaledBmpElement*>(pCurrElement), bitmapList, bitmapGeneratedList); break;
+		case rdo::animation::FrameItem::FIT_ACTIVE : elementActive   (static_cast<rdo::animation::ActiveElement*>(pCurrElement), areaList); break;
 		case rdo::animation::FrameItem::FIT_NULL   : break;
 		}
 	}
@@ -205,7 +202,7 @@ void Content::update(
 	parent_type::update();
 }
 
-void Content::drawBackground(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList)
+void Content::drawBackground(const rdo::animation::Frame* const pFrame, const rdo::gui::BitmapList& bitmapList)
 {
 	ASSERT(pFrame);
 
@@ -225,7 +222,7 @@ void Content::drawBackground(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui:
 		m_memDC.dc().setPen(QColor(g_pApp->getStyle()->style_frame.defaultColor));
 		m_memDC.dc().setBrush(m_bgColor);
 
-		const ruint pountListCount = 4;
+		const std::size_t pountListCount = 4;
 		QPoint pointList[pountListCount];
 		pointList[0].setX(0);
 		pointList[0].setY(0);
@@ -241,13 +238,13 @@ void Content::drawBackground(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui:
 }
 
 template <class F>
-void Content::drawColoredElement(CPTR(rdo::animation::ColoredElement) pColor, F drawMethod)
+void Content::drawColoredElement(const rdo::animation::ColoredElement* pColor, F drawMethod)
 {
 	setColors(pColor);
 	drawMethod(m_memDC.dc());
 }
 
-void Content::setColors(CPTR(rdo::animation::ColoredElement) pColor)
+void Content::setColors(const rdo::animation::ColoredElement* pColor)
 {
 	ASSERT(pColor);
 	if (!pColor->m_foreground.m_transparent)
@@ -277,7 +274,7 @@ void Content::setColors(CPTR(rdo::animation::ColoredElement) pColor)
 	}
 }
 
-void Content::elementText(PTR(rdo::animation::TextElement) pElement)
+void Content::elementText(rdo::animation::TextElement* pElement)
 {
 	ASSERT(pElement);
 
@@ -317,7 +314,7 @@ void Content::elementText(PTR(rdo::animation::TextElement) pElement)
 	m_memDC.dc().drawText(rect, flags, QString::fromStdString(pElement->m_text), &rect);
 }
 
-void Content::elementRect(PTR(rdo::animation::RectElement) pElement)
+void Content::elementRect(rdo::animation::RectElement* pElement)
 {
 	ASSERT(pElement);
 
@@ -333,7 +330,7 @@ void Content::elementRect(PTR(rdo::animation::RectElement) pElement)
 	);
 }
 
-void Content::elementRoundRect(PTR(rdo::animation::RoundRectElement) pElement)
+void Content::elementRoundRect(rdo::animation::RoundRectElement* pElement)
 {
 	ASSERT(pElement);
 
@@ -354,7 +351,7 @@ void Content::elementRoundRect(PTR(rdo::animation::RoundRectElement) pElement)
 	);
 }
 
-void Content::elementLine(PTR(rdo::animation::LineElement) pElement)
+void Content::elementLine(rdo::animation::LineElement* pElement)
 {
 	ASSERT(pElement);
 
@@ -368,11 +365,11 @@ void Content::elementLine(PTR(rdo::animation::LineElement) pElement)
 	}
 }
 
-void Content::elementTriang(PTR(rdo::animation::TriangElement) pElement)
+void Content::elementTriang(rdo::animation::TriangElement* pElement)
 {
 	ASSERT(pElement);
 
-	const ruint pountListCount = 3;
+	const std::size_t pountListCount = 3;
 	QPoint pointList[pountListCount];
 	pointList[0].setX((int)(pElement->m_point1.m_x));
 	pointList[0].setY((int)(pElement->m_point1.m_y));
@@ -381,7 +378,7 @@ void Content::elementTriang(PTR(rdo::animation::TriangElement) pElement)
 	pointList[2].setX((int)(pElement->m_point3.m_x));
 	pointList[2].setY((int)(pElement->m_point3.m_y));
 
-	void (QPainter::*pMethod)(CPTR(QPoint), int, Qt::FillRule) = &QPainter::drawPolygon;
+	void (QPainter::*pMethod)(const QPoint*, int, Qt::FillRule) = &QPainter::drawPolygon;
 
 	drawColoredElement(
 		pElement,
@@ -394,7 +391,7 @@ void Content::elementTriang(PTR(rdo::animation::TriangElement) pElement)
 	);
 }
 
-void Content::elementCircle(PTR(rdo::animation::CircleElement) pElement)
+void Content::elementCircle(rdo::animation::CircleElement* pElement)
 {
 	ASSERT(pElement);
 
@@ -405,7 +402,7 @@ void Content::elementCircle(PTR(rdo::animation::CircleElement) pElement)
 		(int)(pElement->m_radius.m_radius * 2)
 	);
 
-	void (QPainter::*pMethod)(CREF(QRect)) = &QPainter::drawEllipse;
+	void (QPainter::*pMethod)(const QRect&) = &QPainter::drawEllipse;
 
 	drawColoredElement(
 		pElement,
@@ -416,7 +413,7 @@ void Content::elementCircle(PTR(rdo::animation::CircleElement) pElement)
 	);
 }
 
-void Content::elementEllipse(PTR(rdo::animation::EllipseElement) pElement)
+void Content::elementEllipse(rdo::animation::EllipseElement* pElement)
 {
 	ASSERT(pElement);
 
@@ -427,7 +424,7 @@ void Content::elementEllipse(PTR(rdo::animation::EllipseElement) pElement)
 		(int)(pElement->m_size.m_height)
 	);
 
-	void (QPainter::*pMethod)(CREF(QRect)) = &QPainter::drawEllipse;
+	void (QPainter::*pMethod)(const QRect&) = &QPainter::drawEllipse;
 
 	drawColoredElement(
 		pElement,
@@ -439,9 +436,9 @@ void Content::elementEllipse(PTR(rdo::animation::EllipseElement) pElement)
 }
 
 void Content::elementBMP(
-	 PTR(rdo::animation::BmpElement) pElement,
-	CREF(rdo::gui::BitmapList)       bitmapList,
-	 REF(rdo::gui::BitmapList)       bitmapGeneratedList)
+	rdo::animation::BmpElement* pElement,
+	const rdo::gui::BitmapList& bitmapList,
+	rdo::gui::BitmapList& bitmapGeneratedList)
 {
 	ASSERT(pElement);
 
@@ -459,9 +456,9 @@ void Content::elementBMP(
 }
 
 void Content::elementSBMP(
-	 PTR(rdo::animation::ScaledBmpElement) pElement,
-	CREF(rdo::gui::BitmapList)             bitmapList,
-	 REF(rdo::gui::BitmapList)             bitmapGeneratedList)
+	rdo::animation::ScaledBmpElement* pElement,
+	const rdo::gui::BitmapList& bitmapList,
+	rdo::gui::BitmapList& bitmapGeneratedList)
 {
 	ASSERT(pElement);
 
@@ -479,10 +476,10 @@ void Content::elementSBMP(
 }
 
 QPixmap Content::getBitmap(
-	CREF(QString)              bitmapName,
-	CREF(QString)              maskName,
-	CREF(rdo::gui::BitmapList) bitmapList,
-	 REF(rdo::gui::BitmapList) bitmapGeneratedList)
+	const QString& bitmapName,
+	const QString& maskName,
+	const rdo::gui::BitmapList& bitmapList,
+	rdo::gui::BitmapList& bitmapGeneratedList)
 {
 	rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(bitmapName);
 	if (bmpIt == bitmapList.end())
@@ -512,7 +509,7 @@ QPixmap Content::getBitmap(
 			{
 				std::pair<rdo::gui::BitmapList::const_iterator, bool> result =
 					bitmapGeneratedList.insert(rdo::gui::BitmapList::value_type(maskedBitmapName, pixmap));
-				UNUSED(result);
+				(void)result;
 				ASSERT(result.second);
 				return pixmap;
 			}
@@ -522,7 +519,7 @@ QPixmap Content::getBitmap(
 	return bmpIt->second;
 }
 
-void Content::elementActive(PTR(rdo::animation::ActiveElement) pElement, REF(rdo::gui::animation::AreaList) areaList)
+void Content::elementActive(rdo::animation::ActiveElement* pElement, rdo::gui::animation::AreaList& areaList)
 {
 	ASSERT(pElement);
 
@@ -566,26 +563,26 @@ View::View(QWidget* pParent)
 
 View::~View()
 {
-	ruint index = g_pModel->getFrameManager().findFrameIndex(this);
-	if (index != ruint(~0))
+	std::size_t index = g_pModel->getFrameManager().findFrameIndex(this);
+	if (index != std::size_t(~0))
 	{
 		g_pModel->getFrameManager().disconnectView(this);
 		g_pModel->getFrameManager().resetCurrentShowingFrame(index);
 	}
 }
 
-PTR(Content) View::getContent()
+Content* View::getContent()
 {
-	PTR(Content) pContent = static_cast<PTR(Content)>(widget());
+	Content* pContent = static_cast<Content*>(widget());
 	ASSERT(pContent);
 	return pContent;
 }
 
 void View::update(
-	CPTRC(rdo::animation::Frame)         pFrame,
-	 CREF(rdo::gui::BitmapList)          bitmapList,
-	  REF(rdo::gui::BitmapList)          bitmapGeneratedList,
-	  REF(rdo::gui::animation::AreaList) areaList
+	const rdo::animation::Frame* const pFrame,
+	const rdo::gui::BitmapList& bitmapList,
+	rdo::gui::BitmapList& bitmapGeneratedList,
+	rdo::gui::animation::AreaList& areaList
 )
 {
 	getContent()->update(pFrame, bitmapList, bitmapGeneratedList, areaList);
@@ -601,7 +598,7 @@ bool View::event(QEvent* pEvent)
 	if (pEvent->type() == QEvent::KeyPress || pEvent->type() == QEvent::ShortcutOverride)
 	{
 		QKeyEvent* pKeyEvent = static_cast<QKeyEvent*>(pEvent);
-		ruint scanCode = pKeyEvent->nativeVirtualKey();
+		std::size_t scanCode = pKeyEvent->nativeVirtualKey();
 		g_pModel->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_KEY_DOWN, &scanCode);
 
 		if (pKeyEvent->key() == Qt::Key_F1)
@@ -616,7 +613,7 @@ bool View::event(QEvent* pEvent)
 	else if (pEvent->type() == QEvent::KeyRelease)
 	{
 		QKeyEvent* pKeyEvent = static_cast<QKeyEvent*>(pEvent);
-		ruint scanCode = pKeyEvent->nativeVirtualKey();
+		std::size_t scanCode = pKeyEvent->nativeVirtualKey();
 		g_pModel->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_KEY_UP, &scanCode);
 		return true;
 	}

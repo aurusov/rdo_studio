@@ -21,14 +21,14 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeParamSuchAs
 // --------------------------------------------------------------------------------
-CLASS(RDOTypeParamSuchAs): INSTANCE_OF(RDOTypeParam)
+class RDOTypeParamSuchAs: public RDOTypeParam
 {
 DECLARE_FACTORY(RDOTypeParamSuchAs);
 public:
-	CREF(LPRDOParam) getParam() const;
+	const LPRDOParam& getParam() const;
 
 private:
-	RDOTypeParamSuchAs(CREF(LPRDOParam) pParam);
+	RDOTypeParamSuchAs(const LPRDOParam& pParam);
 	virtual ~RDOTypeParamSuchAs();
 
 	LPRDOParam m_pParam;

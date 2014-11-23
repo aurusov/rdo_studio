@@ -3,8 +3,8 @@
   \file      rdoproc_rtp.y
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -14,6 +14,7 @@
 %}
 
 %pure-parser
+%param {void* lexer}
 
 %token RDO_Resource_type				257
 %token RDO_permanent					258
@@ -80,7 +81,7 @@
 %token RDO_set							319
 %token RDO_IDENTIF_NoChange_NoChange	320
 %token RDO_Operations					321
-	
+
 %token RDO_Results						322
 %token RDO_watch_par					323
 %token RDO_watch_state					324
@@ -221,7 +222,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // -------------------- General part
 // --------------------------------------------------------------------------------
 dptrtp_main:
-	| dptrtp_main RDO_Decision_point error RDO_End {UNUSED(@1);} /* заглушка для $Decision_point */
+	| dptrtp_main RDO_Decision_point error RDO_End {(void)(@1);} /* заглушка для $Decision_point */
 	| dptrtp_main RDO_Activities     error RDO_End               /* заглушка для $Activities     */
 	| dptrtp_main RDO_Process        error RDO_End               /* заглушка для $Process        */
 	;

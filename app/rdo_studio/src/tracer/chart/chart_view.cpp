@@ -12,7 +12,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <algorithm>
-#include <boost/foreach.hpp>
 #include <QProcess>
 #include <QEvent>
 #include <QClipboard>
@@ -152,12 +151,12 @@ int ChartView::chartShift() const
 	return m_chartShift;
 }
 
-CREF(Time) ChartView::drawFromX() const
+const Time& ChartView::drawFromX() const
 {
 	return m_drawFromX;
 }
 
-CREF(Time) ChartView::drawToX() const
+const Time& ChartView::drawToX() const
 {
 	return m_drawToX;
 }
@@ -172,7 +171,7 @@ int ChartView::drawToEventCount() const
 	return m_drawToEventCount;
 }
 
-CREF(ChartDoc::TimesList) ChartView::unwrapTimesList() const
+const ChartDoc::TimesList& ChartView::unwrapTimesList() const
 {
 	return m_unwrapTimesList;
 }
@@ -198,7 +197,7 @@ void ChartView::recalcLayout()
 	if (m_pYAxis)
 	{
 		m_pYAxis->getCaptions(m_captionList, m_valueCountY);
-		for (std::vector<tstring>::iterator it = m_captionList.begin(); it != m_captionList.end(); ++it)
+		for (std::vector<std::string>::iterator it = m_captionList.begin(); it != m_captionList.end(); ++it)
 		{
 			QRect rect = axisFontMetrics.boundingRect(QString::fromStdString(*it));
 			if (rect.width() > sizeMax.width())
@@ -223,7 +222,7 @@ void ChartView::recalcLayout()
 	{
 		QFontMetrics legendFontMetrics(m_fontLegend);
 		int count = 0;
-		BOOST_FOREACH(const ChartSerie* const pSerie, pDoc->getSerieList())
+		for (const ChartSerie* const pSerie: pDoc->getSerieList())
 		{
 			size = pSerie->getLegendSize(legendFontMetrics, m_chartRect);
 			if (size.width() && size.height())
@@ -321,7 +320,7 @@ void ChartView::updateScrollBars()
 	getHorzScrollBar().setValue   (m_SM_X.position);
 }
 
-bool ChartView::scrollHorizontally(rsint inc)
+bool ChartView::scrollHorizontally(int inc)
 {
 	if (!m_SM_X.applyInc(inc))
 	{
@@ -556,7 +555,7 @@ void ChartView::drawLegend(QPainter& painter, const QRect& legendRect)
 	ChartDoc* doc = getDocument();
 	QRect rect(legendRect);
 	painter.setFont(m_fontLegend);
-	BOOST_FOREACH(const ChartSerie* const pSerie, doc->getSerieList())
+	for (const ChartSerie* const pSerie: doc->getSerieList())
 	{
 		QSize size = pSerie->drawLegend(painter, rect, m_pStyle->legendFgColor);
 		rect.setTop(rect.top() + size.height());
@@ -581,7 +580,7 @@ void ChartView::drawYAxis(QPainter& painter, const QRect& chartRect, const Chart
 			int heightoffset = rdo::roundDouble((double)chartRect.height() / (double)(count - 1));
 			tmprect.setTop(chartRect.bottom());
 			int index = 0;
-			for (std::vector<tstring>::iterator it = m_captionList.begin(); it != m_captionList.end(); ++it)
+			for (std::vector<std::string>::iterator it = m_captionList.begin(); it != m_captionList.end(); ++it)
 			{
 				index++;
 				painter.drawText(tmprect, Qt::AlignRight, QString::fromStdString(*it));
@@ -616,7 +615,7 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 	ChartDoc* pDoc = getDocument();
 	if (!pDoc->getTimes().empty())
 	{
-		tstring formatstr = "%.3f";
+		std::string formatstr = "%.3f";
 
 		painter.setFont(m_fontAxis);
 		painter.setPen(m_pStyle->axisFgColor);
@@ -631,7 +630,7 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 			}
 			double valo = m_drawFromX.time;
 			int x = chartRect.left();
-			tstring str = rdo::format(formatstr.c_str(), valo);
+			std::string str = rdo::format(formatstr.c_str(), valo);
 			tmprect.setLeft(x);
 			painter.drawText(tmprect, Qt::AlignLeft, QString::fromStdString(str));
 			valo += valoffset;
@@ -660,10 +659,10 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 		else
 		{
 			int ticks = 0;
-			tstring str;
+			std::string str;
 			int lastx = 0;
 			QSize sz;
-			BOOST_FOREACH(const Time* const pTime, m_unwrapTimesList)
+			for (const Time* const pTime: m_unwrapTimesList)
 			{
 				tmprect.setLeft(chartRect.left() + (int)((pTime->time - m_unwrapTimesList.front()->time) * m_timeScale + ticks * m_pStyle->pFontsTicks.tickWidth - m_chartShift));
 				tmprect.setLeft(std::min(tmprect.left(), chartRect.right() - 1));
@@ -763,10 +762,8 @@ void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
 	}
 }
 
-void ChartView::setZoom(double new_zoom, const bool force_update)
+void ChartView::setZoom(double new_zoom, const bool /*force_update*/)
 {
-	UNUSED(force_update);
-
 	/*scale_koeff = new_zoom;
 	 if (scale_koeff < auto_zoom) {
 	 scale_koeff = auto_zoom;
@@ -873,10 +870,8 @@ const ChartViewStyle& ChartView::getStyle() const
 	return (*m_pStyle);
 }
 
-void ChartView::setFonts(const bool needRedraw)
+void ChartView::setFonts(const bool /*needRedraw*/)
 {
-	UNUSED(needRedraw);
-
 	if (!m_pStyle)
 		return;
 
@@ -972,7 +967,7 @@ void ChartView::paintEvent(QPaintEvent*)
 		drawXAxis(painter, m_chartRect);
 		drawGrid(painter, m_chartRect);
 
-		BOOST_FOREACH(const ChartSerie* const pSerie, doc->getSerieList())
+		for (const ChartSerie* const pSerie: doc->getSerieList())
 		{
 			pSerie->drawSerie(this, painter, m_chartRect);
 		}
@@ -1099,12 +1094,11 @@ ChartViewMainWnd::~ChartViewMainWnd()
 
 ChartView& ChartViewMainWnd::view()
 {
-	return *static_cast<PTR(ChartView)>(viewport());
+	return *static_cast<ChartView*>(viewport());
 }
 
-bool ChartViewMainWnd::viewportEvent(PTR(QEvent) pEvent)
+bool ChartViewMainWnd::viewportEvent(QEvent* /*pEvent*/)
 {
-	UNUSED(pEvent);
 	return false;
 }
 
@@ -1118,7 +1112,7 @@ void ChartViewMainWnd::focusOutEvent(QFocusEvent* pEvent)
 	static_cast<QObject*>(viewport())->event(pEvent);
 }
 
-void ChartViewMainWnd::keyPressEvent(PTR(QKeyEvent) pEvent)
+void ChartViewMainWnd::keyPressEvent(QKeyEvent* pEvent)
 {
 	switch (pEvent->key())
 	{

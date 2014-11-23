@@ -3,8 +3,8 @@
   \file      rdorss.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -26,27 +26,29 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int  cnv_rssparse(PTR(void)    lexer);
-int  cnv_rsslex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void cnv_rsserror(const char*  message);
+int cnv_rssparse(void* lexer);
+int cnv_rsslex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
+void cnv_rsserror(YYLTYPE* llocp, void* lexer, const char* message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource
 // --------------------------------------------------------------------------------
-OBJECT(RDORSSResource)
-	IS  INSTANCE_OF(RDOParserSrcInfo  )
-	AND INSTANCE_OF(boost::noncopyable)
+PREDECLARE_POINTER(RDORSSResource);
+class RDORSSResource
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
+	, public boost::noncopyable
 {
 DECLARE_FACTORY(RDORSSResource);
 public:
 	class Param
 	{
 	public:
-		explicit Param(CREF(LPRDOValue) pValue)
+		explicit Param(const LPRDOValue& pValue)
 			: m_pValue(pValue)
 		{}
 
-		CREF(LPRDOValue) param() const
+		const LPRDOValue& param() const
 		{
 			return m_pValue;
 		}
@@ -59,27 +61,27 @@ public:
 
 	virtual rdo::runtime::LPRDOCalc createCalc() const;
 
-	CREF(tstring)    name   () const { return src_info().src_text(); }
-	LPRDORTPResType  getType() const { return m_pResType;            }
+	const std::string& name() const { return src_info().src_text(); }
+	LPRDORTPResType getType() const { return m_pResType; }
 
-	int              getID  () const { return m_id;                  }
+	int getID() const { return m_id; }
 
-	CREF(ParamList)  params () const { return m_paramList;           }
+	const ParamList& params() const { return m_paramList; }
 
-	void  addParam(CREF(LPRDOValue) pParam);
-	rbool getTrace() const      { return trace;  }
-	void  setTrace(rbool value) { trace = value; }
-	rbool defined () const;
+	void addParam(const LPRDOValue& pParam);
+	bool getTrace() const { return trace; }
+	void setTrace(bool value) { trace = value; }
+	bool defined () const;
 
-	void writeModelStructure(REF(std::ostream) stream) const;
+	void writeModelStructure(std::ostream& stream) const;
 
 protected:
-	RDORSSResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
+	RDORSSResource(Converter* pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, int id = UNDEFINED_ID);
 
 	LPRDORTPResType m_pResType;
-	const int       m_id;        //! in system
-	ParamList       m_paramList;
-	rbool           trace;
+	const int m_id; //! in system
+	ParamList m_paramList;
+	bool trace;
 
 private:
 	RDORTPResType::ParamList::const_iterator m_currParam;
@@ -92,7 +94,7 @@ class RDOPROCResource: public RDORSSResource
 {
 DECLARE_FACTORY(RDOPROCResource);
 private:
-	RDOPROCResource(PTR(Converter) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
+	RDOPROCResource(Converter* pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, int id = UNDEFINED_ID);
 	virtual rdo::runtime::LPRDOCalc createCalc() const;
 };
 DECLARE_POINTER(RDOPROCResource);

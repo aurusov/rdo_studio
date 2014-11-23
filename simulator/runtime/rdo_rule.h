@@ -30,29 +30,22 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDORule: public IBaseOperation, public IRule, public RDOActivityPattern<RDOPatternRule>, public RDOPatternPrior
 {
 typedef RDOActivityPattern<RDOPatternRule> pattern_type;
-DEFINE_IFACTORY(RDORule);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(pattern_type)
-	QUERY_INTERFACE_PARENT(RDOPatternPrior)
-	QUERY_INTERFACE(IBaseOperation)
-	QUERY_INTERFACE(IRule)
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDORule);
 friend class RDOTrace;
 friend class RDODPTSearch;
 friend class TreeNode;
 
 private:
-	RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, rbool trace, CREF(tstring) name);
-	RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name);
+	RDORule(const LPRDORuntime& pRuntime, const LPRDOPatternRule& pPattern, bool trace, const std::string& name);
+	RDORule(const LPRDORuntime& pRuntime, const LPRDOPatternRule& pPattern, bool trace, const LPRDOCalc& pCondition, const std::string& name);
 
 	virtual ~RDORule();
 
 	void init();
 
 	LPRDORuntime m_pRuntime;
-	LPRDOCalc    m_pAdditionalCondition;
-	rbool        m_traceOFF;
+	LPRDOCalc m_pAdditionalCondition;
+	bool m_traceOFF;
 
 	void trace();
 

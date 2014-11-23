@@ -28,11 +28,11 @@ class ChartPreferences
 {
 Q_OBJECT
 public:
-	explicit ChartPreferences(PTR(ChartView) pView = NULL);
+	explicit ChartPreferences(ChartView* pView = NULL);
 
 private:
 
-	PTR(QColorDialog) colorDlg;
+	QColorDialog* colorDlg;
 
 	int      m_valueCountX;
 	int      m_valueCountY;
@@ -42,8 +42,8 @@ private:
 
 	int      traceIndex;
 
-	PTR(ChartView)  m_pView;
-	PTR(ChartSerie) m_pSerie;
+	ChartView*  m_pView;
+	ChartSerie* m_pSerie;
 
 	void insertColors(QComboBox* colorBox);
 	void insertColor(const QColor& color, const QString& colorName, QComboBox* colorBox);

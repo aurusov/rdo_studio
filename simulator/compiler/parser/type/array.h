@@ -2,8 +2,8 @@
   \copyright (c) RDO-Team, 2011
   \file      simulator/compiler/parser/type/array.h
   \author    Чирков Михаил
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -13,8 +13,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_array.h"
+#include "simulator/runtime/rdo_model_i.h"
 #include "simulator/compiler/parser/type/info.h"
-#include "simulator/compiler/parser/type/runtime_wrapper_type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -23,17 +23,18 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- RDOArrayType
 // --------------------------------------------------------------------------------
 class RDOArrayType
-	: public RuntimeWrapperType
+	: public rdo::runtime::RDOArrayType
+	, public IType
+	, public IModelStructure
 	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOArrayType);
 public:
-	CREF(LPTypeInfo)             getItemType        () const;
-	rdo::runtime::LPRDOArrayType getRuntimeArrayType() const;
-	LPTypeInfo                   typeInfo           () const;
+	const LPTypeInfo& getItemType() const;
+	LPTypeInfo typeInfo() const;
 
 private:
-	RDOArrayType         (CREF(LPTypeInfo) pItemType, CREF(RDOParserSrcInfo) src_info);
+	RDOArrayType(const LPTypeInfo& pItemType, const RDOParserSrcInfo& src_info);
 	virtual ~RDOArrayType();
 
 	LPTypeInfo m_pItemType;

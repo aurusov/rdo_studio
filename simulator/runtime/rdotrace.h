@@ -17,7 +17,6 @@
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/rdo.h"
 #include "simulator/runtime/rdotrace_i.h"
-#include "simulator/runtime/rdo_runtime_interface_registrator.h"
 #include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------
 
@@ -45,7 +44,7 @@ public:
 	virtual void onEndl();
 };
 
-inline std::ostream& operator << (std::ostream& stream, RDOEndL& rdoEndL);
+std::ostream& operator << (std::ostream& stream, RDOEndL& rdoEndL);
 
 /*!
   \class     RDOTrace
@@ -60,49 +59,49 @@ public:
 	RDOTrace();
 	virtual ~RDOTrace();
 
-	rbool canTrace() const;
+	bool canTrace() const;
 
-	void  startWriting();
-	void  stopWriting();
-	rbool canWrite() const;
-	rbool isNull() const;
+	void startWriting();
+	void stopWriting();
+	bool canWrite() const;
+	bool isNull() const;
 
 	// Search in tree
-	virtual void writeSearchBegin(double currentTime, tstring decisionPointId);
+	virtual void writeSearchBegin(double currentTime, std::string decisionPointId);
 	virtual void writeSearchDecisionHeader();
-	virtual void writeSearchDecision(CREF(LPRDORuntime) pRuntime, TreeNode *node);
-	virtual void writeString(tstring);
+	virtual void writeSearchDecision(const LPRDORuntime& pRuntime, TreeNode *node);
+	virtual void writeString(std::string);
 	virtual void writeSearchOpenNode(int nodeCount, int parentCount, double pathCost, double restCost);
 	virtual void writeSearchNodeInfo(char sign, TreeNodeTrace *node);
-	virtual void writeSearchResult(char letter, CREF(LPRDORuntime) pRuntime, TreeRoot *treeRoot);
+	virtual void writeSearchResult(char letter, const LPRDORuntime& pRuntime, TreeRoot *treeRoot);
 
-	virtual void writeEvent              (CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime);
-	virtual void writeRule               (CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime);
-	virtual void writeAfterOperationBegin(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime);
-	virtual void writeAfterOperationEnd  (CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntime);
+	virtual void writeEvent              (const LPIBaseOperation& opr, const LPRDORuntime& pRuntime);
+	virtual void writeRule               (const LPIBaseOperation& opr, const LPRDORuntime& pRuntime);
+	virtual void writeAfterOperationBegin(const LPIBaseOperation& opr, const LPRDORuntime& pRuntime);
+	virtual void writeAfterOperationEnd  (const LPIBaseOperation& opr, const LPRDORuntime& pRuntime);
 
-	virtual void writeTraceBegin(CREF(LPRDORuntime) pRuntime);
-	virtual void writeModelBegin(CREF(LPRDORuntime) pRuntime);
-	virtual void writeTraceEnd  (CREF(LPRDORuntime) pRuntime);
-	virtual void writeStatus    (CREF(LPRDORuntime) pRuntime, CREF(tstring) status);
+	virtual void writeTraceBegin(const LPRDORuntime& pRuntime);
+	virtual void writeModelBegin(const LPRDORuntime& pRuntime);
+	virtual void writeTraceEnd  (const LPRDORuntime& pRuntime);
+	virtual void writeStatus    (const LPRDORuntime& pRuntime, const std::string& status);
 
-	virtual void writePermanentResources(CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) res_perm);
+	virtual void writePermanentResources(const LPRDORuntime& pRuntime, const std::list<LPRDOResource>& res_perm);
 
-	tstring traceResourcesList( char prefix, CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) rel_res_list);
+	std::string traceResourcesList( char prefix, const LPRDORuntime& pRuntime, const std::list<LPRDOResource>& rel_res_list);
 
-	virtual void writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok);
+	virtual void writeResult(const LPRDORuntime& pRuntime, RDOResultTrace* pok);
 
 public:
 	virtual std::ostream& getOStream();
-	virtual REF(RDOEndL)  getEOL();
+	virtual RDOEndL& getEOL();
 
 protected:
-	rbool         m_isNullTracer;
+	bool m_isNullTracer;
 
 private:
-	rbool         m_canWriteToStream;
+	bool m_canWriteToStream;
 	std::ofstream m_emptyOut;
-	RDOEndL       m_emptyEndL;
+	RDOEndL m_emptyEndL;
 };
 
 /*!
@@ -111,30 +110,26 @@ private:
 */
 class RDOTraceableObject: public ITrace
 {
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(ITrace)
-QUERY_INTERFACE_END
-
 public:
 	enum { NONE = 0xFFFFFFFF };
 
-	rbool traceable() const;
-	void  setTrace(rbool trace);
+	bool traceable() const;
+	void setTrace(bool trace);
 
-	ruint getTraceID() const;
-	void  setTraceID(ruint id);
-	void  setTraceID(ruint id, ruint str_id);
+	std::size_t getTraceID() const;
+	void setTraceID(std::size_t id);
+	void setTraceID(std::size_t id, std::size_t str_id);
 
-	REF(tstring) traceId() const;
+	std::string& traceId() const;
 
 protected:
-	RDOTraceableObject(rbool trace, ruint id = NONE, tstring str = "");
+	RDOTraceableObject(bool trace, std::size_t id = NONE, std::string str = "");
 	virtual ~RDOTraceableObject();
 
 private:
-	rbool           m_trace;
-	ruint           m_id;
-	mutable tstring m_str_id;
+	bool m_trace;
+	std::size_t m_id;
+	mutable std::string m_str_id;
 };
 
 /*!
@@ -143,23 +138,16 @@ private:
 */
 class RDOResultTrace: public RDOTraceableObject, public IResultTrace, public IResultTraceValue
 {
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOTraceableObject)
-	QUERY_INTERFACE(IResultTrace)
-QUERY_INTERFACE_END
-
 public:
-	RDOResultTrace(CREF(LPRDORuntime) pRuntime, rbool trace);
+	RDOResultTrace(const LPRDORuntime& pRuntime, bool trace);
 
 protected:
 	LPRDORuntime m_pRuntime;
-	rbool        m_wasChanged;
+	bool m_wasChanged;
 
 	DECLARE_IResultTrace;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/rdotrace.inl"
 
 #endif // _LIB_RUNTIME_TRACE_H_

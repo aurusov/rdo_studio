@@ -12,12 +12,11 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/process/rdoprocess.h"
 #include "simulator/runtime/process/seize_release.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/calc/resource/calc_relevant.h"
+#include "simulator/runtime/rdo_enum.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -30,7 +29,7 @@ RDOPROCBlockForSeize::RDOPROCBlockForSeize(LPIPROCProcess process, std::vector <
 	, fromParser  (From_Par)
 {}
 
-void RDOPROCBlockForSeize::_onStart(CREF(LPRDORuntime) pRuntime)
+void RDOPROCBlockForSeize::_onStart(const LPRDORuntime& pRuntime)
 {
 	/// @todo: если потребуется стоить деревья, вершинами которых будут полные снимки БД,
 	// как при DPT search, то инициализацию атрибутов надо будет делать в checkOperation
@@ -50,31 +49,53 @@ void RDOPROCBlockForSeize::_onStart(CREF(LPRDORuntime) pRuntime)
 	}
 }
 
+std::string RDOPROCBlockForSeize::getStateParamName()
+{
+	return "Состояние";
+}
+
+std::string RDOPROCBlockForSeize::getStateEnumFree()
+{
+	return "Свободен";
+}
+
+std::string RDOPROCBlockForSeize::getStateEnumBuzy()
+{
+	return "Занят";
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCSeize
 // --------------------------------------------------------------------------------
-void RDOPROCSeize::onStart(CREF(LPRDORuntime) pRuntime)
+RDOPROCSeize::RDOPROCSeize(LPIPROCProcess process, std::vector<parser_for_Seize> From_Par)
+	: RDOPROCBlockForSeize(process, From_Par)
+{
+	static std::size_t g_index = 1;
+	index = g_index++;
+}
+
+void RDOPROCSeize::onStart(const LPRDORuntime& pRuntime)
 {
 	_onStart(pRuntime);
 }
 
-rbool RDOPROCSeize::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCSeize::onCheckCondition(const LPRDORuntime& pRuntime)
 {
 	if (m_transacts.empty())
 		return false;
 
-	ruint Size_Seizes = forRes.size();
-	for (ruint i = 0; i < Size_Seizes; i++)
+	const std::size_t Size_Seizes = forRes.size();
+	for (std::size_t i = 0; i < Size_Seizes; i++)
 	{
 		// если свободен
 		if (forRes[i].rss->getParam(forRes[i].Id_param) == forRes[i].enum_free)
 		{
-			ruint idBlocksTransact    = m_transacts.front()->getTraceID();
-			ruint idResourcesTransact = forRes[i].rss->transacts.front()->getTraceID();
+			const std::size_t idBlocksTransact = m_transacts.front()->getTraceID();
+			const std::size_t idResourcesTransact = forRes[i].rss->transacts.front()->getTraceID();
 			if (idBlocksTransact != idResourcesTransact)
 				return false;
 
-			PTR(RDOTrace) tracer = pRuntime->getTracer();
+			RDOTrace* tracer = pRuntime->getTracer();
 			forRes[i].rss->setParam(forRes[i].Id_param, forRes[i].enum_buzy);
 			TRACE3("%7.1f SEIZES-%d, resId = %d\n", pRuntime->getCurrentTime(), index, forRes[i].rss->getTraceID());
 			if (!tracer->isNull())
@@ -87,14 +108,13 @@ rbool RDOPROCSeize::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 	return false;
 }
 
-IBaseOperation::BOResult RDOPROCSeize::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCSeize::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCSeize::transactGoIn(CREF(LPTransact) pTransact)
+void RDOPROCSeize::transactGoIn(const LPTransact& pTransact)
 {
 	int sizeSeizes = forRes.size();
 	for(int i = 0; i < sizeSeizes; ++i)
@@ -104,7 +124,7 @@ void RDOPROCSeize::transactGoIn(CREF(LPTransact) pTransact)
 	RDOPROCBlockForSeize::transactGoIn(pTransact);
 }
 
-void RDOPROCSeize::transactGoOut(CREF(LPTransact) pTransact)
+void RDOPROCSeize::transactGoOut(const LPTransact& pTransact)
 {
 	int Size_Seizes = forRes.size();
 	for(int i = 0; i < Size_Seizes; ++i)
@@ -114,26 +134,30 @@ void RDOPROCSeize::transactGoOut(CREF(LPTransact) pTransact)
 	RDOPROCBlockForSeize::transactGoOut(pTransact);
 }
 
-void RDOPROCSeize::onStop(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPROCSeize::onStop(const LPRDORuntime& /*pRuntime*/)
+{}
 
-IBaseOperation::BOResult RDOPROCSeize::onContinue(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCSeize::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCRelease
 // --------------------------------------------------------------------------------
-void RDOPROCRelease::onStart(CREF(LPRDORuntime) pRuntime)
+RDOPROCRelease::RDOPROCRelease(LPIPROCProcess process, std::vector<parser_for_Seize> From_Par)
+	: RDOPROCBlockForSeize(process, From_Par)
+{
+	static std::size_t g_index = 1;
+	index = g_index++;
+}
+
+void RDOPROCRelease::onStart(const LPRDORuntime& pRuntime)
 {
 	_onStart(pRuntime);
 }
 
-rbool RDOPROCRelease::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOPROCRelease::onCheckCondition(const LPRDORuntime& pRuntime)
 {
 	if (!m_transacts.empty())
 	{
@@ -178,21 +202,17 @@ rbool RDOPROCRelease::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 	return false;
 }
 
-IBaseOperation::BOResult RDOPROCRelease::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCRelease::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCRelease::onStop(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDOPROCRelease::onStop(const LPRDORuntime& /*pRuntime*/)
+{}
 
-IBaseOperation::BOResult RDOPROCRelease::onContinue(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOPROCRelease::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 

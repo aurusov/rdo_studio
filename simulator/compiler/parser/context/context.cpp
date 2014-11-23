@@ -3,7 +3,7 @@
   \file      context.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      06.06.2010
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -102,7 +102,7 @@ Context::Context()
 Context::~Context()
 {}
 
-void Context::setContextStack(CREF(LPContextStack) pContextStack)
+void Context::setContextStack(const LPContextStack& pContextStack)
 {
 	ASSERT(pContextStack   );
 	ASSERT(!m_pContextStack);
@@ -115,15 +115,15 @@ void Context::resetContextStack()
 	m_pContextStack = NULL;
 }
 
-Context::FindResult Context::find(const std::string& method, const Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult Context::find(const std::string& method, const Params& params, const RDOParserSrcInfo& srcInfo) const
 {
-	Context::FindResult result;
-	LPContext pThis(const_cast<PTR(Context)>(this));
+	Context::LPFindResult result;
+	LPContext pThis(const_cast<Context*>(this));
 	LPIContextFind pThisContextFind = pThis.interface_dynamic_cast<IContextFind>();
 	if (pThisContextFind)
 	{
 		result = pThisContextFind->onFindContext(method, params, srcInfo);
-		if (result.getCreateExpression() || result.getSwitchContext())
+		if (result->getCreateExpression() || result->getSwitchContext())
 		{
 			return result;
 		}

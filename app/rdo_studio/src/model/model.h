@@ -3,7 +3,7 @@
   \file      app/rdo_studio/src/model/model.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      20.02.2003
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -17,7 +17,6 @@
 #include <QObject>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/interface/rdointerface.h"
 #include "kernel/rdothread.h"
 #include "simulator/service/src/simulator.h"
 #include "app/rdo_studio/src/frame/frame_manager.h"
@@ -32,7 +31,6 @@ class View;
 class Model
 	: public QObject
 	, public RDOThreadGUI
-	, public IInit
 {
 Q_OBJECT
 
@@ -42,16 +40,16 @@ public:
 	Model();
 	virtual ~Model();
 
-	bool  openModel (CREF(QString) modelName = QString());
+	bool  openModel (const QString& modelName = QString());
 	bool  runModel  ();
 	bool  closeModel();
 	void  update    ();
 
 	void resetView();
 
-	CREF(QString) getName    () const;
-	void          setName    (CREF(QString) str);
-	QString       getFullName() const;
+	const QString& getName    () const;
+	void           setName    (const QString& str);
+	QString        getFullName() const;
 
 	bool   isRunning     () const;
 	bool   isFrmDescribed() const;
@@ -64,25 +62,34 @@ public:
 	double  getShowRate          () const;
 	void    setShowRate          (double value);
 
-	int           getFrameCount   () const;
-	CREF(QString) getFrameName    (int index) const;
-	void          showFrame       (int index);
-	void          closeAllFrame   ();
-	bool          hasModel        () const;
-	bool          isModify        () const;
-	bool          isEmpty         () const;
+	int            getFrameCount   () const;
+	const QString& getFrameName    (int index) const;
+	void           showFrame       (int index);
+	void           closeAllFrame   ();
+	bool           hasModel        () const;
+	bool           isModify        () const;
+	bool           isEmpty         () const;
 
-	 PTR(TabCtrl) getTab();
-	CPTR(TabCtrl) getTab() const;
+	 TabCtrl* getTab();
+	const TabCtrl* getTab() const;
 
 	void  updateStyleOfAllModel() const;
 	bool  isPrevModelClosed    () const;
 
-	REF(rdo::gui::frame::Manager) getFrameManager();
-	void onChangeFrame(ruint index);
+	rdo::gui::frame::Manager& getFrameManager();
+	void onChangeFrame(std::size_t index);
+
+	bool  canNew    () const;
+	bool  canOpen   () const;
+	bool  canSave   () const;
+	bool  canClose  () const;
+	bool  canBuild  () const;
+	bool  canRun    () const;
+
+	bool saveModel () const;
 
 protected:
-	virtual void proc(REF(RDOThread::RDOMessageInfo) msg);
+	virtual void proc(RDOThread::RDOMessageInfo& msg);
 
 private:
 	enum BuildState
@@ -92,23 +99,16 @@ private:
 		BS_ERROR
 	};
 
-	rdo::gui::frame::Manager  m_frameManager;
-	boost::optional<ruint>    m_templateIndex;
-	bool                      m_GUI_HAS_MODEL;
-	bool                      m_GUI_CAN_RUN;
-	bool                      m_GUI_IS_RUNNING;
+	rdo::gui::frame::Manager m_frameManager;
+	boost::optional<std::size_t> m_templateIndex;
+	bool m_GUI_HAS_MODEL;
+	bool m_GUI_CAN_RUN;
+	bool m_GUI_IS_RUNNING;
 
 	void setHasModel  (bool value);
 	void setCanRun    (bool value);
 	void setIsRunning (bool value);
 	void updateActions();
-
-	bool  canNew    () const;
-	bool  canOpen   () const;
-	bool  canSave   () const;
-	bool  canClose  () const;
-	bool  canBuild  () const;
-	bool  canRun    () const;
 
 	boost::chrono::system_clock::time_point m_timeStart;
 	BuildState                              m_buildState;
@@ -127,8 +127,7 @@ private:
 	View*                                   m_pView;
 	QString                                 m_name;
 
-	bool newModel  (CREF(QString) modelName, CREF(QString) modelPath, ruint templateIndex);
-	bool saveModel () const;
+	bool newModel  (const QString& modelName, const QString& modelPath, std::size_t templateIndex);
 	bool buildModel();
 	bool stopModel () const;
 
@@ -147,23 +146,21 @@ private:
 
 	struct ModelTemplateItem
 	{
-		QString                resName;
-		boost::optional<ruint> position;
+		QString resName;
+		boost::optional<std::size_t> position;
 
 		ModelTemplateItem();
-		ModelTemplateItem(CREF(ModelTemplateItem) copy);
-		ModelTemplateItem(CREF(QString) resName);
-		ModelTemplateItem(CREF(QString) resName, ruint position);
+		ModelTemplateItem(const ModelTemplateItem& copy);
+		ModelTemplateItem(const QString& resName);
+		ModelTemplateItem(const QString& resName, std::size_t position);
 	};
-	typedef  std::map<rdoModelObjects::RDOFileType, ModelTemplateItem>  ModelTemplate;
+	typedef  std::map<rdo::model::FileType, ModelTemplateItem>  ModelTemplate;
 	typedef  std::map<int, ModelTemplate>                               ModelTemplateList;
 	ModelTemplateList m_modelTemplates;
 
 	void show_result();
 
 	void createView();
-
-	DECLARE_IInit;
 
 private slots:
 	void onFileNew    ();
@@ -191,6 +188,10 @@ private slots:
 	void onModelSpeedValueChanged(int value);
 
 	void onEditModifyChanged(bool value);
+
+signals:
+	void actionUpdated();
+	void stopped();
 };
 
 }}} // namespace rdo::gui::model

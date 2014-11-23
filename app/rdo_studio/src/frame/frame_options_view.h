@@ -32,7 +32,7 @@ private:
 public:
 	explicit OptionsView(QWidget* pParent);
 
-	void setStyle(PTR(FrameStyle) style);
+	void setStyle(FrameStyle* style);
 };
 
 }}} // namespace rdo::gui::frame

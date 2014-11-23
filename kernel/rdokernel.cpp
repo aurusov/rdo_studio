@@ -151,14 +151,18 @@ void RDOKernel::idle()
 // -autorun -autoexit "C:\rdo\rdo_cdrom_1\RAO-cd-rom-1\bin\RAO-explorer\Data\Russian\Models\Barber\Source\Barber.rdox"
 // -autorun -autoexit "C:\rdo\rdo_cdrom_1\RAO-cd-rom-1\bin\RAO-explorer\Data\Russian\Models\Heidel\Source\Heidel.rdox"
 
+#ifdef RDO_MT
 class CheckThreadID
 {
 protected:
-	ruint thread_id;
+	std::size_t thread_id;
 public:
-	CheckThreadID( ruint _thread_id ): thread_id( _thread_id ) {}
-	rbool operator() ( RDOThread* thread ) { return thread->getID() == thread_id; }
+	CheckThreadID( std::size_t _thread_id )
+		: thread_id(_thread_id)
+	{}
+	bool operator() ( RDOThread* thread ) { return thread->getID() == thread_id; }
 };
+#endif
 
 void RDOKernel::registration( RDOThread* thread )
 {
@@ -239,7 +243,7 @@ void RDOKernel::method_registration( RDOTreadMethod& msg )
 {
 	methods_mutex.Lock();
 	msg.index = 0;
-	rbool insert = true;
+	bool insert = true;
 	std::list< RDOTreadMethod >::iterator it = methods.begin();
 	while ( it != methods.end() ) {
 		if ( it->thread == msg.thread && it->name == msg.name ) {
@@ -263,8 +267,8 @@ void RDOKernel::method_registration( RDOTreadMethod& msg )
 // --------------------------------------------------------------------------------
 // -------------------- RDOKernelGUI
 // --------------------------------------------------------------------------------
-RDOKernelGUI::RDOKernelGUI( CREF(tstring) _thread_name ):
-	RDOThread( _thread_name )
+RDOKernelGUI::RDOKernelGUI(const std::string& _thread_name)
+	: RDOThread(_thread_name)
 {
 	notifies.push_back( RT_THREAD_CONNECTION );
 	notifies.push_back( RT_THREAD_DISCONNECTION );

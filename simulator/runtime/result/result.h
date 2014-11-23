@@ -54,21 +54,16 @@ OPEN_RDO_RUNTIME_NAMESPACE
 */
 class RDOPMDResult: public RDOResultTrace, public IName
 {
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOResultTrace)
-	QUERY_INTERFACE       (IName         )
-QUERY_INTERFACE_END
-
 protected:
-	RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace);
+	RDOPMDResult(const LPRDORuntime& pRuntime, const std::string& name, bool trace);
 	virtual ~RDOPMDResult();
 
-	static void printLeft(std::ostream& stream, CREF(tstring) txt);
+	static void printLeft(std::ostream& stream, const std::string& txt);
 
 	DECLARE_IName;
 
 private:
-	tstring m_name;
+	std::string m_name;
 };
 
 /*!
@@ -77,15 +72,7 @@ private:
 */
 class RDOPMDWatchPar: public RDOPMDResult, public IResult, public IModelStructure, public INotify
 {
-DEFINE_IFACTORY(RDOPMDWatchPar);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPMDResult     )
-	QUERY_INTERFACE       (IResult          )
-	QUERY_INTERFACE       (IModelStructure  )
-	QUERY_INTERFACE       (IResultTraceValue)
-	QUERY_INTERFACE       (INotify          )
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPMDWatchPar);
 private:
 	typedef boost::accumulators::accumulator_set<
 		double,
@@ -100,7 +87,7 @@ private:
 		double
 	> acc_type;
 
-	RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, ruint resourceID, ruint paramID);
+	RDOPMDWatchPar(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& resName, const std::string& parName, const LPRDOCalc& pResourceCalc, std::size_t paramID);
 	virtual ~RDOPMDWatchPar();
 
 	struct CurrentValue
@@ -114,7 +101,7 @@ private:
 			, weight     (0.0)
 		{}
 
-		CurrentValue(CREF(RDOValue) rdoValue)
+		CurrentValue(const RDOValue& rdoValue)
 			: rdoValue   (rdoValue)
 			, doubleValue(rdoValue.getDouble())
 			, weight     (0.0)
@@ -122,14 +109,15 @@ private:
 	};
 
 	LPRDOResource m_pResource;
-	ruint         m_resourceID;
-	ruint         m_paramID;
-	CurrentValue  m_currentValue;
-	double        m_timeBegin;
-	double        m_timePrev;
-	double        m_timeErase;
-	rbool         m_wasFinalCalc;
-	acc_type      m_acc;
+	LPRDOCalc m_pResourceCalc;
+	std::size_t m_resourceID;
+	std::size_t m_paramID;
+	CurrentValue m_currentValue;
+	double m_timeBegin;
+	double m_timePrev;
+	double m_timeErase;
+	bool m_wasFinalCalc;
+	acc_type m_acc;
 
 	DECLARE_INotify;
 	DECLARE_IResult;
@@ -143,14 +131,7 @@ private:
 */
 class RDOPMDWatchState: public RDOPMDResult, public IResult, public IModelStructure
 {
-DEFINE_IFACTORY(RDOPMDWatchState);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPMDResult     )
-	QUERY_INTERFACE       (IResult          )
-	QUERY_INTERFACE       (IModelStructure  )
-	QUERY_INTERFACE       (IResultTraceValue)
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPMDWatchState);
 private:
 	typedef boost::accumulators::accumulator_set<
 		double,
@@ -162,12 +143,12 @@ private:
 		>
 	> acc_type;
 
-	RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(LPRDOCalc) pLogic);
+	RDOPMDWatchState(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const LPRDOCalc& pLogic);
 	virtual ~RDOPMDWatchState();
 
 	struct CurrentValue
 	{
-		rbool  state;
+		bool state;
 		double duration;
 
 		CurrentValue()
@@ -175,18 +156,18 @@ private:
 			, duration(0.0  )
 		{}
 
-		CurrentValue(rbool state)
+		CurrentValue(bool state)
 			: state   (state)
 			, duration(0.0  )
 		{}
 	};
 
-	LPRDOCalc     m_pLogicCalc;
-	CurrentValue  m_currentValue;
-	double        m_timeBegin;
-	double        m_timePrev;
-	rbool         m_wasFinalCalc;
-	acc_type      m_acc;
+	LPRDOCalc m_pLogicCalc;
+	CurrentValue m_currentValue;
+	double m_timeBegin;
+	double m_timePrev;
+	bool m_wasFinalCalc;
+	acc_type m_acc;
 
 	DECLARE_IResult;
 	DECLARE_IResultTraceValue;
@@ -199,15 +180,7 @@ private:
 */
 class RDOPMDWatchQuant: public RDOPMDResult, public IResult, public IResultWatchQuant, public IModelStructure
 {
-DEFINE_IFACTORY(RDOPMDWatchQuant);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPMDResult     )
-	QUERY_INTERFACE       (IResult          )
-	QUERY_INTERFACE       (IResultTraceValue)
-	QUERY_INTERFACE       (IResultWatchQuant)
-	QUERY_INTERFACE       (IModelStructure  )
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPMDWatchQuant);
 private:
 	typedef boost::accumulators::accumulator_set<
 		double,
@@ -222,12 +195,12 @@ private:
 		double
 	> acc_type;
 
-	RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID);
+	RDOPMDWatchQuant(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& resTypeName, int rtpID);
 	virtual ~RDOPMDWatchQuant();
 
 	struct CurrentValue
 	{
-		ruint   quant;
+		std::size_t quant;
 		double  weight;
 
 		CurrentValue()
@@ -235,21 +208,21 @@ private:
 			, weight(0.0)
 		{}
 
-		CurrentValue(ruint quant)
+		CurrentValue(std::size_t quant)
 			: quant (quant)
 			, weight(0.0  )
 		{}
 	};
 
-	LPRDOCalc    m_pLogicCalc;
-	int          m_rtpID;
+	LPRDOCalc m_pLogicCalc;
+	int m_rtpID;
 	CurrentValue m_currentValue;
-	double       m_timeBegin;
-	double       m_timePrev;
-	rbool        m_wasFinalCalc;
-	acc_type     m_acc;
+	double m_timeBegin;
+	double m_timePrev;
+	bool m_wasFinalCalc;
+	acc_type m_acc;
 
-	ruint calcCurrentQuant(CREF(LPRDORuntime) pRuntime) const;
+	std::size_t calcCurrentQuant(const LPRDORuntime& pRuntime) const;
 
 	DECLARE_IResult;
 	DECLARE_IResultTraceValue;
@@ -263,15 +236,7 @@ private:
 */
 class RDOPMDWatchValue: public RDOPMDResult, public IResult, public IResultWatchValue, public IModelStructure
 {
-DEFINE_IFACTORY(RDOPMDWatchValue);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPMDResult     )
-	QUERY_INTERFACE       (IResult          )
-	QUERY_INTERFACE       (IResultTraceValue)
-	QUERY_INTERFACE       (IResultWatchValue)
-	QUERY_INTERFACE       (IModelStructure  )
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPMDWatchValue);
 private:
 	typedef boost::accumulators::accumulator_set<
 		double,
@@ -285,7 +250,7 @@ private:
 		>
 	> acc_type;
 
-	RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID);
+	RDOPMDWatchValue(const LPRDORuntime& pRuntime, const std::string& name, bool trace, const std::string& resTypeName, int rtpID);
 	virtual ~RDOPMDWatchValue();
 
 	LPRDOCalc m_pLogicCalc;
@@ -306,22 +271,14 @@ private:
 */
 class RDOPMDGetValue: public RDOPMDResult, public IResult, public IResultGetValue, public IModelStructure
 {
-DEFINE_IFACTORY(RDOPMDGetValue);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPMDResult     )
-	QUERY_INTERFACE       (IResult          )
-	QUERY_INTERFACE       (IModelStructure  )
-	QUERY_INTERFACE       (IResultTraceValue)
-	QUERY_INTERFACE       (IResultGetValue  )
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPMDGetValue);
 private:
-	RDOPMDGetValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, CREF(LPRDOCalc) pArithm);
+	RDOPMDGetValue(const LPRDORuntime& pRuntime, const std::string& name, const LPRDOCalc& pArithm);
 	virtual ~RDOPMDGetValue();
 
 	LPRDOCalc m_pArithmCalc;
-	RDOValue  m_value;
-	rbool     m_wasFinalCalc;
+	RDOValue m_value;
+	bool m_wasFinalCalc;
 
 	DECLARE_IResult;
 	DECLARE_IResultTraceValue;

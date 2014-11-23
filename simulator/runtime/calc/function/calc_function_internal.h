@@ -13,7 +13,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/calc/function/calc_function.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -48,13 +47,13 @@ public:
 };
 
 template <class T>
-struct GetParam         { static T      getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber); };
+struct GetParam         { static T      getParam(const LPRDORuntime& pRuntime, std::size_t paramNumber); };
 
 template <>
-struct GetParam<double> { static double getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber); };
+struct GetParam<double> { static double getParam(const LPRDORuntime& pRuntime, std::size_t paramNumber); };
 
 template <>
-struct GetParam<int>    { static int    getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber); };
+struct GetParam<int>    { static int    getParam(const LPRDORuntime& pRuntime, std::size_t paramNumber); };
 
 //! Функции из пространства имен std C++
 template <class F>
@@ -68,14 +67,14 @@ public:
 private:
 	function_type m_pFunction;
 
-	RDOValue calc(CREF(LPRDORuntime) pRuntime, std_fun_one_param);
-	RDOValue calc(CREF(LPRDORuntime) pRuntime, std_fun_two_param);
+	RDOValue calc(const LPRDORuntime& pRuntime, std_fun_one_param);
+	RDOValue calc(const LPRDORuntime& pRuntime, std_fun_two_param);
 
 	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/function/calc_function_internal.inl"
+#include "simulator/runtime/calc/function/calc_function_internal-inl.h"
 
 #endif // _LIB_RUNTIME_CALC_FUNCTION_INTERNAL_H_

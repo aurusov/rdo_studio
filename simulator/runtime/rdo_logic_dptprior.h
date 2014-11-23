@@ -25,7 +25,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOOrderDPTPrior
 {
 public:
-	static LPIBaseOperation sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container);
+	static LPIBaseOperation sort(const LPRDORuntime& pRuntime, BaseOperationList& container);
 };
 
 /*!
@@ -35,9 +35,7 @@ public:
 class RDOLogicDPTPrior: public RDOLogic<RDOOrderDPTPrior>
 {
 protected:
-	DEFINE_IFACTORY(RDOLogicDPTPrior);
-
-	RDOLogicDPTPrior(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent)
+	RDOLogicDPTPrior(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent)
 		: RDOLogic<RDOOrderDPTPrior>(pRuntime, parent)
 	{}
 	virtual ~RDOLogicDPTPrior()
@@ -50,18 +48,12 @@ protected:
 */
 class RDODPTPrior: public RDOLogicDPTPrior, public RDOPatternPrior
 {
-DEFINE_IFACTORY(RDODPTPrior);
-QUERY_INTERFACE_BEGIN
-QUERY_INTERFACE_PARENT(RDOLogicDPTPrior)
-QUERY_INTERFACE_PARENT(RDOPatternPrior )
-QUERY_INTERFACE_END
+DECLARE_FACTORY(RDODPTPrior);
 private:
-	RDODPTPrior(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent = NULL);
+	RDODPTPrior(const LPRDORuntime& pRuntime, LPIBaseOperationContainer pParent = NULL);
 	virtual ~RDODPTPrior();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/rdo_logic_dptprior.inl"
 
 #endif // _LIB_RUNTIME_LOGIC_DPTPRIOR_H_

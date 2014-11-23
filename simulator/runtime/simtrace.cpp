@@ -8,6 +8,8 @@
 */
 
 // ----------------------------------------------------------------------- PLATFORM
+#include <set>
+
 #include "utils/src/common/platform.h"
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
@@ -30,6 +32,20 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOSimulatorTrace
 // --------------------------------------------------------------------------------
+RDOSimulatorTrace::RDOSimulatorTrace()
+	: RDOSimulator     (             )
+	, m_tracer         (NULL         )
+	, maxOperationId   (1            )
+	, traceStartTime   (UNDEFINE_TIME)
+	, traceEndTime     (UNDEFINE_TIME)
+	, m_ieCounter      (1            )
+	, m_eventCounter   (1            )
+	, m_activityCounter(1            )
+	, m_dptCounter     (1            )
+	, memory_current   (0            )
+	, memory_max       (0            )
+{}
+
 RDOSimulatorTrace::~RDOSimulatorTrace()
 {
 	if (m_tracer)
@@ -39,43 +55,129 @@ RDOSimulatorTrace::~RDOSimulatorTrace()
 	}
 }
 
-void RDOSimulatorTrace::copyFrom(CREF(LPRDOSimulatorTrace) pOther)
+RDOTrace* RDOSimulatorTrace::getTracer() const
+{
+	return m_tracer;
+}
+
+bool RDOSimulatorTrace::canTrace() const
+{
+	return getTracer()->canTrace();
+}
+
+double RDOSimulatorTrace::getTraceStartTime() const
+{
+	return traceStartTime;
+}
+
+void RDOSimulatorTrace::setTraceStartTime(double value)
+{
+	traceStartTime = value;
+}
+
+double RDOSimulatorTrace::getTraceEndTime() const
+{
+	return traceEndTime;
+}
+
+void RDOSimulatorTrace::setTraceEndTime(double value)
+{
+	traceEndTime = value;
+}
+
+void RDOSimulatorTrace::onNewTimeNow()
+{
+	if (timeForTrace())
+	{
+		getTracer()->startWriting();
+	}
+	else
+	{
+		getTracer()->stopWriting();
+	}
+}
+
+void RDOSimulatorTrace::memory_insert(std::size_t mem)
+{
+	memory_current += mem;
+	if (memory_current > memory_max) memory_max = memory_current;
+}
+
+void RDOSimulatorTrace::memory_remove(std::size_t mem)
+{
+	memory_current -= mem;
+}
+
+std::size_t RDOSimulatorTrace::memory_get() const
+{
+	return memory_max;
+}
+
+int RDOSimulatorTrace::getFreeEventId()
+{
+	return m_eventCounter++;
+}
+
+int RDOSimulatorTrace::getFreeActivityId()
+{
+	return m_activityCounter++;
+}
+
+int RDOSimulatorTrace::getFreeDPTId()
+{
+	return m_dptCounter++;
+}
+
+bool RDOSimulatorTrace::timeForTrace() const
+{
+	if (getTraceStartTime() != UNDEFINE_TIME && getTraceStartTime() > getCurrentTime())
+		return false;
+	if (getTraceEndTime()   != UNDEFINE_TIME && getTraceEndTime()   < getCurrentTime())
+		return false;
+	return true;
+}
+
+void RDOSimulatorTrace::copyFrom(const LPRDOSimulatorTrace& pOther)
 {
 	ASSERT(pOther);
 
-	freeResourcesIds = pOther->freeResourcesIds;
-	maxResourcesId   = pOther->maxResourcesId;
+	registeredResourcesId    = pOther->registeredResourcesId;
 }
 
 void RDOSimulatorTrace::rdoInit()
 {
-	maxResourcesId = 0;
 	maxOperationId = 1;
+	registeredResourcesId.clear();
 //	ASSERT(m_tracer != NULL);
 	RDOSimulator::rdoInit();
 }
 
-ruint RDOSimulatorTrace::getResourceId()
+void RDOSimulatorTrace::registerResourceId(std::size_t id)
 {
-	if (freeResourcesIds.empty())
-	{
-		return maxResourcesId++;
-	}
-	else
-	{
-#ifdef _DEBUG
-		STL_FOR_ALL(freeResourcesIds, it)
-		{
-			TRACE1("getFreeResourceId: %d\n", *it);
-		}
-#endif
-		ruint id = freeResourcesIds.back();
-		freeResourcesIds.pop_back();
-		return id;
-	}
+	ASSERT(registeredResourcesId.find(id) == registeredResourcesId.end());
+	registeredResourcesId.insert(id);
 }
 
-void RDOSimulatorTrace::eraseFreeResourceId(ruint id)
+std::size_t RDOSimulatorTrace::getResourceId()
+{
+#ifdef _DEBUG
+		for (const auto& id: registeredResourcesId)
+		{
+			TRACE1("getRegisteredResourcesId: %d\n", id);
+		}
+#endif
+
+	std::size_t id = 0;
+	std::set<std::size_t>::iterator it = registeredResourcesId.begin();
+	while (it != registeredResourcesId.end() && *it == id)
+	{
+		++it;
+		++id;
+	}
+	return id;
+}
+
+void RDOSimulatorTrace::eraseFreeResourceId(std::size_t id)
 {
 	MAPII::iterator it = resourcesIdsRefs.find(id);
 	if (it != resourcesIdsRefs.end())
@@ -83,7 +185,7 @@ void RDOSimulatorTrace::eraseFreeResourceId(ruint id)
 		if(--(*it).second >= 1) return;
 		resourcesIdsRefs.erase(it);
 	}
-	freeResourcesIds.push_back(id);
+	registeredResourcesId.erase(id);
 }
 
 void RDOSimulatorTrace::incrementResourceIdReference(int id)
@@ -118,7 +220,7 @@ void RDOSimulatorTrace::freeOperationId(int id)
 	freeOperationsIds.push_front(id);
 }
 
-void RDOSimulatorTrace::onResourceErase(CREF(LPRDOResource) pResource)
+void RDOSimulatorTrace::onResourceErase(const LPRDOResource& pResource)
 {
 	eraseFreeResourceId(pResource->getTraceID());
 }
@@ -127,7 +229,7 @@ void RDOSimulatorTrace::preProcess()
 {
 	RDOSimulator::preProcess();
 	getTracer()->startWriting();
-	LPRDORuntime pRuntime = static_cast<PTR(RDORuntime)>(this);
+	LPRDORuntime pRuntime = static_cast<RDORuntime*>(this);
 	getTracer()->writeTraceBegin(pRuntime);
 	getTracer()->writePermanentResources(pRuntime, getResourcesBeforeSim());
 	getTracer()->writeModelBegin(pRuntime);
@@ -138,7 +240,7 @@ void RDOSimulatorTrace::preProcess()
 
 void RDOSimulatorTrace::postProcess()
 {
-	LPRDORuntime pRuntime = static_cast<PTR(RDORuntime)>(this);
+	LPRDORuntime pRuntime = static_cast<RDORuntime*>(this);
 	getTracer()->writeTraceEnd(pRuntime);
 //	getTracer()->stopWriting();
 }

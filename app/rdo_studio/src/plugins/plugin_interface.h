@@ -23,12 +23,12 @@ class PluginInterface
 {
 public:
 	virtual ~PluginInterface() {}
-	virtual QUuid   getGUID      () = 0;
-	virtual QString getPluginName() = 0;
-	virtual QString getAuthor    () = 0;
-	virtual QString getVersion   () = 0;
+	virtual QUuid   getGUID      () const = 0;
+	virtual QString getPluginName() const = 0;
+	virtual QString getAuthor    () const = 0;
+	virtual QString getVersion   () const = 0;
 
-	virtual void pluginStartAction(QWidget* parent) = 0;
+	virtual void pluginStartAction(QWidget* parent,  const std::string& commandLine) = 0;
 	virtual void pluginStopAction (QWidget* parent) = 0;
 };
 

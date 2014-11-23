@@ -17,6 +17,7 @@
 %}
 
 %pure-parser
+%param {void* lexer}
 
 %token RDO_Resource_type
 %token RDO_permanent
@@ -207,8 +208,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
-
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/rdopat.h"
@@ -382,7 +381,7 @@ rtp_header
 			LPRDOValue pTypeName = PARSER->stack().pop<RDOValue>($2);
 			ASSERT(pTypeName);
 
-			tstring         name = pTypeName->value().getIdentificator();
+			const std::string name = pTypeName->value().getIdentificator();
 			LPRDORTPResType pRTP = PARSER->findRTPResType(name);
 			if (pRTP)
 			{
@@ -405,7 +404,7 @@ rtp_header
 			LPRDOValue pTypeName = PARSER->stack().pop<RDOValue>($2);
 			ASSERT(pTypeName);
 
-			tstring         name = pTypeName->value().getIdentificator();
+			const std::string name = pTypeName->value().getIdentificator();
 			LPRDORTPResType pRTP = PARSER->findRTPResType(name);
 			if (pRTP)
 			{
@@ -417,14 +416,14 @@ rtp_header
 			LPRDOValue pParentTypeName = PARSER->stack().pop<RDOValue>($3);
 			ASSERT(pParentTypeName);
 
-			tstring         prnt_name = pParentTypeName->value().getIdentificator();
+			const std::string prnt_name = pParentTypeName->value().getIdentificator();
 			LPRDORTPResType pParentRTP = PARSER->findRTPResType(prnt_name);
 			if (pParentRTP)
 			{
 				LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(PARSER, pTypeName->src_info(), $4 != 0);
 				ASSERT(pResourceType);
-				ruint t_ind   = 0;
-				ruint col_par = pParentRTP->getParams().size();
+				std::size_t t_ind = 0;
+				const std::size_t col_par = pParentRTP->getParams().size();
 				while (t_ind < col_par)
 				{
 					pResourceType->addParam(pParentRTP->getParams()[t_ind]);
@@ -459,7 +458,7 @@ rtp_header
 	{
 		#PASS1
 		{
-			tstring str(LEXER->YYText());
+			const std::string str(LEXER->YYText());
 			PARSER->error().error(@2, rdo::format("Ошибка в описании имени типа ресурса: %s", str.c_str()));
 		}
 	}
@@ -526,7 +525,7 @@ rtp_param
 		{
 			if (PARSER->lexer_loc_line() == @1.m_last_line)
 			{
-				tstring str(LEXER->YYText());
+				const std::string str(LEXER->YYText());
 				PARSER->error().error(@2, rdo::format("Неверный тип параметра: %s", str.c_str()));
 			}
 			else
@@ -643,10 +642,10 @@ type_declaration
 
 		Context::Params params;
 		params[Context::Params::IDENTIFIER] = pValue->value().getIdentificator();
-		Context::FindResult result = pContext->find(Context::METHOD_TYPE_OF, params, pValue->src_info());
-		ASSERT(result.getCreateExpression());
+		Context::LPFindResult result = pContext->find(Context::METHOD_TYPE_OF, params, pValue->src_info());
+		ASSERT(result->getCreateExpression());
 
-		LPExpression pExpression = result.getCreateExpression()();
+		LPExpression pExpression = result->getCreateExpression()();
 		ASSERT(pExpression);
 		$$ = PARSER->stack().push(pExpression->typeInfo());
 	}
@@ -800,8 +799,8 @@ param_type_enum_list
 type_declaration_such_as
 	: RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF
 	{
-		tstring type  = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
-		tstring param = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
+		const std::string type = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string param = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
 		LPRDORTPResType pResType = PARSER->findRTPResType(type);
 		if (!pResType)
 		{
@@ -820,7 +819,7 @@ type_declaration_such_as
 	}
 	| RDO_such_as RDO_IDENTIF
 	{
-		tstring constName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string constName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDOFUNConstant pConstant = PARSER->findFUNConstant(constName);
 		if (!pConstant)
 		{
@@ -834,7 +833,7 @@ type_declaration_such_as
 	}
 	| RDO_such_as RDO_IDENTIF '.' error
 	{
-		tstring type = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		const std::string type = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDORTPResType pResType = PARSER->findRTPResType(type);
 		if (!pResType)
 		{
@@ -890,18 +889,38 @@ rss_resource_list
 	;
 
 rss_resource
-	: rss_res_init '(' rss_opt_value_list ')'
+	: RDO_IDENTIF '=' rss_constructor_call
 	{
 		#PASS2
 		{
-			LPRDORSSResource pResource = PARSER->stack().pop<RDORSSResource>($1);
+			LPRDOValue pName = PARSER->stack().pop<RDOValue>($1);
+			ASSERT(pName);
+
+			LPRDORSSResource pResourceExist = PARSER->findRSSResource(pName->value().getIdentificator());
+			if (pResourceExist)
+			{
+				PARSER->error().push_only(@1, rdo::format("Ресурс '%s' уже существует",
+					pName->value().getIdentificator().c_str()));
+				PARSER->error().push_only(pResourceExist->src_info(), "См. первое определение");
+				PARSER->error().push_done();
+			}
+			LPRDORTPResType pNameExist = PARSER->findRTPResType(pName->value().getIdentificator());
+			if (pNameExist)
+			{
+				PARSER->error().push_only(@1, rdo::format("Недопустимое имя ресурса: '%s'. Данное имя уже зарезервировано ",
+					pName->value().getIdentificator().c_str()));
+				PARSER->error().push_only(pNameExist->src_info(), "См. первое определение");
+				PARSER->error().push_done();
+			}
+
+			LPRDORSSResource pResource = PARSER->stack().pop<RDORSSResource>($3);
 			ASSERT(pResource);
+			pResource->setSrcInfo(pName->src_info());
 
 			if (!pResource->defined())
 			{
 				PARSER->error().error(@3, rdo::format("Заданы не все параметры ресурса: '%s'", pResource->name().c_str()));
 			}
-			pResource->end();
 		}
 	}
 	| RDO_IDENTIF '.' rss_trace '(' ')'
@@ -914,14 +933,14 @@ rss_resource
 
 			Context::Params params;
 			params[Context::Params::IDENTIFIER] = pName->value().getIdentificator();
-			Context::FindResult result = PARSER->context()->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
-			ASSERT(result.getSwitchContext());
+			Context::LPFindResult result = PARSER->context()->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
+			ASSERT(result->getSwitchContext());
 
 			Context::Params traceParams;
 			traceParams["traceValue"] = traceValue;
-			result = result.getSwitchContext().context->find("trace()", traceParams, pName->src_info());
-			
-			LPExpression pExpression = result.getCreateExpression()();
+			result = result->getSwitchContext().context->find("trace()", traceParams, pName->src_info());
+
+			LPExpression pExpression = result->getCreateExpression()();
 			ASSERT(pExpression);
 
 			rdo::runtime::LPRDOCalc pCalc = pExpression->calc();
@@ -939,38 +958,39 @@ rss_resource
 	}
 	;
 
-rss_res_init
-	: RDO_IDENTIF '=' RDO_IDENTIF
+rss_constructor_call
+	: rss_constructor_name rss_opt_value_list ')'
 	{
 		#PASS2
 		{
-			LPRDOValue pName = PARSER->stack().pop<RDOValue>($1);
-			LPRDOValue pType = PARSER->stack().pop<RDOValue>($3);
-			ASSERT(pName);
+			LPRDORSSResource pResource = PARSER->stack().pop<RDORSSResource>($1);
+			ASSERT(pResource);
+
+			if (!pResource->defined())
+			{
+				PARSER->error().error(@2, rdo::format("Заданы не все параметры ресурса: '%s'", pResource->name().c_str()));
+			}
+			pResource->end();
+			$$ = PARSER->stack().push(pResource);
+		}
+	}
+	;
+
+rss_constructor_name
+	: RDO_IDENTIF '('
+	{
+		#PASS2
+		{
+			LPRDOValue pType = PARSER->stack().pop<RDOValue>($1);
 			ASSERT(pType);
 
 			LPRDORTPResType pResType = PARSER->findRTPResType(pType->value().getIdentificator());
 			if (!pResType)
 			{
-				PARSER->error().error(@3, rdo::format("Неизвестный тип ресурса: %s", pType->value().getIdentificator().c_str()));
+				PARSER->error().error(@1, rdo::format("Неизвестный тип ресурса: %s", pType->value().getIdentificator().c_str()));
 			}
-			LPRDORSSResource pResourceExist = PARSER->findRSSResource(pName->value().getIdentificator());
-			if (pResourceExist)
-			{
-				PARSER->error().push_only(@1, rdo::format("Ресурс '%s' уже существует",
-					pName->value().getIdentificator().c_str()));
-				PARSER->error().push_only(pResourceExist->src_info(), "См. первое определение");
-				PARSER->error().push_done();
-			}
-			LPRDORTPResType pNameExist = PARSER->findRTPResType(pName->value().getIdentificator());
-			if (pNameExist)
-			{
-				PARSER->error().push_only(@1, rdo::format("Недопустимое имя ресурса: '%s'. Данное имя уже зарезервировано ",
-					pName->value().getIdentificator().c_str()));
-				PARSER->error().push_only(pNameExist->src_info(), "См. первое определение");
-				PARSER->error().push_done();
-			}
-			LPRDORSSResource pResource = pResType->createRes(PARSER, pName->src_info());
+			LPRDORSSResource pResource = pResType->createRes(PARSER, RDOParserSrcInfo());
+			PARSER->insertRSSResource(LPRDORSSResource(pResource));
 			$$ = PARSER->stack().push(pResource);
 		}
 	}
@@ -1008,56 +1028,79 @@ rss_value
 	{
 		#PASS2
 		{
-			PARSER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "*")));
+			PARSER->context()->cast<RDORSSResource>()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "*")));
 		}
 	}
 	| '#'
 	{
 		#PASS2
 		{
-			PARSER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "#")));
+			PARSER->context()->cast<RDORSSResource>()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, "#")));
 		}
 	}
 	| RDO_INT_CONST
 	{
 		#PASS2
 		{
-			PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));
+			PARSER->context()->cast<RDORSSResource>()->addParam(PARSER->stack().pop<RDOValue>($1));
 		}
 	}
 	| RDO_REAL_CONST
 	{
 		#PASS2
 		{
-			PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));
+			PARSER->context()->cast<RDORSSResource>()->addParam(PARSER->stack().pop<RDOValue>($1));
 		}
 	}
 	| RDO_BOOL_CONST
 	{
 		#PASS2
 		{
-			PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));
+			PARSER->context()->cast<RDORSSResource>()->addParam(PARSER->stack().pop<RDOValue>($1));
 		}
 	}
 	| RDO_STRING_CONST
 	{
 		#PASS2
 		{
-			PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));
+			PARSER->context()->cast<RDORSSResource>()->addParam(PARSER->stack().pop<RDOValue>($1));
 		}
 	}
 	| RDO_IDENTIF
 	{
 		#PASS2
 		{
-			PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));
+			PARSER->context()->cast<RDORSSResource>()->addParam(PARSER->stack().pop<RDOValue>($1));
 		}
 	}
 	| param_array_value
 	{
 		#PASS2
 		{
-			PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));
+			PARSER->context()->cast<RDORSSResource>()->addParam(PARSER->stack().pop<RDOValue>($1));
+		}
+	}
+	| rss_constructor_call
+	{
+		#PASS2
+		{
+			LPRDORSSResource pResource = PARSER->stack().pop<RDORSSResource>($1);
+			pResource->setIsNested(true);
+			rdo::runtime::RDOValue runtimeValue(
+				pResource->getType(),
+				pResource
+			);
+			LPTypeInfo pResourceTypeInfo = Factory<TypeInfo>::create(
+				pResource->getType(),
+				pResource->getType()->src_info()
+			);
+			LPRDOValue pValue = Factory<parser::RDOValue>::create(
+				runtimeValue,
+				pResource->src_info(),
+				pResourceTypeInfo
+			);
+
+			PARSER->context()->cast<RDORSSResource>()->addParam(pValue);
 		}
 	}
 	| error
@@ -1079,7 +1122,7 @@ pat_main
 	{
 		#PASS1
 		{
-			UNUSED(@1);
+			(void)(@1);
 		}
 
 		#PASS2
@@ -1196,7 +1239,7 @@ pat_trace
 	{
 		$$ = 0;
 	}
-	| RDO_trace	
+	| RDO_trace
 	{
 		$$ = 1;
 	}
@@ -1566,9 +1609,9 @@ pat_rel_res
 					ASSERT(pTypeName);
 
 					YYLTYPE convertor_begin_pos = @3;
-					tstring str = boost::algorithm::to_lower_copy(tstring(LEXER->YYText()));
-					tstring::size_type first_nochange = str.find("nochange");
-					ruint i = 0;
+					const std::string str = boost::algorithm::to_lower_copy(std::string(LEXER->YYText()));
+					const std::string::size_type first_nochange = str.find("nochange");
+					std::size_t i = 0;
 					for (;;)
 					{
 						if (str[i] == '\n')
@@ -1628,9 +1671,9 @@ pat_rel_res
 					ASSERT(pTypeName);
 
 					YYLTYPE convertor_begin_pos = @3;
-					tstring str = boost::algorithm::to_lower_copy(tstring(LEXER->YYText()));
-					tstring::size_type first_nochange = str.find("nochange");
-					ruint i = 0;
+					const std::string str = boost::algorithm::to_lower_copy(std::string(LEXER->YYText()));
+					const std::string::size_type first_nochange = str.find("nochange");
+					std::size_t i = 0;
 					for (;;)
 					{
 						if (str[i] == '\n')
@@ -1757,7 +1800,7 @@ pat_rel_res
 					ASSERT(pRelName );
 					ASSERT(pTypeName);
 
-					tstring convert_begin = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
+					const std::string convert_begin = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
 					YYLTYPE convertor_begin_pos = @4;
 					convertor_begin_pos.m_last_line = convertor_begin_pos.m_first_line;
 					convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + convert_begin.length();
@@ -1800,7 +1843,7 @@ pat_rel_res
 					ASSERT(pRelName );
 					ASSERT(pTypeName);
 
-					tstring convert_begin = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
+					const std::string convert_begin = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
 					YYLTYPE convertor_begin_pos = @4;
 					convertor_begin_pos.m_last_line = convertor_begin_pos.m_first_line;
 					convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + convert_begin.length();
@@ -2205,7 +2248,7 @@ pat_body
 		#PASS2
 		{
 			LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
-			tstring         name     = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+			const std::string name = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 			pPattern->addRelResBody(RDOParserSrcInfo(@2, name));
 			$$ = PARSER->stack().push(pPattern);
 		}
@@ -2215,7 +2258,7 @@ pat_body
 		#PASS2
 		{
 			LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
-			tstring         name     = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+			const std::string name = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 			pPattern->addRelResBody(RDOParserSrcInfo(@2, name));
 			$$ = PARSER->stack().push(pPattern);
 		}
@@ -2224,7 +2267,7 @@ pat_body
 	{
 		#PASS2
 		{
-			tstring str(LEXER->YYText());
+			const std::string str(LEXER->YYText());
 			PARSER->error().error(@2, rdo::format("Неизвестный релевантный ресурс: %s", str.c_str()));
 		}
 	}
@@ -2232,7 +2275,7 @@ pat_body
 	{
 		#PASS2
 		{
-			tstring str(LEXER->YYText());
+			const std::string str(LEXER->YYText());
 			PARSER->error().error(@2, rdo::format("Неизвестный релевантный ресурс: %s", str.c_str()));
 		}
 	}
@@ -2428,7 +2471,7 @@ pat_convert
 			LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
 			ASSERT(pPattern);
 			LPRDORelevantResource rel_res  = pPattern->m_pCurrRelRes;
-			tstring str;
+			std::string str;
 			if (rel_res->m_pChoiceOrder->m_type != rdo::runtime::RDOSelectResourceCalc::order_empty)
 			{
 				str = "Сразу после ключевого слова " + rel_res->m_pChoiceOrder->asString();
@@ -2493,7 +2536,7 @@ pat_convert
 			ASSERT(pPattern);
 			if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
 			{
-				tstring type = "";
+				std::string type = "";
 				switch (pPattern->getType())
 				{
 				case RDOPATPattern::PT_Event: type = "событии";               break;
@@ -2540,7 +2583,7 @@ pat_convert
 			ASSERT(pPattern);
 			if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
 			{
-				tstring type = "";
+				std::string type = "";
 				switch (pPattern->getType())
 				{
 				case RDOPATPattern::PT_Event: type = "событии";               break;
@@ -2587,7 +2630,7 @@ pat_convert
 			ASSERT(pPattern);
 			if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
 			{
-				tstring type = "";
+				std::string type = "";
 				switch (pPattern->getType())
 				{
 				case RDOPATPattern::PT_Event: type = "событии";               break;
@@ -2655,7 +2698,7 @@ pat_convert
 			ASSERT(pPattern);
 			if (pPattern->getType() != RDOPATPattern::PT_Rule)
 			{
-				tstring type = "";
+				std::string type = "";
 				switch (pPattern->getType())
 				{
 				case RDOPATPattern::PT_Event    : type = "событии";               break;
@@ -2707,7 +2750,7 @@ pat_convert
 
 			if (pPattern->getType() != RDOPATPattern::PT_Event)
 			{
-				tstring type = "";
+				std::string type = "";
 				switch (pPattern->getType())
 				{
 				case RDOPATPattern::PT_Rule     : type = "продукционном правиле"; break;
@@ -2861,25 +2904,29 @@ nochange_statement
 	;
 
 stopping_statement
-	: RDO_IDENTIF '.' RDO_Stopping '(' ')' ';'
+	: param_full_name '.' RDO_Stopping '(' ')' ';'
 	{
 		#PASS2
 		{
-			tstring         eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-			LPRDOPATPattern pPattern  = PARSER->findPATPattern(eventName);
+			Context::LPFindResult pPatternResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pPatternResult->getSwitchContext());
+			LPContext pPatternContext = pPatternResult->getSwitchContext().context;
+			ASSERT(pPatternContext);
+
+			LPRDOPATPattern pPattern = pPatternContext.object_dynamic_cast<RDOPATPattern>();
 			if (!pPattern)
 			{
-				PARSER->error().error(@1, rdo::format("Попытка остановить неизвестное событие: %s", eventName.c_str()));
+				PARSER->error().error(@1, rdo::format("Попытка остановить неизвестное событие: %s", pPattern->name().c_str()));
 			}
 
 			LPRDOPatternEvent pEvent = pPattern.object_dynamic_cast<RDOPatternEvent>();
 			if (!pEvent)
 			{
-				PARSER->error().error(@1, rdo::format("Паттерн %s не является событием", eventName.c_str()));
+				PARSER->error().error(@1, rdo::format("Паттерн %s не является событием", pEvent->name().c_str()));
 			}
 
 			rdo::runtime::LPRDOCalcEventStop pCalc = pEvent->stoping();
-			pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Остановка события %s", eventName.c_str())));
+			pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Остановка события %s", pEvent->name().c_str())));
 
 			LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
 			ASSERT(pType);
@@ -2890,7 +2937,7 @@ stopping_statement
 			$$ = PARSER->stack().push(pExpression);
 		}
 	}
-	| RDO_IDENTIF '.' RDO_Stopping '(' ')' error
+	| param_full_name '.' RDO_Stopping '(' ')' error
 	{
 		#PASS2
 		{
@@ -2900,29 +2947,33 @@ stopping_statement
 	;
 
 planning_statement
-	: RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')' ';'
+	: param_full_name '.' RDO_Planning '(' arithm_list ')' ';'
 	{
 		#PASS2
 		{
-			tstring           eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-			LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
+			Context::LPFindResult pPatternResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pPatternResult->getSwitchContext());
+			LPContext pPatternContext = pPatternResult->getSwitchContext().context;
+			ASSERT(pPatternContext);
 
-			LPRDOPATPattern pPattern = PARSER->findPATPattern(eventName);
+			LPRDOPATPattern pPattern = pPatternContext.object_dynamic_cast<RDOPATPattern>();
 			if (!pPattern)
 			{
-				PARSER->error().error(@1, rdo::format("Попытка запланировать неизвестное событие: %s", eventName.c_str()));
+				PARSER->error().error(@1, rdo::format("Попытка запланировать неизвестное событие: %s", pPattern->name().c_str()));
 			}
+
+			LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
 
 			LPRDOPatternEvent pEvent = pPattern.object_dynamic_cast<RDOPatternEvent>();
 			if (!pEvent)
 			{
-				PARSER->error().error(@1, rdo::format("Паттерн %s не является событием", eventName.c_str()));
+				PARSER->error().error(@1, rdo::format("Паттерн %s не является событием", pEvent->name().c_str()));
 			}
 
 			ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
 			if (arithmIt == pArithmList->getContainer().end())
 			{
-				PARSER->error().error(@1, rdo::format("Не указано время планирования события: %s", eventName.c_str()));
+				PARSER->error().error(@1, rdo::format("Не указано время планирования события: %s", pEvent->name().c_str()));
 			}
 
 			LPRDOFUNArithm pTimeArithm = *arithmIt;
@@ -2943,7 +2994,7 @@ planning_statement
 			ASSERT(pCalcTime);
 
 			rdo::runtime::LPRDOCalcEventPlan pEventPlan = pEvent->planning(pCalcTime, pParamList);
-			pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Планирование события %s в момент времени %s", eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
+			pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Планирование события %s в момент времени %s", pEvent->name().c_str(), pCalcTime->srcInfo().src_text().c_str())));
 
 			LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
 			ASSERT(pType);
@@ -2954,28 +3005,28 @@ planning_statement
 			$$ = PARSER->stack().push(pExpression);
 		}
 	}
-	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')' error
+	| param_full_name '.' RDO_Planning '(' arithm_list ')' error
 	{
 		#PASS2
 		{
 			PARSER->error().error(@7, "Не найден символ окончания инструкции - точка с запятой");
 		}
 	}
-	| RDO_IDENTIF '.' RDO_Planning '(' error
+	| param_full_name '.' RDO_Planning '(' error
 	{
 		#PASS2
 		{
 			PARSER->error().error(@5, "Ошибка в арифметическом выражении");
 		}
 	}
-	| RDO_IDENTIF '.' RDO_Planning error
+	| param_full_name '.' RDO_Planning error
 	{
 		#PASS2
 		{
 			PARSER->error().error(@4, "Ожидается открывающая скобка");
 		}
 	}
-	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list error
+	| param_full_name '.' RDO_Planning '(' arithm_list error
 	{
 		#PASS2
 		{
@@ -2985,31 +3036,35 @@ planning_statement
 	;
 
 process_input_statement
-	: RDO_IDENTIF '.' RDO_ProcessStart '(' RDO_IDENTIF ')' ';'
+	: param_full_name '.' RDO_ProcessStart '(' RDO_IDENTIF ')' ';'
 	{
 		#PASS2
 		{
-			tstring          processName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-			LPRDOPROCProcess pProcess    = PARSER->findPROCProcess(processName);
+			Context::LPFindResult pProcessResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pProcessResult->getSwitchContext());
+			LPContext pProcessContext = pProcessResult->getSwitchContext().context;
+			ASSERT(pProcessContext);
+
+			LPRDOPROCProcess pProcess = pProcessContext.object_dynamic_cast<RDOPROCProcess>();
 			if (!pProcess)
 			{
-				PARSER->error().error(@1, rdo::format("Попытка запустить неизвестный процесс: %s", processName.c_str()));
+				PARSER->error().error(@1, rdo::format("Попытка запустить неизвестный процесс: %s", pProcess->name().c_str()));
 			}
 
 			LPIPROCBlock pBlock = (*(pProcess->getBlockList().begin()))->getRuntimeBlock();
 			ASSERT(pBlock);
 
-			tstring relResName = PARSER->stack().pop<RDOValue>($5)->value().getIdentificator();
+			const std::string relResName = PARSER->stack().pop<RDOValue>($5)->value().getIdentificator();
 
 			LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
 			ASSERT(pPattern);
 			/*из-за использования RDO_IDENTIF_RELRES findRelevantResource() всегда находит ресурс*/
 			LPRDORelevantResource pRelRes = pPattern->findRelevantResource(relResName);
-			tstring relResTypeName = pRelRes->getType()->name();
+			const std::string relResTypeName = pRelRes->getType()->name();
 
 			if (!pProcess->checkTransactType(relResTypeName))
 			{
-				PARSER->error().error(@1, rdo::format("Процесс %s ожидает в качестве транзактов ресурсы типа %s, а не %s", processName.c_str(), "true_resTypeName", relResTypeName.c_str()));
+				PARSER->error().error(@1, rdo::format("Процесс %s ожидает в качестве транзактов ресурсы типа %s, а не %s", pProcess->name().c_str(), "true_resTypeName", relResTypeName.c_str()));
 			}
 
 			rdo::runtime::LPRDOCalcProcessControl pCalc = rdo::Factory<rdo::runtime::RDOCalcProcessControl>::create(pBlock, pRelRes->m_relResID);
@@ -3024,7 +3079,7 @@ process_input_statement
 			$$ = PARSER->stack().push(pExpression);
 		}
 	}
-	| RDO_IDENTIF '.' RDO_ProcessStart '(' error ')' ';'
+	| param_full_name '.' RDO_ProcessStart '(' error ')' ';'
 	{
 		#PASS2
 		{
@@ -3034,15 +3089,19 @@ process_input_statement
 	;
 
 watch_start
-	: RDO_IDENTIF '.' RDO_WatchStart '(' ')' ';'
+	: param_full_name '.' RDO_WatchStart '(' ')' ';'
 	{
 		#PASS2
 		{
-			tstring          name         = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-			LPRDOResultGroup pResultGroup = PARSER->findResultGroup(name);
+			Context::LPFindResult pResultGroupResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pResultGroupResult->getSwitchContext());
+			LPContext pResultGroupContext = pResultGroupResult->getSwitchContext().context;
+			ASSERT(pResultGroupContext);
+
+			LPRDOResultGroup pResultGroup = pResultGroupContext.object_dynamic_cast<RDOResultGroup>();
 			if (!pResultGroup)
 			{
-				PARSER->error().error(@1, rdo::format("Неизвестная группа показателей: %s", name.c_str()));
+				PARSER->error().error(@1, rdo::format("Неизвестная группа показателей: %s", pResultGroup->name().c_str()));
 			}
 
 			rdo::runtime::LPRDOCalcWatchGroupStart pCalc = rdo::Factory<rdo::runtime::RDOCalcWatchGroupStart>::create(pResultGroup->getRuntime());
@@ -3060,15 +3119,19 @@ watch_start
 	;
 
 watch_stop
-	: RDO_IDENTIF '.' RDO_WatchStop '(' ')' ';'
+	: param_full_name '.' RDO_WatchStop '(' ')' ';'
 	{
 		#PASS2
 		{
-			tstring          name         = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-			LPRDOResultGroup pResultGroup = PARSER->findResultGroup(name);
+			Context::LPFindResult pResultGroupResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pResultGroupResult->getSwitchContext());
+			LPContext pResultGroupContext = pResultGroupResult->getSwitchContext().context;
+			ASSERT(pResultGroupContext);
+
+			LPRDOResultGroup pResultGroup = pResultGroupContext.object_dynamic_cast<RDOResultGroup>();
 			if (!pResultGroup)
 			{
-				PARSER->error().error(@1, rdo::format("Неизвестная группа показателей: %s", name.c_str()));
+				PARSER->error().error(@1, rdo::format("Неизвестная группа показателей: %s", pResultGroup->name().c_str()));
 			}
 
 			rdo::runtime::LPRDOCalcWatchGroupStop pCalc = rdo::Factory<rdo::runtime::RDOCalcWatchGroupStop>::create(pResultGroup->getRuntime());
@@ -3216,18 +3279,18 @@ dpt_search_begin
 				{
 					LPILogic pParent = pParentDPTPrior->getLogic();
 					ASSERT(pParent);
-					pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
+					pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag*>(&$5), pParent);
 				}
 				else if (pParentDPTSome)
 				{
 					LPILogic pParent = pParentDPTSome->getLogic();
 					ASSERT(pParent);
-					pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
+					pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag*>(&$5), pParent);
 				}
 			}
 			else
 			{
-				pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5));
+				pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag*>(&$5));
 			}
 			ASSERT(pDPTSearch);
 			$$ = PARSER->stack().push(pDPTSearch);
@@ -3863,7 +3926,7 @@ dpt_some_descr_keyb
 		{
 			LPRDODPTActivityHotKey pActivityHotKey = PARSER->getLastDPTSome()->getLastActivity();
 			ASSERT(pActivityHotKey);
-			tstring key = PARSER->stack().pop<RDOValue>($3)->value().getString();
+			const std::string key = PARSER->stack().pop<RDOValue>($3)->value().getString();
 			pActivityHotKey->addHotKey(key, @3);
 		}
 	}
@@ -3873,7 +3936,7 @@ dpt_some_descr_keyb
 		{
 			LPRDODPTActivityHotKey pActivityHotKey = PARSER->getLastDPTSome()->getLastActivity();
 			ASSERT(pActivityHotKey);
-			tstring key = PARSER->stack().pop<RDOValue>($1)->value().getString();
+			const std::string key = PARSER->stack().pop<RDOValue>($1)->value().getString();
 			pActivityHotKey->addHotKey(key, @1);
 		}
 	}
@@ -4191,7 +4254,7 @@ dpt_prior_descr_keyb
 		{
 			LPRDODPTActivityHotKey pActivityHotKey = PARSER->getLastDPTPrior()->getLastActivity();
 			ASSERT(pActivityHotKey);
-			tstring key = PARSER->stack().pop<RDOValue>($3)->value().getString();
+			const std::string key = PARSER->stack().pop<RDOValue>($3)->value().getString();
 			pActivityHotKey->addHotKey(key, @3);
 		}
 	}
@@ -4201,7 +4264,7 @@ dpt_prior_descr_keyb
 		{
 			LPRDODPTActivityHotKey pActivityHotKey = PARSER->getLastDPTPrior()->getLastActivity();
 			ASSERT(pActivityHotKey);
-			tstring key = PARSER->stack().pop<RDOValue>($1)->value().getString();
+			const std::string key = PARSER->stack().pop<RDOValue>($1)->value().getString();
 			pActivityHotKey->addHotKey(key, @1);
 		}
 	}
@@ -4537,7 +4600,7 @@ frm_sprite
 			ASSERT(pValue);
 			ASSERT(pArithmContainer);
 
-			tstring funName = pValue->value().getIdentificator();
+			const std::string funName = pValue->value().getIdentificator();
 
 			LPExpression pFunctionExpression = RDOFUNArithm::generateByIdentificator(pValue)->expression();
 			ASSERT(pFunctionExpression);
@@ -4738,7 +4801,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(255), rbyte(255), rbyte(255), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(255), (unsigned char)(255), (unsigned char)(255), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
@@ -4747,7 +4810,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(0), rbyte(0), rbyte(0), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(0), (unsigned char)(0), (unsigned char)(0), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
@@ -4756,7 +4819,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(255), rbyte(0), rbyte(0), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(255), (unsigned char)(0), (unsigned char)(0), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
@@ -4765,7 +4828,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(0), rbyte(255), rbyte(0), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(0), (unsigned char)(255), (unsigned char)(0), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
@@ -4774,7 +4837,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(0), rbyte(0), rbyte(255), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(0), (unsigned char)(0), (unsigned char)(255), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
@@ -4783,7 +4846,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(0), rbyte(255), rbyte(255), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(0), (unsigned char)(255), (unsigned char)(255), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
@@ -4792,7 +4855,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(255), rbyte(0), rbyte(255), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(255), (unsigned char)(0), (unsigned char)(255), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
@@ -4801,7 +4864,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(255), rbyte(255), rbyte(0), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(255), (unsigned char)(255), (unsigned char)(0), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
@@ -4810,7 +4873,7 @@ frm_color
 	{
 		#PASS2
 		{
-			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(rbyte(127), rbyte(127), rbyte(127), RDOParserSrcInfo(@1, LEXER->YYText()));
+			LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create((unsigned char)(127), (unsigned char)(127), (unsigned char)(127), RDOParserSrcInfo(@1, LEXER->YYText()));
 			ASSERT(pColor);
 			$$ = PARSER->stack().push(pColor);
 		}
@@ -4823,19 +4886,19 @@ frm_color
 			LPRDOFUNArithm pGreen = RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($3));
 			LPRDOFUNArithm pBlue  = RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($4));
 			{
-				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(0), @2), rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(255), @2), @2);
+				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<std::size_t>(0), @2), rdo::Factory<RDOValue>::create(rdo::explicit_value<std::size_t>(255), @2), @2);
 				LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 				LPTypeInfo          pType     = rdo::Factory<TypeInfo>::create(pIntRange, @2);
 				pRed->checkParamType(pType);
 			}
 			{
-				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(0), @3), rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(255), @3), @3);
+				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<std::size_t>(0), @3), rdo::Factory<RDOValue>::create(rdo::explicit_value<std::size_t>(255), @3), @3);
 				LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 				LPTypeInfo          pType     = rdo::Factory<TypeInfo>::create(pIntRange, @3);
 				pGreen->checkParamType(pType);
 			}
 			{
-				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(0), @4), rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(255), @4), @4);
+				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<std::size_t>(0), @4), rdo::Factory<RDOValue>::create(rdo::explicit_value<std::size_t>(255), @4), @4);
 				LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 				LPTypeInfo          pType     = rdo::Factory<TypeInfo>::create(pIntRange, @4);
 				pBlue->checkParamType(pType);
@@ -4874,19 +4937,19 @@ frm_color
 			LPRDOFUNArithm pGreen = PARSER->stack().pop<RDOFUNArithm>($4);
 			LPRDOFUNArithm pBlue  = PARSER->stack().pop<RDOFUNArithm>($6);
 			{
-				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(0), @2), rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(255), @2), @2);
+				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<std::size_t>(0), @2), rdo::Factory<RDOValue>::create(rdo::explicit_value<std::size_t>(255), @2), @2);
 				LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 				LPTypeInfo          pType     = rdo::Factory<TypeInfo>::create(pIntRange, @2);
 				pRed->checkParamType(pType);
 			}
 			{
-				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(0), @4), rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(255), @4), @4);
+				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<std::size_t>(0), @4), rdo::Factory<RDOValue>::create(rdo::explicit_value<std::size_t>(255), @4), @4);
 				LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 				LPTypeInfo          pType     = rdo::Factory<TypeInfo>::create(pIntRange, @4);
 				pGreen->checkParamType(pType);
 			}
 			{
-				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(0), @6), rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(255), @6), @6);
+				LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<std::size_t>(0), @6), rdo::Factory<RDOValue>::create(rdo::explicit_value<std::size_t>(255), @6), @6);
 				LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 				LPTypeInfo          pType     = rdo::Factory<TypeInfo>::create(pIntRange, @6);
 				pBlue->checkParamType(pType);
@@ -6449,7 +6512,7 @@ frm_active
 	{
 		#PASS2
 		{
-			tstring oprName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+			const std::string oprName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 			LPRDODPTActivity pActivity = PARSER->findDPTActivity(oprName);
 			if (!pActivity)
 			{
@@ -7224,11 +7287,11 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
 			}
@@ -7243,11 +7306,11 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
 			}
@@ -7262,11 +7325,11 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
 			}
@@ -7281,11 +7344,11 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
 			}
@@ -7300,7 +7363,7 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7315,11 +7378,11 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
 			}
@@ -7334,11 +7397,11 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
 			}
@@ -7353,7 +7416,7 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7370,7 +7433,7 @@ fun_seq_by_hist_body_real
 			ASSERT(pSequence);
 			RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 			ASSERT(pHeader);
-			if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
 			}
@@ -7386,7 +7449,7 @@ fun_seq_by_hist_body_real
 			ASSERT(pSequence);
 			RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 			ASSERT(pHeader);
-			if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
 			}
@@ -7402,7 +7465,7 @@ fun_seq_by_hist_body_real
 			ASSERT(pSequence);
 			RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 			ASSERT(pHeader);
-			if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
 			}
@@ -7418,7 +7481,7 @@ fun_seq_by_hist_body_real
 			ASSERT(pSequence);
 			RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 			ASSERT(pHeader);
-			if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
 			}
@@ -7444,7 +7507,7 @@ fun_seq_by_hist_body_real
 			ASSERT(pSequence);
 			RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 			ASSERT(pHeader);
-			if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
 			}
@@ -7460,7 +7523,7 @@ fun_seq_by_hist_body_real
 			ASSERT(pSequence);
 			RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 			ASSERT(pHeader);
-			if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
+			if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
 			}
@@ -7484,7 +7547,7 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if (pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int)
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7497,7 +7560,7 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7510,7 +7573,7 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7523,7 +7586,7 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7536,7 +7599,7 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7549,7 +7612,7 @@ fun_seq_by_hist_body_real
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7616,7 +7679,7 @@ fun_seq_by_hist_body_enum
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_enum )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_enum)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7631,7 +7694,7 @@ fun_seq_by_hist_body_enum
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_enum )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_enum)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -7666,7 +7729,7 @@ fun_seq_by_hist_body_enum
 		{
 			RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 			ASSERT(pHeader);
-			if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_enum )
+			if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_enum)
 			{
 				PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 			}
@@ -8059,35 +8122,45 @@ pmd_result_watch_value_begin
 	;
 
 pmd_result
-	: RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' RDO_IDENTIF
+	: RDO_IDENTIF_COLON pmd_trace RDO_watch_par param_full_name
 	{
 		#PASS2
 		{
 			LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(PARSER->stack().pop<RDOValue>($1)->src_info());
 			ASSERT(pResult);
-			pResult->init($2 != 0, PARSER->stack().pop<RDOValue>($4)->src_info(), PARSER->stack().pop<RDOValue>($6)->src_info());
+
+			Context::LPFindResult pParamResult = PARSER->stack().pop<Context::FindResult>($4);
+			ASSERT(pParamResult->getSwitchContext());
+			LPContext pParamContext = pParamResult->getSwitchContext().context;
+			ASSERT(pParamContext);
+
+			Context::Params params = pParamResult->getSwitchContext().params;
+
+			LPRDORTPResType pType = pParamContext.object_dynamic_cast<RDORTPResType>();
+			if (pType)
+			{
+				PARSER->error().error(@4, "Невозможно наблюдать за параметром типа ресурса");
+			}
+			LPRDORTPParam pParam = pParamContext.object_dynamic_cast<RDORTPParam>();
+			if (!pParam)
+			{
+				PARSER->error().error(@4, "Ожидается имя параметра");
+			}
+
+			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(@4);
+			srcInfo.setSrcText(params.identifier());
+			pParam->setSrcInfo(srcInfo);
+			pResult->checkParam(pParam);
+
+			pResult->initFromParam($2 != 0, pParam, params.get<LPExpression>(RDORSSResource::GET_RESOURCE)->calc(), params.get<std::size_t>(RDOParam::CONTEXT_PARAM_PARAM_ID));
 			$$ = PARSER->stack().push(pResult);
-		}
-	}
-	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' error
-	{
-		#PASS2
-		{
-			PARSER->error().error(@5, @6, "Ожидается имя параметра");
-		}
-	}
-	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF error
-	{
-		#PASS2
-		{
-			PARSER->error().error(@4, "Ожидается '.'");
 		}
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par error
 	{
 		#PASS2
 		{
-			PARSER->error().error(@3, @4, "После ключевого слова watch_par ожидается имя ресурса");
+			PARSER->error().error(@3, @4, "Синтаксическая ошибка в имени параметра");
 		}
 	}
 	| RDO_IDENTIF_COLON pmd_trace error
@@ -8280,8 +8353,8 @@ process_begin
 			}
 
 			LPRDOValue transact = PARSER->stack().pop<RDOValue>($3);
-			tstring transactName   = transact->value().getIdentificator();
-			tstring rtp_param_name = "Время_создания";
+			const std::string transactName = transact->value().getIdentificator();
+			const std::string rtp_param_name = "Время_создания";
 
 			// Получили список всех типов ресурсов
 			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
@@ -8305,7 +8378,7 @@ process_begin
 			else
 			{
 				// Проверим тип на временность
-				CREF(rdo::compiler::mbuilder::RDOResType) rtp = rtpList[transactName];
+				const rdo::compiler::mbuilder::RDOResType& rtp = rtpList[transactName];
 				if (rtp.getType() != rdo::compiler::mbuilder::RDOResType::rt_temporary)
 				{
 					PARSER->error().push_only(transact->src_info(), rdo::format("Типа транзакта '%s' должен быть временным", rtp.name().c_str()));
@@ -8330,7 +8403,7 @@ process_begin
 
 			LPRDORTPResType transactType = PARSER->findRTPResType(transactName);
 
-			tstring procName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+			const std::string procName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 			pProcess = rdo::Factory<RDOPROCProcess>::create(RDOParserSrcInfo(@1, @3, procName), procName, transactType);
 			ASSERT(pProcess);
 		}
@@ -8473,13 +8546,13 @@ process_line
 
 			LPRDORTPResType pParserType = pProc->getTransacType();
 			ASSERT(pParserType);
-			
-			rbool permanentFlag = pParserType->isPermanent();
-			rbool traceFlag     = true;
 
-			std::vector<rdo::runtime::RDOValue> paramList;
+			const bool permanentFlag = pParserType->isPermanent();
+			const bool traceFlag = true;
+
+			std::vector<rdo::runtime::LPRDOCalc> paramList;
 			//! \error вместо настоящих значений параметров транзакта просто 0
-			paramList.push_back(rdo::runtime::RDOValue(0.0));
+			paramList.push_back(rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(0)));
 
 			rdo::runtime::LPRDOCalcCreateResource pCreateAndGoOnTransactCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
 				pParserType->getNumber(),
@@ -8625,7 +8698,7 @@ proc_planning_statement
 	{
 		#PASS2
 		{
-			tstring           eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			const std::string eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 			LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
 
 			LPRDOPATPattern pPattern = PARSER->findPATPattern(eventName);
@@ -8703,8 +8776,8 @@ proc_stopping_statement
 	{
 		#PASS2
 		{
-			tstring         eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-			LPRDOPATPattern pPattern  = PARSER->findPATPattern(eventName);
+			const std::string eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			LPRDOPATPattern pPattern = PARSER->findPATPattern(eventName);
 			if (!pPattern)
 			{
 				PARSER->error().error(@1, rdo::format("Попытка остановить неизвестное событие: %s", eventName.c_str()));
@@ -8737,15 +8810,15 @@ queue_param
 		#PASS2
 		{
 			//! Имя ресурса
-			tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info     = @1;
+			const std::string res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
+			const RDOParserSrcInfo& info = @1;
 			// Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			//! Получили список всех типов ресурсов
 			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
-			tstring rtp_name = "QDEPART";
-			tstring q_name   = "Очередь_" + res_name;
+			const std::string rtp_name = "QDEPART";
+			const std::string q_name = "Очередь_" + res_name;
 			//! Если ресурс существует, берем его тип и проверяем
 			if (rssList[res_name].exist())
 			{
@@ -8753,7 +8826,7 @@ queue_param
 				rdo::compiler::mbuilder::BlockForQueue::checkType(rtp, info);
 				LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 				ASSERT(pResult);
-				pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring("длина_очереди")));
+				pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(std::string("длина_очереди")));
 			}
 			else
 			{
@@ -8766,7 +8839,7 @@ queue_param
 						rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, res_name);
 						LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 						ASSERT(pResult);
-						pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring("длина_очереди")));
+						pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(std::string("длина_очереди")));
 					}
 				}
 				else
@@ -8777,7 +8850,7 @@ queue_param
 						rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, res_name);
 						LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 						ASSERT(pResult);
-						pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring("длина_очереди")));
+						pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(std::string("длина_очереди")));
 					}
 				}
 			}
@@ -8803,14 +8876,14 @@ depart_param
 		#PASS2
 		{
 			//! Имя ресурса
-			tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info     = @1;
+			const std::string res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
+			const RDOParserSrcInfo& info = @1;
 			//! Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			//! Получили список всех типов ресурсов
 			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
-			tstring rtp_name = "QDEPART";
+			const std::string rtp_name = "QDEPART";
 			//! Если ресурс существует, берем его тип и проверяем
 			if (rssList[res_name].exist())
 			{
@@ -8843,7 +8916,7 @@ depart_param
 			$$ = PARSER->stack().push(pDepart);
 		}
 	}
-	| RDO_IDENTIF error 
+	| RDO_IDENTIF error
 	{
 		#PASS1
 		{
@@ -8869,7 +8942,7 @@ term_param
 		{
 			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($1);
 			ASSERT(pArithm);
-			if (pArithm->typeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int)
+			if (pArithm->typeInfo()->typeID() == rdo::runtime::RDOType::t_int)
 			{
 				rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(NULL);
 				LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), "TERMINATE", pCalc);
@@ -8897,8 +8970,8 @@ seize_param
 		#PASS2
 		{
 			//! Имя ресурса
-			tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info     = @1;
+			const std::string res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
+			const RDOParserSrcInfo& info = @1;
 			//! Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
@@ -8920,7 +8993,7 @@ seize_param
 			{
 				//! Ресурс не найден, сформировать имя типа по имени ресурса
 				//! Сформировать имя типа по имени ресурса
-				tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
+				const std::string rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
 				//! Получили список всех типов ресурсов
 				rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 				//! Нашли тип ресурса
@@ -8949,8 +9022,8 @@ seize_param
 		#PASS2
 		{
 			//! Имя ресурса
-			tstring                res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info     = @3;
+			const std::string res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
+			const RDOParserSrcInfo& info = @3;
 			//! Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
@@ -8971,7 +9044,7 @@ seize_param
 			{
 				//! Ресурс не найден, сформировать имя типа по имени ресурса
 				//! Сформировать имя типа по имени ресурса
-				tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
+				const std::string rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
 				//! Получили список всех типов ресурсов
 				rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 				//! Нашли тип ресурса
@@ -9010,8 +9083,8 @@ release_param
 		#PASS2
 		{
 			//! Имя ресурса
-			tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info     = @1;
+			const std::string res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
+			const RDOParserSrcInfo& info = @1;
 			//! Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
@@ -9031,7 +9104,7 @@ release_param
 			{
 				//! Ресурс не найден, сформировать имя типа по имени ресурса
 				//! Сформировать имя типа по имени ресурса
-				tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
+				const std::string rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
 				//! Получили список всех типов ресурсов
 				rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 				//! Нашли тип ресурса
@@ -9060,8 +9133,8 @@ release_param
 		#PASS2
 		{
 			//! Имя ресурса
-			tstring                res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
-			CREF(RDOParserSrcInfo) info     = @3;
+			const std::string res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
+			const RDOParserSrcInfo& info = @3;
 			//! Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
@@ -9082,7 +9155,7 @@ release_param
 			{
 				//! Ресурс не найден, сформировать имя типа по имени ресурса
 				//! Сформировать имя типа по имени ресурса
-				tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
+				const std::string rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
 				//! Получили список всех типов ресурсов
 				rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 				//! Нашли тип ресурса
@@ -9120,8 +9193,8 @@ assign_param
 	{
 		#PASS2
 		{
-			tstring res   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-			tstring param = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator();
+			const std::string res = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			const std::string param = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator();
 			rdo::compiler::mbuilder::RDOResType rtp;
 
 			// Получили список всех ресурсов
@@ -9135,7 +9208,7 @@ assign_param
 				{
 					PARSER->error().error(@1, rdo::format("Ссылка на неизвестный параметр ресурса: %s.%s", res.c_str(), param.c_str()));
 				}
-			
+
 				LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($5);
 				ASSERT(pArithm);
 
@@ -9146,8 +9219,8 @@ assign_param
 				LPRDORTPParam   pParam   = pResType->findRTPParam(param);
 				pArithm->checkParamType(pParam->getTypeInfo());
 
-				ruint res = pResource->getID();
-				ruint par = rtp.m_params[param].id();
+				const std::size_t res = pResource->getID();
+				const std::size_t par = rtp.m_params[param].id();
 
 				rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(pParam->getTypeInfo());
 				ASSERT(pCalc);
@@ -9175,7 +9248,7 @@ smr_main
 	{
 		#PASS2
 		{
-			tstring           eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			const std::string eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 			LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
 
 			LPRDOPATPattern pPattern = PARSER->findPATPattern(eventName);
@@ -9500,8 +9573,8 @@ smr_descr
 	{
 		#PASS1
 		{
-			tstring alias = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
-			tstring model = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
+			const std::string alias = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+			const std::string model = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
 			LPRDOSMR pSMR = PARSER->getSMR();
 			ASSERT(pSMR);
 			pSMR->setExternalModelName(alias, model);
@@ -9642,7 +9715,6 @@ statement
 		}
 	}
 	| nochange_statement
-//	| member_statement ';'
 	| process_input_statement
 	| stopping_statement
 	| planning_statement
@@ -9811,86 +9883,68 @@ empty_statement
 	}
 	;
 
-member_statement_parent
-	: RDO_IDENTIF
-	{
-		#PASS2
-		{
-			LPRDOValue pIdentificator = PARSER->stack().pop<RDOValue>($1);
-			ASSERT(pIdentificator);
-
-			LPContext pCurrentContext = PARSER->context();
-			ASSERT(pCurrentContext);
-
-			LPContext pContext = pCurrentContext->find(pIdentificator);
-			if (!pContext)
-			{
-				PARSER->error().error(@1, rdo::format("Неизвестный идентификатор: %s", pIdentificator->value().getIdentificator().c_str()));
-			}
-
-			$$ = PARSER->stack().push(pContext);
-		}
-	}
-	;
-
-member_statement
-	: member_statement_parent '.' RDO_IDENTIF
-	{
-		#PASS2
-		{
-			LPContext  pContext       = PARSER->stack().pop<Context>($1);
-			LPRDOValue pIdentificator = PARSER->stack().pop<RDOValue>($3);
-			ASSERT(pContext      );
-			ASSERT(pIdentificator);
-
-			LPExpression pExpression = pContext->create(pIdentificator);
-			if (!pExpression)
-			{
-				PARSER->error().error(@3, rdo::format("Неизвестный идентификатор: %s", pIdentificator->value().getIdentificator().c_str()));
-			}
-
-			$$ = PARSER->stack().push(pExpression);
-		}
-	}
-	;
-
 set_statement
-	: RDO_IDENTIF set_increment_or_decrement_type
+	: param_full_name set_increment_or_decrement_type
 	{
 		#PASS2
 		{
-			LPRDOValue pParamName = PARSER->stack().pop<RDOValue>($1);
+			Context::LPFindResult pParamResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pParamResult->getSwitchContext());
+			LPContext pParamContext = pParamResult->getSwitchContext().context;
+			ASSERT(pParamContext);
+
+			Context::Params params = pParamResult->getSwitchContext().params;
+
+			std::string name;
+			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(@1);
+			if (params.exists(Context::Params::IDENTIFIER))
+			{
+				name = params.identifier();
+				srcInfo.setSrcText(name);
+			}
+
 			rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
 
-			Context::Params params;
-			params[Context::Params::IDENTIFIER] = pParamName->value().getIdentificator();
 			params[Expression::CONTEXT_PARAM_SET_EXPRESSION] = rdo::Factory<Expression>::create(
 				rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@2)),
 				rdo::Factory<rdo::runtime::RDOCalcConst>::create(1),
 				RDOParserSrcInfo(@2)
 			);
 			params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = setOperationType;
-			Context::FindResult result = PARSER->context()->find(Context::METHOD_SET, params, pParamName->src_info());
-			LPExpression pExpression = result.getCreateExpression()();
-			pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format("%s%s", pParamName->value().getIdentificator().c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str())));
+			Context::LPFindResult result = pParamContext->find(Context::METHOD_SET, params, srcInfo);
+			LPExpression pExpression = result->getCreateExpression()();
+			pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format("%s%s", name.c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str())));
+
 			$$ = PARSER->stack().push(pExpression);
 		}
 	}
-	| RDO_IDENTIF set_operation_type fun_arithm
+	| param_full_name set_operation_type fun_arithm
 	{
 		#PASS2
 		{
-			LPRDOValue     pParamName   = PARSER->stack().pop<RDOValue>($1);
-			LPRDOFUNArithm pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
-			rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
+			Context::LPFindResult pParamResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pParamResult->getSwitchContext());
+			LPContext pParamContext = pParamResult->getSwitchContext().context;
+			ASSERT(pParamContext);
 
-			Context::Params params;
-			params[Context::Params::IDENTIFIER] = pParamName->value().getIdentificator();
+			Context::Params params = pParamResult->getSwitchContext().params;
+
+			std::string name;
+			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(@1);
+			if (params.exists(Context::Params::IDENTIFIER))
+			{
+				name = params.identifier();
+				srcInfo.setSrcText(name);
+			}
+
+			rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
+			LPRDOFUNArithm pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+
 			params[RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM] = pRightArithm;
 			params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = setOperationType;
-			Context::FindResult result = PARSER->context()->find(Context::METHOD_SET, params, pParamName->src_info());
-			LPExpression pExpression = result.getCreateExpression()();
-			pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format("%s %s %s", pParamName->value().getIdentificator().c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str(), pRightArithm->src_text().c_str())));
+			Context::LPFindResult result = pParamContext->find(Context::METHOD_SET, params, srcInfo);
+			LPExpression pExpression = result->getCreateExpression()();
+			pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format("%s %s %s", name.c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str(), pRightArithm->src_text().c_str())));
 			LPRDOFUNArithm pLeftArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 			ASSERT(pLeftArithm);
 			pLeftArithm->setEqual(pRightArithm);
@@ -9898,7 +9952,7 @@ set_statement
 			$$ = PARSER->stack().push(pExpression);
 		}
 	}
-	| RDO_IDENTIF set_operation_type error
+	| param_full_name set_operation_type error
 	{
 		#PASS2
 		{
@@ -9959,12 +10013,12 @@ set_array_item_statement
 			ASSERT(pArithmInd  );
 			ASSERT(pRightArithm);
 
-			if (!pArrayArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>())
+			if (!pArrayArithm->typeInfo()->itype().object_dynamic_cast<RDOArrayType>())
 			{
 				PARSER->error().error(@1, rdo::format("'%s' не является массивом", pParamName->value().getIdentificator().c_str()));
 			}
 
-			LPRDOType pType = pArrayArithm->typeInfo()->type();
+			LPIType pType = pArrayArithm->typeInfo()->itype();
 			ASSERT(pType);
 			LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
 			ASSERT(pArrayType);
@@ -9985,8 +10039,8 @@ set_array_item_statement
 			params[Context::Params::IDENTIFIER] = pParamName->value().getIdentificator();
 			params[Expression::CONTEXT_PARAM_SET_EXPRESSION] = setExpression;
 			params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = rdo::runtime::SetOperationType::SET;
-			Context::FindResult result = PARSER->context()->find(Context::METHOD_SET, params, pParamName->src_info());
-			$$ = PARSER->stack().push(result.getCreateExpression()());
+			Context::LPFindResult result = PARSER->context()->find(Context::METHOD_SET, params, pParamName->src_info());
+			$$ = PARSER->stack().push(result->getCreateExpression()());
 		}
 	}
 	;
@@ -10086,7 +10140,7 @@ init_declaration_value
 
 			LPExpression pExpression = rdo::Factory<Expression>::create(
 				pTypeInfo,
-				rdo::Factory<rdo::runtime::RDOCalcConst>::create(pTypeInfo->type()->get_default()),
+				rdo::Factory<rdo::runtime::RDOCalcConst>::create(pTypeInfo->itype()->get_default()),
 				RDOParserSrcInfo()
 			);
 			ASSERT(pExpression);
@@ -10237,7 +10291,7 @@ for_header
 
 			LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($5);
 			ASSERT(pCondition);
-			
+
 			rdo::runtime::LPRDOCalc pConditionCalc = pCondition->getCalc();
 			ASSERT(pConditionCalc);
 
@@ -10402,6 +10456,10 @@ param_value_default
 	| '=' param_value
 	{
 		$$ = $2;
+	}
+	| '=' rss_constructor_call
+	{
+		PARSER->error().error(@2, "Для вложенных ресурсов нельзя задавать значение по умолчанию");
 	}
 	| '=' error
 	{
@@ -10601,6 +10659,36 @@ fun_logic
 // --------------------------------------------------------------------------------
 // -------------------- Арифметические выражения
 // --------------------------------------------------------------------------------
+param_full_name
+	: RDO_IDENTIF
+	{
+		#PASS2
+		{
+			LPRDOValue pName = PARSER->stack().pop<RDOValue>($1);
+			Context::Params params;
+			params[Context::Params::IDENTIFIER] = pName->value().getIdentificator();
+			Context::LPFindResult result = PARSER->context()->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
+			$$ = PARSER->stack().push(result);
+		}
+	}
+	| param_full_name '.' RDO_IDENTIF
+	{
+		#PASS2
+		{
+			Context::LPFindResult pParentResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pParentResult->getSwitchContext());
+			LPContext pParentContext = pParentResult->getSwitchContext().context;
+			LPRDOValue pName = PARSER->stack().pop<RDOValue>($3);
+
+			Context::Params params = pParentResult->getSwitchContext().params;
+			params[Context::Params::IDENTIFIER] = pName->value().getIdentificator();
+			Context::LPFindResult result = pParentContext->find(Context::METHOD_OPERATOR_DOT, params, pName->src_info());
+
+			$$ = PARSER->stack().push(result);
+		}
+	}
+	;
+
 fun_arithm
 	: RDO_INT_CONST
 	{
@@ -10637,29 +10725,31 @@ fun_arithm
 			$$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1)));
 		}
 	}
-	| RDO_IDENTIF
+	| param_full_name
 	{
 		#PASS2
 		{
-			$$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1)));
+			Context::LPFindResult pParamResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pParamResult->getSwitchContext());
+			LPContext pParamContext = pParamResult->getSwitchContext().context;
+			ASSERT(pParamContext);
+
+			Context::Params params = pParamResult->getSwitchContext().params;
+
+			std::string name;
+			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(@1);
+			if (params.exists(Context::Params::IDENTIFIER))
+			{
+				name = params.identifier();
+				srcInfo.setSrcText(name);
+			}
+
+			Context::LPFindResult result = pParamContext->find(Context::METHOD_GET, params, srcInfo);
+			LPExpression pExpression = result->getCreateExpression()();
+			ASSERT(pExpression);
+ 			$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(pExpression));
 		}
 	}
-	| RDO_IDENTIF '.' RDO_IDENTIF
-	{
-		#PASS2
-		{
-			$$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3)));
-		}
-	}
-// 	| member_statement
-// 	{
-// 		#PASS2
-// 		{
-// 			LPExpression pExpression = PARSER->stack().pop<Expression>($1);
-// 			ASSERT(pExpression);
-// 			$$ = PARSER->stack().push(rdo::Factory<RDOFUNArithm>::create(pExpression));
-// 		}
-// 	}
 	| '*'
 	{
 		#PASS2
@@ -10749,25 +10839,40 @@ fun_arithm
 			$$ = PARSER->stack().push(pArithm->uminus(info.src_pos()));
 		}
 	}
-	| RDO_IDENTIF '.' RDO_Size
+	| param_full_name '.' RDO_Size
 	{
 		#PASS2
 		{
-			LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
-			ASSERT(pValue);
+			Context::LPFindResult pParamResult = PARSER->stack().pop<Context::FindResult>($1);
+			ASSERT(pParamResult->getSwitchContext());
+			LPContext pParamContext = pParamResult->getSwitchContext().context;
+			ASSERT(pParamContext);
 
-			LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(pValue);
-			ASSERT(pArithm);
+			Context::Params params = pParamResult->getSwitchContext().params;
+
+			std::string name;
+			RDOParserSrcInfo srcInfo = RDOParserSrcInfo(@1);
+			if (params.exists(Context::Params::IDENTIFIER))
+			{
+				name = params.identifier();
+				srcInfo.setSrcText(name);
+			}
+
+			Context::LPFindResult result = pParamContext->find(Context::METHOD_GET, params, srcInfo);
+			LPExpression pArithmExpression = result->getCreateExpression()();
+			ASSERT(pArithmExpression);
+
+ 			LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pArithmExpression);
 
 			rdo::runtime::LPRDOCalc pCalc;
-			if (pArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>())
+			if (pArithm->typeInfo()->itype().object_dynamic_cast<RDOArrayType>())
 			{
 				pCalc = rdo::Factory<rdo::runtime::RDOCalcArraySize>::create(pArithm->calc());
 				ASSERT(pCalc);
 			}
 			else
 			{
-				PARSER->error().error(@1, rdo::format("'%s' не является массивом", pValue->value().getIdentificator().c_str()));
+				PARSER->error().error(@1, rdo::format("'%s' не является массивом", name.c_str()));
 			}
 
 			LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@1));
@@ -10792,7 +10897,7 @@ fun_arithm
 			LPRDOFUNArithm pArrayArithm = RDOFUNArithm::generateByIdentificator(pArrayValue);
 			ASSERT(pArrayArithm);
 
-			LPRDOArrayType pArrayType = pArrayArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>();
+			LPRDOArrayType pArrayType = pArrayArithm->typeInfo()->itype().object_dynamic_cast<RDOArrayType>();
 			if (!pArrayType)
 			{
 				PARSER->error().error(@1, rdo::format("'%s' не является массивом"
@@ -10800,7 +10905,7 @@ fun_arithm
 				);
 			}
 
-			LPRDORTPResType pResType = pArrayType->getItemType()->type().object_dynamic_cast<RDORTPResType>();
+			LPRDORTPResType pResType = pArrayType->getItemType()->itype().object_dynamic_cast<RDORTPResType>();
 			if (!pResType)
 			{
 				PARSER->error().error(@1, rdo::format("'%s' не является массивом ресурсов"
@@ -10814,7 +10919,7 @@ fun_arithm
 			LPRDOValue pParamName = PARSER->stack().pop<RDOValue>($6);
 			ASSERT(pParamName);
 
-			ruint paramIndex = pResType->getRTPParamNumber(pParamName->value().getAsString());
+			const std::size_t paramIndex = pResType->getRTPParamNumber(pParamName->value().getAsString());
 
 			if (paramIndex == RDORTPResType::UNDEFINED_PARAM)
 			{
@@ -10861,7 +10966,7 @@ fun_arithm
 			LPRDOFUNArithm pArithmInd = PARSER->stack().pop<RDOFUNArithm>($3);
 			ASSERT(pArithmInd);
 
-			LPRDOType pType = pArithm->typeInfo()->type();
+			LPIType pType = pArithm->typeInfo()->itype();
 			ASSERT(pType);
 
 			LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
@@ -10895,7 +11000,7 @@ fun_arithm_func_call
 	{
 		#PASS2
 		{
-			tstring funName                    = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+			const std::string funName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 			LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($3);
 			ASSERT(pArithmContainer);
 
@@ -11205,8 +11310,8 @@ fun_select_logic
 			Context::Params params;
 			params["FunGroupType"] = (RDOFUNGroupLogic::FunGroupType)$3;
 			params["GroupLogic"] = pLogic;
-			Context::FindResult result = PARSER->context()->find("select()", params, srcInfo);
-			LPExpression pExpression = result.getCreateExpression()();
+			Context::LPFindResult result = PARSER->context()->find("select()", params, srcInfo);
+			LPExpression pExpression = result->getCreateExpression()();
 			ASSERT(pExpression);
 			LPRDOFUNLogic pLogicSelect = rdo::Factory<RDOFUNLogic>::create(pExpression, false);
 			ASSERT(pLogicSelect);
@@ -11239,8 +11344,8 @@ fun_select_logic
 
 			Context::Params params;
 			params["FunGroupType"] = RDOFUNGroupLogic::fgt_empty;
-			Context::FindResult result = PARSER->context()->find("select()", params, srcInfo);
-			LPExpression pExpression = result.getCreateExpression()();
+			Context::LPFindResult result = PARSER->context()->find("select()", params, srcInfo);
+			LPExpression pExpression = result->getCreateExpression()();
 			ASSERT(pExpression);
 			LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pExpression, false);
 			ASSERT(pLogic);
@@ -11290,8 +11395,8 @@ fun_select_arithm
 
 			Context::Params params;
 			params["FunGroupType"] = RDOFUNGroupLogic::fgt_size;
-			Context::FindResult result = PARSER->context()->find("select()", params, srcInfo);
-			LPExpression pExpression = result.getCreateExpression()();
+			Context::LPFindResult result = PARSER->context()->find("select()", params, srcInfo);
+			LPExpression pExpression = result->getCreateExpression()();
 			ASSERT(pExpression);
 			LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 			ASSERT(pArithm);
@@ -11324,8 +11429,8 @@ fun_select_arithm
 
 			Context::Params params;
 			params["FunGroupType"] = RDOFUNGroupLogic::fgt_array;
-			Context::FindResult result = PARSER->context()->find("select()", params, srcInfo);
-			LPExpression pExpression = result.getCreateExpression()();
+			Context::LPFindResult result = PARSER->context()->find("select()", params, srcInfo);
+			LPExpression pExpression = result->getCreateExpression()();
 			ASSERT(pExpression);
 			LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 			ASSERT(pArithm);

@@ -12,24 +12,22 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
-#include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo {
 
-struct NO_V_TABLE IRefCounter
+struct IRefCounter
 {
-	virtual void  addref ()       = 0;
-	virtual void  release()       = 0;
-	virtual rbool owner  () const = 0;
+	virtual void addref() = 0;
+	virtual void release() = 0;
+	virtual bool owner() const = 0;
 };
 #define DECLARE_IRefCounter \
-	void  addref ();        \
-	void  release();        \
-	rbool owner  () const;
+	void addref();          \
+	void release();         \
+	bool owner() const;
 
-typedef PTR(IRefCounter) LPIRefCounter;
+typedef IRefCounter* LPIRefCounter;
 
 } // namespace rdo
 

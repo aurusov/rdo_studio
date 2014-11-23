@@ -23,62 +23,67 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalcGetResourceHelper
 {
 public:
-	static rbool getResource(CREF(LPRDORuntime) pRuntime, ruint resourceID, REF(RDOValue) result);
+	static bool getResource(const LPRDORuntime& pRuntime, std::size_t resourceID, RDOValue& result);
 };
 
 //! Получение ресурса по ID
-CALC(RDOCalcGetResourceByID)
+PREDECLARE_POINTER(RDOCalcGetResourceByID);
+class RDOCalcGetResourceByID: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetResourceByID)
 private:
-	RDOCalcGetResourceByID(CREF(ruint) resourceID);
+	RDOCalcGetResourceByID(const std::size_t& resourceID);
 
-	ruint m_resourceID;
+	std::size_t m_resourceID;
 
 	DECLARE_ICalc;
 };
 
 //! Получение параметр ресурса по калку ресурса и ID параметра
-CALC(RDOCalcGetResourceParam)
+PREDECLARE_POINTER(RDOCalcGetResourceParam);
+class RDOCalcGetResourceParam: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetResourceParam)
 private:
-	RDOCalcGetResourceParam(CREF(LPRDOCalc) pResource, ruint paramID);
+	RDOCalcGetResourceParam(const LPRDOCalc& pResource, std::size_t paramID);
 
 	LPRDOCalc m_pResource;
-	int       m_paramID;
+	int m_paramID;
 
 	DECLARE_ICalc;
 };
 
 //! Параметры несуществующего ресурса
-CALC(RDOCalcGetUnknowResParam)
+PREDECLARE_POINTER(RDOCalcGetUnknowResParam);
+class RDOCalcGetUnknowResParam: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetUnknowResParam)
 private:
-	RDOCalcGetUnknowResParam(CREF(tstring) resName, CREF(tstring) parName);
+	RDOCalcGetUnknowResParam(const std::string& resName, const std::string& parName);
 
-	tstring m_resName;
-	tstring m_parName;
+	std::string m_resName;
+	std::string m_parName;
 
 	DECLARE_ICalc;
 };
 
 //! Установка значения параметра ресурса перед моделированием из SMR
-CALC(RDOSetResourceParamCalc)
+PREDECLARE_POINTER(RDOSetResourceParamCalc);
+class RDOSetResourceParamCalc: public RDOCalc
 {
 DECLARE_FACTORY(RDOSetResourceParamCalc)
 private:
-	RDOSetResourceParamCalc(ruint resourceID, ruint paramID, CREF(LPRDOCalc) pCalc);
+	RDOSetResourceParamCalc(std::size_t resourceID, std::size_t paramID, const LPRDOCalc& pCalc);
 
-	ruint      m_resourceID;
-	ruint      m_paramID;
-	LPRDOCalc  m_pCalc;
+	std::size_t m_resourceID;
+	std::size_t m_paramID;
+	LPRDOCalc m_pCalc;
 
 	DECLARE_ICalc;
 };
 
-CALC(RDOCalcSetResourceTrace)
+PREDECLARE_POINTER(RDOCalcSetResourceTrace);
+class RDOCalcSetResourceTrace: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcSetResourceTrace)
 private:
@@ -94,12 +99,12 @@ template <SetOperationType::Type setOperationType>
 class RDOSetResourceParam: public RDOCalc
 {
 public:
-	RDOSetResourceParam(const LPRDOCalc& getResource, const ruint paramID, const LPRDOCalc& pCalc = NULL);
+	RDOSetResourceParam(const LPRDOCalc& getResource, const std::size_t paramID, const LPRDOCalc& pCalc = NULL);
 	virtual ~RDOSetResourceParam();
 
 protected:
 	LPRDOCalc m_getResource;
-	ruint     m_paramID;
+	std::size_t m_paramID;
 	LPRDOCalc m_pCalc;
 
 	DECLARE_ICalc;
@@ -107,6 +112,6 @@ protected:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/resource/calc_resource.inl"
+#include "simulator/runtime/calc/resource/calc_resource-inl.h"
 
 #endif // _LIB_RUNTIME_CALC_RESOURCE_H_

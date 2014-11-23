@@ -31,22 +31,21 @@ public:
 	View(QWidget* pParent);
 	virtual ~View();
 
-	void setModel(PTR(Model) pModel);
+	void setModel(Model* pModel);
 
-	REF(TabCtrl) getTab();
+	TabCtrl& getTab();
 
 private:
 	typedef  QWidget  parent_type;
 
-	FindDialog*          m_pFindDialog;
+	FindDialog* m_pFindDialog;
 	FindDialog::Settings m_findSettings;
+	TabCtrl* m_pTabCtrl;
+	Model* m_pModel;
 
-	PTR(TabCtrl) m_pTabCtrl;
-	PTR(Model)   m_pModel;
+	void closeEvent(QCloseEvent* event);
 
-	void closeEvent(PTR(QCloseEvent) event);
-
-	void onFindDlgFind(CREF(FindDialog::Settings) settings);
+	void onFindDlgFind(const FindDialog::Settings& settings);
 	void onFindDlgClose();
 
 	void onSearchFindAll();

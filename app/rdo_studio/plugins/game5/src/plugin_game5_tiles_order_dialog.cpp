@@ -16,16 +16,22 @@
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_tiles_order_dialog.h"
 // --------------------------------------------------------------------------------
 
-TilesOrderDialog::TilesOrderDialog(QWidget* pParent, const QString& lineEditText)
+TilesOrderDialog::TilesOrderDialog(QWidget* pParent, const std::vector<unsigned int>& state)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 {
 	setupUi(this);
 
+	QString boardStateStr;
+	for (auto index : state)
+	{
+		boardStateStr += QString::number(index) + " ";
+	}
+
 	QRegExpValidator * validator = new QRegExpValidator();
-	validator->setRegExp(QRegExp(validatorRegExpPattern(lineEditText.length() / 2)));
+	validator->setRegExp(QRegExp(validatorRegExpPattern(state.size())));
 
 	lineEditPosition->setValidator(validator);
-	lineEditPosition->setText(lineEditText);
+	lineEditPosition->setText(boardStateStr);
 
 	connect(buttonCancel, &QPushButton::clicked, this, &TilesOrderDialog::reject);
 	connect(buttonOk    , &QPushButton::clicked, this, &TilesOrderDialog::onOkClick);
@@ -42,11 +48,17 @@ TilesOrderDialog::~TilesOrderDialog()
 
 void TilesOrderDialog::onOkClick()
 {
-	emit tilesOrderCommited(lineEditPosition->text());
+	QStringList positionList = lineEditPosition->text().split(' ', QString::SkipEmptyParts);
+	std::vector<unsigned int> newState;
+	for (const auto& position: positionList)
+	{
+		newState.push_back(position.toInt());
+	}
+	emit tilesOrderCommited(newState);
 	accept();
 }
 
-QString TilesOrderDialog::validatorRegExpPattern(int value)
+QString TilesOrderDialog::validatorRegExpPattern(int value) const
 {
 	QString singleRegExp;
 	int leastBit = value % 10 - 1;

@@ -24,29 +24,29 @@ class RDOCalcBinaryBase: public RDOCalc
 {
 public:
 	template <class T>
-	static LPRDOCalc generateCalc(CREF(LPRDOCalc) pFirst, CREF(LPRDOCalc) pSecond);
+	static LPRDOCalc generateCalc(const LPRDOCalc& pFirst, const LPRDOCalc& pSecond);
 
 protected:
-	RDOCalcBinaryBase(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
+	RDOCalcBinaryBase(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
 
 	LPRDOCalc  m_pLeft;
 	LPRDOCalc  m_pRight;
 };
 
 //! Константный бинарный оператор RDOValue
-template <typename ret_type, ret_type (RDOValue::*pMethod)(CREF(RDOValue)) const>
+template <typename ret_type, ret_type (RDOValue::*pMethod)(const RDOValue&) const>
 struct BinaryOperatorConstP1
 {
-	typedef ret_type (RDOValue::*method_type)(CREF(RDOValue)) const;
+	typedef ret_type (RDOValue::*method_type)(const RDOValue&) const;
 
 	static method_type method();
 };
 
 //! Неконстантный бинарный оператор RDOValue
-template <typename ret_type, ret_type (RDOValue::*pMethod)(CREF(RDOValue))>
+template <typename ret_type, ret_type (RDOValue::*pMethod)(const RDOValue&)>
 struct BinaryOperatorNonConstP1
 {
-	typedef ret_type (RDOValue::*method_type)(CREF(RDOValue));
+	typedef ret_type (RDOValue::*method_type)(const RDOValue&);
 
 	static method_type method();
 };
@@ -68,12 +68,12 @@ public:
 
 	LPRDOCalc      getLeft        () const;
 	LPRDOCalcConst getRightAsConst() const;
-	void           setRight       (CREF(LPRDOCalc) pRight);
+	void           setRight       (const LPRDOCalc& pRight);
 
-	static RDOSrcInfo getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
+	static RDOSrcInfo getStaticSrcInfo(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
 
 protected:
-	RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
+	RDOCalcBinary(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
 
 private:
 	//! Выполняет бинарную операцию \ref value_operator над \ref m_pLeft и \ref m_pRight
@@ -86,6 +86,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/operation/calc_binary.inl"
+#include "simulator/runtime/calc/operation/calc_binary-inl.h"
 
 #endif // _LIB_RUNTIME_CALC_OPERATION_BINARY_H_

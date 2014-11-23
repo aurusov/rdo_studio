@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
-#include <boost/foreach.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_graph_node_info_dialog.h"
@@ -21,7 +20,7 @@ PluginGame5GraphNodeInfoDialog::PluginGame5GraphNodeInfoDialog(QWidget* pParent)
 	, m_pNode(NULL)
 {
 	setupUi(this);
-	gameBoard->init(true);
+	gameBoard->setTilesDisabled(true);
 
 	buttonNext->setIcon(style()->standardIcon(QStyle::SP_ArrowForward));
 	buttonPrev->setIcon(style()->standardIcon(QStyle::SP_ArrowBack));
@@ -35,8 +34,7 @@ PluginGame5GraphNodeInfoDialog::PluginGame5GraphNodeInfoDialog(QWidget* pParent)
 }
 
 PluginGame5GraphNodeInfoDialog::~PluginGame5GraphNodeInfoDialog()
-{
-}
+{}
 
 void PluginGame5GraphNodeInfoDialog::updateDlg(GraphNode* node)
 {
@@ -45,31 +43,19 @@ void PluginGame5GraphNodeInfoDialog::updateDlg(GraphNode* node)
 	labelPathCostOut    ->setText(QString::number(node->getPathCost()));
 	labelRestPathCostOut->setText(QString::number(node->getRestPathCost()));
 	labelRelevantTileOut->setText(QString::number(node->getRelevantTile()));
-	QString moveText;
+	QString moveText = node->getMoveDirection();
 	if (node->getRelevantTile())
 	{
-		QString moveDirectionText;
-		switch (node->getMoveDirection())
-		{
-			case 1: moveDirectionText = "Вправо"; break;
-			case 2: moveDirectionText = "Влево" ; break;
-			case 3: moveDirectionText = "Вверх" ; break;
-			case 4: moveDirectionText = "Вниз"  ; break;
-		}
-		moveText = moveDirectionText + " (c " + QString::number(node->getTileMoveFrom())
-		         + " на " + QString::number(node->getTileMoveTo()) + ")";
+		moveText += " (c " + QString::number(node->getTileMoveFrom())
+		         +  " на " + QString::number(node->getTileMoveTo()) + ")";
 	}
-	else
-	{
-		moveText = "Начало поиска";
-	}
-	labelSolutionOut->setText(node->isRelatedToSolution() ? "Да" : "Нет");
+	labelSolutionOut     ->setText(node->isRelatedToSolution() ? "Да" : "Нет");
 	labelMoveDirectionOut->setText(moveText);
 	labelMoveCostOut     ->setText(QString::number(node->getMoveCost()));
-	labelNodeNumOut      ->setText(QString::number(node->getGraphNode()));
+	labelNodeNumOut      ->setText(QString::number(node->getNodeID()));
 	if (GraphNode* parentNode = node->getParentGraphNode())
 	{
-		labelParentNodeNumOut->setText(QString::number(parentNode->getGraphNode()));
+		labelParentNodeNumOut->setText(QString::number(parentNode->getNodeID()));
 	}
 	else
 	{
@@ -80,11 +66,16 @@ void PluginGame5GraphNodeInfoDialog::updateDlg(GraphNode* node)
 	buttonPrev->setEnabled(node->getParentGraphNode() != NULL);
 
 	gameBoard->setTilesPositon(node->getBoardState());
+
+	if (size().width() < sizeHint().width())
+	{
+		setFixedSize(sizeHint());
+	}
 }
 
 void PluginGame5GraphNodeInfoDialog::nextNode()
 {
-	BOOST_FOREACH(GraphNode* node, m_pNode->getChildrenList())
+	for (GraphNode* node: m_pNode->getChildrenList())
 	{
 		if (node->isRelatedToSolution())
 		{

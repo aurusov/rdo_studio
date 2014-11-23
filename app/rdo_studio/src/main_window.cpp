@@ -12,7 +12,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 #include <boost/range/algorithm/find.hpp>
 #include <QProcess>
 #include <QTextCodec>
@@ -399,7 +398,7 @@ void MainWindow::createInsertMenu()
 		)
 	);
 
-	BOOST_FOREACH(const MenuList::value_type& menu, menuList)
+	for (const MenuList::value_type& menu: menuList)
 	{
 		if (menu.first.isEmpty())
 		{
@@ -411,7 +410,7 @@ void MainWindow::createInsertMenu()
 		QMenu* pMenu = new QMenu(menu.first, this);
 		menuInsert->addMenu(pMenu);
 
-		BOOST_FOREACH(const MenuItem& menuItem, menu.second)
+		for (const MenuItem& menuItem: menu.second)
 		{
 			QAction* pAction = pMenu->addAction(menuItem.title());
 			pAction->setEnabled(false);
@@ -424,10 +423,6 @@ void MainWindow::createInsertMenu()
 
 void MainWindow::init()
 {
-	// Кто-то должен поднять кернел и треды
-	new rdo::gui::model::Model();
-	m_pModel = g_pModel;
-
 	QSettings settings;
 	settings.beginGroup("style");
 	
@@ -478,7 +473,6 @@ void MainWindow::init()
 	QObject::connect(m_pDockBuild, &QDockWidget::visibilityChanged, this, &MainWindow::onDockVisibleChanged);
 	QObject::connect(m_pDockFind,  &QDockWidget::visibilityChanged, this, &MainWindow::onDockVisibleChanged);
 
-	updateAllStyles();
 	addDockWidget(Qt::BottomDockWidgetArea, m_pDockBuild);
 	tabifyDockWidget(m_pDockBuild, m_pDockDebug  );
 	tabifyDockWidget(m_pDockBuild, m_pDockTrace  );
@@ -492,7 +486,7 @@ void MainWindow::init()
 	tabifyDockWidget(m_pDockChartTree, m_pDockFrame);
 	m_pDockChartTree->raise();
 
-	PTR(QMenu) pMenuDockView = new QMenu("Окна");
+	QMenu* pMenuDockView = new QMenu("Окна");
 	ASSERT(pMenuDockView);
 	menuView->insertMenu(actViewSettings, pMenuDockView);
 	pMenuDockView->addAction(m_pDockBuild->toggleViewAction());
@@ -503,7 +497,7 @@ void MainWindow::init()
 	pMenuDockView->addAction(m_pDockChartTree->toggleViewAction());
 	pMenuDockView->addAction(m_pDockFrame->toggleViewAction());
 
-	PTR(QMenu) pMenuToolbarView = new QMenu("Панели");
+	QMenu* pMenuToolbarView = new QMenu("Панели");
 	ASSERT(pMenuToolbarView);
 	menuView->insertMenu(actViewSettings, pMenuToolbarView);
 	pMenuToolbarView->addAction(toolBarFile->toggleViewAction());
@@ -513,9 +507,9 @@ void MainWindow::init()
 
 	menuView->insertSeparator(actViewSettings);
 
-	PTR(IInit) pModelInit = dynamic_cast<PTR(IInit)>(g_pModel);
-	ASSERT(pModelInit);
-	pModelInit->init();
+	new rdo::gui::model::Model();
+	m_pModel = g_pModel;
+	updateAllStyles();
 }
 
 void MainWindow::setVisible(bool visible)
@@ -590,7 +584,7 @@ void MainWindow::updateAllStyles()
 	g_pTracer->updateChartsStyles();
 }
 
-CREF(LPStatusBar) MainWindow::statusBar() const
+const LPStatusBar& MainWindow::statusBar() const
 {
 	return m_pStatusBar;
 }
@@ -655,11 +649,6 @@ void MainWindow::addSubWindow(QWidget* pWidget)
 	QMdiSubWindow* pFrame = mdiArea->addSubWindow(pWidget);
 	QObject::connect(pFrame, &QMdiSubWindow::windowStateChanged, this, &MainWindow::onSubWindowStateChanged);
 
-	IInit* pInitWidget = dynamic_cast<IInit*>(pWidget);
-	if (pInitWidget)
-	{
-		pInitWidget->init();
-	}
 	pWidget->show();
 
 	static const float sizeScale = 0.9f;
@@ -740,7 +729,7 @@ void MainWindow::onMenuFileReopen(QAction* pAction)
 	}
 }
 
-void MainWindow::insertMenuFileReopenItem(CREF(QString) item)
+void MainWindow::insertMenuFileReopenItem(const QString& item)
 {
 	if (!item.isEmpty())
 	{
@@ -790,13 +779,13 @@ void MainWindow::loadMenuFileReopen()
 
 	QStringList groupList = settings.childKeys();
 	std::vector<int> indexList;
-	BOOST_FOREACH(const QString& index, groupList)
+	for (const QString& index: groupList)
 	{
 		indexList.push_back(index.toInt());
 	}
 	std::sort(indexList.begin(), indexList.end());
 
-	BOOST_FOREACH(int index, indexList)
+	for (int index: indexList)
 	{
 		QString value = settings.value(QString::number(index), QString()).toString();
 		if (!value.isEmpty())
@@ -813,8 +802,8 @@ void MainWindow::saveMenuFileReopen() const
 	QSettings settings;
 	settings.beginGroup("reopen");
 
-	ruint index = 1;
-	BOOST_FOREACH(const QString& fileName, m_reopenList)
+	std::size_t index = 1;
+	for (const QString& fileName: m_reopenList)
 	{
 		settings.setValue(QString::number(index++), fileName);
 	}
@@ -825,13 +814,13 @@ void MainWindow::saveMenuFileReopen() const
 void MainWindow::updateInsertMenu(bool enabled)
 {
 	QList<QAction*> menuList = menuInsert->actions();
-	BOOST_FOREACH(const QAction* pMenu, menuList)
+	for (const QAction* pMenu: menuList)
 	{
 		if (pMenu->isSeparator())
 			continue;
 
 		QList<QAction*> itemList = pMenu->menu()->actions();
-		BOOST_FOREACH(QAction* pItem, itemList)
+		for (QAction* pItem: itemList)
 		{
 			pItem->setEnabled(enabled);
 		}
@@ -901,7 +890,7 @@ void MainWindow::forAllSubWindows(F functor, QMdiSubWindow* pTopSubWindow)
 	{
 		firstCall = false;
 		QList<QMdiSubWindow*> windowList = mdiArea->subWindowList();
-		BOOST_FOREACH(QMdiSubWindow* pSubWindow, windowList)
+		for (QMdiSubWindow* pSubWindow: windowList)
 		{
 			if (pSubWindow != pTopSubWindow)
 			{

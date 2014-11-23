@@ -12,8 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
-#include "utils/src/common/rdotypes.h"
 #include "utils/src/smart_ptr/ref_counter/counter_reference.h"
 #include "utils/src/smart_ptr/interface_ptr/interface_ptr.h"
 #include "utils/src/smart_ptr/ref_counter/ref_counter_i.h"
@@ -30,30 +28,30 @@ public:
 	typedef T                object_type;
 	typedef intrusive_ptr<T> this_type;
 
-	 intrusive_ptr();
-	 intrusive_ptr(PTR (T)         object);
-	 intrusive_ptr(CREF(this_type) sptr  );
-	 template <class P>
-	 intrusive_ptr(CREF(interface_ptr<P>) pInterface);
+	intrusive_ptr();
+	intrusive_ptr(T* object);
+	intrusive_ptr(const this_type& sptr);
+	template <class P>
+	intrusive_ptr(const interface_ptr<P>& pInterface);
 	~intrusive_ptr();
 
-	REF(this_type) operator= (CREF(this_type) sptr);
+	this_type& operator=(const this_type& sptr);
 
 	//! Сравнивает по указателям
 	template <class P>
-	rbool operator== (CREF(intrusive_ptr<P>) sptr) const;
+	bool operator==(const intrusive_ptr<P>& sptr) const;
 	template <class P>
-	rbool operator!= (CREF(intrusive_ptr<P>) sptr) const;
+	bool operator!=(const intrusive_ptr<P>& sptr) const;
 
 	//! Сравнивает по значениям
 	template<class P>
-	rbool compare(CREF(intrusive_ptr<P>) sptr) const;
+	bool compare(const intrusive_ptr<P>& sptr) const;
 
-	operator rbool     () const;
-	 PTR(T) operator-> () const;
-	 PTR(T) operator-> ();
-	CREF(T) operator*  () const;
-	 REF(T) operator*  ();
+	operator bool() const;
+	T* operator->() const;
+	T* operator->();
+	const T& operator*() const;
+	T& operator*();
 
 	template <class P>
 	operator intrusive_ptr<P>() const;
@@ -74,28 +72,26 @@ public:
 	interface_ptr<P> interface_dynamic_cast() const;
 
 	/// @todo переместить в protected
-	PTR(T)   get();
-	CPTR(T)  get() const;
+	T* get();
+	const T* get() const;
 
-	rbool owner () const;
+	bool owner() const;
 
 protected:
-	void  addref ();
-	void  release();
+	void addref();
+	void release();
 
 private:
-	PTR(T) m_object;
+	T* m_object;
 
-	REF(ruint) counter();
+	std::size_t& counter();
 };
 
 #define DECLARE_POINTER(TYPE)    typedef rdo::intrusive_ptr<TYPE> LP##TYPE;
 #define PREDECLARE_POINTER(TYPE) class TYPE; DECLARE_POINTER(TYPE);
-#define OBJECT(TYPE)             PREDECLARE_POINTER(TYPE); CLASS(TYPE): INSTANCE_OF        (rdo::counter_reference)
-#define OBJECT_VIRTUAL(TYPE)     PREDECLARE_POINTER(TYPE); CLASS(TYPE): INSTANCE_VIRTUAL_OF(rdo::counter_reference)
 
 } // namespace rdo
 
-#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.inl"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr-inl.h"
 
 #endif // _UTILS_SMART_PTR_INTRUSIVE_PTR_H_

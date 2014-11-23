@@ -10,14 +10,13 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-RDOResourceTypeList::RDOResourceTypeList(ruint number, CREF(LPRDORuntime) pRuntime)
+RDOResourceTypeList::RDOResourceTypeList(std::size_t number, const LPRDORuntime& pRuntime)
 	: RDOType           (t_pointer)
 	, RDOTraceableObject(false, number, rdo::toString(number + 1))
 {
@@ -36,7 +35,7 @@ void RDOResourceTypeList::setFactoryMethod(const Create& create)
 	m_create = create;
 }
 
-LPRDOResource RDOResourceTypeList::createRes(CREF(LPRDORuntime) pRuntime, ruint resID, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag)
+LPRDOResource RDOResourceTypeList::createRes(const LPRDORuntime& pRuntime, std::size_t resID, const std::vector<RDOValue>& paramsCalcs, bool traceFlag, bool permanentFlag, bool isNested)
 {
 	ASSERT(m_create);
 
@@ -45,19 +44,19 @@ LPRDOResource RDOResourceTypeList::createRes(CREF(LPRDORuntime) pRuntime, ruint 
 	LPIResourceType pIResType = pThis.interface_cast<IResourceType>();
 	ASSERT(pIResType);
 
-	LPRDOResource resource = m_create(pRuntime, paramsCalcs, pIResType, resID, getTraceID(), traceFlag, permanentFlag);
+	LPRDOResource resource = m_create(pRuntime, paramsCalcs, pIResType, resID, getTraceID(), traceFlag, permanentFlag, isNested);
 	insertNewResource(pRuntime, resource);
 
 	return resource;
 }
 
-void RDOResourceTypeList::insertNewResource(CREF(LPRDORuntime) pRuntime, CREF(LPRDOResource) pResource)
+void RDOResourceTypeList::insertNewResource(const LPRDORuntime& pRuntime, const LPRDOResource& pResource)
 {
 	ASSERT(pRuntime);
 	ASSERT(pResource);
 
 #ifdef _DEBUG
-	BOOST_FOREACH(const LPRDOResource& resource, m_resourceList)
+	for (const LPRDOResource& resource: m_resourceList)
 	{
 		ASSERT(resource->getTraceID() != pResource->getTraceID());
 	}
@@ -67,7 +66,7 @@ void RDOResourceTypeList::insertNewResource(CREF(LPRDORuntime) pRuntime, CREF(LP
 	pRuntime->insertNewResource(pResource);
 }
 
-void RDOResourceTypeList::eraseRes(CREF(LPRDOResource) pResource)
+void RDOResourceTypeList::eraseRes(const LPRDOResource& pResource)
 {
 	m_resourceList.remove(pResource);
 }
@@ -82,12 +81,12 @@ IResourceType::ResCIterator RDOResourceTypeList::res_end() const
 	return m_resourceList.end();
 }
 
-LPRDOResourceTypeList RDOResourceTypeList::clone(CREF(LPRDORuntime) pRuntime) const
+LPRDOResourceTypeList RDOResourceTypeList::clone(const LPRDORuntime& pRuntime) const
 {
 	LPRDOResourceTypeList type = rdo::Factory<RDOResourceTypeList>::create(getTraceID(), pRuntime);
 	ASSERT(type);
 	type->setFactoryMethod(m_create);
-	BOOST_FOREACH(const LPRDOResource& resource, m_resourceList)
+	for (const LPRDOResource& resource: m_resourceList)
 	{
 		type->insertNewResource(pRuntime, resource->clone(pRuntime));
 	}

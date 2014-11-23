@@ -20,22 +20,20 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int cnv_oprlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_oprlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void cnv_oprerror(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_oprerror(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOOPROperation
 // --------------------------------------------------------------------------------
-RDOOPROperation::RDOOPROperation(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
+RDOOPROperation::RDOOPROperation(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info)
 	: RDODPTActivityHotKey(pDPT, src_info, pattern_src_info)
 {
 	Converter::s_converter()->insertOPROperation(this);
@@ -44,7 +42,7 @@ RDOOPROperation::RDOOPROperation(LPIBaseOperationContainer pDPT, CREF(RDOParserS
 // --------------------------------------------------------------------------------
 // -------------------- RDOOperations
 // --------------------------------------------------------------------------------
-RDOOperations::RDOOperations(CREF(RDOParserSrcInfo) src_info)
+RDOOperations::RDOOperations(const RDOParserSrcInfo& src_info)
 	: RDOLogicActivity<rdo::runtime::RDOOperations, RDOOPROperation>(src_info)
 {
 	Converter::s_converter()->insertOperations(this);

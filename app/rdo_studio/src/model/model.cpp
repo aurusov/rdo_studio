@@ -13,7 +13,6 @@
 #include "utils/src/common/warning_disable.h"
 #include <limits>
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <boost/numeric/conversion/bounds.hpp>
 #include <QMessageBox>
@@ -48,16 +47,16 @@ using namespace rdo::simulation::report;
 Model::ModelTemplateItem::ModelTemplateItem()
 {}
 
-Model::ModelTemplateItem::ModelTemplateItem(CREF(ModelTemplateItem) copy)
+Model::ModelTemplateItem::ModelTemplateItem(const ModelTemplateItem& copy)
 	: resName (copy.resName )
 	, position(copy.position)
 {}
 
-Model::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName)
+Model::ModelTemplateItem::ModelTemplateItem(const QString& resName)
 	: resName(resName)
 {}
 
-Model::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName, ruint position)
+Model::ModelTemplateItem::ModelTemplateItem(const QString& resName, std::size_t position)
 	: resName (resName )
 	, position(position)
 {}
@@ -65,10 +64,10 @@ Model::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName, ruint positio
 // --------------------------------------------------------------------------------
 // -------------------- Model
 // --------------------------------------------------------------------------------
-PTR(Model) g_pModel = NULL;
+Model* g_pModel = NULL;
 
 Model::Model()
-	: RDOThreadGUI("RDOThreadModelGUI", static_cast<PTR(RDOKernelGUI)>(g_pApp->m_pStudioGUI))
+	: RDOThreadGUI("RDOThreadModelGUI", static_cast<RDOKernelGUI*>(g_pApp->m_pStudioGUI))
 	, m_frameManager   (boost::bind(&Model::onChangeFrame, this, _1))
 	, m_GUI_HAS_MODEL  (false                     )
 	, m_GUI_CAN_RUN    (true                      )
@@ -127,81 +126,81 @@ Model::Model()
 	setIsRunning(m_GUI_IS_RUNNING);
 
 	ModelTemplate modelTemplate;
-	modelTemplate[rdoModelObjects::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_0/template_0.smr");
+	modelTemplate[rdo::model::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_0/template_0.smr");
 	m_modelTemplates[0] = modelTemplate;
 
 	modelTemplate.clear();
-	modelTemplate[rdoModelObjects::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_1/template_1.smr");
+	modelTemplate[rdo::model::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_1/template_1.smr");
 	m_modelTemplates[1] = modelTemplate;
 
 	modelTemplate.clear();
-	modelTemplate[rdoModelObjects::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.rtp", 15);
-	modelTemplate[rdoModelObjects::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.rss", 12);
-	modelTemplate[rdoModelObjects::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.evn", 9);
-	modelTemplate[rdoModelObjects::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.pat", 9);
-	modelTemplate[rdoModelObjects::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.dpt", 16);
-	modelTemplate[rdoModelObjects::PRC] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.prc", 10);
-	modelTemplate[rdoModelObjects::FRM] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.frm", 7);
-	modelTemplate[rdoModelObjects::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.fun", 10);
-	modelTemplate[rdoModelObjects::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.smr");
-	modelTemplate[rdoModelObjects::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.pmd", 10);
+	modelTemplate[rdo::model::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.rtp", 15);
+	modelTemplate[rdo::model::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.rss", 12);
+	modelTemplate[rdo::model::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.evn", 9);
+	modelTemplate[rdo::model::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.pat", 9);
+	modelTemplate[rdo::model::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.dpt", 16);
+	modelTemplate[rdo::model::PRC] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.prc", 10);
+	modelTemplate[rdo::model::FRM] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.frm", 7);
+	modelTemplate[rdo::model::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.fun", 10);
+	modelTemplate[rdo::model::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.smr");
+	modelTemplate[rdo::model::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.pmd", 10);
 	m_modelTemplates[2] = modelTemplate;
 
 	modelTemplate.clear();
-	modelTemplate[rdoModelObjects::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.rtp", 98);
-	modelTemplate[rdoModelObjects::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.rss", 58);
-	modelTemplate[rdoModelObjects::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.evn", 67);
-	modelTemplate[rdoModelObjects::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.pat", 89);
-	modelTemplate[rdoModelObjects::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.dpt", 132);
-	modelTemplate[rdoModelObjects::PRC] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.prc", 75);
-	modelTemplate[rdoModelObjects::FRM] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.frm", 84);
-	modelTemplate[rdoModelObjects::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.fun", 44);
-	modelTemplate[rdoModelObjects::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.smr");
-	modelTemplate[rdoModelObjects::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.pmd", 43);
+	modelTemplate[rdo::model::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.rtp", 98);
+	modelTemplate[rdo::model::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.rss", 58);
+	modelTemplate[rdo::model::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.evn", 67);
+	modelTemplate[rdo::model::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.pat", 89);
+	modelTemplate[rdo::model::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.dpt", 132);
+	modelTemplate[rdo::model::PRC] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.prc", 75);
+	modelTemplate[rdo::model::FRM] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.frm", 84);
+	modelTemplate[rdo::model::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.fun", 44);
+	modelTemplate[rdo::model::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.smr");
+	modelTemplate[rdo::model::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.pmd", 43);
 	m_modelTemplates[3] = modelTemplate;
 
 	modelTemplate.clear();
-	modelTemplate[rdoModelObjects::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.rtp");
-	modelTemplate[rdoModelObjects::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.rss");
-	modelTemplate[rdoModelObjects::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.evn");
-	modelTemplate[rdoModelObjects::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.pat");
-	modelTemplate[rdoModelObjects::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.dpt");
-	modelTemplate[rdoModelObjects::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.fun");
-	modelTemplate[rdoModelObjects::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.smr");
-	modelTemplate[rdoModelObjects::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.pmd");
+	modelTemplate[rdo::model::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.rtp");
+	modelTemplate[rdo::model::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.rss");
+	modelTemplate[rdo::model::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.evn");
+	modelTemplate[rdo::model::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.pat");
+	modelTemplate[rdo::model::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.dpt");
+	modelTemplate[rdo::model::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.fun");
+	modelTemplate[rdo::model::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.smr");
+	modelTemplate[rdo::model::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.pmd");
 	m_modelTemplates[4] = modelTemplate;
 
 	modelTemplate.clear();
-	modelTemplate[rdoModelObjects::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.rtp");
-	modelTemplate[rdoModelObjects::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.rss");
-	modelTemplate[rdoModelObjects::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.evn");
-	modelTemplate[rdoModelObjects::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.pat");
-	modelTemplate[rdoModelObjects::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.dpt");
-	modelTemplate[rdoModelObjects::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.fun");
-	modelTemplate[rdoModelObjects::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.smr");
-	modelTemplate[rdoModelObjects::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.pmd");
+	modelTemplate[rdo::model::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.rtp");
+	modelTemplate[rdo::model::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.rss");
+	modelTemplate[rdo::model::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.evn");
+	modelTemplate[rdo::model::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.pat");
+	modelTemplate[rdo::model::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.dpt");
+	modelTemplate[rdo::model::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.fun");
+	modelTemplate[rdo::model::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.smr");
+	modelTemplate[rdo::model::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.pmd");
 	m_modelTemplates[5] = modelTemplate;
 
 	modelTemplate.clear();
-	modelTemplate[rdoModelObjects::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.rtp");
-	modelTemplate[rdoModelObjects::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.rss");
-	modelTemplate[rdoModelObjects::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.evn");
-	modelTemplate[rdoModelObjects::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.pat");
-	modelTemplate[rdoModelObjects::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.dpt");
-	modelTemplate[rdoModelObjects::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.fun");
-	modelTemplate[rdoModelObjects::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.smr");
-	modelTemplate[rdoModelObjects::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.pmd");
+	modelTemplate[rdo::model::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.rtp");
+	modelTemplate[rdo::model::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.rss");
+	modelTemplate[rdo::model::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.evn");
+	modelTemplate[rdo::model::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.pat");
+	modelTemplate[rdo::model::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.dpt");
+	modelTemplate[rdo::model::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.fun");
+	modelTemplate[rdo::model::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.smr");
+	modelTemplate[rdo::model::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.pmd");
 	m_modelTemplates[6] = modelTemplate;
 
 	modelTemplate.clear();
-	modelTemplate[rdoModelObjects::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.rtp");
-	modelTemplate[rdoModelObjects::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.rss");
-	modelTemplate[rdoModelObjects::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.evn");
-	modelTemplate[rdoModelObjects::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.pat");
-	modelTemplate[rdoModelObjects::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.dpt");
-	modelTemplate[rdoModelObjects::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.fun");
-	modelTemplate[rdoModelObjects::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.smr");
-	modelTemplate[rdoModelObjects::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.pmd");
+	modelTemplate[rdo::model::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.rtp");
+	modelTemplate[rdo::model::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.rss");
+	modelTemplate[rdo::model::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.evn");
+	modelTemplate[rdo::model::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.pat");
+	modelTemplate[rdo::model::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.dpt");
+	modelTemplate[rdo::model::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.fun");
+	modelTemplate[rdo::model::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.smr");
+	modelTemplate[rdo::model::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.pmd");
 	m_modelTemplates[7] = modelTemplate;
 
 	notifies.push_back(RT_STUDIO_MODEL_GET_TEXT             );
@@ -233,24 +232,15 @@ Model::~Model()
 //	closeModel();
 }
 
-bool Model::init()
-{
-	PTR(IInit) pFrameManagerInit = dynamic_cast<PTR(IInit)>(&m_frameManager);
-	ASSERT(pFrameManagerInit);
-	pFrameManagerInit->init();
-
-	return true;
-}
-
-void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
+void Model::proc(RDOThread::RDOMessageInfo& msg)
 {
 	switch (msg.message)
 	{
 		case RDOThread::RT_STUDIO_MODEL_GET_TEXT:
 		{
 			msg.lock();
-			PTR(rdo::repository::RDOThreadRepository::FileData) fdata = static_cast<PTR(rdo::repository::RDOThreadRepository::FileData)>(msg.param);
-			PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(fdata->m_type);
+			rdo::repository::RDOThreadRepository::FileData* fdata = static_cast<rdo::repository::RDOThreadRepository::FileData*>(msg.param);
+			editor::Model* pEdit = m_pView->getTab().getItemEdit(fdata->m_type);
 			if (pEdit)
 			{
 				pEdit->save(fdata->m_stream);
@@ -273,7 +263,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 			QMessageBox::critical(
 				g_pApp->getMainWnd(),
 				"Ошибка открытия модели",
-				QString("Невозможно открыть модель '%1'.").arg(QString::fromStdWString(static_cast<PTR(boost::filesystem::path)>(msg.param)->wstring()))
+				QString("Невозможно открыть модель '%1'.").arg(QString::fromStdWString(static_cast<boost::filesystem::path*>(msg.param)->wstring()))
 			);
 			break;
 		}
@@ -285,7 +275,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_REPOSITORY_MODEL_OPEN_GET_NAME:
 		{
 			msg.lock();
-			PTR(rdo::repository::RDOThreadRepository::OpenFile) data = static_cast<PTR(rdo::repository::RDOThreadRepository::OpenFile)>(msg.param);
+			rdo::repository::RDOThreadRepository::OpenFile* data = static_cast<rdo::repository::RDOThreadRepository::OpenFile*>(msg.param);
 
 			QString modelName = QFileDialog::getOpenFileName(
 				NULL,
@@ -323,7 +313,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 			int index = m_frameManager.getLastShowedFrame();
 			if (index != -1)
 			{
-				PTR(rdo::gui::frame::View) pView = m_frameManager.getFrameView(index);
+				rdo::gui::frame::View* pView = m_frameManager.getFrameView(index);
 				if (pView) pView->setFocus();
 			}
 			g_pApp->getIMainWnd()->update_start();
@@ -341,6 +331,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 			));
 			setCanRun   (true );
 			setIsRunning(false);
+			emit stopped();
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_MODEL_STOP_OK:
@@ -375,7 +366,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 			g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
-			BOOST_FOREACH(const FileMessage& message, errors)
+			for (const FileMessage& message: errors)
 			{
 				g_pApp->getIMainWnd()->getDockBuild().appendString(message);
 				if (message.getType() == FileMessage::MT_WARNING)
@@ -389,7 +380,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 			}
 			if (errors_cnt || warnings_cnt)
 			{
-//				const_cast<PTR(rdo::gui::editor::Build)>(output->getBuild())->showFirstError();
+//				const_cast<rdo::gui::editor::Build*>(output->getBuild())->showFirstError();
 			}
 
 			g_pApp->autoCloseByModel();
@@ -402,7 +393,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 			g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
-			BOOST_FOREACH(const FileMessage& message, errors)
+			for (const FileMessage& message: errors)
 			{
 				g_pApp->getIMainWnd()->getDockBuild().appendString(message);
 				if (message.getType() == FileMessage::MT_WARNING)
@@ -433,7 +424,7 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 			g_pApp->m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
-			BOOST_FOREACH(const FileMessage& message, errors)
+			for (const FileMessage& message: errors)
 			{
 				g_pApp->getIMainWnd()->getDockBuild().appendString(message);
 				if (message.getType() == FileMessage::MT_WARNING)
@@ -467,21 +458,21 @@ void Model::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_SIMULATOR_PARSE_STRING:
 		{
 			msg.lock();
-			g_pApp->getIMainWnd()->getDockBuild().appendString(QString::fromStdString(*static_cast<PTR(tstring)>(msg.param)));
+			g_pApp->getIMainWnd()->getDockBuild().appendString(QString::fromStdString(*static_cast<std::string*>(msg.param)));
 			msg.unlock();
 			break;
 		}
 		case RDOThread::RT_DEBUG_STRING:
 		{
 			msg.lock();
-			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdString(*static_cast<PTR(tstring)>(msg.param)));
+			g_pApp->getIMainWnd()->getDockDebug().appendString(QString::fromStdString(*static_cast<std::string*>(msg.param)));
 			msg.unlock();
 			break;
 		}
 		case RDOThread::RT_RESULT_STRING:
 		{
 			msg.lock();
-			g_pApp->getIMainWnd()->getDockResults().appendString(QString::fromStdString(*static_cast<PTR(tstring)>(msg.param)));
+			g_pApp->getIMainWnd()->getDockResults().appendString(QString::fromStdString(*static_cast<std::string*>(msg.param)));
 			msg.unlock();
 			break;
 		}
@@ -497,7 +488,7 @@ void Model::show_result()
 	QString str = QString::fromStdString(modelResults.str());
 	if (!str.isEmpty())
 	{
-		rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::PMV);
+		rdo::repository::RDOThreadRepository::FileInfo data(rdo::model::PMV);
 		g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 		if (!data.m_described)
 		{
@@ -509,7 +500,7 @@ void Model::show_result()
 	}
 }
 
-bool Model::newModel(CREF(QString) modelName, CREF(QString) modelPath, ruint templateIndex)
+bool Model::newModel(const QString& modelName, const QString& modelPath, std::size_t templateIndex)
 {
 	m_templateIndex = templateIndex;
 	g_pApp->getIMainWnd()->getDockBuild  ().clear();
@@ -523,7 +514,7 @@ bool Model::newModel(CREF(QString) modelName, CREF(QString) modelPath, ruint tem
 	return true;
 }
 
-bool Model::openModel(CREF(QString) modelName)
+bool Model::openModel(const QString& modelName)
 {
 	if (isRunning())
 	{
@@ -549,7 +540,7 @@ bool Model::openModel(CREF(QString) modelName)
 	if (data.m_result && !m_openError && !m_smrEmptyError)
 	{
 		std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
-		rdo::repository::RDOThreadRepository::FileData fileData(rdoModelObjects::PMV, stream);
+		rdo::repository::RDOThreadRepository::FileData fileData(rdo::model::PMV, stream);
 		g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
 		g_pApp->getIMainWnd()->getDockResults().appendString(QString::fromStdString(stream.str()));
 		g_pApp->getIMainWnd()->getDockDebug().appendString("Загрузка модели... ok\n");
@@ -661,7 +652,7 @@ void Model::createView()
 
 	for (int i = 0; i < m_pView->getTab().count(); i++)
 	{
-		PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
+		editor::Model* pEdit = m_pView->getTab().getItemEdit(i);
 		connect(pEdit, SIGNAL(modifyChanged(bool)), this, SLOT(onEditModifyChanged(bool)));
 	}
 }
@@ -672,7 +663,7 @@ void Model::resetView()
 	{
 		for (int i = 0; i < m_pView->getTab().count(); i++)
 		{
-			PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
+			editor::Model* pEdit = m_pView->getTab().getItemEdit(i);
 			disconnect(pEdit, SIGNAL(modifyChanged(bool)), this, SLOT(onEditModifyChanged(bool)));
 		}
 		m_pView->setModel(NULL);
@@ -684,7 +675,7 @@ void Model::newModelFromRepository()
 	setHasModel(true);
 
 	createView();
-	rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
+	rdo::repository::RDOThreadRepository::FileInfo data_smr(rdo::model::RDOX);
 	g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
 	setName(QString::fromStdWString(data_smr.m_name.wstring()));
 
@@ -694,7 +685,7 @@ void Model::newModelFromRepository()
 
 	for (int i = 0; i < m_pView->getTab().count(); i++)
 	{
-		PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
+		editor::Model* pEdit = m_pView->getTab().getItemEdit(i);
 		pEdit->setReadOnly(false);
 		pEdit->clearAll();
 		if (templateIt != m_modelTemplates.end())
@@ -728,7 +719,7 @@ void Model::newModelFromRepository()
 		saveModel();
 		for (int i = 0; i < m_pView->getTab().count(); i++)
 		{
-			PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
+			editor::Model* pEdit = m_pView->getTab().getItemEdit(i);
 			pEdit->clearUndoBuffer();
 		}
 	}
@@ -739,7 +730,7 @@ void Model::openModelFromRepository()
 	setHasModel(true);
 
 	createView();
-	rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
+	rdo::repository::RDOThreadRepository::FileInfo data_smr(rdo::model::RDOX);
 	g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
 	setName(QString::fromStdWString(data_smr.m_name.wstring()));
 
@@ -748,12 +739,12 @@ void Model::openModelFromRepository()
 	g_pApp->getMainWndUI()->statusBar()->stepProgress();
 	for (int i = 0; i < cnt; i++)
 	{
-		PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
+		editor::Model* pEdit = m_pView->getTab().getItemEdit(i);
 		pEdit->setReadOnly(false);
 		pEdit->clearAll();
 		std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
 		bool canLoad = true;
-		rdoModelObjects::RDOFileType type = m_pView->getTab().indexToType(i);
+		rdo::model::FileType type = m_pView->getTab().indexToType(i);
 		if (m_pView->getTab().typeSupported(type))
 		{
 			rdo::repository::RDOThreadRepository::FileData fileData(type, stream);
@@ -783,14 +774,14 @@ void Model::openModelFromRepository()
 				QString objName;
 				switch (type)
 				{
-				case rdoModelObjects::RTP: objName = "типы ресурсов";          break;
-				case rdoModelObjects::RSS: objName = "ресурсы";                break;
-				case rdoModelObjects::EVN: objName = "события";                break;
-				case rdoModelObjects::PAT: objName = "образцы";                break;
-				case rdoModelObjects::DPT: objName = "точки принятия решений"; break;
-				case rdoModelObjects::FRM: objName = "кадры";                  break;
-				case rdoModelObjects::FUN: objName = "функции";                break;
-				case rdoModelObjects::PMD: objName = "описание показателей";   break;
+				case rdo::model::RTP: objName = "типы ресурсов";          break;
+				case rdo::model::RSS: objName = "ресурсы";                break;
+				case rdo::model::EVN: objName = "события";                break;
+				case rdo::model::PAT: objName = "образцы";                break;
+				case rdo::model::DPT: objName = "точки принятия решений"; break;
+				case rdo::model::FRM: objName = "кадры";                  break;
+				case rdo::model::FUN: objName = "функции";                break;
+				case rdo::model::PMD: objName = "описание показателей";   break;
 				default                  : objName = "неизвестный объект";     break;
 				}
 				if (!objName.isEmpty())
@@ -815,13 +806,13 @@ void Model::openModelFromRepository()
 void Model::saveModelToRepository()
 {
 	bool smr_modified = false;
-	PTR(editor::Model) pSmrEdit = m_pView->getTab().getItemEdit(rdoModelObjects::SMR);
+	editor::Model* pSmrEdit = m_pView->getTab().getItemEdit(rdo::model::SMR);
 	if (pSmrEdit->isModify())
 	{
 		std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
 		pSmrEdit->save(stream);
 		m_smrEmptyError = false;
-		rdo::repository::RDOThreadRepository::FileData fileData(rdoModelObjects::SMR, stream);
+		rdo::repository::RDOThreadRepository::FileData fileData(rdo::model::SMR, stream);
 		g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &fileData);
 		if (m_smrEmptyError)
 		{
@@ -846,24 +837,24 @@ void Model::saveModelToRepository()
 		g_pApp->getMainWndUI()->statusBar()->stepProgress();
 		for (int i = 0; i < cnt; i++)
 		{
-			PTR(editor::Model) pEdit = m_pView->getTab().getItemEdit(i);
+			editor::Model* pEdit = m_pView->getTab().getItemEdit(i);
 			if (smr_modified || pEdit->isModify())
 			{
 				std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
 				pEdit->save(stream);
 				g_pApp->getMainWndUI()->statusBar()->stepProgress();
-				rdoModelObjects::RDOFileType type = m_pView->getTab().indexToType(i);
+				rdo::model::FileType type = m_pView->getTab().indexToType(i);
 				switch (type)
 				{
-				case rdoModelObjects::RTP:
-				case rdoModelObjects::RSS:
-				case rdoModelObjects::EVN:
-				case rdoModelObjects::PAT:
-				case rdoModelObjects::DPT:
-				case rdoModelObjects::PRC:
-				case rdoModelObjects::FRM:
-				case rdoModelObjects::FUN:
-				case rdoModelObjects::PMD:
+				case rdo::model::RTP:
+				case rdo::model::RSS:
+				case rdo::model::EVN:
+				case rdo::model::PAT:
+				case rdo::model::DPT:
+				case rdo::model::PRC:
+				case rdo::model::FRM:
+				case rdo::model::FUN:
+				case rdo::model::PMD:
 					{
 						rdo::repository::RDOThreadRepository::FileData fileData(type, stream);
 						g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &fileData);
@@ -878,7 +869,7 @@ void Model::saveModelToRepository()
 		g_pApp->getMainWndUI()->statusBar()->endProgress();
 	}
 
-	rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
+	rdo::repository::RDOThreadRepository::FileInfo data(rdo::model::RDOX);
 	g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	setName(QString::fromStdWString(data.m_name.wstring()));
 
@@ -893,14 +884,13 @@ void Model::saveModelToRepository()
 
 QString Model::getFullName() const
 {
-	rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
+	rdo::repository::RDOThreadRepository::FileInfo data(rdo::model::RDOX);
 	g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	return QString::fromStdWString(data.m_fullName.wstring());
 }
 
 void Model::updateFrmDescribed()
 {
-//	frmDescribed = kernel->repository()->isDescribed(rdoModelObjects::FRM);
 	m_frmDescribed = true;
 }
 
@@ -932,12 +922,12 @@ void Model::closeModelFromRepository()
 	setName("");
 }
 
-CREF(QString) Model::getName() const
+const QString& Model::getName() const
 {
 	return m_name;
 }
 
-void Model::setName(CREF(QString) name)
+void Model::setName(const QString& name)
 {
 	QString newName = name.trimmed();
 
@@ -966,30 +956,30 @@ void Model::afterModelStart()
 		g_pApp->getIMainWnd()->getDockDebug().appendString("Загрузка ресурсов для анимации...\n");
 		g_pApp->getIMainWnd()->getDockDebug().getContext().update();
 
-		std::list<tstring> frames;
-		std::list<tstring> bitmaps;
+		std::list<std::string> frames;
+		std::list<std::string> bitmaps;
 		rdo::service::simulation::RDOThreadSimulator::GetList getListFrames (rdo::service::simulation::RDOThreadSimulator::GetList::frames,  &frames );
 		rdo::service::simulation::RDOThreadSimulator::GetList getListBitmaps(rdo::service::simulation::RDOThreadSimulator::GetList::bitmaps, &bitmaps);
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListFrames );
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListBitmaps);
-		BOOST_FOREACH(const tstring& name, bitmaps)
+		for (const std::string& name: bitmaps)
 		{
 			m_frameManager.insertBitmap(QString::fromStdString(name));
 		}
-		BOOST_FOREACH(const tstring& name, frames)
+		for (const std::string& name: frames)
 		{
 			m_frameManager.insertFrame(QString::fromStdString(name));
 		}
 		m_timeNow = 0;
-		ruint initFrameNumber = kernel->simulator()->getInitialFrameNumber();
-		if (initFrameNumber != ruint(~0))
+		std::size_t initFrameNumber = kernel->simulator()->getInitialFrameNumber();
+		if (initFrameNumber != std::size_t(~0))
 		{
 			--initFrameNumber;
 		}
 		m_frameManager.setLastShowedFrame(initFrameNumber);
 		if (getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && initFrameNumber < m_frameManager.count())
 		{
-			PTR(rdo::gui::frame::View) pView = m_frameManager.createView(initFrameNumber);
+			rdo::gui::frame::View* pView = m_frameManager.createView(initFrameNumber);
 			if (pView)
 			{
 				m_frameManager.getFrameView(initFrameNumber)->setFocus();
@@ -1001,7 +991,7 @@ void Model::afterModelStart()
 	else
 	{
 		m_timeNow = 0;
-		m_frameManager.setLastShowedFrame(ruint(~0));
+		m_frameManager.setLastShowedFrame(std::size_t(~0));
 	}
 }
 
@@ -1035,7 +1025,7 @@ void Model::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 			case rdo::runtime::RTM_MaxSpeed: closeAllFrame(); break;
 			default:
 			{
-				PTR(rdo::gui::frame::View) pView = m_frameManager.getFrameViewFirst();
+				rdo::gui::frame::View* pView = m_frameManager.getFrameViewFirst();
 				if (!pView)
 				{
 					m_frameManager.createView(m_frameManager.getLastShowedFrame());
@@ -1049,7 +1039,7 @@ void Model::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 
 QString Model::getLastBreakPointName()
 {
-	tstring str;
+	std::string str;
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_LAST_BREAKPOINT, &str);
 	return QString::fromStdString(str);
 }
@@ -1105,7 +1095,7 @@ int Model::getFrameCount() const
 	return m_frameManager.count();
 }
 
-CREF(QString) Model::getFrameName(int index) const
+const QString& Model::getFrameName(int index) const
 {
 	return m_frameManager.getFrameName(index);
 }
@@ -1142,7 +1132,6 @@ void Model::updateActions()
 	Ui::MainWindow* pMainWindow = g_pApp->getMainWndUI();
 	if (!pMainWindow)
 		return;
-
 	pMainWindow->actFileNew->setEnabled(canNew());
 	pMainWindow->actFileOpen->setEnabled(canOpen());
 	pMainWindow->actFileSaveAll->setEnabled(canSave());
@@ -1186,7 +1175,7 @@ void Model::updateActions()
 
 	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SPEED>(
 		getRuntimeMode() != rdo::runtime::RTM_MaxSpeed || !isRunning()
-			? QString("Скорость: %1%").arg(rsint(getSpeed() * 100))
+			? QString("Скорость: %1%").arg(int(getSpeed() * 100))
 			: ""
 	);
 
@@ -1226,6 +1215,7 @@ void Model::updateActions()
 		}
 	}
 	g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SHOWRATE>(showRateStr);
+	emit actionUpdated();
 }
 
 void Model::update()
@@ -1252,7 +1242,7 @@ void Model::update()
 		{
 			break;
 		}
-		PTR(rdo::gui::frame::View) pView = m_frameManager.getFrameView(i);
+		rdo::gui::frame::View* pView = m_frameManager.getFrameView(i);
 		if (pView)
 		{
 			//! @todo qt: переделать модель отрисовки.
@@ -1267,7 +1257,7 @@ void Model::update()
 					sendMessage(kernel->runtime(), RT_RUNTIME_GET_FRAME, &getFrame);
 					m_frameManager.showFrame(&frame, i);
 				}
-				catch (REF(rdo::runtime::RDORuntimeException))
+				catch (const rdo::runtime::RDORuntimeException&)
 				{
 					sendMessage(kernel->runtime(), RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY);
 					return;
@@ -1368,17 +1358,17 @@ rdo::runtime::RunTimeMode Model::getRuntimeMode() const
 	return m_runtimeMode;
 }
 
-REF(rdo::gui::frame::Manager) Model::getFrameManager()
+rdo::gui::frame::Manager& Model::getFrameManager()
 {
 	return m_frameManager;
 }
 
-void Model::onChangeFrame(ruint)
+void Model::onChangeFrame(std::size_t)
 {
 	updateActions();
 }
 
-PTR(TabCtrl) Model::getTab()
+TabCtrl* Model::getTab()
 {
 	if (!m_pView)
 		return NULL;
@@ -1386,7 +1376,7 @@ PTR(TabCtrl) Model::getTab()
 	return &m_pView->getTab();
 }
 
-CPTR(TabCtrl) Model::getTab() const
+const TabCtrl* Model::getTab() const
 {
 	if (!m_pView)
 		return NULL;

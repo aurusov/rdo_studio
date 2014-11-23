@@ -4,8 +4,8 @@
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Романов Ярослав (robot.xet@gmail.com)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -29,14 +29,14 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 const std::string RDORSSResource::GET_RESOURCE = "resource_expression";
 
-RDORSSResource::RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, ruint id)
+RDORSSResource::RDORSSResource(const LPRDOParser& pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, std::size_t id)
 	: RDOParserSrcInfo(src_info                                      )
 	, m_pResType      (pResType                                      )
 	, m_id            (id == UNDEFINED_ID ? pParser->getRSS_id() : id)
 	, trace           (false                                         )
+	, isNested        (false                                         )
 {
 	ASSERT(m_pResType);
-	pParser->insertRSSResource(LPRDORSSResource(this));
 	m_currParam = m_pResType->getParams().begin();
 	RDOParser::s_parser()->contextStack()->push(this);
 }
@@ -49,7 +49,7 @@ void RDORSSResource::end()
 	RDOParser::s_parser()->contextStack()->pop<RDORSSResource>();
 }
 
-namespace 
+namespace
 {
 
 LPExpression contextSetTrace(const rdo::runtime::LPRDOCalc& getResource, bool traceValue, const RDOParserSrcInfo& srcInfo)
@@ -61,37 +61,51 @@ LPExpression contextSetTrace(const rdo::runtime::LPRDOCalc& getResource, bool tr
 	);
 }
 
+LPExpression contextGetResource(const LPRDORSSResource& resource, const RDOParserSrcInfo& srcInfo)
+{
+	return resource->createGetResourceExpression(srcInfo);
 }
 
-Context::FindResult RDORSSResource::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+}
+
+Context::LPFindResult RDORSSResource::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
+	if (method == Context::METHOD_OPERATOR_DOT)
+	{
+		const std::string paramName = params.identifier();
+
+		const std::size_t parNumb = getType()->getRTPParamNumber(paramName);
+		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
+		{
+			return rdo::Factory<FindResult>::create();
+		}
+
+		Context::Params params_;
+		params_[Context::Params::IDENTIFIER] = paramName;
+		params_[RDORSSResource::GET_RESOURCE] = createGetResourceExpression(srcInfo);
+
+		return getType()->find(Context::METHOD_OPERATOR_DOT, params_, srcInfo);
+	}
+
 	if (method == Context::METHOD_GET)
 	{
 		const std::string paramName = params.identifier();
 
-		ruint parNumb = getType()->getRTPParamNumber(paramName);
-		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
+		if (paramName == name())
 		{
-			RDOParser::s_parser()->error().error(srcInfo, rdo::format("Неизвестный параметр ресурса: %s", paramName.c_str()));
+			LPRDORSSResource pThis(const_cast<RDORSSResource*>(this));
+			return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextGetResource, pThis, srcInfo)));
 		}
-
-		Context::Params params_;
-		params_[RDORSSResource::GET_RESOURCE] = createGetResourceExpression(srcInfo);
-		params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = parNumb;
-
-		LPContext pParam = getType()->findRTPParam(paramName);
-		ASSERT(pParam);
-		return pParam->find(Context::METHOD_GET, params_, srcInfo);
 	}
-	
+
 	if (method == "trace()")
 	{
 		rdo::runtime::LPRDOCalc getResource = rdo::Factory<rdo::runtime::RDOCalcGetResourceByID>::create(getID());
 		const bool traceValue = params.get<bool>("traceValue");
-		return FindResult(CreateExpression(boost::bind(&contextSetTrace, getResource, traceValue, srcInfo)));
+		return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextSetTrace, getResource, traceValue, srcInfo)));
 	}
-	
-	return FindResult();
+
+	return rdo::Factory<FindResult>::create();
 }
 
 LPExpression RDORSSResource::createGetResourceExpression(const RDOParserSrcInfo& srcInfo) const
@@ -108,11 +122,12 @@ void RDORSSResource::writeModelStructure(std::ostream& stream) const
 	stream << (getID() + 1) << " " << name() << " " << getType()->getNumber() << std::endl;
 }
 
-void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
+void RDORSSResource::addParam(const LPRDOValue& pParam)
 {
 	ASSERT(pParam);
 
-	LPRDOValue pAddParam;
+	LPRDOValue pAddParamValue;
+	LPExpression pAddParam;
 
 	if (m_currParam == getType()->getParams().end())
 	{
@@ -132,23 +147,23 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 				RDOParser::s_parser()->error().push_only((*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()), "См. описание параметра");
 				RDOParser::s_parser()->error().push_done();
 			}
-			pAddParam = (*m_currParam)->getDefault();
+			pAddParamValue = (*m_currParam)->getDefault();
 		}
 		else if (pParam->value().getAsString() == "#")
 		{
-			pAddParam = (*m_currParam)->getDefault()->defined()
+			pAddParamValue = (*m_currParam)->getDefault()->defined()
 				? (*m_currParam)->getDefault()
 				: rdo::Factory<rdo::compiler::parser::RDOValue>::create(
-					(*m_currParam)->getTypeInfo()->type()->get_default(),
+					(*m_currParam)->getTypeInfo()->itype()->get_default(),
 					(*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()),
 					(*m_currParam)->getTypeInfo()
 				);
-			ASSERT(pAddParam);
-			pAddParam->value().setUndefined(true);
+			ASSERT(pAddParamValue);
+			pAddParamValue->value().setUndefined(true);
 		}
 		else
 		{
-			pAddParam = (*m_currParam)->getTypeInfo()->value_cast(pParam);
+			pAddParamValue = (*m_currParam)->getTypeInfo()->value_cast(pParam);
 		}
 	}
 	catch(const RDOSyntaxException&)
@@ -156,10 +171,31 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 		RDOParser::s_parser()->error().modify(rdo::format("Для параметра '%s': ", (*m_currParam)->name().c_str()));
 	}
 
-	ASSERT(pAddParam);
+	ASSERT(pAddParamValue);
 	try
 	{
-		pAddParam = rdo::Factory<RDOValue>::create(pAddParam->value().clone(), pAddParam->src_info(), pAddParam->typeInfo());
+		if (pAddParamValue->value().type().object_dynamic_cast<rdo::runtime::RDOResourceTypeList>())
+		{
+			LPRDORSSResource pResourceValue = pAddParamValue->value().getPointerByType<RDORTPResType>();
+			ASSERT(pResourceValue);
+
+			pResourceValue->setSrcInfo(pParam->src_info());
+			pResourceValue->setSrcText(std::to_string(getID()) + '_' + (*m_currParam)->name());
+
+			rdo::runtime::LPRDOCalc pCalc = pResourceValue->createCalc();
+
+			pAddParam = rdo::Factory<Expression>::create(
+				rdo::Factory<TypeInfo>::create(pAddParamValue->typeInfo()),
+				pCalc,
+				pAddParamValue->src_info()
+			);
+		}
+		else
+			pAddParam = rdo::Factory<Expression>::create(
+				rdo::Factory<TypeInfo>::create(pAddParamValue->typeInfo()),
+				rdo::Factory<rdo::runtime::RDOCalcConst>::create(pAddParamValue->value().clone()),
+				pAddParamValue->src_info()
+			);
 	}
 	catch (const rdo::runtime::RDOValueException& e)
 	{
@@ -169,36 +205,48 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 	m_currParam++;
 }
 
-rbool RDORSSResource::defined() const
+bool RDORSSResource::defined() const
 {
 	return m_currParam == getType()->getParams().end();
 }
 
-std::vector<rdo::runtime::LPRDOCalc> RDORSSResource::createCalc() const
+rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
 {
-	std::vector<rdo::runtime::LPRDOCalc> calcList;
-	std::vector<rdo::runtime::RDOValue> paramList;
-	STL_FOR_ALL_CONST(params(), it)
-	{
-		paramList.push_back(it->param()->value());
-	}
+	std::vector<rdo::runtime::LPRDOCalc> paramList;
+	for (const auto& param: params())
+		paramList.push_back(param.param()->calc());
 
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
 		getType()->getNumber(),
 		paramList,
 		getTrace(),
-		getType()->isPermanent()
+		getType()->isPermanent(),
+		isNested,
+		~0,
+		getID()
 	);
 	ASSERT(pCalc);
 	rdo::runtime::RDOSrcInfo srcInfo(src_info());
 	srcInfo.setSrcText("Создание ресурса " + src_text());
 	pCalc->setSrcInfo(srcInfo);
-	
+
+	return pCalc;
+}
+
+std::vector<rdo::runtime::LPRDOCalc> RDORSSResource::createCalcList() const
+{
+	std::vector<rdo::runtime::LPRDOCalc> calcList;
+	rdo::runtime::LPRDOCalc pCalc = createCalc();
 	calcList.push_back(pCalc);
 	if (m_traceCalc)
 		calcList.push_back(m_traceCalc);
 
 	return calcList;
+}
+
+std::string RDORSSResource::asString() const
+{
+	return name();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

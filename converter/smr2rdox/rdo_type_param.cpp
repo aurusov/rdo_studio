@@ -21,7 +21,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeParam
 // --------------------------------------------------------------------------------
-RDOTypeParam::RDOTypeParam(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info)
+RDOTypeParam::RDOTypeParam(const LPRDOType& pType, const RDOParserSrcInfo& src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_pType         (pType   )
 {
@@ -42,12 +42,12 @@ LPRDOType RDOTypeParam::type() const
 	return m_pType;
 }
 
-void RDOTypeParam::writeModelStructure(REF(std::ostream) stream) const
+void RDOTypeParam::writeModelStructure(std::ostream& stream) const
 {
 	m_pType->writeModelStructure(stream);
 }
 
-LPRDOValue RDOTypeParam::value_cast(CREF(LPRDOValue) pValue) const
+LPRDOValue RDOTypeParam::value_cast(const LPRDOValue& pValue) const
 {
 	ASSERT(pValue);
 	return m_pType->value_cast(pValue, src_info(), pValue->src_info());

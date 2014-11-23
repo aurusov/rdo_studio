@@ -3,7 +3,7 @@
   \file      context.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      06.06.2010
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -26,7 +26,8 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- Context
 // --------------------------------------------------------------------------------
-OBJECT_VIRTUAL(Context)
+PREDECLARE_POINTER(Context);
+class Context: public virtual rdo::counter_reference
 {
 DECLARE_FACTORY(Context);
 friend void ContextStack::push(LPContext pContext);
@@ -79,8 +80,10 @@ public:
 		SwitchContext();
 	};
 
-	class FindResult
+	class FindResult: public virtual rdo::counter_reference
 	{
+	DECLARE_FACTORY(FindResult);
+
 	public:
 		FindResult();
 		explicit FindResult(const CreateExpression& createExpression);
@@ -95,6 +98,7 @@ public:
 		CreateExpressionFunction createExpression;
 		SwitchContext            switchContext;
 	};
+	DECLARE_POINTER(FindResult);
 
 	template <class T>
 	rdo::intrusive_ptr<T> cast();
@@ -102,7 +106,7 @@ public:
 	template <class T>
 	rdo::interface_ptr<T> interface_cast();
 
-	FindResult find(const std::string& method, const Params& params, const RDOParserSrcInfo& srcInfo) const;
+	LPFindResult find(const std::string& method, const Params& params, const RDOParserSrcInfo& srcInfo) const;
 
 protected:
 	Context();
@@ -111,12 +115,12 @@ protected:
 private:
 	LPContextStack  m_pContextStack;
 
-	void setContextStack  (CREF(LPContextStack) pContextStack);
+	void setContextStack  (const LPContextStack& pContextStack);
 	void resetContextStack();
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#include "simulator/compiler/parser/context/context.inl"
+#include "simulator/compiler/parser/context/context-inl.h"
 
 #endif // _RDOPARSER_CONTEXT_H_

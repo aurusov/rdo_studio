@@ -3,7 +3,7 @@
   \file      tracer_resource.cpp
   \author    Захаров Павел
   \date      11.03.2003
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -22,7 +22,7 @@ using namespace rdo::gui::tracer;
 // --------------------------------------------------------------------------------
 // -------------------- Param
 // --------------------------------------------------------------------------------
-Param::Param(CREF(LPResource) pResource)
+Param::Param(const LPResource& pResource)
 	: Serie(SK_PARAM)
 	, m_pResource(pResource)
 {}
@@ -30,7 +30,7 @@ Param::Param(CREF(LPResource) pResource)
 Param::~Param()
 {}
 
-CREF(LPResource) Param::getResource() const
+const LPResource& Param::getResource() const
 {
 	return m_pResource;
 }
@@ -44,7 +44,7 @@ ParamInfo* Param::getParamInfo() const
 		: NULL;
 }
 
-void Param::getCaptions(std::vector<tstring>& captions, const int valueCount) const
+void Param::getCaptions(std::vector<std::string>& captions, const int valueCount) const
 {
 	switch (getParamInfo()->getParamType())
 	{
@@ -91,7 +91,7 @@ void Param::getCaptions(std::vector<tstring>& captions, const int valueCount) co
 // --------------------------------------------------------------------------------
 // -------------------- Resource
 // --------------------------------------------------------------------------------
-Resource::Resource(CREF(LPResourceType) pResType, CREF(QString) name, int id)
+Resource::Resource(const LPResourceType& pResType, const QString& name, int id)
 	: ChartTreeItem()
 	, m_name(name)
 	, m_id(id)
@@ -108,12 +108,12 @@ Resource::Resource(CREF(LPResourceType) pResType, CREF(QString) name, int id)
 Resource::~Resource()
 {}
 
-CREF(QString) Resource::getName() const
+const QString& Resource::getName() const
 {
 	return m_name;
 }
 
-void Resource::setName(CREF(QString) name)
+void Resource::setName(const QString& name)
 {
 	m_name = name;
 }
@@ -123,12 +123,12 @@ int Resource::getID() const
 	return m_id;
 }
 
-CREF(LPResourceType) Resource::getType() const
+const LPResourceType& Resource::getType() const
 {
 	return m_pResourceType;
 }
 
-void Resource::addParam(CREF(LPParam) pParam)
+void Resource::addParam(const LPParam& pParam)
 {
 	ASSERT(pParam);
 	pParam->setTitle(m_name + "." + m_pResourceType->getParamInfo(m_paramList.size())->getName());
@@ -142,7 +142,7 @@ LPParam Resource::getParam(unsigned int index) const
 	return m_paramList.at(index);
 }
 
-int Resource::getParamIndex(CREF(LPParam) pParam) const
+int Resource::getParamIndex(const LPParam& pParam) const
 {
 	int count = m_paramList.size();
 	for (int i = 0; i < count; i++)
@@ -155,14 +155,14 @@ int Resource::getParamIndex(CREF(LPParam) pParam) const
 	return -1;
 }
 
-void Resource::setParams(tstring& line, Time* const pTime, const int eventIndex, const bool erasing)
+void Resource::setParams(std::string& line, Time* const pTime, const int eventIndex, const bool erasing)
 {
 	int count = m_paramList.size();
 	for (int i = 0; i < count; i++)
 	{
 		Value* pPrevValue;
 		m_paramList.at(i)->getLastValue(pPrevValue);
-		tstring nextValue = g_pTracer->getNextValue(line);
+		std::string nextValue = g_pTracer->getNextValue(line);
 		double newValue;
 		if (erasing)
 		{
@@ -180,6 +180,10 @@ void Resource::setParams(tstring& line, Time* const pTime, const int eventIndex,
 				newValue = m_pResourceType->getParamInfo(i)->addStringValue(nextValue);
 				break;
 
+			case ParamInfo::PT_RESOURCE:
+				newValue = 0;
+				break;
+				
 			default:
 				newValue = boost::lexical_cast<double>(nextValue);
 				break;

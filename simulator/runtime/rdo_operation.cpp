@@ -12,7 +12,6 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_operation.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -23,7 +22,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOOperation
 // --------------------------------------------------------------------------------
-RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(tstring) name)
+RDOOperation::RDOOperation(const LPRDORuntime& pRuntime, const LPRDOPatternOperation& pPattern, bool trace, const std::string& name)
 	: RDOActivityPattern<RDOPatternOperation>(pPattern, trace, name)
 	, RDOPatternPrior                        (                     )
 {
@@ -32,7 +31,7 @@ RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperati
 	setTraceID(pRuntime->getFreeActivityId());
 }
 
-RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name)
+RDOOperation::RDOOperation(const LPRDORuntime& pRuntime, const LPRDOPatternOperation& pPattern, bool trace, const LPRDOCalc& pCondition, const std::string& name)
 	: RDOActivityPattern<RDOPatternOperation>(pPattern, trace, name)
 	, RDOPatternPrior                        (                     )
 	, m_pAdditionalCondition                 (pCondition           )
@@ -42,7 +41,7 @@ RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperati
 	setTraceID(pRuntime->getFreeActivityId());
 }
 
-RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(RDOOperation) originForClone)
+RDOOperation::RDOOperation(const LPRDORuntime& pRuntime, const RDOOperation& originForClone)
 	: RDOActivityPattern<RDOPatternOperation>(originForClone.m_pPattern, originForClone.traceable(), originForClone.m_oprName)
 	, m_pAdditionalCondition                 (NULL)
 {
@@ -59,7 +58,7 @@ RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(RDOOperation) origi
 RDOOperation::~RDOOperation()
 {}
 
-rbool RDOOperation::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDOOperation::onCheckCondition(const LPRDORuntime& pRuntime)
 {
 	// Если операция может начаться, то создать её клон и поместить его в список
 	onBeforeChoiceFrom(pRuntime);
@@ -67,30 +66,30 @@ rbool RDOOperation::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 	return choiceFrom(pRuntime);
 }
 
-IBaseOperation::BOResult RDOOperation::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDOOperation::onDoOperation(const LPRDORuntime& pRuntime)
 {
-	LPIOperation newOper = RF(RDOOperation)::create(pRuntime, *this);
+	LPIOperation newOper = rdo::Factory<RDOOperation>::create(pRuntime, *this);
 	newOper->onBeforeOperationBegin(pRuntime);
 	newOper->convertBegin(pRuntime);
 
 	std::vector<RDOValue> params;
 	params.reserve(m_paramsCalcs.size());
-	BOOST_FOREACH(const LPRDOCalc& param, m_paramsCalcs)
+	for (const LPRDOCalc& param: m_paramsCalcs)
 	{
 		params.push_back(param->calcValue(pRuntime));
 	}
 
-	LPIEvent event(newOper);
+	LPIEvent event(newOper.object_dynamic_cast<IEvent>());
 	pRuntime->addTimePoint(
 		newOper->getNextTimeInterval(pRuntime) + pRuntime->getCurrentTime(),
-		event,
+		event.object_dynamic_cast<IBaseOperation>(),
 		boost::bind(&IEvent::onMakePlaned, event.get(), pRuntime, params)
 	);
 	newOper->onAfterOperationBegin(pRuntime);
 	return IBaseOperation::BOR_planned_and_run;
 }
 
-void RDOOperation::onMakePlaned(CREF(LPRDORuntime) pRuntime, const std::vector<RDOValue>& params)
+void RDOOperation::onMakePlaned(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& params)
 {
 	// Выполняем событие конца операции-клона
 	pRuntime->inc_cnt_events();
@@ -99,7 +98,7 @@ void RDOOperation::onMakePlaned(CREF(LPRDORuntime) pRuntime, const std::vector<R
 	onAfterOperationEnd(pRuntime);
 }
 
-rbool RDOOperation::choiceFrom(CREF(LPRDORuntime) pRuntime)
+bool RDOOperation::choiceFrom(const LPRDORuntime& pRuntime)
 {
 	pRuntime->setCurrentActivity(this);
 	if (m_haveAdditionalCondition)
@@ -112,29 +111,29 @@ rbool RDOOperation::choiceFrom(CREF(LPRDORuntime) pRuntime)
 	return m_pPattern->choiceFrom(pRuntime); 
 }
 
-void RDOOperation::convertBegin(CREF(LPRDORuntime) pRuntime)
+void RDOOperation::convertBegin(const LPRDORuntime& pRuntime)
 {
 	pRuntime->setCurrentActivity(this);
 	m_pPattern->convertBegin(pRuntime);
 }
 
-void RDOOperation::convertEnd(CREF(LPRDORuntime) pRuntime)
+void RDOOperation::convertEnd(const LPRDORuntime& pRuntime)
 {
 	pRuntime->setCurrentActivity(this);
 	m_pPattern->convertEnd(pRuntime);
 }
 
-void RDOOperation::onBeforeChoiceFrom(CREF(LPRDORuntime) pRuntime)
+void RDOOperation::onBeforeChoiceFrom(const LPRDORuntime& pRuntime)
 {
 	setPatternParameters(pRuntime, m_paramsCalcs);
 }
 
-void RDOOperation::onBeforeOperationEnd(CREF(LPRDORuntime) pRuntime, const std::vector<rdo::runtime::RDOValue>& params)
+void RDOOperation::onBeforeOperationEnd(const LPRDORuntime& pRuntime, const std::vector<rdo::runtime::RDOValue>& params)
 {
 	setPatternParameters(pRuntime, params);
 }
 
-void RDOOperation::onAfterOperationBegin(CREF(LPRDORuntime) pRuntime)
+void RDOOperation::onAfterOperationBegin(const LPRDORuntime& pRuntime)
 {
 	updateConvertStatus(pRuntime, m_pPattern->m_convertorBeginStatus);
 	pRuntime->getTracer()->writeAfterOperationBegin(this, pRuntime);
@@ -143,7 +142,7 @@ void RDOOperation::onAfterOperationBegin(CREF(LPRDORuntime) pRuntime)
 	incrementRelevantResourceReference(pRuntime);
 }
 
-void RDOOperation::onAfterOperationEnd(CREF(LPRDORuntime) pRuntime)
+void RDOOperation::onAfterOperationEnd(const LPRDORuntime& pRuntime)
 {
 	decrementRelevantResourceReference(pRuntime);
 	updateConvertStatus(pRuntime, m_pPattern->m_convertorEndStatus);
@@ -153,13 +152,13 @@ void RDOOperation::onAfterOperationEnd(CREF(LPRDORuntime) pRuntime)
 	updateRelRes(pRuntime);
 }
 
-double RDOOperation::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
+double RDOOperation::getNextTimeInterval(const LPRDORuntime& pRuntime)
 {
 	pRuntime->setCurrentActivity(this);
 	return m_pPattern->getNextTimeInterval(pRuntime);
 }
 
-tstring RDOOperation::traceOperId() const
+std::string RDOOperation::traceOperId() const
 {
 	return rdo::toString(m_operId);
 }
@@ -227,7 +226,7 @@ bool mustBeExist(RDOResource::ConvertStatus status_begin, RDOResource::ConvertSt
 }
 }
 
-void RDOOperation::incrementRelevantResourceReference(CREF(LPRDORuntime) pRuntime)
+void RDOOperation::incrementRelevantResourceReference(const LPRDORuntime& pRuntime)
 {
 	ASSERT(m_pPattern->m_convertorBeginStatus.size() == m_pPattern->m_convertorEndStatus.size());
 
@@ -241,7 +240,7 @@ void RDOOperation::incrementRelevantResourceReference(CREF(LPRDORuntime) pRuntim
 	}
 }
 
-void RDOOperation::decrementRelevantResourceReference(CREF(LPRDORuntime) pRuntime)
+void RDOOperation::decrementRelevantResourceReference(const LPRDORuntime& pRuntime)
 {
 	ASSERT(m_pPattern->m_convertorBeginStatus.size() == m_pPattern->m_convertorEndStatus.size());
 
@@ -255,9 +254,9 @@ void RDOOperation::decrementRelevantResourceReference(CREF(LPRDORuntime) pRuntim
 	}
 }
 
-void                     RDOOperation::onBeforeOperationBegin(CREF(LPRDORuntime) pRuntime) { UNUSED(pRuntime); }
-void                     RDOOperation::onStart               (CREF(LPRDORuntime) pRuntime) { UNUSED(pRuntime); }
-void                     RDOOperation::onStop                (CREF(LPRDORuntime) pRuntime) { UNUSED(pRuntime); }
-IBaseOperation::BOResult RDOOperation::onContinue            (CREF(LPRDORuntime) pRuntime) { UNUSED(pRuntime); return IBaseOperation::BOR_cant_run; }
+void                     RDOOperation::onBeforeOperationBegin(const LPRDORuntime& /*pRuntime*/) {}
+void                     RDOOperation::onStart               (const LPRDORuntime& /*pRuntime*/) {}
+void                     RDOOperation::onStop                (const LPRDORuntime& /*pRuntime*/) {}
+IBaseOperation::BOResult RDOOperation::onContinue            (const LPRDORuntime& /*pRuntime*/) { return IBaseOperation::BOR_cant_run; }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

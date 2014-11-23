@@ -21,14 +21,14 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeParamSuchAs
 // --------------------------------------------------------------------------------
-CLASS(RDOTypeParamSuchAs): INSTANCE_OF(TypeInfo)
+class RDOTypeParamSuchAs: public TypeInfo
 {
 DECLARE_FACTORY(RDOTypeParamSuchAs);
 public:
-	CREF(LPRDOParam) getParam() const;
+	const LPRDOParam& getParam() const;
 
 private:
-	RDOTypeParamSuchAs(CREF(LPRDOParam) pParam);
+	RDOTypeParamSuchAs(const LPRDOParam& pParam);
 	virtual ~RDOTypeParamSuchAs();
 
 	LPRDOParam m_pParam;

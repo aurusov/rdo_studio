@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>Функции</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <SCRIPT>
 function toggle_display(e)
 {
@@ -17,17 +20,17 @@ function toggle_display(e)
 <BODY>
 	<DIV>
 		<H1>ФУНКЦИИ</H1>
-		<P><B>Описание функции</B> следует за описанием констант в <A href="rdo_obj_const_fun_sec.htm">объекте символьных констант, функций и последовательностей</A> (с расширением <FONT class="syntax">.fun</FONT>) и имеет следующий формат:</P>
-		<PRE class="syntax">$Function <A class="syntax" href="#fun_name">&lt;имя_функции&gt;</A> : <A class="syntax" href="#val_type">&lt;тип_значения_функции&gt;</A>
+		<P><B>Описание функции</B> следует за описанием констант в <A href="rdo_obj_const_fun_seq.htm">объекте символьных констант, функций и последовательностей</A> (с расширением <FONT class="syntax">.fun</FONT>) и имеет следующий формат:</P>
+		<PRE class="syntax"><code class="rdo">$Function <A class="syntax" href="#fun_name">&lt;имя_функции&gt;</A> : <A class="syntax" href="#val_type">&lt;тип_значения_функции&gt;</A>
 $Type = <A class="syntax" href="#fun_type">&lt;тип_функции&gt;</A>
 $Parameters
 <A class="syntax" href="#param_desc">&lt;описание_параметра_функции&gt;</A> { &lt;описание_параметра_функции&gt; }
-$Body <A class="syntax" href="#body">&lt;тело_функции&gt;</A> $End</PRE>
+$Body <A class="syntax" href="#body">&lt;тело_функции&gt;</A> $End</code></PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="fun_name"></A><I>имя_функции</I></DT>
 			<DD class="syntax">Имя функции представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех функций и не должны совпадать с ранее определенными именами.</DD>
 			<DT class="syntax"><A name="val_type"></A><I>тип_значения_функции</I></DT>
-			<DD class="syntax">Тип значения функции - это один из возможных в языке <A href="../rdo_base/rdo_base_types.htm">типов данных</A> и описанных ранее <A href="../rdo_base/rdo_base_res_types.htm">типов ресурсов</A>. При описании типов значений функции возможны ссылки на <A href="../rdo_base/rdo_base_res_types.htm#param_type">типы параметров ресурсов</A> и <A href="rdo_obj_const_fun_sec.htm#const_type">типы символьных констант</A>. Значения по умолчанию также могут быть указаны при описании типа значения функции, однако они не используются, за исключением функций типа список.</DD>
+			<DD class="syntax">Тип значения функции - это один из возможных в языке <A href="../rdo_base/rdo_base_types.htm">типов данных</A> и описанных ранее <A href="../rdo_base/rdo_base_res_types.htm">типов ресурсов</A>. При описании типов значений функции возможны ссылки на <A href="../rdo_base/rdo_base_res_types.htm#param_type">типы параметров ресурсов</A> и <A href="rdo_obj_const.htm#const_type">типы символьных констант</A>. Значения по умолчанию также могут быть указаны при описании типа значения функции, однако они не используются, за исключением функций типа список.</DD>
 			<DT class="syntax"><A name="fun_type"></A><I>тип_функции</I></DT>
 			<DD class="syntax">В данной версии языка определены функции следующих типов:
 				<TABLE class="visible">
@@ -52,17 +55,17 @@ $Body <A class="syntax" href="#body">&lt;тело_функции&gt;</A> $End</P
 			</DD>
 			<DT class="syntax"><A name="param_desc"></A><I>описание_параметра_функции</I></DT>
 			<DD class="syntax">Описание параметра функции имеет следующий формат:<BR>
-				<PRE class="syntax"><A class="syntax" href="#param_name">&lt;имя_параметра_функции&gt;</A> : <A class="syntax" href="#param_type">&lt;тип_параметра&gt;</A></PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#param_name">&lt;имя_параметра_функции&gt;</A> : <A class="syntax" href="#param_type">&lt;тип_параметра&gt;</A></code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="param_name"></A><I>имя_параметра_функции</I></DT>
 					<DD class="syntax">Имя параметра функции представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех параметров и не должны совпадать с ранее определенными именами.</DD>
 					<DT class="syntax"><A name="param_type"></A><I>тип_параметра</I></DT>
-					<DD class="syntax">Тип параметра функции - это один из возможных в языке <A href="../rdo_base/rdo_base_types.htm">типов данных</A> и описанных ранее <A href="../rdo_base/rdo_base_res_types.htm">типов ресурсов</A>. При описании типов параметров функции возможны ссылки на <A href="../rdo_base/rdo_base_res_types.htm#param_type">типы параметров ресурсов</A> и <A href="rdo_obj_const_fun_sec.htm#const_type">типы символьных констант</A>. Значения по умолчанию не задают.</DD>
+					<DD class="syntax">Тип параметра функции - это один из возможных в языке <A href="../rdo_base/rdo_base_types.htm">типов данных</A> и описанных ранее <A href="../rdo_base/rdo_base_res_types.htm">типов ресурсов</A>. При описании типов параметров функции возможны ссылки на <A href="../rdo_base/rdo_base_res_types.htm#param_type">типы параметров ресурсов</A> и <A href="rdo_obj_const.htm#const_type">типы символьных констант</A>. Значения по умолчанию не задают.</DD>
 				</DL>
 			</DD>
 			<BR>
 			<P><BR><A name="call"></A><B>Обращение к функции</B> имеет следующий формат:</P>
-			<PRE class="syntax">&lt;имя_функции&gt; ( <A class="syntax" href="#call_expr">&lt;выражение&gt;</A> { , &lt;выражение&gt; } )</PRE>
+			<PRE class="syntax"><code class="rdo">&lt;имя_функции&gt; ( <A class="syntax" href="#call_expr">&lt;выражение&gt;</A> { , &lt;выражение&gt; } )</code></PRE>
 			<DL class="syntax">
 				<DT class="syntax"><A name="call_expr"></A><I>выражение</I></DT>
 				<DD class="syntax">После имени функции в скобках через запятую записывают <A href="../rdo_base/rdo_base_equations.htm#arith_expr">арифметические выражения</A> для вычисления значений параметров. Порядок следования выражений определяется порядком следования параметров в описании функции. Тип арифметического выражения должен соответствовать типу параметра. Для вещественных параметров допустимо выражение целого типа.</DD>
@@ -71,8 +74,8 @@ $Body <A class="syntax" href="#body">&lt;тело_функции&gt;</A> $End</P
 			<DT class="syntax"><A name="body"></A><I>тело_функции</I></DT>
 			<DD class="syntax">Синтаксис тела функции зависит от типа функции.
 				<P><BR>Для <B>функции типа список</B> описание тела имеет следующий формат:</P>
-				<PRE class="syntax"><A class="syntax" href="#list_param_val">&lt;значения_параметров&gt;</A> = <A class="syntax" href="#list_fun_val">&lt;значение_функции&gt;</A>
-{ &lt;значения_параметров&gt; = &lt;значение_функции&gt; }</PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#list_param_val">&lt;значения_параметров&gt;</A> = <A class="syntax" href="#list_fun_val">&lt;значение_функции&gt;</A>
+{ &lt;значения_параметров&gt; = &lt;значение_функции&gt; }</code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="list_param_val"></A><I>значения_параметров</I></DT>
 					<DD class="syntax">Значения параметров функции разделяют по крайней мере одним <A href="../rdo_lex_div/rdo_lex_div_intro.htm">разделителем</A>. Порядок следования значений параметров определяется порядком следования описаний параметров функции. Значение параметра задают целой или вещественной <A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">численной константой</A> либо именем значения в соответствии с типом параметра.</DD>
@@ -85,7 +88,7 @@ $Body <A class="syntax" href="#body">&lt;тело_функции&gt;</A> $End</P
 					<DD class="syntax"></DD>
 					<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
 					<DIV style="display:none" id="v1">
-					<PRE class="samples">$Function Список_1 : such_as Константа_9 = Значение_2
+					<PRE class="syntax"><code class="rdo">$Function Список_1 : such_as Константа_9 = Значение_2
 $Type = list
 $Parameters
   Параметр_1 : such_as Константа_5
@@ -98,12 +101,12 @@ $Body
   Погрузка   22    = Значение_5
   Разгрузка   9    = Значение_4
   Занят      18    = Значение_1
-$End</PRE>
+$End</code></PRE>
 					</DIV>
 					<P>Вызовы функций и получаемые значения:</P>
-					<PRE class="samples">Список_1(Занят, 40 + 1) = Значение_1
+					<PRE class="syntax"><code class="rdo">Список_1(Занят, 40 + 1) = Значение_1
 Список_1(Погрузка, 22)  = Значение_5
-Список_1(Свободен, 4)   = Значение_2  (по умолчанию)</PRE>
+Список_1(Свободен, 4)   = Значение_2  (по умолчанию)</code></PRE>
 				</DL>
 				<P><BR>При описании <B>функции типа таблица</B> все параметры должны иметь либо целый тип с обязательным указанием диапазона, либо перечислимый тип, причем для целых параметров значение нижней границы диапазона обязательно должно быть равно 1. Это необходимо для определения количества значений в таблице и правильного вычисления линейного номера значения.</P>
 				<P>Тело функции-таблицы представляет собой множество значений функции для каждой комбинации значений параметров. Значения в теле функции задают целой или вещественной <A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">численной константой</A> либо именем значения в соответствии с типом значения функции и разделяют по крайней мере одним <A href="../rdo_lex_div/rdo_lex_div_intro.htm">разделителем</A>. В многомерных таблицах (количество параметров функции больше одного) значения располагают следующим образом: сначала указывают значения, соответствующие возрастающим значениям первого параметра-индекса, затем второго и так далее.</P>
@@ -113,7 +116,7 @@ $End</PRE>
 					<A href="" class="ref" onclick="return toggle_display(v2);"><H4>Примеры</H4></A>
 					<DIV style="display:none" id="v2">
 					<P>Комментарии в теле функций даны для пояснения порядка следования значений.</P>
-					<PRE class="samples">$Function Таблица_1 : such_as Константа_9
+					<PRE class="syntax"><code class="rdo">$Function Таблица_1 : such_as Константа_9
 $Type = table
 $Parameters
   Параметр_1 : integer [1..8]
@@ -153,19 +156,19 @@ $Body
   { Параметр_2 }
   { 1 }             0.64       0.02       0.52       0.73       0.63
   { 2 }             0.10       0.43       0.95       0.74       0.27
-$End</PRE>
+$End</code></PRE>
 					<P>Вызовы функций и получаемые значения:</P>
-					<PRE class="samples">Таблица_1(2) = Значение_5
+					<PRE class="syntax"><code class="rdo">Таблица_1(2) = Значение_5
 Таблица_1(2 * 5 - 4) = Значение_2
 Таблица_2(Значение_4, 2) = 39
 Таблица_2(Значение_5, 1) = 6
 Таблица_3(Значение_4, 1, 1) = 0.53
 Таблица_3(Значение_2, 2, 1) = 0.64
-Таблица_3(Значение_3, 2, 2) = 0.95</PRE>
+Таблица_3(Значение_3, 2, 2) = 0.95</code></PRE>
 				</DIV>
 				</DL>
 				<P><BR>Тело <A name="alg"></A><B>алгоритмической функции</B> имеет следующий формат:</P>
-				<PRE class="syntax"><A class="syntax" href="#list_opereations">&lt;процедура&gt;</A>;{&lt;процедура&gt;;}</PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#list_opereations">&lt;процедура&gt;</A>;{&lt;процедура&gt;;}</code></PRE>
 				<DD class="syntax"><A name="list_opereations"></A><I>процедура</I></DD>
 				<DL class="syntax">
 				    <DD class="syntax">Тело функции представляет собой последовательность <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедур</A>. Значение функции должно быть возвращено <A href="../rdo_base/rdo_base_proc_lang.htm#operator_return">оператором return</A>.</DD>
@@ -176,7 +179,7 @@ $End</PRE>
 					<DD class="syntax"></DD>
 					<A href="" class="ref" onclick="return toggle_display(v3);"><H4>Примеры</H4></A>
 					<DIV style="display:none" id="v3">
-					<PRE class="samples">$Function Функция_1 : real
+					<PRE class="syntax"><code class="rdo">$Function Функция_1 : real
 $Type = algorithmic
 $Parameters
     Параметр_1 : integer
@@ -204,9 +207,9 @@ $Body
     if (Параметр_1.параметр > Параметр_2.параметр) return Параметр_1;
     else                                           return Параметр_2;
 $End
-</PRE>
+</code></PRE>
 					<P>Вызовы функций и получаемые значения:</P>
-					<PRE class="samples">Функция_1(2, 10.0 / 2) = 10.0
+					<PRE class="syntax"><code class="rdo">Функция_1(2, 10.0 / 2) = 10.0
 Функция_1(8, 1.0 * 3 - 1.0) = 3.0
 Функция_2(5.64) = Зеленый
 Функция_2(12.6) = Желтый
@@ -215,14 +218,15 @@ $Resources
 	Ресурс_1 = Тип_ресурса_1(1);
 	Ресурс_2 = Тип_ресурса_1(2);
 $End
-Функция_3(Ресурс_1,Ресурс_2) = Ресурс_2</PRE>
+Функция_3(Ресурс_1,Ресурс_2) = Ресурс_2</code></PRE>
 				</DIV>
 				</DL>
 			</DD>
 		</DL>
 		<H4>См. также</H4>
 		<P><A href="../rdo_base/rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
-		<P><A href="rdo_obj_const_fun_sec.htm">Описание символьных констант, функций и последовательностей</A></P>
+		<P><A href="rdo_obj_const_fun_seq.htm">Описание символьных констант, функций и последовательностей</A></P>
+		<P><A href="rdo_obj_const.htm">Синтаксис констант</A></P>
 		<P><A href="rdo_obj_sec/rdo_obj_sec.htm">Синтаксис последовательности</A></P>
 	</DIV>
 	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>

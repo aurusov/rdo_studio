@@ -4,8 +4,8 @@
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
@@ -15,6 +15,7 @@
 %}
 
 %pure-parser
+%param {void* lexer}
 
 %token RDO_Resource_type				257
 %token RDO_permanent					258
@@ -81,7 +82,7 @@
 %token RDO_set							319
 %token RDO_IDENTIF_NoChange_NoChange	320
 %token RDO_Operations					321
-	
+
 %token RDO_Results						322
 %token RDO_watch_par					323
 %token RDO_watch_state					324
@@ -251,7 +252,7 @@ opr_body
 		ASSERT(pOperations);
 		LPRDOValue pName    = CONVERTER->stack().pop<RDOValue>($2);
 		LPRDOValue pPattern = CONVERTER->stack().pop<RDOValue>($3);
-		LPRDOOPROperation pOperation = pOperations->addNewActivity(pName->src_info(), pPattern->src_info());
+		LPRDOOPROperation pOperation = pOperations->addNewActivity(pName->src_info(), pPattern->src_info()).object_dynamic_cast<RDOOPROperation>();
 		ASSERT(pOperation);
 
 		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
@@ -311,7 +312,7 @@ opr_keyb
 	{
 		LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
 		ASSERT(pOperation);
-		tstring key = CONVERTER->stack().pop<RDOValue>($2)->value().getString();
+		const std::string key = CONVERTER->stack().pop<RDOValue>($2)->value().getString();
 		pOperation->addHotKey(key, @2);
 		$$ = CONVERTER->stack().push(pOperation);
 	}
@@ -319,7 +320,7 @@ opr_keyb
 	{
 		LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
 		ASSERT(pOperation);
-		tstring key = CONVERTER->stack().pop<RDOValue>($3)->value().getString();
+		const std::string key = CONVERTER->stack().pop<RDOValue>($3)->value().getString();
 		pOperation->addHotKey(key, @3);
 		$$ = CONVERTER->stack().push(pOperation);
 	}
@@ -679,7 +680,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
 		ASSERT(pFunParams);
-		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @3);
 		pFunParams->setSrcText(funName + "()");
@@ -691,7 +692,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = CONVERTER->stack().pop<RDOFUNParams>($3);
 		ASSERT(pFunParams);
-		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		const std::string funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
 		pFunParams->setSrcText(funName + "(" + pFunParams->src_text() + ")");

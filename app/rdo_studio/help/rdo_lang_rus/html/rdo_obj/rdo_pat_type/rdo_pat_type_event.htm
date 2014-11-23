@@ -2,7 +2,10 @@
 <HEAD>
 <TITLE>Описание событий</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../../shared/styles/highlight.styles/googlecode.css">
 <META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <SCRIPT>
 function toggle_display(e)
 {
@@ -18,11 +21,11 @@ function toggle_display(e)
 		<DIV>
 			<H1>ОПИСАНИЕ СОБЫТИЙ</H1>
 		<P><B>События</B> описываются в отдельном <A href="../../rdo_terms.htm">объекте</A> с расширением <B>.evn</B>
-		<PRE class="syntax">$Pattern <A class="syntax" href="#event_name">&lt;имя_события&gt;</A> : event [ <A class="syntax" href="#sign_of_the_trace">&lt;признак_трассировки&gt;</A> ]
+		<PRE class="syntax"><code class="rdo">$Pattern <A class="syntax" href="#event_name">&lt;имя_события&gt;</A> : event [ <A class="syntax" href="#sign_of_the_trace">&lt;признак_трассировки&gt;</A> ]
 [ $Parameters <A class="syntax" href="../rdo_obj_pat.htm#param_descr">&lt;описание_параметров_события&gt;</A> ]
 $Relevant_resources <A class="syntax" href="#rel_res_desc">&lt;описание_релевантных_ресурсов_события&gt;</A>
 $Body <A class="syntax" href="#body">&lt;тело_события&gt;</A>
-$End</PRE>
+$End</code></PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="event_name"></A><I>имя_события</I></DT>
 			<DD class="syntax">Имя события представляет собой <A href="../../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех событий и не должны совпадать с ранее определенными именами.</DD>
@@ -30,7 +33,7 @@ $End</PRE>
 			<DD class="syntax">Событие может иметь признак трассировки (подробнее смотри описание <A class="syntax" href="../../rdo_res/rdo_res_trace_descr.htm">&lt;трассировка состояния объектов РДО&gt;</A>).
 			<DT class="syntax"><A name="rel_res_desc"></A><I>описание_релевантных_ресурсов_события</I></DT>
 			<DD class="syntax">Описание релевантных ресурсов события имеет следующий формат:
-				<PRE class="syntax"><A class="syntax" href="#rel_res_name">&lt;имя_релевантного_ресурса&gt;</A> : <A class="syntax" href="#rel_res_describer">&lt;описатель&gt;</A> <A class="syntax" href="#event_conv_stat">&lt;статус_конвертора&gt;</A></PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#rel_res_name">&lt;имя_релевантного_ресурса&gt;</A> : <A class="syntax" href="#rel_res_describer">&lt;описатель&gt;</A> <A class="syntax" href="#event_conv_stat">&lt;статус_конвертора&gt;</A></code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="rel_res_name"></A><I>имя_релевантного_ресурса</I></DT>
 					<DD class="syntax">Имя релевантного ресурса образца представляет собой <A href="../../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Область видимости имени релевантного ресурса события - это данное событие. Поэтому имена всех релевантных ресурсов одного события должны быть различными.</DD>
@@ -63,14 +66,14 @@ $End</PRE>
 			</DD>
 		<DT class="syntax"><A name="body"></A><I>тело_образца</I></DT>
 		<DD class="syntax">Тело событий и образцов имеет следующий формат:
-			<PRE class="syntax"><A class="syntax" href="#body_rel_res_name">&lt;имя_релевантного_ресурса&gt;</A> Convert_event <A class="syntax" href="#statement_list">&lt;список_инструкций&gt;</A></PRE>
+			<PRE class="syntax"><code class="rdo"><A class="syntax" href="#body_rel_res_name">&lt;имя_релевантного_ресурса&gt;</A> Convert_event <A class="syntax" href="#statement_list">&lt;список_инструкций&gt;</A></code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="body_rel_res_name"></A><I>имя_релевантного_ресурса</I></DT>
 					<DD class="syntax">Имена релевантных ресурсов должны следовать в том порядке, в котором они указаны в описании <A href="#rel_res_desc">релевантных ресурсов</A>.</DD>
 						<DT class="syntax"><A name="statement_list"></A><I>список_инструкций</I></DT>
 						<DD class="syntax">Список инструкций и указанное перед ним зарезервированное слово должны присутствовать в образце в том случае, если соответствующий <A href="#rel_res_desc">статус конвертора</A>, указанный при описании релевантных ресурсов, есть <FONT class="syntax">Keep</FONT> или <FONT class="syntax">Create</FONT>. Если статус конвертора есть <FONT class="syntax">Erase</FONT>, то список инструкций может быть пустым или наоборот содержать инструкции, которые требуется выполнить для сбора статистики в момент удаления ресурса. <A name="temp_trace_feat"></A>Если статус конвертора есть <FONT class="syntax">Create</FONT>, то после зарезервированного слова может быть указан <A href="../../rdo_res/rdo_res_trace_descr.htm">признак трассировки</A> для создаваемого ресурса.
 							<P>Список инструкций записывают в следующем формате:</P>
-							<PRE class="syntax"><A class="syntax" href="../../rdo_base/rdo_base_proc_lang.htm#statement">&lt;инструкция&gt;</A> { &lt;инструкция&gt; }</PRE>
+							<PRE class="syntax"><code class="rdo"><A class="syntax" href="../../rdo_base/rdo_base_proc_lang.htm#statement">&lt;инструкция&gt;</A> { &lt;инструкция&gt; }</code></PRE>
 							<P><A name="set_order"></A>Все инструкции могут быть указаны в произвольном порядке. Вычисление новых значений параметров релевантных ресурсов происходит в том порядке, в котором следуют их инструкции присваивания. Если нет ни одной инструкции присваивания, которая относится к данному параметру, то подразумевается, что значение этого параметра не изменяется. Для ресурсов, имеющих статус конвертора <FONT class="syntax">Create</FONT>, задание новых значений каждого параметра обязательны, за исключением случая, когда для параметра указано значение по умолчанию в описании типа ресурса.</P>
 						</DD>
 				</DL>
@@ -78,7 +81,7 @@ $End</PRE>
 	</DL>
 	<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
 	<DIV style="display:none" id="v1">
-	<PRE class="samples">
+	<PRE class="syntax"><code class="rdo">
 $Pattern Образец_прихода_клиента : event
 $Parameters
   Количество : integer = 10
@@ -91,12 +94,12 @@ $Body
     Образец_прихода_клиента.planning( time_now + Интервал_прихода( 30 ) )(norm(5));
     Количество_в_очереди += Образец_прихода_клиента.Количество
 $End
-	</PRE>
+	</code></PRE>
 	</DIV>
 		<H4>См. также</H4>
 	<P><A href="../../rdo_base/rdo_base_res_types.htm">Типы ресурсов</A></P>
 	<P><A href="../../rdo_base/rdo_base_resources.htm">Описание ресурсов</A></P>
-	<P><A href="../rdo_obj_const_fun_sec.htm">Описание символьных констант, функций и последовательностей</A></P>
+	<P><A href="../rdo_obj_const_fun_seq.htm">Описание символьных констант, функций и последовательностей</A></P>
 	<P><A href="../rdo_obj_dpt.htm">Описание точек принятия решений</A></P>
 	<P><A href="../../rdo_res/rdo_res_trc.htm">Объект трассировки</A></P>
 	</DIV>

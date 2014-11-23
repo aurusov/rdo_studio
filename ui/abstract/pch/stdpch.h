@@ -15,8 +15,6 @@
 #include <list>
 #include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
-#include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 #endif // _UI_ABSTRACT_STDPCH_H_

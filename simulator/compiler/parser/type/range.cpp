@@ -17,7 +17,7 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-RDOTypeRangeRange::RDOTypeRangeRange(CREF(LPRDOValue) pMinValue, CREF(LPRDOValue) pMaxValue, CREF(RDOParserSrcInfo) src_info)
+RDOTypeRangeRange::RDOTypeRangeRange(const LPRDOValue& pMinValue, const LPRDOValue& pMaxValue, const RDOParserSrcInfo& src_info)
 	: RDOParserSrcInfo(src_info )
 	, m_pMinValue     (pMinValue)
 	, m_pMaxValue     (pMaxValue)
@@ -34,7 +34,7 @@ void RDOTypeRangeRange::checkRange() const
 {
 	if (m_pMinValue->typeID() != m_pMaxValue->typeID())
 	{
-		parser::g_error().error(m_pMaxValue->src_info(), rdo::format("Границы диапазона должны быть одного типа, найдено: [%s] .. [%s]", m_pMinValue->typeInfo()->type()->name().c_str(), m_pMaxValue->typeInfo()->type()->name().c_str()));
+		parser::g_error().error(m_pMaxValue->src_info(), rdo::format("Границы диапазона должны быть одного типа, найдено: [%s] .. [%s]", m_pMinValue->typeInfo()->itype()->name().c_str(), m_pMaxValue->typeInfo()->itype()->name().c_str()));
 	}
 	if (m_pMinValue->value() > m_pMaxValue->value())
 	{
@@ -42,7 +42,7 @@ void RDOTypeRangeRange::checkRange() const
 	}
 }
 
-void RDOTypeRangeRange::checkValue(CREF(LPRDOValue) pValue) const
+void RDOTypeRangeRange::checkValue(const LPRDOValue& pValue) const
 {
 	ASSERT(pValue);
 
@@ -61,12 +61,12 @@ void RDOTypeRangeRange::checkValue(CREF(LPRDOValue) pValue) const
 	}
 }
 
-CREF(LPRDOValue) RDOTypeRangeRange::getMin() const
+const LPRDOValue& RDOTypeRangeRange::getMin() const
 {
 	return m_pMinValue;
 }
 
-CREF(LPRDOValue) RDOTypeRangeRange::getMax() const
+const LPRDOValue& RDOTypeRangeRange::getMax() const
 {
 	return m_pMaxValue;
 }

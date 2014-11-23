@@ -13,7 +13,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/interface/rdointerface.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
@@ -30,7 +29,7 @@ CLOSE_RDO_RUNTIME_NAMESPACE
   \interface IBaseOperation
   \brief     Интерфейс для паттернов, процессов и блоков процесса
 */
-class IBaseOperation
+class IBaseOperation: public virtual rdo::counter_reference
 {
 public:
 	//! Статуc состояния операции
@@ -43,58 +42,58 @@ public:
 	};
 
 	/*!
-	  \fn      virtual void onStart(CREF(rdo::runtime::LPRDORuntime) pRuntime)
+	  \fn      virtual void onStart(const rdo::runtime::LPRDORuntime& pRuntime)
 	  \brief   Запуск
 	  \details Вызывается перед стартом прогона и перед возобновление операции
 	           Например, условие DPT-some поменялось с false на true
 	           Используется для GENERATE, чтобы задать время прихода первого клиента
 	  \param   pRuntime константная ссылка на указатель на Рантайм
 	*/
-	virtual void onStart(CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
+	virtual void onStart(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
 
 	/*!
-	  \fn      virtual void onStop(CREF(rdo::runtime::LPRDORuntime) pRuntime)
+	  \fn      virtual void onStop(const rdo::runtime::LPRDORuntime& pRuntime)
 	  \brief   Остановка
 	  \details Вызывается при остановке операции, например, условие DPT-some поменялось с true на false
 	  \param   pRuntime константная ссылка на указатель на Рантайм
 	*/
-	virtual void onStop(CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
+	virtual void onStop(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
 
 	/*!
-	  \fn      virtual rbool onCheckCondition(CREF(rdo::runtime::LPRDORuntime) pRuntime)
+	  \fn      virtual bool onCheckCondition(const rdo::runtime::LPRDORuntime& pRuntime)
 	  \brief   Проверка
 	  \details Вызывается для проверки выполнимости операции
 	  \param   pRuntime константная ссылка на указатель на Рантайм
 	*/
-	virtual rbool onCheckCondition(CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
+	virtual bool onCheckCondition(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
 
 	/*!
-	  \fn      virtual BOResult onDoOperation(CREF(rdo::runtime::LPRDORuntime) pRuntime)
+	  \fn      virtual BOResult onDoOperation(const rdo::runtime::LPRDORuntime& pRuntime)
 	  \brief   Выполнение
 	  \details Вызывается для выполнения правил/операций
 	  \return  BOResult результат выполнения операции
 	  \param   pRuntime константная ссылка на указатель на Рантайм
 	*/
-	virtual BOResult onDoOperation(CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
+	virtual BOResult onDoOperation(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
 
 	/*!
-	  \fn      virtual BOResult onContinue(CREF(rdo::runtime::LPRDORuntime) pRuntime)
+	  \fn      virtual BOResult onContinue(const rdo::runtime::LPRDORuntime& pRuntime)
 	  \brief   Продолжение
 	  \details Вызывается для продолжения долгой операции, например, DPT search
 	  \return  BOResult результат выполнения операции
 	  \param   pRuntime константная ссылка на указатель на Рантайм
 	*/
-	virtual BOResult onContinue(CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
+	virtual BOResult onContinue(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
 };
 
-#define DECLARE_IBaseOperation                                                    \
-	virtual void     onStart         (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual void     onStop          (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual rbool    onCheckCondition(CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual BOResult onDoOperation   (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
-	virtual BOResult onContinue      (CREF(rdo::runtime::LPRDORuntime) pRuntime);
+#define DECLARE_IBaseOperation                                                     \
+	virtual void     onStart         (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual void     onStop          (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual bool     onCheckCondition(const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual BOResult onDoOperation   (const rdo::runtime::LPRDORuntime& pRuntime); \
+	virtual BOResult onContinue      (const rdo::runtime::LPRDORuntime& pRuntime);
 
-INTERFACE_PREDECLARATION(IBaseOperation);
+DECLARE_POINTER(IBaseOperation);
 
 /*!
   \typedef BaseOperationList

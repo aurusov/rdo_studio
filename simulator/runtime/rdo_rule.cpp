@@ -20,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDORule
 // --------------------------------------------------------------------------------
-RDORule::RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, rbool trace, CREF(tstring) name)
+RDORule::RDORule(const LPRDORuntime& pRuntime, const LPRDOPatternRule& pPattern, bool trace, const std::string& name)
 	: RDOActivityPattern<RDOPatternRule>(pPattern, trace, name)
 	, RDOPatternPrior                   (                     )
 	, m_pRuntime                        (pRuntime             )
@@ -28,7 +28,7 @@ RDORule::RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, r
 	init();
 }
 
-RDORule::RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name)
+RDORule::RDORule(const LPRDORuntime& pRuntime, const LPRDOPatternRule& pPattern, bool trace, const LPRDOCalc& pCondition, const std::string& name)
 	: RDOActivityPattern<RDOPatternRule>(pPattern, trace, name)
 	, RDOPatternPrior                   (                     )
 	, m_pRuntime                        (pRuntime             )
@@ -46,12 +46,12 @@ void RDORule::init()
 	m_traceOFF = false;
 }
 
-void RDORule::onBeforeChoiceFrom(CREF(LPRDORuntime) pRuntime)
+void RDORule::onBeforeChoiceFrom(const LPRDORuntime& pRuntime)
 {
 	setPatternParameters(pRuntime, m_paramsCalcs);
 }
 
-rbool RDORule::choiceFrom(CREF(LPRDORuntime) pRuntime)
+bool RDORule::choiceFrom(const LPRDORuntime& pRuntime)
 {
 	pRuntime->setCurrentActivity(this);
 	if (m_pAdditionalCondition && !m_pAdditionalCondition->calcValue(pRuntime).getAsBool())
@@ -61,18 +61,16 @@ rbool RDORule::choiceFrom(CREF(LPRDORuntime) pRuntime)
 	return m_pPattern->choiceFrom(pRuntime);
 }
 
-void RDORule::onBeforeRule(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-}
+void RDORule::onBeforeRule(const LPRDORuntime& /*pRuntime*/)
+{}
 
-void RDORule::convertRule(CREF(LPRDORuntime) pRuntime)
+void RDORule::convertRule(const LPRDORuntime& pRuntime)
 { 
 	pRuntime->setCurrentActivity(this);
 	m_pPattern->convertRule(pRuntime);
 }
 
-void RDORule::onAfterRule(CREF(LPRDORuntime) pRuntime, rbool inSearch)
+void RDORule::onAfterRule(const LPRDORuntime& pRuntime, bool inSearch)
 {
 	updateConvertStatus(pRuntime, m_pPattern->m_convertorStatus);
 	if (!inSearch)
@@ -91,11 +89,11 @@ void RDORule::trace()
 	}
 }
 
-rbool RDORule::onCheckCondition(CREF(LPRDORuntime) pRuntime)
+bool RDORule::onCheckCondition(const LPRDORuntime& pRuntime)
 {
 	onBeforeChoiceFrom(pRuntime);
 	pRuntime->inc_cnt_choice_from();
-	rbool result = choiceFrom(pRuntime);
+	bool result = choiceFrom(pRuntime);
 	if (result)
 	{
 		m_traceOFF = true;
@@ -115,7 +113,7 @@ rbool RDORule::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 	return result;
 }
 
-IBaseOperation::BOResult RDORule::onDoOperation(CREF(LPRDORuntime) pRuntime)
+IBaseOperation::BOResult RDORule::onDoOperation(const LPRDORuntime& pRuntime)
 {
 	onBeforeRule(pRuntime);
 	convertRule (pRuntime);
@@ -123,8 +121,8 @@ IBaseOperation::BOResult RDORule::onDoOperation(CREF(LPRDORuntime) pRuntime)
 	return IBaseOperation::BOR_done;
 }
 
-void                     RDORule::onStart   (CREF(LPRDORuntime) pRuntime) { UNUSED(pRuntime); }
-void                     RDORule::onStop    (CREF(LPRDORuntime) pRuntime) { UNUSED(pRuntime); }
-IBaseOperation::BOResult RDORule::onContinue(CREF(LPRDORuntime) pRuntime) { UNUSED(pRuntime); return IBaseOperation::BOR_cant_run; }
+void                     RDORule::onStart   (const LPRDORuntime& /*pRuntime*/) {}
+void                     RDORule::onStop    (const LPRDORuntime& /*pRuntime*/) {}
+IBaseOperation::BOResult RDORule::onContinue(const LPRDORuntime& /*pRuntime*/) { return IBaseOperation::BOR_cant_run; }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

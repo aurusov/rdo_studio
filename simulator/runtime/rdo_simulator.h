@@ -24,25 +24,25 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \class     RDOSimulator
   \brief     Один из базовых классов для RDORuntime
 */
-CLASS(RDOSimulator): INSTANCE_OF (RDOSimulatorBase)
+class RDOSimulator: public RDOSimulatorBase
 {
 public:
 	RDOSimulator();
 	virtual ~RDOSimulator();
 
-	void             appendLogic       (CREF(LPIBaseOperation) pLogic, LPIBaseOperationContainer pParent);
+	void appendLogic(const LPIBaseOperation& pLogic, LPIBaseOperationContainer pParent);
 	LPIBaseOperation getMustContinueOpr() const;
-	void             setMustContinueOpr(CREF(LPIBaseOperation) pOperation);
-	virtual void     onPutToTreeNode   () = 0;
+	void setMustContinueOpr(const LPIBaseOperation& pOperation);
+	virtual void onPutToTreeNode() = 0;
 
-	tstring          writeActivitiesStructure(REF(ruint) counter);
+	std::string writeActivitiesStructure(std::size_t& counter);
 
-	ruint getSizeofSim() const;
+	std::size_t getSizeofSim() const;
 
 	LPIBaseOperationContainer m_pMetaLogic;
 
 protected:
-	void appendBaseOperation(LPIBaseOperationContainer pLogic, CREF(LPIBaseOperation) pBaseOperation);
+	void appendBaseOperation(LPIBaseOperationContainer pLogic, const LPIBaseOperation& pBaseOperation);
 
 	// Инициализирует нерегулярные события и блоки GENERATE: задает время первого срабатывания
 	virtual void preProcess();
@@ -51,16 +51,14 @@ protected:
 	virtual void onCheckResult     () = 0;
 	virtual void onAfterCheckResult() = 0;
 
-	ruint m_sizeofSim;
+	std::size_t m_sizeofSim;
 
 private:
 	LPIBaseOperation m_pOprMustContinue;
 
-	virtual rbool doOperation();
+	virtual bool doOperation();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/rdo_simulator.inl"
 
 #endif // _LIB_RUNTIME_SIMULATOR_H_

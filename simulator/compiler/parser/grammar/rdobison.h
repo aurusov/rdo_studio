@@ -12,8 +12,8 @@
 #define _RDOBISON_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <cstddef>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 // Определим YYSTYPE именно в этом файле, чтобы убрать зависимость от rdogramma.h
@@ -28,14 +28,14 @@ typedef int YYSTYPE;
 
 struct yyltype
 {
-	ruint m_first_line;
-	ruint m_first_pos;
+	std::size_t m_first_line;
+	std::size_t m_first_pos;
 
-	ruint m_last_line;
-	ruint m_last_pos;
+	std::size_t m_last_line;
+	std::size_t m_last_pos;
 
-	ruint m_first_seek;
-	ruint m_last_seek;
+	std::size_t m_first_seek;
+	std::size_t m_last_seek;
 };
 #define YYLTYPE yyltype
 
@@ -45,7 +45,7 @@ struct yyltype
 
 #define YYLLOC_DEFAULT(Current, Rhs, N)                             \
 	do {                                                            \
-		if (YYID(N))                                                \
+		if (N)                                                      \
 		{                                                           \
 			(Current).m_first_line = YYRHSLOC(Rhs, 1).m_first_line; \
 			(Current).m_first_pos  = YYRHSLOC(Rhs, 1).m_first_pos;  \
@@ -64,6 +64,6 @@ struct yyltype
 			(Current).m_last_seek  = YYRHSLOC(Rhs, 0).m_last_seek;  \
 		}                                                           \
 	}                                                               \
-	while (YYID(0))
+	while (0)
 
 #endif // _RDOBISON_H_

@@ -24,14 +24,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 */
 class RDOPMDResultGroup: public IResult, public IResultGroup
 {
-DEFINE_IFACTORY(RDOPMDResultGroup);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IResult     )
-	QUERY_INTERFACE(IResultGroup)
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPMDResultGroup);
 private:
-	RDOPMDResultGroup(CREF(tstring) name);
+	RDOPMDResultGroup(const std::string& name);
 	virtual ~RDOPMDResultGroup();
 
 	/*!
@@ -45,12 +40,12 @@ private:
 	};
 
 	typedef std::vector<LPIResult> ResultList;
-	ResultList                   m_resultList;
-	tstring                      m_name;
-	State                        m_state;
-	double                       m_timeStart;
-	boost::filesystem::ofstream  m_streamFull;
-	boost::filesystem::ofstream  m_streamTable;
+	ResultList m_resultList;
+	std::string m_name;
+	State m_state;
+	double m_timeStart;
+	boost::filesystem::ofstream m_streamFull;
+	boost::filesystem::ofstream m_streamTable;
 
 	DECLARE_IResult;
 	DECLARE_IResultGroup;

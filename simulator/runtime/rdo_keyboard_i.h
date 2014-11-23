@@ -12,7 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/interface/rdointerface.h"
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
@@ -27,7 +26,7 @@ CLOSE_RDO_RUNTIME_NAMESPACE
   \interface IKeyboard
   \brief     Интерфейс клавиатурной операции
 */
-class IKeyboard
+class IKeyboard: public virtual rdo::counter_reference
 {
 public:
 	//! Статуc нажатия клавиши
@@ -38,12 +37,13 @@ public:
 		addhk_notfound, //!< клавиша не найдена
 		addhk_dont	    //!< клавиша не нажата
 	};
-	virtual rbool           hasHotKey() const = 0;
-	virtual AddHotKeyResult addHotKey(CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(tstring) hotKey) = 0;
+	virtual bool hasHotKey() const = 0;
+	virtual AddHotKeyResult addHotKey(const rdo::runtime::LPRDORuntime& pRuntime, const std::string& hotKey) = 0;
 };
+DECLARE_POINTER(IKeyboard)
 
 #define DECLARE_IKeyboard \
-	virtual rbool           hasHotKey() const; \
-	virtual AddHotKeyResult addHotKey(CREF(rdo::runtime::LPRDORuntime) pRuntime, CREF(tstring) hotKey);
+	virtual bool hasHotKey() const; \
+	virtual AddHotKeyResult addHotKey(const rdo::runtime::LPRDORuntime& pRuntime, const std::string& hotKey);
 
 #endif // _LIB_RUNTIME_KEYBOARD_I_H_

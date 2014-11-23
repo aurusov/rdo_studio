@@ -17,7 +17,7 @@
 FindReplaceDialog::Settings::Settings()
 {}
 
-FindReplaceDialog::Settings::Settings(CREF(Settings) settings)
+FindReplaceDialog::Settings::Settings(const Settings& settings)
 	: FindDialog::Settings(settings)
 	, byWhat(settings.byWhat)
 {}
@@ -50,7 +50,7 @@ FindReplaceDialog::~FindReplaceDialog()
 	m_onCloseCallback();
 }
 
-void FindReplaceDialog::setSettings(CREF(Settings) settings)
+void FindReplaceDialog::setSettings(const Settings& settings)
 {
 	m_settings = settings;
 

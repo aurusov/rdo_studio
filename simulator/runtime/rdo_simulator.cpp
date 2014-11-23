@@ -33,23 +33,45 @@ RDOSimulator::RDOSimulator()
 	: RDOSimulatorBase( )
 	, m_sizeofSim     (0)
 {
-	m_pMetaLogic = RF(RDOLogicMeta)::create();
+	m_pMetaLogic = rdo::Factory<RDOLogicMeta>::create();
 }
 
 RDOSimulator::~RDOSimulator()
 {}
 
-void RDOSimulator::appendLogic(CREF(LPIBaseOperation) pLogic, LPIBaseOperationContainer pParent)
+LPIBaseOperation RDOSimulator::getMustContinueOpr() const
+{
+	return m_pOprMustContinue;
+}
+
+void RDOSimulator::setMustContinueOpr(const LPIBaseOperation& pOperation)
+{
+	m_pOprMustContinue = pOperation;
+}
+
+std::size_t RDOSimulator::getSizeofSim() const
+{
+	return m_sizeofSim;
+}
+
+void RDOSimulator::appendBaseOperation(LPIBaseOperationContainer pLogic, const LPIBaseOperation& pBaseOperation)
+{
+	ASSERT(pLogic        );
+	ASSERT(pBaseOperation);
+	pLogic->append(pBaseOperation);
+}
+
+void RDOSimulator::appendLogic(const LPIBaseOperation& pLogic, LPIBaseOperationContainer pParent)
 {
 	ASSERT(pParent);
 	pParent->append(pLogic);
 }
 
-rbool RDOSimulator::doOperation()
+bool RDOSimulator::doOperation()
 {
-	LPRDORuntime pRuntime(static_cast<PTR(RDORuntime)>(this));
+	LPRDORuntime pRuntime(static_cast<RDORuntime*>(this));
 
-	rbool res;
+	bool res;
 	if (getMustContinueOpr())
 	{
 		// Есть действие, которое необходимо продолжить. Используется в DPT
@@ -62,7 +84,7 @@ rbool RDOSimulator::doOperation()
 	}
 	else
 	{
-		rbool foundPlaned = false;
+		bool foundPlaned = false;
 		// Отработаем все запланированные на данный момент события
 		if (!m_checkOperation && !m_timePoints.empty())
 		{
@@ -105,12 +127,12 @@ rbool RDOSimulator::doOperation()
 		{
 			// Не нашли запланированное событие
 			// Проверить все возможные события и действия, вызвать первое, которое может быть вызвано
-			LPIBaseOperation pMetaLogic = m_pMetaLogic.query_cast<IBaseOperation>();
+			LPIBaseOperation pMetaLogic = m_pMetaLogic.object_dynamic_cast<IBaseOperation>();
 			try
 			{
 				res = pMetaLogic->onCheckCondition(pRuntime);
 			}
-			catch (CREF(RDOUndefinedException))
+			catch (const RDOUndefinedException&)
 			{
 				res = false;
 			}
@@ -131,19 +153,19 @@ rbool RDOSimulator::doOperation()
 
 void RDOSimulator::preProcess()
 {
-	LPRDORuntime pRuntime(static_cast<PTR(RDORuntime)>(this));
-	m_pMetaLogic.query_cast<IBaseOperation>()->onStart(pRuntime);
+	LPRDORuntime pRuntime(static_cast<RDORuntime*>(this));
+	m_pMetaLogic.object_dynamic_cast<IBaseOperation>()->onStart(pRuntime);
 	onResetResult();
 }
 
-tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, REF(ruint) counter)
+std::string writeActivitiesStructureRecurse(const LPIBaseOperationContainer& pLogic, std::size_t& counter)
 {
 	std::stringstream stream;
 	IBaseOperationContainer::CIterator it = pLogic->begin();
 	while (it != pLogic->end())
 	{
-		LPIModelStructure pModelStructure = *it;
-		if (pModelStructure && (pModelStructure.query_cast<IRule>() || pModelStructure.query_cast<IOperation>()))
+		LPIModelStructure pModelStructure = it->object_dynamic_cast<IModelStructure>();
+		if (pModelStructure && (pModelStructure.object_dynamic_cast<IRule>() || pModelStructure.object_dynamic_cast<IOperation>()))
 		{
 			stream << counter++ << " ";
 			pModelStructure->writeModelStructure(stream);
@@ -155,12 +177,12 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 	stream << std::endl;
 #endif
 
-	ruint _counter = 1;
+	std::size_t _counter = 1;
 	it = pLogic->begin();
 	while (it != pLogic->end())
 	{
-		LPIModelStructure pModelStructure = *it;
-		if (pModelStructure && pModelStructure.query_cast<IEvent>() && !pModelStructure.query_cast<IOperation>())
+		LPIModelStructure pModelStructure = it->object_dynamic_cast<IModelStructure>();
+		if (pModelStructure && pModelStructure.object_dynamic_cast<IEvent>() && !pModelStructure.object_dynamic_cast<IOperation>())
 		{
 			stream << _counter++ << " ";
 			counter++;
@@ -172,10 +194,10 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 	it = pLogic->begin();
 	while (it != pLogic->end())
 	{
-		LPILogic pLogic = *it;
+		LPILogic pLogic = it->object_dynamic_cast<ILogic>();
 		if (pLogic)
 		{
-			stream << writeActivitiesStructureRecurse(pLogic, counter);
+			stream << writeActivitiesStructureRecurse(pLogic.object_dynamic_cast<IBaseOperationContainer>(), counter);
 		}
 		++it;
 	}
@@ -183,7 +205,7 @@ tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, 
 	return stream.str();
 }
 
-tstring RDOSimulator::writeActivitiesStructure(REF(ruint) counter)
+std::string RDOSimulator::writeActivitiesStructure(std::size_t& counter)
 {
 	return writeActivitiesStructureRecurse(m_pMetaLogic, counter);
 }

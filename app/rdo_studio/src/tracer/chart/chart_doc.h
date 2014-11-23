@@ -42,8 +42,8 @@ public:
 	void attachView(ChartView* pView);
 	ChartView* getFirstView();
 
-	CREF(QString) getTitle () const;
-	void          setTitle (CREF(QString) title);
+	const QString& getTitle () const;
+	void           setTitle (const QString& title);
 	void          autoTitle();
 	static void   resetTitleIndex();
 
@@ -51,8 +51,8 @@ public:
 
 	void updateAllViews();
 
-	void addSerie(CREF(LPSerie) pSerie);
-	bool serieExists(CREF(LPSerie) pSerie) const;
+	void addSerie(const LPSerie& pSerie);
+	bool serieExists(const LPSerie& pSerie) const;
 
 	void incTimeEventsCount(Time* time);
 	bool newValueToSerieAdded(Value* val);
@@ -60,25 +60,25 @@ public:
 	void addToViews     (ChartView* pWidget);
 	void removeFromViews(ChartView* pWidget);
 
-	CREF(TimesList) getTimes    () const;
-	CREF(SerieList) getSerieList() const;
+	const TimesList& getTimes    () const;
+	const SerieList& getSerieList() const;
 
 	int    getMaxMarkerSize() const;
 	int    getTicksCount   () const;
 	double getMinTimeOffset() const;
 
 private:
-	TimesList            m_docTimes;
-	TimesList::iterator  m_insertedIt;
-	SerieList            m_serieList;
-	double               m_minTimeOffset;
-	int                  m_ticksCount;
-	bool                 m_previewMode;
+	TimesList m_docTimes;
+	TimesList::iterator m_insertedIt;
+	SerieList m_serieList;
+	double m_minTimeOffset;
+	int m_ticksCount;
+	bool m_previewMode;
 
 	std::vector<ChartView*> m_widgetList;
-	QString                 m_title;
+	QString m_title;
 	std::vector<ChartView*> m_viewList;
-	static ruint            s_titleIndex;
+	static std::size_t s_titleIndex;
 
 	int getSerieIndex(ChartSerie* serie) const;
 	QColor selectColor() const;

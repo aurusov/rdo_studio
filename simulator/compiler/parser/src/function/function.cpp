@@ -11,7 +11,6 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 #include <boost/range/algorithm/find_if.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/procedural/calc_statement.h"
@@ -24,7 +23,7 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-Function::Function(CREF(LPTypeInfo) pReturnType, CREF(RDOParserSrcInfo) srcInfo)
+Function::Function(const LPTypeInfo& pReturnType, const RDOParserSrcInfo& srcInfo)
 	: RDOParserSrcInfo(srcInfo)
 	, m_pReturnType(pReturnType)
 {
@@ -73,7 +72,7 @@ void Function::popParamDefinitionContext()
 	ASSERT(m_pFunctionType);
 }
 
-void Function::onPushParam(CREF(LPRDOParam) pParam)
+void Function::onPushParam(const LPRDOParam& pParam)
 {
 	ASSERT(pParam);
 	LPRDOParam pParamPrev = findParam(pParam->name());
@@ -83,10 +82,10 @@ void Function::onPushParam(CREF(LPRDOParam) pParam)
 		RDOParser::s_parser()->error().push_only(pParamPrev->src_info(), "См. первое определение");
 		RDOParser::s_parser()->error().push_done();
 	}
-	m_paramList.push_back(pParam); 
+	m_paramList.push_back(pParam);
 }
 
-LPRDOParam Function::findParam(CREF(tstring) paramName) const
+LPRDOParam Function::findParam(const std::string& paramName) const
 {
 	ParamList::const_iterator it = find(paramName);
 
@@ -95,7 +94,7 @@ LPRDOParam Function::findParam(CREF(tstring) paramName) const
 		: LPRDOParam(NULL);
 }
 
-Function::ParamID Function::findParamID(CREF(tstring) paramName) const
+Function::ParamID Function::findParamID(const std::string& paramName) const
 {
 	ParamList::const_iterator it = find(paramName);
 
@@ -104,12 +103,12 @@ Function::ParamID Function::findParamID(CREF(tstring) paramName) const
 		: ParamID();
 }
 
-Function::ParamList::const_iterator Function::find(CREF(tstring) paramName) const
+Function::ParamList::const_iterator Function::find(const std::string& paramName) const
 {
 	return boost::range::find_if(m_paramList, compareName<RDOParam>(paramName));
 }
 
-CREF(Function::ParamList) Function::getParams() const
+const Function::ParamList& Function::getParams() const
 {
 	return m_paramList;
 }
@@ -119,7 +118,7 @@ LPFunctionType Function::generateType() const
 	ASSERT(m_pReturnType);
 
 	FunctionParamType::ParamList paramTypeList;
-	BOOST_FOREACH(const LPRDOParam& pParam, m_paramList)
+	for (const LPRDOParam& pParam: m_paramList)
 	{
 		paramTypeList.push_back(pParam->getTypeInfo());
 	}
@@ -152,7 +151,7 @@ void Function::popFunctionBodyContext()
 {
 	ASSERT(m_pContextFunctionBody);
 
-	if (m_pReturnType->type()->typeID() != rdo::runtime::RDOType::t_void)
+	if (m_pReturnType->typeID() != rdo::runtime::RDOType::t_void)
 	{
 		if (!m_pContextFunctionBody->getReturnFlag())
 		{
@@ -168,7 +167,7 @@ void Function::popFunctionBodyContext()
 	m_pContextFunctionBody = NULL;
 }
 
-void Function::setBody(CREF(rdo::runtime::LPRDOCalc) pBody)
+void Function::setBody(const rdo::runtime::LPRDOCalc& pBody)
 {
 	ASSERT(!m_pBody);
 	ASSERT(pBody);
@@ -187,13 +186,13 @@ void Function::setBody(CREF(rdo::runtime::LPRDOCalc) pBody)
 	pCalcStatementList->addCalcStatement(pBody);
 	pCalcStatementList->addCalcStatement(pCalcCloseBrace);
 
-	if (m_pReturnType->type()->typeID() != rdo::runtime::RDOType::t_void && !m_pContextFunctionBody->getReturnFlag())
+	if (m_pReturnType->typeID() != rdo::runtime::RDOType::t_void && !m_pContextFunctionBody->getReturnFlag())
 	{
 		rdo::runtime::LPRDOCalc pCalcDefault = m_pDefaultValue;
 		if (!pCalcDefault)
 		{
 			//! Присвоить автоматическое значение по умолчанию, если оно не задано в явном виде
-			pCalcDefault = rdo::Factory<rdo::runtime::RDOCalcConst>::create(m_pReturnType->type()->get_default());
+			pCalcDefault = rdo::Factory<rdo::runtime::RDOCalcConst>::create(m_pReturnType->itype()->get_default());
 			ASSERT(pCalcDefault);
 			pCalcDefault->setSrcInfo(m_pReturnType->src_info());
 		}
@@ -214,7 +213,7 @@ void Function::setBody(CREF(rdo::runtime::LPRDOCalc) pBody)
 	m_pBody = pCalcReturnCatch;
 }
 
-void Function::setDefaultCalc(CREF(rdo::runtime::LPRDOCalc) pDefaultValue)
+void Function::setDefaultCalc(const rdo::runtime::LPRDOCalc& pDefaultValue)
 {
 	ASSERT(pDefaultValue);
 	ASSERT(!m_pDefaultValue);
@@ -224,7 +223,7 @@ void Function::setDefaultCalc(CREF(rdo::runtime::LPRDOCalc) pDefaultValue)
 namespace
 {
 
-LPExpression contextParameter(const LPRDOParam& param, ruint paramID, const RDOParserSrcInfo& srcInfo)
+LPExpression contextParameter(const LPRDOParam& param, std::size_t paramID, const RDOParserSrcInfo& srcInfo)
 {
 	return rdo::Factory<Expression>::create(
 		param->getTypeInfo(),
@@ -235,7 +234,7 @@ LPExpression contextParameter(const LPRDOParam& param, ruint paramID, const RDOP
 
 }
 
-Context::FindResult Function::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult Function::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
 	if (method == Context::METHOD_GET || method == Context::METHOD_SET || method == Context::METHOD_OPERATOR_DOT)
 	{
@@ -244,7 +243,7 @@ Context::FindResult Function::onFindContext(const std::string& method, const Con
 		LPRDOParam pParam = findParam(identifier);
 		if (pParam)
 		{
-			rdo::runtime::RDOType::TypeID typeID = pParam->getTypeInfo()->type()->typeID();
+			rdo::runtime::RDOType::TypeID typeID = pParam->getTypeInfo()->typeID();
 			if (typeID == rdo::runtime::RDOType::t_identificator || typeID == rdo::runtime::RDOType::t_unknow)
 			{
 				RDOParser::s_parser()->error().push_only(
@@ -259,16 +258,22 @@ Context::FindResult Function::onFindContext(const std::string& method, const Con
 
 			if (method == Context::METHOD_GET)
 			{
-				return FindResult(CreateExpression(boost::bind(&contextParameter, pParam, *paramID, srcInfo)));
+				return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextParameter, pParam, *paramID, srcInfo)));
 			}
 			else if (method == Context::METHOD_OPERATOR_DOT)
 			{
-				LPRDORTPResType resourceType = pParam->getTypeInfo()->type().object_dynamic_cast<RDORTPResType>();
+				LPRDORTPResType resourceType = pParam->getTypeInfo()->itype().object_dynamic_cast<RDORTPResType>();
 				if (resourceType)
 				{
 					Context::Params params_;
 					params_[RDORSSResource::GET_RESOURCE] = contextParameter(pParam, *paramID, srcInfo);
-					return FindResult(SwitchContext(resourceType, params_));
+					params_[Context::Params::IDENTIFIER] = identifier;
+					return rdo::Factory<FindResult>::create(SwitchContext(resourceType, params_));
+				}
+				else
+				{
+					LPFunction pThis(const_cast<Function*>(this));
+					return rdo::Factory<FindResult>::create(SwitchContext(pThis, params));
 				}
 			}
 			else
@@ -279,7 +284,7 @@ Context::FindResult Function::onFindContext(const std::string& method, const Con
 		}
 	}
 
-	return FindResult();
+	return rdo::Factory<FindResult>::create();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

@@ -3,7 +3,7 @@
   \file      rdo_type_range.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      10.02.2010
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -24,17 +24,20 @@ class Converter;
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeRangeRange
 // --------------------------------------------------------------------------------
-OBJECT(RDOTypeRangeRange) IS INSTANCE_OF(RDOParserSrcInfo)
+PREDECLARE_POINTER(RDOTypeRangeRange);
+class RDOTypeRangeRange
+	: public rdo::counter_reference
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOTypeRangeRange);
 public:
-	void             checkRange()                        const;
-	void             checkValue(CREF(LPRDOValue) pValue) const;
-	CREF(LPRDOValue) getMin    () const;
-	CREF(LPRDOValue) getMax    () const;
+	void              checkRange()                         const;
+	void              checkValue(const LPRDOValue& pValue) const;
+	const LPRDOValue& getMin    () const;
+	const LPRDOValue& getMax    () const;
 
 private:
-	RDOTypeRangeRange(CREF(LPRDOValue) pMinValue, CREF(LPRDOValue) pMaxValue, CREF(RDOParserSrcInfo) src_info);
+	RDOTypeRangeRange(const LPRDOValue& pMinValue, const LPRDOValue& pMaxValue, const RDOParserSrcInfo& src_info);
 	virtual ~RDOTypeRangeRange();
 
 	LPRDOValue m_pMinValue;
@@ -50,12 +53,12 @@ class RDOTypeRange: public T
 {
 DECLARE_FACTORY(RDOTypeRange<T>);
 public:
-	CREF(LPRDOTypeRangeRange) range() const;
+	const LPRDOTypeRangeRange& range() const;
 
 private:
 	typedef T parent_type;
 
-	RDOTypeRange(CREF(LPRDOTypeRangeRange) range);
+	RDOTypeRange(const LPRDOTypeRangeRange& range);
 	virtual ~RDOTypeRange();
 
 	LPRDOTypeRangeRange m_pRange;
@@ -69,6 +72,6 @@ DECLARE_POINTER(RDOTypeRealRange);
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-#include "converter/smr2rdox/rdo_type_range.inl"
+#include "converter/smr2rdox/rdo_type_range-inl.h"
 
 #endif // _CONVERTOR_RDO_TYPE_RANGE_H_

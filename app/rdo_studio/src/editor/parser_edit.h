@@ -24,18 +24,18 @@ public:
 	Parser(QWidget* pParent);
 	virtual ~Parser();
 
-	void setEditorStyle(PTR(ParserStyle) pStyle);
+	void setEditorStyle(ParserStyle* pStyle);
 
-	void replaceCurrent(CREF(QString) str, int changePosValue = -1) const;
+	void replaceCurrent(const QString& str, int changePosValue = -1) const;
 
 protected:
-	tstring kw0;
-	tstring kw1;
-	tstring kw2;
-	tstring kw3;
-	tstring getAllKW() const;
+	std::string kw0;
+	std::string kw1;
+	std::string kw2;
+	std::string kw3;
+	std::string getAllKW() const;
 
-	static tstring convertToLexer(CREF(tstring) kw);
+	static std::string convertToLexer(const std::string& kw);
 
 private:
 	typedef  Edit  super;

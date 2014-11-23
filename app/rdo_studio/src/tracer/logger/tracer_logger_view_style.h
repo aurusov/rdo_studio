@@ -72,8 +72,8 @@ public:
 	LogStyle();
 	~LogStyle();
 
-	virtual bool getItemColors( int index,          LogColorPair &colors ) const;
-	virtual bool getItemColors( CREF(tstring) item, LogColorPair &colors ) const;
+	virtual bool getItemColors(int index, LogColorPair &colors) const;
+	virtual bool getItemColors(const std::string& item, LogColorPair &colors) const;
 
 	LogStyle& operator =( const LogStyle& style );
 	bool operator ==( const LogStyle& style ) const;

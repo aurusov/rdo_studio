@@ -37,58 +37,50 @@
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-int cnv_dptlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_dptlex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void cnv_dpterror(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_dpterror(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
+{}
 
-int cnv_proc_rtp_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_proc_rtp_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void cnv_proc_rtp_error(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_proc_rtp_error(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
+{}
 
-int cnv_proc_rss_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_proc_rss_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void cnv_proc_rss_error(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_proc_rss_error(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
+{}
 
-int cnv_proc_opr_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
+int cnv_proc_opr_lex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
 	LEXER->m_lpval = lpval;
 	LEXER->m_lploc = llocp;
 	return LEXER->yylex();
 }
 
-void cnv_proc_opr_error(const char* message)
-{
-	UNUSED(message);
-}
+void cnv_proc_opr_error(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTActivity
 // --------------------------------------------------------------------------------
-RDODPTActivity::RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
+RDODPTActivity::RDODPTActivity(const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_currParam     (0       )
 {
@@ -103,7 +95,7 @@ RDODPTActivity::RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSr
 RDODPTActivity::~RDODPTActivity()
 {}
 
-void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
+void RDODPTActivity::addParam(const LPRDOValue& pParam)
 {
 	ASSERT(pParam);
 
@@ -111,7 +103,7 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 	{
 		if (pParam->src_pos().m_first_line == src_pos().m_first_line)
 		{
-			if (dynamic_cast<PTR(RDOOPROperation)>(this))
+			if (dynamic_cast<RDOOPROperation*>(this))
 			{
 				Converter::s_converter()->error().push_only(pParam->src_info(), rdo::format("Слишком много параметров для образца '%s' при описании операции '%s'", m_pPattern->name().c_str(), name().c_str()));
 			}
@@ -124,7 +116,7 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 		}
 		else
 		{
-			if (dynamic_cast<PTR(RDOOPROperation)>(this))
+			if (dynamic_cast<RDOOPROperation*>(this))
 			{
 				Converter::s_converter()->error().error(pParam->src_info(), "Имя операции должно заканчиваться двоеточием");
 			}
@@ -156,13 +148,13 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 	m_currParam++;
 }
 
-void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
+void RDODPTActivity::endParam(const YYLTYPE& param_pos)
 {
 	if (m_pPattern->m_paramList.size() > m_currParam)
 	{
 		LPRDOParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
 		Converter::s_converter()->error().push_only(param_pos, rdo::format("Указаны не все параметра образца '%s':", m_pPattern->src_text().c_str()));
-		for (ruint i = m_currParam; i < m_pPattern->m_paramList.size(); i++)
+		for (std::size_t i = m_currParam; i < m_pPattern->m_paramList.size(); i++)
 		{
 			pPatternParam = m_pPattern->m_paramList.at(i);
 			Converter::s_converter()->error().push_only(pPatternParam->src_info(), rdo::format("Ожидаемый параметр '%s' имеет тип '%s'", pPatternParam->name().c_str(), pPatternParam->getType()->src_text().c_str()));
@@ -171,9 +163,9 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 	}
 	if (m_pPattern->getType() == RDOPATPattern::PT_Keyboard)
 	{
-		if (!static_cast<PTR(RDODPTActivityHotKey)>(this)->hasHotKey())
+		if (!static_cast<RDODPTActivityHotKey*>(this)->hasHotKey())
 		{
-			if (dynamic_cast<PTR(RDOOPROperation)>(this))
+			if (dynamic_cast<RDOOPROperation*>(this))
 			{
 				Converter::s_converter()->error().push_only(param_pos, "Для клавиатурной операции должна быть указана клавиша");
 			}
@@ -194,14 +186,14 @@ void RDODPTActivity::planningInsertIntoSMR() const
 	if (pattern()->getType() != RDOPATPattern::PT_IE)
 		return;
 
-	const tstring planning_time = boost::str(boost::format("time_now + %s")
+	const std::string planning_time = boost::str(boost::format("time_now + %s")
 		% pattern()->time->calc()->srcInfo().src_text());
 
 	std::vector<std::string> planning_params;
 	planning_params.push_back(planning_time);
 	boost::range::insert(planning_params, planning_params.end(), m_paramValuesAsString);
 
-	const tstring planning = boost::str(boost::format("%s.planning(%s)\r\n")
+	const std::string planning = boost::str(boost::format("%s.planning(%s)\r\n")
 		% pattern()->name()
 		% boost::algorithm::join(planning_params, ", "));
 
@@ -212,16 +204,15 @@ void RDODPTActivity::planningInsertIntoSMR() const
 	Converter::s_converter()->insertDocUpdate(pPlanningInsertIntoSMR);
 }
 
-rbool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) pPrior)
+bool RDODPTActivity::setPrior(LPRDOFUNArithm& /*pPrior*/)
 {
-	UNUSED(pPrior);
 	return false;
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTActivityHotKey
 // --------------------------------------------------------------------------------
-RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
+RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info)
 	: RDODPTActivity(src_info, pattern_src_info)
 {
 	switch (pattern()->getType())
@@ -239,7 +230,7 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 	}
 }
 
-IKeyboard::AddHotKeyResult RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey)
+IKeyboard::AddHotKeyResult RDODPTActivityHotKey::addHotKey(const std::string& hotKey)
 {
 	rdo::runtime::RDOHotKey::KeyCode scanCode = Converter::s_converter()->runtime()->hotkey().toolkit().codeFromString(hotKey);
 	if (scanCode == rdo::runtime::RDOHotKey::UNDEFINED_KEY)
@@ -254,19 +245,17 @@ IKeyboard::AddHotKeyResult RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey)
 	return IKeyboard::addhk_ok;
 }
 
-rbool RDODPTActivityHotKey::hasHotKey() const
+bool RDODPTActivityHotKey::hasHotKey() const
 {
-	STL_FOR_ALL_CONST(m_scanCodeList, it)
+	for (const auto key: m_scanCodeList)
 	{
-		if (*it != VK_SHIFT && *it != VK_CONTROL)
-		{
+		if (key != VK_SHIFT && key != VK_CONTROL)
 			return true;
-		}
 	}
 	return false;
 }
 
-void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_pos)
+void RDODPTActivityHotKey::addHotKey(const std::string& hotKey, const YYLTYPE& hotkey_pos)
 {
 	if (pattern()->getType() != RDOPATPattern::PT_Keyboard)
 	{
@@ -281,7 +270,7 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 		break;
 
 	case rdo::runtime::RDOKeyboard::addhk_already:
-		if (dynamic_cast<PTR(RDOOPROperation)>(this))
+		if (dynamic_cast<RDOOPROperation*>(this))
 		{
 			Converter::s_converter()->error().error(hotkey_pos, rdo::format("Для операции '%s' клавиша уже назначена", src_text().c_str()));
 		}
@@ -309,7 +298,7 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTFreeActivity
 // --------------------------------------------------------------------------------
-RDODPTFreeActivity::RDODPTFreeActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
+RDODPTFreeActivity::RDODPTFreeActivity(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info)
 	: RDODPTActivityHotKey(pDPT, src_info, pattern_src_info)
 {
 	Converter::s_converter()->insertDPTFreeActivity(this);
@@ -318,11 +307,11 @@ RDODPTFreeActivity::RDODPTFreeActivity(LPIBaseOperationContainer pDPT, CREF(RDOP
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTFree
 // --------------------------------------------------------------------------------
-RDODPTFree::RDODPTFree(CREF(RDOParserSrcInfo) src_info)
+RDODPTFree::RDODPTFree(const RDOParserSrcInfo& src_info)
 	: RDOLogicActivity<rdo::runtime::RDODPTFree, RDODPTFreeActivity>(src_info)
 {
 	Converter::s_converter()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = RF(rdo::runtime::RDODPTFree)::create(Converter::s_converter()->runtime());
+	m_pRuntimeLogic = rdo::Factory<rdo::runtime::RDODPTFree>::create(Converter::s_converter()->runtime());
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(Converter::s_converter()->runtime());
 	Converter::s_converter()->insertDPTFree(this);
@@ -331,25 +320,25 @@ RDODPTFree::RDODPTFree(CREF(RDOParserSrcInfo) src_info)
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSomeActivity
 // --------------------------------------------------------------------------------
-RDODPTSomeActivity::RDODPTSomeActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
+RDODPTSomeActivity::RDODPTSomeActivity(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info)
 	: RDODPTActivityHotKey(pDPT, src_info, pattern_src_info)
 {}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTPriorActivity
 // --------------------------------------------------------------------------------
-RDODPTPriorActivity::RDODPTPriorActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
+RDODPTPriorActivity::RDODPTPriorActivity(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info)
 	: RDODPTActivityHotKey(pDPT, src_info, pattern_src_info)
 {}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSome
 // --------------------------------------------------------------------------------
-RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
+RDODPTSome::RDODPTSome(const RDOParserSrcInfo& src_info, LPILogic pParent)
 	: RDOLogicActivity<rdo::runtime::RDODPTSome, RDODPTSomeActivity>(src_info)
 {
 	Converter::s_converter()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = RF(rdo::runtime::RDODPTSome)::create(Converter::s_converter()->runtime(), pParent);
+	m_pRuntimeLogic = rdo::Factory<rdo::runtime::RDODPTSome>::create(Converter::s_converter()->runtime(), pParent.object_dynamic_cast<IBaseOperationContainer>()).object_dynamic_cast<ILogic>();
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(Converter::s_converter()->runtime());
 	Converter::s_converter()->insertDPTSome(this);
@@ -366,11 +355,11 @@ void RDODPTSome::end()
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTPrior
 // --------------------------------------------------------------------------------
-RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
+RDODPTPrior::RDODPTPrior(const RDOParserSrcInfo& src_info, LPILogic pParent)
 	: RDOLogicActivity<rdo::runtime::RDODPTPrior, RDODPTPriorActivity>(src_info)
 {
 	Converter::s_converter()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = RF(rdo::runtime::RDODPTPrior)::create(Converter::s_converter()->runtime(), pParent);
+	m_pRuntimeLogic = rdo::Factory<rdo::runtime::RDODPTPrior>::create(Converter::s_converter()->runtime(), pParent.object_dynamic_cast<IBaseOperationContainer>());
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(Converter::s_converter()->runtime());
 	Converter::s_converter()->insertDPTPrior(this);
@@ -387,7 +376,7 @@ void RDODPTPrior::end()
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearchActivity
 // --------------------------------------------------------------------------------
-RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
+RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info)
 	: RDODPTActivity(src_info, pattern_src_info   )
 	, m_value       (IDPTSearchActivity::vt_before)
 {
@@ -409,7 +398,7 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(
 	}
 }
 
-void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LPRDOFUNArithm) pRuleCost, CREF(YYLTYPE) param_pos)
+void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, const LPRDOFUNArithm& pRuleCost, const YYLTYPE& param_pos)
 {
 	endParam(param_pos);
 	m_value     = value;
@@ -419,7 +408,7 @@ void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LP
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearch
 // --------------------------------------------------------------------------------
-RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace, LPILogic pParent)
+RDODPTSearch::RDODPTSearch(const RDOParserSrcInfo& src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace, LPILogic pParent)
 	: RDOLogicActivity<rdo::runtime::RDODPTSearchRuntime, RDODPTSearchActivity>(src_info)
 	, m_pParent(pParent)
 	, m_closed (false  )
@@ -434,8 +423,8 @@ void RDODPTSearch::end()
 	rdo::runtime::LPRDOCalc pCalcCondition = m_pConditon     ? m_pConditon->getCalc()     : rdo::Factory<rdo::runtime::RDOCalcConst>::create(1).object_parent_cast<rdo::runtime::RDOCalc>();
 	rdo::runtime::LPRDOCalc pCalcTerminate = m_pTermConditon ? m_pTermConditon->getCalc() : rdo::Factory<rdo::runtime::RDOCalcConst>::create(1).object_parent_cast<rdo::runtime::RDOCalc>();
 
-	m_pRuntimeLogic = RF(rdo::runtime::RDODPTSearchRuntime)::create(Converter::s_converter()->runtime(),
-		m_pParent,
+	m_pRuntimeLogic = rdo::Factory<rdo::runtime::RDODPTSearchRuntime>::create(Converter::s_converter()->runtime(),
+		m_pParent.object_dynamic_cast<IBaseOperationContainer>(),
 		pCalcCondition,
 		pCalcTerminate,
 		m_pEvalBy->createCalc(),
@@ -449,7 +438,7 @@ void RDODPTSearch::end()
 	{
 		LPRDODPTSearchActivity pSearchActivity = getActivities().at(i);
 		ASSERT(pSearchActivity);
-		LPIDPTSearchLogic pSearchLogic = m_pRuntimeLogic;
+		LPIDPTSearchLogic pSearchLogic = m_pRuntimeLogic.object_dynamic_cast<IDPTSearchLogic>();
 		ASSERT(pSearchLogic);
 	}
 	m_closed = true;
@@ -458,23 +447,23 @@ void RDODPTSearch::end()
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCProcess
 // --------------------------------------------------------------------------------
-tstring RDOPROCProcess::s_name_prefix = "";
-tstring RDOPROCProcess::s_name_sufix  = "s";
+std::string RDOPROCProcess::s_name_prefix = "";
+std::string RDOPROCProcess::s_name_sufix  = "s";
 
-RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info)
+RDOPROCProcess::RDOPROCProcess(const RDOParserSrcInfo& info)
 	: RDOParserSrcInfo(info )
 	, m_closed        (false)
 {
 	Converter::s_converter()->insertPROCProcess(this);
-	m_pRuntime = RF(rdo::runtime::RDOPROCProcess)::create(info.src_text(), Converter::s_converter()->runtime());
+	m_pRuntime = rdo::Factory<rdo::runtime::RDOPROCProcess>::create(info.src_text(), Converter::s_converter()->runtime());
 	ASSERT(m_pRuntime);
-	m_pRuntime.query_cast<ILogic>()->init(Converter::s_converter()->runtime());
+	m_pRuntime.object_dynamic_cast<ILogic>()->init(Converter::s_converter()->runtime());
 }
 
-rbool RDOPROCProcess::setPrior(REF(LPRDOFUNArithm) pPrior)
+bool RDOPROCProcess::setPrior(LPRDOFUNArithm& pPrior)
 {
 	LPILogic pRuntimeLogic = getRunTime();
-	LPIPriority pPriority = pRuntimeLogic.query_cast<IPriority>();
+	LPIPriority pPriority = pRuntimeLogic.object_dynamic_cast<IPriority>();
 	if (pPriority)
 	{
 		return pPriority->setPrior(pPrior->createCalc());
@@ -491,13 +480,13 @@ void RDOPROCProcess::end()
 	}
 }
 
-void RDOPROCProcess::insertBlock(CREF(LPRDOPROCOperator) pBlock)
+void RDOPROCProcess::insertBlock(const LPRDOPROCOperator& pBlock)
 {
 	ASSERT(pBlock);
 	m_blockList.push_back(pBlock);
 }
 
-void RDOPROCProcess::insertChild(REF(LPRDOPROCProcess) pProcess)
+void RDOPROCProcess::insertChild(LPRDOPROCProcess& pProcess)
 {
 	ASSERT(pProcess);
 	m_childProcessList.push_back(pProcess);
@@ -507,7 +496,7 @@ void RDOPROCProcess::insertChild(REF(LPRDOPROCProcess) pProcess)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCOperator
 // --------------------------------------------------------------------------------
-RDOPROCOperator::RDOPROCOperator(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
+RDOPROCOperator::RDOPROCOperator(const LPRDOPROCProcess& pProcess, const std::string& name)
 	: m_name    (name    )
 	, m_pProcess(pProcess)
 {
@@ -521,23 +510,21 @@ RDOPROCOperator::~RDOPROCOperator()
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCGenerate
 // --------------------------------------------------------------------------------
-RDOPROCGenerate::RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pTimeCalc)
+RDOPROCGenerate::RDOPROCGenerate(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& /*pTimeCalc*/)
 	: RDOPROCOperator(pProcess, name)
-{
-	UNUSED(pTimeCalc);
-}
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCBlockForQueue
 // --------------------------------------------------------------------------------
-RDOPROCBlockForQueue::RDOPROCBlockForQueue(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
+RDOPROCBlockForQueue::RDOPROCBlockForQueue(const LPRDOPROCProcess& pProcess, const std::string& name)
 	: RDOPROCOperator(pProcess, name)
 {}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCQueue
 // --------------------------------------------------------------------------------
-RDOPROCQueue::RDOPROCQueue(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
+RDOPROCQueue::RDOPROCQueue(const LPRDOPROCProcess& pProcess, const std::string& name)
 	: RDOPROCBlockForQueue(pProcess, name)
 {}
 
@@ -546,7 +533,7 @@ void RDOPROCQueue::createRuntime()
    NEVER_REACH_HERE;
 }
 
-void RDOPROCQueue::setResource(CREF(tstring) name)
+void RDOPROCQueue::setResource(const std::string& name)
 {
 	ASSERT(!name.empty()         );
 	ASSERT(m_resourceName.empty());
@@ -557,7 +544,7 @@ void RDOPROCQueue::setResource(CREF(tstring) name)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCDepart
 // --------------------------------------------------------------------------------
-RDOPROCDepart::RDOPROCDepart(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
+RDOPROCDepart::RDOPROCDepart(const LPRDOPROCProcess& pProcess, const std::string& name)
 	: RDOPROCBlockForQueue(pProcess, name)
 {}
 
@@ -566,7 +553,7 @@ void RDOPROCDepart::createRuntime()
    NEVER_REACH_HERE;
 }
 
-void RDOPROCDepart::setResource(CREF(tstring) name)
+void RDOPROCDepart::setResource(const std::string& name)
 {
 	ASSERT(!name.empty()         );
 	ASSERT(m_resourceName.empty());
@@ -577,14 +564,14 @@ void RDOPROCDepart::setResource(CREF(tstring) name)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCBlockForSeize
 // --------------------------------------------------------------------------------
-RDOPROCBlockForSeize::RDOPROCBlockForSeize(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
+RDOPROCBlockForSeize::RDOPROCBlockForSeize(const LPRDOPROCProcess& pProcess, const std::string& name)
 	: RDOPROCOperator(pProcess, name)
 {}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCSeize
 // --------------------------------------------------------------------------------
-RDOPROCSeize::RDOPROCSeize(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
+RDOPROCSeize::RDOPROCSeize(const LPRDOPROCProcess& pProcess, const std::string& name)
 	: RDOPROCBlockForSeize(pProcess, name)
 {}
 
@@ -593,7 +580,7 @@ void RDOPROCSeize::createRuntime()
    NEVER_REACH_HERE;
 }
 
-void RDOPROCSeize::addResource(CREF(tstring) name)
+void RDOPROCSeize::addResource(const std::string& name)
 {
 	ASSERT(!name.empty());
 	m_resourceList.push_back(name);
@@ -602,7 +589,7 @@ void RDOPROCSeize::addResource(CREF(tstring) name)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCRelease
 // --------------------------------------------------------------------------------
-RDOPROCRelease::RDOPROCRelease(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
+RDOPROCRelease::RDOPROCRelease(const LPRDOPROCProcess& pProcess, const std::string& name)
 	: RDOPROCBlockForSeize(pProcess, name)
 {}
 
@@ -611,7 +598,7 @@ void RDOPROCRelease::createRuntime()
    NEVER_REACH_HERE;
 }
 
-void RDOPROCRelease::addResource(CREF(tstring) name)
+void RDOPROCRelease::addResource(const std::string& name)
 {
 	ASSERT(!name.empty());
 	m_resourceList.push_back(name);
@@ -620,30 +607,30 @@ void RDOPROCRelease::addResource(CREF(tstring) name)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAdvance
 // --------------------------------------------------------------------------------
-RDOPROCAdvance::RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pTimeCalc)
+RDOPROCAdvance::RDOPROCAdvance(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pTimeCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdo::runtime::RDOPROCAdvance)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pTimeCalc);
+	m_pRuntime = rdo::Factory<rdo::runtime::RDOPROCAdvance>::create(Converter::s_converter()->getLastPROCProcess()->getRunTime().object_dynamic_cast<IPROCProcess>(), pTimeCalc).object_dynamic_cast<IPROCBlock>();
 	ASSERT(m_pRuntime);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCTerminate
 // --------------------------------------------------------------------------------
-RDOPROCTerminate::RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pCalc)
+RDOPROCTerminate::RDOPROCTerminate(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdo::runtime::RDOPROCTerminate)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pCalc);
+	m_pRuntime = rdo::Factory<rdo::runtime::RDOPROCTerminate>::create(Converter::s_converter()->getLastPROCProcess()->getRunTime().object_dynamic_cast<IPROCProcess>(), pCalc).object_dynamic_cast<IPROCBlock>();
 	ASSERT(m_pRuntime);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAssign
 // --------------------------------------------------------------------------------
-RDOPROCAssign::RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pValue)
+RDOPROCAssign::RDOPROCAssign(const LPRDOPROCProcess& pProcess, const std::string& name, const rdo::runtime::LPRDOCalc& pValue)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdo::runtime::RDOPROCAssign)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pValue);
+	m_pRuntime = rdo::Factory<rdo::runtime::RDOPROCAssign>::create(Converter::s_converter()->getLastPROCProcess()->getRunTime().object_dynamic_cast<IPROCProcess>(), pValue).object_dynamic_cast<IPROCBlock>();
 	ASSERT(m_pRuntime);
 }
 

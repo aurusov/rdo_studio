@@ -3,7 +3,7 @@
   \file      rdo_type_param.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      12.02.2010
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -24,19 +24,21 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeParam
 // --------------------------------------------------------------------------------
-OBJECT(RDOTypeParam)
-	IS INSTANCE_OF       (RDOParserSrcInfo)
-	AND IMPLEMENTATION_OF(IModelStructure )
+PREDECLARE_POINTER(RDOTypeParam);
+class RDOTypeParam
+	: public virtual rdo::counter_reference
+	, public RDOParserSrcInfo
+	, public IModelStructure
 {
 DECLARE_FACTORY(RDOTypeParam);
 public:
-	LPRDOType   type      ()                        const;
-	LPRDOValue  value_cast(CREF(LPRDOValue) pValue) const;
+	LPRDOType   type      ()                         const;
+	LPRDOValue  value_cast(const LPRDOValue& pValue) const;
 
 	DECLARE_IModelStructure;
 
 protected:
-	RDOTypeParam(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info);
+	RDOTypeParam(const LPRDOType& pType, const RDOParserSrcInfo& src_info);
 	virtual ~RDOTypeParam();
 
 private:

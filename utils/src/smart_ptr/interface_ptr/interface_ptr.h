@@ -26,27 +26,26 @@ public:
 	typedef interface_ptr<T> this_type;
 
 	interface_ptr ();
-	interface_ptr (PTR (T) pInterface, LPIRefCounter pCounter);
-	interface_ptr (CREF(this_type) sptr);
+	interface_ptr (T* pInterface, LPIRefCounter pCounter);
+	interface_ptr (const this_type& sptr);
 	~interface_ptr();
 
-	REF(this_type) operator= (CREF(this_type) sptr);
+	this_type& operator= (const this_type& sptr);
 
-	operator rbool      () const;
-	CPTR(T)  operator-> () const;
-	 PTR(T)  operator-> ();
+	operator bool() const;
+	const T* operator->() const;
+	T* operator->();
 
 private:
-	PTR(T)        m_pInterface;
+	T* m_pInterface;
 	LPIRefCounter m_pCounter;
 };
 
 #define DECLARE_OBJECT_INTERFACE(TYPE)    typedef rdo::interface_ptr<TYPE> LP##TYPE;
-#define PREDECLARE_OBJECT_INTERFACE(TYPE) struct NO_V_TABLE TYPE; DECLARE_OBJECT_INTERFACE(TYPE);
-#define OBJECT_INTERFACE(TYPE)            PREDECLARE_OBJECT_INTERFACE(TYPE) struct TYPE: public rdo::RefCounter<TYPE>
+#define PREDECLARE_OBJECT_INTERFACE(TYPE) struct TYPE; DECLARE_OBJECT_INTERFACE(TYPE);
 
 } // namespace rdo
 
-#include "utils/src/smart_ptr/interface_ptr/interface_ptr.inl"
+#include "utils/src/smart_ptr/interface_ptr/interface_ptr-inl.h"
 
 #endif // _UTILS_SMART_PTR_INTERFACE_PTR_H_

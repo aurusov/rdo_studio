@@ -20,7 +20,6 @@
 #include <QTreeWidget>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/interface/rdointerface.h"
 #include "app/rdo_studio/src/frame/frame_view.h"
 // --------------------------------------------------------------------------------
 
@@ -33,50 +32,48 @@ struct Frame;
 
 namespace rdo { namespace gui { namespace frame {
 
-class Manager
-	: public QObject
-	, public IInit
+class Manager: public QObject
 {
 Q_OBJECT
 
 public:
-	typedef  boost::function<void (ruint)>  OnChangeFrame;
+	typedef boost::function<void (std::size_t)> OnChangeFrame;
 
-	Manager(CREF(OnChangeFrame) onChangeFrame);
+	Manager(const OnChangeFrame& onChangeFrame);
 	virtual ~Manager();
 
-	void insertFrame (CREF(QString) frameName );
-	void insertBitmap(CREF(QString) bitmapName);
+	void insertFrame (const QString& frameName );
+	void insertBitmap(const QString& bitmapName);
 
-	ruint findFrameIndex(CPTR(QTreeWidgetItem) pTreeWidgetItem) const;
-	ruint findFrameIndex(CPTR(View)            pView          ) const;
-	ruint findFrameIndex(CPTR(Content)         pContent       ) const;
+	std::size_t findFrameIndex(const QTreeWidgetItem* pTreeWidgetItem) const;
+	std::size_t findFrameIndex(const View* pView) const;
+	std::size_t findFrameIndex(const Content* pContent) const;
 
-	bool           isShowing         () const;
-	CREF(QString)  getFrameName      (ruint index) const;
-	PTR(View)      getFrameView      (ruint index) const;
-	PTR(View)      getFrameViewFirst () const;
-	ruint          count             () const;
-	bool           isChanged         ();
+	bool isShowing() const;
+	const QString& getFrameName(std::size_t index) const;
+	View* getFrameView(std::size_t index) const;
+	View* getFrameViewFirst() const;
+	std::size_t count() const;
+	bool isChanged();
 
-	void           areaDown          (ruint frameIndex, CREF(QPoint) point) const;
+	void areaDown(std::size_t frameIndex, const QPoint& point) const;
 
-	PTR(View)  createView    (ruint index);
-	void       disconnectView(CPTR(View) pView);
-	void       closeAll      ();
-	void       clear         ();
+	View* createView(std::size_t index);
+	void disconnectView(const View* pView);
+	void closeAll();
+	void clear();
 
-	ruint getLastShowedFrame      () const;
-	void  setLastShowedFrame      (ruint index);
-	void  setCurrentShowingFrame  (ruint index);
-	void  resetCurrentShowingFrame(ruint index);
-	void  showFrame               (CPTRC(rdo::animation::Frame) pFrame, ruint index);
-	void  showNextFrame           ();
-	void  showPrevFrame           ();
-	void  showFrame               (ruint index);
-	bool  canShowNextFrame        () const;
-	bool  canShowPrevFrame        () const;
-	void  updateStyles            () const;
+	std::size_t getLastShowedFrame() const;
+	void setLastShowedFrame(std::size_t index);
+	void setCurrentShowingFrame(std::size_t index);
+	void resetCurrentShowingFrame(std::size_t index);
+	void showFrame(const rdo::animation::Frame* const pFrame, std::size_t index);
+	void showNextFrame();
+	void showPrevFrame();
+	void showFrame(std::size_t index);
+	bool canShowNextFrame() const;
+	bool canShowPrevFrame() const;
+	void updateStyles() const;
 
 private:
 	struct Frame
@@ -84,26 +81,24 @@ private:
 		 Frame();
 		~Frame();
 
-		PTR(QTreeWidgetItem)           m_pTreeWidgetItem;
-		QString                        m_name;
-		PTR(View)                      m_pView;
-		PTR(Content)                   m_pContent;
-		rdo::gui::animation::AreaList  m_areaList;
+		QTreeWidgetItem* m_pTreeWidgetItem;
+		QString m_name;
+		View* m_pView;
+		Content* m_pContent;
+		rdo::gui::animation::AreaList m_areaList;
 
 	private:
 		void clear();
 	};
 
-	typedef  std::vector<PTR(Frame)>  FrameList;
+	typedef std::vector<Frame*> FrameList;
 
-	FrameList             m_frameList;
-	rdo::gui::BitmapList  m_bitmapList;
-	ruint                 m_lastShowedFrame;
-	ruint                 m_currentShowingFrame;
-	bool                  m_changed;
-	OnChangeFrame         m_onChangeFrame;
-
-	DECLARE_IInit;
+	FrameList m_frameList;
+	rdo::gui::BitmapList m_bitmapList;
+	std::size_t m_lastShowedFrame;
+	std::size_t m_currentShowingFrame;
+	bool m_changed;
+	OnChangeFrame m_onChangeFrame;
 
 private slots:
 	void onSubWindowActivated         (QMdiSubWindow* pWindow);

@@ -16,7 +16,7 @@
 
 using namespace rdo::gui;
 
-QPixmap Bitmap::transparent(CREF(QPixmap) bitmap, CREF(QPixmap) mask)
+QPixmap Bitmap::transparent(const QPixmap& bitmap, const QPixmap& mask)
 {
 	QPixmap result;
 
@@ -29,7 +29,7 @@ QPixmap Bitmap::transparent(CREF(QPixmap) bitmap, CREF(QPixmap) mask)
 	return result;
 }
 
-QImage Bitmap::transparent(CREF(QImage) bitmap, CREF(QImage) mask)
+QImage Bitmap::transparent(const QImage& bitmap, const QImage& mask)
 {
 	QImage result(bitmap);
 

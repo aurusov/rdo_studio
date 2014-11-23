@@ -25,7 +25,8 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- IContextFunctionBodyManager
 // --------------------------------------------------------------------------------
-OBJECT_INTERFACE(IContextFunctionBodyManager)
+PREDECLARE_OBJECT_INTERFACE(IContextFunctionBodyManager)
+struct IContextFunctionBodyManager: public rdo::RefCounter<IContextFunctionBodyManager>
 {
 DECLARE_FACTORY(IContextFunctionBodyManager)
 public:
@@ -50,7 +51,7 @@ class ContextFunctionBody: public ContextReturnable
 {
 DECLARE_FACTORY(ContextFunctionBody)
 public:
-	void setBody(CREF(rdo::runtime::LPRDOCalc) pBody);
+	void setBody(const rdo::runtime::LPRDOCalc& pBody);
 
 	void pushContext();
 	void popContext ();

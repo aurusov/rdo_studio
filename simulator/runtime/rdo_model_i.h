@@ -12,14 +12,14 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/interface/rdointerface.h"
+#include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 /*!
   \interface IModelStructure
   \brief     Интерфейс структуры модели, используется для записи стукруры в файл трассировки
 */
-class IModelStructure
+class IModelStructure: public virtual rdo::counter_reference
 {
 public:
 	/*!
@@ -28,6 +28,7 @@ public:
 	*/
 	virtual void writeModelStructure(std::ostream& stream) const = 0;
 };
+DECLARE_POINTER(IModelStructure)
 
 #define DECLARE_IModelStructure \
 	virtual void writeModelStructure(std::ostream& stream) const;
@@ -36,17 +37,18 @@ public:
   \interface IName
   \brief     Интерфейс имени объекта
 */
-class IName
+class IName: public virtual rdo::counter_reference
 {
 public:
 	/*!
 	  \brief  Получить имя объекта
 	  \return имя объекта
 	*/
-	virtual CREF(tstring) name() const = 0;
+	virtual const std::string& name() const = 0;
 };
+DECLARE_POINTER(IName)
 
 #define DECLARE_IName \
-	virtual CREF(tstring) name() const;
+	virtual const std::string& name() const;
 
 #endif // _LIB_RUNTIME_MODEL_I_H_

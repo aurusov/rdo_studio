@@ -17,6 +17,7 @@
 #include <QTextCodec>
 #include <QSettings>
 #include <QMessageBox>
+#include <QRegExp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/file/rdofile.h"
@@ -31,6 +32,43 @@
 #include "app/rdo_studio/src/dialog/file_association_dialog.h"
 #include "app/rdo_studio/src/tracer/tracer.h"
 // --------------------------------------------------------------------------------
+
+
+namespace
+{
+	typedef std::map<int, std::string> PluginOptionType;
+
+	int validateKeyByPrefix(const std::string& key, const std::string& prefix)
+	{
+		QRegExp re(QString::fromStdString(prefix) + "(\\d+)");
+
+		if (re.indexIn(QString::fromStdString(key), 0) != -1)
+		{
+			return re.cap(1).toInt();
+		}
+		else
+		{
+			return -1;
+		}
+	}
+
+	PluginOptionType getPluginsOptions(const boost::program_options::variables_map& vm,
+	                                   const std::string& prefix)
+	{
+		PluginOptionType pluginOptions;
+		namespace po = boost::program_options;
+		for (const po::variables_map::value_type& pair: vm)
+		{
+			const std::string& key = pair.first;
+			int postfix = validateKeyByPrefix(key, prefix);
+			if (postfix != -1)
+			{
+				pluginOptions.insert(std::make_pair(postfix, pair.second.as<std::string>()));
+			}
+		}
+		return pluginOptions;
+	}
+} // end anonymous namespace
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioApp
@@ -154,7 +192,6 @@ Application::Application(int& argc, char** argv)
 	m_pMainFrame->show();
 
 	m_pluginLoader.init(m_pMainFrame);
-	m_pluginLoader.startAutoloadedPlugins();
 
 #ifdef RDO_MT
 	kernel->thread_studio = m_pStudioGUI;
@@ -182,7 +219,7 @@ Application::~Application()
 	if (m_pStudioGUI)
 	{
 		m_pStudioGUI->sendMessage(m_pStudioGUI, RDOThread::RT_THREAD_CLOSE);
-		delete static_cast<PTR(ThreadStudioGUI)>(m_pStudioGUI);
+		delete static_cast<ThreadStudioGUI*>(m_pStudioGUI);
 		m_pStudioGUI = NULL;
 	}
 #endif
@@ -211,11 +248,13 @@ void Application::onInit(int argc, char** argv)
 	po::options_description desc("RAO-studio");
 	desc.add_options()
 		("help,h", "display help message")
-		("input,i", po::value<tstring>(), "model file name")
+		("input,i", po::value<std::string>(), "model file name")
 		("gui_silent_mode,s", "turn on GUI silent mode from console running")
 		("autorun", "auto run model")
 		("autoexit", "auto exit after simulation stoped")
 		("dont_close_if_error", "don't close application if model error detected")
+		("plugin_list", "display all plugins")
+		("plugin*", po::value<std::string>(), "start # plugin from list with [arg] as options, e.g. --plugin1=\"--help\"")
 	;
 
 	po::variables_map vm;
@@ -239,10 +278,10 @@ void Application::onInit(int argc, char** argv)
 		quit();
 	}
 
-	tstring openModelName;
+	std::string openModelName;
 	if (vm.count("input"))
 	{
-		openModelName = vm["input"].as<tstring>();
+		openModelName = vm["input"].as<std::string>();
 		openModelName = rdo::locale::convertFromCLocale(openModelName);
 	}
 
@@ -286,7 +325,6 @@ void Application::onInit(int argc, char** argv)
 	if (!autoModel)
 	{
 		autoRun            = false;
-		m_autoExitByModel  = false;
 		m_dontCloseIfError = false;
 	}
 
@@ -294,6 +332,22 @@ void Application::onInit(int argc, char** argv)
 	{
 		g_pModel->runModel();
 	}
+
+	if (vm.count("plugin_list"))
+	{
+		std::stringstream stream;
+		int index = 0;
+		for (const LPPluginInfo& pluginInfo: *(m_pluginLoader.getPluginInfoList()))
+		{
+			stream << index++ << " " << pluginInfo->getName().toStdString()
+			       << " ver. " << pluginInfo->getVersion().toStdString()
+			       << (pluginInfo->isAvailable() ? " available" : " not available");
+		}
+		rdo::locale::cout(stream.str());
+		quit();
+	}
+
+	m_pluginLoader.autoStartPlugins(getPluginsOptions(vm, "plugin"));
 }
 
 RDOKernel* Application::getKernel() const
@@ -311,41 +365,42 @@ rdo::gui::tracer::Tracer* Application::getTracer() const
 	return g_pTracer;
 }
 
-PTR(QMainWindow) Application::getMainWnd()
+QMainWindow* Application::getMainWnd()
 {
 	return m_pMainFrame;
 }
 
-PTR(MainWindowBase) Application::getStyle()
+MainWindowBase* Application::getStyle()
 {
 	return m_pMainFrame;
 }
 
-PTR(MainWindowBase) Application::getIMainWnd()
+MainWindowBase* Application::getIMainWnd()
 {
 	return m_pMainFrame;
 }
 
-REF(std::ofstream) Application::log()
+std::ofstream& Application::log()
 {
 	return m_log;
 }
 
-QString Application::getFullHelpFileName(CREF(QString) helpFileName) const
+QString Application::getFullHelpFileName(const QString& helpFileName) const
 {
 	QString result = chkHelpExist(helpFileName);
-	if (result.size() < 3)
+	if (!result.isEmpty())
 	{
-		result = QString();
-	}
-	if (chkHelpExist("assistant.exe").size() < 3)
-	{
-		result = QString();
+#ifdef OST_WINDOWS		
+		if (chkHelpExist("assistant.exe").isEmpty())
+		{
+			result = QString();
+		}
+#endif
 	}
 	return result;
 }
 
-QString Application::chkHelpExist(CREF(QString) helpFileName) const
+QString Application::chkHelpExist(const QString& helpFileName) const
 {
 	QString fullHelpFileName = QString("%1%2")
 		.arg(QString::fromStdWString(rdo::File::extractFilePath(qApp->applicationFilePath().toStdWString()).wstring()))
@@ -372,9 +427,9 @@ void Application::chkAndRunQtAssistant()
 		m_pAssistant = runQtAssistant();
 }
 
-PTR(QProcess) Application::runQtAssistant() const
+QProcess* Application::runQtAssistant() const
 {
-	PTR(QProcess) pProcess = new QProcess;
+	QProcess* pProcess = new QProcess;
 	QStringList args;
 	args << QString("-collectionFile")
 		<< getFullHelpFileName()
@@ -384,7 +439,7 @@ PTR(QProcess) Application::runQtAssistant() const
 	return pProcess;
 }
 
-void Application::callQtAssistant(CREF(QByteArray) ba)
+void Application::callQtAssistant(const QByteArray& ba)
 {
 	chkAndRunQtAssistant();
 	if (m_pAssistant->state() != m_pAssistant->Running)
@@ -439,12 +494,12 @@ void Application::setOpenLastProject(bool value)
 	}
 }
 
-CREF(QString) Application::getLastProjectName() const
+const QString& Application::getLastProjectName() const
 {
 	return m_lastProjectName;
 }
 
-void Application::setLastProjectName(CREF(QString) projectName)
+void Application::setLastProjectName(const QString& projectName)
 {
 	m_pMainFrame->insertMenuFileReopenItem(projectName);
 	if (m_lastProjectName != projectName)
@@ -492,7 +547,7 @@ void Application::setupFileAssociation()
 		if (pos != -1)
 		{
 			openCommand.remove(pos, appParam.length());
-			if (openCommand != appFullName)
+			if (openCommand != appFullName && qApp->platformName() != QString("minimal"))
 			{
 				FileAssociationDialog dlg(g_pApp->getMainWndUI());
 				mustBeRegistered = dlg.exec() == QDialog::Accepted;
@@ -536,12 +591,13 @@ void Application::autoCloseByModel()
 	}
 }
 
-void Application::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void) pParam)
+void Application::broadcastMessage(RDOThread::RDOTreadMessage message, void* pParam)
 {
 #ifdef RDO_MT
-	PTR(CEvent) pEvent = m_pStudioMT->manualMessageFrom(message, pParam);
-	while (::WaitForSingleObject(pEvent->m_hObject, 0) == WAIT_TIMEOUT) {
-		static_cast<PTR(ThreadStudioGUI)>(m_pStudioGUI)->processMessages();
+	CEvent* pEvent = m_pStudioMT->manualMessageFrom(message, pParam);
+	while (::WaitForSingleObject(pEvent->m_hObject, 0) == WAIT_TIMEOUT)
+	{
+		static_cast<ThreadStudioGUI*>(m_pStudioGUI)->processMessages();
 		if (m_pMainFrame) {
 			m_pMainFrame->UpdateWindow();
 		} else {
@@ -557,13 +613,13 @@ void Application::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void)
 void Application::onIdle()
 {
 #ifdef RDO_MT
-	static_cast<PTR(ThreadStudioGUI)>(m_pStudioGUI)->processMessages();
+	static_cast<ThreadStudioGUI*>(m_pStudioGUI)->processMessages();
 #else
 	kernel->idle();
 #endif
 }
 
-CREF(rdo::gui::editor::LPModelStyle) Application::getModelStyle() const
+const rdo::gui::editor::LPModelStyle& Application::getModelStyle() const
 {
 	ASSERT(m_pModelStyle);
 	return m_pModelStyle;
@@ -705,7 +761,7 @@ void Application::convertSettings() const
 
 	if (convertor.contains("reopen"))
 	{
-		for (ruint i = 0; i < 10; i++)
+		for (std::size_t i = 0; i < 10; i++)
 		{
 			QString value = convertor.value<QString>(QString("reopen/%1%2").arg(i+1 < 10 ? "0" : "").arg(i+1));
 			if (value.isEmpty())

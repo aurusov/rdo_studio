@@ -29,7 +29,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 */
 struct runtime_for_Queue
 {
-	LPRDOResource rss; 
+	LPRDOResource rss;
 	int           Id_param;
 	RDOValue      defaultValue;
 };
@@ -55,24 +55,19 @@ protected:
 
 	parser_for_Queue  fromParser;
 	runtime_for_Queue forRes;
-	void _onStart(CREF(LPRDORuntime) pRuntime);
+	void _onStart(const LPRDORuntime& pRuntime);
 };
 
 /*!
   \class   RDOPROCQueue
   \brief   Процессный блок QUEUE
 */
-class RDOPROCQueue: public RDOPROCBlockForQueue, public IBaseOperation
+class RDOPROCQueue: public RDOPROCBlockForQueue
 {
-DEFINE_IFACTORY(RDOPROCQueue);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPROCBlockForQueue)
-	QUERY_INTERFACE       (IBaseOperation      )
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPROCQueue);
 public:
-	static ruint   getDefaultValue  ();
-	static tstring getQueueParamName();
+	static std::size_t getDefaultValue();
+	static std::string getQueueParamName();
 
 private:
 	RDOPROCQueue(LPIPROCProcess process, parser_for_Queue From_Par);
@@ -84,17 +79,12 @@ private:
   \class   RDOPROCDepart
   \brief   Процессный блок DEPART
 */
-class RDOPROCDepart: public RDOPROCBlockForQueue, public IBaseOperation
+class RDOPROCDepart: public RDOPROCBlockForQueue
 {
-DEFINE_IFACTORY(RDOPROCDepart);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPROCBlockForQueue)
-	QUERY_INTERFACE       (IBaseOperation      )
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPROCDepart);
 public:
-	static ruint   getDefaultValue   ();
-	static tstring getDepartParamName();
+	static std::size_t getDefaultValue();
+	static std::string getDepartParamName();
 
 private:
 	RDOPROCDepart(LPIPROCProcess process, parser_for_Queue From_Par);
@@ -103,7 +93,5 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/process/queue_depart.inl"
 
 #endif // _LIB_RUNTIME_PROCESS_QUEUE_DEPART_H_

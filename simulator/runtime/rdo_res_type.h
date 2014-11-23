@@ -35,26 +35,27 @@ private:
 	friend class rdo::Factory<RDOResourceTypeList>;
 
 public:
-	typedef  boost::function<LPRDOResource (const LPRDORuntime&, const std::vector<RDOValue>&, const LPIResourceType&, ruint, ruint, rbool, rbool)>  Create;
+	typedef  boost::function<LPRDOResource (const LPRDORuntime&, const std::vector<RDOValue>&, const LPIResourceType&, std::size_t, std::size_t, bool, bool, bool)>  Create;
 	void setFactoryMethod(const Create& create);
 
 	virtual ResCIterator res_begin() const;
 	virtual ResCIterator res_end  () const;
 
-	virtual void          eraseRes(CREF(LPRDOResource) pResource);
-	LPRDOResourceTypeList clone   (CREF(LPRDORuntime) pRuntime) const;
+	virtual void          eraseRes(const LPRDOResource& pResource);
+	LPRDOResourceTypeList clone   (const LPRDORuntime& pRuntime) const;
 
-private:
-	RDOResourceTypeList(ruint number, CREF(LPRDORuntime) pRuntime);
+protected:
+	RDOResourceTypeList(std::size_t number, const LPRDORuntime& pRuntime);
 	virtual ~RDOResourceTypeList();
 
-	void insertNewResource(CREF(LPRDORuntime) pRuntime, CREF(LPRDOResource) pResource);
+private:
+	void insertNewResource(const LPRDORuntime& pRuntime, const LPRDOResource& pResource);
 
 	typedef  std::list<LPRDOResource> ResourceList;
 	ResourceList m_resourceList;
 	Create       m_create;
 
-	virtual LPRDOResource createRes(CREF(LPRDORuntime) pRuntime, ruint resID, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag);
+	virtual LPRDOResource createRes(const LPRDORuntime& pRuntime, std::size_t resID, const std::vector<RDOValue>& paramsCalcs, bool traceFlag, bool permanentFlag, bool isNested = 0);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

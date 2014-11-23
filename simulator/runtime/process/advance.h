@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2012
-  \file      advance.inl
+  \file      advance-inl.h
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      12.02.2012
@@ -28,15 +28,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \class   RDOPROCAdvance
   \brief   Процессный блок ADVANCE
 */
-class RDOPROCAdvance: public RDOPROCBlock, public IBaseOperation, public IInternalStatisticsManager
+class RDOPROCAdvance: public RDOPROCBlock, public IInternalStatisticsManager
 {
-DEFINE_IFACTORY(RDOPROCAdvance);
-QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPROCBlock  )
-	QUERY_INTERFACE       (IBaseOperation)
-	QUERY_INTERFACE       (IInternalStatisticsManager)
-QUERY_INTERFACE_END
-
+DECLARE_FACTORY(RDOPROCAdvance);
 protected:
 	LPRDOCalc pDelayCalc;
 
@@ -49,23 +43,21 @@ protected:
 	{
 		LPRDOPROCTransact transact;
 		double            timeLeave;
-		LeaveTr(CREF(LPRDOPROCTransact) _transact, double _timeLeave);
+		LeaveTr(const LPRDOPROCTransact& _transact, double _timeLeave);
 	};
 	std::list<LeaveTr> leave_list;
 
 private:
-	RDOPROCAdvance(LPIPROCProcess process, CREF(LPRDOCalc) _pDelayCalc);
+	RDOPROCAdvance(LPIPROCProcess process, const LPRDOCalc& _pDelayCalc);
 
 	LPIInternalStatistics m_pStatistics;
 
-	void onMakePlaned(CREF(LPRDORuntime) pRuntime);
+	void onMakePlaned(const LPRDORuntime& pRuntime);
 
 	DECLARE_IBaseOperation;
 	DECLARE_IInternalStatisticsManager;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/process/advance.inl"
 
 #endif // _LIB_RUNTIME_PROCESS_ADVANCE_H_

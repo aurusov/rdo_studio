@@ -33,7 +33,7 @@
 #undef LEXER_POS
 #endif
 
-#define LEXER     reinterpret_cast<PTR(rdo::converter::smr2rdox::RDOLexer)>(this)
+#define LEXER     reinterpret_cast<rdo::converter::smr2rdox::RDOLexer*>(this)
 #define LEXER_POS (*LEXER->m_lploc)
 #define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()
@@ -311,9 +311,9 @@ $term				return(RDO_Fuzzy_Term);
 set					return(RDO_set);
 
 (\'[^\']*\') {
-	tstring n1(YYText());
-	int len = n1.length();
-	tstring name(n1, 1, len-2);
+	const std::string n1(YYText());
+	const int len = n1.length();
+	const std::string name(n1, 1, len-2);
 	LEXER->setvalue(CONVERTER->stack().push(
 		rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
 			name,
@@ -363,9 +363,9 @@ set					return(RDO_set);
 [#`~@$%^&|:;(),=\[\]\.\*\>\<\+\-\/\\]	return(YYText()[YYLeng()-1]);
 
 ([+-]?[0-9]+"..") {
-	tstring n1(YYText());
-	tstring::size_type pos = n1.find_first_of("..");
-	tstring yText(n1, 0, pos);
+	const std::string n1(YYText());
+	const std::string::size_type pos = n1.find_first_of("..");
+	const std::string yText(n1, 0, pos);
 	unput('.');
 	unput('.');
 	LEXER->loc_delta_pos(-2);
@@ -399,7 +399,7 @@ set					return(RDO_set);
 
 ([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
 
-	tstring yText = YYText();
+	const std::string yText = YYText();
 
 	rdo::converter::smr2rdox::RDOParserSrcInfo srcInfo(
 		LEXER->m_lploc
@@ -430,7 +430,7 @@ set					return(RDO_set);
 
 [+-]?[0-9]+ {
 
-	tstring yText = YYText();
+	const std::string yText = YYText();
 
 	rdo::converter::smr2rdox::RDOParserSrcInfo srcInfo(
 		LEXER->m_lploc
@@ -490,10 +490,10 @@ false {
 }
 
 [A-Za-z\xA8\xB8\xC0-\xFF_$][A-Za-z\xA8\xB8\xC0-\xFF0-9_$]*[\r\n\t ]+NoChange[\r\n\t ]+NoChange {
-	tstring n1(YYText());
-	tstring::size_type pos = n1.find_first_of("\r\n\t :");
-	tstring name(n1, 0, pos);
-	RUNTIME->memory_insert(name.length() + sizeof(tstring));
+	const std::string n1(YYText());
+	const std::string::size_type pos = n1.find_first_of("\r\n\t :");
+	const std::string name(n1, 0, pos);
+	RUNTIME->memory_insert(name.length() + sizeof(std::string));
 	rdo::converter::smr2rdox::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
@@ -514,10 +514,10 @@ false {
 }
 
 [A-Za-z\xA8\xB8\xC0-\xFF_$][A-Za-z\xA8\xB8\xC0-\xFF0-9_$]*[\r\n\t ]+NoChange {
-	tstring n1(YYText());
-	tstring::size_type pos = n1.find_first_of("\r\n\t :");
-	tstring name(n1, 0, pos);
-	RUNTIME->memory_insert(name.length() + sizeof(tstring));
+	const std::string n1(YYText());
+	const std::string::size_type pos = n1.find_first_of("\r\n\t :");
+	const std::string name(n1, 0, pos);
+	RUNTIME->memory_insert(name.length() + sizeof(std::string));
 	rdo::converter::smr2rdox::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
@@ -538,10 +538,10 @@ false {
 }
 
 [A-Za-z\xA8\xB8\xC0-\xFF_$][A-Za-z\xA8\xB8\xC0-\xFF0-9_$]*[\r\n\t ]*\: {
-	tstring n1(YYText());
-	tstring::size_type pos = n1.find_first_of("\r\n\t :");
-	tstring name(n1, 0, pos);
-	RUNTIME->memory_insert(name.length() + sizeof(tstring));
+	const std::string n1(YYText());
+	const std::string::size_type pos = n1.find_first_of("\r\n\t :");
+	const std::string name(n1, 0, pos);
+	RUNTIME->memory_insert(name.length() + sizeof(std::string));
 	rdo::converter::smr2rdox::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
@@ -562,8 +562,8 @@ false {
 }
 
 [A-Za-z\xA8\xB8\xC0-\xFF_$][A-Za-z\xA8\xB8\xC0-\xFF0-9_$]* {
-	tstring name(YYText());
-	RUNTIME->memory_insert(name.length() + sizeof(tstring));
+	const std::string name(YYText());
+	RUNTIME->memory_insert(name.length() + sizeof(std::string));
 
 	LEXER->setvalue(CONVERTER->stack().push(
 		rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(

@@ -12,8 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
 
@@ -34,11 +32,11 @@ public:
 	};
 
 	template <Type>
-	static REF(ruint) getCalcCounter();
+	static std::size_t& getCalcCounter();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/operation/operation_type.inl"
+#include "simulator/runtime/calc/operation/operation_type-inl.h"
 
 #endif // _LIB_RUNTIME_CALC_OPERATION_TYPE_H_

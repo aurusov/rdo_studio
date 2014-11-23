@@ -26,7 +26,7 @@
 
 using namespace rdo::gui::tracer;
 
-ruint ChartDoc::s_titleIndex = 0;
+std::size_t ChartDoc::s_titleIndex = 0;
 
 ChartDoc::ChartDoc(const bool preview)
 	: m_minTimeOffset(1.7E+308)
@@ -51,12 +51,12 @@ ChartDoc::~ChartDoc()
 	}
 }
 
-CREF(ChartDoc::TimesList) ChartDoc::getTimes() const
+const ChartDoc::TimesList& ChartDoc::getTimes() const
 {
 	return m_docTimes;
 }
 
-CREF(ChartDoc::SerieList) ChartDoc::getSerieList() const
+const ChartDoc::SerieList& ChartDoc::getSerieList() const
 {
 	return m_serieList;
 }
@@ -175,7 +175,7 @@ void ChartDoc::updateChartViews(Update updateType) const
 	boost::range::for_each(m_widgetList, boost::bind(&ChartView::onUserUpdateChartView, _1, updateType));
 }
 
-void ChartDoc::addSerie(CREF(LPSerie) pSerie)
+void ChartDoc::addSerie(const LPSerie& pSerie)
 {
 	if (pSerie && !serieExists(pSerie))
 	{
@@ -310,17 +310,17 @@ Serie::Marker ChartDoc::selectMarker()
 	return res;
 }
 
-bool ChartDoc::serieExists(CREF(LPSerie) pSerie) const
+bool ChartDoc::serieExists(const LPSerie& pSerie) const
 {
 	return boost::range::find_if(m_serieList, boost::bind(&ChartSerie::isTracerSerie, _1, pSerie)) != m_serieList.end();
 }
 
-CREF(QString) ChartDoc::getTitle() const
+const QString& ChartDoc::getTitle() const
 {
 	return m_title;
 }
 
-void ChartDoc::setTitle(CREF(QString) title)
+void ChartDoc::setTitle(const QString& title)
 {
 	m_title = title;
 	getFirstView()->parentWidget()->setWindowTitle(QString("график: %1").arg(m_title));

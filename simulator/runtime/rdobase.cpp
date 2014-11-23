@@ -50,12 +50,74 @@ RDOSimulatorBase::RDOSimulatorBase()
 	, m_cnt_choice_from   (0           )
 {}
 
-ruint RDOSimulatorBase::get_cnt_calc_arithm() const
+RDOSimulatorBase::~RDOSimulatorBase()
+{}
+
+void RDOSimulatorBase::setStartTime(double value)
+{
+	m_startTime = value;
+}
+
+double RDOSimulatorBase::getCurrentTime() const
+{
+	return m_currentTime;
+}
+
+RunTimeMode RDOSimulatorBase::getMode() const
+{
+	return m_mode;
+}
+
+double RDOSimulatorBase::getSpeed() const
+{
+	return m_speed;
+}
+
+double RDOSimulatorBase::getShowRate() const
+{
+	return m_showRate;
+}
+
+void RDOSimulatorBase::inc_cnt_events()
+{
+	++m_cnt_events;
+}
+
+void RDOSimulatorBase::inc_cnt_choice_from()
+{
+	++m_cnt_choice_from;
+}
+
+std::size_t RDOSimulatorBase::get_cnt_events()
+{
+	return m_cnt_events;
+}
+
+std::size_t RDOSimulatorBase::get_cnt_choice_from()
+{
+	return m_cnt_choice_from;
+}
+
+std::size_t RDOSimulatorBase::getMSec(const boost::posix_time::ptime& ptime)
+{
+	boost::posix_time::ptime startTime = boost::posix_time::time_from_string("1970-01-01 00:00:00.000");
+	return (std::size_t)( ptime - startTime ).total_milliseconds();
+}
+
+void RDOSimulatorBase::setCurrentTime(double value)
+{
+	m_currentTime = value;
+}
+
+void RDOSimulatorBase::onNewTimeNow()
+{}
+
+std::size_t RDOSimulatorBase::get_cnt_calc_arithm() const
 {
 	return OperatorType::getCalcCounter<OperatorType::OT_ARITHM>();
 }
 
-ruint RDOSimulatorBase::get_cnt_calc_logic() const
+std::size_t RDOSimulatorBase::get_cnt_calc_logic() const
 {
 	return OperatorType::getCalcCounter<OperatorType::OT_LOGIC>();
 }
@@ -82,7 +144,7 @@ void RDOSimulatorBase::rdoInit()
 	onNewTimeNow();
 }
 
-rbool RDOSimulatorBase::rdoNext()
+bool RDOSimulatorBase::rdoNext()
 {
 	if (m_mode == RTM_Pause || m_mode == RTM_BreakPoint)
 	{
@@ -90,7 +152,7 @@ rbool RDOSimulatorBase::rdoNext()
 		return true;
 	}
 	// Если нажата клавиша или активная область, то задержки надо проскачить
-	rbool keyboard = isKeyDown();
+	bool keyboard = isKeyDown();
 	if (!keyboard)
 	{
 		// Задержка общей скорости моделирования
@@ -107,8 +169,8 @@ rbool RDOSimulatorBase::rdoNext()
 		if (m_msec_wait > 1)
 		{
 			boost::posix_time::ptime systime_current = boost::posix_time::microsec_clock::local_time();
-			ruint msec_curr = getMSec(systime_current);
-			ruint msec_delta;
+			std::size_t msec_curr = getMSec(systime_current);
+			std::size_t msec_delta;
 			// Милисекунды считаются с учетом часов, но при смене суток часы сбрасываются на ноль,
 			// и текущее время в милисекундах становится меньше предыдущего. Учитываем этот момент
 			// через ветку ELSE. Теперь система сможет учесть переход на один день вперед между
@@ -224,7 +286,7 @@ void RDOSimulatorBase::setSpeed( double value )
 	if (value < 0) value = 0;
 	if (value > 1) value = 1;
 	m_speed = value;
-	m_next_delay_count = (ruint)((1 - m_speed) * m_speed_range_max);
+	m_next_delay_count = (std::size_t)((1 - m_speed) * m_speed_range_max);
 	// Чтобы сразу перейти к следующей операции
 	m_next_delay_current = m_next_delay_count;
 	m_msec_wait          = 0;

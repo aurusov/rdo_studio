@@ -62,84 +62,51 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <widget class="QGroupBox" name="groupBox">
-           <property name="title">
-            <string>Привязка к расширению</string>
-           </property>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Привязка к расширению</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
            <widget class="QCheckBox" name="setupCheckBox">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>20</y>
-              <width>281</width>
-              <height>17</height>
-             </rect>
-            </property>
             <property name="text">
              <string>Установить привязку для файла проекта (*.rdox)</string>
             </property>
            </widget>
+          </item>
+          <item>
            <widget class="QCheckBox" name="checkInFutureCheckBox">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>40</y>
-              <width>141</width>
-              <height>17</height>
-             </rect>
-            </property>
             <property name="text">
              <string>Проверять в будущем</string>
             </property>
            </widget>
-          </widget>
-         </item>
-         <item>
-          <spacer name="verticalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Maximum</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>10</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="openLastProjectCheckBox">
-           <property name="text">
-            <string>Открывать последний проект при старте</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="showFullNameCheckBox">
-           <property name="text">
-            <string>Показывать полное имя проекта в заголовке</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+          </item>
+         </layout>
+        </widget>
        </item>
        <item row="1" column="0">
-        <spacer name="verticalSpacer_2">
+        <widget class="QCheckBox" name="openLastProjectCheckBox">
+         <property name="text">
+          <string>Открывать последний проект при старте</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QCheckBox" name="showFullNameCheckBox">
+         <property name="text">
+          <string>Показывать полное имя проекта в заголовке</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <spacer name="verticalSpacer_3">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Minimum</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>220</height>
+           <height>40</height>
           </size>
          </property>
         </spacer>
@@ -152,139 +119,65 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
+        <layout class="QGridLayout" name="gridLayout_16">
+         <item row="0" column="0">
           <widget class="QGroupBox" name="groupBoxAutoComplete">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>200</width>
-             <height>100</height>
-            </size>
-           </property>
            <property name="title">
             <string>Авто-завершение</string>
            </property>
-           <widget class="QCheckBox" name="checkBoxCodeCompUse">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>20</y>
-              <width>171</width>
-              <height>17</height>
-             </rect>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Включить</string>
-            </property>
-           </widget>
-           <widget class="QRadioButton" name="radioButtonFullList">
-            <property name="geometry">
-             <rect>
-              <x>20</x>
-              <y>50</y>
-              <width>131</width>
-              <height>17</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Полный список</string>
-            </property>
-           </widget>
-           <widget class="QRadioButton" name="radioButtonNearestWords">
-            <property name="geometry">
-             <rect>
-              <x>20</x>
-              <y>70</y>
-              <width>171</width>
-              <height>17</height>
-             </rect>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Только ближайшие слова</string>
-            </property>
-           </widget>
+           <layout class="QVBoxLayout" name="verticalLayout_9">
+            <item>
+             <widget class="QCheckBox" name="checkBoxCodeCompUse">
+              <property name="text">
+               <string>Включить</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="radioButtonFullList">
+              <property name="text">
+               <string>Полный список</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="radioButtonNearestWords">
+              <property name="text">
+               <string>Только ближайшие слова</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </item>
-         <item>
+         <item row="0" column="1">
           <widget class="QGroupBox" name="groupBoxLeft">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>200</width>
-             <height>100</height>
-            </size>
-           </property>
            <property name="title">
             <string>Слева</string>
            </property>
-           <widget class="QCheckBox" name="checkBoxMarginFold">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>20</y>
-              <width>281</width>
-              <height>17</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Выводить группы</string>
-            </property>
-           </widget>
-           <widget class="QCheckBox" name="checkBoxMarginBookmark">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>40</y>
-              <width>281</width>
-              <height>17</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Выводить закладки</string>
-            </property>
-           </widget>
-           <widget class="QCheckBox" name="checkBoxMarginLineNum">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>60</y>
-              <width>301</width>
-              <height>21</height>
-             </rect>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Выводить номера строк</string>
-            </property>
-           </widget>
+           <layout class="QVBoxLayout" name="verticalLayout_10">
+            <item>
+             <widget class="QCheckBox" name="checkBoxMarginFold">
+              <property name="text">
+               <string>Выводить группы</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBoxMarginBookmark">
+              <property name="text">
+               <string>Выводить закладки</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBoxMarginLineNum">
+              <property name="text">
+               <string>Выводить номера строк</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </item>
         </layout>
@@ -318,165 +211,100 @@
           <string/>
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
-          <item row="0" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_3">
-              <property name="sizeConstraint">
-               <enum>QLayout::SetMinimumSize</enum>
-              </property>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_2">
-                <item>
-                 <widget class="QLabel" name="tabSizeLabel">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text">
-                   <string>Размер табуляции</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_3">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QLineEdit" name="tabSizeLineEdit">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>70</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_3">
-                <item>
-                 <widget class="QLabel" name="indentSizeLabel">
-                  <property name="text">
-                   <string>Размер отступа</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_2">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QLineEdit" name="indentSizeLineEdit">
-                  <property name="minimumSize">
-                   <size>
-                    <width>70</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>70</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_4">
-              <item>
-               <widget class="QCheckBox" name="useTabSymbolCheckBox">
-                <property name="text">
-                 <string>Использовать символ табуляции (не пробел)</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="indentAsTabcheckBox">
-                <property name="text">
-                 <string>Отступ через табуляцию</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
+          <item row="3" column="3">
+           <widget class="QCheckBox" name="indentAsTabcheckBox">
+            <property name="text">
+             <string>Отступ через табуляцию</string>
+            </property>
+           </widget>
           </item>
-          <item row="1" column="0">
-           <layout class="QVBoxLayout" name="verticalLayout_6">
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_5">
-              <item>
-               <widget class="QRadioButton" name="eraseWithTabRadioButton">
-                <property name="text">
-                 <string>Стирать табуляцией</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QRadioButton" name="eraseWithIndentRadioButton">
-                <property name="text">
-                 <string>Стирать отступом</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="autoIndentCheckBox">
-              <property name="text">
-               <string>Авто-отступ</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="indentSizeLineEdit">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QCheckBox" name="useTabSymbolCheckBox">
+            <property name="text">
+             <string>Использовать символ табуляции (не пробел)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="tabSizeLineEdit">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="tabSizeLabel">
+            <property name="text">
+             <string>Размер табуляции</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0" colspan="2">
+           <widget class="QRadioButton" name="eraseWithIndentRadioButton">
+            <property name="text">
+             <string>Стирать отступом</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0" colspan="2">
+           <widget class="QCheckBox" name="autoIndentCheckBox">
+            <property name="text">
+             <string>Авто-отступ</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" colspan="2">
+           <widget class="QRadioButton" name="eraseWithTabRadioButton">
+            <property name="text">
+             <string>Стирать табуляцией</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="indentSizeLabel">
+            <property name="text">
+             <string>Размер отступа</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="4" rowspan="2">
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>
        </item>
-       <item row="1" column="0">
+       <item row="6" column="0">
         <spacer name="verticalSpacer_4">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Minimum</enum>
-         </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>180</height>
+           <height>40</height>
           </size>
          </property>
         </spacer>
@@ -788,7 +616,7 @@
              <property name="sizeHint" stdset="0">
               <size>
                <width>20</width>
-               <height>44</height>
+               <height>40</height>
               </size>
              </property>
             </spacer>
@@ -823,7 +651,7 @@
              <property name="sizeHint" stdset="0">
               <size>
                <width>20</width>
-               <height>44</height>
+               <height>40</height>
               </size>
              </property>
             </spacer>

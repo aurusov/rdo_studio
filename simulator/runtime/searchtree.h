@@ -31,24 +31,24 @@ class TreeRoot
 public:
 	virtual ~TreeRoot();
 
-	virtual void createRootTreeNode(CREF(LPRDORuntime) pRuntime) = 0;
+	virtual void createRootTreeNode(const LPRDORuntime& pRuntime) = 0;
 
-	std::vector<TreeNode*>		m_OPEN;
-	RDODPTSearch*				m_dp;
-	TreeNode*					m_rootNode;
-	TreeNode*					m_targetNode;
-	LPRDORuntime				m_theRealSimulator;
-	int							m_nodesInGraphCount;
-	int							m_expandedNodesCount;
-	int							m_fullNodesCount;
-	boost::posix_time::ptime	m_ptime;
-	ruint						m_sizeof_dpt;
+	std::vector<TreeNode*> m_OPEN;
+	RDODPTSearch* m_dp;
+	TreeNode* m_rootNode;
+	TreeNode* m_targetNode;
+	LPRDORuntime m_theRealSimulator;
+	int m_nodesInGraphCount;
+	int m_expandedNodesCount;
+	int m_fullNodesCount;
+	boost::posix_time::ptime m_ptime;
+	std::size_t m_sizeof_dpt;
 
 	int getNodesCound() const;
 	int getNewNodeNumber();
 
 protected:
-	TreeRoot(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP);
+	TreeRoot(const LPRDORuntime& pRuntime, RDODPTSearch* pDP);
 
 private:
 	int m_nodesCount;
@@ -88,11 +88,11 @@ public:
 
 	/// @todo задокументировать функцию
 	// return 0 - no such simulator, 1 - exist better, 2 - exist not better
-	NodeFoundInfo CheckIfExistBetter(CREF(LPRDORuntime) pChildRuntime, double useCost, TreeNode** better );
+	NodeFoundInfo CheckIfExistBetter(const LPRDORuntime& pChildRuntime, double useCost, TreeNode** better );
 	void ReCostSubTree(double cost);
 
 protected:
-	TreeNode(CREF(LPRDORuntime) pRuntime, PTR(TreeNode) pParent, PTR(TreeRoot) pRoot, LPIDPTSearchActivity pActivity, double cost, int cnt);
+	TreeNode(const LPRDORuntime& pRuntime, TreeNode* pParent, TreeRoot* pRoot, LPIDPTSearchActivity pActivity, double cost, int cnt);
 
 	LPIDPTSearchActivity  m_currAct; // вершина пытается применять различные активности
 	LPRDORuntime          m_pChildRuntime;
@@ -101,15 +101,13 @@ protected:
 	double m_newCostRest;
 	double m_newCostRule;
 
-	virtual void          onSearchOpenNode        (CREF(LPRDORuntime) pRuntime);
-	virtual void          onSearchNodeInfoDeleted (CREF(LPRDORuntime) pRuntime);
-	virtual void          onSearchNodeInfoReplaced(CREF(LPRDORuntime) pRuntime);
-	virtual void          onSearchNodeInfoNew     (CREF(LPRDORuntime) pRuntime);
-	virtual PTR(TreeNode) createChildTreeNode     ();
+	virtual void      onSearchOpenNode        (const LPRDORuntime& pRuntime);
+	virtual void      onSearchNodeInfoDeleted (const LPRDORuntime& pRuntime);
+	virtual void      onSearchNodeInfoReplaced(const LPRDORuntime& pRuntime);
+	virtual void      onSearchNodeInfoNew     (const LPRDORuntime& pRuntime);
+	virtual TreeNode* createChildTreeNode     ();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/searchtree.inl"
 
 #endif // _LIB_RUNTIME_SEARCH_TREE_H_

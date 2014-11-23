@@ -10,8 +10,8 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
-#include <boost/foreach.hpp>
 #include <algorithm>
+#include <boost/filesystem/path.hpp>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/main_window.h"
@@ -23,10 +23,30 @@
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_graph_dialog.h"
 // --------------------------------------------------------------------------------
 
+namespace
+{
+	const int SPACER_X  = 20;
+	const int SPACER_Y  = 20;
+
+	const int DPS_CO_INDEX = 4;
+	const int DPS_TO_INDEX = 5;
+	const int DPS_TT_INDEX = 6;
+
+	bool sortingFunction(GraphNode* first, GraphNode* second)
+	{
+		const int firstParentOLO  = first ->getParentGraphNode()->getGraphOnLevelOrder();
+		const int secondParentOLO = second->getParentGraphNode()->getGraphOnLevelOrder();
+
+		return firstParentOLO < secondParentOLO;
+	}
+} // end anonymous namespace
+
 PluginGame5GraphDialog::PluginGame5GraphDialog(QWidget * pParent)
-	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
+	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowMaximizeButtonHint| Qt::WindowCloseButtonHint)
 	, m_traceTimeStamp(getTraceTimeStamp())
 	, m_clickedNode(NULL)
+	, m_nodeWidth(0)
+	, m_nodeHeight(0)
 {
 	setupUi(this);
 
@@ -37,25 +57,29 @@ PluginGame5GraphDialog::PluginGame5GraphDialog(QWidget * pParent)
 
 	PluginGame5GraphNodeInfoDialog* nodeInfoDlg = new PluginGame5GraphNodeInfoDialog(this);
 	
-	connect(this, &PluginGame5GraphDialog::updateNodeInfoDlg, nodeInfoDlg, &PluginGame5GraphNodeInfoDialog::updateDlg);
-	connect(this, &PluginGame5GraphDialog::showNodeInfoDlg  , nodeInfoDlg, &PluginGame5GraphNodeInfoDialog::show);
+	connect(this       , &PluginGame5GraphDialog::updateNodeInfoDlg,
+	        nodeInfoDlg, &PluginGame5GraphNodeInfoDialog::updateDlg);
+	connect(this       , &PluginGame5GraphDialog::showNodeInfoDlg,
+	        nodeInfoDlg, &PluginGame5GraphNodeInfoDialog::show);
 
-	connect(nodeInfoDlg, &PluginGame5GraphNodeInfoDialog::updateCheckedNode, this, &PluginGame5GraphDialog::updateCheckedNode);
+	connect(nodeInfoDlg, &PluginGame5GraphNodeInfoDialog::updateCheckedNode,
+	        this       , &PluginGame5GraphDialog::updateCheckedNode);
 }
 
 PluginGame5GraphDialog::~PluginGame5GraphDialog()
-{
-}
+{}
 
-QString PluginGame5GraphDialog::getTraceFile()
+QString PluginGame5GraphDialog::getTraceFile() const
 {
 	MainWindow* pMainWindow = (MainWindow*)(parent());
 	rdo::gui::model::Model* pModel = pMainWindow->getModel();
-	QString traceFile = pModel->getFullName().section('.', 0, -2) + ".trc";
-	return traceFile;
+	boost::filesystem::path traceFilePath(pModel->getFullName().toStdString());
+	traceFilePath.replace_extension(".trc");
+
+	return QString(traceFilePath.string().c_str());
 }
 
-QString PluginGame5GraphDialog::getTraceTimeStamp()
+QString PluginGame5GraphDialog::getTraceTimeStamp() const
 {
 	QFile trcFile(getTraceFile());
 	QString trcString;
@@ -63,11 +87,11 @@ QString PluginGame5GraphDialog::getTraceTimeStamp()
 	{
 		trcString = QString(trcFile.readLine());
 	}
-	QString timeStamp = trcString.section(' ', -2, -1);
+	const QString timeStamp = trcString.section(' ', -2, -1);
 	return timeStamp;
 }
 
-std::vector<int> PluginGame5GraphDialog::getSolutionNodes()
+std::list<int> PluginGame5GraphDialog::getSolutionNodes() const
 {
 	QFile trcFile(getTraceFile());
 	QString trcString;
@@ -77,30 +101,34 @@ std::vector<int> PluginGame5GraphDialog::getSolutionNodes()
 	}
 
 	QString solutionStr;
-	int begin = trcString.indexOf("SD");
+	const int begin = trcString.indexOf("SD");
 	int end;
 	if (begin > 0)
 	{
 		end = trcString.indexOf("SES", begin);
-		solutionStr = trcString.mid(begin + 2, end - begin - 2);
+		solutionStr = trcString.mid(begin, end - begin);
 	}
 
-	QRegExp regExp("(\\d{1,5})((\\s\\d){3}\\s\\s\\d{1,2}\\s\\d{1,2})");
-	std::vector<int> list;
-	list.push_back(1);
+	const QRegExp regExp("(\\d{1,5})((\\s\\d){3}\\s\\s\\d{1,2}\\s\\d{1,2})");
+	std::list<int> list;
 
-	int pos=0;
-	while((pos = regExp.indexIn(solutionStr, pos))!= -1)
+	int pos = 0;
+	while ((pos = regExp.indexIn(solutionStr, pos))!= -1)
 	{
 		list.push_back(regExp.cap(1).toInt());
 		pos += regExp.matchedLength();
 	}
 
+	if (!list.empty())
+	{
+		list.push_front(1);
+	}
+
 	trcFile.close();
 	return list;
 }
 
-QStringList PluginGame5GraphDialog::parseTrace()
+std::vector<GraphNodeInfo> PluginGame5GraphDialog::parseTrace(const std::vector<unsigned int>& startBoardState)
 {
 	QFile trcFile(getTraceFile());
 	QString trcString;
@@ -108,149 +136,150 @@ QStringList PluginGame5GraphDialog::parseTrace()
 	{
 		trcString = QString(trcFile.readAll());
 	}
+	trcFile.close();
 
-	int begin = trcString.indexOf("SB");
-	int end   = trcString.indexOf("SEN", begin + 2);
-	QString trcStringS;
-	trcStringS = trcString.mid(begin + 2, end - begin - 2);
+	const int begin = trcString.indexOf("SB");
+	const int end   = trcString.indexOf(QRegExp("SEN|SES"), begin);
+	const QString trcStringShort = trcString.mid(begin, end - begin);
 
-	QRegExp regExp("(STN|STR)(((\\s)-?\\d{1,5}){8}((\\s)(\\s)(\\d{1,2})(\\s)(\\d{1,2})))(((\\nSRK)((\\s)\\d){4})(\\s\\d{1,2})((\\nSRK)((\\s)\\d){3})(\\s\\d{1,2}))?");
+	const QRegExp regExp("(STN|STR)(((\\s)-?\\d+){8}((\\s)(\\s)(\\d+)(\\s)(\\d+)))(((\\nSRK)((\\s)\\d+){4})(\\s\\d+)((\\nSRK)((\\s)\\d+){3})(\\s\\d+))");
 	QStringList list;
-	int pos=0;
-	while((pos = regExp.indexIn(trcStringS, pos))!= -1)
+	int pos = 0;
+	while ((pos = regExp.indexIn(trcStringShort, pos))!= -1)
 	{
 		list << regExp.cap(2) + regExp.cap(16) + regExp.cap(21);
 		pos += regExp.matchedLength();
 	}
-	trcFile.close();
-	return list;
-}
 
-QString PluginGame5GraphDialog::getTraceInfo()
-{
-	QFile trcFile(getTraceFile());
-	QString trcString;
-	if (trcFile.open(QIODevice::ReadOnly))
+	const QFont sceneFont = graphWidget->scene()->font();
+	std::vector<GraphNodeInfo> parsingResult;
+	if (!list.empty())
 	{
-		trcString = QString(trcFile.readAll());
+		parsingResult.resize(list.size() + 1);
+		parsingResult[0] = GraphNodeInfo(1, 0, 0, 0, "Начало поиска", 0, 0, 0, 0, 0, startBoardState);
+
+		QRect nodeRect = GraphNode::calcNodeRect(parsingResult[0], sceneFont);
+		m_nodeWidth  = nodeRect.width();
+		m_nodeHeight = nodeRect.height();
 	}
-
-	int begin = trcString.indexOf("DPS_C");
-	QString trcStringShort = trcString.mid(begin);
-
-	trcFile.close();
-	return trcStringShort;
-}
-
-int PluginGame5GraphDialog::parseTraceInfo(const QString& key)
-{
-	QString regExpPat = "(" + key + "\\s)(\\d{1,5})";
-	QRegExp regExp(regExpPat);
-	int value = 0;
-	QString str = getTraceInfo(); 
-
-	int pos = 0;
-	while((pos = regExp.indexIn(str, pos))!= -1)
+	for (const QString& string: list)
 	{
-		value = regExp.cap(2).toInt();
-		pos += regExp.matchedLength();
-	}
+		const int graphNodeId       = string.section(" ",  1,  1).toInt();
+		const int parentGraphNodeId = string.section(" ",  2,  2).toInt();
+		const int pathCost          = string.section(" ",  3,  3).toInt();
+		const int restPathCost      = string.section(" ",  4,  4).toInt() - pathCost;
+		const int moveDirection     = string.section(" ",  5,  5).toInt();
+		const int moveCost          = string.section(" ",  7,  7).toInt();
 
-	return value;
-}
+		const int tileMoveFrom      = string.section(" ", -1, -1).toInt();
+		const int tileMoveTo        = string.section(" ", -2, -2).toInt();
+		const int relevantTile      = string.section(" ", -4, -4).toInt();
 
-void PluginGame5GraphDialog::updateGraph(const QString& startBoardState)
-{
-	graphWidget->scene->clear();//@todo Хранить и рисовать 2 разных объекта
-	m_graph.clear();            //Очистка вектора, объекты удалены при очистке сцены
-	m_clickedNode = NULL;
-
-	GraphNode* leftNode;
-	GraphNode* rightNode;
-	std::vector<std::vector<int>> paintLevel;
-	QStringList parsingResult = parseTrace();
-	m_graph.resize(parsingResult.size() + 2);
-	m_graph[1] = new GraphNode(1, NULL, 0, 0, 0, 0, 0, 0, 0, 0, startBoardState);
-	BOOST_FOREACH(const QString& string, parsingResult)
-	{
-		int graphNode        = string.section(" ",  1,  1).toInt();
-		int parentGraphNode  = string.section(" ",  2,  2).toInt();
-		int pathCost         = string.section(" ",  3,  3).toInt();
-		int restPathCost     = string.section(" ",  4,  4).toInt() - pathCost;
-		int moveDirection    = string.section(" ",  5,  5).toInt();
-		int moveCost         = string.section(" ",  7,  7).toInt();
-
-		int tileMoveFrom     = string.section(" ", -1, -1).toInt();
-		int tileMoveTo       = string.section(" ", -2, -2).toInt();
-		int relevantTile     = string.section(" ", -4, -4).toInt();
-
-		int graphLevel = m_graph[parentGraphNode]->getGraphLevel() + 1;
-		QString	boardState = m_graph[parentGraphNode]->getBoardState();
-		int tileMoveToPos   = (tileMoveTo   - 1) * 2;
-		int tileMoveFromPos = (tileMoveFrom - 1) * 2;
-		QString tileMoveToStr   = boardState.mid(tileMoveToPos, 1  );
-		QString tileMoveFromStr = boardState.mid(tileMoveFromPos, 1);
-		boardState.replace(tileMoveToPos  , 1, tileMoveFromStr);
-		boardState.replace(tileMoveFromPos, 1, tileMoveToStr  );
-		
-		m_graph[graphNode] = new GraphNode(graphNode, m_graph[parentGraphNode], pathCost, restPathCost,moveDirection,
-		                                   moveCost, relevantTile, graphLevel, tileMoveFrom, tileMoveTo, boardState
-		);
-	}
-
-	for (unsigned int i = 1; i < m_graph.size(); i++)
-	{
-		int graphLevel = m_graph[i]->getGraphLevel();
-		connect(m_graph[i], &GraphNode::clickedNode  , this, &PluginGame5GraphDialog::updateCheckedNode);
-		connect(m_graph[i], &GraphNode::doubleClicked, this, &PluginGame5GraphDialog::emitShowNodeInfoDlg);
-		int currentLevel = paintLevel.size() - 1;
-		if (currentLevel < graphLevel)
+		QString moveDirectionText;
+		switch (moveDirection)
 		{
-			paintLevel.push_back(std::vector<int>());
+			case 1: moveDirectionText = "Вправо"; break;
+			case 2: moveDirectionText = "Влево" ; break;
+			case 3: moveDirectionText = "Вверх" ; break;
+			case 4: moveDirectionText = "Вниз"  ; break;
 		}
-		paintLevel[graphLevel].push_back(i);
+
+		const int graphNodeIndex = graphNodeId - 1;
+		const int parentGraphNodeIndex = parentGraphNodeId - 1;
+
+		const int graphLevel = parsingResult[parentGraphNodeIndex].m_graphLevel + 1;
+		std::vector<unsigned int> boardState = parsingResult[parentGraphNodeIndex].m_boardState;
+		std::swap(boardState[tileMoveFrom - 1], boardState[tileMoveTo - 1]);
+
+		parsingResult[graphNodeIndex] = GraphNodeInfo(graphNodeId, parentGraphNodeId, pathCost, restPathCost,
+		                                              moveDirectionText, moveCost, relevantTile, graphLevel,
+		                                              tileMoveFrom, tileMoveTo, boardState);
+
+		QRect nodeRect = GraphNode::calcNodeRect(parsingResult[graphNodeIndex], sceneFont);
+		m_nodeWidth  = std::max(nodeRect.width(), m_nodeWidth);
+		m_nodeHeight = std::max(nodeRect.height(), m_nodeHeight);
 	}
 
-	for (unsigned int i = 1; i < paintLevel.size(); i++)
+	for (int nodeId: getSolutionNodes())
 	{
-		quickSort(paintLevel[i]);
-		for (unsigned int j = 0; j < paintLevel[i].size(); j++)
+		parsingResult[nodeId - 1].m_relatedToSolutionState = true;
+	}
+
+	return parsingResult;
+}
+
+std::vector<std::vector<GraphNode*> > PluginGame5GraphDialog::generateGraphNodes(std::vector<GraphNodeInfo>& parsingResult) const
+{
+	std::vector<GraphNode*> tempStorage;
+	tempStorage.resize(parsingResult.size());
+	auto it = tempStorage.begin();
+	while (it != tempStorage.end())
+	{
+		*it = NULL;
+		++it;
+	}
+
+	std::vector<std::vector<GraphNode*>> graphTree;
+	for (const GraphNodeInfo& info: parsingResult)
+	{
+		const int nodeGraphLevel = info.m_graphLevel;
+		const int currentLevel = graphTree.size() - 1;
+		if (currentLevel < nodeGraphLevel)
 		{
-			m_graph[paintLevel[i][j]]->setGraphOnLevelOrder(j);
+			graphTree.push_back(std::vector<GraphNode*>());
+		}
+
+		GraphNode* parentNode = NULL;
+		if (info.m_parentNodeId)
+		{
+			ASSERT(tempStorage[info.m_parentNodeId - 1]);
+			parentNode = tempStorage[info.m_parentNodeId - 1];
+		}
+
+		GraphNode* node = new GraphNode(info, parentNode, m_nodeWidth, m_nodeHeight);
+		connect(node, &GraphNode::clickedNode  , this, &PluginGame5GraphDialog::updateCheckedNode);
+		connect(node, &GraphNode::doubleClicked, this, &PluginGame5GraphDialog::emitShowNodeInfoDlg);
+		graphTree[nodeGraphLevel].push_back(node);
+		tempStorage[info.m_nodeID - 1] = node;
+	}
+
+	for (unsigned int i = 1; i < graphTree.size(); i++)
+	{
+		std::sort(graphTree[i].begin(), graphTree[i].end(), sortingFunction);
+		for (unsigned int j = 0; j < graphTree[i].size(); j++)
+		{
+			graphTree[i][j]->setGraphOnLevelOrder(j);
 		}
 	}
 
-	BOOST_FOREACH(int node, getSolutionNodes())
-	{
-		m_graph[node]->setRelatedToSolution(true);
-	}
-	
-	for (unsigned int j = 0; j < paintLevel.back().size(); j++)
-	{
-		int node = paintLevel.back()[j];
+	return graphTree;
+}
 
-		graphWidget->scene->addItem(m_graph[node]);
-		m_graph[node]->setPos(40 * (j + 1), 20 + (paintLevel.size() - 1) * 40);
+void PluginGame5GraphDialog::drawGraph(const std::vector<std::vector<GraphNode*>>& graph) const
+{
+	for (unsigned int j = 0; j < graph.back().size(); j++)
+	{
+		GraphNode* node = graph.back()[j];
+		graphWidget->scene()->addItem(node);
+		node->setPos((SPACER_X + m_nodeWidth) * (j + 1), (graph.size() - 1) * (SPACER_Y + m_nodeHeight));
 	}
-	leftNode  = m_graph[paintLevel.back().front()];
-	rightNode = m_graph[paintLevel.back().back()];
-	
-	for (int i = (int)paintLevel.size() - 2; i >= 0; i--)
+
+	for (int i = (int)graph.size() - 2; i >= 0; i--)
 	{
 		bool buildFlag   = true;
 		unsigned int tempNodeNum = 0;
 		unsigned int tempCounter = 0;
 		std::vector<UnbuiltRange> unbuiltRangeVector;
-		for (unsigned int j = 0; j < paintLevel[i].size(); j++)
+		for (unsigned int j = 0; j < graph[i].size(); j++)
 		{
-			int node = paintLevel[i][j];
-			if (m_graph[node]->haveChild())
+			GraphNode* node = graph[i][j];
+			if (node->haveChild())
 			{
-				graphWidget->scene->addItem(m_graph[node]);
-				m_graph[node]->setPos(m_graph[node]->childrenMeanX(), m_graph[node]->childrenMeanY() - 40);
-				BOOST_FOREACH(GraphNode* childNode, m_graph[node]->getChildrenList())
+				graphWidget->scene()->addItem(node);
+				node->setPos(node->childrenMeanX(), node->childrenMeanY() - (SPACER_Y + m_nodeHeight));
+				for (GraphNode* childNode: node->getChildrenList())
 				{
-					graphWidget->scene->addItem(new GraphEdge(m_graph[node], childNode));
+					graphWidget->scene()->addItem(new GraphEdge(*node, *childNode));
 				}
 
 				if (!buildFlag)
@@ -278,74 +307,104 @@ void PluginGame5GraphDialog::updateGraph(const QString& startBoardState)
 			unbuiltRangeVector.push_back(temp);
 			tempCounter = 0;
 		}
-		BOOST_FOREACH(const UnbuiltRange& unbuiltRange, unbuiltRangeVector)
+		for (const UnbuiltRange& unbuiltRange: unbuiltRangeVector)
 		{
-			unsigned int endUnbuiltRange = unbuiltRange.firstNode + unbuiltRange.range;
+			const unsigned int endUnbuiltRange = unbuiltRange.firstNode + unbuiltRange.range;
 			if (unbuiltRange.firstNode == 0)
 			{
-				int temp  = paintLevel[i][endUnbuiltRange];
+				GraphNode* leftNode = graph[i][endUnbuiltRange];
 				for (unsigned int k = unbuiltRange.firstNode; k < endUnbuiltRange; k++)
 				{
-					int node  = paintLevel[i][k];
-					int segment = unbuiltRange.range - k + unbuiltRange.firstNode;
+					GraphNode* node = graph[i][k];
+					const int segment = unbuiltRange.range - k + unbuiltRange.firstNode;
 
-					graphWidget->scene->addItem(m_graph[node]);
-					m_graph[node]->setPos(m_graph[temp]->pos().x() - 40 * segment, m_graph[temp]->pos().y());
-				}
-				if (leftNode->pos().x() > m_graph[paintLevel[i][unbuiltRange.firstNode]]->pos().x())
-				{
-					leftNode = m_graph[paintLevel[i][unbuiltRange.firstNode]];
+					graphWidget->scene()->addItem(node);
+					node->setPos(leftNode->pos().x() - (SPACER_X + m_nodeWidth) * segment, leftNode->pos().y());
 				}
 			}
-			else if (endUnbuiltRange == paintLevel[i].size())
+			else if (endUnbuiltRange == graph[i].size())
 			{
-				int temp = paintLevel[i][unbuiltRange.firstNode - 1];
+				GraphNode* rightNode = graph[i][unbuiltRange.firstNode - 1];
 				for (unsigned int k = unbuiltRange.firstNode; k < endUnbuiltRange; k++)
 				{
-					int node  = paintLevel[i][k];
-					int segment = k - unbuiltRange.firstNode + 1;
+					GraphNode* node = graph[i][k];
+					const int segment = k - unbuiltRange.firstNode + 1;
 
-					graphWidget->scene->addItem(m_graph[node]);
-					m_graph[node]->setPos(m_graph[temp]->pos().x() + 40 * segment, m_graph[temp]->pos().y());
-				}
-				if (rightNode->pos().x() < m_graph[paintLevel[i][endUnbuiltRange - 1]]->pos().x())
-				{
-					rightNode = m_graph[paintLevel[i][endUnbuiltRange - 1]];
+					graphWidget->scene()->addItem(node);
+					node->setPos(rightNode->pos().x() + (SPACER_X + m_nodeWidth) * segment, rightNode->pos().y());
 				}
 			}
 			else
 			{
-				int temp1  = paintLevel[i][unbuiltRange.firstNode - 1];
-				int temp2  = paintLevel[i][endUnbuiltRange];
-				double deltaX =  m_graph[temp2]->pos().x() - m_graph[temp1]->pos().x();
+				GraphNode* leftNode  = graph[i][unbuiltRange.firstNode - 1];
+				GraphNode* rightNode = graph[i][endUnbuiltRange];
+				double deltaX =  rightNode->pos().x() - leftNode->pos().x();
 
-				if (deltaX < (unbuiltRange.range + 1) * 40)
+				if (deltaX < (unbuiltRange.range + 1) * (SPACER_X + m_nodeWidth))
 				{
-					for (unsigned int l = endUnbuiltRange; l < paintLevel[i].size(); l++)
+					for (unsigned int l = endUnbuiltRange; l < graph[i].size(); l++)
 					{
-						int node    = paintLevel[i][l];
-						m_graph[node]->forceShift((unbuiltRange.range + 1) * 40 - deltaX);
+						GraphNode* node = graph[i][l];
+						node->forceShift((unbuiltRange.range + 1) * (SPACER_X + m_nodeWidth) - deltaX);
 					}
-					deltaX = m_graph[temp2]->pos().x() - m_graph[temp1]->pos().x();
+					deltaX = rightNode->pos().x() - leftNode->pos().x();
 				}
 
 				for (unsigned int k = unbuiltRange.firstNode; k < endUnbuiltRange; k++)
 				{
-					int node    = paintLevel[i][k];
-					int segment = k - unbuiltRange.firstNode + 1;
+					GraphNode* node    = graph[i][k];
+					const int segment = k - unbuiltRange.firstNode + 1;
 
-					graphWidget->scene->addItem(m_graph[node]);
-					m_graph[node]->setPos(m_graph[temp1]->pos().x() + segment * deltaX/(unbuiltRange.range + 1), m_graph[temp1]->pos().y());
+					graphWidget->scene()->addItem(node);
+					node->setPos(leftNode->pos().x() + segment * deltaX/(unbuiltRange.range + 1), leftNode->pos().y());
 				}
 			}
 		}
 	}
-	graphWidget->scene->setSceneRect(leftNode->pos().x() - 20, 0, rightNode->pos().x() - leftNode->pos().x() + 40, paintLevel.size() * 40);
-	graphWidget->scene->addItem(new GraphInfo(parseTraceInfo("DPS_CO"), parseTraceInfo("DPS_TO"), parseTraceInfo("DPS_TT"),
-	                                          graphWidget->scene->sceneRect().x(), graphWidget->scene->sceneRect().y()));
 }
 
-void PluginGame5GraphDialog::onPluginAction(QString boardState)
+PluginGame5GraphDialog::GraphInfo PluginGame5GraphDialog::getGraphInfo() const
+{
+	QFile trcFile(getTraceFile());
+	QString trcString;
+	if (trcFile.open(QIODevice::ReadOnly))
+	{
+		trcString = QString(trcFile.readAll());
+	}
+	trcFile.close();
+
+	const int begin = trcString.indexOf(QRegExp("SES|SEN"));
+	if (begin >= 0)
+	{
+		const QString trcStringShort = trcString.mid(begin);
+
+		QString solutionCost       = trcStringShort.section(' ', DPS_CO_INDEX, DPS_CO_INDEX, QString::SectionSkipEmpty);
+		QString numberOfOpenNodes  = trcStringShort.section(' ', DPS_TO_INDEX, DPS_TO_INDEX, QString::SectionSkipEmpty);
+		QString totalNumberOfNodes = trcStringShort.section(' ', DPS_TT_INDEX, DPS_TT_INDEX, QString::SectionSkipEmpty);
+		return GraphInfo(solutionCost, numberOfOpenNodes, totalNumberOfNodes);
+	}
+	return GraphInfo();
+}
+
+void PluginGame5GraphDialog::updateGraph(const std::vector<unsigned int>& startBoardState)
+{
+	graphWidget->scene()->clear();
+	m_clickedNode = NULL;
+
+	std::vector<GraphNodeInfo> parsingResult = parseTrace(startBoardState);
+	std::vector<std::vector<GraphNode*>> graph = generateGraphNodes(parsingResult);
+	if (!graph.empty())
+	{
+		drawGraph(graph);
+	}
+
+	PluginGame5GraphDialog::GraphInfo graphInfo = getGraphInfo();
+	graphWidget->updateGraphInfo(graphInfo.solutionCost, graphInfo.numberOfOpenNodes, graphInfo.totalNumberOfNodes);
+	graphWidget->scene()->setSceneRect(graphWidget->scene()->itemsBoundingRect());
+	graphWidget->zoomFit();
+}
+
+void PluginGame5GraphDialog::onPluginAction(const std::vector<unsigned int>& boardState)
 {
 	if (m_traceTimeStamp != getTraceTimeStamp())
 	{
@@ -374,8 +433,8 @@ void PluginGame5GraphDialog::emitShowNodeInfoDlg()
 	emit showNodeInfoDlg();
 }
 
-void PluginGame5GraphDialog::quickSort(std::vector<int>& vector)
-{
-	SortStruct s(this);
-	std::sort(vector.begin(), vector.end(), s);
-}
+PluginGame5GraphDialog::GraphInfo::GraphInfo(QString solutionCost, QString numberOfOpenNodes, QString totalNumberOfNodes)
+	: solutionCost(solutionCost)
+	, numberOfOpenNodes(numberOfOpenNodes)
+	, totalNumberOfNodes(totalNumberOfNodes)
+{}

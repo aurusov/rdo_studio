@@ -3,7 +3,7 @@
   \file      info.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      09.04.2011
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/optional.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/type/type.h"
+#include "simulator/compiler/parser/type/type_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -21,27 +21,30 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- TypeInfo
 // --------------------------------------------------------------------------------
-OBJECT(TypeInfo)
+PREDECLARE_POINTER(TypeInfo);
+class TypeInfo: public rdo::counter_reference
 {
 DECLARE_FACTORY(TypeInfo)
 public:
-	CREF(LPRDOType)        type      () const;
-	RDOParserSrcInfo       src_info  () const;
-	CREF(RDOParserSrcInfo) src_info  (CREF(RDOParserSrcInfo) srcInfo) const;
-	LPTypeInfo             type_cast (CREF(LPTypeInfo) pFrom, CREF(RDOParserSrcInfo) src_info) const;
-	LPRDOValue             value_cast(CREF(LPRDOValue) pValue) const;
+	rdo::runtime::LPRDOType type() const;
+	rdo::runtime::RDOType::TypeID typeID() const;
+	const LPIType& itype() const;
+	RDOParserSrcInfo src_info() const;
+	const RDOParserSrcInfo& src_info(const RDOParserSrcInfo& srcInfo) const;
+	LPTypeInfo type_cast(const LPTypeInfo& pFrom, const RDOParserSrcInfo& src_info) const;
+	LPRDOValue value_cast(const LPRDOValue& pValue) const;
 
 protected:
-	TypeInfo(CREF(LPTypeInfo) pTypeInfo);
+	TypeInfo(const LPTypeInfo& pTypeInfo);
 	virtual ~TypeInfo();
 
 private:
-	TypeInfo(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) srcInfo);
+	TypeInfo(const LPIType& pType, const RDOParserSrcInfo& srcInfo);
 
 	template <class T>
-	static LPTypeInfo create(CREF(RDOParserSrcInfo) srcInfo);
+	static LPTypeInfo create(const RDOParserSrcInfo& srcInfo);
 
-	LPRDOType                         m_pType;
+	const LPIType m_pType;
 	boost::optional<RDOParserSrcInfo> m_srcInfo;
 
 	void init();
@@ -49,6 +52,6 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#include "simulator/compiler/parser/type/info.inl"
+#include "simulator/compiler/parser/type/info-inl.h"
 
 #endif // _RDOPARSER_TYPE_INFO_H_

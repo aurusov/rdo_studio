@@ -18,13 +18,14 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Получение параметра паттерна
-CALC(RDOCalcPatParam)
+PREDECLARE_POINTER(RDOCalcPatParam);
+class RDOCalcPatParam: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcPatParam)
 private:
-	RDOCalcPatParam(ruint paramID);
+	RDOCalcPatParam(std::size_t paramID);
 
-	ruint  m_paramID;
+	std::size_t m_paramID;
 
 	DECLARE_ICalc;
 };

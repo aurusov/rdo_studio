@@ -27,7 +27,7 @@ std::fstream file("C:\\rdo_kernel_mt.log", std::ios_base::in | std::ios_base::ou
 std::fstream file("C:\\rdo_kernel_st.log", std::ios_base::in | std::ios_base::out | std::ios_base::trunc);
 #endif
 
-void RDOThread::trace(CREF(tstring) str)
+void RDOThread::trace(const std::string& str)
 {
 	file << str << std::endl;
 	file.flush();
@@ -38,7 +38,7 @@ void RDOThread::trace(CREF(tstring) str)
 // -------------------- RDOThread
 // --------------------------------------------------------------------------------
 #ifdef RDO_MT
-RDOThread::RDOThread(CREF(tstring) _thread_name, RDOThreadFun _thread_fun)
+RDOThread::RDOThread(const std::string& _thread_name, RDOThreadFun _thread_fun)
 	: thread_name      (_thread_name)
 	, thread_id        (0           )
 	, broadcast_cnt    (-1          )
@@ -49,20 +49,17 @@ RDOThread::RDOThread(CREF(tstring) _thread_name, RDOThreadFun _thread_fun)
 	, broadcast_waiting(false       )
 	, was_start        (false       )
 	, was_close        (false       )
-#else // not RDO_MT
-RDOThread::RDOThread(CREF(tstring) _thread_name)
-	: thread_name(_thread_name          )
-#ifdef COMPILER_VISUAL_STUDIO
-	, thread_id  (::GetCurrentThreadId())
+#if defined(COMPILER_VISUAL_STUDIO) || defined(COMPILER_MINGW)
+	, thread_id(::GetCurrentThreadId())
+#elif defined(COMPILER_GCC)
+	, thread_id(pthread_self())
+#else
+	#error Unknown compiler
 #endif // COMPILER_VISUAL_STUDIO
-#ifdef COMPILER_GCC
-	#ifdef COMPILER_MINGW
-	, thread_id  (::GetCurrentThreadId())
-	#else
-	, thread_id  (pthread_self()        )
-	#endif // COMPILER_MINGW
-#endif // COMPILER_GCC
-	, idle_cnt   (0                     )
+	, idle_cnt(0)
+#else // not RDO_MT
+RDOThread::RDOThread(const std::string& _thread_name)
+	: thread_name(_thread_name          )
 #endif // RDO_MT
 {
 #ifdef TR_TRACE
@@ -71,7 +68,7 @@ RDOThread::RDOThread(CREF(tstring) _thread_name)
 	// Чтобы треда не получала ниодного сообщения. RT_THREAD_CLOSE обрабатывается автоматически
 	notifies.push_back(RT_THREAD_CLOSE);
 #ifdef RDO_MT
-	for (ruint i = 0; i < 10; i++)
+	for (std::size_t i = 0; i < 10; i++)
 		broadcast_data.push_back(BroadcastData(10));
 
 	if (!isGUI()) {
@@ -112,7 +109,7 @@ RDOThread::~RDOThread()
 #endif
 }
 
-PTR(RDOThread) RDOThread::getKernel()
+RDOThread* RDOThread::getKernel()
 {
 	return kernel;
 }
@@ -140,9 +137,9 @@ void RDOThread::after_constructor()
 }
 
 #ifdef RDO_MT
-ruint RDOThread::threadFun(PTR(void) pParam)
+std::size_t RDOThread::threadFun(void* pParam)
 {
-	PTR(RDOThread) thread = static_cast<PTR(RDOThread)>(pParam);
+	RDOThread* thread = static_cast<RDOThread*>(pParam);
 	thread->thread_id = ::GetCurrentThreadId();
 	thread->proc_create.SetEvent();
 	thread->thread_create.Lock();
@@ -160,7 +157,7 @@ ruint RDOThread::threadFun(PTR(void) pParam)
 #endif
 
 #ifdef RDO_MT
-rbool RDOThread::processMessages()
+bool RDOThread::processMessages()
 {
 	messages_mutex.Lock();
 	if (was_close)
@@ -210,7 +207,7 @@ rbool RDOThread::processMessages()
 }
 #endif
 /*
-void RDOThread::sendMessage(PTR(RDOThread) to, RDOTreadMessage message, PTR(void) pParam)
+void RDOThread::sendMessage(RDOThread* to, RDOTreadMessage message, void* pParam)
 {
 #ifdef RDO_MT
 	RDOMessageInfo msg(this, message, pParam, RDOThread::RDOMessageInfo::send);
@@ -229,7 +226,7 @@ void RDOThread::sendMessage(PTR(RDOThread) to, RDOTreadMessage message, PTR(void
 }
 */
 #ifdef RDO_MT
-PTR(CEvent) RDOThread::manualMessageFrom(RDOTreadMessage message, PTR(void) pParam)
+CEvent* RDOThread::manualMessageFrom(RDOTreadMessage message, void* pParam)
 {
 	RDOMessageInfo msg(this, message, pParam, RDOThread::RDOMessageInfo::manual);
 	msg.send_event = new CEvent();
@@ -242,7 +239,7 @@ PTR(CEvent) RDOThread::manualMessageFrom(RDOTreadMessage message, PTR(void) pPar
 }
 #endif
 
-void RDOThread::broadcastMessage(RDOTreadMessage message, PTR(void) pParam, rbool lock)
+void RDOThread::broadcastMessage(RDOTreadMessage message, void* pParam, bool lock)
 {
 #ifdef RDO_MT
 	if (pParam) lock = true;
@@ -251,11 +248,11 @@ void RDOThread::broadcastMessage(RDOTreadMessage message, PTR(void) pParam, rboo
 		broadcast_data.push_back(BroadcastData(10));
 
 	kernel->threads_mutex.Lock();
-	ruint       cnt        = 0;
-	PTR(CMutex) param_lock = NULL;
+	std::size_t cnt = 0;
+	CMutex* param_lock = NULL;
 	for (RDOKernel::RDOThreadList::iterator it = kernel->threads.begin(); it != kernel->threads.end(); ++it)
 	{
-		PTR(RDOThread) thread = *it;
+		RDOThread* thread = *it;
 		thread->notifies_mutex.Lock();
 		if (thread != this && (thread->notifies.empty() || std::find(thread->notifies.begin(), thread->notifies.end(), message) != thread->notifies.end()))
 		{
@@ -279,7 +276,7 @@ void RDOThread::broadcastMessage(RDOTreadMessage message, PTR(void) pParam, rboo
 	kernel->threads_mutex.Unlock();
 	if (cnt)
 	{
-		for (ruint i = 0; i < cnt; i++)
+		for (std::size_t i = 0; i < cnt; i++)
 			broadcast_data[broadcast_cnt].handles[i] = broadcast_data[broadcast_cnt].events[i]->m_hObject;
 
 		broadcast_waiting = true;
@@ -292,7 +289,7 @@ void RDOThread::broadcastMessage(RDOTreadMessage message, PTR(void) pParam, rboo
 	if (lock && param_lock)
 		delete param_lock;
 #else
-	UNUSED(lock);
+	(void)lock;
 	RDOMessageInfo msg(this, message, pParam);
 	std::list< RDOThread* >::iterator it = kernel->threads.begin();
 	while ( it != kernel->threads.end() ) {
@@ -340,7 +337,7 @@ RDOThread* RDOThreadGUI::getKernel()
 	return kernel_gui;
 }
 
-rbool RDOThreadGUI::processMessages()
+bool RDOThreadGUI::processMessages()
 {
 	return kernel_gui->processMessages();
 }

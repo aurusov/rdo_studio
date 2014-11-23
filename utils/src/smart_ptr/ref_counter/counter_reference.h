@@ -11,9 +11,8 @@
 #define _UTILS_SMART_PTR_COUNTER_REFERENCE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <cstddef>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdomacros.h"
-#include "utils/src/common/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo {
@@ -28,11 +27,9 @@ public:
 	virtual ~counter_reference();
 
 private:
-	ruint m_intrusive_counter;
+	std::size_t m_intrusive_counter;
 };
 
 } // namespace rdo
-
-#include "utils/src/smart_ptr/ref_counter/counter_reference.inl"
 
 #endif // _UTILS_SMART_PTR_COUNTER_REFERENCE_H_

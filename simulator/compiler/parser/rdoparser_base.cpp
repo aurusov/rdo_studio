@@ -18,23 +18,20 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 RDOParserItem::RDOParserItem()
-	: m_type      (rdoModelObjects::PAT)
-	, m_parser_fun(NULL                )
-	, m_error_fun (NULL                )
-	, m_lexer_fun (NULL                )
-	, m_from      (sf_repository       )
+	: m_type      (rdo::model::PAT)
+	, m_parser_fun(NULL)
+	, m_lexer_fun (NULL)
+	, m_from      (sf_repository)
 {}
 
 RDOParserItem::RDOParserItem(
-		rdoModelObjects::RDOFileType type,
+		rdo::model::FileType type,
 		t_bison_parse_fun            parser_fun,
-		t_bison_error_fun            error_fun,
 		t_flex_lexer_fun             lexer_fun,
 		StreamFrom                   from
 )
 	: m_type      (type      )
 	, m_parser_fun(parser_fun)
-	, m_error_fun (error_fun )
 	, m_lexer_fun (lexer_fun )
 	, m_from      (from      )
 {}
@@ -42,18 +39,15 @@ RDOParserItem::RDOParserItem(
 RDOParserItem::~RDOParserItem()
 {}
 
-void RDOParserItem::parse(CREF(LPRDOParser) pParser, REF(std::istream) in_stream)
+void RDOParserItem::parse(const LPRDOParser& /*pParser*/, std::istream& /*in_stream*/)
+{}
+
+std::size_t RDOParserItem::lexer_loc_line()
 {
-	UNUSED(pParser  );
-	UNUSED(in_stream);
+	return std::size_t(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
 }
 
-ruint RDOParserItem::lexer_loc_line()
-{
-	return ruint(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
-}
-
-ruint RDOParserItem::lexer_loc_pos()
+std::size_t RDOParserItem::lexer_loc_pos()
 {
 	return 0;
 }

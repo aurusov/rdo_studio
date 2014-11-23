@@ -28,7 +28,7 @@ Error::Error()
 {}
 
 //! 1
-void Error::error(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
+void Error::error(const RDOParserSrcInfo& src_info, const std::string& message)
 {
 	if (blocked())
 		return;
@@ -37,7 +37,7 @@ void Error::error(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
 	throw RDOSyntaxException(m_errorList.back().getText());
 }
 
-void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message) 
+void Error::warning(const RDOParserSrcInfo& src_info, const std::string& message) 
 {
 	if (blocked())
 		return;
@@ -45,7 +45,7 @@ void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
 	m_errorList.push_back(rdo::simulation::report::FileMessage(message, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, FileMessage::MT_WARNING));
 }
 
-void Error::push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
+void Error::push_only(const RDOParserSrcInfo& src_info, const std::string& message)
 {
 	if (blocked())
 		return;
@@ -57,7 +57,7 @@ void Error::push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
 }
 
 //! 2
-void Error::error(CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_info2, CREF(tstring) message)
+void Error::error(const RDOParserSrcInfo& src_info1, const RDOParserSrcInfo& src_info2, const std::string& message)
 {
 	if (blocked())
 		return;
@@ -78,14 +78,14 @@ void Error::push_done()
 	}
 }
 
-void Error::modify(CREF(tstring) message)
+void Error::modify(const std::string& message)
 {
 	if (blocked())
 		return;
 
 	if (!m_errorList.empty())
 	{
-		tstring new_text = message + m_errorList.front().getText();;
+		const std::string new_text = message + m_errorList.front().getText();;
 		m_errorList.front().setText(new_text); 
 		throw RDOSyntaxException("");
 	}
@@ -99,7 +99,7 @@ void Error::clear()
 	m_errorList.clear();
 }
 
-CREF(Error::ErrorList) Error::getList() const
+const Error::ErrorList& Error::getList() const
 {
 	return m_errorList;
 }
@@ -114,12 +114,12 @@ void Error::unblock()
 	m_blocked = false;
 }
 
-rbool Error::blocked() const
+bool Error::blocked() const
 {
 	return m_blocked;
 }
 
-REF(Error) g_error()
+Error& g_error()
 {
 	return RDOParser::s_parser()->error();
 }

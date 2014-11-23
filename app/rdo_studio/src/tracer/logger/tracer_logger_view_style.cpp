@@ -221,19 +221,18 @@ LogStyle::~LogStyle()
 {
 }
 
-bool LogStyle::getItemColors( int index, LogColorPair &colors ) const
+bool LogStyle::getItemColors(int /*index*/, LogColorPair &colors) const
 {
-	UNUSED(index);
 	return getDefaultColor(colors);
 }
 
-bool LogStyle::getItemColors( CREF(tstring) item, LogColorPair &colors ) const
+bool LogStyle::getItemColors(const std::string& item, LogColorPair &colors) const
 {
 	if ( item.empty() )
 		return LogStyle::getDefaultColor(colors);
 	int posstart = item.find_first_not_of( ' ' );
 	int posend = item.find_first_of( ' ', posstart );
-	tstring key = boost::algorithm::trim_copy(item.substr(posstart, posend - posstart));
+	std::string key = boost::algorithm::trim_copy(item.substr(posstart, posend - posstart));
 	bool res = true;
 	if ( key == "ES" ) {
 		colors = es;
@@ -255,7 +254,7 @@ bool LogStyle::getItemColors( CREF(tstring) item, LogColorPair &colors ) const
 		colors = v;
 	} else if ( key == "$Status" ) {
 		colors = s;
-	} else if ( key.find( "DPS" ) != tstring::npos ) {
+	} else if ( key.find( "DPS" ) != std::string::npos ) {
 		colors = dps;
 	} else if ( key == "SB" ) {
 		colors = sb;

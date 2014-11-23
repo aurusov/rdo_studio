@@ -2,14 +2,15 @@
   \copyright (c) RDO-Team, 2011
   \file      enum.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date
+  \brief
   \indent    4T
 */
 
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/type/enum.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -22,37 +23,20 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- RDOEnumType
 // --------------------------------------------------------------------------------
 RDOEnumType::RDOEnumType()
-	: RuntimeWrapperType(rdo::Factory<rdo::runtime::RDOEnumType>::create())
-{
-	ASSERT(m_pType);
-}
-
-RDOEnumType::RDOEnumType(CREF(rdo::runtime::LPRDOEnumType) pEnumType)
-	: RuntimeWrapperType(rdo::runtime::g_unknow)
-{
-	rdo::runtime::LPRDOEnumType pType = rdo::Factory<rdo::runtime::RDOEnumType>::create();
-	m_pType = pType;
-	ASSERT(m_pType);
-
-	rdo::runtime::RDOEnumType::Enums::const_iterator it = pEnumType->begin();
-	while (it != pEnumType->end())
-	{
-		pType->add(*it);
-	}
-}
+{}
 
 RDOEnumType::~RDOEnumType()
 {}
 
-tstring RDOEnumType::name() const
+std::string RDOEnumType::name() const
 {
-	tstring str = "(";
-	rdo::runtime::RDOEnumType::const_iterator it = getEnums()->begin();
-	while (it != getEnums()->end())
+	std::string str = "(";
+	rdo::runtime::RDOEnumType::const_iterator it = begin();
+	while (it != end())
 	{
 		str += *it;
 		++it;
-		if (it != getEnums()->end())
+		if (it != end())
 		{
 			str += ", ";
 		}
@@ -61,13 +45,13 @@ tstring RDOEnumType::name() const
 	return str;
 }
 
-LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPIType RDOEnumType::type_cast(const LPIType& from, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
-	switch (from->type()->typeID())
+	switch (from.object_dynamic_cast<RDOType>()->typeID())
 	{
 		case rdo::runtime::RDOType__int::t_enum:
 		{
-			LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
+			LPRDOEnumType pEnum(const_cast<RDOEnumType*>(this));
 			//! Это один и тот же тип
 			if (pEnum == from)
 				return pEnum;
@@ -94,9 +78,9 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) fr
 		case rdo::runtime::RDOType::t_string       :
 		case rdo::runtime::RDOType::t_identificator:
 		{
-			if (getEnums()->exist(from_src_info.src_text()))
+			if (exist(from_src_info.src_text()))
 			{
-				LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
+				LPRDOEnumType pEnum(const_cast<RDOEnumType*>(this));
 				return pEnum;
 			}
 			parser::g_error().error(src_info, rdo::format("Значение '%s' не является элементом перечислимого типа %s", from_src_info.src_text().c_str(), to_src_info.src_text().c_str()));
@@ -111,22 +95,22 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) fr
 	return NULL;
 }
 
-LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOValue RDOEnumType::value_cast(const LPRDOValue& pFrom, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	ASSERT(pFrom);
 
 	LPRDOValue pToValue;
-	LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
+	LPRDOEnumType pEnum(const_cast<RDOEnumType*>(this));
 	try
 	{
 		switch (pFrom->typeID())
 		{
 		case rdo::runtime::RDOType::t_identificator:
-			if (getEnums()->findEnum(pFrom->value().getIdentificator()) != rdo::runtime::RDOEnumType::END)
+			if (findEnum(pFrom->value().getIdentificator()) != rdo::runtime::RDOEnumType::END)
 			{
 				LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pEnum, to_src_info);
 				ASSERT(pType);
-				pToValue = rdo::Factory<RDOValue>::create(rdo::runtime::RDOValue(getEnums(), pFrom->value().getIdentificator()), pFrom->src_info(), pType);
+				pToValue = rdo::Factory<RDOValue>::create(rdo::runtime::RDOValue(pEnum, pFrom->value().getIdentificator()), pFrom->src_info(), pType);
 				ASSERT(pToValue);
 			}
 			else
@@ -137,11 +121,11 @@ LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo
 			break;
 
 		case rdo::runtime::RDOType::t_string:
-			if (getEnums()->findEnum(pFrom->value().getAsString()) != rdo::runtime::RDOEnumType::END)
+			if (findEnum(pFrom->value().getAsString()) != rdo::runtime::RDOEnumType::END)
 			{
 				LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pEnum, to_src_info);
 				ASSERT(pType);
-				pToValue = rdo::Factory<RDOValue>::create(rdo::runtime::RDOValue(getEnums(), pFrom->value().getAsString()), pFrom->src_info(), pType);
+				pToValue = rdo::Factory<RDOValue>::create(rdo::runtime::RDOValue(pEnum, pFrom->value().getAsString()), pFrom->src_info(), pType);
 				ASSERT(pToValue);
 			}
 			else
@@ -152,7 +136,7 @@ LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo
 			break;
 
 		case rdo::runtime::RDOType::t_enum:
-			if (m_pType == pFrom->typeInfo()->type()->type())
+			if (pEnum == pFrom->typeInfo()->itype())
 				pToValue = rdo::Factory<RDOValue>::create(pFrom);
 			break;
 
@@ -160,7 +144,7 @@ LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo
 			break;
 		}
 	}
-	catch (CREF(rdo::runtime::RDOValueException))
+	catch (const rdo::runtime::RDOValueException&)
 	{}
 
 	if (!pToValue || pToValue->typeID() == rdo::runtime::RDOType::t_unknow)
@@ -172,34 +156,61 @@ LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo
 	return pToValue;
 }
 
-rdo::runtime::LPRDOCalc RDOEnumType::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdo::runtime::LPRDOCalc RDOEnumType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& pType) const
 {
-	return RuntimeWrapperType::calc_cast(pCalc, pType);
+	return pCalc;
 }
 
 rdo::runtime::RDOValue RDOEnumType::get_default() const
 {
-	return rdo::runtime::RDOValue(getEnums(), 0);
+	return rdo::runtime::RDOValue(rdo::runtime::LPRDOEnumType(const_cast<RDOEnumType*>(this)), 0);
 }
 
 void RDOEnumType::writeModelStructure(std::ostream& stream) const
 {
-	stream << "E " << getEnums()->getValues().size() << std::endl;
-	for (ruint i = 0; i < getEnums()->getValues().size(); i++)
+	stream << "E " << getValues().size() << std::endl;
+	for (std::size_t i = 0; i < getValues().size(); i++)
 	{
-		stream << "    " << i << " " << getEnums()->getValues().at(i) << std::endl;
+		stream << "    " << i << " " << getValues().at(i) << std::endl;
 	}
 }
 
-void RDOEnumType::add(CREF(LPRDOValue) pNext)
+void RDOEnumType::add(const LPRDOValue& pNext)
 {
 	ASSERT(pNext);
 
-	if (getEnums()->findEnum(pNext->value().getAsString()) != rdo::runtime::RDOEnumType::END)
+	if (findEnum(pNext->value().getAsString()) != rdo::runtime::RDOEnumType::END)
 	{
 		parser::g_error().error(pNext->src_info(), rdo::format("Значение перечислимого типа уже существует: %s", pNext->src_text().c_str()));
 	}
-	getEnums()->add(pNext->value().getAsString());
+	rdo::runtime::RDOEnumType::add(pNext->value().getAsString());
+}
+
+namespace
+{
+
+LPExpression contextUnknownEnum(const RDOEnumType::EnumItem& enumValue, std::size_t index, const RDOParserSrcInfo& srcInfo)
+{
+	LPTypeInfo typeInfo = rdo::Factory<TypeInfo>::delegate<RDOType__identificator>(srcInfo);
+	return rdo::Factory<Expression>::create(
+		typeInfo,
+		rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(enumValue, typeInfo->type())),
+		srcInfo
+	);
+}
+
+}
+
+Context::LPFindResult RDOEnumType::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+{
+	if (method == Context::METHOD_GET)
+	{
+		std::size_t index = findEnum(params.identifier());
+		EnumItem enumValue = getValues()[index];
+		return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextUnknownEnum, enumValue, index, srcInfo)));
+	}
+
+	return rdo::Factory<FindResult>::create();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

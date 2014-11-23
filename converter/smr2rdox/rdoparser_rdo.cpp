@@ -32,8 +32,8 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserRDOItem
 // --------------------------------------------------------------------------------
-RDOParserRDOItem::RDOParserRDOItem(rdo::converter::smr2rdox::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun)
-	: RDOParserItem(type, parser_fun, error_fun, lexer_fun)
+RDOParserRDOItem::RDOParserRDOItem(rdo::converter::smr2rdox::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_flex_lexer_fun lexer_fun)
+	: RDOParserItem(type, parser_fun, lexer_fun)
 	, m_pLexer(NULL)
 {}
 
@@ -46,7 +46,7 @@ RDOParserRDOItem::~RDOParserRDOItem()
 	}
 }
 
-void RDOParserRDOItem::parse(PTR(Converter) pParser, REF(std::istream) streamIn)
+void RDOParserRDOItem::parse(Converter* pParser, std::istream& streamIn)
 {
 	ASSERT(pParser);
 
@@ -63,13 +63,13 @@ void RDOParserRDOItem::parse(PTR(Converter) pParser, REF(std::istream) streamIn)
 		m_parser_fun(m_pLexer);
 }
 
-PTR(RDOLexer) RDOParserRDOItem::getLexer(PTR(Converter) pParser, PTR(std::istream) streamIn, PTR(std::ostream) streamOut)
+RDOLexer* RDOParserRDOItem::getLexer(Converter* pParser, std::istream* streamIn, std::ostream* streamOut)
 {
 	ASSERT(pParser);
 	return new RDOLexer(pParser, streamIn, streamOut);
 }
 
-ruint RDOParserRDOItem::lexer_loc_line()
+std::size_t RDOParserRDOItem::lexer_loc_line()
 {
 	if (m_pLexer)
 	{
@@ -77,11 +77,11 @@ ruint RDOParserRDOItem::lexer_loc_line()
 	}
 	else
 	{
-		return ruint(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
+		return std::size_t(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
 	}
 }
 
-ruint RDOParserRDOItem::lexer_loc_pos()
+std::size_t RDOParserRDOItem::lexer_loc_pos()
 {
 	return m_pLexer && m_pLexer->m_lploc ? m_pLexer->m_lploc->m_first_pos : 0;
 }
@@ -90,10 +90,10 @@ ruint RDOParserRDOItem::lexer_loc_pos()
 // -------------------- RDOParserRSS
 // --------------------------------------------------------------------------------
 RDOParserRSS::RDOParserRSS()
-	: RDOParserRDOItem(rdo::converter::smr2rdox::RSS_IN, cnv_rssparse, cnv_rsserror, cnv_rsslex)
+	: RDOParserRDOItem(rdo::converter::smr2rdox::RSS_IN, cnv_rssparse, cnv_rsslex)
 {}
 
-void RDOParserRSS::parse(PTR(Converter) pParser, REF(std::istream) streamIn)
+void RDOParserRSS::parse(Converter* pParser, std::istream& streamIn)
 {
 	ASSERT(pParser);
 	pParser->setHaveKWResources   (false);
@@ -105,27 +105,27 @@ void RDOParserRSS::parse(PTR(Converter) pParser, REF(std::istream) streamIn)
 // -------------------- RDOParserRSSPost
 // --------------------------------------------------------------------------------
 RDOParserRSSPost::RDOParserRSSPost()
-	: RDOParserItem(rdo::converter::smr2rdox::RSS_IN, NULL, NULL, NULL)
+	: RDOParserItem(rdo::converter::smr2rdox::RSS_IN, NULL, NULL)
 {
 	m_needStream = false;
 }
 
-void RDOParserRSSPost::parse(PTR(Converter) pParser)
+void RDOParserRSSPost::parse(Converter* pParser)
 {
 	ASSERT(pParser);
 
 	//! В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
 #ifdef RDOSIM_COMPATIBLE
-	STL_FOR_ALL_CONST(pParser->getRTPResTypes(), rtp_it)
+	for (const auto& rtp: pParser->getRTPResTypes())
 	{
 #endif
-		STL_FOR_ALL_CONST(pParser->getRSSResources(), rss_it)
+		for (const auto& rss: pParser->getRSSResources())
 		{
 #ifdef RDOSIM_COMPATIBLE
-			if ((*rss_it)->getType() == *rtp_it)
+			if (rss->getType() == rtp)
 			{
 #endif
-				rdo::runtime::LPRDOCalc calc = (*rss_it)->createCalc();
+				rdo::runtime::LPRDOCalc calc = rss->createCalc();
 				pParser->runtime()->addInitCalc(calc);
 #ifdef RDOSIM_COMPATIBLE
 			}
@@ -140,7 +140,7 @@ void RDOParserRSSPost::parse(PTR(Converter) pParser)
 // -------------------- RDOParserSTDFUN
 // --------------------------------------------------------------------------------
 RDOParserSTDFUN::RDOParserSTDFUN()
-	: RDOParserItem(rdo::converter::smr2rdox::FUN_IN, NULL, NULL, NULL)
+	: RDOParserItem(rdo::converter::smr2rdox::FUN_IN, NULL, NULL)
 {
 	m_needStream = false;
 }
@@ -188,10 +188,8 @@ int roundLocal(double value)
 	return (int)floor(value + 0.5);
 }
 
-void RDOParserSTDFUN::parse(PTR(Converter) pParser)
+void RDOParserSTDFUN::parse(Converter* /*pParser*/)
 {
-	UNUSED(pParser);
-
 	typedef rdo::runtime::std_fun1<double, double>         StdFun_D_D;
 	typedef rdo::runtime::std_fun2<double, double, double> StdFun_D_DD;
 	typedef rdo::runtime::std_fun2<double, double, int>    StdFun_D_DI;

@@ -12,8 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdotypes.h"
-#include "utils/src/common/rdomacros.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
 
@@ -26,13 +24,13 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOException
 {
 public:
-	RDOException(CREF(tstring) message);
-	virtual tstring getType() const = 0;
-	
-	CREF(tstring) message() const;
+	RDOException(const std::string& message);
+	virtual std::string getType() const = 0;
+
+	const std::string& message() const;
 
 private:
-	tstring m_message;
+	std::string m_message;
 };
 
 /*!
@@ -42,8 +40,8 @@ private:
 class RDORuntimeException: public RDOException
 {
 public:
-	RDORuntimeException(CREF(tstring) message);
-	virtual tstring getType() const;
+	RDORuntimeException(const std::string& message);
+	virtual std::string getType() const;
 };
 
 /*!
@@ -53,8 +51,8 @@ public:
 class RDOTypeException: public RDORuntimeException
 {
 public:
-	RDOTypeException(CREF(tstring) message = "");
-	virtual tstring getType() const;
+	RDOTypeException(const std::string& message = "");
+	virtual std::string getType() const;
 };
 
 /*!
@@ -64,8 +62,8 @@ public:
 class RDOValueException: public RDORuntimeException
 {
 public:
-	RDOValueException(CREF(tstring) message = "");
-	virtual tstring getType() const;
+	RDOValueException(const std::string& message = "");
+	virtual std::string getType() const;
 };
 
 /*!
@@ -76,7 +74,7 @@ class RDOUndefinedException: public RDORuntimeException
 {
 public:
 	RDOUndefinedException();
-	virtual tstring getType() const;
+	virtual std::string getType() const;
 };
 
 /*!
@@ -86,12 +84,10 @@ public:
 class RDOInternalException: public RDORuntimeException
 {
 public:
-	RDOInternalException(CREF(tstring) message);
-	virtual tstring getType() const;
+	RDOInternalException(const std::string& message);
+	virtual std::string getType() const;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#include "simulator/runtime/rdo_exception.inl"
 
 #endif // _LIB_RUNTIME_EXCEPTION_H_

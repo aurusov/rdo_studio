@@ -32,7 +32,7 @@ Debug::Debug(QWidget* pParent)
 Debug::~Debug()
 {}
 
-void Debug::appendLine(CREF(QString) str)
+void Debug::appendLine(const QString& str)
 {
 	bool readOnly = isReadOnly();
 	setReadOnly(false);

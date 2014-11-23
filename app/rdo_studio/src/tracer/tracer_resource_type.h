@@ -3,7 +3,7 @@
   \file      tracer_resource_type.h
   \author    Захаров Павел
   \date      11.03.2003
-  \brief     
+  \brief
   \indent    4T
 */
 
@@ -30,24 +30,25 @@ public:
 		PT_ENUMERATIVE,
 		PT_BOOL,
 		PT_ARRAY,
-		PT_STRING
+		PT_STRING,
+		PT_RESOURCE
 	};
 
 	ParamInfo(const ParamType type);
 	virtual ~ParamInfo();
 
-	CREF(QString) getName() const;
-	void          setName(CREF(QString) name);
+	const QString& getName() const;
+	void           setName(const QString& name);
 
 	ParamType getParamType() const;
 
-	int     addEnumValue  (CREF(tstring) value);
-	int     addStringValue(CREF(tstring) value);
-	tstring getEnumValue  (unsigned int index) const;
-	int     getEnumCount  () const;
+	int addEnumValue(const std::string& value);
+	int addStringValue(const std::string& value);
+	std::string getEnumValue (unsigned int index) const;
+	int getEnumCount() const;
 
 private:
-	typedef std::vector<tstring> EnumValueList;
+	typedef std::vector<std::string> EnumValueList;
 
 	QString        m_name;
 	EnumValueList* m_enumValueList;
@@ -66,8 +67,8 @@ public:
 		RDOTK_PERMANENT = 0, RDOTK_TEMPORARY
 	};
 
-	CREF(QString) getName() const;
-	void          setName(CREF(QString) name);
+	const QString& getName() const;
+	void           setName(const QString& name);
 
 	Kind getKind() const;
 

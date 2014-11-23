@@ -10,7 +10,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/thread.hpp>
 #include <boost/format.hpp>
-#include <boost/foreach.hpp>
 #include <boost/date_time.hpp>
 #include <boost/filesystem/fstream.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -32,19 +31,19 @@
 #include "app/rdo_console/terminate_codes.h"
 // --------------------------------------------------------------------------------
 
-typedef std::list<tstring> string_list;
+typedef std::list<std::string> string_list;
 typedef rdo::event_xml_parser::event_container event_container;
 
 const boost::filesystem::path LOG_FILE_NAME = "log.txt";
 
-void read_events(REF(std::istream) stream, REF(event_container) container);
-void write_build_log(REF(std::ostream) stream, CREF(string_list) list);
-bool run(PTR(rdo::console_controller) pAppController, REF(event_container) container);
-void process_event(PTR(rdo::console_controller) pAppController, REF(event_container) container);
+void read_events(std::istream& stream, event_container& container);
+void write_build_log(std::ostream& stream, const string_list& list);
+bool run(rdo::console_controller* pAppController, event_container& container);
+void process_event(rdo::console_controller* pAppController, event_container& container);
 
-int main(int argc, PTR(char) argv[])
+int main(int argc, char* argv[])
 {
-	ruint exitCode = TERMINATION_NORMAL;
+	std::size_t exitCode = TERMINATION_NORMAL;
 
 	rdo::locale::init();
 
@@ -54,10 +53,10 @@ int main(int argc, PTR(char) argv[])
 	optionsController.parseOptions();
 
 	const boost::filesystem::path modelFileName = optionsController.getModelFileName();
-	const rbool modelExist = rdo::File::exist(modelFileName);
+	const bool modelExist = rdo::File::exist(modelFileName);
 
 	const boost::filesystem::path eventsFileName = optionsController.getScriptFileName();
-	const rbool eventExist = rdo::File::exist(eventsFileName);
+	const bool eventExist = rdo::File::exist(eventsFileName);
 
 	if (optionsController.helpQuery())
 	{
@@ -94,7 +93,7 @@ int main(int argc, PTR(char) argv[])
 	if (optionsController.convertQuery())
 	{
 		bool converted = false;
-		while(!converted)
+		while (!converted)
 		{
 			converted = pAppController->converted();
 			boost::this_thread::sleep(boost::posix_time::milliseconds(500));
@@ -132,7 +131,7 @@ int main(int argc, PTR(char) argv[])
 	}
 
 	const boost::posix_time::ptime endTime = boost::posix_time::microsec_clock::local_time();
-	const ruint64 simulationTimeMillisecond = (endTime - startTime).total_milliseconds();
+	const uint64_t simulationTimeMillisecond = (endTime - startTime).total_milliseconds();
 	rdo::locale::cout(boost::str(boost::format("Total simulation time : %1% milliseconds") % simulationTimeMillisecond));
 
 	if (simulationSuccessfully)
@@ -147,7 +146,7 @@ int main(int argc, PTR(char) argv[])
 	return exitCode;
 }
 
-void read_events(REF(std::istream) stream, REF(event_container) container)
+void read_events(std::istream& stream, event_container& container)
 {
 	container.clear();
 
@@ -169,19 +168,19 @@ void read_events(REF(std::istream) stream, REF(event_container) container)
 	}
 }
 
-void write_build_log(REF(std::ostream) stream, CREF(string_list) list)
+void write_build_log(std::ostream& stream, const string_list& list)
 {
 	if (stream.fail())
 	{
 		exit(TERMINATION_WITH_APP_RUNTIME_ERROR);
 	}
-	BOOST_FOREACH(const string_list::value_type& line, list)
+	for (const string_list::value_type& line: list)
 	{
 		stream << line.c_str() << std::endl;
 	}
 }
 
-bool run(PTR(rdo::console_controller) pAppController, REF(event_container) container)
+bool run(rdo::console_controller* pAppController, event_container& container)
 {
 	pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN);
 
@@ -202,7 +201,7 @@ bool run(PTR(rdo::console_controller) pAppController, REF(event_container) conta
 	return pAppController->simulationSuccessfully();
 }
 
-void process_event(PTR(rdo::console_controller) pAppController, REF(event_container) container)
+void process_event(rdo::console_controller* pAppController, event_container& container)
 {
 	double runtime_time = 0;
 	pAppController->broadcastMessage(RDOThread::RT_RUNTIME_GET_TIMENOW, &runtime_time);
@@ -224,7 +223,7 @@ void process_event(PTR(rdo::console_controller) pAppController, REF(event_contai
 			{
 			case rdo::event::key:
 				{
-				ruint code = static_cast<rdo::key_event*>(it->second.get())->getKeyCode();
+				std::size_t code = static_cast<rdo::key_event*>(it->second.get())->getKeyCode();
 					rdo::key_event::states state = static_cast<rdo::key_event*>(it->second.get())->getState();
 
 					rdo::console_controller::RDOTreadMessage message_type;

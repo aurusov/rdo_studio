@@ -11,7 +11,6 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/calc_event.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -39,20 +38,20 @@ RDOCalcEventPlan::RDOCalcEventPlan(const LPIEvent& event, const LPRDOCalc& pTime
 	ASSERT(m_pTimeCalc);
 }
 
-RDOValue RDOCalcEventPlan::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcEventPlan::doCalc(const LPRDORuntime& pRuntime)
 {
 	RDOValue time = m_pTimeCalc->calcValue(pRuntime);
 
 	std::vector<RDOValue> params;
 	params.reserve(m_params.size());
-	BOOST_FOREACH(const LPRDOCalc& param, m_params)
+	for (const LPRDOCalc& param: m_params)
 	{
 		params.push_back(param->calcValue(pRuntime));
 	}
 
 	pRuntime->addTimePoint(
 		time.getDouble(),
-		m_pEvent,
+		m_pEvent.object_dynamic_cast<IBaseOperation>(),
 		boost::bind(&IEvent::onMakePlaned, m_pEvent.get(), pRuntime, params)
 	);
 	return time;
@@ -65,9 +64,9 @@ RDOCalcEventStop::RDOCalcEventStop(const LPIEvent& event)
 	: RDOCalcEvent(event)
 {}
 
-RDOValue RDOCalcEventStop::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcEventStop::doCalc(const LPRDORuntime& pRuntime)
 {
-	pRuntime->removeTimePoint(m_pEvent);
+	pRuntime->removeTimePoint(m_pEvent.object_dynamic_cast<IBaseOperation>());
 	return RDOValue();
 }
 

@@ -22,7 +22,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcDiv
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcDiv::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOCalcDiv::RDOCalcDiv(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
+	: parent_type(pLeft, pRight)
+{}
+
+RDOValue RDOCalcDiv::doCalc(const LPRDORuntime& pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
 	RDOValue right = m_pRight->calcValue(pRuntime);
@@ -36,7 +40,11 @@ RDOValue RDOCalcDiv::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcPlusEnumSafe
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcPlusEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOCalcPlusEnumSafe::RDOCalcPlusEnumSafe(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
+	: RDOCalcPlus(pLeft, pRight)
+{}
+
+RDOValue RDOCalcPlusEnumSafe::doCalc(const LPRDORuntime& pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
 	return m_pLeft->calcValue(pRuntime).getEnumAsInt() + m_pRight->calcValue(pRuntime).getEnumAsInt();
@@ -45,7 +53,11 @@ RDOValue RDOCalcPlusEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcMultEnumSafe
 // --------------------------------------------------------------------------------
-RDOValue RDOCalcMultEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOCalcMultEnumSafe::RDOCalcMultEnumSafe(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
+	: RDOCalcMult(pLeft, pRight)
+{}
+
+RDOValue RDOCalcMultEnumSafe::doCalc(const LPRDORuntime& pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
 	return m_pLeft->calcValue(pRuntime).getEnumAsInt() * m_pRight->calcValue(pRuntime).getEnumAsInt();

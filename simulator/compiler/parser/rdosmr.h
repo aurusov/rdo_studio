@@ -29,22 +29,23 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOSMR
 // --------------------------------------------------------------------------------
-OBJECT(RDOSMR)
+PREDECLARE_POINTER(RDOSMR);
+class RDOSMR: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOSMR);
 public:
-	typedef std::map<tstring, tstring> StringTable;
+	typedef std::map<std::string, std::string> StringTable;
 
-	void setExternalModelName(CREF(tstring) alias, CREF(tstring) modelID)
+	void setExternalModelName(const std::string& alias, const std::string& modelID)
 	{
 		m_extModelList[alias] = modelID;
 	}
-	tstring getExternalModelName(CREF(tstring) alias) const
+	std::string getExternalModelName(const std::string& alias) const
 	{
 		StringTable::const_iterator it = m_extModelList.find(alias);
 		return it != m_extModelList.end() ? it->second : "";
 	}
-	CREF(StringTable) getExternalModelList() const
+	const StringTable& getExternalModelList() const
 	{
 		return m_extModelList;
 	}
@@ -57,26 +58,31 @@ public:
 	double                             getTraceEndTime  () const { return m_traceEndTime;   }
 
 	void setShowMode      (rdo::service::simulation::ShowMode showMode);
-	void setFrameNumber   (int value,    CREF(YYLTYPE) pos);
-	void setShowRate      (double value, CREF(YYLTYPE) pos);
-	void setRunStartTime  (double value, CREF(YYLTYPE) pos);
-	void setTraceStartTime(double value, CREF(YYLTYPE) pos);
-	void setTraceEndTime  (double value, CREF(YYLTYPE) pos);
+	void setFrameNumber   (int value,    const YYLTYPE& pos);
+	void setShowRate      (double value, const YYLTYPE& pos);
+	void setRunStartTime  (double value, const YYLTYPE& pos);
+	void setTraceStartTime(double value, const YYLTYPE& pos);
+	void setTraceEndTime  (double value, const YYLTYPE& pos);
 
-	void setTerminateIf  (REF(LPRDOFUNLogic) pLogic);
-	void setConstValue   (CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm)    pArithm);
-	void setResParValue  (CREF(RDOParserSrcInfo) res_info,   CREF(RDOParserSrcInfo) par_info, REF(LPRDOFUNArithm) pArithm);
-	void setSeed         (CREF(RDOParserSrcInfo) seq_info,   int base);
-	void insertBreakPoint(CREF(RDOParserSrcInfo) src_info,   REF(LPRDOFUNLogic) pLogic);
+	void setTerminateIf  (LPRDOFUNLogic& pLogic);
+	void setConstValue   (const RDOParserSrcInfo& const_info, LPRDOFUNArithm& pArithm);
+	void setResParValue  (const RDOParserSrcInfo& res_info, const RDOParserSrcInfo& par_info, LPRDOFUNArithm& pArithm);
+	void setSeed         (const RDOParserSrcInfo& seq_info, int base);
+	void insertBreakPoint(const RDOParserSrcInfo& src_info, LPRDOFUNLogic& pLogic);
+
+	std::vector<rdo::runtime::LPRDOCalc> getCalcList() const { return m_SMRCalcList; }
 
 private:
 	RDOSMR();
 
-	OBJECT(BreakPoint) IS INSTANCE_OF(RDOParserSrcInfo)
+	PREDECLARE_POINTER(BreakPoint);
+	class BreakPoint
+		: public rdo::counter_reference
+		, public RDOParserSrcInfo
 	{
 	DECLARE_FACTORY(BreakPoint);
 	private:
-		BreakPoint(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic);
+		BreakPoint(const RDOParserSrcInfo& src_info, LPRDOFUNLogic pLogic);
 	};
 	typedef std::vector<LPBreakPoint> BreakPointList;
 
@@ -91,6 +97,10 @@ private:
 	YYLTYPE                             m_traceEndTime_pos;
 	LPRDOFUNLogic                       m_pTerminateIf;
 	BreakPointList                      m_breakPointList;
+
+	void addCalc(const rdo::runtime::LPRDOCalc pCalc) { m_SMRCalcList.push_back(pCalc); }
+
+	std::vector<rdo::runtime::LPRDOCalc> m_SMRCalcList;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

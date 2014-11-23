@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/tracer_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/chart/chart_preferences.h"
 #include "app/rdo_studio/src/tracer/chart/chart_view.h"
@@ -20,7 +19,7 @@
 
 using namespace rdo::gui::tracer;
 
-ChartPreferences::ChartPreferences(PTR(ChartView) pView)
+ChartPreferences::ChartPreferences(ChartView* pView)
 	: QDialog(pView, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 	, traceIndex(0)
 	, m_pView(pView)
@@ -46,7 +45,7 @@ ChartPreferences::ChartPreferences(PTR(ChartView) pView)
 
 	ChartDoc* doc = m_pView->getDocument();
 
-	BOOST_FOREACH(const ChartSerie* const pSerie, doc->getSerieList())
+	for (const ChartSerie* const pSerie: doc->getSerieList())
 	{
 		yTraceComboBox->addItem(pSerie->getSerie()->getTitle());
 		valueComboBox->addItem(pSerie->getSerie()->getTitle());
@@ -235,10 +234,8 @@ void ChartPreferences::onApplyButton()
 	applyButton->setEnabled(false);
 }
 
-void ChartPreferences::onCheckInput(const QString& text)
+void ChartPreferences::onCheckInput(const QString& /*text*/)
 {
-	UNUSED(text);
-
 	bool check = yValueLineEdit->text().toInt() >= 2 &&
 		xValueLineEdit->text().toInt() >= 2 &&
 		markerSizeLineEdit->text().toInt() >= 2;
@@ -285,9 +282,8 @@ void ChartPreferences::onColorSelected(const QColor& color)
 	onCheckAllData();
 }
 
-void ChartPreferences::onTraceValue(int index)
+void ChartPreferences::onTraceValue(int /*index*/)
 {
-	UNUSED(index);
 	onCheckAllData();
 }
 

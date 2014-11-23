@@ -38,25 +38,25 @@ class LogMainWnd;
 class TracerBase: public RDOThreadGUI
 {
 public:
-	void setLog (PTR(LogMainWnd) pTracerLog);
-	void setTree(PTR(ChartTree) pTreeCtrl);
+	void setLog(LogMainWnd* pTracerLog);
+	void setTree(ChartTree* pTreeCtrl);
 
 	void startTrace();
-	void    getModelStructure(std::istream& stream);
-	void    getTraceString(tstring trace_string);
-	tstring getNextValue(REF(tstring) line);
+	void getModelStructure(std::istream& stream);
+	void getTraceString(std::string trace_string);
+	std::string getNextValue(std::string& line);
 	ChartDoc* createNewChart();
 	void addChart(ChartDoc* const pDocument);
 	void removeChart(ChartDoc* pDocument);
-	ChartDoc* addSerieToChart(CREF(LPSerie) pSerie, ChartDoc* pDocument = NULL);
+	ChartDoc* addSerieToChart(const LPSerie& pSerie, ChartDoc* pDocument = NULL);
 	void updateChartsStyles() const;
 	void clear();
-	void setModelName(CREF(QString) name) const;
+	void setModelName(const QString& name) const;
 	void setDrawTrace(const bool value);
 	bool getDrawTrace() const;
 
 protected:
-	TracerBase(CREF(tstring) _thread_name, RDOKernelGUI* _kernel_gui);
+	TracerBase(const std::string& _thread_name, RDOKernelGUI* _kernel_gui);
 	virtual ~TracerBase();
 
 private:
@@ -82,34 +82,34 @@ private:
 	EventList         m_eventList;
 	ResultList        m_resultList;
 
-	void addResourceType(REF(tstring) s, std::istream& stream);
-	void addResource    (REF(tstring) s, std::istream& stream);
-	void addPattern     (REF(tstring) s, std::istream& stream);
-	void addOperation   (REF(tstring) s, std::istream& stream);
-	void addResult      (REF(tstring) s, std::istream& stream);
+	void addResourceType(std::string& s, std::istream& stream);
+	void addResource(std::string& s, std::istream& stream);
+	void addPattern(std::string& s, std::istream& stream);
+	void addOperation(std::string& s, std::istream& stream);
+	void addResult(std::string& s, std::istream& stream);
 
-	void dispatchNextString(REF(tstring) line);
+	void dispatchNextString(std::string& line);
 
-	Time* addTime(CREF(tstring) time);
+	Time* addTime(const std::string& time);
 	int m_eventIndex;
 
-	LPOperationBase getOperation(REF(tstring) line);void startAction(REF(tstring) line, Time* const pTime);
-	void accomplishAction(REF(tstring) line, Time* const pTime);
-	void irregularEvent(REF(tstring) line, Time* const pTime);
-	void productionRule(REF(tstring) line, Time* const pTime);
+	LPOperationBase getOperation(std::string& line);void startAction(std::string& line, Time* const pTime);
+	void accomplishAction(std::string& line, Time* const pTime);
+	void irregularEvent(std::string& line, Time* const pTime);
+	void productionRule(std::string& line, Time* const pTime);
 
-	LPResource getResource(REF(tstring) line);
-	LPResource resourceCreation(REF(tstring) line, Time* const pTime);
-	LPResource resourceElimination(REF(tstring) line, Time* const pTime);
+	LPResource getResource(std::string& line);
+	LPResource resourceCreation(std::string& line, Time* const pTime);
+	LPResource resourceElimination(std::string& line, Time* const pTime);
 	enum TracerResUpdateAction
 	{
 		RUA_NONE, RUA_ADD, RUA_UPDATE
 	};
 	TracerResUpdateAction m_updateAction;
-	LPResource            m_pResource;
-	LPResource resourceChanging(REF(tstring) line, Time* const pTime);
+	LPResource m_pResource;
+	LPResource resourceChanging(std::string& line, Time* const pTime);
 
-	LPResult getResult(REF(tstring) line);void resultChanging(REF(tstring) line, Time* const pTime);
+	LPResult getResult(std::string& line);void resultChanging(std::string& line, Time* const pTime);
 
 	TimeList m_timeList;
 

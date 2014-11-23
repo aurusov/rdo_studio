@@ -83,7 +83,7 @@ bool FindStyle::styleItalic( const int styleType ) const
 	return false;
 }
 
-tstring FindStyle::styleFGColorToHEX( const int styleType ) const
+std::string FindStyle::styleFGColorToHEX( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_FIND_DEFAULT: return colorToHEX( defaultColor );
