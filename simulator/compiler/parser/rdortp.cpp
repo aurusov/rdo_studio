@@ -271,6 +271,9 @@ Context::LPFindResult RDORTPResType::onFindContext(const std::string& method, co
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 			return rdo::Factory<FindResult>::create();
 
+		if (!params.exists(RDORSSResource::GET_RESOURCE))
+			RDOParser::s_parser()->error().error(srcInfo, rdo::format("Недопустимая конструкция"));
+
 		LPRDOParam pParam = findRTPParam(paramName);
 		ASSERT(pParam);
 
