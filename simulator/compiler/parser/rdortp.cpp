@@ -244,23 +244,10 @@ LPExpression contextTypeOfResourceType(const LPRDORTPResType& resourceType, cons
 
 Context::LPFindResult RDORTPResType::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
-	if (method == Context::METHOD_GET)
+	if (method == Context::METHOD_GET || method == Context::METHOD_SET)
 	{
-		const std::string paramName = params.identifier();
-
-		const std::size_t parNumb = getRTPParamNumber(paramName);
-		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
-		{
-			RDOParser::s_parser()->error().error(srcInfo, rdo::format("Неизвестный параметр ресурса: %s", paramName.c_str()));
-		}
-
-		Context::Params params_;
-		params_[RDORSSResource::GET_RESOURCE] = params.get<LPExpression>(RDORSSResource::GET_RESOURCE);
-		params_[RDOParam::CONTEXT_PARAM_PARAM_ID] = parNumb;
-
-		LPContext pParam = findRTPParam(paramName);
-		ASSERT(pParam);
-		return pParam->find(Context::METHOD_GET, params_, srcInfo);
+		RDOParser::s_parser()->error().error(
+			srcInfo, rdo::format("Присваивание ресурсов не разрешено"));
 	}
 
 	if (method == Context::METHOD_OPERATOR_DOT)
@@ -272,7 +259,7 @@ Context::LPFindResult RDORTPResType::onFindContext(const std::string& method, co
 			return rdo::Factory<FindResult>::create();
 
 		if (!params.exists(RDORSSResource::GET_RESOURCE))
-			RDOParser::s_parser()->error().error(srcInfo, rdo::format("Недопустимая конструкция"));
+			RDOParser::s_parser()->error().error(srcInfo, rdo::format("Ожидается имя ресурса"));
 
 		LPRDOParam pParam = findRTPParam(paramName);
 		ASSERT(pParam);
@@ -296,8 +283,6 @@ Context::LPFindResult RDORTPResType::onFindContext(const std::string& method, co
 
 		return rdo::Factory<FindResult>::create(SwitchContext(pParamType, params__));
 	}
-
-
 
 	if (method == Context::METHOD_TYPE_OF)
 	{
