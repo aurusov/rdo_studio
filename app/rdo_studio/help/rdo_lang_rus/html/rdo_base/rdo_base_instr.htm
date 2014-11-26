@@ -17,7 +17,7 @@
 | <A class="syntax" href="#statement_process_start">&lt;инструкция_инициации_процесса&gt;</A>
 | <A class="syntax" href="rdo_base_proc_lang.htm#operator_if">&lt;условная инструкция&gt;</A>
 | <A class="syntax" href="#statement_nochange">&lt;пустая_инструкция&gt;</A>
-| { <A class="syntax" href="#statement_list">&lt;список_инструкций&gt;</A> }</code></PRE>
+| {<A class="syntax" href="#statement_list">&lt;список_инструкций&gt;</A>}</code></PRE>
 			<DL class="syntax">
 				<DT class="syntax"><A name="statement_assignment"></A><I>инструкция_присваивания</I></DT>
 				<DD class="syntax">Инструкция присваивания имеет формат:
@@ -58,7 +58,7 @@
 				</DD>
 				<DT class="syntax"><A name="statement_planning"></A><I>инструкция_планирования_события</I></DT>
 				<DD class="syntax">Инструкция планирования события имеет формат:
-					<PRE class="syntax"><code class="rdo"><A class="syntax" href="#planning_event_name">&lt;имя_события&gt;</A>.planning( <A class="syntax" href="#event_time">&lt;время_планирования_события&gt;</A> [, <A class="syntax" href="#param_descr">&lt;знчение_параметров_события&gt;</A> ] );</code></PRE>
+					<PRE class="syntax"><code class="rdo"><A class="syntax" href="#planning_event_name">&lt;имя_события&gt;</A>.planning(<A class="syntax" href="#event_time">&lt;время_планирования_события&gt;</A> [, <A class="syntax" href="#param_descr">&lt;знчение_параметров_события&gt;</A>]);</code></PRE>
 					<DL class="syntax">
 						<DT class="syntax"><A name="planning_event_name"></A><I>имя_события</I></DT>
 						<DD class="syntax">Имя события - это имя одного из описанных в модели <A class="syntax" href="../rdo_obj/rdo_pat_type/rdo_pat_type_event.htm">событий</A>.</DD>
@@ -78,7 +78,7 @@
 				</DD>
 				<DT class="syntax"><A name="statement_process_start"></A><I>инструкция_инициации_процесса</I></DT>
 				<DD class="syntax">Инструкция инициации процесса активизирует процесс обслуживания, передавая транзакт в его первый блок, имеет следующий формат:
-					<PRE class="syntax"><code class="rdo"><A class="syntax" href="#proc_name">&lt;имя_процесса&gt;</A>.processStart( <A class="syntax" href="#transact">&lt;транзакт&gt;</A> );</code></PRE>
+					<PRE class="syntax"><code class="rdo"><A class="syntax" href="#proc_name">&lt;имя_процесса&gt;</A>.processStart(<A class="syntax" href="#transact">&lt;транзакт&gt;</A>);</code></PRE>
 					<DL class="syntax">
 						<DT class="syntax"><A name="proc_name"></A><I>имя_процесса</I></DT>
 						<DD class="syntax">Имя события - это имя одного из описанных в модели <A class="syntax" href="../rdo_obj/rdo_obj_proc.htm">процессов</A>.</DD>

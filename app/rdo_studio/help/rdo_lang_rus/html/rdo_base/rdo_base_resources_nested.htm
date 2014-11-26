@@ -24,91 +24,85 @@
     <DT class="syntax"><A name="param_type"></A><I>имя_типа_ресурса</I></DT>
           <DD class="syntax">Имя типа ресурса - это имя одного из типов ресурсов, описанных ранее. Задание значения по умолчанию для параметра типа ресурса невозможно.</DD>
 		<H4>Пример</H4>
-		<PRE class="syntax"><code class="rdo">
-$Resource_type CPU_Type: permanent
+		<PRE class="syntax"><code class="rdo">$Resource_type CPU_Type: permanent
 $Parameters
-  number_of_cores:  integer
-  clock_rate: real
+    number_of_cores: integer
+    clock_rate     : real
 $End
 
 $Resource_type RAM_Type: permanent
 $Parameters
-  memory_size: real
-  clock_rate: real
+    memory_size: real
+    clock_rate : real
 $End
 
 $Resource_type Graphic_Card_Type: permanent
 $Parameters
-  memory_size: real
-  memory_clock: real
+    memory_size : real
+    memory_clock: real
 $End
 
 $Resource_type HDD_Type: permanent
 $Parameters
-  memory_size: real
-  rotational_frequency: real
+    memory_size         : real
+    rotational_frequency: real
 $End
 
 $Resource_type Laptop: permanent
 $Parameters
-  CPU: CPU_Type
-  RAM: RAM_Type
-  Graphic_Card: Graphic_Card_Type
-  HDD: HDD_Type
-  screen_size: real
-  weight: real
-  price: real
-  amount: integer
-  sold: integer
-  rating: real
-$End
-</code></PRE>
+    CPU         : CPU_Type
+    RAM         : RAM_Type
+    Graphic_Card: Graphic_Card_Type
+    HDD         : HDD_Type
+    screen_size : real
+    weight      : real
+    price       : real
+    amount      : integer
+    sold        : integer
+    rating      : real
+$End</code></PRE>
     <H4>Создание вложенных ресурсов</H4>
 		<P>Создание вложенных ресурсов осуществляется как определение значения соответствующего параметра родительского ресурса. В этом случае вместо начального значения параметра приводится конструктор вложенного ресурса с начальными значениями его параметров. Если вложенный ресурс тоже имеет ресурсы в качестве своих параметров, их создание описывается аналогично.</P>
 		<H4>Пример</H4>
-		<PRE class="syntax"><code class="rdo">
-$Resources
-  Laptop_1 = Laptop(
-    CPU_Type(4, 3700),
-    RAM_Type(4096, 1600),
-    Graphic_Card_Type(2048, 2600),
-    HDD_Type(500, 7200),
-    15.6,
-    2.1,
-    1499,
-    50,
-    0,
-    0
-  );  							
-$End
-</code></PRE>
+		<PRE class="syntax"><code class="rdo">$Resources
+    Laptop_1 = Laptop(
+        CPU_Type(4, 3700),
+        RAM_Type(4096, 1600),
+        Graphic_Card_Type(2048, 2600),
+        HDD_Type(500, 7200),
+        15.6,
+        2.1,
+        1499,
+        50,
+        0,
+        0);    							
+$End</code></PRE>
     <H4>Доступ к параметрам вложенных ресурсов</H4>
 		<P>Доступ к параметрам ресурса произвольного уровня вложенности осуществляется через оператор 'точка'('.').</P>
 		<H4>Пример<H4>
-		<PRE class="syntax"><code class="rdo">
-$Pattern Choosing_laptop_pattern : operation trace
+		<PRE class="syntax"><code class="rdo">$Pattern Choosing_laptop_pattern: operation trace
 $Relevant_resources
-  _Client : Clients Keep Erase
-  _Chosen_laptop : Laptop Keep NoChange
+    _Client       : Clients Keep Erase
+    _Chosen_laptop: Laptop Keep NoChange
 $Time = exponential_sequence(20)
 $Body
 _Client:
-  Choice from status == Ready
-  Convert_begin
-    status = Done;
+    Choice from status == Ready
+    Convert_begin
+        status = Done;
+		
 _Chosen_laptop:
-  Choice from _Client.money_available >= price
-      and _Client.desired_Laptop.RAM.memory_size <= RAM.memory_size
-      and _Client.desired_Laptop.Graphic_Card.memory_clock <= Graphic_Card.memory_clock
-      and _Client.desired_Laptop.CPU.clock_rate <= CPU.clock_rate
-      and _Client.desired_Laptop.HDD.memory_size <= HDD.memory_size
-      and amount > 0
-      with_min price
-  Convert_begin
-    amount--;
-    sold++;
-$End
-</code></PRE>
+    Choice from _Client.money_available >= price
+            and _Client.desired_Laptop.RAM.memory_size <= RAM.memory_size
+            and _Client.desired_Laptop.Graphic_Card.memory_clock <= Graphic_Card.memory_clock
+            and _Client.desired_Laptop.CPU.clock_rate <= CPU.clock_rate
+            and _Client.desired_Laptop.HDD.memory_size <= HDD.memory_size
+            and amount > 0
+    with_min price
+    Convert_begin
+        amount--;
+        sold++;
+$End</code></PRE>
 <H4>См. также</H4>
   <P><A href="rdo_base_resources.htm">Описание ресурсов</A></P>
 	<P><A href="rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
