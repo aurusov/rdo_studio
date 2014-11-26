@@ -1,0 +1,111 @@
+<HTML>
+<HEAD>
+<TITLE>Спрайт</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
+<link rel="stylesheet" href="../../../shared/styles/highlight.styles/googlecode.css">
+<META http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script src="../../../shared/scripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<SCRIPT>
+function toggle_display(e)
+{
+	if (e.style.display == "none")
+		e.style.display = "";
+	else
+		e.style.display = "none";
+	return false;
+}
+</SCRIPT>
+</HEAD>
+<BODY>
+	<DIV>
+		<H1>СПРАЙТ</H1>
+		<P><B>Описание спрайтов</B> производится в <A href="../rdo_terms.htm#object">объекте</A> исходных данных с расширением <FONT class="syntax">.frm</FONT> (<A href="rdo_obj_frm.htm">кадры анимации</A>), который является исходным для системы отображения. <A name="sprite"></A>Спрайт представляет собой группу переменных элементов отображения, состав, форма, размеры и расположение которых определяются состоянием системы и, следовательно, могут изменяться во время просмотра <A href="rdo_obj_frm.htm#frame">кадра</A>.</P>
+		<P>Описание спрайта имеет следующий формат:</P>
+		<PRE class="syntax"><code class="rdo">$Sprite <A class="syntax" href="#sprite_name">&lt;имя_спрайта&gt;</A> ()
+[ <A class="syntax" href="#elem_desc">&lt;описание_элементов_отображения&gt;</A> ]
+$End</code></PRE>
+		<DL class="syntax">
+			<DT class="syntax"><A name="sprite_name"></A><I>имя_спрайта</I></DT>
+			<DD class="syntax">Имя спрайта представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех спрайтов и не должны совпадать с ранее определенными именами.</DD>
+			<DT class="syntax"><A name="elem_desc"></A><I>описание_элементов_отображения</I></DT>
+			<DD class="syntax">Список элементов можно посмотреть по <A href="rdo_obj_frm_elem.htm">ссылке</A>.
+				<P>Спрайт может быть пустым. При описании спрайта может быть использован <A href="../rdo_base/rdo_base_proc_lang.htm">процедурный язык</A>. Это дает возможность отображать часть элементов по заданному <A href="../rdo_base/rdo_base_proc_lang.htm#operator_if">условию</A> или сокращать объём кода модели за счет <A href="../rdo_base/rdo_base_proc_lang.htm#operator_for">циклов</A>. Использование спрайтов позволяет сокращать объем кода модели за счет повторного использования текста, написанного в теле спрайта. Спрайты целесообразно применять для отрисовки повторяющейся сложной анимации на разных кадрах ИЛИ в рамках одного кадра, используя при описании спрайта <A href="rdo_obj_sec_enum.htm">последовательности перечислимых значений</A>, причем количество её элементов должно совпадать с количеством использований конкретного спрайта.</P>
+			</DD>
+		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Пример 1</H4></A>
+		<DIV style="display:none" id="v1">
+		<PRE class="syntax"><code class="rdo">$Sprite Target()
+	integer centerX = R + Seq_X_val;
+	integer centerY = R + Seq_Y_val;
+	integer step = R/num;
+
+	for (integer i = 0; i < num/2; i++)
+	{
+		circle (centerX,centerY,R - 2*step*i + 2       ,black,black);
+		circle (centerX,centerY,R - 2*step*i           ,red  ,black);
+		circle (centerX,centerY,R - 2*step*i - step + 2,black,black);
+		circle (centerX,centerY,R - 2*step*i - step    ,white,black);
+	}
+	
+	for (integer j = 1; j < num; j++)
+	{
+		text (centerX - step*j - 20,centerY - 10,20,20,transparent,black,= num - j);
+		text (centerX + step*j     ,centerY - 10,20,20,transparent,black,= num - j);
+	}
+	text (centerX - 10,centerY - 10,20,20,transparent,black,= num);
+$End
+
+$Frame frame1
+$Back_picture = <23, 124, 253> 1148 480
+	sprite Target();
+	sprite Target();
+	sprite Target();
+	sprite Target();
+	sprite Target();
+	sprite Target();
+$End</code></PRE>
+	</DIV>
+	<A href="" class="ref" onclick="return toggle_display(v2);"><H4>Пример 2</H4></A>
+	<DIV style="display:none" id="v2">
+		<PRE class="syntax"><code class="rdo">$Sprite Target()
+	integer centerX = R + 30;
+	integer centerY = R + 30;
+	integer step = R/num;
+
+	for (integer i = 0; i < num/2; i++)
+	{
+		circle (centerX,centerY,R - 2*step*i + 2       ,black,black);
+		circle (centerX,centerY,R - 2*step*i           ,red  ,black);
+		circle (centerX,centerY,R - 2*step*i - step + 2,black,black);
+		circle (centerX,centerY,R - 2*step*i - step    ,white,black);
+	}
+	
+	for (integer j = 1; j < num; j++)
+	{
+		text (centerX - step*j - 20,centerY - 10,20,20,transparent,black,= num - j);
+		text (centerX + step*j     ,centerY - 10,20,20,transparent,black,= num - j);
+	}
+	text (centerX - 10,centerY - 10,20,20,transparent,black,= num);
+$End
+
+$Frame frame1
+$Back_picture = <23, 124, 253> 1148 480
+	sprite Target();
+$End
+
+$Frame frame2
+$Back_picture = <23, 124, 253> 1148 480
+	sprite Target();
+$End
+
+$Frame frame3
+$Back_picture = <23, 124, 253> 1148 480
+	sprite Target();
+$End</code></PRE>
+	</DIV>
+	<H4>См. также</H4>
+	<P><A href="rdo_obj_pat.htm">Описание образцов</A></P>
+	</DIV>
+	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
+</BODY>
+</HTML>
