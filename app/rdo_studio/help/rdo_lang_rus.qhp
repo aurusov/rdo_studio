@@ -55,6 +55,7 @@
 					</section>
 					<section title="Кадры анимации" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm">
 						<section title="Элементы отображения" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm_elem.htm"/>
+						<section title="Спрайт" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm_sprite.htm"/>
 					</section>
 					<section title="Объект описания показателей" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
 					<section title="Объект прогона" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
@@ -129,6 +130,7 @@
 			<keyword name="$Result_values" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
 			<keyword name="$Results" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
 			<keyword name="$Sequence" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec.htm"/>
+			<keyword name="$Sprite" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm_sprite.htm"/>
 			<keyword name="$Status" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
 			<keyword name="$Status" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
 			<keyword name="$Term_condition" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
@@ -342,6 +344,7 @@
 			<keyword name="SMR" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
 			<keyword name="SO" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
 			<keyword name="some" ref="rdo_lang_rus/html/rdo_dpt/rdo_dpt_some.htm"/>
+			<keyword name="sprite" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm_elem.htm"/>
 			<keyword name="Sqrt" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
 			<keyword name="SRC" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
 			<keyword name="SRE" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
