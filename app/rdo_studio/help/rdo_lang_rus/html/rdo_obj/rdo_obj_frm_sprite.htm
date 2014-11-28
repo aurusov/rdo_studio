@@ -22,8 +22,8 @@ function toggle_display(e)
 		<H1>СПРАЙТ</H1>
 		<P><B>Описание спрайтов</B> производится в <A href="../rdo_terms.htm#object">объекте</A> исходных данных с расширением <FONT class="syntax">.frm</FONT> (<A href="rdo_obj_frm.htm">кадры анимации</A>), который является исходным для системы отображения. <A name="sprite"></A>Спрайт представляет собой группу переменных элементов отображения, состав, форма, размеры и расположение которых определяются состоянием системы и, следовательно, могут изменяться во время просмотра <A href="rdo_obj_frm.htm#frame">кадра</A>.</P>
 		<P>Описание спрайта имеет следующий формат:</P>
-		<PRE class="syntax"><code class="rdo">$Sprite <A class="syntax" href="#sprite_name">&lt;имя_спрайта&gt;</A> ()
-[ <A class="syntax" href="#elem_desc">&lt;описание_элементов_отображения&gt;</A> ]
+		<PRE class="syntax"><code class="rdo">$Sprite <A class="syntax" href="#sprite_name">&lt;имя_спрайта&gt;</A>(&lt;параметры&gt;)
+    [<A class="syntax" href="#elem_desc">&lt;описание_элементов_отображения&gt;</A>]
 $End</code></PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="sprite_name"></A><I>имя_спрайта</I></DT>
@@ -38,72 +38,72 @@ $End</code></PRE>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Пример 1</H4></A>
 		<DIV style="display:none" id="v1">
 		<PRE class="syntax"><code class="rdo">$Sprite Target()
-	integer centerX = R + Seq_X_val;
-	integer centerY = R + Seq_Y_val;
-	integer step = R/num;
+    integer centerX = R + Seq_X_val;
+    integer centerY = R + Seq_Y_val;
+    integer step = R/num;
 
-	for (integer i = 0; i < num/2; i++)
-	{
-		circle (centerX,centerY,R - 2*step*i + 2       ,black,black);
-		circle (centerX,centerY,R - 2*step*i           ,red  ,black);
-		circle (centerX,centerY,R - 2*step*i - step + 2,black,black);
-		circle (centerX,centerY,R - 2*step*i - step    ,white,black);
-	}
-	
-	for (integer j = 1; j < num; j++)
-	{
-		text (centerX - step*j - 20,centerY - 10,20,20,transparent,black,= num - j);
-		text (centerX + step*j     ,centerY - 10,20,20,transparent,black,= num - j);
-	}
-	text (centerX - 10,centerY - 10,20,20,transparent,black,= num);
+    for (integer i = 0; i < num/2; i++)
+    {
+        circle(centerX, centerY, R - 2*step*i + 2       , black, black);
+        circle(centerX, centerY, R - 2*step*i           , red  , black);
+        circle(centerX, centerY, R - 2*step*i - step + 2, black, black);
+        circle(centerX, centerY, R - 2*step*i - step    , white, black);
+    }
+
+    for (integer j = 1; j < num; j++)
+    {
+        text(centerX - step*j - 20, centerY - 10, 20, 20, transparent, black,= num - j);
+        text(centerX + step*j     , centerY - 10, 20, 20, transparent, black,= num - j);
+    }
+    text(centerX - 10, centerY - 10, 20, 20, transparent, black,= num);
 $End
 
 $Frame frame1
 $Back_picture = <23, 124, 253> 1148 480
-	sprite Target();
-	sprite Target();
-	sprite Target();
-	sprite Target();
-	sprite Target();
-	sprite Target();
+    sprite Target();
+    sprite Target();
+    sprite Target();
+    sprite Target();
+    sprite Target();
+    sprite Target();
 $End</code></PRE>
 	</DIV>
 	<A href="" class="ref" onclick="return toggle_display(v2);"><H4>Пример 2</H4></A>
 	<DIV style="display:none" id="v2">
 		<PRE class="syntax"><code class="rdo">$Sprite Target()
-	integer centerX = R + 30;
-	integer centerY = R + 30;
-	integer step = R/num;
+    integer centerX = R + 30;
+    integer centerY = R + 30;
+    integer step = R/num;
 
-	for (integer i = 0; i < num/2; i++)
-	{
-		circle (centerX,centerY,R - 2*step*i + 2       ,black,black);
-		circle (centerX,centerY,R - 2*step*i           ,red  ,black);
-		circle (centerX,centerY,R - 2*step*i - step + 2,black,black);
-		circle (centerX,centerY,R - 2*step*i - step    ,white,black);
-	}
-	
-	for (integer j = 1; j < num; j++)
-	{
-		text (centerX - step*j - 20,centerY - 10,20,20,transparent,black,= num - j);
-		text (centerX + step*j     ,centerY - 10,20,20,transparent,black,= num - j);
-	}
-	text (centerX - 10,centerY - 10,20,20,transparent,black,= num);
+    for (integer i = 0; i < num/2; i++)
+    {
+        circle(centerX, centerY, R - 2*step*i + 2       , black, black);
+        circle(centerX, centerY, R - 2*step*i           , red  , black);
+        circle(centerX, centerY, R - 2*step*i - step + 2, black, black);
+        circle(centerX, centerY, R - 2*step*i - step    , white, black);
+    }
+
+    for (integer j = 1; j < num; j++)
+    {
+        text(centerX - step*j - 20, centerY - 10, 20, 20, transparent, black,= num - j);
+        text(centerX + step*j     , centerY - 10, 20, 20, transparent, black,= num - j);
+    }
+    text(centerX - 10, centerY - 10, 20, 20, transparent, black,= num);
 $End
 
 $Frame frame1
 $Back_picture = <23, 124, 253> 1148 480
-	sprite Target();
+    sprite Target();
 $End
 
 $Frame frame2
 $Back_picture = <23, 124, 253> 1148 480
-	sprite Target();
+    sprite Target();
 $End
 
 $Frame frame3
 $Back_picture = <23, 124, 253> 1148 480
-	sprite Target();
+    sprite Target();
 $End</code></PRE>
 	</DIV>
 	<H4>См. также</H4>
