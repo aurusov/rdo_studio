@@ -133,7 +133,6 @@ void RDOThreadRepository::proc(RDOMessageInfo& msg)
 			data->m_name      = getFileName    (data->m_type);
 			data->m_fullName  = getFullFileName(data->m_type);
 			data->m_extension = getExtension   (data->m_type);
-			data->m_described = isDescribed    (data->m_type);
 			data->m_readOnly  = isReadOnly     (data->m_type);
 			msg.unlock();
 			break;
@@ -199,7 +198,6 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 	for (auto& file: m_files)
 	{
 		file.second.m_fileName      = m_modelName;
-		file.second.m_described     = true;
 		file.second.m_mustExist     = false;
 		file.second.m_deleteIfEmpty = true;
 	}
@@ -376,36 +374,29 @@ void RDOThreadRepository::setName(const boost::filesystem::path& name)
 	}
 }
 
-void RDOThreadRepository::loadFile(const boost::filesystem::path& fileName, std::ostream& stream, bool described, bool mustExist, bool& reanOnly) const
+void RDOThreadRepository::loadFile(const boost::filesystem::path& fileName, std::ostream& stream, bool mustExist, bool& reanOnly) const
 {
-	if (described)
+	if (rdo::File::exist(fileName))
 	{
-		if (rdo::File::exist(fileName))
+		if (!m_realOnlyInDlg)
 		{
-			if (!m_realOnlyInDlg)
-			{
-				reanOnly = rdo::File::read_only(fileName);
-			}
-			else
-			{
-				reanOnly = true;
-			}
-			boost::filesystem::ifstream file(fileName, std::ios::in | std::ios::binary);
-			stream << file.rdbuf();
-			file.close();
+			reanOnly = rdo::File::read_only(fileName);
 		}
 		else
 		{
-			stream.setstate(std::ios_base::badbit);
-			if (mustExist)
-			{
-				stream.setstate(stream.rdstate() | std::ios_base::failbit);
-			}
+			reanOnly = true;
 		}
+		boost::filesystem::ifstream file(fileName, std::ios::in | std::ios::binary);
+		stream << file.rdbuf();
+		file.close();
 	}
 	else
 	{
 		stream.setstate(std::ios_base::badbit);
+		if (mustExist)
+		{
+			stream.setstate(stream.rdstate() | std::ios_base::failbit);
+		}
 	}
 }
 
@@ -463,7 +454,7 @@ void RDOThreadRepository::createRDOX()
 
 void RDOThreadRepository::load(rdo::model::FileType type, std::ostream& stream)
 {
-	loadFile(getFullFileName(type), stream, m_files[type].m_described, m_files[type].m_mustExist, m_files[type].m_readOnly);
+	loadFile(getFullFileName(type), stream, m_files[type].m_mustExist, m_files[type].m_readOnly);
 }
 
 void RDOThreadRepository::save(rdo::model::FileType type, const std::stringstream& stream) const
@@ -525,44 +516,36 @@ void RDOThreadRepository::beforeModelStart()
 	m_systemTime = boost::posix_time::second_clock::local_time();
 
 	if (m_traceFile.is_open())
-	{
 		m_traceFile.close();
-	}
-	if (m_files[rdo::model::TRC].m_described)
+
+	m_traceFile.open(getFullFileName(rdo::model::TRC), std::ios::out | std::ios::binary);
+	if (m_traceFile.is_open())
 	{
-		m_traceFile.open(getFullFileName(rdo::model::TRC), std::ios::out | std::ios::binary);
-		if (m_traceFile.is_open())
-		{
-			writeModelFilesInfo(m_traceFile);
-			std::stringstream model_structure;
-			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure);
-			m_traceFile << std::endl << model_structure.str() << std::endl;
-			m_traceFile << "$Tracing" << std::endl;
-		}
+		writeModelFilesInfo(m_traceFile);
+		std::stringstream model_structure;
+		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure);
+		m_traceFile << std::endl << model_structure.str() << std::endl;
+		m_traceFile << "$Tracing" << std::endl;
 	}
 }
 
 void RDOThreadRepository::stopModel()
 {
 	if (m_traceFile.is_open())
-	{
 		m_traceFile.close();
-	}
-	if (m_files[rdo::model::PMV].m_described)
+
+	boost::filesystem::ofstream results_file;
+	results_file.open(getFullFileName(rdo::model::PMV), std::ios::out | std::ios::binary);
+	if (results_file.is_open())
 	{
-		boost::filesystem::ofstream results_file;
-		results_file.open(getFullFileName(rdo::model::PMV), std::ios::out | std::ios::binary);
-		if (results_file.is_open())
-		{
-			writeModelFilesInfo(results_file);
-			std::stringstream stream;
-			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS_INFO, &stream);
-			results_file << std::endl << stream.str() << std::endl;
-			stream.str("");
-			stream.clear();
-			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &stream);
-			results_file << std::endl << stream.str() << std::endl;
-		}
+		writeModelFilesInfo(results_file);
+		std::stringstream stream;
+		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS_INFO, &stream);
+		results_file << std::endl << stream.str() << std::endl;
+		stream.str("");
+		stream.clear();
+		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &stream);
+		results_file << std::endl << stream.str() << std::endl;
 	}
 }
 
@@ -623,17 +606,6 @@ bool RDOThreadRepository::isReadOnly(rdo::model::FileType type) const
 	}
 
 	return it->second.m_readOnly;
-}
-
-bool RDOThreadRepository::isDescribed(rdo::model::FileType type) const
-{
-	const auto it = m_files.find(type);
-	if (it == m_files.end())
-	{
-		NEVER_REACH_HERE;
-	}
-
-	return it->second.m_described;
 }
 
 bool RDOThreadRepository::isMustExist(rdo::model::FileType type) const

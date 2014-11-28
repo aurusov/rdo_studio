@@ -11,27 +11,36 @@
 	<DIV>
 		<H1>ТРАССИРОВКА СОСТОЯНИЯ РЕСУРСОВ</H1>
 		<P><B>Трассировка состояния ресурсов</B> включает в себя информацию обо всех изменениях состояния ресурсов. В момент изменения состояния трассируемого ресурса в объект трассировки выдается отдельная строка следующего формата:</P>
-		<PRE class="syntax"><code class="rdo">R<A class="syntax" href="#stat_symb">&lt;символ_статуса&gt;</A> <A class="syntax" href="#time">&lt;время&gt;</A> <A class="syntax" href="#type_num">&lt;номер_типа&gt;</A> <A class="syntax" href="#res_num">&lt;номер_ресурса&gt;</A>
-<A class="syntax" href="#new_val">&lt;новые_значения_параметров&gt;</A></code></PRE>
+		<PRE class="syntax"><code class="rdo">R<A class="syntax" href="#stat_symb">&lt;символ_статуса&gt;</A>
+    <A class="syntax" href="#time">&lt;время&gt;</A>
+    <A class="syntax" href="#type_num">&lt;номер_типа&gt;</A>
+    <A class="syntax" href="#res_num">&lt;номер_ресурса&gt;</A>
+    <A class="syntax" href="#new_val">&lt;новые_значения_параметров&gt;</A></code></PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="stat_symb"></A><I>символ_статуса</I></DT>
 			<DD class="syntax">Символ статуса обозначает, что произошло с ресурсом в целом:
 				<TABLE class="visible">
 					<TR valign="top">
-						<TH align="left" width="20%">Символ статуса</TH>
-						<TH align="left" width="80%">Описание</TH>
+						<TH align="left" width="15%">Символ статуса</TH>
+						<TH align="left" width="85%">Описание</TH>
 					</TR>
 					<TR valign="top">
-						<TD class="visible" NOWRAP width="20%"><A name="rc"></A><FONT class="syntax">C</FONT></TD>
-						<TD class="visible" width="80%">Ресурс создан</TD>
+						<TD class="visible" NOWRAP width="15%"><A name="rc"></A><FONT class="syntax">C</FONT></TD>
+						<TD class="visible" width="85%">Ресурс создан
+							<PRE class="syntax"><code class="rdo">RC 0 8 71 1 1 31.0032 0 51 0 0 274.8 402.8 530.8 498.8 626.8 754.8 722.8</code></PRE>
+						</TD>
 					</TR>
 					<TR valign="top">
-						<TD class="visible" NOWRAP width="20%"><A name="re"></A><FONT class="syntax">E</FONT></TD>
-						<TD class="visible" width="80%">Ресурс уничтожен</TD>
+						<TD class="visible" NOWRAP width="15%"><A name="re"></A><FONT class="syntax">E</FONT></TD>
+						<TD class="visible" width="85%">Ресурс уничтожен
+							<PRE class="syntax"><code class="rdo">RE 0.336553 1 87 -3275 201 489 467 0.360761 1281 2.85054 0 2 8 38 32766 350 0.843091 0.873441</code></PRE>
+						</TD>
 					</TR>
 					<TR valign="top">
-						<TD class="visible" NOWRAP width="20%"><A name="rk"></A><FONT class="syntax">K</FONT></TD>
-						<TD class="visible" width="80%">Значения параметров ресурса изменились</TD>
+						<TD class="visible" NOWRAP width="15%"><A name="rk"></A><FONT class="syntax">K</FONT></TD>
+						<TD class="visible" width="85%">Значения параметров ресурса изменились
+							<PRE class="syntax"><code class="rdo">RK 0 7 42 2 1 2 53 26.8291 0 14 519 160 180 7.92202 0 3 1 8 0 0 0 0</code></PRE>
+						</TD>
 					</TR>
 				</TABLE>
 			</DD>
