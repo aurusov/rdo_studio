@@ -34,8 +34,9 @@ function toggle_display(e)
 			<h2>Условный оператор</h2>
 			<P><A name="operator_if"></A><B>Описание условного оператора</B> имеет следующий формат:</P>
 			<PRE class="syntax"><code class="rdo">if (<A class="syntax" href="#log_cond">&lt;условие&gt;</A>)
-  <A class="syntax" href="#proc_list_1">&lt;первая_ветвь_исполнения&gt;</A>;
-{else <A class="syntax" href="#proc_list_2">&lt;вторая_ветвь_исполнения&gt;</A>;}</code></PRE>
+    <A class="syntax" href="#proc_list_1">&lt;первая_ветвь_исполнения&gt;</A>;
+{else
+    <A class="syntax" href="#proc_list_2">&lt;вторая_ветвь_исполнения&gt;</A>;}</code></PRE>
 			<DL class="syntax">
 				<DT class="syntax"><A name="log_cond"></A><I>условие</I></DT>
 				<DD class="syntax">Логическое выражение, определяющее выполнение первой ветви <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедур</A> условного оператора</DD>
@@ -64,11 +65,11 @@ else
 			</DL>
 			<h2>Операторы объявления и инициализации локальной переменной</h2>
 			<P>Для <A name="operator_declare"></A><B>объявления локальной переменной</B>  необходимо указать ее тип и имя:</P>
-			<PRE class="syntax"><code class="rdo"> <A class="syntax" href="#type_var">&lt;тип_переменной&gt;</A> <A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A></code></PRE>
+			<PRE class="syntax"><code class="rdo"><A class="syntax" href="#type_var">&lt;тип_переменной&gt;</A> <A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A></code></PRE>
 			<P><A name="operator_init"></A><B>Инициализовать локальную переменную</B> можно следующим образом:</P>
-			<PRE class="syntax"><code class="rdo"> <A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A> = <A class="syntax" href="#var_equation">&lt;значение&gt;</A></code></PRE>
+			<PRE class="syntax"><code class="rdo"><A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A> = <A class="syntax" href="#var_equation">&lt;значение&gt;</A></code></PRE>
 			<P> Два данных оператора можно использовать в одной процедуре, сводя ее к такой конструкции, создающей новую переменную:</P>
-			<PRE class="syntax"><code class="rdo"> <A class="syntax" href="#type_var">&lt;тип_переменной&gt;</A> <A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A> = <A class="syntax" href="#var_equation">&lt;значение&gt;</A>;</code></PRE>
+			<PRE class="syntax"><code class="rdo"><A class="syntax" href="#type_var">&lt;тип_переменной&gt;</A> <A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A> = <A class="syntax" href="#var_equation">&lt;значение&gt;</A>;</code></PRE>
 			<DL class="syntax">
 				<DT class="syntax"><A name="type_var"></A><I>тип_переменной</I></DT>
 				<DD class="syntax">Тип переменной - это один из возможных в языке <A href="rdo_base_types.htm">типов данных</A>.</DD>
@@ -84,7 +85,7 @@ else
 				<PRE name="sample_3" class="samples">
 <code class="rdo">{
     integer i;
-    bool Condition = false;
+    bool condition = false;
     real k;
     k = 1.01;
 }</code>
@@ -93,12 +94,12 @@ else
 			</DL>
 				<h2>Оператор цикла</h2>
 			<P><A name="operator_for"></A><B>Описание оператора цикла</B> имеет следующий формат:</P>
-			<PRE class="syntax"><code class="rdo">for ( <A class="syntax" href="#def_cycle_var">&lt;определение_циклической_переменной&gt;</A>; <A class="syntax" href="#cycle_log_cond">&lt;логическое выражение&gt;</A>;<A class="syntax" href="#cycle_statement"> &lt;выражение&gt;</A>)
-			<A class="syntax" href="#cycle_body">&lt;тело_цикла&gt;</A></code></PRE>
+			<PRE class="syntax"><code class="rdo">for (<A class="syntax" href="#def_cycle_var">&lt;инициализация&gt;</A>; <A class="syntax" href="#cycle_log_cond">&lt;условие_останова&gt;</A>; <A class="syntax" href="#cycle_statement">&lt;выражение&gt;</A>)
+    <A class="syntax" href="#cycle_body">&lt;тело_цикла&gt;</A></code></PRE>
 			<DL class="syntax">
-				<DT class="syntax"><A name="def_cycle_var"></A><I>определение_циклической_переменной</I></DT>
+				<DT class="syntax"><A name="def_cycle_var"></A><I>инициализация</I></DT>
 				<DD class="syntax">Определить циклическую переменную можно оператором присваивания начального значения уже объявленной циклической переменной или оператором объявления локальной циклической переменной с инициализирующим значением.</DD>
-				<DT class="syntax"><A name="cycle_log_cond"></A><I>логическое выражение</I></DT>
+				<DT class="syntax"><A name="cycle_log_cond"></A><I>условие_останова</I></DT>
 				<DD class="syntax">Логическое выражение, содержащее условие выполнения текущей итерации цикла.</DD>
 				<DT class="syntax"><A name="cycle_statement"></A><I>выражение</I></DT>
 				<DD class="syntax"><A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедура</A>, выполняемая после <A href="#cycle_body">тела цикла</A>. Обычно используется для изменения циклической переменной.</DD>
@@ -116,18 +117,17 @@ else
 			<P class="remarks">Окончание работы цикла также может быть вызвано <B>операторами</B> <A href="#operator_break">break</A> и <A href="#operator_return">return</A>.</P>
 			<DL class="syntax">
 				<DD class="syntax"></DD>
-				<A href="" class="ref" onclick="return toggle_display(v3);"><H4>Примеры</H4></A>
+				<A href="" class="ref" onclick="return toggle_display(v3);"><H4>Пример</H4></A>
 				<DIV style="display:none" id="v3">
 				<P>Пример функции <B><I>вычисления факториала числа</I></B>:</P>
-				<PRE name="sample_4" class="samples">
-<code class="rdo">$Function Factorial : integer
+				<PRE name="sample_4" class="samples"><code class="rdo">$Function Factorial: integer
 $Type = algorithmic
 $Parameters
-argument: integer
+    argument: integer
 $Body
-    integer s=1;
+    integer s = 1;
     for (integer i = 1; i &lsaquo;= argument; i++)
-    s *= i;
+        s *= i;
     return s;
 $End</code>
 				</PRE>
@@ -137,23 +137,21 @@ $End</code>
 			<P><A name="operator_break"></A>Для преждевременного (до выполнения <A href="#cycle_log_cond">условия</A>) выхода из цикла можно использовать <B>оператор break</B>. Данный оператор позволяет закончить выполнение оператора цикла. Может быть указан одной из <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедур</A> тела цикла. В одной процедуре с данным оператором не может быть ни каких других операторов.</P>
 			<DL class="syntax">
 				<DD class="syntax"></DD>
-				<A href="" class="ref" onclick="return toggle_display(v4);"><H4>Примеры</H4></A>
+				<A href="" class="ref" onclick="return toggle_display(v4);"><H4>Пример</H4></A>
 				<DIV style="display:none" id="v4">
 				<P>Пример вложенного цикла, считающего сумму из квадратов чисел 1-30,кубов чисел 1-20 и четвертых степеней 1-10:</P>
-				<PRE name="sample_5" class="samples">
-<code class="rdo">real s = 0;
+				<PRE name="sample_5" class="samples"><code class="rdo">real s = 0;
 for (integer i = 2; i &lt; 4; i++)
 {
-  for(integer j = 1; j &lt; 30; j++)
-  {
-    if ((i == 3 and j &gt; 20) or (i == 4 and j &gt; 10))
-      break; // Для кубов, если число дойдет до 20,
-             // то вложенный цикл остановится и степень сменится на 4.
-             // Для четвертых степеней суммирование остановится на 10.
-    s += IntPower(j, i);
-  }
-}</code>
-				</PRE>
+    for (integer j = 1; j &lt; 30; j++)
+    {
+        if ((i == 3 and j &gt; 20) or (i == 4 and j &gt; 10))
+            break; // Для кубов, если число дойдет до 20,
+                   // то вложенный цикл остановится и степень сменится на 4.
+                   // Для четвертых степеней суммирование остановится на 10.
+        s += IntPower(j, i);
+    }
+}</code></PRE>
 				</DIV>
 			</DL>
 			<h2>Оператор возврата значения</h2>
@@ -162,26 +160,23 @@ for (integer i = 2; i &lt; 4; i++)
 				<DD class="syntax"></DD>
 				<A href="" class="ref" onclick="return toggle_display(v5);"><H4>Примеры</H4></A>
 				<DIV style="display:none" id="v5">
-				<PRE name="sample_6" class="samples">
-<code class="rdo">return true;
+				<PRE name="sample_6" class="samples"><code class="rdo">return true;
 return i*i;
 return Factorial(5);
 return 5;
-return argument;</code>
-				</PRE>
+return argument;</code></PRE>
 				<P>Пример функции, меняющей состояние канала</P>
 				<PRE name="sample_7" class="samples">
-<code class="rdo">$Function fun_test : such_as Тестовый_тип_СМО.состояние_канала
+<code class="rdo">$Function fun_test: such_as Тестовый_тип_СМО.состояние_канала
 $Type = algorithmic
 $Parameters
-СМО	: Тестовый_тип_СМО
+СМО: Тестовый_тип_СМО
 $Body
-if(СМО.состояние_канала == Свободен)
-  return Занят;
-else
-  return Свободен;
-$End</code>
-				</PRE>
+    if (СМО.состояние_канала == Свободен)
+        return Занят;
+    else
+        return Свободен;
+$End</code></PRE>
 				</DIV>
 			</DL>
 			<h2>Оператор выделения области локальной памяти</h2>
@@ -190,17 +185,14 @@ $End</code>
 				<DD class="syntax"></DD>
 				<A href="" class="ref" onclick="return toggle_display(v6);"><H4>Примеры</H4></A>
 				<DIV style="display:none" id="v6">
-				<PRE name="sample_8" class="samples">
-<code class="rdo">$Body
-bool b;
+				<PRE name="sample_8" class="samples"><code class="rdo">bool b;
 {
-    integer i; //нет ошибки
-    real k; //нет ошибки
-    bool b; //ошибка - конфликт имен
+    integer i; // нет ошибки
+    real k;    // нет ошибки
+    bool b;    // ошибка - конфликт имен
 }
-integer i; //нет ошибки
-real k; //нет ошибки</code>
-				</PRE>
+integer i;     // нет ошибки
+real k;        // нет ошибки</code></PRE>
 				</DIV>
 			</DL>
 			<H4>Примечание</H4>
@@ -210,8 +202,7 @@ real k; //нет ошибки</code>
 				<A href="" class="ref" onclick="return toggle_display(v7);"><H4>Примеры</H4></A>
 				<DIV style="display:none" id="v7">
 				<P>Цикл в примере выполнится 4 раза</P>
-				<PRE name="sample_9" class="samples">
-<code class="rdo">integer i;
+				<PRE name="sample_9" class="samples"><code class="rdo">integer i;
 real a = 1.0;
 bool b = true;
 for (i = 1; b; i++)
@@ -219,18 +210,15 @@ for (i = 1; b; i++)
     a /= i;
     if (a &lt; 0.1)
         b = false;
-}</code>
-				</PRE>
+}</code></PRE>
 				<P>Цикл в примере будет выполняться бесконечно, т.к. условный оператор не входит в тело цикла</P>
-				<PRE name="sample_10" class="samples">
-<code class="rdo">integer i;
+				<PRE name="sample_10" class="samples"><code class="rdo">integer i;
 real a = 1.0;
 bool b = true;
 for (i = 1; b; i++)
     a /= i;
-    if (a &lt; 0.1) //идентация обманчива!
-        b = false;</code>
-				</PRE>
+    if (a &lt; 0.1) // идентация обманчива!
+        b = false;</code></PRE>
 				</DIV>
 			</DL>
 			<h2>Оператор вызова подпрограммы</h2>
