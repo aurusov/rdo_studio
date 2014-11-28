@@ -891,7 +891,6 @@ QString Model::getFullName() const
 
 void Model::updateFrmDescribed()
 {
-//	frmDescribed = kernel->repository()->isDescribed(rdo::model::FRM);
 	m_frmDescribed = true;
 }
 

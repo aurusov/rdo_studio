@@ -106,19 +106,19 @@ function toggle_display(e)
 		<P><BR><A name="seed_new"></A>Формат задания <B>нового начального значения базы генераторов последовательности</B>:</P>
 		<PRE class="syntax"><code class="rdo">&lt;имя_последовательности&gt;.Seed = &lt;значение&gt;</code></PRE>
 		<P>Имя последовательности - это одно из имен, указанных в <A href="rdo_obj_const.htm">объекте констант</A> при описании последовательностей. Оно идентифицирует последовательность, для которой задается значение базы. Значение задают <A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">численной константой</A> целого типа в диапазоне -2147483647…2147483647.</P>
-		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
+		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Пример</H4></A>
 		<DIV style="display:none" id="v1">
-		<PRE class="syntax"><code class="rdo">Model_name = example
-Resource_file = example
-OprIev_file = example
-Frame_file = example
+		<PRE class="syntax"><code class="rdo">Model_name     = example
+Resource_file  = example
+OprIev_file    = example
+Frame_file     = example
 Statistic_file = example
-Results_file = example
-Trace_file = example
+Results_file   = example
+Trace_file     = example
+
 Show_mode = Animation
 
-Terminate_if Ресурс_2.Параметр_5 = Занят and
-             Ресурс_1.Параметр_1 &gt; 10
+Terminate_if Ресурс_2.Параметр_5 = Занят and Ресурс_1.Параметр_1 &gt; 10
 
 Константа_1 = 20
 Константа_5 = Занят
