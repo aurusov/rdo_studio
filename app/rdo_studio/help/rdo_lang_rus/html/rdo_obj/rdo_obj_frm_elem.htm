@@ -31,8 +31,16 @@
 								<TD class="visible" width="80%">Картинка</TD>
 							</TR>
 							<TR valign="top">
+								<TD class="visible" NOWRAP width="20%"><FONT class="syntax">s_bmp</FONT></TD>
+								<TD class="visible" width="80%">Масштабируемая картинка</TD>
+							</TR>
+							<TR valign="top">
 								<TD class="visible" NOWRAP width="20%"><FONT class="syntax">rect</FONT></TD>
 								<TD class="visible" width="80%">Прямоугольник</TD>
+							</TR>
+							<TR valign="top">
+								<TD class="visible" NOWRAP width="20%"><FONT class="syntax">r_rect</FONT></TD>
+								<TD class="visible" width="80%">Прямоугольник со скругленными углами</TD>
 							</TR>
 							<TR valign="top">
 								<TD class="visible" NOWRAP width="20%"><FONT class="syntax">line</FONT></TD>
@@ -47,16 +55,12 @@
 								<TD class="visible" width="80%">Эллипс</TD>
 							</TR>
 							<TR valign="top">
-								<TD class="visible" NOWRAP width="20%"><FONT class="syntax">r_rect</FONT></TD>
-								<TD class="visible" width="80%">Прямоугольник со скругленными углами</TD>
-							</TR>
-							<TR valign="top">
 								<TD class="visible" NOWRAP width="20%"><FONT class="syntax">triang</FONT></TD>
 								<TD class="visible" width="80%">Треугольник</TD>
 							</TR>
 							<TR valign="top">
-								<TD class="visible" NOWRAP width="20%"><FONT class="syntax">s_bmp</FONT></TD>
-								<TD class="visible" width="80%">Масштабируемая картинка</TD>
+								<TD class="visible" NOWRAP width="20%"><FONT class="syntax">sprite</FONT></TD>
+								<TD class="visible" width="80%">Спрайт</TD>
 							</TR>
 						</TABLE>
 					</DD>
@@ -150,6 +154,13 @@
 				<P><B>Треугольник</B> (<FONT class="syntax">triang</FONT>) имеет формат:</P>
 				<PRE class="syntax"><code class="rdo">triang(&lt;X1&gt;, &lt;Y1&gt;, &lt;X2&gt;, &lt;Y2&gt;, &lt;X3&gt;, &lt;Y3&gt;, &lt;цвет_фона&gt;, &lt;цвет&gt;);</code></PRE>
 				<P>Треугольник задается координатами трех его вершин. Как и у прямоугольников и эллипсов, внутренняя область треугольника может быть прозрачной либо иметь какой-либо цвет. Граница треугольника изображается линией указанного цвета толщиной в один пиксел.</P>
+				<P><A name="sprite"></A><B>Cпрайт</B> (<FONT class="syntax">sprite</FONT>) имеет формат:</P>
+				<PRE class="syntax"><code class="rdo">sprite <A class="syntax" href="#sprite_name">&lt;имя_спрайта&gt;</A>();</code></PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="sprite_name"></A><I>имя_спрайта</I></DT>
+					<DD class="syntax">Имя спрайта представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех спрайта и не должны совпадать с ранее определенными именами.</DD>
+				</DL>
+				<P>Вызываемый спрайт должен быть <A href="rdo_obj_frm_sprite.htm">объявлен</A>. Спрайт можно вызывать множество раз, такое использование позволяет сокращать объем модели за счет повторного использования кода модели, написаного при объявлении спрайта. Вызов может быть произведен в любом месте описания кадра, где могут быть записаны видимые <A href="rdo_obj_frm_elem.htm">элементы отображения</A></P>
 			</DD>
 		</DL>
 		<P><BR><A name="active"></A><B>Активная область</B> - это элемент отображения, невидимый на экране.</P>
