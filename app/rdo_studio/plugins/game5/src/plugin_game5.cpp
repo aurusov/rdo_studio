@@ -164,17 +164,18 @@ void PluginGame5::pluginStopAction(QWidget* pParent)
 	delete pluignAction;
 
 	if (pluginMenu->isEmpty())
-	{
 		delete pluginMenu;
-	}
 
-	ASSERT(m_generateSituationDlg);
-	delete m_generateSituationDlg;
-	ASSERT(m_graphDlg);
-	delete m_graphDlg;
+	if (m_generateSituationDlg)
+		delete m_generateSituationDlg;
+
+	if (m_graphDlg);
+		delete m_graphDlg;
+
 	QToolBar* pluginGame5ToolBar = pParent->findChild<QToolBar*>(PLUGIN_TOOLBAR_NAME);
-	ASSERT(pluginGame5ToolBar);
-	delete pluginGame5ToolBar;
+	if (pluginGame5ToolBar)
+		delete pluginGame5ToolBar;
+
 	if (g_pApp->getMainWndUI())
 	{
 		rdo::gui::model::Model* pModel = g_pApp->getMainWndUI()->getModel();
