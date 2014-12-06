@@ -103,15 +103,18 @@ void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QS
 
 	case QtWarningMsg:
 		TRACE1("Warning: %s\n", message.toLocal8Bit().constData());
-		QMessageBox::warning(g_pApp->getMainWnd(), "QtWarning", message);
+		if (g_pApp->platformName() != "minimal")
+			QMessageBox::warning(g_pApp->getMainWnd(), "QtWarning", message);
 		break;
 
 	case QtCriticalMsg:
-		QMessageBox::critical(g_pApp->getMainWnd(), "QtCritical", message);
+		if (g_pApp->platformName() != "minimal")
+			QMessageBox::critical(g_pApp->getMainWnd(), "QtCritical", message);
 		break;
 
 	case QtFatalMsg:
-		QMessageBox::critical(g_pApp->getMainWnd(), "QtFatal", message);
+		if (g_pApp->platformName() != "minimal")
+			QMessageBox::critical(g_pApp->getMainWnd(), "QtFatal", message);
 		break;
 	}
 
