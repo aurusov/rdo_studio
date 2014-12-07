@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      tracer_logger_view_style.h
-  \author    Захаров Павел
-  \date      12.03.2003
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _RDO_STUDIO_TRACER_LOGGER_VIEW_STYLE_H_
 #define _RDO_STUDIO_TRACER_LOGGER_VIEW_STYLE_H_
 

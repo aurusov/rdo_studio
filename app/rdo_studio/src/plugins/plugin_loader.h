@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      app/rdo_studio/src/plugins/plugin_loader.h
-  \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
-  \date      22.09.2013
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _RDO_STUDIO_PLUGIN_LOADER_H_
 #define _RDO_STUDIO_PLUGIN_LOADER_H_
 

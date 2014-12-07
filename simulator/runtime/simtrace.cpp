@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      simtrace.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      11.06.2006
-  \brief     Трассировка симулятора
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- PLATFORM
 #include <set>
 

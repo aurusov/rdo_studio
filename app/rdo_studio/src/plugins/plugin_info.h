@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      app/rdo_studio/src/plugins/plugininfo.h
-  \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
-  \date      22.09.2013
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _RDO_STUDIO_PLUGIN_INFO_H_
 #define _RDO_STUDIO_PLUGIN_INFO_H_
 

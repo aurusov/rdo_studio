@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      results_edit.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      14.03.2003
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _RDO_STUDIO_EDITOR_PARSER_EDIT_H_
 #define _RDO_STUDIO_EDITOR_PARSER_EDIT_H_
 

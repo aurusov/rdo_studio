@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      intrusive_ptr-inl.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      08.06.2010
-  \brief
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/smart_ptr/factory/factory.h"

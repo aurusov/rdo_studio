@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2013
-  \file      frame_options_view.cpp
-  \author    Романов Ярослав (robot.xet@gmail.com)
-  \date      07.02.2013
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/frame_pch.h"
 // ----------------------------------------------------------------------- INCLUDES

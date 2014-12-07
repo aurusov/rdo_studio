@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      local_variable.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      16.10.2010
-  \brief
-  \indent    4T
-*/
-
 #ifndef _SIMULATOR_COMPILER_PARSER_FUNCTION_LOCAL_VARIABLE_H_
 #define _SIMULATOR_COMPILER_PARSER_FUNCTION_LOCAL_VARIABLE_H_
 

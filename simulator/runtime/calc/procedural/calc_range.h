@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_range.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      26.12.2011
-  \brief     Проверка на диапазон
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_CALC_PROCEDURAL_RANGE_H_
 #define _LIB_RUNTIME_CALC_PROCEDURAL_RANGE_H_
 

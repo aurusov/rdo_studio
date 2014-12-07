@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_function_internal-inl.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      31.07.2011
-  \brief     Стандартные функции языка
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/calc_base.h"

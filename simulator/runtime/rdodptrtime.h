@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdodptrtime.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      16.05.2007
-  \brief     Runtime трассировка для DPTSearch
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_DPTRTIME_H_
 #define _LIB_RUNTIME_DPTRTIME_H_
 
@@ -20,10 +11,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDODPTSearchRuntime
-  \brief   потомок RDODPTSearch
-*/
 class RDODPTSearchRuntime: public RDODPTSearchTrace
 {
 DECLARE_FACTORY(RDODPTSearchRuntime);

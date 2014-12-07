@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdorepository.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date
-  \brief
-  \indent    4T
-*/
-
 #ifndef _RDOREPOSITORY_H_
 #define _RDOREPOSITORY_H_
 

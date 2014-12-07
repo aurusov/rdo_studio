@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_logic_i.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      30.07.2009
-  \brief     Интерфейс ILogic
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_LOGIC_I_H_
 #define _LIB_RUNTIME_LOGIC_I_H_
 
@@ -22,10 +12,6 @@ PREDECLARE_POINTER(RDORuntime);
 PREDECLARE_POINTER(RDOCalc);
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \interface ILogic
-  \brief     Логика в РДО - правила логического вывода для контейнеров IBaseOperationContainer
-*/
 class ILogic: public virtual rdo::counter_reference
 {
 public:
@@ -40,10 +26,6 @@ DECLARE_POINTER(ILogic)
 	virtual void setCondition     (const rdo::runtime::LPRDOCalc&    pCondition    ); \
 	virtual void setMultithreading(bool                              multithreading);
 
-/*!
-  \interface IBaseOperationContainer
-  \brief     Иерархические контейнеры активностей. См. паттерн "Компоновщик"
-*/
 class IBaseOperationContainer: public virtual rdo::counter_reference
 {
 public:

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      simulator/runtime/rdo_value-inl.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      24.07.2008
-  \brief     RDOValue
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/debug/static_assert.h"

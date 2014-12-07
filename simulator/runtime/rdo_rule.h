@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_rule.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      18.08.2010
-  \brief     Продукционные правила
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_RULE_H_
 #define _LIB_RUNTIME_RULE_H_
 
@@ -23,10 +13,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class     RDORule
-  \brief     Продукционное правило
-*/
 class RDORule: public IBaseOperation, public IRule, public RDOActivityPattern<RDOPatternRule>, public RDOPatternPrior
 {
 typedef RDOActivityPattern<RDOPatternRule> pattern_type;

@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011-2012
-  \file      bison_value_pair.h
-  \authors   Чирков Михаил
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      02.12.2010
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _SIMULATOR_COMPILER_PARSER_BISON_VALUE_PAIR_H_
 #define _SIMULATOR_COMPILER_PARSER_BISON_VALUE_PAIR_H_
 

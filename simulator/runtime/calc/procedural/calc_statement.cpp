@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_statement.cpp
-  \authors   Чирков Михаил
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      16.04.2011
-  \brief     Инструкции
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES

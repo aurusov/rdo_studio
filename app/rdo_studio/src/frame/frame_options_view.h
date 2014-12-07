@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2013
-  \file      frame_options_view.h
-  \author    Романов Ярослав (robot.xet@gmail.com)
-  \date      07.02.2013
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _RDO_STUDIO_FRAME_OPTIONS_VIEW_H_
 #define _RDO_STUDIO_FRAME_OPTIONS_VIEW_H_
 

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_param_i.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      09.12.2010
-  \brief     Интерфейс IParam
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_PARAM_I_H_
 #define _LIB_RUNTIME_PARAM_I_H_
 
@@ -22,11 +13,6 @@ PREDECLARE_POINTER(RDOCalc)
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \interface IParam
-  \brief     Интерфейс для параметров
-  \todo      перевести все параметры в РДО на этот интерфейс
-*/
 class IParam
 {
 public:

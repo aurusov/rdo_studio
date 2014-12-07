@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_value.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date
-  \brief
-  \indent    4T
-*/
-
 #ifndef _CONVERTOR_RDOCONVERTER_VALUE_H_
 #define _CONVERTOR_RDOCONVERTER_VALUE_H_
 

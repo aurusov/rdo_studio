@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_const.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      17.12.2011
-  \brief     Пустая операция
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_CALC_PROCEDURAL_CONST_H_
 #define _LIB_RUNTIME_CALC_PROCEDURAL_CONST_H_
 
@@ -17,13 +8,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \defgroup calc_const Константный калк
-  \class    RDOCalcConst
-  \brief    Константа
-  \details  Возвращает константное значение
-  \ingroup  calc calc_const
-*/
 PREDECLARE_POINTER(RDOCalcConst);
 class RDOCalcConst: public RDOCalc
 {

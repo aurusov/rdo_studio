@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2014
-  \file      app/rdo_studio/plugins/game5/src/graph_node_info.h
-  \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
-  \date      18.05.2014
-  \brief
-  \indent    4T
-*/
-
 #ifndef GRAPH_NODE_INFO_H
 #define GRAPH_NODE_INFO_H
 

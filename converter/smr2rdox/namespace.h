@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      /converter/smr2rdox/namespace.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      09.02.2010
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _CONVERTER_SMR2RDOX_NAMESPACE_H_
 #define _CONVERTER_SMR2RDOX_NAMESPACE_H_
 

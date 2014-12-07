@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      searchtrace.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      11.06.2006
-  \brief     Трассировка DPTSearch
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_SEARCH_TRACE_H_
 #define _LIB_RUNTIME_SEARCH_TRACE_H_
 
@@ -21,19 +12,11 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDODPTSearchTrace
-  \brief   Трассировка точки принятия решений DPTSearch
-*/
 class RDODPTSearchTrace: public RDODPTSearch, public RDOTraceableObject, public IDPTSearchTraceStatistics
 {
 DECLARE_FACTORY(RDODPTSearchTrace);
 public:
-	/*!
-	  \enum  DPT_TraceFlag
-	  \brief статусы трассировки для точек DPTSearch
-	*/
-	enum DPT_TraceFlag
+		enum DPT_TraceFlag
 	{
 	   DPT_no_trace,
 	   DPT_trace_stat,
@@ -67,10 +50,6 @@ private:
 	DECLARE_IDPTSearchTraceStatistics;
 };
 
-/*!
-  \class   TreeRootTrace
-  \brief   Трассировка корня графа состояний точки принятия решений DPTSearch
-*/
 class TreeRootTrace: public TreeRoot
 {
 private:
@@ -80,10 +59,6 @@ public:
 	TreeRootTrace(const LPRDORuntime& pRuntime, RDODPTSearch* pDP);
 };
 
-/*!
-  \class   TreeNodeTrace
-  \brief   Трассировка узла графа состояний точки принятия решений DPTSearch
-*/
 class TreeNodeTrace: public TreeNode
 {
 friend class RDOTrace;

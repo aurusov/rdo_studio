@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      application.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      20.02.2003
-  \brief
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/application_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -103,15 +94,18 @@ void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QS
 
 	case QtWarningMsg:
 		TRACE1("Warning: %s\n", message.toLocal8Bit().constData());
-		QMessageBox::warning(g_pApp->getMainWnd(), "QtWarning", message);
+		if (g_pApp->platformName() != "minimal")
+			QMessageBox::warning(g_pApp->getMainWnd(), "QtWarning", message);
 		break;
 
 	case QtCriticalMsg:
-		QMessageBox::critical(g_pApp->getMainWnd(), "QtCritical", message);
+		if (g_pApp->platformName() != "minimal")
+			QMessageBox::critical(g_pApp->getMainWnd(), "QtCritical", message);
 		break;
 
 	case QtFatalMsg:
-		QMessageBox::critical(g_pApp->getMainWnd(), "QtFatal", message);
+		if (g_pApp->platformName() != "minimal")
+			QMessageBox::critical(g_pApp->getMainWnd(), "QtFatal", message);
 		break;
 	}
 

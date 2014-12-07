@@ -1,14 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdorss.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Романов Ярослав (robot.xet@gmail.com)
-  \date
-  \brief
-  \indent    4T
-*/
-
 #ifndef _RDORSS_RSS_H_
 #define _RDORSS_RSS_H_
 

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_enum.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      22.06.2008
-  \brief     Перечисления
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_ENUM_H_
 #define _LIB_RUNTIME_ENUM_H_
 
@@ -19,10 +10,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class     RDOEnumType
-  \brief     Тип перечисления
-*/
 class RDOEnumType: public RDOType
 {
 DECLARE_FACTORY(RDOEnumType);

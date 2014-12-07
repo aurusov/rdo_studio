@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      queue_depart.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      12.02.2012
-  \brief     Процессные операторы QUEUE и DEPART
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_PROCESS_QUEUE_DEPART_H_
 #define _LIB_RUNTIME_PROCESS_QUEUE_DEPART_H_
 
@@ -23,10 +13,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \struct  runtime_for_Queue
-  \brief   Вспомогательный класс для оператора QUEUE в Runtime
-*/
 struct runtime_for_Queue
 {
 	LPRDOResource rss;
@@ -34,20 +20,12 @@ struct runtime_for_Queue
 	RDOValue      defaultValue;
 };
 
-/*!
-  \struct  parser_for_Queue
-  \brief   Вспомогательный класс для оператора QUEUE в Parser
-*/
 struct parser_for_Queue
 {
 	int Id_res;
 	int Id_param;
 };
 
-/*!
-  \class   RDOPROCBlockForQueue
-  \brief   Вспомогательный класс для процессного оператора QUEUE
-*/
 class RDOPROCBlockForQueue: public RDOPROCBlock
 {
 protected:
@@ -58,10 +36,6 @@ protected:
 	void _onStart(const LPRDORuntime& pRuntime);
 };
 
-/*!
-  \class   RDOPROCQueue
-  \brief   Процессный блок QUEUE
-*/
 class RDOPROCQueue: public RDOPROCBlockForQueue
 {
 DECLARE_FACTORY(RDOPROCQueue);
@@ -75,10 +49,6 @@ private:
 	DECLARE_IBaseOperation;
 };
 
-/*!
-  \class   RDOPROCDepart
-  \brief   Процессный блок DEPART
-*/
 class RDOPROCDepart: public RDOPROCBlockForQueue
 {
 DECLARE_FACTORY(RDOPROCDepart);

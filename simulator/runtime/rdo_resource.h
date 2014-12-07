@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_resource.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      16.04.2008
-  \brief     Ресурсы в runtime
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_RESOURCE_H_
 #define _LIB_RUNTIME_RESOURCE_H_
 
@@ -25,12 +15,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDORuntime;
 PREDECLARE_OBJECT_INTERFACE(IResourceType);
 
-/*!
-  \class   RDOResource
-  \brief   "обычные" ресурсы моделей
-  \details Ресурсы, которые могут быть релевантны активностям и
- * событиям, но не могут использоваться в процессах
-*/
 PREDECLARE_POINTER(RDOResource);
 class RDOResource
 	: public virtual rdo::counter_reference
@@ -39,11 +23,7 @@ class RDOResource
 	, public boost::operators<RDOResource>
 {
 public:
-	/*!
-	  \enum  ConvertStatus
-	  \brief статусы конверторов релевантных ресурсов
-	*/
-	enum ConvertStatus
+		enum ConvertStatus
 	{
 		CS_None = 0,
 		CS_Keep,

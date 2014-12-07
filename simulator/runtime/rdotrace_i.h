@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdotrace_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      28.07.2009
-  \brief     Интерфейс ITrace
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_TRACE_I_H_
 #define _LIB_RUNTIME_TRACE_I_H_
 
@@ -14,10 +5,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-/*!
-  \interface ITrace
-  \brief     Интерфейс ITrace
-*/
 class ITrace: public virtual rdo::counter_reference
 {
 public:
@@ -40,10 +27,6 @@ DECLARE_POINTER(ITrace)
 	virtual void setTraceID(std::size_t id, std::size_t str_id); \
 	virtual std::string& traceId() const ;
 
-/*!
-  \interface IResultTraceValue
-  \brief     Интерфейс IResultTraceValue
-*/
 class IResultTraceValue: public virtual rdo::counter_reference
 {
 public:
@@ -53,10 +36,6 @@ public:
 #define DECLARE_IResultTraceValue \
 	virtual std::string traceValue() const;
 
-/*!
-  \interface IResultTrace
-  \brief     Интерфейс IResultTrace
-*/
 class IResultTrace: public virtual rdo::counter_reference
 {
 public:

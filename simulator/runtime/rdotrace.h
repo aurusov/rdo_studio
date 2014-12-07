@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdotrace.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      11.06.2006
-  \brief     Трассировщик
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_TRACE_H_
 #define _LIB_RUNTIME_TRACE_H_
 
@@ -34,10 +25,6 @@ class TreeRoot;
 PREDECLARE_POINTER(RDOResource);
 PREDECLARE_POINTER(RDORuntime);
 
-/*!
-  \class     RDOEndL
-  \brief     Рассылает броадкастом строку трассировки
-*/
 class RDOEndL
 {
 public:
@@ -46,10 +33,6 @@ public:
 
 std::ostream& operator << (std::ostream& stream, RDOEndL& rdoEndL);
 
-/*!
-  \class     RDOTrace
-  \brief     Формирует строки трассировки
-*/
 class RDOTrace
 {
 friend class RDOSimulatorTrace;
@@ -104,10 +87,6 @@ private:
 	RDOEndL m_emptyEndL;
 };
 
-/*!
-  \class     RDOTraceableObject
-  \brief     Трассируемый объект
-*/
 class RDOTraceableObject: public ITrace
 {
 public:
@@ -132,10 +111,6 @@ private:
 	mutable std::string m_str_id;
 };
 
-/*!
-  \class     RDOResultTrace
-  \brief     Трассируемый показатель
-*/
 class RDOResultTrace: public RDOTraceableObject, public IResultTrace, public IResultTraceValue
 {
 public:

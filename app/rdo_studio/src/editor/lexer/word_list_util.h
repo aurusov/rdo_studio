@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      word_list_util.h
-  \author    Романов Ярослав (robot.xet@gmail.com)
-  \date      29.09.2012
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _RDO_STUDIO_EDITOR_LEXER_WORD_LIST_UTIL_H_
 #define _RDO_STUDIO_EDITOR_LEXER_WORD_LIST_UTIL_H_
 

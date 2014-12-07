@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_keyboard_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      01.08.2009
-  \brief     Интерфейс клавиатурной операции
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_KEYBOARD_I_H_
 #define _LIB_RUNTIME_KEYBOARD_I_H_
 
@@ -22,10 +13,6 @@ PREDECLARE_POINTER(RDORuntime)
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \interface IKeyboard
-  \brief     Интерфейс клавиатурной операции
-*/
 class IKeyboard: public virtual rdo::counter_reference
 {
 public:

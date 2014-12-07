@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdoframe.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Копнин Андрей (kopninandrey@gmail.com)
-  \date      07.12.2008
-  \brief     Кадры РДО модели
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_FRAME_H_
 #define _LIB_RUNTIME_FRAME_H_
 
@@ -24,10 +14,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 PREDECLARE_POINTER(RDOFRMItem);
 
-/*!
-  \interface IRDOFRMItemGetBitmap
-  \brief     Интерфейс запроса картинок у элемента анимации
-*/
 PREDECLARE_OBJECT_INTERFACE(IRDOFRMItemGetBitmap)
 struct IRDOFRMItemGetBitmap: public rdo::RefCounter<IRDOFRMItemGetBitmap>
 {
@@ -45,10 +31,6 @@ protected:
 	virtual void getBitmaps(ImageNameList& list) const;
 
 
-/*!
-  \class     RDOFRMSprite
-  \brief     Спрайт. Владеет и запускает на исполнение основные команды анимации
-*/
 PREDECLARE_POINTER(RDOFRMSprite);
 class RDOFRMSprite
 	: public RDOCalc
@@ -58,22 +40,14 @@ class RDOFRMSprite
 {
 DECLARE_FACTORY(RDOFRMSprite)
 public:
-	/*!
-	  \class     RDOFRMPosition
-	  \brief     Позиция
-	*/
-	PREDECLARE_POINTER(RDOFRMPosition);
+		PREDECLARE_POINTER(RDOFRMPosition);
 	class RDOFRMPosition
 		: public rdo::counter_reference
 		, public RDORuntimeObject
 	{
 	DECLARE_FACTORY(RDOFRMPosition)
 	public:
-		/*!
-		  \enum      PositionType
-		  \brief     Тип позици
-		*/
-		enum PositionType
+				enum PositionType
 		{
 			PT_ABSOLUTE,
 			PT_DELTA,
@@ -101,11 +75,7 @@ public:
 	};
 	friend class RDOFRMPosition;
 
-	/*!
-	  \class     RDOFRMColor
-	  \brief     Объект-цвет
-	*/
-	PREDECLARE_POINTER(RDOFRMColor);
+		PREDECLARE_POINTER(RDOFRMColor);
 	class RDOFRMColor
 		: public rdo::counter_reference
 		, public RDORuntimeObject
@@ -142,11 +112,7 @@ public:
 	};
 	friend class RDOFRMColor;
 
-	/*!
-	  \class     RDOFRMRulet
-	  \brief     Рулетка. Используется для позиционирования
-	*/
-	PREDECLARE_POINTER(RDOFRMRulet);
+		PREDECLARE_POINTER(RDOFRMRulet);
 	class RDOFRMRulet: public RDOCalc
 	{
 	DECLARE_FACTORY(RDOFRMRulet)
@@ -216,11 +182,6 @@ private:
 };
 DECLARE_POINTER(RDOFRMSprite);
 
-/*!
-  \class     RDOFRMBoundingItem
-  \brief     Объект-четырехугольник
-  \details   В парсере не создается
-*/
 class RDOFRMBoundingItem
 {
 protected:
@@ -241,11 +202,6 @@ private:
 	RDOFRMSprite::LPRDOFRMPosition m_pHeight;
 };
 
-/*!
-  \class     RDOFRMColoredItem
-  \brief     Объект с цветом
-  \details   В парсере не создается
-*/
 class RDOFRMColoredItem
 {
 public:
@@ -264,10 +220,6 @@ private:
 	RDOFRMSprite::LPRDOFRMColor m_pFgColor;
 };
 
-/*!
-  \class     RDOFRMItem
-  \brief     Базовый класс для всех элементов
-*/
 PREDECLARE_POINTER(RDOFRMItem);
 class RDOFRMItem: public RDOCalc
 {
@@ -282,10 +234,6 @@ private:
 	LPRDOFRMSprite m_pFrame;
 };
 
-/*!
-  \class     RDOFRMText
-  \brief     Текст
-*/
 PREDECLARE_POINTER(RDOFRMText);
 class RDOFRMText
 	: public RDOFRMItem
@@ -319,10 +267,6 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class     RDOFRMBitmapBase
-  \brief     Базовый класс для картинок
-*/
 PREDECLARE_POINTER(RDOFRMBitmapBase);
 class RDOFRMBitmapBase
 	: public RDOFRMItem
@@ -339,10 +283,6 @@ private:
 	DECLARE_IRDOFRMItemGetBitmap
 };
 
-/*!
-  \class     RDOFRMBitmap
-  \brief     Картинка
-*/
 class RDOFRMBitmap: public RDOFRMBitmapBase
 {
 DECLARE_FACTORY(RDOFRMBitmap)
@@ -364,10 +304,6 @@ private:
 
 DECLARE_POINTER(RDOFRMBitmap)
 
-/*!
-  \class     RDOFRMBitmapStretch
-  \brief     Масштабируемая картинка
-*/
 class RDOFRMBitmapStretch
 	: public RDOFRMBitmapBase
 	, public RDOFRMBoundingItem
@@ -390,10 +326,6 @@ private:
 
 DECLARE_POINTER(RDOFRMBitmapStretch);
 
-/*!
-  \class     RDOFRMRect
-  \brief     Объект прямоугольник
-*/
 PREDECLARE_POINTER(RDOFRMRect);
 class RDOFRMRect
 	: public RDOFRMItem
@@ -416,10 +348,6 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class     RDOFRMRectRound
-  \brief     Прямоугольник со скругленными углами
-*/
 PREDECLARE_POINTER(RDOFRMRectRound);
 class RDOFRMRectRound
 	: public RDOFRMItem
@@ -442,10 +370,6 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class     RDOFRMCircle
-  \brief     Окружность
-*/
 PREDECLARE_POINTER(RDOFRMCircle);
 class RDOFRMCircle
 	: public RDOFRMItem
@@ -470,10 +394,6 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class     RDOFRMEllipse
-  \brief     Эллипс
-*/
 PREDECLARE_POINTER(RDOFRMEllipse);
 class RDOFRMEllipse
 	: public RDOFRMItem
@@ -496,10 +416,6 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class     RDOFRMLine
-  \brief     Линия
-*/
 PREDECLARE_POINTER(RDOFRMLine);
 class RDOFRMLine
 	: public RDOFRMItem
@@ -522,10 +438,6 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class     RDOFRMTriang
-  \brief     Треугольник
-*/
 PREDECLARE_POINTER(RDOFRMTriang);
 class RDOFRMTriang
 	: public RDOFRMItem
@@ -556,10 +468,6 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class     RDOFRMActive
-  \brief     Активная область
-*/
 PREDECLARE_POINTER(RDOFRMActive);
 class RDOFRMActive
 	: public RDOFRMItem
@@ -582,10 +490,6 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class     RDOFRMSpace
-  \brief     Пустота
-*/
 PREDECLARE_POINTER(RDOFRMSpace);
 class RDOFRMSpace
 	: public RDOFRMItem
@@ -605,10 +509,6 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class     RDOFRMFrame
-  \brief     Фрейм. Формирует кадр анимации
-*/
 class RDOFRMFrame: public RDOFRMSprite
 {
 DECLARE_FACTORY(RDOFRMFrame)

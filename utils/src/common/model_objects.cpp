@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      model_objects.cpp
-  \authors   Евгений Пройдаков (lord.tiran@gmail.com)
-  \date      13.06.2009
-  \brief     
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/model_objects.h"

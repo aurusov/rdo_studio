@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012-2012
-  \file      dock_find.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      04.10.2012
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _RDO_STUDIO_DOCK_FIND_H_
 #define _RDO_STUDIO_DOCK_FIND_H_
 

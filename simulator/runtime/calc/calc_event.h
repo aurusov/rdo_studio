@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_event.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      26.05.2010
-  \brief     RDOCalc для планирования и остановки событий
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_CALC_EVENT_H_
 #define _LIB_RUNTIME_CALC_EVENT_H_
 

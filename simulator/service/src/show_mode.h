@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      show_mode.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      16.02.2012
-  \brief     Режимы анимации
-  \indent    4T
-*/
-
 #ifndef _LIB_SERVICE_SHOW_MODE_H_
 #define _LIB_SERVICE_SHOW_MODE_H_
 

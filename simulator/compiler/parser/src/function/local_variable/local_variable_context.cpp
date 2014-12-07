@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      local_variable_context.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      16.12.2012
-  \brief     Контекст инициализации списка локальных переменных: integer i, j;
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES

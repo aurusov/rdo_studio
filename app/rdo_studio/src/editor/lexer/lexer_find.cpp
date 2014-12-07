@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2013
-  \file      lexer_find.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      28.02.2003
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/editor_pch.h"
 // ----------------------------------------------------------------------- INCLUDES

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      frame_tree_ctrl.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      28.03.2003
-  \brief     Дерево кадров анимации
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/frame_pch.h"
 // ----------------------------------------------------------------------- INCLUDES

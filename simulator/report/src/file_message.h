@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      file_message.h
-  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
-  \date      1.10.2012
-  \brief     Файловое сообщение
-  \indent    4T
-*/
-
 #ifndef _SIMULATOR_REPORT_FILE_MESSAGE_H_
 #define _SIMULATOR_REPORT_FILE_MESSAGE_H_
 

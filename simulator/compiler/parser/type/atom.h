@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      atom.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      09.04.2011
-  \brief
-  \indent    4T
-*/
-
 #ifndef _RDOPARSER_TYPE_ATOM_H_
 #define _RDOPARSER_TYPE_ATOM_H_
 

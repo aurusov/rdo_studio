@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      procgui.cpp
-  \author    Шувалов Андрей
-  \date      22.04.2011
-  \brief
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/procgui/pch.h"
 // ----------------------------------------------------------------------- INCLUDES

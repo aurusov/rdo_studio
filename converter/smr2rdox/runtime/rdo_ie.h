@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_ie.h
-  \author
-  \date
-  \brief
-  \indent    4T
-*/
-
 #ifndef _RDO_IE_H_
 #define _RDO_IE_H_
 

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_operation_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      30.07.2009
-  \brief     Интерфейс операции
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_OPERATION_I_H_
 #define _LIB_RUNTIME_OPERATION_I_H_
 
@@ -24,10 +15,6 @@ PREDECLARE_POINTER(RDORuntime)
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \interface IOperation
-  \brief     Интерфейс модифицированного продукционного правила
-*/
 class IOperation: public virtual rdo::counter_reference
 {
 public:
@@ -54,10 +41,6 @@ DECLARE_POINTER(IOperation)
 	virtual void   onAfterOperationEnd   (const rdo::runtime::LPRDORuntime& pRuntime); \
 	virtual double getNextTimeInterval   (const rdo::runtime::LPRDORuntime& pRuntime)
 
-/*!
-  \interface IOperationTrace
-  \brief     Интерфейс IOperationTrace
-*/
 class IOperationTrace: public virtual rdo::counter_reference
 {
 public:

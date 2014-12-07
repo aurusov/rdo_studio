@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      animation_base.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      14.12.2012
-  \brief     Базовый класс объектов анимации парсера
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
