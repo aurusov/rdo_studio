@@ -9,8 +9,6 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
-// ----------------------------------------------------------------------- PLATFORM
-#include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDORealFormatTest
 #include "utils/src/common/warning_disable.h"
