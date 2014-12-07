@@ -1,5 +1,4 @@
-#ifndef _RDO_KEY_EVENT_H_
-#define _RDO_KEY_EVENT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -33,5 +32,3 @@ private:
 };
 
 } // namespace rdo
-
-#endif // _RDO_KEY_EVENT_H_

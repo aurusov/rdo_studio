@@ -1,5 +1,4 @@
-#ifndef _SIMULATOR_COMPILER_GUI_PROCGUI_H_
-#define _SIMULATOR_COMPILER_GUI_PROCGUI_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -234,5 +233,3 @@ private:
 };
 
 CLOSE_COMPILER_GUI_NAMESPACE
-
-#endif // _SIMULATOR_COMPILER_GUI_PROCGUI_H_

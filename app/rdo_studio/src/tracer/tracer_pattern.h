@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_TRACER_PATTERN_H_
-#define _RDO_STUDIO_TRACER_PATTERN_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -37,5 +36,3 @@ private:
 typedef  rdo::intrusive_ptr<Pattern>  LPPattern;
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_PATTERN_H_

@@ -1,5 +1,4 @@
-#ifndef _RDO_PLUGIN_GAME5_GRAPH_DIALOG_H_
-#define _RDO_PLUGIN_GAME5_GRAPH_DIALOG_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -60,5 +59,3 @@ private:
 
 	PluginGame5GraphDialog::GraphInfo getGraphInfo() const;
 };
-
-#endif // _RDO_PLUGIN_GAME5_GRAPH_DIALOG_H_

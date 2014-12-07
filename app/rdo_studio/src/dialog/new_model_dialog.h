@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_DIALOG_NEW_MODEL_DIALOG_H_
-#define _RDO_STUDIO_DIALOG_NEW_MODEL_DIALOG_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -35,5 +34,3 @@ private slots:
 	void updateUI();
 	void onPathButtonClicked();
 };
-
-#endif // _RDO_STUDIO_DIALOG_NEW_MODEL_DIALOG_H_

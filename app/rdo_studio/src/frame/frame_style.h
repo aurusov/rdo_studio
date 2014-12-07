@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_FRAME_STYLE_H_
-#define _RDO_STUDIO_FRAME_STYLE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -25,5 +24,3 @@ public:
 };
 
 }}} // namespace rdo::gui::frame
-
-#endif // _RDO_STUDIO_FRAME_STYLE_H_

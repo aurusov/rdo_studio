@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_EDITOR_EDIT_POPUP_MENU_H_
-#define _RDO_STUDIO_EDITOR_EDIT_POPUP_MENU_H_
+#pragma once
 
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
@@ -22,5 +21,3 @@ protected:
 };
 
 }}} // namespace rdo::gui::editor
-
-#endif // _RDO_STUDIO_EDITOR_EDIT_POPUP_MENU_H_

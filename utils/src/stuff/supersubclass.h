@@ -1,5 +1,4 @@
-#ifndef _UTILS_SUPERSUBCLASS_H_
-#define _UTILS_SUPERSUBCLASS_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -35,5 +34,3 @@ public:
 #define SUPERSUBCLASS(T, U) (SuperSubClass<const U*, const T*>::exists)
 
 } // namespace rdo
-
-#endif // _UTILS_SUPERSUBCLASS_H_

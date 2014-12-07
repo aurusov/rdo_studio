@@ -1,5 +1,4 @@
-#ifndef _LOG_EDIT_LINE_INFO_H_
-#define _LOG_EDIT_LINE_INFO_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -30,5 +29,3 @@ private:
 };
 
 }}} // namespace rdo::simulation::report
-
-#endif // _LOG_EDIT_LINE_INFO_H_

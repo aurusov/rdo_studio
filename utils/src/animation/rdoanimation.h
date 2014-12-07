@@ -1,5 +1,4 @@
-#ifndef _UTILS_RDOANIMATION_H_
-#define _UTILS_RDOANIMATION_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
@@ -256,5 +255,3 @@ struct Frame
 };
 
 }} // namespace rdo::animation
-
-#endif // _UTILS_RDOANIMATION_H_

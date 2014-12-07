@@ -1,5 +1,4 @@
-#ifndef _UTILS_SMART_PTR_COUNTER_REFERENCE_H_
-#define _UTILS_SMART_PTR_COUNTER_REFERENCE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <cstddef>
@@ -21,5 +20,3 @@ private:
 };
 
 } // namespace rdo
-
-#endif // _UTILS_SMART_PTR_COUNTER_REFERENCE_H_

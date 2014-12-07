@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_LOGIC_I_H_
-#define _LIB_RUNTIME_LOGIC_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -54,5 +53,3 @@ DECLARE_POINTER(IBaseOperationContainer);
 	virtual bool              empty () const;           \
 	virtual LPIBaseOperation& back  ();                 \
 	virtual void              clear ();
-
-#endif // _LIB_RUNTIME_LOGIC_I_H_

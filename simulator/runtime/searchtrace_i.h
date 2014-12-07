@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_SEARCH_TRACE_I_H_
-#define _LIB_RUNTIME_SEARCH_TRACE_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -30,5 +29,3 @@ DECLARE_POINTER(IDPTSearchTraceStatistics)
 	virtual std::size_t getCalcResFoundCnt() const;                                      \
 	virtual void getStatsDOUBLE(Type type, double& min, double& max, double& med) const; \
 	virtual void getStatsRUINT(Type type, std::size_t&  min, std::size_t&  max, double& med) const;
-
-#endif // _LIB_RUNTIME_SEARCH_TRACE_I_H_

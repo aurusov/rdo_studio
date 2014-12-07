@@ -1,5 +1,4 @@
-#ifndef _PARSER_PCH_H_
-#define _PARSER_PCH_H_
+#pragma once
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
@@ -28,5 +27,3 @@
 #include "utils/src/common/rdocommon.h"
 #include "utils/src/debug/rdodebug.h"
 // --------------------------------------------------------------------------------
-
-#endif // _PARSER_PCH_H_

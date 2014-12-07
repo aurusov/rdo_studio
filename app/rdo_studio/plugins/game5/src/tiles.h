@@ -1,5 +1,4 @@
-#ifndef _RDO_PLUGIN_GAME_5_TILES_H_
-#define _RDO_PLUGIN_GAME_5_TILES_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -24,5 +23,3 @@ private:
 private slots:
 	void reemitClicked();
 };
-
-#endif // _RDO_PLUGIN_GAME_5_TILES_H_

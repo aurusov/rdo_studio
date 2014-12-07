@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_RES_TYPE_I_H_
-#define _LIB_RUNTIME_RES_TYPE_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
@@ -40,5 +39,3 @@ protected:
 	rdo::runtime::LPRDOResource createRes(const LPRDORuntime& pRuntime, std::size_t resID, const std::vector<RDOValue>& paramsCalcs, bool traceFlag, bool permanentFlag, bool isNested = 0);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_RES_TYPE_I_H_

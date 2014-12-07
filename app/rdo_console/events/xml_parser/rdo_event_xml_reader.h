@@ -1,5 +1,4 @@
-#ifndef _RDO_EVENT_XML_READER_H_
-#define _RDO_EVENT_XML_READER_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/property_tree/ptree.hpp>
@@ -20,5 +19,3 @@ public:
 };
 
 } // namespace rdo
-
-#endif // _RDO_EVENT_XML_READER_H_

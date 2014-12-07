@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_STD_FUN_H_
-#define _RDOPARSER_STD_FUN_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <iostream>
@@ -30,5 +29,3 @@ private:
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_STD_FUN_H_

@@ -1,5 +1,4 @@
-#ifndef _RDO_CONTROLLER_CONSOLE_OPTIONS_H_
-#define _RDO_CONTROLLER_CONSOLE_OPTIONS_H_
+#pragma once
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
@@ -48,5 +47,3 @@ private:
 #ifdef COMPILER_VISUAL_STUDIO
 #	pragma warning (default:4512)
 #endif // COMPILER_VISUAL_STUDIO
-
-#endif // _RDO_CONTROLLER_CONSOLE_OPTIONS_H_

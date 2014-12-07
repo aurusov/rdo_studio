@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_TRACER_CHART_VIEW_STYLE_H_
-#define _RDO_STUDIO_TRACER_CHART_VIEW_STYLE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -63,5 +62,3 @@ QSettings& operator<< (QSettings& settings, const ChartViewStyle& style);
 QSettings& operator>> (QSettings& settings,       ChartViewStyle& style);
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_CHART_VIEW_STYLE_H_

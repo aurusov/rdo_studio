@@ -1,5 +1,4 @@
-#ifndef _MBUILDER_PROCESS_H_
-#define _MBUILDER_PROCESS_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -33,5 +32,3 @@ public:
 };
 
 CLOSE_COMPILER_MBUILDER_NAMESPACE
-
-#endif // _MBUILDER_PROCESS_H_

@@ -1,5 +1,4 @@
-#ifndef _UTILS_MODEL_OBJECTS_H_
-#define _UTILS_MODEL_OBJECTS_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
@@ -30,5 +29,3 @@ enum FileType
 std::string getFileTypeString(FileType type);
 
 }} // namespace rdo::model
-
-#endif // _UTILS_MODEL_OBJECTS_H_

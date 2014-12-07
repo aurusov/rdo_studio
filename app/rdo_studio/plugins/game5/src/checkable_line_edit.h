@@ -1,5 +1,4 @@
-#ifndef _RDO_PLUGIN_GAME_5_CHECKABLE_LINE_EDIT_H
-#define _RDO_PLUGIN_GAME_5_CHECKABLE_LINE_EDIT_H
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -26,5 +25,3 @@ private:
 private slots:
 	void setLineEditState(int state);
 };
-
-#endif // _RDO_PLUGIN_GAME_5_CHECKABLE_LINE_EDIT_H

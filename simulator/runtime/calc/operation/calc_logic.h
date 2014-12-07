@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_CALC_OPERATION_LOGIC_H_
-#define _LIB_RUNTIME_CALC_OPERATION_LOGIC_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -87,5 +86,3 @@ private:
 #endif
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_CALC_OPERATION_LOGIC_H_

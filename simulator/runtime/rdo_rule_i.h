@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_RULE_I_H_
-#define _LIB_RUNTIME_RULE_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -30,5 +29,3 @@ DECLARE_POINTER(IRule)
 	virtual void  onBeforeRule      (const rdo::runtime::LPRDORuntime& pRuntime); \
 	virtual void  convertRule       (const rdo::runtime::LPRDORuntime& pRuntime); \
 	virtual void  onAfterRule       (const rdo::runtime::LPRDORuntime& pRuntime, bool inSearch);
-
-#endif // _LIB_RUNTIME_RULE_I_H_

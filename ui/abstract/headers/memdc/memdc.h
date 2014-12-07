@@ -1,5 +1,4 @@
-#ifndef _UI_ABSTRACT_MEMDC_H_
-#define _UI_ABSTRACT_MEMDC_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <memory>
@@ -57,5 +56,3 @@ namespace rdo
 } // namespace rdo
 
 #include "ui/abstract/headers/memdc/memdc-inl.h"
-
-#endif // _UI_ABSTRACT_MEMDC_H_

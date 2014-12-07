@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_DOCK_TRACE_TREE_H_
-#define _RDO_STUDIO_DOCK_TRACE_TREE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -15,5 +14,3 @@ public:
 	DockChartTree(QWidget* pParent);
 	virtual ~DockChartTree();
 };
-
-#endif // _RDO_STUDIO_DOCK_TRACE_TREE_H_

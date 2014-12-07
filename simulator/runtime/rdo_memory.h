@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_MEMORY_H_
-#define _LIB_RUNTIME_MEMORY_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
@@ -50,5 +49,3 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_MEMORY_H_

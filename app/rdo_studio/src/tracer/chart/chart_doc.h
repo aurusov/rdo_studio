@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_TRACER_CHART_DOC_H_
-#define _RDO_STUDIO_TRACER_CHART_DOC_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -81,5 +80,3 @@ private:
 };
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_CHART_DOC_H_

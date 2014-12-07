@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_THREAD_H_
-#define _RDO_STUDIO_THREAD_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -31,5 +30,3 @@ protected:
 	virtual ~ThreadStudioGUI() {}; // Чтобы нельзя было удалить через delete
 };
 #endif
-
-#endif // _RDO_STUDIO_THREAD_H_

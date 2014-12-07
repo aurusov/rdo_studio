@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_RDO_H_
-#define _RDOPARSER_RDO_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <iostream>
@@ -42,5 +41,3 @@ private:
 DECLARE_POINTER(RDOParserRDOItem);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_RDO_H_

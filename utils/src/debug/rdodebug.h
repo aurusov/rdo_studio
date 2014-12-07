@@ -1,5 +1,4 @@
-#ifndef _UTILS_RDODEBUG_H_
-#define _UTILS_RDODEBUG_H_
+#pragma once
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
@@ -81,5 +80,3 @@ Type IdentityNeverReachHere(Type value)
 #define NEVER_REACH_HERE
 
 #endif // _DEBUG
-
-#endif // _UTILS_RDODEBUG_H_

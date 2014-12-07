@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_EXPRESSION_H_
-#define _RDOPARSER_EXPRESSION_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -56,5 +55,3 @@ private:
 DECLARE_POINTER(ExpressionEmpty);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_EXPRESSION_H_

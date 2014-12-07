@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_KEYBOARD_I_H_
-#define _LIB_RUNTIME_KEYBOARD_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -31,5 +30,3 @@ DECLARE_POINTER(IKeyboard)
 #define DECLARE_IKeyboard \
 	virtual bool hasHotKey() const; \
 	virtual AddHotKeyResult addHotKey(const rdo::runtime::LPRDORuntime& pRuntime, const std::string& hotKey);
-
-#endif // _LIB_RUNTIME_KEYBOARD_I_H_

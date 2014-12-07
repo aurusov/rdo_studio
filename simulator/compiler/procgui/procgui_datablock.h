@@ -1,5 +1,4 @@
-#ifndef _SIMULATOR_COMPILER_GUI_DATABLOCK_H_
-#define _SIMULATOR_COMPILER_GUI_DATABLOCK_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
@@ -137,5 +136,3 @@ private:
 DECLARE_POINTER(RPShapeDataBlockProcess);
 
 CLOSE_COMPILER_GUI_NAMESPACE
-
-#endif // _SIMULATOR_COMPILER_GUI_DATABLOCK_H_

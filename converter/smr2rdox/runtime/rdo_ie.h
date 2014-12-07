@@ -1,5 +1,4 @@
-#ifndef _RDO_IE_H_
-#define _RDO_IE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -69,5 +68,3 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _RDO_IE_H_

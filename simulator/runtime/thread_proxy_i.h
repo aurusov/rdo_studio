@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_THREAD_PROXY_I_H_
-#define _LIB_RUNTIME_THREAD_PROXY_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -24,5 +23,3 @@ protected:
 	virtual ~IThreadProxy()
 	{}
 };
-
-#endif // _LIB_RUNTIME_THREAD_PROXY_I_H_

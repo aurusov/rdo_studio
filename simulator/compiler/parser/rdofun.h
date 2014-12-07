@@ -1,5 +1,4 @@
-#ifndef _RDOFUN_H_
-#define _RDOFUN_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
@@ -692,5 +691,3 @@ private:
 DECLARE_POINTER(RDOFUNSelect);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOFUN_H_

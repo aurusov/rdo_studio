@@ -1,5 +1,4 @@
-#ifndef _SIMULATOR_COMPILER_PARSER_BISON_VALUE_PAIR_H_
-#define _SIMULATOR_COMPILER_PARSER_BISON_VALUE_PAIR_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <utility>
@@ -35,5 +34,3 @@ private:
 CLOSE_RDO_PARSER_NAMESPACE
 
 #include "simulator/compiler/parser/bison_value_pair-inl.h"
-
-#endif // _SIMULATOR_COMPILER_PARSER_BISON_VALUE_PAIR_H_

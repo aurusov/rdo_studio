@@ -1,5 +1,4 @@
-#ifndef _UTILS_SMART_PTR_REF_COUNTER_H_
-#define _UTILS_SMART_PTR_REF_COUNTER_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -16,5 +15,3 @@ public:
 };
 
 } // namespace rdo
-
-#endif // _UTILS_SMART_PTR_REF_COUNTER_H_

@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_NOTIFY_I_H_
-#define _LIB_RUNTIME_NOTIFY_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
@@ -14,5 +13,3 @@ public:
 };
 #define DECLARE_INotify \
 	virtual void notify(std::size_t message, void* pParam);
-
-#endif // _LIB_RUNTIME_NOTIFY_I_H_

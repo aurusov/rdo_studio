@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDORTP_PARAM_H_
-#define _CONVERTOR_RDORTP_PARAM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -33,5 +32,3 @@ private:
 DECLARE_POINTER(RDORTPParam);
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDORTP_PARAM_H_

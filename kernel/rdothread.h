@@ -1,5 +1,4 @@
-#ifndef RDO_THREAD_H
-#define RDO_THREAD_H
+#pragma once
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
@@ -532,5 +531,3 @@ protected:
 	{}
 };
 #endif
-
-#endif // RDO_THREAD_H

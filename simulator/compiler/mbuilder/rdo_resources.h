@@ -1,5 +1,4 @@
-#ifndef _MBUILDER_RESOURCES_H_
-#define _MBUILDER_RESOURCES_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
@@ -331,5 +330,3 @@ public:
 };
 
 CLOSE_COMPILER_MBUILDER_NAMESPACE
-
-#endif // _MBUILDER_RESOURCES_H_

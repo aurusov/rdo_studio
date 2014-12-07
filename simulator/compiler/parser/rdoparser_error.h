@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_ERROR_H_
-#define _RDOPARSER_ERROR_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -72,5 +71,3 @@ public:
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_ERROR_H_

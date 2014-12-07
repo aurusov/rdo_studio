@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDOCONVERTER_H_
-#define _CONVERTOR_RDOCONVERTER_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <algorithm>
@@ -302,5 +301,3 @@ private:
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDOCONVERTER_H_

@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_EDITOR_MODEL_EDIT_H_
-#define _RDO_STUDIO_EDITOR_MODEL_EDIT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -66,5 +65,3 @@ private slots:
 };
 
 }}} // namespace rdo::gui::editor
-
-#endif // _RDO_STUDIO_EDITOR_MODEL_EDIT_H_

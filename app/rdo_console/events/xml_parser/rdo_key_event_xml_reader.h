@@ -1,5 +1,4 @@
-#ifndef _RDO_KEY_EVENT_XML_READER_H_
-#define _RDO_KEY_EVENT_XML_READER_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -17,5 +16,3 @@ public:
 };
 
 } // namespace rdo
-
-#endif // _RDO_KEY_EVENT_XML_READER_H_

@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_MODEL_MODEL_H_
-#define _RDO_STUDIO_MODEL_MODEL_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -189,5 +188,3 @@ signals:
 
 // --------------------------------------------------------------------------------
 extern rdo::gui::model::Model* g_pModel;
-
-#endif // _RDO_STUDIO_MODEL_MODEL_H_

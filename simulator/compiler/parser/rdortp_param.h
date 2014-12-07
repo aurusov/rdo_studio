@@ -1,5 +1,4 @@
-#ifndef _RDORTP_PARAM_H_
-#define _RDORTP_PARAM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -32,5 +31,3 @@ private:
 DECLARE_POINTER(RDORTPParam);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDORTP_PARAM_H_

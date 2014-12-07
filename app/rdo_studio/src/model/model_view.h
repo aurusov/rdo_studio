@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_MODEL_VIEW_H_
-#define _RDO_STUDIO_MODEL_VIEW_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -46,5 +45,3 @@ private slots:
 };
 
 }}} // namespace rdo::gui::model
-
-#endif // RDOSTUDIOMODELVIEW_H

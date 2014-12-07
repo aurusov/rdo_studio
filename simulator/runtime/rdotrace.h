@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_TRACE_H_
-#define _LIB_RUNTIME_TRACE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
@@ -124,5 +123,3 @@ protected:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_TRACE_H_

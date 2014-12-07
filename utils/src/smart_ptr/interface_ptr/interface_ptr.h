@@ -1,5 +1,4 @@
-#ifndef _UTILS_SMART_PTR_INTERFACE_PTR_H_
-#define _UTILS_SMART_PTR_INTERFACE_PTR_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -37,5 +36,3 @@ private:
 } // namespace rdo
 
 #include "utils/src/smart_ptr/interface_ptr/interface_ptr-inl.h"
-
-#endif // _UTILS_SMART_PTR_INTERFACE_PTR_H_

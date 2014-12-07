@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_TRACER_CHART_TREE_H_
-#define _RDO_STUDIO_TRACER_CHART_TREE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -87,5 +86,3 @@ private slots:
 };
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_CHART_TREE_H_

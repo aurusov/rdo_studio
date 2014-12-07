@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_CALC_RESOURCE_CREATE_RESOURCE_H_
-#define _LIB_RUNTIME_CALC_RESOURCE_CREATE_RESOURCE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/optional.hpp>
@@ -37,5 +36,3 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_CALC_RESOURCE_CREATE_RESOURCE_H_

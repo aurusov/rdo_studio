@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_TRACER_OPERATION_H_
-#define _RDO_STUDIO_TRACER_OPERATION_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -71,5 +70,3 @@ private:
 typedef  rdo::intrusive_ptr<Event>  LPEvent;
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_OPERATION_H_

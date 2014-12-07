@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDOCONVERTER_ENUM_H_
-#define _CONVERTOR_RDOCONVERTER_ENUM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -46,5 +45,3 @@ private:
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDOCONVERTER_ENUM_H_

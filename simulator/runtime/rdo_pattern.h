@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_PATTERN_H_
-#define _LIB_RUNTIME_PATTERN_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -161,5 +160,3 @@ private:
 DECLARE_POINTER(RDOPatternKeyboard);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_PATTERN_H_

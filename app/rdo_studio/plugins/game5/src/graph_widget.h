@@ -1,5 +1,4 @@
-#ifndef _RDO_PLUGIN_GAME_5_GRAPH_WIDGET_H_
-#define _RDO_PLUGIN_GAME_5_GRAPH_WIDGET_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -46,5 +45,3 @@ private:
 private slots:
 	void callContextMenu(const QPoint &pos);
 };
-
-#endif // _RDO_PLUGIN_GAME_5_GRAPH_WIDGET_H_

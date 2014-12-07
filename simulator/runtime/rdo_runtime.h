@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_RUNTIME_H_
-#define _LIB_RUNTIME_RUNTIME_H_
+#pragma once
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
@@ -277,5 +276,3 @@ private:
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "simulator/runtime/rdo_runtime-inl.h"
-
-#endif // _LIB_RUNTIME_RUNTIME_H_

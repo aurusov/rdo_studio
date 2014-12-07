@@ -1,5 +1,4 @@
-#ifndef _RDO_PLUGIN_GAME_5_TILE_ORDER_DIALOG_H_
-#define _RDO_PLUGIN_GAME_5_TILE_ORDER_DIALOG_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -26,5 +25,3 @@ private:
 private slots:
 	void onOkClick();
 };
-
-#endif // _RDO_PLUGIN_GAME_5_TILE_ORDER_DIALOG_H_

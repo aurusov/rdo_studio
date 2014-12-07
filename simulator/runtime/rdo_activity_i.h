@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_ACTIVITY_I_H_
-#define _LIB_RUNTIME_ACTIVITY_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -41,5 +40,3 @@ DECLARE_POINTER(IActivityPatternTrace)
 
 #define DECLARE_IActivityPatternTrace \
 	virtual const std::string& tracePatternId() const;
-
-#endif // _LIB_RUNTIME_ACTIVITY_I_H_

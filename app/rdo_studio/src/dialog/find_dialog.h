@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_DIALOG_FIND_DIALOG_H_
-#define _RDO_STUDIO_DIALOG_FIND_DIALOG_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -48,5 +47,3 @@ private slots:
 	void onMatchWholeWordChanged(int value);
 	void onDirectionDownToggled (bool checked);
 };
-
-#endif // _RDO_STUDIO_DIALOG_FIND_DIALOG_H_

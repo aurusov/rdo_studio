@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_LOGIC_H_
-#define _LIB_RUNTIME_LOGIC_H_
+#pragma once
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
@@ -80,5 +79,3 @@ protected:
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "simulator/runtime/rdo_logic-inl.h"
-
-#endif // _LIB_RUNTIME_LOGIC_H_

@@ -1,5 +1,4 @@
-#ifndef PLUGIN_GAME5_MODEL_GENERATOR_H
-#define PLUGIN_GAME5_MODEL_GENERATOR_H
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -17,5 +16,3 @@ public:
 	                        const std::string& activityValueDown = "before 1", const std::string& activityValueUp = "before 1");
 	static QString modelFUN(const Board& gameBoard);
 };
-
-#endif // PLUGIN_GAME5_MODEL_GENERATOR_H

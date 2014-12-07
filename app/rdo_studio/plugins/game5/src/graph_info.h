@@ -1,5 +1,4 @@
-#ifndef _RDO_PLUGIN_GAME_5_GRAPH_INFO_H_
-#define _RDO_PLUGIN_GAME_5_GRAPH_INFO_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -27,5 +26,3 @@ private:
 	QLabel* m_totalNumberOfNodesLabel;
 	QLabel* m_totalNumberOfNodesValue;
 };
-
-#endif // _RDO_PLUGIN_GAME_5_GRAPH_INFO_H_

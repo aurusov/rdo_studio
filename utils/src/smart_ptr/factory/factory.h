@@ -1,5 +1,4 @@
-#ifndef _UTILS_SMART_PTR_FACTORY_H_
-#define _UTILS_SMART_PTR_FACTORY_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -58,5 +57,3 @@ private:
 #define DECLARE_FACTORY(TYPE) friend class rdo::Factory<TYPE>;
 
 } // namespace rdo
-
-#endif // _UTILS_SMART_PTR_FACTORY_H_

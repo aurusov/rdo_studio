@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_MODEL_I_H_
-#define _LIB_RUNTIME_MODEL_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -25,5 +24,3 @@ DECLARE_POINTER(IName)
 
 #define DECLARE_IName \
 	virtual const std::string& name() const;
-
-#endif // _LIB_RUNTIME_MODEL_I_H_

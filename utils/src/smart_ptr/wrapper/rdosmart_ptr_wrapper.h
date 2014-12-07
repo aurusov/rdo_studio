@@ -1,5 +1,4 @@
-#ifndef _UTILS_RDOSMART_PTR_WRAPPER_H_
-#define _UTILS_RDOSMART_PTR_WRAPPER_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -78,5 +77,3 @@ private:
 };
 
 } // namespace rdo
-
-#endif // _UTILS_RDOSMART_PTR_WRAPPER_H_

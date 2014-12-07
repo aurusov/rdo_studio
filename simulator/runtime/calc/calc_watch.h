@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_CALC_WATCH_H_
-#define _LIB_RUNTIME_CALC_WATCH_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -36,5 +35,3 @@ protected:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_CALC_WATCH_H_

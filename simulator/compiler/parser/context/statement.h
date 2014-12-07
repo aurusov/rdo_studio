@@ -1,5 +1,4 @@
-#ifndef _CONTEXT_STATEMENT_H_
-#define _CONTEXT_STATEMENT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -47,5 +46,3 @@ private:
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _CONTEXT_STATEMENT_H_

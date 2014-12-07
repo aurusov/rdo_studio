@@ -1,5 +1,4 @@
-#ifndef _LIB_PARSER_PROCESS_H_
-#define _LIB_PARSER_PROCESS_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -284,5 +283,3 @@ private:
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _LIB_PARSER_PROCESS_H_

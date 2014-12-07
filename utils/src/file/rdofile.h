@@ -1,5 +1,4 @@
-#ifndef _UTILS_RDOFILE_H_
-#define _UTILS_RDOFILE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -27,5 +26,3 @@ public:
 };
 
 } // namespace rdo
-
-#endif // _UTILS_RDOFILE_H_

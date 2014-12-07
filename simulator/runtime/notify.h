@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_NOTIFY_H_
-#define _LIB_RUNTIME_NOTIFY_H_
+#pragma once
 
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
@@ -32,5 +31,3 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_NOTIFY_H_

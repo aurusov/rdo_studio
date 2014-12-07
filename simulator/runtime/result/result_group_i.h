@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_RESULT_GROUP_I_H_
-#define _LIB_RUNTIME_RESULT_GROUP_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -20,5 +19,3 @@ DECLARE_POINTER(IResultGroup)
 	void onStart (const rdo::runtime::LPRDORuntime& pRuntime); \
 	void onStop  (const rdo::runtime::LPRDORuntime& pRuntime); \
 	void onAppend(const LPIResult&                  pResult );
-
-#endif // _LIB_RUNTIME_RESULT_GROUP_I_H_

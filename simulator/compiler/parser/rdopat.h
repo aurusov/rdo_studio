@@ -1,5 +1,4 @@
-#ifndef _RDOPAT_H_
-#define _RDOPAT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
@@ -437,5 +436,3 @@ private:
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPAT_H_

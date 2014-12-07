@@ -1,7 +1,6 @@
 #include <string>
 
-#ifndef _RDOCOMMON_MODEL_OBJECTS_CONVERTOR_H_
-#define _RDOCOMMON_MODEL_OBJECTS_CONVERTOR_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -79,5 +78,3 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 		obALL  = 0x07FF
 	};
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _RDOCOMMON_MODEL_OBJECTS_CONVERTOR_H_

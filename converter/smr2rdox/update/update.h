@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_UPDATE_H_
-#define _CONVERTOR_UPDATE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -101,5 +100,3 @@ private:
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_UPDATE_H_

@@ -1,5 +1,4 @@
-#ifndef _RDO_COMMON_EXPLICIT_VALUE_H_
-#define _RDO_COMMON_EXPLICIT_VALUE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -26,5 +25,3 @@ private:
 };
 
 } // namespace rdo
-
-#endif // _RDO_COMMON_EXPLICIT_VALUE_H_

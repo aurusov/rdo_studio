@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_TYPE_H_
-#define _LIB_RUNTIME_TYPE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -63,5 +62,3 @@ DEFINE_ATOM_TYPE(bool);
 DEFINE_ATOM_TYPE(string);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_TYPE_H_

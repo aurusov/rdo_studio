@@ -1,5 +1,4 @@
-#ifndef _LIB_SERVICE_SIMULATOR_H_
-#define _LIB_SERVICE_SIMULATOR_H_
+#pragma once
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
@@ -307,5 +306,3 @@ public:
 };
 
 }}} // namespace rdo::service::simulation
-
-#endif // _LIB_SERVICE_SIMULATOR_H_

@@ -1,5 +1,4 @@
-#ifndef _UI_QT_SCROLL_BAR_H_
-#define _UI_QT_SCROLL_BAR_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -21,5 +20,3 @@ namespace rdo
 		};
 	} // namespace gui
 } // namespace rdo
-
-#endif // _UI_QT_SCROLL_BAR_H_

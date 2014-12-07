@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_CALC_SEQUENCE_H_
-#define _LIB_RUNTIME_CALC_SEQUENCE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/optional.hpp>
@@ -87,5 +86,3 @@ DEFINE_RANDON_DISTRIBUTION(ByHist, RandGeneratorCommonNext);
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "simulator/runtime/calc/calc_sequence-inl.h"
-
-#endif // _LIB_RUNTIME_CALC_SEQUENCE_H_

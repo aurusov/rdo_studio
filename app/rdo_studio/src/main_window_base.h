@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_MAIN_WINDOW_BASE_H_
-#define _RDO_STUDIO_MAIN_WINDOW_BASE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -60,5 +59,3 @@ protected:
 	DockChartTree*  m_pDockChartTree;
 	DockFrame*      m_pDockFrame;
 };
-
-#endif // _RDO_STUDIO_MAIN_WINDOW_BASE_H_

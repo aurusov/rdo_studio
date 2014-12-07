@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_SIM_TRACE_H_
-#define _LIB_RUNTIME_SIM_TRACE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <set>
@@ -99,5 +98,3 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_SIM_TRACE_H_

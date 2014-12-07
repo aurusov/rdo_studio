@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_TRACER_H_
-#define _RDO_STUDIO_TRACER_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -36,5 +35,3 @@ namespace rdo
 
 // --------------------------------------------------------------------------------
 extern rdo::gui::tracer::Tracer* g_pTracer;
-
-#endif // _RDO_STUDIO_TRACER_H_

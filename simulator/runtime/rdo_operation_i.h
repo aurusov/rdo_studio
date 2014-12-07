@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_OPERATION_I_H_
-#define _LIB_RUNTIME_OPERATION_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
@@ -50,5 +49,3 @@ DECLARE_POINTER(IOperationTrace)
 
 #define DECLARE_IOperationTrace \
 	virtual std::string traceOperId() const;
-
-#endif // _LIB_RUNTIME_OPERATION_I_H_

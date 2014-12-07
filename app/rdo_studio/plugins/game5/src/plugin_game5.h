@@ -1,5 +1,4 @@
-#ifndef _RDO_PLUGIN_PLUGIN_GAME5_H_
-#define _RDO_PLUGIN_PLUGIN_GAME5_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -47,5 +46,3 @@ signals:
 	void setGraphDlgActionEnabled(bool);
 	void setGenerateSituationDlgActionEnabled(bool);
 };
-
-#endif // _RDO_PLUGIN_PLUGIN_GAME5_H_

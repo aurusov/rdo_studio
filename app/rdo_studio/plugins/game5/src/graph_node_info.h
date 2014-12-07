@@ -1,5 +1,4 @@
-#ifndef GRAPH_NODE_INFO_H
-#define GRAPH_NODE_INFO_H
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -33,5 +32,3 @@ public:
 	bool    m_relatedToSolutionState;
 	std::vector<unsigned int> m_boardState;
 };
-
-#endif // GRAPH_NODE_INFO_H

@@ -1,5 +1,4 @@
-#ifndef _CONEXT_MEMORY_H_
-#define _CONEXT_MEMORY_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -46,5 +45,3 @@ private:
 DECLARE_POINTER(ContextMemory);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _CONEXT_MEMORY_H_

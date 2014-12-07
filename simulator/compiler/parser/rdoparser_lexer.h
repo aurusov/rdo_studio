@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_LEXER_H_
-#define _RDOPARSER_LEXER_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -57,5 +56,3 @@ CLOSE_RDO_PARSER_NAMESPACE
 
 #define LEXER     reinterpret_cast<rdo::compiler::parser::RDOLexer*>(lexer)
 #define LEXER_POS (*LEXER->m_lploc)
-
-#endif // _RDOPARSER_LEXER_H_

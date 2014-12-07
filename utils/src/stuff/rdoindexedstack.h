@@ -1,5 +1,4 @@
-#ifndef _UTILS_RDOINDEXEDSTACK_H_
-#define _UTILS_RDOINDEXEDSTACK_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
@@ -44,5 +43,3 @@ protected:
 };
 
 } // namespace rdo
-
-#endif // _UTILS_RDOINDEXEDSTACK_H_

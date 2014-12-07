@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDOCONVERTER_LEXER_H_
-#define _CONVERTOR_RDOCONVERTER_LEXER_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -56,5 +55,3 @@ CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #define LEXER     reinterpret_cast<rdo::converter::smr2rdox::RDOLexer*>(lexer)
 #define LEXER_POS (*LEXER->m_lploc)
-
-#endif // _CONVERTOR_RDOCONVERTER_LEXER_H_

@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_PRIORITY_I_H_
-#define _LIB_RUNTIME_PRIORITY_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -24,5 +23,3 @@ DECLARE_POINTER(IPriority)
 #define DECLARE_IPriority                       \
 	virtual rdo::runtime::LPRDOCalc getPrior(); \
 	virtual bool setPrior(const rdo::runtime::LPRDOCalc& pPrior);
-
-#endif // _LIB_RUNTIME_PRIORITY_I_H_

@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_CONTEXT_H_
-#define _RDOPARSER_CONTEXT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
@@ -113,5 +112,3 @@ private:
 CLOSE_RDO_PARSER_NAMESPACE
 
 #include "simulator/compiler/parser/context/context-inl.h"
-
-#endif // _RDOPARSER_CONTEXT_H_

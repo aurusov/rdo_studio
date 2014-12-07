@@ -1,5 +1,4 @@
-#ifndef _LIB_SERVICE_SHOW_MODE_H_
-#define _LIB_SERVICE_SHOW_MODE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -18,5 +17,3 @@ enum ShowMode
 };
 
 }}} // namespace rdo::service::simulation
-
-#endif // _LIB_SERVICE_SHOW_MODE_H_

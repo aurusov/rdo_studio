@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_CONTEXT_TYPE_H_
-#define _RDOPARSER_CONTEXT_TYPE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -38,5 +37,3 @@ private:
 DECLARE_POINTER(TypeContext);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_CONTEXT_TYPE_H_

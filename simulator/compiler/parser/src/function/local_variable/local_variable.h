@@ -1,5 +1,4 @@
-#ifndef _SIMULATOR_COMPILER_PARSER_FUNCTION_LOCAL_VARIABLE_H_
-#define _SIMULATOR_COMPILER_PARSER_FUNCTION_LOCAL_VARIABLE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
@@ -83,5 +82,3 @@ private:
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _SIMULATOR_COMPILER_PARSER_FUNCTION_LOCAL_VARIABLE_H_

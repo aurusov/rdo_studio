@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_ACTION_ACTIVATOR_H_
-#define _RDO_STUDIO_ACTION_ACTIVATOR_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -60,5 +59,3 @@ protected:
 private:
 	bool m_activated;
 };
-
-#endif // _RDO_STUDIO_ACTION_ACTIVATOR_H_

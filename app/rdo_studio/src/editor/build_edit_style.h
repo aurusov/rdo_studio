@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_EDITOR_BUILD_EDIT_STYLE_H_
-#define _RDO_STUDIO_EDITOR_BUILD_EDIT_STYLE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -33,5 +32,3 @@ QSettings& operator<< (QSettings& settings, const BuildStyle& style);
 QSettings& operator>> (QSettings& settings,       BuildStyle& style);
 
 }}} // namespace rdo::gui::editor
-
-#endif // _RDO_STUDIO_EDITOR_BUILD_EDIT_STYLE_H_

@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_TRACER_RESULT_H_
-#define _RDO_STUDIO_TRACER_RESULT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
@@ -42,5 +41,3 @@ private:
 typedef  rdo::intrusive_ptr<Result>  LPResult;
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_RESULT_H_

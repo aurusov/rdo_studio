@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_EDITOR_LEXER_WORD_LIST_UTIL_H_
-#define _RDO_STUDIO_EDITOR_LEXER_WORD_LIST_UTIL_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
@@ -18,5 +17,3 @@ public:
 private:
 	const WordList& wl;
 };
-
-#endif // _RDO_STUDIO_EDITOR_LEXER_WORD_LIST_UTIL_H_

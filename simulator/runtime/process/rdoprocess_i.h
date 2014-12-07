@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_PROCESS_I_H_
-#define _LIB_RUNTIME_PROCESS_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
@@ -48,5 +47,3 @@ public:
 	virtual void  setParent  (LPIPROCProcess                         pProcess ); \
 	virtual void  next       (const rdo::runtime::LPRDOPROCTransact& pTransact); \
 	virtual rdo::runtime::LPIResourceType getTranType() const;
-
-#endif // _LIB_RUNTIME_PROCESS_I_H_

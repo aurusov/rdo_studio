@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_CALC_FUNCTION_INTERNAL_H_
-#define _LIB_RUNTIME_CALC_FUNCTION_INTERNAL_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -63,5 +62,3 @@ private:
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "simulator/runtime/calc/function/calc_function_internal-inl.h"
-
-#endif // _LIB_RUNTIME_CALC_FUNCTION_INTERNAL_H_

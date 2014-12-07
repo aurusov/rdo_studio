@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_CONSOLE_CONTROLLER_H_
-#define _RDO_STUDIO_CONSOLE_CONTROLLER_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/optional.hpp>
@@ -58,5 +57,3 @@ private:
 };
 
 } // namespace rdo
-
-#endif // _RDO_STUDIO_CONSOLE_CONTROLLER_H_

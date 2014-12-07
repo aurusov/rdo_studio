@@ -1,5 +1,4 @@
-#ifndef _UTILS_LOCALE_H_
-#define _UTILS_LOCALE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
@@ -47,5 +46,3 @@ namespace rdo
 	};
 
 } // namespace rdo
-
-#endif // _UTILS_LOCALE_H_

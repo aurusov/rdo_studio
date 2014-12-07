@@ -1,5 +1,4 @@
-#ifndef _RDORTP_H_
-#define _RDORTP_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
@@ -207,5 +206,3 @@ DECLARE_POINTER(RDORTPResType);
 //};
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDORTP_H_

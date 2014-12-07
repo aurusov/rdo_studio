@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_DIALOG_GO_TO_NEXT_LINE_DIALOG_H_
-#define _RDO_STUDIO_DIALOG_GO_TO_NEXT_LINE_DIALOG_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -27,5 +26,3 @@ private slots:
 	void onOkButtonClicked();
 	void onCheckInput(const QString& text);
 };
-
-#endif // _RDO_STUDIO_DIALOG_GO_TO_NEXT_LINE_DIALOG_H_

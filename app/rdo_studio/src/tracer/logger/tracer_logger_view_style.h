@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_TRACER_LOGGER_VIEW_STYLE_H_
-#define _RDO_STUDIO_TRACER_LOGGER_VIEW_STYLE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -111,5 +110,3 @@ QSettings& operator<< (QSettings& settings, const LogStyle& style);
 QSettings& operator>> (QSettings& settings,       LogStyle& style);
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_LOGGER_VIEW_STYLE_H_

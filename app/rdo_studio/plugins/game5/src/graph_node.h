@@ -1,5 +1,4 @@
-#ifndef _RDO_PLUGIN_GAME_5_GRAPH_NODE_H_
-#define _RDO_PLUGIN_GAME_5_GRAPH_NODE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -81,5 +80,3 @@ private:
 	virtual void     mousePressEvent      (QGraphicsSceneMouseEvent* mEvent);
 	virtual void     mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mEvent);
 };
-
-#endif // _RDO_PLUGIN_GAME_5_GRAPH_NODE_H_

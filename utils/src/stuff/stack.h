@@ -1,5 +1,4 @@
-#ifndef _RDO_COMMON_STACK_H_
-#define _RDO_COMMON_STACK_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
@@ -30,5 +29,3 @@ private:
 } // namespace rdo
 
 #include "utils/src/stuff/stack-inl.h"
-
-#endif // _RDO_COMMON_STACK_H_

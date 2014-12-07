@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_VALUE_ARRAY_H_
-#define _RDOPARSER_VALUE_ARRAY_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -39,5 +38,3 @@ private:
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_VALUE_ARRAY_H_

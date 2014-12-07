@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_TRACER_SERIE_H_
-#define _RDO_STUDIO_TRACER_SERIE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
@@ -99,5 +98,3 @@ private:
 typedef  rdo::intrusive_ptr<Serie>  LPSerie;
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_SERIE_H_

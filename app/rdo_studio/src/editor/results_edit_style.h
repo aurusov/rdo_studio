@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_EDITOR_RESULTS_EDIT_STYLE_H_
-#define _RDO_STUDIO_EDITOR_RESULTS_EDIT_STYLE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -24,5 +23,3 @@ public:
 };
 
 }}} // namespace rdo::gui::editor
-
-#endif // _RDO_STUDIO_EDITOR_RESULTS_EDIT_STYLE_H_

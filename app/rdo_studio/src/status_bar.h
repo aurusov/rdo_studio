@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_STATUS_BAR_H_
-#define _RDO_STUDIO_STATUS_BAR_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -68,5 +67,3 @@ private:
 	template <Type N>
 	QLabel* getLabel(StatusBarType<N>);
 };
-
-#endif // _RDO_STUDIO_STATUS_BAR_H_

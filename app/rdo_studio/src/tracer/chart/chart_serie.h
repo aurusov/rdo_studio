@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_TRACER_CHART_SERIE_H_
-#define _RDO_STUDIO_TRACER_CHART_SERIE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -52,5 +51,3 @@ protected:
 };
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_CHART_SERIE_H_

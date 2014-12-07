@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_MODEL_TAB_CTRL_H_
-#define _RDO_STUDIO_MODEL_TAB_CTRL_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -37,5 +36,3 @@ private:
 };
 
 }}} // namespace rdo::gui::model
-
-#endif // _RDO_STUDIO_MODEL_TAB_CTRL_H_

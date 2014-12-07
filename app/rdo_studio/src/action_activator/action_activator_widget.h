@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_ACTION_ACTIVATOR_WIDGET_H_
-#define _RDO_STUDIO_ACTION_ACTIVATOR_WIDGET_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -20,5 +19,3 @@ protected:
 	virtual void focusInEvent (QFocusEvent* pEvent);
 	virtual void focusOutEvent(QFocusEvent* pEvent);
 };
-
-#endif // _RDO_STUDIO_ACTION_ACTIVATOR_WIDGET_H_

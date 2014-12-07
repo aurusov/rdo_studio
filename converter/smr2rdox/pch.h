@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_PCH_H_
-#define _CONVERTOR_PCH_H_
+#pragma once
 
 #ifdef COMPILER_VISUAL_STUDIO
 #pragma warning(disable: 4786)
@@ -26,5 +25,3 @@
 #include "utils/src/common/rdocommon.h"
 #include "utils/src/debug/rdodebug.h"
 // --------------------------------------------------------------------------------
-
-#endif // _CONVERTOR_PCH_H_

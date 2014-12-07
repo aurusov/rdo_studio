@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_PLUGIN_INFO_H_
-#define _RDO_STUDIO_PLUGIN_INFO_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -70,5 +69,3 @@ namespace rdo
 };
 
 Q_DECLARE_METATYPE(LPPluginInfo)
-
-#endif // _RDO_STUDIO_PLUGIN_INFO_H_

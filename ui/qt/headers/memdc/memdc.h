@@ -1,5 +1,4 @@
-#ifndef _UI_QT_MEMDC_H_
-#define _UI_QT_MEMDC_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -57,5 +56,3 @@ namespace rdo
 
 	} // namespace gui
 } // namespace rdo
-
-#endif // _UI_QT_MEMDC_H_

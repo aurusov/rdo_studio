@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_FRAME_TREE_CTRL_H_
-#define _RDO_STUDIO_FRAME_TREE_CTRL_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -39,5 +38,3 @@ private slots:
 };
 
 }}} // namespace rdo::gui::frame
-
-#endif // _RDO_STUDIO_FRAME_TREE_CTRL_H_

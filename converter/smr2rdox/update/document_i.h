@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_DOCUMENT_I_H_
-#define _CONVERTOR_DOCUMENT_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -42,5 +41,3 @@ protected:
 	std::string get(Type type, std::size_t from, std::size_t to);
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_DOCUMENT_I_H_

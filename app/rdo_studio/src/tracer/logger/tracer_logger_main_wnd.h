@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_TRACER_LOGGER_MAIN_WND_H_
-#define _RDO_STUDIO_TRACER_LOGGER_MAIN_WND_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -32,5 +31,3 @@ private:
 };
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_LOGGER_MAIN_WND_H_

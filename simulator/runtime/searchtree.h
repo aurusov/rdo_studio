@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_SEARCH_TREE_H_
-#define _LIB_RUNTIME_SEARCH_TREE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -87,5 +86,3 @@ protected:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_SEARCH_TREE_H_

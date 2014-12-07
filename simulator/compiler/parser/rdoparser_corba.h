@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_CORBA_H_
-#define _RDOPARSER_CORBA_H_
+#pragma once
 
 #ifdef CORBA_ENABLE
 
@@ -39,5 +38,3 @@ private:
 CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // CORBA_ENABLE
-
-#endif // _RDOPARSER_CORBA_H_

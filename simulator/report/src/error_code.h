@@ -1,5 +1,4 @@
-#ifndef _SIMULATOR_REPORT_ERROR_CODE_H_
-#define _SIMULATOR_REPORT_ERROR_CODE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -21,5 +20,3 @@ enum RDOExitCode
 };
 
 }}} // namespace rdo::simulation::report
-
-#endif // _SIMULATOR_REPORT_ERROR_CODE_H_

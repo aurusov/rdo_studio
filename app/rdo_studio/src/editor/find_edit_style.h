@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_EDITOR_FIND_EDIT_STYLE_H_
-#define _RDO_STUDIO_EDITOR_FIND_EDIT_STYLE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -41,5 +40,3 @@ QSettings& operator<< (QSettings& settings, const FindStyle& style);
 QSettings& operator>> (QSettings& settings,       FindStyle& style);
 
 }}} // namespace rdo::gui::editor
-
-#endif // _RDO_STUDIO_EDITOR_FIND_EDIT_STYLE_H_

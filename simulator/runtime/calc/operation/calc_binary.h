@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_CALC_OPERATION_BINARY_H_
-#define _LIB_RUNTIME_CALC_OPERATION_BINARY_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -62,5 +61,3 @@ private:
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "simulator/runtime/calc/operation/calc_binary-inl.h"
-
-#endif // _LIB_RUNTIME_CALC_OPERATION_BINARY_H_

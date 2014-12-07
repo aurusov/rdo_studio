@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_TRACER_CHART_TREE_ITEM_H_
-#define _RDO_STUDIO_TRACER_CHART_TREE_ITEM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -32,5 +31,3 @@ private:
 typedef  rdo::intrusive_ptr<ChartTreeItem>  LPChartTreeItem;
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_CHART_TREE_ITEM_H_

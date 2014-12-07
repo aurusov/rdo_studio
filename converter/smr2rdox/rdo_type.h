@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDOCONVERTER_TYPE_H_
-#define _CONVERTOR_RDOCONVERTER_TYPE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -108,5 +107,3 @@ DEFINE_ATOM_TYPE_CONVERTER(bool         );
 DEFINE_ATOM_TYPE_CONVERTER(string       );
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDOCONVERTER_TYPE_H_

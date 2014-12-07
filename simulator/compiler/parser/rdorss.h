@@ -1,5 +1,4 @@
-#ifndef _RDORSS_RSS_H_
-#define _RDORSS_RSS_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
@@ -104,5 +103,3 @@ private:
 DECLARE_POINTER(RDORSSResource);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDORSS_RSS_H_

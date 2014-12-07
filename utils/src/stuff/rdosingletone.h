@@ -1,5 +1,4 @@
-#ifndef _UTILS_RDOSINGLETONE_H_
-#define _UTILS_RDOSINGLETONE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -42,5 +41,3 @@ private:
 };
 
 } // namespace rdo
-
-#endif // _UTILS_RDOSINGLETONE_H_

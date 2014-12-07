@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_PLUGIN_LOADER_H_
-#define _RDO_STUDIO_PLUGIN_LOADER_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -41,5 +40,3 @@ private:
 	PluginInfo        generatePluginInfo     (PluginInterface* pluginInterface, QPluginLoader* pluginLoader) const;
 	int               matchPluginInfo        (const PluginInfoList& list, const LPPluginInfo& pluginInfo) const;
 };
-
-#endif // _RDO_STUDIO_PLUGIN_LOADER_H_

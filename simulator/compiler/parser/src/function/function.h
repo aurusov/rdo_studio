@@ -1,5 +1,4 @@
-#ifndef _SIMULATOR_COMPILER_PARSER_FUNCTION_H_
-#define _SIMULATOR_COMPILER_PARSER_FUNCTION_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/optional.hpp>
@@ -65,5 +64,3 @@ private:
 DECLARE_POINTER(Function);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _SIMULATOR_COMPILER_PARSER_FUNCTION_H_

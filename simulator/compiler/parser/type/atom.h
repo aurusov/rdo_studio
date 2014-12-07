@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_TYPE_ATOM_H_
-#define _RDOPARSER_TYPE_ATOM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -34,5 +33,3 @@ DEFINE_ATOM_TYPE_PARSER(string       );
 DEFINE_ATOM_TYPE_PARSER(void         );
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_TYPE_ATOM_H_

@@ -1,5 +1,4 @@
-#ifndef _UTILS_SMART_PTR_REF_COUNTER_I_H_
-#define _UTILS_SMART_PTR_REF_COUNTER_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -21,5 +20,3 @@ struct IRefCounter
 typedef IRefCounter* LPIRefCounter;
 
 } // namespace rdo
-
-#endif // _UTILS_SMART_PTR_REF_COUNTER_I_H_

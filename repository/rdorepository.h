@@ -1,5 +1,4 @@
-#ifndef _RDOREPOSITORY_H_
-#define _RDOREPOSITORY_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
@@ -196,5 +195,3 @@ protected:
 };
 
 }} // namespace rdo::repository
-
-#endif // _RDOREPOSITORY_H_

@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_TYPE_FUNCTION_TYPE_H_
-#define _RDOPARSER_TYPE_FUNCTION_TYPE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
@@ -71,5 +70,3 @@ private:
 DECLARE_POINTER(FunctionType);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_TYPE_FUNCTION_TYPE_H_

@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDOFRM_H_
-#define _CONVERTOR_RDOFRM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/optional.hpp>
@@ -48,5 +47,3 @@ private:
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDOFRM_H_

@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDOPAT_H_
-#define _CONVERTOR_RDOPAT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
@@ -491,5 +490,3 @@ private:
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDOPAT_H_

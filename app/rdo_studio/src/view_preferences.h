@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_VIEW_PREFERENCES_H_
-#define _RDO_STUDIO_VIEW_PREFERENCES_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -402,5 +401,3 @@ private:
 	IntVector    selectedRows           () const;
 	void         updatePluginList       ();
 };
-
-#endif // _RDO_STUDIO_VIEW_PREFERENCES_H_

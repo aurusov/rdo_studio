@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDO_TYPE_RANGE_H_
-#define _CONVERTOR_RDO_TYPE_RANGE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -64,5 +63,3 @@ DECLARE_POINTER(RDOTypeRealRange);
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #include "converter/smr2rdox/rdo_type_range-inl.h"
-
-#endif // _CONVERTOR_RDO_TYPE_RANGE_H_

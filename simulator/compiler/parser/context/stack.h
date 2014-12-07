@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_CONTEXT_STACK_H_
-#define _RDOPARSER_CONTEXT_STACK_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
@@ -43,5 +42,3 @@ private:
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_CONTEXT_STACK_H_

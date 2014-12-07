@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_DIALOG_ABOUT_DIALOG_H_
-#define _RDO_STUDIO_DIALOG_ABOUT_DIALOG_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -16,5 +15,3 @@ Q_OBJECT
 public:
 	explicit AboutDialog(QWidget* pParent = NULL);
 };
-
-#endif // _RDO_STUDIO_DIALOG_ABOUT_DIALOG_H_

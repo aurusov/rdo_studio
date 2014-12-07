@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_CALC_EVENT_H_
-#define _LIB_RUNTIME_CALC_EVENT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -44,5 +43,3 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_CALC_EVENT_H_

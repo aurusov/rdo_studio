@@ -1,5 +1,4 @@
-#ifndef _UTILS_RDOCOMMON_H_
-#define _UTILS_RDOCOMMON_H_
+#pragma once
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
@@ -50,5 +49,3 @@ namespace rdo {
 	int roundDouble(double val);
 
 } // namespace rdo
-
-#endif // _UTILS_RDOCOMMON_H_

@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDOFUN_H_
-#define _CONVERTOR_RDOFUN_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
@@ -621,5 +620,3 @@ private:
 DECLARE_POINTER(RDOFUNSelect);
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDOFUN_H_

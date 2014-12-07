@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_EDITOR_LEXER_FIND_H_
-#define _RDO_STUDIO_EDITOR_LEXER_FIND_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -11,5 +10,3 @@
 // --------------------------------------------------------------------------------
 
 extern LexerModule lexerRDOFind;
-
-#endif // _RDO_STUDIO_EDITOR_LEXER_FIND_H_

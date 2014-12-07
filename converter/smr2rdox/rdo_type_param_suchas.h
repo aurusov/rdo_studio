@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDO_TYPE_PARAM_SUCHAS_H_
-#define _CONVERTOR_RDO_TYPE_PARAM_SUCHAS_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -27,5 +26,3 @@ private:
 DECLARE_POINTER(RDOTypeParamSuchAs);
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDO_TYPE_PARAM_SUCHAS_H_

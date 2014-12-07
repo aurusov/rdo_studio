@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDOCONVERTER_ERROR_H_
-#define _CONVERTOR_RDOCONVERTER_ERROR_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -72,5 +71,3 @@ public:
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDOCONVERTER_ERROR_H_

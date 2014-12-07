@@ -1,5 +1,4 @@
-#ifndef _RDO_PLUGIN_GAME_5_GRAPH_ITEMS_TYPES_H
-#define _RDO_PLUGIN_GAME_5_GRAPH_ITEMS_TYPES_H
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -19,5 +18,3 @@ enum TypeID
 };
 
 }}} // namespace rdo::plugin::game5
-
-#endif // _RDO_PLUGIN_GAME_5_GRAPH_ITEMS_TYPES_H

@@ -1,5 +1,4 @@
-#ifndef _BUILD_EDIT_LINE_INFO_H_
-#define _BUILD_EDIT_LINE_INFO_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -23,5 +22,3 @@ public:
 };
 
 }}} // namespace rdo::simulation::report
-
-#endif // _BUILD_EDIT_LINE_INFO_H_

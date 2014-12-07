@@ -1,5 +1,4 @@
-#ifndef _RDOSMR_H_
-#define _RDOSMR_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
@@ -94,5 +93,3 @@ private:
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOSMR_H_

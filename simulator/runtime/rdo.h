@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_RDO_H_
-#define _LIB_RUNTIME_RDO_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -47,5 +46,3 @@ public:
 DECLARE_POINTER(IBaseOperation);
 
 typedef std::vector<LPIBaseOperation> BaseOperationList;
-
-#endif // _LIB_RUNTIME_RDO_H_

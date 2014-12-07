@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_CONTEXT_FIND_I_H_
-#define _RDOPARSER_CONTEXT_FIND_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -26,5 +25,3 @@ protected:
 	Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_CONTEXT_FIND_I_H_

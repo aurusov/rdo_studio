@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_RDO_EDIT_RDOEDITORBASEEDIT_H_
-#define _RDO_STUDIO_RDO_EDIT_RDOEDITORBASEEDIT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -33,5 +32,3 @@ private:
 };
 
 }}} // namespace rdo::gui::editor
-
-#endif // _RDO_STUDIO_RDO_EDIT_RDOEDITORBASEEDIT_H_

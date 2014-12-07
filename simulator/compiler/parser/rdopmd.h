@@ -1,5 +1,4 @@
-#ifndef _RDOPMD_PMD_H_
-#define _RDOPMD_PMD_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -156,5 +155,3 @@ private:
 DECLARE_POINTER(RDOPMDGetValue);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPMD_PMD_H_

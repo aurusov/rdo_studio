@@ -1,5 +1,4 @@
-#ifndef _SIMULATOR_COMPILER_PARSER_FUNCTION_LOCAL_VARIABLE_CONTEXT_H_
-#define _SIMULATOR_COMPILER_PARSER_FUNCTION_LOCAL_VARIABLE_CONTEXT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/function.hpp>
@@ -30,5 +29,3 @@ private:
 DECLARE_POINTER(ContextLocalVariable);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _SIMULATOR_COMPILER_PARSER_FUNCTION_LOCAL_VARIABLE_CONTEXT_H_

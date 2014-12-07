@@ -1,5 +1,4 @@
-#ifndef RDO_KERNEL_H
-#define RDO_KERNEL_H
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -126,5 +125,3 @@ typedef RDOKernel RDOKernelGUI;
 
 // --------------------------------------------------------------------------------
 extern RDOKernel* kernel;
-
-#endif // RDO_KERNEL_H

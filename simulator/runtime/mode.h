@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_NAMESPACE_MODE_H_
-#define _LIB_RUNTIME_NAMESPACE_MODE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -18,5 +17,3 @@ enum RunTimeMode
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_NAMESPACE_MODE_H_

@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_PARAM_I_H_
-#define _LIB_RUNTIME_PARAM_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -23,5 +22,3 @@ public:
 #define DECLARE_IParam \
 	virtual bool setParam(const rdo::runtime::LPRDOCalc& pParam); \
 	virtual bool endParam();
-
-#endif // _LIB_RUNTIME_PARAM_I_H_

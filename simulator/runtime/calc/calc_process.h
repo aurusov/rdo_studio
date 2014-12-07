@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_CALC_PROCESS_H_
-#define _LIB_RUNTIME_CALC_PROCESS_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -47,5 +46,3 @@ DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_CALC_PROCESS_H_

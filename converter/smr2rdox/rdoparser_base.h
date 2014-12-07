@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDOCONVERTER_BASE_H_
-#define _CONVERTOR_RDOCONVERTER_BASE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
@@ -110,5 +109,3 @@ private:
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDOCONVERTER_BASE_H_

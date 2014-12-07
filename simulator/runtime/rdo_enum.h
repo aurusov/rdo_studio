@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_ENUM_H_
-#define _LIB_RUNTIME_ENUM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -39,5 +38,3 @@ protected:
 DECLARE_POINTER(RDOEnumType);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_ENUM_H_

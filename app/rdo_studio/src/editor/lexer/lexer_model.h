@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_EDITOR_LEXER_MODEL_H_
-#define _RDO_STUDIO_EDITOR_LEXER_MODEL_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <locale>
@@ -17,5 +16,3 @@ bool isDigit     (int ch);
 }}} // namespace rdo::gui::lexer
 
 extern LexerModule lexerRDOSyntax;
-
-#endif // _RDO_STUDIO_EDITOR_LEXER_MODEL_H_

@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_DOCK_BUILD_H_
-#define _RDO_STUDIO_DOCK_BUILD_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -21,5 +20,3 @@ public:
 
 	context_type& getContext();
 };
-
-#endif // _RDO_STUDIO_DOCK_BUILD_H_

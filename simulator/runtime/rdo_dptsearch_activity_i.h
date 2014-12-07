@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_DPTSEARCH_ACTIVITY_I_H_
-#define _LIB_RUNTIME_DPTSEARCH_ACTIVITY_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -31,5 +30,3 @@ DECLARE_POINTER(IDPTSearchActivity)
 	virtual LPIRule& rule();                                         \
 	virtual double cost(const rdo::runtime::LPRDORuntime& pRuntime); \
 	virtual ValueTime valueTime() const;
-
-#endif // _LIB_RUNTIME_DPTSEARCH_ACTIVITY_I_H_

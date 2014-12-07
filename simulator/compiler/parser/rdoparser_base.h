@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_BASE_H_
-#define _RDOPARSER_BASE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
@@ -57,5 +56,3 @@ protected:
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_BASE_H_

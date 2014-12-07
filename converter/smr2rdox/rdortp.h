@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDORTP_H_
-#define _CONVERTOR_RDORTP_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
@@ -186,5 +185,3 @@ DECLARE_POINTER(RDORTPResType);
 //};
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDORTP_H_

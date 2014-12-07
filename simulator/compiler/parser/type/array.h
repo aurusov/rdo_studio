@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_TYPE_ARRAY_H_
-#define _RDOPARSER_TYPE_ARRAY_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -36,5 +35,3 @@ private:
 DECLARE_POINTER(RDOArrayType)
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_TYPE_ARRAY_H_

@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_AS_STRING_I_H
-#define _LIB_RUNTIME_AS_STRING_I_H
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
@@ -25,5 +24,3 @@ DECLARE_POINTER(IAsString)
 	std::string asString() const;
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_AS_STRING_I_H

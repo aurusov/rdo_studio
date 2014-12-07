@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_TYPE_INFO_H_
-#define _RDOPARSER_TYPE_INFO_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/optional.hpp>
@@ -44,5 +43,3 @@ private:
 CLOSE_RDO_PARSER_NAMESPACE
 
 #include "simulator/compiler/parser/type/info-inl.h"
-
-#endif // _RDOPARSER_TYPE_INFO_H_

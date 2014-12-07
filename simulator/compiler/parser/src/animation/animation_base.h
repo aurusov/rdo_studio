@@ -1,5 +1,4 @@
-#ifndef _SIMULATOR_COMPILER_PARSER_ANIMATION_BASE_H_
-#define _SIMULATOR_COMPILER_PARSER_ANIMATION_BASE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -40,5 +39,3 @@ private:
 DECLARE_POINTER(RDOFRMCommandList);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _SIMULATOR_COMPILER_PARSER_ANIMATION_BASE_H_

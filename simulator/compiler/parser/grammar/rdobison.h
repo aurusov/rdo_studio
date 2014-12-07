@@ -1,5 +1,4 @@
-#ifndef _RDOBISON_H_
-#define _RDOBISON_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <cstddef>
@@ -55,5 +54,3 @@ struct yyltype
 		}                                                           \
 	}                                                               \
 	while (0)
-
-#endif // _RDOBISON_H_

@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_RDO_EDIT_RDOEDITORBASEEDITSTYLE_H_
-#define _RDO_STUDIO_RDO_EDIT_RDOEDITORBASEEDITSTYLE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -63,5 +62,3 @@ QSettings& operator<< (QSettings& settings, const ParserStyle& style);
 QSettings& operator>> (QSettings& settings,       ParserStyle& style);
 
 }}} // namespace rdo::gui::editor
-
-#endif // _RDO_STUDIO_RDO_EDIT_RDOEDITORBASEEDITSTYLE_H_

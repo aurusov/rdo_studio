@@ -1,5 +1,4 @@
-#ifndef _UTILS_RDOTIME_H_
-#define _UTILS_RDOTIME_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <cstdint>
@@ -33,5 +32,3 @@ private:
 };
 
 } // namespace rdo
-
-#endif // _UTILS_RDOTIME_H_

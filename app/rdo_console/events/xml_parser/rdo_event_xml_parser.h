@@ -1,5 +1,4 @@
-#ifndef _RDO_KEY_EVENT_XML_PARSER_H_
-#define _RDO_KEY_EVENT_XML_PARSER_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
@@ -32,5 +31,3 @@ private:
 };
 
 } // namespace rdo
-
-#endif // _RDO_KEY_EVENT_XML_PARSER_H_

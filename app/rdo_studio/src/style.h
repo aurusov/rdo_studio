@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_STYLE_H_
-#define _RDO_STUDIO_STYLE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -69,5 +68,3 @@ QSettings& operator<< (QSettings& settings, const StyleBase& style);
 QSettings& operator>> (QSettings& settings,       StyleBase& style);
 
 }}} // namespace rdo::gui::style
-
-#endif // _RDO_STUDIO_STYLE_H_

@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_EDITOR_LOG_EDIT_H_
-#define _RDO_STUDIO_EDITOR_LOG_EDIT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -59,5 +58,3 @@ private slots:
 };
 
 }}} // namespace rdo::gui::editor
-
-#endif // _RDO_STUDIO_EDITOR_LOG_EDIT_H_

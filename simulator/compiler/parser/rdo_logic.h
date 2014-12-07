@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_LOGIC_H_
-#define _RDOPARSER_LOGIC_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -37,5 +36,3 @@ private:
 CLOSE_RDO_PARSER_NAMESPACE
 
 #include "simulator/compiler/parser/rdo_logic-inl.h"
-
-#endif // _RDOPARSER_LOGIC_H_

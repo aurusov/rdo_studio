@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDOCONVERTER_OBJECT_H_
-#define _CONVERTOR_RDOCONVERTER_OBJECT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -130,5 +129,3 @@ private:
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDOCONVERTER_OBJECT_H_

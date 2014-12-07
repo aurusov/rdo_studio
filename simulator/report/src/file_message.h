@@ -1,5 +1,4 @@
-#ifndef _SIMULATOR_REPORT_FILE_MESSAGE_H_
-#define _SIMULATOR_REPORT_FILE_MESSAGE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
@@ -46,5 +45,3 @@ private:
 };
 
 }}} // namespace rdo::simulation::report
-
-#endif // _SIMULATOR_REPORT_FILE_MESSAGE_H_

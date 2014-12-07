@@ -1,5 +1,4 @@
-#ifndef _RDO_PLUGIN_GAME_5_MULTI_SELECT_COMPLETER_H_
-#define _RDO_PLUGIN_GAME_5_MULTI_SELECT_COMPLETER_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -29,5 +28,3 @@ private:
 	int m_cursorPos;
 	int m_selectionLen;
 };
-
-#endif // _RDO_PLUGIN_GAME_5_MULTI_SELECT_COMPLETER_H_

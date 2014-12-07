@@ -23,6 +23,10 @@ def __remove_doxygen(text):
     text = re.sub(r'(.*)\/\/\!(\s)?<(.*)', r'\1//\3', text)
     return text
 
+def __use_pragma_once(text):
+    text = re.sub(r'#ifndef\s(.*)\n#define\s\1\n+((?:[^\n]*(\n+))+(.*))(\n+)#endif // \1(\n+)?', r'#pragma once\n\n\2', text, re.M)
+    return text
+
 full_file_paths = __get_filepaths(os.path.abspath('../../'))
 remove_headers_pattern = re.compile(r'\/\*\!(?:[^\n]*(\n+))+?(\s*)?(.*)\*\/(\n+)', re.VERBOSE | re.MULTILINE)
 
@@ -33,5 +37,6 @@ for file in full_file_paths:
     ifile.close()
     text = __remove_headers(remove_headers_pattern, text)
     text = __remove_doxygen(text)
+    text = __use_pragma_once(text)
     ofile = open(file, 'w')
     ofile.write(text)

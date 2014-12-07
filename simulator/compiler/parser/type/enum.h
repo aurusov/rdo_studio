@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_TYPE_ENUM_H_
-#define _RDOPARSER_TYPE_ENUM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -48,5 +47,3 @@ private:
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_TYPE_ENUM_H_

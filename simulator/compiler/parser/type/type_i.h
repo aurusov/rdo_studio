@@ -1,5 +1,4 @@
-#ifndef _SIMULATOR_COMPILER_PARSER_TYPE_I_H_
-#define _SIMULATOR_COMPILER_PARSER_TYPE_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -49,5 +48,3 @@ public:
 	virtual rdo::runtime::RDOValue get_default() const;
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _SIMULATOR_COMPILER_PARSER_TYPE_I_H_

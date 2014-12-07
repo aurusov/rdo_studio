@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_FRAME_OPTIONS_VIEW_H_
-#define _RDO_STUDIO_FRAME_OPTIONS_VIEW_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -27,5 +26,3 @@ public:
 };
 
 }}} // namespace rdo::gui::frame
-
-#endif // _RDO_STUDIO_FRAME_OPTIONS_VIEW_H_

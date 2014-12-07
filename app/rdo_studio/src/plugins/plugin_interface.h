@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_PLUGIN_INTERFACE_H_
-#define _RDO_STUDIO_PLUGIN_INTERFACE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -24,5 +23,3 @@ public:
 };
 
 Q_DECLARE_INTERFACE(PluginInterface, "RDO_PLUGIN_INTERFACE");
-
-#endif // _RDO_STUDIO_PLUGIN_INTERFACE_H_

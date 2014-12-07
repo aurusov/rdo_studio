@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_TYPE_SUCH_AS_H_
-#define _RDOPARSER_TYPE_SUCH_AS_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -27,5 +26,3 @@ private:
 DECLARE_POINTER(RDOTypeParamSuchAs);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_TYPE_SUCH_AS_H_

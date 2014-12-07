@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_LOGIC_DPTSEARCH_I_H_
-#define _LIB_RUNTIME_LOGIC_DPTSEARCH_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -15,5 +14,3 @@ DECLARE_POINTER(IDPTSearchLogic)
 
 #define DECLARE_IDPTSearchLogic \
 	virtual void addActivity(LPIDPTSearchActivity activity);
-
-#endif // _LIB_RUNTIME_LOGIC_DPTSEARCH_I_H_

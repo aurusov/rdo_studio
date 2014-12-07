@@ -1,5 +1,4 @@
-#ifndef _SIMULATOR_COMPILER_PARSER_ANIMATION_SPRITE_H_
-#define _SIMULATOR_COMPILER_PARSER_ANIMATION_SPRITE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -22,5 +21,3 @@ private:
 DECLARE_POINTER(RDOFRMSprite);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _SIMULATOR_COMPILER_PARSER_ANIMATION_SPRITE_H_

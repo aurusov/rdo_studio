@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_OBJECT_H_
-#define _RDOPARSER_OBJECT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -131,5 +130,3 @@ private:
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_OBJECT_H_

@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_DOCK_TRACE_H_
-#define _RDO_STUDIO_DOCK_TRACE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -17,5 +16,3 @@ public:
 
 	context_type& getContext();
 };
-
-#endif // _RDO_STUDIO_DOCK_TRACE_H_

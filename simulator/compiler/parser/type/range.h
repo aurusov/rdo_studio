@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_TYPE_RANGE_H_
-#define _RDOPARSER_TYPE_RANGE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -62,5 +61,3 @@ DECLARE_POINTER(RDOTypeRealRange);
 CLOSE_RDO_PARSER_NAMESPACE
 
 #include "simulator/compiler/parser/type/range-inl.h"
-
-#endif // _RDOPARSER_TYPE_RANGE_H_

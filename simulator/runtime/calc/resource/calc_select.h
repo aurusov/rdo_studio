@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_CALC_RESOURCE_SELECT_H_
-#define _LIB_RUNTIME_CALC_RESOURCE_SELECT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
@@ -78,5 +77,3 @@ DEFINE_CALC_SELECT_METHOD(Size     );
 DEFINE_CALC_SELECT_METHOD(Array    );
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_CALC_RESOURCE_SELECT_H_

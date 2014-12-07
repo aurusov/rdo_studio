@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDOCONVERTER_CONVERTOR_RDO_H_
-#define _CONVERTOR_RDOCONVERTER_CONVERTOR_RDO_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <iostream>
@@ -70,5 +69,3 @@ private:
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDOCONVERTER_CONVERTOR_RDO_H_

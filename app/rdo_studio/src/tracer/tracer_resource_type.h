@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_TRACER_RESOURCE_TYPE_H_
-#define _RDO_STUDIO_TRACER_RESOURCE_TYPE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -81,5 +80,3 @@ private:
 typedef rdo::intrusive_ptr<ResourceType> LPResourceType;
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_RESOURCE_TYPE_H_

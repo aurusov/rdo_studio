@@ -1,5 +1,4 @@
-#ifndef _UI_QT_BITMAP_H_
-#define _UI_QT_BITMAP_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -25,5 +24,3 @@ namespace rdo
 
 	} // namespace gui
 } // namespace rdo
-
-#endif // _UI_GDIPLUS_BITMAP_H_

@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_DOCK_FOCUSABLE_H_
-#define _RDO_STUDIO_DOCK_FOCUSABLE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -20,5 +19,3 @@ public:
 private slots:
 	void onVisibilityChanged(bool visible);
 };
-
-#endif // _RDO_STUDIO_DOCK_FOCUSABLE_H_

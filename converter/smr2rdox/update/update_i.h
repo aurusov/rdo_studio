@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_UPDATE_I_H_
-#define _CONVERTOR_UPDATE_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
@@ -75,5 +74,3 @@ protected:
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_UPDATE_I_H_

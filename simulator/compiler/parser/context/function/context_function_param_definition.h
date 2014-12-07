@@ -1,5 +1,4 @@
-#ifndef _SIMULATOR_COMPILER_PARSER_CONTEXT_FUNCTION_PARAM_DEFINITION_H_
-#define _SIMULATOR_COMPILER_PARSER_CONTEXT_FUNCTION_PARAM_DEFINITION_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/function.hpp>
@@ -52,5 +51,3 @@ private:
 DECLARE_POINTER(ContextParamDefinition);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _SIMULATOR_COMPILER_PARSER_CONTEXT_FUNCTION_PARAM_DEFINITION_H_

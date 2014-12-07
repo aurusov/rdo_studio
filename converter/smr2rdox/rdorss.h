@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDORSS_RSS_H_
-#define _CONVERTOR_RDORSS_RSS_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
@@ -90,5 +89,3 @@ private:
 DECLARE_POINTER(RDOPROCResource);
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDORSS_RSS_H_

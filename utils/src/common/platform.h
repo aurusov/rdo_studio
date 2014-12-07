@@ -1,5 +1,4 @@
-#ifndef _UTILS_PLATFORM_H_
-#define _UTILS_PLATFORM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -43,5 +42,3 @@
 #else
 	#error Unknown architecture!
 #endif
-
-#endif // _UTILS_PLATFORM_H_

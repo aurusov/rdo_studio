@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_RESULT_I_H_
-#define _LIB_RUNTIME_RESULT_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -55,5 +54,3 @@ DECLARE_POINTER(IResultGetValue)
 
 #define DECLARE_IResultGetValue \
 	const rdo::runtime::RDOValue& getValue() const;
-
-#endif // _LIB_RUNTIME_RESULT_I_H_

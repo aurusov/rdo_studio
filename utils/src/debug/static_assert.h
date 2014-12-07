@@ -1,5 +1,4 @@
-#ifndef _UTILS_STATIC_ASSERT_H_
-#define _UTILS_STATIC_ASSERT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -18,5 +17,3 @@ struct CompileTimeError<true> {};
 	rdo::CompileTimeError<((expr) != 0)>();
 
 } // namespace rdo
-
-#endif // _UTILS_STATIC_ASSERT_H_
