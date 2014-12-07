@@ -13,8 +13,8 @@ namespace game5 {
 
 enum TypeID
 {
-	GRAPH_NODE = QGraphicsItem::UserType + 1,
-	GRAPH_EDGE = QGraphicsItem::UserType + 2,
+    GRAPH_NODE = QGraphicsItem::UserType + 1,
+    GRAPH_EDGE = QGraphicsItem::UserType + 2,
 };
 
 }}} // namespace rdo::plugin::game5

@@ -12,13 +12,13 @@ class RDOCalcCheckRange: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcCheckRange)
 private:
-	RDOCalcCheckRange(const RDOValue& minValue, const RDOValue& maxValue, const LPRDOCalc& pCalc);
+    RDOCalcCheckRange(const RDOValue& minValue, const RDOValue& maxValue, const LPRDOCalc& pCalc);
 
-	RDOValue   m_minValue;
-	RDOValue   m_maxValue;
-	LPRDOCalc  m_pCalc;
+    RDOValue   m_minValue;
+    RDOValue   m_maxValue;
+    LPRDOCalc  m_pCalc;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

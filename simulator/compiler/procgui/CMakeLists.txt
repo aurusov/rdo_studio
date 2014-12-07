@@ -12,29 +12,29 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 SET(COMMON_FILES
-	namespace.h
+    namespace.h
 )
 
 SET(PCH_FILES
-	pch.h
-	pch.cpp
+    pch.h
+    pch.cpp
 )
 
 SET(PROCGUI_FILES
-	procgui.cpp
-	procgui.h
-	procgui_datablock.cpp
-	procgui_datablock.h
+    procgui.cpp
+    procgui.h
+    procgui_datablock.cpp
+    procgui_datablock.h
 )
 
 SET(SOURCE_FILES
-	${PCH_FILES}
-	${COMMON_FILES}
-	${PROCGUI_FILES}
+    ${PCH_FILES}
+    ${COMMON_FILES}
+    ${PROCGUI_FILES}
 )
 
 SET(NO_PCH_FILES
-	${PCH_FILES}
+    ${PCH_FILES}
 )
 
 ADD_LIBRARY(rdo_procgui STATIC ${SOURCE_FILES})
@@ -49,19 +49,19 @@ INSTALL(TARGETS rdo_procgui DESTINATION lib)
 
 IF(MSVC_IDE) # options for windows #
 
-	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
-	ADD_PCH("${SOURCE_FILES}" "${NO_PCH_FILES}" simulator/compiler/procgui ./ pch)
+    INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
+    ADD_PCH("${SOURCE_FILES}" "${NO_PCH_FILES}" simulator/compiler/procgui ./ pch)
 
-	SOURCE_GROUP(".common" FILES
-		${COMMON_FILES}
-	)
+    SOURCE_GROUP(".common" FILES
+        ${COMMON_FILES}
+    )
 
-	SOURCE_GROUP(".pch" FILES
-		${PCH_FILES}
-	)
+    SOURCE_GROUP(".pch" FILES
+        ${PCH_FILES}
+    )
 
-	SOURCE_GROUP(".procgui" FILES
-		${PROCGUI_FILES}
-	)
+    SOURCE_GROUP(".procgui" FILES
+        ${PROCGUI_FILES}
+    )
 
 ENDIF()

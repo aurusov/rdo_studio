@@ -9,19 +9,19 @@
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 RDOParam::RDOParam(const std::string& name, const LPRDOTypeParam& pType, const LPRDOValue& pDefault)
-	: RDOParserSrcInfo(name        )
-	, m_pType         (pType       )
-	, m_pDefault      (pDefault    )
+    : RDOParserSrcInfo(name        )
+    , m_pType         (pType       )
+    , m_pDefault      (pDefault    )
 {
-	checkDefault();
+    checkDefault();
 }
 
 RDOParam::RDOParam(const RDOParserSrcInfo& src_info, const LPRDOTypeParam& pType, const LPRDOValue& pDefault)
-	: RDOParserSrcInfo(src_info)
-	, m_pType         (pType   )
-	, m_pDefault      (pDefault)
+    : RDOParserSrcInfo(src_info)
+    , m_pType         (pType   )
+    , m_pDefault      (pDefault)
 {
-	checkDefault();
+    checkDefault();
 }
 
 RDOParam::~RDOParam()
@@ -29,11 +29,11 @@ RDOParam::~RDOParam()
 
 void RDOParam::checkDefault()
 {
-	if (m_pDefault && m_pDefault->defined())
-	{
-		m_pType->type()->type_cast(m_pDefault->type(), m_pDefault->src_info(), this->src_info(), m_pDefault->src_info());
-		m_pDefault = m_pType->type()->value_cast(m_pDefault, this->src_info(), m_pDefault->src_info());
-	}
+    if (m_pDefault && m_pDefault->defined())
+    {
+        m_pType->type()->type_cast(m_pDefault->type(), m_pDefault->src_info(), this->src_info(), m_pDefault->src_info());
+        m_pDefault = m_pType->type()->value_cast(m_pDefault, this->src_info(), m_pDefault->src_info());
+    }
 }
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

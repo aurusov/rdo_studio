@@ -13,26 +13,26 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 struct ITypeContext
 {
-	virtual const LPTypeInfo& getTypeInfo() const = 0;
+    virtual const LPTypeInfo& getTypeInfo() const = 0;
 };
 #define DECLARE_ITypeContext        \
 public:                             \
-	const LPTypeInfo& getTypeInfo() const;
+    const LPTypeInfo& getTypeInfo() const;
 
 // --------------------------------------------------------------------------------
 // -------------------- TypeContext
 // --------------------------------------------------------------------------------
 class TypeContext
-	: public Context
-	, public ITypeContext
+    : public Context
+    , public ITypeContext
 {
 DECLARE_FACTORY(TypeContext);
 private:
-	TypeContext(const LPTypeInfo& pType);
+    TypeContext(const LPTypeInfo& pType);
 
-	LPTypeInfo m_pType;
+    LPTypeInfo m_pType;
 
-	DECLARE_ITypeContext;
+    DECLARE_ITypeContext;
 };
 DECLARE_POINTER(TypeContext);
 

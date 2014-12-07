@@ -13,15 +13,15 @@ class CheckableLineEdit: public QWidget
 {Q_OBJECT
 
 public:
-	CheckableLineEdit(QWidget* parent);
-	QCheckBox& getCheckBox() {return *checkBox;};
-	QLineEdit& getLineEdit() {return *lineEdit;};
+    CheckableLineEdit(QWidget* parent);
+    QCheckBox& getCheckBox() {return *checkBox;};
+    QLineEdit& getLineEdit() {return *lineEdit;};
 
 private:
-	QCheckBox*    checkBox;
-	QLineEdit*    lineEdit;
-	const QString defaultText;
+    QCheckBox*    checkBox;
+    QLineEdit*    lineEdit;
+    const QString defaultText;
 
 private slots:
-	void setLineEditState(int state);
+    void setLineEditState(int state);
 };

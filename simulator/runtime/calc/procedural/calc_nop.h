@@ -12,10 +12,10 @@ class RDOCalcNop: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcNop)
 private:
-	RDOCalcNop();
-	virtual ~RDOCalcNop();
+    RDOCalcNop();
+    virtual ~RDOCalcNop();
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

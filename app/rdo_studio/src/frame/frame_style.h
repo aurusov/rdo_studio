@@ -13,14 +13,14 @@ namespace rdo { namespace gui { namespace frame {
 class FrameStyle: public rdo::gui::style::StyleBase
 {
 public:
-	FrameStyle();
-	~FrameStyle();
+    FrameStyle();
+    ~FrameStyle();
 
-	FrameStyle& operator =( const FrameStyle& style );
-	bool operator ==( const FrameStyle& style ) const;
-	bool operator !=( const FrameStyle& style ) const;
+    FrameStyle& operator =( const FrameStyle& style );
+    bool operator ==( const FrameStyle& style ) const;
+    bool operator !=( const FrameStyle& style ) const;
 
-	static FrameStyle getDefaultStyle();
+    static FrameStyle getDefaultStyle();
 };
 
 }}} // namespace rdo::gui::frame

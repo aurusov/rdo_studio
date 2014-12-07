@@ -9,14 +9,14 @@
 // --------------------------------------------------------------------------------
 
 DockResults::DockResults(QWidget* pParent)
-	: DockFocusable("Результаты", pParent)
+    : DockFocusable("Результаты", pParent)
 {
-	context_type* pWidget = new context_type(this);
-	pWidget->setMinimumSize(QSize(300, 110));
+    context_type* pWidget = new context_type(this);
+    pWidget->setMinimumSize(QSize(300, 110));
 
-	setWidget(pWidget);
+    setWidget(pWidget);
 
-	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_results.png")));
+    toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_results.png")));
 }
 
 DockResults::~DockResults()
@@ -24,20 +24,20 @@ DockResults::~DockResults()
 
 void DockResults::appendString(const QString& str)
 {
-	int pos = getContext().getCurrentPos();
-	getContext().setCurrentPos(getContext().getLength());
-	getContext().setReadOnly  (false);
-	getContext().appendText   (str  );
-	getContext().setReadOnly  (true );
-	getContext().setCurrentPos(pos  );
+    int pos = getContext().getCurrentPos();
+    getContext().setCurrentPos(getContext().getLength());
+    getContext().setReadOnly  (false);
+    getContext().appendText   (str  );
+    getContext().setReadOnly  (true );
+    getContext().setCurrentPos(pos  );
 }
 
 void DockResults::clear()
 {
-	getContext().clearAll();
+    getContext().clearAll();
 }
 
 DockResults::context_type& DockResults::getContext()
 {
-	return *static_cast<context_type*>(widget());
+    return *static_cast<context_type*>(widget());
 }

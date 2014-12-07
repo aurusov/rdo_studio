@@ -12,9 +12,9 @@ class RDOCalcOpenBrace: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcOpenBrace)
 private:
-	RDOCalcOpenBrace();
+    RDOCalcOpenBrace();
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 PREDECLARE_POINTER(RDOCalcCloseBrace);
@@ -22,9 +22,9 @@ class RDOCalcCloseBrace: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcCloseBrace)
 private:
-	RDOCalcCloseBrace();
+    RDOCalcCloseBrace();
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 PREDECLARE_POINTER(RDOCalcFunEnd);
@@ -32,9 +32,9 @@ class RDOCalcFunEnd: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFunEnd)
 private:
-	RDOCalcFunEnd();
+    RDOCalcFunEnd();
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

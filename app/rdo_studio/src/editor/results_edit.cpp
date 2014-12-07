@@ -10,15 +10,15 @@
 using namespace rdo::gui::editor;
 
 Results::Results(QWidget* pParent)
-	: super(pParent)
-	, PopupMenu(pParent)
+    : super(pParent)
+    , PopupMenu(pParent)
 {
-	kw0 = "TRUE FALSE";
-	kw1 = "";
-	kw2 = "";
-	kw3 = "";
+    kw0 = "TRUE FALSE";
+    kw1 = "";
+    kw2 = "";
+    kw3 = "";
 
-	setReadOnly( true );
+    setReadOnly( true );
 }
 
 Results::~Results()
@@ -26,27 +26,27 @@ Results::~Results()
 
 void Results::setEditorStyle(ResultsStyle* pStyle)
 {
-	super::setEditorStyle(pStyle);
+    super::setEditorStyle(pStyle);
 }
 
 void Results::onHelpContext()
 {
-	std::string keyword = getCurrentOrSelectedWord();
-	std::string s = getAllKW();
+    std::string keyword = getCurrentOrSelectedWord();
+    std::string s = getAllKW();
 
-	if (s.find_first_of(keyword) == std::string::npos || keyword.empty())
-	{
-		keyword = "pmv";
-	}
+    if (s.find_first_of(keyword) == std::string::npos || keyword.empty())
+    {
+        keyword = "pmv";
+    }
 
-	QByteArray ba;
-	ba.append("activateKeyword ");
-	ba.append(keyword.c_str());
-	ba.append("\n");
-	g_pApp->callQtAssistant(ba);
+    QByteArray ba;
+    ba.append("activateKeyword ");
+    ba.append(keyword.c_str());
+    ba.append("\n");
+    g_pApp->callQtAssistant(ba);
 }
 
 void Results::contextMenuEvent(QContextMenuEvent *pEvent)
 {
-	m_pPopupMenu->exec(pEvent->globalPos());
+    m_pPopupMenu->exec(pEvent->globalPos());
 }

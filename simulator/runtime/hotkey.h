@@ -14,87 +14,87 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOHotKey
 {
 public:
-	typedef std::size_t KeyCode;
+    typedef std::size_t KeyCode;
 
 private:
-	typedef  std::list<KeyCode>  KeyList;
+    typedef  std::list<KeyCode>  KeyList;
 
 public:
-	static const std::size_t UNDEFINED_KEY = std::size_t(~0);
+    static const std::size_t UNDEFINED_KEY = std::size_t(~0);
 
-	class Toolkit
-	{
-	public:
-		Toolkit();
-		virtual ~Toolkit();
+    class Toolkit
+    {
+    public:
+        Toolkit();
+        virtual ~Toolkit();
 
-		KeyCode codeFromString(const std::string& keyName) const;
+        KeyCode codeFromString(const std::string& keyName) const;
 
-	private:
-		typedef std::map<std::string, KeyCode> KeySet;
-		KeySet m_keyList;
-	};
+    private:
+        typedef std::map<std::string, KeyCode> KeySet;
+        KeySet m_keyList;
+    };
 
-	class KeyInModelList
-	{
-	public:
-		bool insert(const KeyCode& keyCode);
+    class KeyInModelList
+    {
+    public:
+        bool insert(const KeyCode& keyCode);
 
-		bool check(const KeyCode& keyCode) const;
+        bool check(const KeyCode& keyCode) const;
 
-	private:
-		KeyList m_keyList;
-	};
+    private:
+        KeyList m_keyList;
+    };
 
-	class KeyDownList
-	{
-	public:
-		KeyDownList();
-		virtual ~KeyDownList();
+    class KeyDownList
+    {
+    public:
+        KeyDownList();
+        virtual ~KeyDownList();
 
-		bool down(const KeyCode& keyCode);
-		void up(const KeyCode& keyCode);
+        bool down(const KeyCode& keyCode);
+        void up(const KeyCode& keyCode);
 
-		bool isPressed(const KeyCode& keyCode, bool shift, bool control);
-		bool isFound() const;
-		void clear();
+        bool isPressed(const KeyCode& keyCode, bool shift, bool control);
+        bool isFound() const;
+        void clear();
 
-	private:
-		KeyList m_keyList;
-		bool m_keyFound;
-	};
+    private:
+        KeyList m_keyList;
+        bool m_keyFound;
+    };
 
-	class AreaList
-	{
-	public:
-		void  click(const std::string& areaName);
+    class AreaList
+    {
+    public:
+        void  click(const std::string& areaName);
 
-		bool check(const std::string& areaName);
-		bool empty() const;
-		void clear();
+        bool check(const std::string& areaName);
+        bool empty() const;
+        void clear();
 
-	private:
-		typedef std::list<std::string> NameList;
-		NameList m_activeAreasMouseClicked;
-	};
+    private:
+        typedef std::list<std::string> NameList;
+        NameList m_activeAreasMouseClicked;
+    };
 
-	RDOHotKey();
-	virtual ~RDOHotKey();
+    RDOHotKey();
+    virtual ~RDOHotKey();
 
-	void clear();
+    void clear();
 
-	const Toolkit& toolkit() const;
-	KeyInModelList& keyInModel();
-	KeyDownList& keyDown();
-	AreaList& areaList();
+    const Toolkit& toolkit() const;
+    KeyInModelList& keyInModel();
+    KeyDownList& keyDown();
+    AreaList& areaList();
 
-	bool isKeyDown() const;
+    bool isKeyDown() const;
 
 private:
-	Toolkit m_toolkit;
-	KeyInModelList m_keyInModel;
-	KeyDownList m_keyDown;
-	AreaList m_areaList;
+    Toolkit m_toolkit;
+    KeyInModelList m_keyInModel;
+    KeyDownList m_keyDown;
+    AreaList m_areaList;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

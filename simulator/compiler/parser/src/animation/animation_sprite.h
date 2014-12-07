@@ -11,12 +11,12 @@ class RDOFRMSprite: public RDOFRMCommandList
 {
 DECLARE_FACTORY(RDOFRMSprite);
 private:
-	RDOFRMSprite(const RDOParserSrcInfo& src_info);
-	virtual ~RDOFRMSprite();
+    RDOFRMSprite(const RDOParserSrcInfo& src_info);
+    virtual ~RDOFRMSprite();
 
-	rdo::runtime::LPRDOFRMSprite m_pSprite;
+    rdo::runtime::LPRDOFRMSprite m_pSprite;
 
-	rdo::runtime::LPRDOFRMSprite list() const;
+    rdo::runtime::LPRDOFRMSprite list() const;
 };
 DECLARE_POINTER(RDOFRMSprite);
 

@@ -26,10 +26,10 @@ TARGET_LINK_LIBRARIES(rdo_mbuilder rdo_parser)
 INSTALL(TARGETS rdo_mbuilder DESTINATION lib)
 
 IF(MSVC_IDE)
-	SET(PCH_FILES
-		pch.h
-		pch.cpp
-	)
-	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
-	ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" simulator/compiler/mbuilder ./ pch)
+    SET(PCH_FILES
+        pch.h
+        pch.cpp
+    )
+    INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
+    ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" simulator/compiler/mbuilder ./ pch)
 ENDIF()

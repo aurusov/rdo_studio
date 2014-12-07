@@ -8,9 +8,9 @@
 class IDPTSearchLogic: public virtual rdo::counter_reference
 {
 public:
-	virtual void addActivity(LPIDPTSearchActivity activity) = 0;
+    virtual void addActivity(LPIDPTSearchActivity activity) = 0;
 };
 DECLARE_POINTER(IDPTSearchLogic)
 
 #define DECLARE_IDPTSearchLogic \
-	virtual void addActivity(LPIDPTSearchActivity activity);
+    virtual void addActivity(LPIDPTSearchActivity activity);

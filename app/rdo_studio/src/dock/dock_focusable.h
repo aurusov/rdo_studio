@@ -11,11 +11,11 @@ class DockFocusable: public QDockWidget
 {
 Q_OBJECT
 public:
-	typedef  QDockWidget  super;
+    typedef  QDockWidget  super;
 
-	DockFocusable(const QString& title, QWidget* pParent);
-	virtual ~DockFocusable();
+    DockFocusable(const QString& title, QWidget* pParent);
+    virtual ~DockFocusable();
 
 private slots:
-	void onVisibilityChanged(bool visible);
+    void onVisibilityChanged(bool visible);
 };

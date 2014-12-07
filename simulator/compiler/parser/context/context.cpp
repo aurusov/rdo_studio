@@ -16,17 +16,17 @@ const std::string Context::Params::IDENTIFIER = "identifier";
 
 std::string Context::Params::get(const std::string& name) const
 {
-	return get<std::string>(name);
+    return get<std::string>(name);
 }
 
 std::string Context::Params::identifier() const
 {
-	return get(IDENTIFIER);
+    return get(IDENTIFIER);
 }
 
 bool Context::Params::exists(const std::string& name) const
 {
-	return find(name) != end();
+    return find(name) != end();
 }
 
 // --------------------------------------------------------------------------------
@@ -36,17 +36,17 @@ Context::SwitchContext::SwitchContext()
 {}
 
 Context::SwitchContext::SwitchContext(const LPContext& context)
-	: context(context)
+    : context(context)
 {}
 
 Context::SwitchContext::SwitchContext(const LPContext& context, const Context::Params& params)
-	: context(context)
-	, params(params)
+    : context(context)
+    , params(params)
 {}
 
 Context::SwitchContext::operator bool() const
 {
-	return context;
+    return context;
 }
 
 // --------------------------------------------------------------------------------
@@ -56,26 +56,26 @@ Context::FindResult::FindResult()
 {}
 
 Context::FindResult::FindResult(const CreateExpression& createExpression)
-	: createExpression(createExpression.function)
+    : createExpression(createExpression.function)
 {}
 
 Context::FindResult::FindResult(const SwitchContext& switchContext)
-	: switchContext(switchContext)
+    : switchContext(switchContext)
 {}
 
 Context::FindResult::operator bool() const
 {
-	return createExpression || switchContext;
+    return createExpression || switchContext;
 }
 
 const Context::CreateExpressionFunction& Context::FindResult::getCreateExpression() const
 {
-	return createExpression;
+    return createExpression;
 }
 
 const Context::SwitchContext& Context::FindResult::getSwitchContext() const
 {
-	return switchContext;
+    return switchContext;
 }
 
 // --------------------------------------------------------------------------------
@@ -95,47 +95,47 @@ Context::~Context()
 
 void Context::setContextStack(const LPContextStack& pContextStack)
 {
-	ASSERT(pContextStack   );
-	ASSERT(!m_pContextStack);
-	m_pContextStack = pContextStack;
+    ASSERT(pContextStack   );
+    ASSERT(!m_pContextStack);
+    m_pContextStack = pContextStack;
 }
 
 void Context::resetContextStack()
 {
-	ASSERT(m_pContextStack);
-	m_pContextStack = NULL;
+    ASSERT(m_pContextStack);
+    m_pContextStack = NULL;
 }
 
 Context::LPFindResult Context::find(const std::string& method, const Params& params, const RDOParserSrcInfo& srcInfo) const
 {
-	Context::LPFindResult result;
-	LPContext pThis(const_cast<Context*>(this));
-	LPIContextFind pThisContextFind = pThis.interface_dynamic_cast<IContextFind>();
-	if (pThisContextFind)
-	{
-		result = pThisContextFind->onFindContext(method, params, srcInfo);
-		if (result->getCreateExpression() || result->getSwitchContext())
-		{
-			return result;
-		}
-	}
+    Context::LPFindResult result;
+    LPContext pThis(const_cast<Context*>(this));
+    LPIContextFind pThisContextFind = pThis.interface_dynamic_cast<IContextFind>();
+    if (pThisContextFind)
+    {
+        result = pThisContextFind->onFindContext(method, params, srcInfo);
+        if (result->getCreateExpression() || result->getSwitchContext())
+        {
+            return result;
+        }
+    }
 
-	LPContext pPrev;
+    LPContext pPrev;
 
-	if (m_pContextStack)
-	{
-		pPrev = m_pContextStack->prev(pThis);
-	}
+    if (m_pContextStack)
+    {
+        pPrev = m_pContextStack->prev(pThis);
+    }
 
-	if (!pPrev)
-	{
-		const std::string error = params.exists(Params::IDENTIFIER)
-			? boost::str(boost::format("Неизвестный идентификатор: %s") % params.identifier())
-			: "Неизвестная ошибка";
-		RDOParser::s_parser()->error().error(srcInfo, error);
-	}
+    if (!pPrev)
+    {
+        const std::string error = params.exists(Params::IDENTIFIER)
+            ? boost::str(boost::format("Неизвестный идентификатор: %s") % params.identifier())
+            : "Неизвестная ошибка";
+        RDOParser::s_parser()->error().error(srcInfo, error);
+    }
 
-	return pPrev->find(method, params, srcInfo);
+    return pPrev->find(method, params, srcInfo);
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

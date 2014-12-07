@@ -9,13 +9,13 @@
 class DockResults: public DockFocusable
 {
 public:
-	typedef rdo::gui::editor::Results context_type;
+    typedef rdo::gui::editor::Results context_type;
 
-	DockResults(QWidget* pParent);
-	virtual ~DockResults();
+    DockResults(QWidget* pParent);
+    virtual ~DockResults();
 
-	void appendString(const QString& str);
-	void clear();
+    void appendString(const QString& str);
+    void clear();
 
-	context_type& getContext();
+    context_type& getContext();
 };

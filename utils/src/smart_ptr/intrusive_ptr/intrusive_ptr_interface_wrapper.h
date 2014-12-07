@@ -12,11 +12,11 @@ template <class T>
 class intrusive_ptr_interface_wrapper: public rdo::intrusive_ptr<T>, public rdo::IRefCounter
 {
 public:
-	intrusive_ptr_interface_wrapper(const rdo::intrusive_ptr<T>& pPointer);
-	DECLARE_IRefCounter;
+    intrusive_ptr_interface_wrapper(const rdo::intrusive_ptr<T>& pPointer);
+    DECLARE_IRefCounter;
 
 private:
-	typedef rdo::intrusive_ptr<T> parent_type;
+    typedef rdo::intrusive_ptr<T> parent_type;
 };
 
 } // namespace rdo

@@ -15,13 +15,13 @@ class RDOTypeParamSuchAs: public TypeInfo
 {
 DECLARE_FACTORY(RDOTypeParamSuchAs);
 public:
-	const LPRDOParam& getParam() const;
+    const LPRDOParam& getParam() const;
 
 private:
-	RDOTypeParamSuchAs(const LPRDOParam& pParam);
-	virtual ~RDOTypeParamSuchAs();
+    RDOTypeParamSuchAs(const LPRDOParam& pParam);
+    virtual ~RDOTypeParamSuchAs();
 
-	LPRDOParam m_pParam;
+    LPRDOParam m_pParam;
 };
 DECLARE_POINTER(RDOTypeParamSuchAs);
 

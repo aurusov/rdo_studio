@@ -13,7 +13,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- ContextParamDefinition
 // --------------------------------------------------------------------------------
 ContextParamDefinition::ContextParamDefinition(const OnPushParam& onPushParam)
-	: m_onPushParam(onPushParam)
+    : m_onPushParam(onPushParam)
 {}
 
 ContextParamDefinition::~ContextParamDefinition()
@@ -21,7 +21,7 @@ ContextParamDefinition::~ContextParamDefinition()
 
 void ContextParamDefinition::pushParam(const LPRDOParam& pParam)
 {
-	m_onPushParam(pParam);
+    m_onPushParam(pParam);
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

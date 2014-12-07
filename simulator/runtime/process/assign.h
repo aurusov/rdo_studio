@@ -18,11 +18,11 @@ class RDOPROCAssign: public RDOPROCBlock
 {
 DECLARE_FACTORY(RDOPROCAssign);
 private:
-	RDOPROCAssign(LPIPROCProcess pProcess, const LPRDOCalc& pCalc);
+    RDOPROCAssign(LPIPROCProcess pProcess, const LPRDOCalc& pCalc);
 
-	LPRDOCalc pAssignCalc;
+    LPRDOCalc pAssignCalc;
 
-	DECLARE_IBaseOperation;
+    DECLARE_IBaseOperation;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

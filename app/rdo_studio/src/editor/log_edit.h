@@ -17,44 +17,44 @@ class Log: public Edit
 Q_OBJECT
 
 public:
-	typedef rdo::simulation::report::LogEditLineInfo LogEditLineInfo;
-	typedef std::list<LogEditLineInfo*> LogEditLineInfoList;
+    typedef rdo::simulation::report::LogEditLineInfo LogEditLineInfo;
+    typedef std::list<LogEditLineInfo*> LogEditLineInfoList;
 
-	Log(QWidget* pParent);
-	virtual ~Log();
+    Log(QWidget* pParent);
+    virtual ~Log();
 
-	virtual void setEditorStyle(LogStyle* pStyle);
+    virtual void setEditorStyle(LogStyle* pStyle);
 
-	void gotoNext();
-	void gotoPrev();
+    void gotoNext();
+    void gotoPrev();
 
-	virtual void clearAll();
-	virtual void appendLine(LogEditLineInfo* pLine);
-
-protected:
-	void getLines(LogEditLineInfoList& pLines) const;
-	int getCurrentLine() const;
-	int getSciMarkerLine() const;
-
-	void setCurrentLine(int currentLine);
-	void setSciMarkerLine(int sciMarkerLine);
+    virtual void clearAll();
+    virtual void appendLine(LogEditLineInfo* pLine);
 
 protected:
-	virtual void updateEdit(Model* pEdit, const LogEditLineInfo* pLineInfo);
+    void getLines(LogEditLineInfoList& pLines) const;
+    int getCurrentLine() const;
+    int getSciMarkerLine() const;
 
-	void  clearLines     ();
-	void  setSelectLine  (int line, const LogEditLineInfo* pLineInfo, bool useScroll = false);
-	void  clearSelectLine();
-	bool  hasSelectLine  () const;
+    void setCurrentLine(int currentLine);
+    void setSciMarkerLine(int sciMarkerLine);
+
+protected:
+    virtual void updateEdit(Model* pEdit, const LogEditLineInfo* pLineInfo);
+
+    void  clearLines     ();
+    void  setSelectLine  (int line, const LogEditLineInfo* pLineInfo, bool useScroll = false);
+    void  clearSelectLine();
+    bool  hasSelectLine  () const;
 
 private:
-	LogEditLineInfoList m_lines;
-	int m_currentLine;
-	int m_sciMarkerLine;
+    LogEditLineInfoList m_lines;
+    int m_currentLine;
+    int m_sciMarkerLine;
 
 private slots:
-	void catchDoubleClick(int position, int line);
-	void catchModified   ();
+    void catchDoubleClick(int position, int line);
+    void catchModified   ();
 };
 
 }}} // namespace rdo::gui::editor

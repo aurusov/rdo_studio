@@ -14,26 +14,26 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 void Error::push(const RDOSyntaxMessage& message)
 {
-	m_errorList.push_back(message);
-	throw RDORuntimeException("");
+    m_errorList.push_back(message);
+    throw RDORuntimeException("");
 }
 
 void Error::push(const std::string& message, const RDOSrcInfo& srcInfo)
 {
-	ASSERT(!message.empty());
+    ASSERT(!message.empty());
 
-	RDOSyntaxMessage error(
-		message,
-		srcInfo.src_filetype(),
-		srcInfo.src_pos().m_last_line,
-		srcInfo.src_pos().m_last_pos
-	);
-	push(error);
+    RDOSyntaxMessage error(
+        message,
+        srcInfo.src_filetype(),
+        srcInfo.src_pos().m_last_line,
+        srcInfo.src_pos().m_last_pos
+    );
+    push(error);
 }
 
 const Error::ErrorList& Error::list() const
 {
-	return m_errorList;
+    return m_errorList;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

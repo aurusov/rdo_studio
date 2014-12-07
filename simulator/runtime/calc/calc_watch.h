@@ -13,12 +13,12 @@ class RDOCalcWatchGroupStart: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStart)
 protected:
-	RDOCalcWatchGroupStart(const LPIResultGroup& pResultGroup);
-	virtual ~RDOCalcWatchGroupStart();
+    RDOCalcWatchGroupStart(const LPIResultGroup& pResultGroup);
+    virtual ~RDOCalcWatchGroupStart();
 
-	LPIResultGroup m_pResultGroup;
+    LPIResultGroup m_pResultGroup;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 PREDECLARE_POINTER(RDOCalcWatchGroupStop);
@@ -26,12 +26,12 @@ class RDOCalcWatchGroupStop: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStop)
 protected:
-	RDOCalcWatchGroupStop(const LPIResultGroup& pResultGroup);
-	virtual ~RDOCalcWatchGroupStop();
+    RDOCalcWatchGroupStop(const LPIResultGroup& pResultGroup);
+    virtual ~RDOCalcWatchGroupStop();
 
-	LPIResultGroup m_pResultGroup;
+    LPIResultGroup m_pResultGroup;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

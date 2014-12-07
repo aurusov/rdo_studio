@@ -13,27 +13,27 @@ namespace rdo { namespace gui { namespace editor {
 class FindStyle: public LogStyle
 {
 public:
-	FindStyle();
-	~FindStyle();
+    FindStyle();
+    ~FindStyle();
 
-	FindStyle& operator =( const FindStyle& style );
-	bool operator ==( const FindStyle& style ) const;
-	bool operator !=( const FindStyle& style ) const;
+    FindStyle& operator =( const FindStyle& style );
+    bool operator ==( const FindStyle& style ) const;
+    bool operator !=( const FindStyle& style ) const;
 
-	virtual bool styleDefault( const int styleType ) const;
-	virtual bool styleUsing( const int styleType ) const;
-	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
-	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
-	virtual std::string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+    virtual bool styleDefault( const int styleType ) const;
+    virtual bool styleUsing( const int styleType ) const;
+    virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
+    virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
+    virtual std::string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
-	static FindStyle getDefaultStyle();
-	static FindStyle getClassicStyle();
-	static FindStyle getTwilightStyle();
-	static FindStyle getOceanStyle();
+    static FindStyle getDefaultStyle();
+    static FindStyle getClassicStyle();
+    static FindStyle getTwilightStyle();
+    static FindStyle getOceanStyle();
 
-	QColor keywordColor;
+    QColor keywordColor;
 
-	style::StyleFont::style keywordStyle;
+    style::StyleFont::style keywordStyle;
 };
 
 QSettings& operator<< (QSettings& settings, const FindStyle& style);

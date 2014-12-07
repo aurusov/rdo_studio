@@ -9,7 +9,7 @@
 // --------------------------------------------------------------------------------
 
 ActionActivator::ActionActivator()
-	: m_activated(false)
+    : m_activated(false)
 {}
 
 ActionActivator::~ActionActivator()
@@ -17,30 +17,30 @@ ActionActivator::~ActionActivator()
 
 bool ActionActivator::isActivated() const
 {
-	return m_activated;
+    return m_activated;
 }
 
 void ActionActivator::activate(QFocusEvent* pEvent)
 {
-	ASSERT(pEvent);
+    ASSERT(pEvent);
 
-	if (!m_activated)
-	{
-		m_activated = true;
-		onUpdateActions(m_activated);
-	}
+    if (!m_activated)
+    {
+        m_activated = true;
+        onUpdateActions(m_activated);
+    }
 }
 
 void ActionActivator::deactivate(QFocusEvent* pEvent)
 {
-	ASSERT(pEvent);
+    ASSERT(pEvent);
 
-	if (pEvent->reason() != Qt::PopupFocusReason)
-	{
-		if (m_activated)
-		{
-			m_activated = false;
-			onUpdateActions(m_activated);
-		}
-	}
+    if (pEvent->reason() != Qt::PopupFocusReason)
+    {
+        if (m_activated)
+        {
+            m_activated = false;
+            onUpdateActions(m_activated);
+        }
+    }
 }

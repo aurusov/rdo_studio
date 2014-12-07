@@ -15,12 +15,12 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDOOperation
-	: public IBaseOperation
-	, public IOperation
-	, public IEvent
-	, public RDOActivityPattern<RDOPatternOperation>
-	, public RDOPatternPrior
-	, public IOperationTrace
+    : public IBaseOperation
+    , public IOperation
+    , public IEvent
+    , public RDOActivityPattern<RDOPatternOperation>
+    , public RDOPatternPrior
+    , public IOperationTrace
 {
 typedef RDOActivityPattern<RDOPatternOperation> pattern_type;
 DECLARE_FACTORY(RDOOperation);
@@ -29,28 +29,28 @@ friend class RDOSimulatorTrace;
 friend class RDOSimulator;
 
 protected:
-	RDOOperation(const LPRDORuntime& pRuntime, const LPRDOPatternOperation& pPattern, bool trace, const std::string& name);
-	RDOOperation(const LPRDORuntime& pRuntime, const LPRDOPatternOperation& pPattern, bool trace, const LPRDOCalc& pCondition, const std::string& name);
-	virtual ~RDOOperation();
-	DECLARE_IOperation;
+    RDOOperation(const LPRDORuntime& pRuntime, const LPRDOPatternOperation& pPattern, bool trace, const std::string& name);
+    RDOOperation(const LPRDORuntime& pRuntime, const LPRDOPatternOperation& pPattern, bool trace, const LPRDOCalc& pCondition, const std::string& name);
+    virtual ~RDOOperation();
+    DECLARE_IOperation;
 
 private:
-	RDOOperation(const LPRDORuntime& pRuntime, const RDOOperation& originForClone);
+    RDOOperation(const LPRDORuntime& pRuntime, const RDOOperation& originForClone);
 
-	typedef std::vector<LPIOperation> CloneList;
+    typedef std::vector<LPIOperation> CloneList;
 
-	CloneList m_cloneList;
-	bool m_haveAdditionalCondition;
-	LPRDOCalc m_pAdditionalCondition;
-	int m_operId;
+    CloneList m_cloneList;
+    bool m_haveAdditionalCondition;
+    LPRDOCalc m_pAdditionalCondition;
+    int m_operId;
 
-	virtual void onMakePlaned(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& params);
+    virtual void onMakePlaned(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& params);
 
-	void incrementRelevantResourceReference(const LPRDORuntime& pRuntime);
-	void decrementRelevantResourceReference(const LPRDORuntime& pRuntime);
+    void incrementRelevantResourceReference(const LPRDORuntime& pRuntime);
+    void decrementRelevantResourceReference(const LPRDORuntime& pRuntime);
 
-	DECLARE_IBaseOperation;
-	DECLARE_IOperationTrace;
+    DECLARE_IBaseOperation;
+    DECLARE_IOperationTrace;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

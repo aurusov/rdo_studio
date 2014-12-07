@@ -17,15 +17,15 @@ class RDOParserSTDFUN: public RDOParserItem
 {
 DECLARE_FACTORY(RDOParserSTDFUN);
 private:
-	RDOParserSTDFUN()
-		: RDOParserItem(rdo::model::FUN, NULL, NULL)
-	{}
+    RDOParserSTDFUN()
+        : RDOParserItem(rdo::model::FUN, NULL, NULL)
+    {}
 
-	virtual void parse(const LPRDOParser& pParser);
+    virtual void parse(const LPRDOParser& pParser);
 
-	typedef rdo::vector<LPTypeInfo> ParamList;
-	void generate(const std::string& name, const rdo::runtime::LPRDOFunCalc& pCalc, const LPRDOParam& pReturnType, const ParamList& paramList) const;
-	void generateReal(const std::string& name, const rdo::runtime::LPRDOFunCalc& pCalc, const LPRDOParam& pReturnType, const ParamList& paramList) const;
+    typedef rdo::vector<LPTypeInfo> ParamList;
+    void generate(const std::string& name, const rdo::runtime::LPRDOFunCalc& pCalc, const LPRDOParam& pReturnType, const ParamList& paramList) const;
+    void generateReal(const std::string& name, const rdo::runtime::LPRDOFunCalc& pCalc, const LPRDOParam& pReturnType, const ParamList& paramList) const;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

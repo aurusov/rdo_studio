@@ -18,15 +18,15 @@ DECLARE_FACTORY(RDOEvent);
 friend class RDOTrace;
 
 private:
-	RDOEvent(const LPRDORuntime& pRuntime, const LPRDOPatternEvent& pPattern, bool trace, const std::string& name);
+    RDOEvent(const LPRDORuntime& pRuntime, const LPRDOPatternEvent& pPattern, bool trace, const std::string& name);
 
-	void convertEvent(const LPRDORuntime& pRuntime);
+    void convertEvent(const LPRDORuntime& pRuntime);
 
-	        void onBeforeEvent(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& params);
-	        void onAfterEvent (const LPRDORuntime& pRuntime);
-	virtual void onMakePlaned (const LPRDORuntime& pRuntime, const std::vector<RDOValue>& params);
+            void onBeforeEvent(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& params);
+            void onAfterEvent (const LPRDORuntime& pRuntime);
+    virtual void onMakePlaned (const LPRDORuntime& pRuntime, const std::vector<RDOValue>& params);
 
-	DECLARE_IBaseOperation;
+    DECLARE_IBaseOperation;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

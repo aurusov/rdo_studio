@@ -9,12 +9,12 @@
 // --------------------------------------------------------------------------------
 
 class FileAssociationDialog
-	: public QDialog
-	, public Ui::FileAssociationDialog
+    : public QDialog
+    , public Ui::FileAssociationDialog
 {
 Q_OBJECT
 
 public:
-	FileAssociationDialog(QWidget* pParent);
-	virtual ~FileAssociationDialog();
+    FileAssociationDialog(QWidget* pParent);
+    virtual ~FileAssociationDialog();
 };

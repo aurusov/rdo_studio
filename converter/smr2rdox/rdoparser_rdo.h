@@ -20,19 +20,19 @@ class RDOParserRDOItem: public RDOParserItem
 {
 DECLARE_FACTORY(RDOParserRDOItem);
 public:
-	virtual void parse(Converter* pParser, std::istream& streamIn);
-	virtual std::size_t lexer_loc_line();
-	virtual std::size_t lexer_loc_pos();
+    virtual void parse(Converter* pParser, std::istream& streamIn);
+    virtual std::size_t lexer_loc_line();
+    virtual std::size_t lexer_loc_pos();
 
 protected:
-	RDOParserRDOItem(rdo::converter::smr2rdox::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_flex_lexer_fun lexer_fun);
-	virtual ~RDOParserRDOItem();
+    RDOParserRDOItem(rdo::converter::smr2rdox::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_flex_lexer_fun lexer_fun);
+    virtual ~RDOParserRDOItem();
 
-	RDOLexer* m_pLexer;
-	YYLTYPE m_loc;
+    RDOLexer* m_pLexer;
+    YYLTYPE m_loc;
 
 private:
-	RDOLexer* getLexer(Converter* pParser, std::istream* streamIn, std::ostream* streamOut);
+    RDOLexer* getLexer(Converter* pParser, std::istream* streamIn, std::ostream* streamOut);
 };
 
 // --------------------------------------------------------------------------------
@@ -42,8 +42,8 @@ class RDOParserRSS: public RDOParserRDOItem
 {
 DECLARE_FACTORY(RDOParserRSS);
 private:
-	RDOParserRSS();
-	virtual void parse(Converter* pParser, std::istream& streamIn);
+    RDOParserRSS();
+    virtual void parse(Converter* pParser, std::istream& streamIn);
 };
 
 // --------------------------------------------------------------------------------
@@ -53,8 +53,8 @@ class RDOParserRSSPost: public RDOParserItem
 {
 DECLARE_FACTORY(RDOParserRSSPost);
 private:
-	RDOParserRSSPost();
-	virtual void parse(Converter* pParser);
+    RDOParserRSSPost();
+    virtual void parse(Converter* pParser);
 };
 
 // --------------------------------------------------------------------------------
@@ -64,8 +64,8 @@ class RDOParserSTDFUN: public RDOParserItem
 {
 DECLARE_FACTORY(RDOParserSTDFUN);
 private:
-	RDOParserSTDFUN();
-	virtual void parse(Converter* pParser);
+    RDOParserSTDFUN();
+    virtual void parse(Converter* pParser);
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

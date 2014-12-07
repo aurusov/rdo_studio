@@ -11,30 +11,30 @@
 namespace rdo { namespace gui { namespace frame {
 
 class TreeCtrl
-	: public QTreeWidget
-	, public ActionActivator
+    : public QTreeWidget
+    , public ActionActivator
 {
 Q_OBJECT
 
 public:
-	TreeCtrl(QWidget* pParent);
-	virtual ~TreeCtrl();
+    TreeCtrl(QWidget* pParent);
+    virtual ~TreeCtrl();
 
-	QTreeWidgetItem* insertFrame(const QString& name);
+    QTreeWidgetItem* insertFrame(const QString& name);
 
-	void clear();
+    void clear();
 
 private:
-	typedef  QTreeWidget  parent_type;
+    typedef  QTreeWidget  parent_type;
 
-	QTreeWidgetItem* m_pRootItem;
+    QTreeWidgetItem* m_pRootItem;
 
-	virtual void focusInEvent   (QFocusEvent* pEvent);
-	virtual void focusOutEvent  (QFocusEvent* pEvent);
-	virtual void onUpdateActions(bool activated);
+    virtual void focusInEvent   (QFocusEvent* pEvent);
+    virtual void focusOutEvent  (QFocusEvent* pEvent);
+    virtual void onUpdateActions(bool activated);
 
 private slots:
-	void onHelpContext();
+    void onHelpContext();
 };
 
 }}} // namespace rdo::gui::frame

@@ -13,5 +13,5 @@ class AboutDialog: public QDialog, private Ui::AboutDialog
 Q_OBJECT
 
 public:
-	explicit AboutDialog(QWidget* pParent = NULL);
+    explicit AboutDialog(QWidget* pParent = NULL);
 };

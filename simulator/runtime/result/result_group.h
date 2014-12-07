@@ -12,25 +12,25 @@ class RDOPMDResultGroup: public IResult, public IResultGroup
 {
 DECLARE_FACTORY(RDOPMDResultGroup);
 private:
-	RDOPMDResultGroup(const std::string& name);
-	virtual ~RDOPMDResultGroup();
+    RDOPMDResultGroup(const std::string& name);
+    virtual ~RDOPMDResultGroup();
 
-		enum State
-	{
-		RGS_STOP,
-		RGS_START
-	};
+        enum State
+    {
+        RGS_STOP,
+        RGS_START
+    };
 
-	typedef std::vector<LPIResult> ResultList;
-	ResultList m_resultList;
-	std::string m_name;
-	State m_state;
-	double m_timeStart;
-	boost::filesystem::ofstream m_streamFull;
-	boost::filesystem::ofstream m_streamTable;
+    typedef std::vector<LPIResult> ResultList;
+    ResultList m_resultList;
+    std::string m_name;
+    State m_state;
+    double m_timeStart;
+    boost::filesystem::ofstream m_streamFull;
+    boost::filesystem::ofstream m_streamTable;
 
-	DECLARE_IResult;
-	DECLARE_IResultGroup;
+    DECLARE_IResult;
+    DECLARE_IResultGroup;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

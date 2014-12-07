@@ -20,19 +20,19 @@ struct IContextFunctionBodyManager: public rdo::RefCounter<IContextFunctionBodyM
 {
 DECLARE_FACTORY(IContextFunctionBodyManager)
 public:
-	virtual void pushFunctionBodyContext() = 0;
-	virtual void popFunctionBodyContext () = 0;
+    virtual void pushFunctionBodyContext() = 0;
+    virtual void popFunctionBodyContext () = 0;
 
 protected:
-	IContextFunctionBodyManager()
-	{}
-	virtual ~IContextFunctionBodyManager()
-	{}
+    IContextFunctionBodyManager()
+    {}
+    virtual ~IContextFunctionBodyManager()
+    {}
 };
 
 #define DECLARE_IContextFunctionBodyManager \
-	void pushFunctionBodyContext();         \
-	void popFunctionBodyContext ();
+    void pushFunctionBodyContext();         \
+    void popFunctionBodyContext ();
 
 // --------------------------------------------------------------------------------
 // -------------------- ContextFunctionBody
@@ -41,18 +41,18 @@ class ContextFunctionBody: public ContextReturnable
 {
 DECLARE_FACTORY(ContextFunctionBody)
 public:
-	void setBody(const rdo::runtime::LPRDOCalc& pBody);
+    void setBody(const rdo::runtime::LPRDOCalc& pBody);
 
-	void pushContext();
-	void popContext ();
+    void pushContext();
+    void popContext ();
 
 private:
-	typedef  boost::function<void (const rdo::runtime::LPRDOCalc&)>  OnBody;
+    typedef  boost::function<void (const rdo::runtime::LPRDOCalc&)>  OnBody;
 
-	ContextFunctionBody(const OnBody& onBody);
-	virtual ~ContextFunctionBody();
+    ContextFunctionBody(const OnBody& onBody);
+    virtual ~ContextFunctionBody();
 
-	OnBody m_onBody;
+    OnBody m_onBody;
 };
 DECLARE_POINTER(ContextFunctionBody);
 

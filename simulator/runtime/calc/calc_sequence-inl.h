@@ -10,62 +10,62 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 template<class T>
 inline RDOCalcRandomDistribution<T>::RDOCalcRandomDistribution(T* gen)
-	: m_gen(gen)
+    : m_gen(gen)
 {}
 
 template<class T>
 inline RDOCalcRandomDistribution<T>::~RDOCalcRandomDistribution()
 {
-	delete m_gen;
+    delete m_gen;
 }
 
 template<class T>
 inline RDOValue RDOCalcRandomDistribution<T>::doCalc(const LPRDORuntime& pRuntime)
 {
-	RDOValue res = getNextValue(pRuntime);
-	if (m_range)
-	{
-		if (res < m_range.get().m_min)
-		{
-			return m_res_real
-				? m_range.get().m_min
-				: RDOValue(m_range.get().m_min > 0
-					? m_range.get().m_min + 0.5
-					: m_range.get().m_min - 0.5
-				  ).getInt();
-		}
-		if (res > m_range.get().m_max)
-		{
-			return m_res_real
-				? m_range.get().m_max
-				: RDOValue(m_range.get().m_max > 0
-					? m_range.get().m_max + 0.5
-					: m_range.get().m_max - 0.5
-				  ).getInt();
-		}
-		return m_res_real
-			? res
-			: RDOValue(res > 0
-				? res + 0.5
-				: res - 0.5
-			  ).getInt();
-		// В новом РДО была сделана попытка выбирать новое случайное число, если текущее вышло за диапазон. Но при этом смешается среднее (оно и в другом случае может смещаться imho). Для совместимости оставим первый вариант.
-//			for ( int i = 0; i < 1000; i++ ) {
-//				if ( res >= m_range.get().m_min && res <= m_range.get().m_max ) return res_real ? res : static_cast<int>(res > 0 ? res + 0.5 : res - 0.5);
-//				res = gen->next( pRuntime->getFuncArgument(0), pRuntime->getFuncArgument(1) );
-//			}
-//			pRuntime->error().push("Не удается получить значение, попадающее в назначенный диапазон", this);
-//			return res_real ? m_range.get().m_min : static_cast<int>(m_range.get().m_min);
-	}
-	else
-	{
-		return m_res_real
-			? res
-			: RDOValue(res > 0
-				? res + 0.5
-				: res - 0.5
-			  ).getInt();
-	}
+    RDOValue res = getNextValue(pRuntime);
+    if (m_range)
+    {
+        if (res < m_range.get().m_min)
+        {
+            return m_res_real
+                ? m_range.get().m_min
+                : RDOValue(m_range.get().m_min > 0
+                    ? m_range.get().m_min + 0.5
+                    : m_range.get().m_min - 0.5
+                  ).getInt();
+        }
+        if (res > m_range.get().m_max)
+        {
+            return m_res_real
+                ? m_range.get().m_max
+                : RDOValue(m_range.get().m_max > 0
+                    ? m_range.get().m_max + 0.5
+                    : m_range.get().m_max - 0.5
+                  ).getInt();
+        }
+        return m_res_real
+            ? res
+            : RDOValue(res > 0
+                ? res + 0.5
+                : res - 0.5
+              ).getInt();
+        // В новом РДО была сделана попытка выбирать новое случайное число, если текущее вышло за диапазон. Но при этом смешается среднее (оно и в другом случае может смещаться imho). Для совместимости оставим первый вариант.
+//            for ( int i = 0; i < 1000; i++ ) {
+//                if ( res >= m_range.get().m_min && res <= m_range.get().m_max ) return res_real ? res : static_cast<int>(res > 0 ? res + 0.5 : res - 0.5);
+//                res = gen->next( pRuntime->getFuncArgument(0), pRuntime->getFuncArgument(1) );
+//            }
+//            pRuntime->error().push("Не удается получить значение, попадающее в назначенный диапазон", this);
+//            return res_real ? m_range.get().m_min : static_cast<int>(m_range.get().m_min);
+    }
+    else
+    {
+        return m_res_real
+            ? res
+            : RDOValue(res > 0
+                ? res + 0.5
+                : res - 0.5
+              ).getInt();
+    }
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

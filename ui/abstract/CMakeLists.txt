@@ -20,10 +20,10 @@ ADD_DEPENDENCIES(rdo_ui_abstract rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_ui_abstract rdo_utils)
 
 IF(MSVC_IDE)
-	SET(PCH_FILES
-		pch/stdpch.cpp
-		pch/stdpch.h
-	)
-	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
-	ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" ui/abstract pch stdpch)
+    SET(PCH_FILES
+        pch/stdpch.cpp
+        pch/stdpch.h
+    )
+    INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
+    ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" ui/abstract pch stdpch)
 ENDIF()

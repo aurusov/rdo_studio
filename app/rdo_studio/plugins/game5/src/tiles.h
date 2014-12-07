@@ -11,15 +11,15 @@ class Tile: public QPushButton
 {Q_OBJECT
 
 public:
-	Tile(int number, QWidget* pParent);
-	virtual ~Tile();
+    Tile(int number, QWidget* pParent);
+    virtual ~Tile();
 
 signals:
-	void tileClicked(int number);
+    void tileClicked(int number);
 
 private:
-	int tileNumber;
+    int tileNumber;
 
 private slots:
-	void reemitClicked();
+    void reemitClicked();
 };

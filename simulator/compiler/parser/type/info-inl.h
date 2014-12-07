@@ -10,13 +10,13 @@ OPEN_RDO_PARSER_NAMESPACE
 template <class T>
 inline LPTypeInfo TypeInfo::create(const RDOParserSrcInfo& srcInfo)
 {
-	rdo::runtime::LPRDOType pType = rdo::Factory<T>::create();
-	ASSERT(pType);
+    rdo::runtime::LPRDOType pType = rdo::Factory<T>::create();
+    ASSERT(pType);
 
-	LPTypeInfo pTypeInfo = rdo::Factory<TypeInfo>::create(pType.object_dynamic_cast<IType>(), srcInfo);
-	ASSERT(pTypeInfo);
+    LPTypeInfo pTypeInfo = rdo::Factory<TypeInfo>::create(pType.object_dynamic_cast<IType>(), srcInfo);
+    ASSERT(pTypeInfo);
 
-	return pTypeInfo;
+    return pTypeInfo;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

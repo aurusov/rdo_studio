@@ -18,26 +18,26 @@ namespace rdo { namespace gui { namespace style {
 class StyleFont
 {
 public:
-	StyleFont();
-	virtual ~StyleFont();
+    StyleFont();
+    virtual ~StyleFont();
 
-	StyleFont& operator =(const StyleFont& font);
-	bool operator ==(const StyleFont& font) const;
-	bool operator !=(const StyleFont& font) const;
+    StyleFont& operator =(const StyleFont& font);
+    bool operator ==(const StyleFont& font) const;
+    bool operator !=(const StyleFont& font) const;
 
-	void load(QSettings& settings);
-	void save(QSettings& settings) const;
+    void load(QSettings& settings);
+    void save(QSettings& settings) const;
 
-	enum style { NONE = 0x00, BOLD = 0x01, ITALIC = 0x02, UNDERLINE = 0x04 };
+    enum style { NONE = 0x00, BOLD = 0x01, ITALIC = 0x02, UNDERLINE = 0x04 };
 
-	std::string name;
-	int size;
+    std::string name;
+    int size;
 
-	static StyleFont getDefaultFont();
-	static StyleFont getClassicFont();
-	static StyleFont getTracerLogFont();
-	static StyleFont getChartViewFont();
-	static StyleFont getFrameFont();
+    static StyleFont getDefaultFont();
+    static StyleFont getClassicFont();
+    static StyleFont getTracerLogFont();
+    static StyleFont getChartViewFont();
+    static StyleFont getFrameFont();
 };
 
 QSettings& operator<< (QSettings& settings, const StyleFont& font);
@@ -50,18 +50,18 @@ PREDECLARE_POINTER(StyleBase);
 class StyleBase: public rdo::counter_reference
 {
 public:
-	StyleBase();
-	~StyleBase();
+    StyleBase();
+    ~StyleBase();
 
-	StyleBase& operator =(const StyleBase& style);
-	bool operator ==(const StyleBase& style) const;
-	bool operator !=(const StyleBase& style) const;
+    StyleBase& operator =(const StyleBase& style);
+    bool operator ==(const StyleBase& style) const;
+    bool operator !=(const StyleBase& style) const;
 
-	StyleFont font;
-	StyleFont::style defaultStyle;
+    StyleFont font;
+    StyleFont::style defaultStyle;
 
-	QColor defaultColor;
-	QColor backgroundColor;
+    QColor defaultColor;
+    QColor backgroundColor;
 };
 
 QSettings& operator<< (QSettings& settings, const StyleBase& style);

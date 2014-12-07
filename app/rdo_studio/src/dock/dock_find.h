@@ -9,16 +9,16 @@
 class DockFind: public DockFocusable
 {
 public:
-	typedef rdo::gui::editor::Find context_type;
+    typedef rdo::gui::editor::Find context_type;
 
-	DockFind(QWidget* pParent);
-	virtual ~DockFind();
+    DockFind(QWidget* pParent);
+    virtual ~DockFind();
 
-	void appendString(
-		const QString& str,
-		rdo::model::FileType fileType = rdo::model::PAT,
-		int lineNumber = -1, int posInLine = 0);
-	void clear();
+    void appendString(
+        const QString& str,
+        rdo::model::FileType fileType = rdo::model::PAT,
+        int lineNumber = -1, int posInLine = 0);
+    void clear();
 
-	context_type& getContext();
+    context_type& getContext();
 };

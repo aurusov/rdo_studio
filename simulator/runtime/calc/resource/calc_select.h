@@ -15,27 +15,27 @@ class RDOFunCalcSelect: public RDOFunCalcGroup
 {
 DECLARE_FACTORY(RDOFunCalcSelect)
 public:
-	mutable std::list<LPRDOResource> res_list;
-	void prepare(const LPRDORuntime& pRuntime);
+    mutable std::list<LPRDOResource> res_list;
+    void prepare(const LPRDORuntime& pRuntime);
 
-	const LPIResourceType& getResType();
+    const LPIResourceType& getResType();
 
 private:
-	RDOFunCalcSelect(const LPIResourceType& pResType, int nResType, const LPRDOCalc& pCondition);
+    RDOFunCalcSelect(const LPIResourceType& pResType, int nResType, const LPRDOCalc& pCondition);
 
-	LPIResourceType m_pResType;
+    LPIResourceType m_pResType;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 PREDECLARE_POINTER(RDOFunCalcSelectBase);
 class RDOFunCalcSelectBase: public RDOFunCalc
 {
 protected:
-	RDOFunCalcSelectBase(const LPRDOFunCalcSelect& pSelect, const LPRDOCalc& pCondition);
+    RDOFunCalcSelectBase(const LPRDOFunCalcSelect& pSelect, const LPRDOCalc& pCondition);
 
-	LPRDOFunCalcSelect m_pSelect;
-	LPRDOCalc          m_pCondition;
+    LPRDOFunCalcSelect m_pSelect;
+    LPRDOCalc          m_pCondition;
 };
 
 #define DEFINE_CALC_SELECT_GROUP(CalcName)                    \
@@ -44,10 +44,10 @@ class RDOFunCalcSelect##CalcName: public RDOFunCalcSelectBase \
 {                                                             \
 DECLARE_FACTORY(RDOFunCalcSelect##CalcName)                   \
 private:                                                      \
-	RDOFunCalcSelect##CalcName(const LPRDOFunCalcSelect& pSelect, const LPRDOCalc& pCondition) \
-		: RDOFunCalcSelectBase(pSelect, pCondition)           \
-	{}                                                        \
-	DECLARE_ICalc;                                            \
+    RDOFunCalcSelect##CalcName(const LPRDOFunCalcSelect& pSelect, const LPRDOCalc& pCondition) \
+        : RDOFunCalcSelectBase(pSelect, pCondition)           \
+    {}                                                        \
+    DECLARE_ICalc;                                            \
 };
 
 #define DEFINE_CALC_SELECT_METHOD(CalcName)                      \
@@ -56,10 +56,10 @@ class RDOFunCalcSelect##CalcName: public RDOFunCalcSelectBase    \
 {                                                                \
 DECLARE_FACTORY(RDOFunCalcSelect##CalcName)                      \
 private:                                                         \
-	RDOFunCalcSelect##CalcName(const LPRDOFunCalcSelect& pSelect) \
-		: RDOFunCalcSelectBase(pSelect, NULL)                    \
-	{}                                                           \
-	DECLARE_ICalc;                                               \
+    RDOFunCalcSelect##CalcName(const LPRDOFunCalcSelect& pSelect) \
+        : RDOFunCalcSelectBase(pSelect, NULL)                    \
+    {}                                                           \
+    DECLARE_ICalc;                                               \
 };
 
 DEFINE_CALC_SELECT_GROUP(Exist);

@@ -10,16 +10,16 @@
 using namespace rdo::gui::frame;
 
 TreeCtrl::TreeCtrl(QWidget* pParent)
-	: parent_type(pParent)
+    : parent_type(pParent)
 {
-	setColumnCount    (1);
-	setHeaderHidden   (true);
-	setRootIsDecorated(false);
+    setColumnCount    (1);
+    setHeaderHidden   (true);
+    setRootIsDecorated(false);
 
-	m_pRootItem = new QTreeWidgetItem(this);
-	m_pRootItem->setText(0, "Кадры");
-	m_pRootItem->setIcon(0, QIcon(QString::fromUtf8(":/images/images/tree_frame_root.png")));
-	addTopLevelItem(m_pRootItem);
+    m_pRootItem = new QTreeWidgetItem(this);
+    m_pRootItem->setText(0, "Кадры");
+    m_pRootItem->setIcon(0, QIcon(QString::fromUtf8(":/images/images/tree_frame_root.png")));
+    addTopLevelItem(m_pRootItem);
 }
 
 TreeCtrl::~TreeCtrl()
@@ -27,49 +27,49 @@ TreeCtrl::~TreeCtrl()
 
 QTreeWidgetItem* TreeCtrl::insertFrame(const QString& name)
 {
-	QTreeWidgetItem* pItem = new QTreeWidgetItem(m_pRootItem);
-	ASSERT(pItem);
-	pItem->setText(0, name);
-	pItem->setIcon(0, QIcon(QString::fromUtf8(":/images/images/tree_frame_item.png")));
-	return pItem;
+    QTreeWidgetItem* pItem = new QTreeWidgetItem(m_pRootItem);
+    ASSERT(pItem);
+    pItem->setText(0, name);
+    pItem->setIcon(0, QIcon(QString::fromUtf8(":/images/images/tree_frame_item.png")));
+    return pItem;
 }
 
 void TreeCtrl::clear()
 {
-	QList<QTreeWidgetItem*> children = m_pRootItem->takeChildren();
-	for (QTreeWidgetItem* item: children)
-	{
-		m_pRootItem->removeChild(item);
-	}
+    QList<QTreeWidgetItem*> children = m_pRootItem->takeChildren();
+    for (QTreeWidgetItem* item: children)
+    {
+        m_pRootItem->removeChild(item);
+    }
 }
 
 void TreeCtrl::focusInEvent(QFocusEvent* pEvent)
 {
-	parent_type::focusInEvent(pEvent);
-	activate(pEvent);
+    parent_type::focusInEvent(pEvent);
+    activate(pEvent);
 }
 
 void TreeCtrl::focusOutEvent(QFocusEvent* pEvent)
 {
-	deactivate(pEvent);
-	parent_type::focusOutEvent(pEvent);
+    deactivate(pEvent);
+    parent_type::focusOutEvent(pEvent);
 }
 
 void TreeCtrl::onUpdateActions(bool activated)
 {
-	MainWindow* pMainWindow = g_pApp->getMainWndUI();
-	ASSERT(pMainWindow);
+    MainWindow* pMainWindow = g_pApp->getMainWndUI();
+    ASSERT(pMainWindow);
 
-	updateAction(
-		pMainWindow->actHelpContext,
-		activated,
-		this, &TreeCtrl::onHelpContext
-	);
+    updateAction(
+        pMainWindow->actHelpContext,
+        activated,
+        this, &TreeCtrl::onHelpContext
+    );
 }
 
 void TreeCtrl::onHelpContext()
 {
-	QByteArray ba;
-	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_frame.htm#frame\n");
-	g_pApp->callQtAssistant(ba);
+    QByteArray ba;
+    ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_frame.htm#frame\n");
+    g_pApp->callQtAssistant(ba);
 }

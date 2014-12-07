@@ -14,10 +14,10 @@ namespace rdo { namespace gui { namespace editor {
 class PopupMenu
 {
 protected:
-	PopupMenu(QWidget* pParent);
-	virtual ~PopupMenu();
+    PopupMenu(QWidget* pParent);
+    virtual ~PopupMenu();
 
-	QMenu* m_pPopupMenu;
+    QMenu* m_pPopupMenu;
 };
 
 }}} // namespace rdo::gui::editor

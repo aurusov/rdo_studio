@@ -15,17 +15,17 @@ class RDOMemory: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOMemory);
 public:
-	typedef std::map<std::string, RDOValue> LocalMemory;
+    typedef std::map<std::string, RDOValue> LocalMemory;
 
-	void createVariable(const std::string& name, const RDOValue& variable);
-	RDOValue getVariable(const std::string& name) const;
-	void setVariable(const std::string& name, const RDOValue& variable);
-	bool findVariable(const std::string& name) const;
+    void createVariable(const std::string& name, const RDOValue& variable);
+    RDOValue getVariable(const std::string& name) const;
+    void setVariable(const std::string& name, const RDOValue& variable);
+    bool findVariable(const std::string& name) const;
 
 private:
-	RDOMemory();
+    RDOMemory();
 
-	LocalMemory m_localMemory;
+    LocalMemory m_localMemory;
 };
 
 PREDECLARE_POINTER(RDOMemoryStack);
@@ -33,19 +33,19 @@ class RDOMemoryStack: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOMemoryStack);
 public:
-	typedef std::list<LPRDOMemory> MemoryStack;
+    typedef std::list<LPRDOMemory> MemoryStack;
 
-	void push(LPRDOMemory pMemory);
-	void pop();
+    void push(LPRDOMemory pMemory);
+    void pop();
 
-	void create(const std::string& name, const RDOValue& variable);
-	RDOValue get(const std::string& name) const;
-	void set(const std::string& name, const RDOValue& variable);
+    void create(const std::string& name, const RDOValue& variable);
+    RDOValue get(const std::string& name) const;
+    void set(const std::string& name, const RDOValue& variable);
 
 private:
-	RDOMemoryStack();
+    RDOMemoryStack();
 
-	MemoryStack m_pMemoryStack;
+    MemoryStack m_pMemoryStack;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

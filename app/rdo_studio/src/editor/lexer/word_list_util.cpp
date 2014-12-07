@@ -8,74 +8,74 @@
 // --------------------------------------------------------------------------------
 
 WordListUtil::WordListUtil(const WordList& wordlist)
-	: wl(wordlist)
+    : wl(wordlist)
 {}
 
 std::vector<std::string> WordListUtil::getNearestWords(const std::string& userPattern) const
 {
-	struct PriorityResultItem
-	{
-		std::string  value;
-		float        priority;
+    struct PriorityResultItem
+    {
+        std::string  value;
+        float        priority;
 
-		PriorityResultItem()
-			: priority(0.0)
-		{}
-		PriorityResultItem(const std::string& value, float priority)
-			: value   (value   )
-			, priority(priority)
-		{}
+        PriorityResultItem()
+            : priority(0.0)
+        {}
+        PriorityResultItem(const std::string& value, float priority)
+            : value   (value   )
+            , priority(priority)
+        {}
 
-		bool operator< (const PriorityResultItem& item) const
-		{
-			return priority == item.priority
-				? value < item.value
-				: priority > item.priority;
-		}
-	};
+        bool operator< (const PriorityResultItem& item) const
+        {
+            return priority == item.priority
+                ? value < item.value
+                : priority > item.priority;
+        }
+    };
 
-	typedef  std::vector<std::string>  result_type;
-	result_type result;
+    typedef  std::vector<std::string>  result_type;
+    result_type result;
 
-	if (wl.words == 0)
-		return result;
+    if (wl.words == 0)
+        return result;
 
-	if (userPattern.empty())
-	{
-		for (int i = 0; i < wl.len; ++i)
-		{
-			result.push_back(wl.words[i]);
-		}
-		return result;
-	}
+    if (userPattern.empty())
+    {
+        for (int i = 0; i < wl.len; ++i)
+        {
+            result.push_back(wl.words[i]);
+        }
+        return result;
+    }
 
-	std::vector<PriorityResultItem> priorityResult;
-	for (int i = 0; i < wl.len; ++i)
-	{
-		boost::iterator_range<char*> findPatternIt = boost::ifind_first(wl.words[i], userPattern);
-		if (!findPatternIt.empty())
-		{
-			boost::iterator_range<char*> fullKeywordIt(wl.words[i], wl.words[i] + strlen(wl.words[i]));
-			std::size_t position = findPatternIt.begin() - fullKeywordIt.begin();
-			std::size_t diff = position + (fullKeywordIt.end() - findPatternIt.end());
-			std::size_t wLen = fullKeywordIt.end() - fullKeywordIt.begin();
-			float positionPart = float(position) / float(wLen);
-			float diffPart = float(diff) / float(wLen);
-			float priority = 1 - (positionPart + diffPart) / 2;
-			priorityResult.push_back(PriorityResultItem(wl.words[i], priority));
-		}
-		else
-		{
-			priorityResult.push_back(PriorityResultItem(wl.words[i], 0.0));
-		}
-	}
-	std::sort(priorityResult.begin(), priorityResult.end());
-	float const minPriority = 0.3f;
+    std::vector<PriorityResultItem> priorityResult;
+    for (int i = 0; i < wl.len; ++i)
+    {
+        boost::iterator_range<char*> findPatternIt = boost::ifind_first(wl.words[i], userPattern);
+        if (!findPatternIt.empty())
+        {
+            boost::iterator_range<char*> fullKeywordIt(wl.words[i], wl.words[i] + strlen(wl.words[i]));
+            std::size_t position = findPatternIt.begin() - fullKeywordIt.begin();
+            std::size_t diff = position + (fullKeywordIt.end() - findPatternIt.end());
+            std::size_t wLen = fullKeywordIt.end() - fullKeywordIt.begin();
+            float positionPart = float(position) / float(wLen);
+            float diffPart = float(diff) / float(wLen);
+            float priority = 1 - (positionPart + diffPart) / 2;
+            priorityResult.push_back(PriorityResultItem(wl.words[i], priority));
+        }
+        else
+        {
+            priorityResult.push_back(PriorityResultItem(wl.words[i], 0.0));
+        }
+    }
+    std::sort(priorityResult.begin(), priorityResult.end());
+    float const minPriority = 0.3f;
 
-	for (const PriorityResultItem& item: priorityResult)
-	{
-		if(item.priority >= minPriority)
-			result.push_back(item.value);
-	}
-	return result;
+    for (const PriorityResultItem& item: priorityResult)
+    {
+        if(item.priority >= minPriority)
+            result.push_back(item.value);
+    }
+    return result;
 }

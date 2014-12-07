@@ -19,29 +19,29 @@ class RDOEnumType: public RDOType
 {
 DECLARE_FACTORY(RDOEnumType);
 public:
-	void add(const LPRDOValue& pNext);
+    void add(const LPRDOValue& pNext);
 
-	rdo::runtime::LPRDOEnumType getEnums() const
-	{
-		return m_pType.object_static_cast<rdo::runtime::RDOEnumType>();
-	}
+    rdo::runtime::LPRDOEnumType getEnums() const
+    {
+        return m_pType.object_static_cast<rdo::runtime::RDOEnumType>();
+    }
 
-	bool operator== (const RDOEnumType& pEnumType) const
-	{
-		return getEnums()->getValues() == pEnumType.getEnums()->getValues();
-	}
-	bool operator!= (const RDOEnumType& pEnumType) const
-	{
-		return !operator==(pEnumType);
-	}
+    bool operator== (const RDOEnumType& pEnumType) const
+    {
+        return getEnums()->getValues() == pEnumType.getEnums()->getValues();
+    }
+    bool operator!= (const RDOEnumType& pEnumType) const
+    {
+        return !operator==(pEnumType);
+    }
 
-	DECLARE_ITypeConverter;
-	DECLARE_IModelStructure;
+    DECLARE_ITypeConverter;
+    DECLARE_IModelStructure;
 
 private:
-	RDOEnumType         ();
-	RDOEnumType         (const rdo::runtime::LPRDOEnumType& pEnumType);
-	virtual ~RDOEnumType();
+    RDOEnumType         ();
+    RDOEnumType         (const rdo::runtime::LPRDOEnumType& pEnumType);
+    virtual ~RDOEnumType();
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

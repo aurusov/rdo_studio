@@ -19,27 +19,27 @@ class RDOCalc: public rdo::counter_reference
 DECLARE_FACTORY(RDOCalc)
 
 public:
-	RDOValue calcValue(const LPRDORuntime& pRuntime);
+    RDOValue calcValue(const LPRDORuntime& pRuntime);
 
-	virtual bool compare(const LPRDOCalc& pCalc) const;
+    virtual bool compare(const LPRDOCalc& pCalc) const;
 
-	const RDOSrcInfo& srcInfo() const;
-	void setSrcInfo(const RDOSrcInfo& srcInfo);
+    const RDOSrcInfo& srcInfo() const;
+    void setSrcInfo(const RDOSrcInfo& srcInfo);
 
-	typedef std::vector<LPRDOCalc> RDOCalcList;
+    typedef std::vector<LPRDOCalc> RDOCalcList;
 
 protected:
-	RDOCalc();
-	virtual ~RDOCalc();
+    RDOCalc();
+    virtual ~RDOCalc();
 
-	virtual RDOValue doCalc(const LPRDORuntime& pRuntime) = 0;
+    virtual RDOValue doCalc(const LPRDORuntime& pRuntime) = 0;
 
 private:
-	RDOSrcInfo m_srcInfo;
+    RDOSrcInfo m_srcInfo;
 };
 
 #define DECLARE_ICalc \
 private:              \
-	RDOValue doCalc(const LPRDORuntime& pRuntime);
+    RDOValue doCalc(const LPRDORuntime& pRuntime);
 
 CLOSE_RDO_RUNTIME_NAMESPACE

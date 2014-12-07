@@ -18,30 +18,30 @@ class View: public QWidget
 Q_OBJECT
 
 public:
-	View(QWidget* pParent);
-	virtual ~View();
+    View(QWidget* pParent);
+    virtual ~View();
 
-	void setModel(Model* pModel);
+    void setModel(Model* pModel);
 
-	TabCtrl& getTab();
+    TabCtrl& getTab();
 
 private:
-	typedef  QWidget  parent_type;
+    typedef  QWidget  parent_type;
 
-	FindDialog* m_pFindDialog;
-	FindDialog::Settings m_findSettings;
-	TabCtrl* m_pTabCtrl;
-	Model* m_pModel;
+    FindDialog* m_pFindDialog;
+    FindDialog::Settings m_findSettings;
+    TabCtrl* m_pTabCtrl;
+    Model* m_pModel;
 
-	void closeEvent(QCloseEvent* event);
+    void closeEvent(QCloseEvent* event);
 
-	void onFindDlgFind(const FindDialog::Settings& settings);
-	void onFindDlgClose();
+    void onFindDlgFind(const FindDialog::Settings& settings);
+    void onFindDlgClose();
 
-	void onSearchFindAll();
+    void onSearchFindAll();
 
 private slots:
-	void onSearchFindInModel();
+    void onSearchFindInModel();
 };
 
 }}} // namespace rdo::gui::model

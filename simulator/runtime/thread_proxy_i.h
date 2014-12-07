@@ -11,15 +11,15 @@ struct IThreadProxy: public rdo::RefCounter<IThreadProxy>
 {
 DECLARE_FACTORY(IThreadProxy)
 public:
-	enum ThreadID
-	{
-		TID_REPOSITORY
-	};
-	virtual void sendMessage(ThreadID threadID, std::size_t messageID, void* pParam) = 0;
+    enum ThreadID
+    {
+        TID_REPOSITORY
+    };
+    virtual void sendMessage(ThreadID threadID, std::size_t messageID, void* pParam) = 0;
 
 protected:
-	IThreadProxy()
-	{}
-	virtual ~IThreadProxy()
-	{}
+    IThreadProxy()
+    {}
+    virtual ~IThreadProxy()
+    {}
 };

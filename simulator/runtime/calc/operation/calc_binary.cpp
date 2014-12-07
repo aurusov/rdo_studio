@@ -11,11 +11,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOCalcBinaryBase
 // --------------------------------------------------------------------------------
 RDOCalcBinaryBase::RDOCalcBinaryBase(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
-	: m_pLeft (pLeft )
-	, m_pRight(pRight)
+    : m_pLeft (pLeft )
+    , m_pRight(pRight)
 {
-	ASSERT(m_pLeft );
-	ASSERT(m_pRight);
+    ASSERT(m_pLeft );
+    ASSERT(m_pRight);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -6,7 +6,7 @@
 namespace rdo {
 
 event::event(const std::string& name, etime time, types type) :
-	m_name(name), m_time(time), m_type(type)
+    m_name(name), m_time(time), m_type(type)
 {
 }
 
@@ -16,27 +16,27 @@ event::~event()
 
 void event::setName(const std::string& name)
 {
-	m_name = name;
+    m_name = name;
 }
 
 void event::setTime(double time)
 {
-	m_time =  time;
+    m_time =  time;
 }
 
 std::string event::getName() const
 {
-	return m_name;
+    return m_name;
 }
 
 event::etime event::getTime() const
 {
-	return m_time;
+    return m_time;
 }
 
 event::types event::getType() const
 {
-	return m_type;
+    return m_type;
 }
 
 } // namespace rdo

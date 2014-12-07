@@ -12,11 +12,11 @@ class RDOCalcPatParam: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcPatParam)
 private:
-	RDOCalcPatParam(std::size_t paramID);
+    RDOCalcPatParam(std::size_t paramID);
 
-	std::size_t m_paramID;
+    std::size_t m_paramID;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

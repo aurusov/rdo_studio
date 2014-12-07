@@ -17,25 +17,25 @@ class RDOPROCAdvance: public RDOPROCBlock, public IInternalStatisticsManager
 {
 DECLARE_FACTORY(RDOPROCAdvance);
 protected:
-	LPRDOCalc pDelayCalc;
+    LPRDOCalc pDelayCalc;
 
-		struct LeaveTr
-	{
-		LPRDOPROCTransact transact;
-		double            timeLeave;
-		LeaveTr(const LPRDOPROCTransact& _transact, double _timeLeave);
-	};
-	std::list<LeaveTr> leave_list;
+        struct LeaveTr
+    {
+        LPRDOPROCTransact transact;
+        double            timeLeave;
+        LeaveTr(const LPRDOPROCTransact& _transact, double _timeLeave);
+    };
+    std::list<LeaveTr> leave_list;
 
 private:
-	RDOPROCAdvance(LPIPROCProcess process, const LPRDOCalc& _pDelayCalc);
+    RDOPROCAdvance(LPIPROCProcess process, const LPRDOCalc& _pDelayCalc);
 
-	LPIInternalStatistics m_pStatistics;
+    LPIInternalStatistics m_pStatistics;
 
-	void onMakePlaned(const LPRDORuntime& pRuntime);
+    void onMakePlaned(const LPRDORuntime& pRuntime);
 
-	DECLARE_IBaseOperation;
-	DECLARE_IInternalStatisticsManager;
+    DECLARE_IBaseOperation;
+    DECLARE_IInternalStatisticsManager;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

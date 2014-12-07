@@ -15,57 +15,57 @@ class PluginInfo: public rdo::counter_reference
 {
 DECLARE_FACTORY(PluginInfo);
 public:
-	PluginInfo(const QString& name, QPluginLoader* loader, bool autoload, const QUuid& GUID, 
-	           const QString& author, const QString& version, int state);
-	~PluginInfo();
-	const QString& getName    () const;
-	const QString& getAuthor  () const;
-	const QString& getVersion () const;
-	bool           getAutoload() const;
-	const QUuid&   getGUID    () const;
-	int            getState   () const;
-	bool           isActive   () const;
-	QPluginLoader* getLoader  ();
-	
-	void setAutoload(bool value);
-	void setState   (int  value);
-	void setActive  (bool value);
+    PluginInfo(const QString& name, QPluginLoader* loader, bool autoload, const QUuid& GUID, 
+               const QString& author, const QString& version, int state);
+    ~PluginInfo();
+    const QString& getName    () const;
+    const QString& getAuthor  () const;
+    const QString& getVersion () const;
+    bool           getAutoload() const;
+    const QUuid&   getGUID    () const;
+    int            getState   () const;
+    bool           isActive   () const;
+    QPluginLoader* getLoader  ();
+    
+    void setAutoload(bool value);
+    void setState   (int  value);
+    void setActive  (bool value);
 
-	bool pluginSignInfoIsEqual(const PluginInfo& pluginInfo);
-	bool isAvailable() const;
-	bool operator==(const PluginInfo& other);
+    bool pluginSignInfoIsEqual(const PluginInfo& pluginInfo);
+    bool isAvailable() const;
+    bool operator==(const PluginInfo& other);
 
 private:
-	QString        pluginName;
-	QPluginLoader* pluginLoader;
-	bool           pluginAutoload;
-	QUuid          pluginGUID;
-	QString        pluginAuthor;
-	QString        pluginVersion;
-	int            pluginState;
-	bool           pluginIsActive;
+    QString        pluginName;
+    QPluginLoader* pluginLoader;
+    bool           pluginAutoload;
+    QUuid          pluginGUID;
+    QString        pluginAuthor;
+    QString        pluginVersion;
+    int            pluginState;
+    bool           pluginIsActive;
 };
 
 PREDECLARE_POINTER(PluginInfoList);
 class PluginInfoList
-	: public rdo::counter_reference
-	, public std::list<LPPluginInfo>
+    : public rdo::counter_reference
+    , public std::list<LPPluginInfo>
 {
-	DECLARE_FACTORY(PluginInfo);
+    DECLARE_FACTORY(PluginInfo);
 };
 
 namespace rdo
 {
-	namespace plugin
-	{
-		enum LoadState
-		{
-			Unique = -52,
-			IdOnlyMatched,
-			ExactMatched,
-			Deleted
-		};
-	}
+    namespace plugin
+    {
+        enum LoadState
+        {
+            Unique = -52,
+            IdOnlyMatched,
+            ExactMatched,
+            Deleted
+        };
+    }
 };
 
 Q_DECLARE_METATYPE(LPPluginInfo)

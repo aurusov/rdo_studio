@@ -13,27 +13,27 @@ class RDOEnumType: public RDOType
 {
 DECLARE_FACTORY(RDOEnumType);
 public:
-	typedef std::string EnumItem;
-	typedef rdo::vector<EnumItem> Enums;
-	typedef Enums::const_iterator CIterator;
-	typedef Enums::const_iterator const_iterator;
+    typedef std::string EnumItem;
+    typedef rdo::vector<EnumItem> Enums;
+    typedef Enums::const_iterator CIterator;
+    typedef Enums::const_iterator const_iterator;
 
-	static const std::size_t END = std::size_t(~0);
+    static const std::size_t END = std::size_t(~0);
 
-	void add(const std::string& next);
-	std::size_t findEnum(const std::string& val) const;
-	bool exist(const std::string& val) const;
+    void add(const std::string& next);
+    std::size_t findEnum(const std::string& val) const;
+    bool exist(const std::string& val) const;
 
-	bool empty() const;
-	const CIterator begin() const;
-	const CIterator end() const;
-	const Enums& getValues() const;
+    bool empty() const;
+    const CIterator begin() const;
+    const CIterator end() const;
+    const Enums& getValues() const;
 
 protected:
-	RDOEnumType();
-	RDOEnumType(const Enums& enums);
+    RDOEnumType();
+    RDOEnumType(const Enums& enums);
 
-	Enums m_enum;
+    Enums m_enum;
 };
 DECLARE_POINTER(RDOEnumType);
 

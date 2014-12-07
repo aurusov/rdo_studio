@@ -14,15 +14,15 @@ class RDOFRMFrame: public RDOFRMCommandList
 {
 DECLARE_FACTORY(RDOFRMFrame);
 public:
-	const rdo::runtime::LPRDOFRMFrame& frame() const;
+    const rdo::runtime::LPRDOFRMFrame& frame() const;
 
 private:
-	RDOFRMFrame(const RDOParserSrcInfo& srcInfo);
-	virtual ~RDOFRMFrame();
+    RDOFRMFrame(const RDOParserSrcInfo& srcInfo);
+    virtual ~RDOFRMFrame();
 
-	rdo::runtime::LPRDOFRMFrame m_pFrame;
+    rdo::runtime::LPRDOFRMFrame m_pFrame;
 
-	rdo::runtime::LPRDOFRMSprite list() const;
+    rdo::runtime::LPRDOFRMSprite list() const;
 };
 DECLARE_POINTER(RDOFRMFrame);
 

@@ -42,17 +42,17 @@ class RDORTPFuzzyParam;
 // --------------------------------------------------------------------------------
 #define DEFINE_OBJECT_CONTAINER_MINIMUM(TYPE, NAME) \
 public: \
-	typedef std::vector<TYPE> NAME##List; \
-	void                insert##NAME (TYPE value); \
-	TYPE                getLast##NAME()       { return !m_all##NAME.empty() ? m_all##NAME.back() : TYPE(NULL); } \
-	const NAME##List&   get##NAME##s () const { return m_all##NAME; } \
+    typedef std::vector<TYPE> NAME##List; \
+    void                insert##NAME (TYPE value); \
+    TYPE                getLast##NAME()       { return !m_all##NAME.empty() ? m_all##NAME.back() : TYPE(NULL); } \
+    const NAME##List&   get##NAME##s () const { return m_all##NAME; } \
 private: \
-	NAME##List m_all##NAME;
+    NAME##List m_all##NAME;
 
 #define DEFINE_OBJECT_CONTAINER_WITHNAME(TYPE, NAME) \
 public: \
-	const TYPE find##NAME  (const std::string& name) const; \
-	bool remove##NAME(const TYPE item);
+    const TYPE find##NAME  (const std::string& name) const; \
+    bool remove##NAME(const TYPE item);
 
 #define DEFINE_OBJECT_CONTAINER_NONAME(NAME) \
 DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
@@ -66,12 +66,12 @@ PREDECLARE_POINTER(RDOParser);
 template <typename T>
 struct identity
 {
-	typedef T type;
+    typedef T type;
 };
 
 class RDOParser
-	: public Context
-	, public IContextFind
+    : public Context
+    , public IContextFind
 {
 DECLARE_FACTORY(RDOParser);
 
@@ -95,167 +95,167 @@ DEFINE_OBJECT_CONTAINER(PROCProcess   );
 DEFINE_OBJECT_CONTAINER_NONAME(FUNGroup);
 
 public:
-	virtual void init  ();
-	virtual void deinit();
+    virtual void init  ();
+    virtual void deinit();
 
-	const rdo::runtime::LPRDORuntime& runtime() const { return m_pRuntime; }
+    const rdo::runtime::LPRDORuntime& runtime() const { return m_pRuntime; }
 
-	bool isPattern() const { return m_pattern; }
-	FUNGroupList& getFUNGroupStack() { return m_allFUNGroup; }
+    bool isPattern() const { return m_pattern; }
+    FUNGroupList& getFUNGroupStack() { return m_allFUNGroup; }
 
-	void  checkFunctionName    (const RDOParserSrcInfo& src_info);
-	void  checkActivityName    (const RDOParserSrcInfo& src_info);
-	void  checkDPTName         (const RDOParserSrcInfo& src_info);
+    void  checkFunctionName    (const RDOParserSrcInfo& src_info);
+    void  checkActivityName    (const RDOParserSrcInfo& src_info);
+    void  checkDPTName         (const RDOParserSrcInfo& src_info);
 
-	void insertChanges (const std::string& name, const std::string& value);
+    void insertChanges (const std::string& name, const std::string& value);
 
-	bool isCurrentDPTSearch();
-	bool isCurrentDPTPrior();
+    bool isCurrentDPTSearch();
+    bool isCurrentDPTPrior();
 
-	std::size_t getRTP_id() const { return m_allRTPResType.size()  + 1; }
-	std::size_t getRSS_id() const { return m_allRSSResource.size() + 0; }
-	std::size_t getPAT_id() const { return m_allPATPattern.size()  + 0; }
-	std::size_t getPMD_id() { return m_resultGeneratorID.get(); }
-	std::size_t getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
+    std::size_t getRTP_id() const { return m_allRTPResType.size()  + 1; }
+    std::size_t getRSS_id() const { return m_allRSSResource.size() + 0; }
+    std::size_t getPAT_id() const { return m_allPATPattern.size()  + 0; }
+    std::size_t getPMD_id() { return m_resultGeneratorID.get(); }
+    std::size_t getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
 
-	std::string getModelStructure();
-	std::string getChanges() const;
+    std::string getModelStructure();
+    std::string getChanges() const;
 
-	LPRDOSMR getSMR() const { return m_pSMR; }
-	void setSMR(const LPRDOSMR& pSMR) { m_pSMR = pSMR; }
-	bool hasSMR() const { return m_pSMR ? true : false; }
+    LPRDOSMR getSMR() const { return m_pSMR; }
+    void setSMR(const LPRDOSMR& pSMR) { m_pSMR = pSMR; }
+    bool hasSMR() const { return m_pSMR ? true : false; }
 
-	void parse();
-	void parse(std::istream& stream);
+    void parse();
+    void parse(std::istream& stream);
 
-	void beforeRun();
+    void beforeRun();
 
-	const Error& error() const { return m_error; }
-	 Error& error() { return m_error; }
+    const Error& error() const { return m_error; }
+     Error& error() { return m_error; }
 
-	class Stack: private rdo::IndexedStack<rdo::LPISmartPtrWrapper>
-	{
-	friend class RDOParser;
-	public:
-		typedef rdo::IndexedStack<rdo::LPISmartPtrWrapper> IndexedStack;
+    class Stack: private rdo::IndexedStack<rdo::LPISmartPtrWrapper>
+    {
+    friend class RDOParser;
+    public:
+        typedef rdo::IndexedStack<rdo::LPISmartPtrWrapper> IndexedStack;
 
-		template <class T>
-		IndexedStack::ID push(const rdo::intrusive_ptr<T>& pObject)
-		{
-			rdo::LPISmartPtrWrapper pWrapper = new rdo::smart_ptr_wrapper<T>(pObject);
-			return IndexedStack::push(pWrapper);
-		}
-		template <class T>
-		rdo::intrusive_ptr<T> pop(IndexedStack::ID id)
-		{
-			rdo::LPISmartPtrWrapper pWrapper = IndexedStack::pop(id);
-			ASSERT(pWrapper);
+        template <class T>
+        IndexedStack::ID push(const rdo::intrusive_ptr<T>& pObject)
+        {
+            rdo::LPISmartPtrWrapper pWrapper = new rdo::smart_ptr_wrapper<T>(pObject);
+            return IndexedStack::push(pWrapper);
+        }
+        template <class T>
+        rdo::intrusive_ptr<T> pop(IndexedStack::ID id)
+        {
+            rdo::LPISmartPtrWrapper pWrapper = IndexedStack::pop(id);
+            ASSERT(pWrapper);
 
-			// Падение в в этом месте означает, что из стека вытаскивается указатель неправильного типа
-			// Что бы узнать тип, необходимо найти команду push для этого указателя
-			ASSERT((pWrapper->getRefCounter() && dynamic_cast<const T*>(pWrapper->getRefCounter())) || !pWrapper->getRefCounter());
+            // Падение в в этом месте означает, что из стека вытаскивается указатель неправильного типа
+            // Что бы узнать тип, необходимо найти команду push для этого указателя
+            ASSERT((pWrapper->getRefCounter() && dynamic_cast<const T*>(pWrapper->getRefCounter())) || !pWrapper->getRefCounter());
 
-			rdo::intrusive_ptr<T> pObject = *reinterpret_cast<rdo::intrusive_ptr<T>*>(pWrapper->getSmartPtr());
-			pWrapper->destroy();
-			return pObject;
-		}
+            rdo::intrusive_ptr<T> pObject = *reinterpret_cast<rdo::intrusive_ptr<T>*>(pWrapper->getSmartPtr());
+            pWrapper->destroy();
+            return pObject;
+        }
 
-		rdo::LPISmartPtrWrapper raw_pop(IndexedStack::ID id)
-		{
-			rdo::LPISmartPtrWrapper pWrapper = IndexedStack::pop(id);
-			ASSERT(pWrapper);
-			return pWrapper;
-		}
+        rdo::LPISmartPtrWrapper raw_pop(IndexedStack::ID id)
+        {
+            rdo::LPISmartPtrWrapper pWrapper = IndexedStack::pop(id);
+            ASSERT(pWrapper);
+            return pWrapper;
+        }
 
-	private:
-		void clear()
-		{
-			for (const auto& stack: m_stack)
-				stack.second->destroy();
-		}
-	};
+    private:
+        void clear()
+        {
+            for (const auto& stack: m_stack)
+                stack.second->destroy();
+        }
+    };
 
-	Stack& stack()
-	{
-		return m_movementObjectList;
-	}
+    Stack& stack()
+    {
+        return m_movementObjectList;
+    }
 
-	typedef std::vector<LPTypeInfo> PreCastTypeList;
-	void insertPreCastType(const LPTypeInfo& pType)
-	{
-		m_preCastTypeList.push_back(pType);
-	}
+    typedef std::vector<LPTypeInfo> PreCastTypeList;
+    void insertPreCastType(const LPTypeInfo& pType)
+    {
+        m_preCastTypeList.push_back(pType);
+    }
 
-	LPContextStack contextStack();
-	LPContext      context     () const;
+    LPContextStack contextStack();
+    LPContext      context     () const;
 
-	static rdo::model::FileType getFileToParse();
-	static std::size_t lexer_loc_line();
-	static std::size_t lexer_loc_pos();
-	static std::string lexer_text();
-	static LPRDOParser s_parser();
+    static rdo::model::FileType getFileToParse();
+    static std::size_t lexer_loc_line();
+    static std::size_t lexer_loc_pos();
+    static std::string lexer_text();
+    static LPRDOParser s_parser();
 
-	template <class T>
-	void howIsIt()
-	{
-		howIsIt(identity<T>());
-	}
+    template <class T>
+    void howIsIt()
+    {
+        howIsIt(identity<T>());
+    }
 
-	static const std::string METHOD_TIME_NOW;
-	static const std::string METHOD_SECONDS;
-	static const std::string METHOD_TERMINATE_COUNTER;
+    static const std::string METHOD_TIME_NOW;
+    static const std::string METHOD_SECONDS;
+    static const std::string METHOD_TERMINATE_COUNTER;
 
 private:
-	RDOParser();
-	virtual ~RDOParser();
+    RDOParser();
+    virtual ~RDOParser();
 
-	typedef std::vector<LPRDOParserItem> Compilers;
+    typedef std::vector<LPRDOParserItem> Compilers;
 
-	rdo::runtime::LPRDORuntime m_pRuntime;
-	LPRDOSMR m_pSMR;
-	Error m_error;
-	Stack m_movementObjectList;
-	PreCastTypeList m_preCastTypeList;
-	LPContextStack m_pContextStack;
-	bool m_pattern;
-	rdo::IDGenerator m_resultGeneratorID;
-	Compilers m_compilers;
-	LPRDOParserItem m_parser_item;
+    rdo::runtime::LPRDORuntime m_pRuntime;
+    LPRDOSMR m_pSMR;
+    Error m_error;
+    Stack m_movementObjectList;
+    PreCastTypeList m_preCastTypeList;
+    LPContextStack m_pContextStack;
+    bool m_pattern;
+    rdo::IDGenerator m_resultGeneratorID;
+    Compilers m_compilers;
+    LPRDOParserItem m_parser_item;
 
-	void runRSSPost();
-	void runSMRPost();
-	void runRTPPost();
+    void runRSSPost();
+    void runSMRPost();
+    void runRTPPost();
 
-	template <class T>
-	void howIsIt(identity<T>)
-	{
-		m_pattern = false;
-	}
+    template <class T>
+    void howIsIt(identity<T>)
+    {
+        m_pattern = false;
+    }
 
-	void howIsIt(identity<LPRDOFUNGroup>)
-	{}
+    void howIsIt(identity<LPRDOFUNGroup>)
+    {}
 
-	void howIsIt(identity<LPRDOPATPattern>)
-	{
-		m_pattern = true;
-	}
+    void howIsIt(identity<LPRDOPATPattern>)
+    {
+        m_pattern = true;
+    }
 
-	struct Changes
-	{
-		std::string m_name;
-		std::string m_value;
-		Changes(const std::string& name, const std::string& value)
-			: m_name (name )
-			, m_value(value)
-		{}
-	};
-	typedef std::vector<Changes> ChangesList;
-	ChangesList m_changes;
+    struct Changes
+    {
+        std::string m_name;
+        std::string m_value;
+        Changes(const std::string& name, const std::string& value)
+            : m_name (name )
+            , m_value(value)
+        {}
+    };
+    typedef std::vector<Changes> ChangesList;
+    ChangesList m_changes;
 
-	typedef std::list<LPRDOParser> ParserList;
-	static ParserList s_parserStack;
+    typedef std::list<LPRDOParser> ParserList;
+    static ParserList s_parserStack;
 
-	DECLARE_IContextFind;
+    DECLARE_IContextFind;
 };
 DECLARE_POINTER(RDOParser);
 

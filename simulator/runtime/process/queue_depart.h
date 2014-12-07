@@ -14,51 +14,51 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 struct runtime_for_Queue
 {
-	LPRDOResource rss;
-	int           Id_param;
-	RDOValue      defaultValue;
+    LPRDOResource rss;
+    int           Id_param;
+    RDOValue      defaultValue;
 };
 
 struct parser_for_Queue
 {
-	int Id_res;
-	int Id_param;
+    int Id_res;
+    int Id_param;
 };
 
 class RDOPROCBlockForQueue: public RDOPROCBlock
 {
 protected:
-	RDOPROCBlockForQueue(LPIPROCProcess process, parser_for_Queue From_Par);
+    RDOPROCBlockForQueue(LPIPROCProcess process, parser_for_Queue From_Par);
 
-	parser_for_Queue  fromParser;
-	runtime_for_Queue forRes;
-	void _onStart(const LPRDORuntime& pRuntime);
+    parser_for_Queue  fromParser;
+    runtime_for_Queue forRes;
+    void _onStart(const LPRDORuntime& pRuntime);
 };
 
 class RDOPROCQueue: public RDOPROCBlockForQueue
 {
 DECLARE_FACTORY(RDOPROCQueue);
 public:
-	static std::size_t getDefaultValue();
-	static std::string getQueueParamName();
+    static std::size_t getDefaultValue();
+    static std::string getQueueParamName();
 
 private:
-	RDOPROCQueue(LPIPROCProcess process, parser_for_Queue From_Par);
+    RDOPROCQueue(LPIPROCProcess process, parser_for_Queue From_Par);
 
-	DECLARE_IBaseOperation;
+    DECLARE_IBaseOperation;
 };
 
 class RDOPROCDepart: public RDOPROCBlockForQueue
 {
 DECLARE_FACTORY(RDOPROCDepart);
 public:
-	static std::size_t getDefaultValue();
-	static std::string getDepartParamName();
+    static std::size_t getDefaultValue();
+    static std::string getDepartParamName();
 
 private:
-	RDOPROCDepart(LPIPROCProcess process, parser_for_Queue From_Par);
+    RDOPROCDepart(LPIPROCProcess process, parser_for_Queue From_Par);
 
-	DECLARE_IBaseOperation;
+    DECLARE_IBaseOperation;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

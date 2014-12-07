@@ -10,14 +10,14 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class OperatorType
 {
 public:
-	enum Type
-	{
-		OT_ARITHM,
-		OT_LOGIC
-	};
+    enum Type
+    {
+        OT_ARITHM,
+        OT_LOGIC
+    };
 
-	template <Type>
-	static std::size_t& getCalcCounter();
+    template <Type>
+    static std::size_t& getCalcCounter();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

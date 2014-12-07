@@ -18,19 +18,19 @@ template<class RTLogic, class Activity>
 class RDOLogic: public RDOLogicBase
 {
 public:
-	typedef rdo::intrusive_ptr<Activity> LPActivity;
-	typedef std::vector<LPActivity>      ActivityList;
+    typedef rdo::intrusive_ptr<Activity> LPActivity;
+    typedef std::vector<LPActivity>      ActivityList;
 
-	LPActivity          addNewActivity (const RDOParserSrcInfo& activity_src_info, const RDOParserSrcInfo& pattern_src_info);
-	LPActivity          getLastActivity() const;
-	const ActivityList& getActivities  () const;
+    LPActivity          addNewActivity (const RDOParserSrcInfo& activity_src_info, const RDOParserSrcInfo& pattern_src_info);
+    LPActivity          getLastActivity() const;
+    const ActivityList& getActivities  () const;
 
 protected:
-	RDOLogic(const RDOParserSrcInfo& src_info);
-	virtual ~RDOLogic();
+    RDOLogic(const RDOParserSrcInfo& src_info);
+    virtual ~RDOLogic();
 
 private:
-	ActivityList m_activityList;
+    ActivityList m_activityList;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

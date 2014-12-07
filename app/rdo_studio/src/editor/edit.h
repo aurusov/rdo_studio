@@ -18,222 +18,222 @@
 namespace rdo { namespace gui { namespace editor {
 
 class Edit
-	: public ScintillaEditBase
-	, public ActionActivator
+    : public ScintillaEditBase
+    , public ActionActivator
 {
 Q_OBJECT
 
 private:
-	typedef  boost::function<void (Edit*)>        this_method;
-	typedef  boost::function<bool (const Edit*)>  this_predicate;
+    typedef  boost::function<void (Edit*)>        this_method;
+    typedef  boost::function<bool (const Edit*)>  this_predicate;
 
 public:
-	Edit(QWidget* pParent);
-	virtual ~Edit();
+    Edit(QWidget* pParent);
+    virtual ~Edit();
 
-	// TODO Вынести класс в отдельный модуль
-	class Group
-	{
-	public:
-		typedef std::vector<Edit*> List;
+    // TODO Вынести класс в отдельный модуль
+    class Group
+    {
+    public:
+        typedef std::vector<Edit*> List;
 
-		bool    bMatchCase;
-		bool    bMatchWholeWord;
-		bool    bSearchDown;
-		QString findStr;
-		QString replaceStr;
+        bool    bMatchCase;
+        bool    bMatchWholeWord;
+        bool    bSearchDown;
+        QString findStr;
+        QString replaceStr;
 
-		Group();
+        Group();
 
-		void insert(Edit* pEdit);
+        void insert(Edit* pEdit);
 
-		List::const_iterator begin() const;
-		List::const_iterator end  () const;
-		List::const_iterator next (const List::const_iterator& it) const;
-		List::const_iterator prev (const List::const_iterator& it) const;
+        List::const_iterator begin() const;
+        List::const_iterator end  () const;
+        List::const_iterator next (const List::const_iterator& it) const;
+        List::const_iterator prev (const List::const_iterator& it) const;
 
-		void                 for_each(const this_method& fun) const;
-		List::const_iterator find_if (const this_predicate& fun) const;
+        void                 for_each(const this_method& fun) const;
+        List::const_iterator find_if (const this_predicate& fun) const;
 
-	private:
-		List m_list;
-	};
+    private:
+        List m_list;
+    };
 
-	const EditStyle* getEditorStyle() const;
-	void setEditorStyle(EditStyle* pStyle);
+    const EditStyle* getEditorStyle() const;
+    void setEditorStyle(EditStyle* pStyle);
 
-	void setGroup(Group* pGroup);
+    void setGroup(Group* pGroup);
 
-	bool  isEmpty() const                                  { return getLength() == 0;                                                     }
-	bool  isSelected() const                               { return sendEditor(SCI_GETSELECTIONSTART) != sendEditor(SCI_GETSELECTIONEND); }
+    bool  isEmpty() const                                  { return getLength() == 0;                                                     }
+    bool  isSelected() const                               { return sendEditor(SCI_GETSELECTIONSTART) != sendEditor(SCI_GETSELECTIONEND); }
 
-	bool  isModify() const                                 { return sendEditor(SCI_GETMODIFY) ? true : false; }
-	void  setModifyFalse()                                 { sendEditor(SCI_SETSAVEPOINT); }
+    bool  isModify() const                                 { return sendEditor(SCI_GETMODIFY) ? true : false; }
+    void  setModifyFalse()                                 { sendEditor(SCI_SETSAVEPOINT); }
 
-	virtual void clearAll();
-	void clearUndoBuffer() const                           { sendEditor(SCI_EMPTYUNDOBUFFER); }
+    virtual void clearAll();
+    void clearUndoBuffer() const                           { sendEditor(SCI_EMPTYUNDOBUFFER); }
 
-	bool  isReadOnly() const                               { return sendEditor(SCI_GETREADONLY) ? true : false; }
-	void  setReadOnly(const bool value)                    { sendEditor(SCI_SETREADONLY, value); }
+    bool  isReadOnly() const                               { return sendEditor(SCI_GETREADONLY) ? true : false; }
+    void  setReadOnly(const bool value)                    { sendEditor(SCI_SETREADONLY, value); }
 
-	void appendText(const QString& str) const;
+    void appendText(const QString& str) const;
 
-	int getZoom() const                                    { return sendEditor(SCI_GETZOOM); }
-	void setZoom(const int value) const                    { sendEditor(SCI_SETZOOM, value); }
-	void zoomIn() const                                    { sendEditor(SCI_ZOOMIN);         }
-	void zoomOut() const                                   { sendEditor(SCI_ZOOMOUT);        }
-	void resetZoom() const                                 { sendEditor(SCI_SETZOOM, 0);     }
+    int getZoom() const                                    { return sendEditor(SCI_GETZOOM); }
+    void setZoom(const int value) const                    { sendEditor(SCI_SETZOOM, value); }
+    void zoomIn() const                                    { sendEditor(SCI_ZOOMIN);         }
+    void zoomOut() const                                   { sendEditor(SCI_ZOOMOUT);        }
+    void resetZoom() const                                 { sendEditor(SCI_SETZOOM, 0);     }
 
-	bool  bookmarkToggle  (int line = -1) const;
-	bool  bookmarkNext    (bool canLoop = true, bool fromCurrentLine = true) const;
-	bool  bookmarkPrev    (bool canLoop = true, bool fromCurrentLine = true) const;
-	void  bookmarkClearAll() const;
-	bool  hasBookmarks    () const;
+    bool  bookmarkToggle  (int line = -1) const;
+    bool  bookmarkNext    (bool canLoop = true, bool fromCurrentLine = true) const;
+    bool  bookmarkPrev    (bool canLoop = true, bool fromCurrentLine = true) const;
+    void  bookmarkClearAll() const;
+    bool  hasBookmarks    () const;
 
-	int getLength() const                         { return sendEditor(SCI_GETLENGTH);                  }
-	int getLineCount() const                      { return sendEditor(SCI_GETLINECOUNT);               }
-	int getCurrentPos() const                     { return sendEditor(SCI_GETCURRENTPOS);              }
-	int getPositionFromLine(const int line) const { return sendEditor(SCI_POSITIONFROMLINE, line);     }
-	int getLineFromPosition(const int pos) const  { return sendEditor(SCI_LINEFROMPOSITION, pos);      }
-	int isEndOfWord(int pos) const                { return sendEditor(SCI_WORDENDPOSITION, pos, true); }
-	void setCurrentPos (const int value) const;
-	void setCurrentPos (const int line, int pos_in_line, const bool convert_rdo_tab = false) const;
-	bool isLineVisible(const int line) const;
-	void scrollToLine  (const int line) const;
-	void scrollToLine2 (const int line) const;
-	void scrollToCarret() const;
-	void horzScrollToCurrentPos() const;
+    int getLength() const                         { return sendEditor(SCI_GETLENGTH);                  }
+    int getLineCount() const                      { return sendEditor(SCI_GETLINECOUNT);               }
+    int getCurrentPos() const                     { return sendEditor(SCI_GETCURRENTPOS);              }
+    int getPositionFromLine(const int line) const { return sendEditor(SCI_POSITIONFROMLINE, line);     }
+    int getLineFromPosition(const int pos) const  { return sendEditor(SCI_LINEFROMPOSITION, pos);      }
+    int isEndOfWord(int pos) const                { return sendEditor(SCI_WORDENDPOSITION, pos, true); }
+    void setCurrentPos (const int value) const;
+    void setCurrentPos (const int line, int pos_in_line, const bool convert_rdo_tab = false) const;
+    bool isLineVisible(const int line) const;
+    void scrollToLine  (const int line) const;
+    void scrollToLine2 (const int line) const;
+    void scrollToCarret() const;
+    void horzScrollToCurrentPos() const;
 
-	std::string getCurrentWord() const;
-	std::string getSelection  () const;
-	std::string getCurrentOrSelectedWord() const;
-	QString getWordForFind() const;
+    std::string getCurrentWord() const;
+    std::string getSelection  () const;
+    std::string getCurrentOrSelectedWord() const;
+    QString getWordForFind() const;
 
-	int findPos(const QString& findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false) const;
-	std::string getLine(const int line) const;
+    int findPos(const QString& findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false) const;
+    std::string getLine(const int line) const;
 
-	void load(const std::stringstream& stream);
-	void save(std::stringstream& stream) const;
-	std::string saveAsRTF(int start, int end) const;
+    void load(const std::stringstream& stream);
+    void save(std::stringstream& stream) const;
+    std::string saveAsRTF(int start, int end) const;
 
 protected:
-	EditStyle* m_pStyle;
+    EditStyle* m_pStyle;
 
-	long sendEditor(std::size_t msg, unsigned long wParam = 0, long lParam = 0) const { return super::send (msg, wParam, lParam); }
-	long sendEditorString(std::size_t msg, unsigned long wParam, const char* str)     const { return super::sends(msg, wParam, str); }
-	long sendEditorString(std::size_t msg, const std::string& str) const;
+    long sendEditor(std::size_t msg, unsigned long wParam = 0, long lParam = 0) const { return super::send (msg, wParam, lParam); }
+    long sendEditorString(std::size_t msg, unsigned long wParam, const char* str)     const { return super::sends(msg, wParam, str); }
+    long sendEditorString(std::size_t msg, const std::string& str) const;
 
-	int  getNewMarker();
-	void defineMarker(int marker, int markerType, QColor fore, QColor back) const;
+    int  getNewMarker();
+    void defineMarker(int marker, int markerType, QColor fore, QColor back) const;
 
-	CharacterRange getSelectionRange() const;
-	void setSelection(int anchor, int currentPos) const { sendEditor(SCI_SETSEL, anchor, currentPos); }
+    CharacterRange getSelectionRange() const;
+    void setSelection(int anchor, int currentPos) const { sendEditor(SCI_SETSEL, anchor, currentPos); }
 
-	int getCurrentLineNumber  () const { return getLineFromPosition(getCurrentPos());       }
-	int getCurrentColumnNumber() const { return sendEditor(SCI_GETCOLUMN, getCurrentPos()); }
+    int getCurrentLineNumber  () const { return getLineFromPosition(getCurrentPos());       }
+    int getCurrentColumnNumber() const { return sendEditor(SCI_GETCOLUMN, getCurrentPos()); }
 
-	virtual void onUpdateActions(bool activated);
+    virtual void onUpdateActions(bool activated);
 
-	static std::size_t convertColor(const QColor& color);
+    static std::size_t convertColor(const QColor& color);
 
 protected slots:
-	        void onUpdateEditGUI();
-	virtual void onHelpContext  () = 0;
+            void onUpdateEditGUI();
+    virtual void onHelpContext  () = 0;
 
 private:
-	typedef  ScintillaEditBase  super;
+    typedef  ScintillaEditBase  super;
 
-	Group* m_pGroup;
-	int m_sciMarkerBookmark;
-	int m_firstFoundPos;
-	bool m_haveFound;
+    Group* m_pGroup;
+    int m_sciMarkerBookmark;
+    int m_firstFoundPos;
+    bool m_haveFound;
 
-	void gotoLineEnsureVisible(int line) const;
-	void ensureRangeVisible(int posStart, int posEnd, bool enforcePolicy = true) const;
+    void gotoLineEnsureVisible(int line) const;
+    void ensureRangeVisible(int posStart, int posEnd, bool enforcePolicy = true) const;
 
-	void findNext  (const QString& findWhat, bool searchDown, bool matchCase, bool matchWholeWord);
-	void replace   (const QString& findWhat, const QString& replaceWhat, bool searchDown, bool matchCase, bool matchWholeWord);
-	void replaceAll(const QString& findWhat, const QString& replaceWhat, bool matchCase, bool matchWholeWord);
+    void findNext  (const QString& findWhat, bool searchDown, bool matchCase, bool matchWholeWord);
+    void replace   (const QString& findWhat, const QString& replaceWhat, bool searchDown, bool matchCase, bool matchWholeWord);
+    void replaceAll(const QString& findWhat, const QString& replaceWhat, bool matchCase, bool matchWholeWord);
 
-	int  indentOfBlock     (int line) const;
-	void setLineIndentation(int line, int indent) const;
-	void autoIndent        () const;
+    int  indentOfBlock     (int line) const;
+    void setLineIndentation(int line, int indent) const;
+    void autoIndent        () const;
 
-	bool  isViewWhiteSpace () const;
-	void  setViewWhiteSpace(bool value);
+    bool  isViewWhiteSpace () const;
+    void  setViewWhiteSpace(bool value);
 
-	bool  isViewEndOfLine () const;
-	void  setViewEndOfLine(bool value);
+    bool  isViewEndOfLine () const;
+    void  setViewEndOfLine(bool value);
 
-	void onSearchBookmarkNextPrev(
-		const boost::function<bool (const Edit*, bool, bool)>& nextPrevFun,
-		const boost::function<Group::List::const_iterator (const Group::List::const_iterator& it)>& nextPrevGroup
-	) const;
+    void onSearchBookmarkNextPrev(
+        const boost::function<bool (const Edit*, bool, bool)>& nextPrevFun,
+        const boost::function<Group::List::const_iterator (const Group::List::const_iterator& it)>& nextPrevGroup
+    ) const;
 
-	int   m_markerCount;
+    int   m_markerCount;
 
-	FindDialog*          m_pFindDialog;
-	FindDialog::Settings m_findSettings;
+    FindDialog*          m_pFindDialog;
+    FindDialog::Settings m_findSettings;
 
-	FindReplaceDialog*          m_pFindReplaceDialog;
-	FindReplaceDialog::Settings m_findReplaceSettings;
+    FindReplaceDialog*          m_pFindReplaceDialog;
+    FindReplaceDialog::Settings m_findReplaceSettings;
 
-	void onFindDlgFind(const FindDialog::Settings& settings);
-	void onFindDlgClose();
+    void onFindDlgFind(const FindDialog::Settings& settings);
+    void onFindDlgClose();
 
-	void onFindReplaceDlgFind      (const FindReplaceDialog::Settings& settings);
-	void onFindReplaceDlgReplace   (const FindReplaceDialog::Settings& settings);
-	void onFindReplaceDlgReplaceAll(const FindReplaceDialog::Settings& settings);
-	void onFindReplaceDlgClose     ();
-	void showFindWarning           (const QString& findWhat);
+    void onFindReplaceDlgFind      (const FindReplaceDialog::Settings& settings);
+    void onFindReplaceDlgReplace   (const FindReplaceDialog::Settings& settings);
+    void onFindReplaceDlgReplaceAll(const FindReplaceDialog::Settings& settings);
+    void onFindReplaceDlgClose     ();
+    void showFindWarning           (const QString& findWhat);
 
-	void updateActionFind(bool activated);
+    void updateActionFind(bool activated);
 
-	void  methodOfGroup   (const this_method& fun);
-	bool  predicateOfGroup(const this_predicate& fun) const;
+    void  methodOfGroup   (const this_method& fun);
+    bool  predicateOfGroup(const this_predicate& fun) const;
 
-	virtual void focusInEvent (QFocusEvent* pEvent);
-	virtual void focusOutEvent(QFocusEvent* pEvent);
+    virtual void focusInEvent (QFocusEvent* pEvent);
+    virtual void focusOutEvent(QFocusEvent* pEvent);
 
 private slots:
-	void catchNeedShown(int position, int length);
-	void catchCharAdded(int ch);
+    void catchNeedShown(int position, int length);
+    void catchCharAdded(int ch);
 
-	void onEditUndo     ();
-	void onEditRedo     ();
-	void onEditCut      ();
-	void onEditCopy     ();
-	void onEditPaste    ();
-	void onEditDel      ();
-	void onEditSelectAll();
-	void onEditUpperCase();
-	void onEditLowerCase();
+    void onEditUndo     ();
+    void onEditRedo     ();
+    void onEditCut      ();
+    void onEditCopy     ();
+    void onEditPaste    ();
+    void onEditDel      ();
+    void onEditSelectAll();
+    void onEditUpperCase();
+    void onEditLowerCase();
 
-	void onSearchFind               ();
-	void onSearchFindNext           ();
-	void onSearchFindPrevious       ();
-	void onSearchFindNextCurrent    ();
-	void onSearchFindPreviousCurrent();
-	void onSearchReplace            ();
-	void onSearchBookmarkToggle     ();
-	void onSearchBookmarkNext       () const;
-	void onSearchBookmarkPrev       () const;
-	void onSearchBookmarkClearAll   ();
-	void onSearchGotoLine           ();
+    void onSearchFind               ();
+    void onSearchFindNext           ();
+    void onSearchFindPrevious       ();
+    void onSearchFindNextCurrent    ();
+    void onSearchFindPreviousCurrent();
+    void onSearchReplace            ();
+    void onSearchBookmarkToggle     ();
+    void onSearchBookmarkNext       () const;
+    void onSearchBookmarkPrev       () const;
+    void onSearchBookmarkClearAll   ();
+    void onSearchGotoLine           ();
 
-	void onViewZoomChanged   (int zoom);
-	void onViewZoomInc       ();
-	void onViewZoomDec       ();
-	void onViewZoomReset     ();
-	void onViewShowWhiteSpace();
-	void onViewShowEndOfLine ();
+    void onViewZoomChanged   (int zoom);
+    void onViewZoomInc       ();
+    void onViewZoomDec       ();
+    void onViewZoomReset     ();
+    void onViewShowWhiteSpace();
+    void onViewShowEndOfLine ();
 
-	void onCopyAsRTF(QMimeData* pMimeData);
+    void onCopyAsRTF(QMimeData* pMimeData);
 
-	void onUpdateModify();
+    void onUpdateModify();
 
 signals:
-	void modifyChanged(bool value);
+    void modifyChanged(bool value);
 };
 
 }}} // namespace rdo::gui::editor

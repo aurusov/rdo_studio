@@ -2,16 +2,16 @@
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
-	#pragma warning(disable : 4786)
-	#ifndef WINVER               // Allow use of features specific to Windows XP or later.
-		#define WINVER 0x0501    // Change this to the appropriate value to target other versions of Windows.
-	#endif
+    #pragma warning(disable : 4786)
+    #ifndef WINVER               // Allow use of features specific to Windows XP or later.
+        #define WINVER 0x0501    // Change this to the appropriate value to target other versions of Windows.
+    #endif
 
-	#ifdef RDO_MT
-		#include <afxwin.h>
-	#else
-		#include <windows.h>
-	#endif
+    #ifdef RDO_MT
+        #include <afxwin.h>
+    #else
+        #include <windows.h>
+    #endif
 #endif // COMPILER_VISUAL_STUDIO
 
 #include <algorithm>

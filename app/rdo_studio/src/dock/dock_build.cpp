@@ -13,14 +13,14 @@
 // --------------------------------------------------------------------------------
 
 DockBuild::DockBuild(QWidget* pParent)
-	: DockFocusable("Компилятор", pParent)
+    : DockFocusable("Компилятор", pParent)
 {
-	context_type* pWidget = new context_type(this);
-	pWidget->setMinimumSize(QSize(300, 110));
+    context_type* pWidget = new context_type(this);
+    pWidget->setMinimumSize(QSize(300, 110));
 
-	setWidget(pWidget);
+    setWidget(pWidget);
 
-	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_build.png")));
+    toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_build.png")));
 }
 
 DockBuild::~DockBuild()
@@ -28,32 +28,32 @@ DockBuild::~DockBuild()
 
 void DockBuild::appendString(const QString& str)
 {
-	rdo::simulation::report::BuildEditLineInfo* pLine = new rdo::simulation::report::BuildEditLineInfo(str.toStdString());
-	getContext().appendLine(pLine);
+    rdo::simulation::report::BuildEditLineInfo* pLine = new rdo::simulation::report::BuildEditLineInfo(str.toStdString());
+    getContext().appendLine(pLine);
 }
 
 void DockBuild::appendString(const rdo::simulation::report::FileMessage& message)
 {
-	QString qMessage = QString::fromStdString(message.getText());
-	if (qMessage.contains("Сработало лицензионное ограничение"))
-	{
-		QMessageBox::critical(g_pApp->getMainWnd(), "Лицензионное ограничение", qMessage);
-		return;
-	}
+    QString qMessage = QString::fromStdString(message.getText());
+    if (qMessage.contains("Сработало лицензионное ограничение"))
+    {
+        QMessageBox::critical(g_pApp->getMainWnd(), "Лицензионное ограничение", qMessage);
+        return;
+    }
 
-	if (message.getType() == rdo::simulation::report::FileMessage::MT_ERROR || (message.getType() == rdo::simulation::report::FileMessage::MT_WARNING && static_cast<rdo::gui::editor::BuildStyle>(g_pApp->getStyle()->style_build).warning))
-	{
-		rdo::simulation::report::BuildEditLineInfo* pLine = new rdo::simulation::report::BuildEditLineInfo(message);
-		getContext().appendLine(pLine);
-	}
+    if (message.getType() == rdo::simulation::report::FileMessage::MT_ERROR || (message.getType() == rdo::simulation::report::FileMessage::MT_WARNING && static_cast<rdo::gui::editor::BuildStyle>(g_pApp->getStyle()->style_build).warning))
+    {
+        rdo::simulation::report::BuildEditLineInfo* pLine = new rdo::simulation::report::BuildEditLineInfo(message);
+        getContext().appendLine(pLine);
+    }
 }
 
 void DockBuild::clear()
 {
-	getContext().clearAll();
+    getContext().clearAll();
 }
 
 DockBuild::context_type& DockBuild::getContext()
 {
-	return *static_cast<context_type*>(widget());
+    return *static_cast<context_type*>(widget());
 }

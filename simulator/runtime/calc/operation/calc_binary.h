@@ -11,30 +11,30 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalcBinaryBase: public RDOCalc
 {
 public:
-	template <class T>
-	static LPRDOCalc generateCalc(const LPRDOCalc& pFirst, const LPRDOCalc& pSecond);
+    template <class T>
+    static LPRDOCalc generateCalc(const LPRDOCalc& pFirst, const LPRDOCalc& pSecond);
 
 protected:
-	RDOCalcBinaryBase(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
+    RDOCalcBinaryBase(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
 
-	LPRDOCalc  m_pLeft;
-	LPRDOCalc  m_pRight;
+    LPRDOCalc  m_pLeft;
+    LPRDOCalc  m_pRight;
 };
 
 template <typename ret_type, ret_type (RDOValue::*pMethod)(const RDOValue&) const>
 struct BinaryOperatorConstP1
 {
-	typedef ret_type (RDOValue::*method_type)(const RDOValue&) const;
+    typedef ret_type (RDOValue::*method_type)(const RDOValue&) const;
 
-	static method_type method();
+    static method_type method();
 };
 
 template <typename ret_type, ret_type (RDOValue::*pMethod)(const RDOValue&)>
 struct BinaryOperatorNonConstP1
 {
-	typedef ret_type (RDOValue::*method_type)(const RDOValue&);
+    typedef ret_type (RDOValue::*method_type)(const RDOValue&);
 
-	static method_type method();
+    static method_type method();
 };
 
 template <class F, typename OperatorType::Type CalcType>
@@ -42,20 +42,20 @@ class RDOCalcBinary: public RDOCalcBinaryBase
 {
 friend class rdo::Factory<RDOCalcBinary<F, CalcType> >;
 public:
-	enum { calc_type = CalcType };
-	typedef F caller_type;
+    enum { calc_type = CalcType };
+    typedef F caller_type;
 
-	LPRDOCalc      getLeft        () const;
-	LPRDOCalcConst getRightAsConst() const;
-	void           setRight       (const LPRDOCalc& pRight);
+    LPRDOCalc      getLeft        () const;
+    LPRDOCalcConst getRightAsConst() const;
+    void           setRight       (const LPRDOCalc& pRight);
 
-	static RDOSrcInfo getStaticSrcInfo(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
+    static RDOSrcInfo getStaticSrcInfo(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
 
 protected:
-	RDOCalcBinary(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
+    RDOCalcBinary(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
 
 private:
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

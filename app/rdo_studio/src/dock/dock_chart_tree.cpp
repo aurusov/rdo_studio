@@ -10,16 +10,16 @@
 // --------------------------------------------------------------------------------
 
 DockChartTree::DockChartTree(QWidget* pParent)
-	: DockFocusable("Графики", pParent)
+    : DockFocusable("Графики", pParent)
 {
-	context_type* pWidget = new context_type(this);
-	pWidget->setMinimumSize(QSize(150, 200));
+    context_type* pWidget = new context_type(this);
+    pWidget->setMinimumSize(QSize(150, 200));
 
-	setWidget(pWidget);
+    setWidget(pWidget);
 
-	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_chart.png")));
+    toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_chart.png")));
 
-	g_pTracer->setTree(pWidget);
+    g_pTracer->setTree(pWidget);
 }
 
 DockChartTree::~DockChartTree()

@@ -9,10 +9,10 @@
 class DockTrace: public DockFocusable
 {
 public:
-	typedef  rdo::gui::tracer::LogMainWnd  context_type;
+    typedef  rdo::gui::tracer::LogMainWnd  context_type;
 
-	DockTrace(QWidget* pParent);
-	virtual ~DockTrace();
+    DockTrace(QWidget* pParent);
+    virtual ~DockTrace();
 
-	context_type& getContext();
+    context_type& getContext();
 };

@@ -14,8 +14,8 @@ class RDOCalcNoChange: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcNoChange)
 private:
-	RDOCalcNoChange();
-	DECLARE_ICalc;
+    RDOCalcNoChange();
+    DECLARE_ICalc;
 };
 
 PREDECLARE_POINTER(RDOCalcIf);
@@ -23,20 +23,20 @@ class RDOCalcIf: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcIf)
 public:
-	void setThenStatement(const LPRDOCalc& pStatement);
-	void setElseStatement(const LPRDOCalc& pStatement);
+    void setThenStatement(const LPRDOCalc& pStatement);
+    void setElseStatement(const LPRDOCalc& pStatement);
 
-	bool hasElse() const;
+    bool hasElse() const;
 
 private:
-	typedef  std::pair<LPRDOCalc, LPRDOCalc>  Statements;
+    typedef  std::pair<LPRDOCalc, LPRDOCalc>  Statements;
 
-	RDOCalcIf(const LPRDOCalc& pCondition);
+    RDOCalcIf(const LPRDOCalc& pCondition);
 
-	LPRDOCalc   m_pCondition;
-	Statements  m_statements;
+    LPRDOCalc   m_pCondition;
+    Statements  m_statements;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 PREDECLARE_POINTER(RDOCalcFor);
@@ -44,17 +44,17 @@ class RDOCalcFor: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFor)
 public:
-	void setStatement(const LPRDOCalc& pStatement);
+    void setStatement(const LPRDOCalc& pStatement);
 
 private:
-	RDOCalcFor(const LPRDOCalc& pDeclaration, const LPRDOCalc& pCondition, const LPRDOCalc& pExpression);
+    RDOCalcFor(const LPRDOCalc& pDeclaration, const LPRDOCalc& pCondition, const LPRDOCalc& pExpression);
 
-	LPRDOCalc m_pDeclaration;
-	LPRDOCalc m_pCondition;
-	LPRDOCalc m_pExpression;
-	LPRDOCalc m_pStatement;
+    LPRDOCalc m_pDeclaration;
+    LPRDOCalc m_pCondition;
+    LPRDOCalc m_pExpression;
+    LPRDOCalc m_pStatement;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 PREDECLARE_POINTER(RDOCalcFunReturn);
@@ -62,10 +62,10 @@ class RDOCalcFunReturn: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFunReturn)
 private:
-	RDOCalcFunReturn(const LPRDOCalc& pReturn);
+    RDOCalcFunReturn(const LPRDOCalc& pReturn);
 
-	LPRDOCalc m_pReturn;
-	DECLARE_ICalc;
+    LPRDOCalc m_pReturn;
+    DECLARE_ICalc;
 };
 
 PREDECLARE_POINTER(RDOCalcFunBreak);
@@ -73,9 +73,9 @@ class RDOCalcFunBreak: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFunBreak)
 private:
-	RDOCalcFunBreak();
+    RDOCalcFunBreak();
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 PREDECLARE_POINTER(RDOCalcBaseStatementList);
@@ -83,15 +83,15 @@ class RDOCalcBaseStatementList: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcBaseStatementList)
 public:
-	void        addCalcStatement(const LPRDOCalc& pStatement);
-	RDOCalcList statementList();
+    void        addCalcStatement(const LPRDOCalc& pStatement);
+    RDOCalcList statementList();
 
 protected:
-	RDOCalcBaseStatementList();
+    RDOCalcBaseStatementList();
 
-	RDOCalcList m_calcStatementList;
+    RDOCalcList m_calcStatementList;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 PREDECLARE_POINTER(RDOCalcStatementList);
@@ -99,9 +99,9 @@ class RDOCalcStatementList: public RDOCalcBaseStatementList
 {
 DECLARE_FACTORY(RDOCalcStatementList)
 private:
-	RDOCalcStatementList();
+    RDOCalcStatementList();
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 PREDECLARE_POINTER(RDOCalcBreakCatch);
@@ -109,14 +109,14 @@ class RDOCalcBreakCatch: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcBreakCatch)
 public:
-	void addStatementList(const LPRDOCalc& pStatementList);
+    void addStatementList(const LPRDOCalc& pStatementList);
 
 private:
-	RDOCalcBreakCatch();
-	
-	LPRDOCalc m_pStatementList;
+    RDOCalcBreakCatch();
+    
+    LPRDOCalc m_pStatementList;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 PREDECLARE_POINTER(RDOCalcReturnCatch);
@@ -124,14 +124,14 @@ class RDOCalcReturnCatch: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcReturnCatch)
 public:
-	void setTryCalc(const LPRDOCalc& pTryCalc);
+    void setTryCalc(const LPRDOCalc& pTryCalc);
 
 private:
-	RDOCalcReturnCatch();
+    RDOCalcReturnCatch();
 
-	LPRDOCalc m_pTryCalc;
+    LPRDOCalc m_pTryCalc;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

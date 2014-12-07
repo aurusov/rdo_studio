@@ -8,8 +8,8 @@
 using namespace rdo::gui::tracer;
 
 ChartTreeItem::ChartTreeItem(bool drawable)
-	: m_pCtrlItem(NULL    )
-	, m_drawable (drawable)
+    : m_pCtrlItem(NULL    )
+    , m_drawable (drawable)
 {}
 
 ChartTreeItem::~ChartTreeItem()
@@ -17,16 +17,16 @@ ChartTreeItem::~ChartTreeItem()
 
 void ChartTreeItem::setCtrlItem(QTreeWidgetItem* pCtrlItem)
 {
-	m_pCtrlItem = pCtrlItem;
+    m_pCtrlItem = pCtrlItem;
 }
 
 QTreeWidgetItem& ChartTreeItem::getCtrlItem()
 {
-	ASSERT(m_pCtrlItem)
-	return *m_pCtrlItem;
+    ASSERT(m_pCtrlItem)
+    return *m_pCtrlItem;
 }
 
 bool ChartTreeItem::isDrawable() const
 {
-	return m_drawable;
+    return m_drawable;
 }

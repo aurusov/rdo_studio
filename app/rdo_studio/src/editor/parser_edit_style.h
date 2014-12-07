@@ -16,46 +16,46 @@ namespace rdo { namespace gui { namespace editor {
 class ParserStyle: public EditStyle
 {
 public:
-	ParserStyle();
-	~ParserStyle();
+    ParserStyle();
+    ~ParserStyle();
 
-	ParserStyle& operator =( const ParserStyle& style );
-	bool operator ==( const ParserStyle& style ) const;
-	bool operator !=( const ParserStyle& style ) const;
+    ParserStyle& operator =( const ParserStyle& style );
+    bool operator ==( const ParserStyle& style ) const;
+    bool operator !=( const ParserStyle& style ) const;
 
-	virtual bool styleDefault( const int styleType ) const;
-	virtual bool styleUsing( const int styleType ) const;
-	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
-	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
-	virtual std::string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+    virtual bool styleDefault( const int styleType ) const;
+    virtual bool styleUsing( const int styleType ) const;
+    virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
+    virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
+    virtual std::string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
-	static ParserStyle getDefaultStyle();
-	static ParserStyle getCppStyle();
-	static ParserStyle getPascalStyle();
-	static ParserStyle getHtmlStyle();
-	static ParserStyle getClassicStyle();
-	static ParserStyle getTwilightStyle();
-	static ParserStyle getOceanStyle();
+    static ParserStyle getDefaultStyle();
+    static ParserStyle getCppStyle();
+    static ParserStyle getPascalStyle();
+    static ParserStyle getHtmlStyle();
+    static ParserStyle getClassicStyle();
+    static ParserStyle getTwilightStyle();
+    static ParserStyle getOceanStyle();
 
-	QColor identifierColor;
-	QColor keywordColor;
-	QColor functionsColor;
-	QColor traceColor;
-	QColor colorColor;
-	QColor commentColor;
-	QColor numberColor;
-	QColor stringColor;
-	QColor operatorColor;
+    QColor identifierColor;
+    QColor keywordColor;
+    QColor functionsColor;
+    QColor traceColor;
+    QColor colorColor;
+    QColor commentColor;
+    QColor numberColor;
+    QColor stringColor;
+    QColor operatorColor;
 
-	style::StyleFont::style identifierStyle;
-	style::StyleFont::style keywordStyle;
-	style::StyleFont::style functionsStyle;
-	style::StyleFont::style traceStyle;
-	style::StyleFont::style colorStyle;
-	style::StyleFont::style commentStyle;
-	style::StyleFont::style numberStyle;
-	style::StyleFont::style stringStyle;
-	style::StyleFont::style operatorStyle;
+    style::StyleFont::style identifierStyle;
+    style::StyleFont::style keywordStyle;
+    style::StyleFont::style functionsStyle;
+    style::StyleFont::style traceStyle;
+    style::StyleFont::style colorStyle;
+    style::StyleFont::style commentStyle;
+    style::StyleFont::style numberStyle;
+    style::StyleFont::style stringStyle;
+    style::StyleFont::style operatorStyle;
 };
 
 QSettings& operator<< (QSettings& settings, const ParserStyle& style);

@@ -12,21 +12,21 @@ template <typename opr_type>
 class OperatorName
 {
 public:
-	static std::string name(const opr_type& pOperator);
+    static std::string name(const opr_type& pOperator);
 
 private:
-	struct OprItem
-	{
-		opr_type m_pOperator;
-		std::string m_name;
+    struct OprItem
+    {
+        opr_type m_pOperator;
+        std::string m_name;
 
-		OprItem(const opr_type& pOperator, const std::string& name);
+        OprItem(const opr_type& pOperator, const std::string& name);
 
-		bool operator== (const opr_type& pOperator) const;
-	};
-	typedef std::list<OprItem> NameList;
+        bool operator== (const opr_type& pOperator) const;
+    };
+    typedef std::list<OprItem> NameList;
 
-	static const NameList& getList();
+    static const NameList& getList();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

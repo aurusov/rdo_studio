@@ -14,13 +14,13 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 #define DEFINE_ATOM_TYPE_PARSER(Type)      \
 class RDOType__##Type                      \
-	: public rdo::runtime::RDOType__##Type \
-	, public IType                         \
-	, public IModelStructure               \
+    : public rdo::runtime::RDOType__##Type \
+    , public IType                         \
+    , public IModelStructure               \
 {                                          \
 public:                                    \
-	DECLARE_IType;                         \
-	DECLARE_IModelStructure;               \
+    DECLARE_IType;                         \
+    DECLARE_IModelStructure;               \
 };                                         \
 DECLARE_POINTER(RDOType__##Type);
 

@@ -9,14 +9,14 @@
 // --------------------------------------------------------------------------------
 
 DockFrame::DockFrame(QWidget* pParent)
-	: DockFocusable("Анимация", pParent)
+    : DockFocusable("Анимация", pParent)
 {
-	context_type* pWidget = new context_type(this);
-	pWidget->setMinimumSize(QSize(150, 200));
+    context_type* pWidget = new context_type(this);
+    pWidget->setMinimumSize(QSize(150, 200));
 
-	setWidget(pWidget);
+    setWidget(pWidget);
 
-	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_frame.png")));
+    toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_frame.png")));
 }
 
 DockFrame::~DockFrame()
@@ -24,5 +24,5 @@ DockFrame::~DockFrame()
 
 DockFrame::context_type& DockFrame::getContext()
 {
-	return *static_cast<context_type*>(widget());
+    return *static_cast<context_type*>(widget());
 }

@@ -6,9 +6,9 @@
 // --------------------------------------------------------------------------------
 
 FileAssociationDialog::FileAssociationDialog(QWidget* pParent)
-	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
+    : QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 {
-	setupUi(this);
+    setupUi(this);
 }
 
 FileAssociationDialog::~FileAssociationDialog()

@@ -9,24 +9,24 @@
 // --------------------------------------------------------------------------------
 
 class PluginGame5GraphNodeInfoDialog
-	: public QDialog
-	, public Ui_PluginGame5GraphNodeInfoDialog
+    : public QDialog
+    , public Ui_PluginGame5GraphNodeInfoDialog
 {
 Q_OBJECT
 public:
-	PluginGame5GraphNodeInfoDialog(QWidget* parent);
-	~PluginGame5GraphNodeInfoDialog();
+    PluginGame5GraphNodeInfoDialog(QWidget* parent);
+    ~PluginGame5GraphNodeInfoDialog();
 
 public slots:
-	void updateDlg(GraphNode* node);
+    void updateDlg(GraphNode* node);
 
 signals:
-	void updateCheckedNode(GraphNode* node);
+    void updateCheckedNode(GraphNode* node);
 
 private slots:
-	void nextNode();
-	void prevNode();
+    void nextNode();
+    void prevNode();
 
 private:
-	GraphNode* m_pNode;
+    GraphNode* m_pNode;
 };

@@ -12,8 +12,8 @@ class RDODPTFree: public RDOLogicSimple, public RDOPatternPrior
 {
 DECLARE_FACTORY(RDODPTFree);
 private:
-	RDODPTFree(const LPRDORuntime& pRuntime);
-	virtual ~RDODPTFree();
+    RDODPTFree(const LPRDORuntime& pRuntime);
+    virtual ~RDODPTFree();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

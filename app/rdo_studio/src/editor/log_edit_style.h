@@ -13,19 +13,19 @@ namespace rdo { namespace gui { namespace editor {
 class LogStyle: public EditStyle
 {
 public:
-	LogStyle();
-	~LogStyle();
+    LogStyle();
+    ~LogStyle();
 
-	LogStyle& operator =( const LogStyle& style );
-	bool operator ==( const LogStyle& style ) const;
-	bool operator !=( const LogStyle& style ) const;
+    LogStyle& operator =( const LogStyle& style );
+    bool operator ==( const LogStyle& style ) const;
+    bool operator !=( const LogStyle& style ) const;
 
-	static LogStyle getDefaultStyle();
-	static LogStyle getClassicStyle();
-	static LogStyle getTwilightStyle();
-	static LogStyle getOceanStyle();
+    static LogStyle getDefaultStyle();
+    static LogStyle getClassicStyle();
+    static LogStyle getTwilightStyle();
+    static LogStyle getOceanStyle();
 
-	QColor selectLineBgColor;
+    QColor selectLineBgColor;
 };
 
 QSettings& operator<< (QSettings& settings, const LogStyle& style);

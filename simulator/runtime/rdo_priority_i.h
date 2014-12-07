@@ -15,11 +15,11 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IPriority: public virtual rdo::counter_reference
 {
 public:
-	virtual rdo::runtime::LPRDOCalc getPrior()                   = 0;
-	virtual bool setPrior(const rdo::runtime::LPRDOCalc& pPrior) = 0;
+    virtual rdo::runtime::LPRDOCalc getPrior()                   = 0;
+    virtual bool setPrior(const rdo::runtime::LPRDOCalc& pPrior) = 0;
 };
 DECLARE_POINTER(IPriority)
 
 #define DECLARE_IPriority                       \
-	virtual rdo::runtime::LPRDOCalc getPrior(); \
-	virtual bool setPrior(const rdo::runtime::LPRDOCalc& pPrior);
+    virtual rdo::runtime::LPRDOCalc getPrior(); \
+    virtual bool setPrior(const rdo::runtime::LPRDOCalc& pPrior);

@@ -16,22 +16,22 @@ class Converter;
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOTypeRangeRange);
 class RDOTypeRangeRange
-	: public rdo::counter_reference
-	, public RDOParserSrcInfo
+    : public rdo::counter_reference
+    , public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOTypeRangeRange);
 public:
-	void              checkRange()                         const;
-	void              checkValue(const LPRDOValue& pValue) const;
-	const LPRDOValue& getMin    () const;
-	const LPRDOValue& getMax    () const;
+    void              checkRange()                         const;
+    void              checkValue(const LPRDOValue& pValue) const;
+    const LPRDOValue& getMin    () const;
+    const LPRDOValue& getMax    () const;
 
 private:
-	RDOTypeRangeRange(const LPRDOValue& pMinValue, const LPRDOValue& pMaxValue, const RDOParserSrcInfo& src_info);
-	virtual ~RDOTypeRangeRange();
+    RDOTypeRangeRange(const LPRDOValue& pMinValue, const LPRDOValue& pMaxValue, const RDOParserSrcInfo& src_info);
+    virtual ~RDOTypeRangeRange();
 
-	LPRDOValue m_pMinValue;
-	LPRDOValue m_pMaxValue;
+    LPRDOValue m_pMinValue;
+    LPRDOValue m_pMaxValue;
 };
 DECLARE_POINTER(RDOTypeRangeRange);
 
@@ -43,17 +43,17 @@ class RDOTypeRange: public T
 {
 DECLARE_FACTORY(RDOTypeRange<T>);
 public:
-	const LPRDOTypeRangeRange& range() const;
+    const LPRDOTypeRangeRange& range() const;
 
 private:
-	typedef T parent_type;
+    typedef T parent_type;
 
-	RDOTypeRange(const LPRDOTypeRangeRange& range);
-	virtual ~RDOTypeRange();
+    RDOTypeRange(const LPRDOTypeRangeRange& range);
+    virtual ~RDOTypeRange();
 
-	LPRDOTypeRangeRange m_pRange;
+    LPRDOTypeRangeRange m_pRange;
 
-	DECLARE_ITypeConverter;
+    DECLARE_ITypeConverter;
 };
 typedef RDOTypeRange<RDOType__int>  RDOTypeIntRange;
 typedef RDOTypeRange<RDOType__real> RDOTypeRealRange;

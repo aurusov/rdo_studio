@@ -14,26 +14,26 @@ PREDECLARE_POINTER(RDOType);
 class RDOType: public virtual rdo::counter_reference
 {
 public:
-		enum TypeID
-	{
-		t_unknow = 0,
-		t_void,
-		t_identificator,
-		t_int,
-		t_real,
-		t_bool,
-		t_string,
-		t_enum,
-		t_pointer
-	};
+        enum TypeID
+    {
+        t_unknow = 0,
+        t_void,
+        t_identificator,
+        t_int,
+        t_real,
+        t_bool,
+        t_string,
+        t_enum,
+        t_pointer
+    };
 
-	RDOType(TypeID typeID);
-	virtual ~RDOType();
+    RDOType(TypeID typeID);
+    virtual ~RDOType();
 
-	TypeID  typeID() const;
+    TypeID  typeID() const;
 
 private:
-	TypeID  m_typeID;
+    TypeID  m_typeID;
 };
 
 // TODO внимание макрос!
@@ -41,9 +41,9 @@ private:
 class RDOType__##Type: public RDOType \
 {                                     \
 public:                               \
-	RDOType__##Type()                 \
-		: RDOType(t_##Type)           \
-	{}                                \
+    RDOType__##Type()                 \
+        : RDOType(t_##Type)           \
+    {}                                \
 };                                    \
 extern rdo::intrusive_ptr<RDOType__##Type> g_##Type;
 

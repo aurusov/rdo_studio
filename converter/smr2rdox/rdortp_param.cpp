@@ -12,7 +12,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // -------------------- RDORTPParam
 // --------------------------------------------------------------------------------
 RDORTPParam::RDORTPParam(const LPRDOTypeParam& pParamType, const LPRDOValue& pDefault, const RDOParserSrcInfo& src_info)
-	: RDOParam(src_info, pParamType, pDefault)
+    : RDOParam(src_info, pParamType, pDefault)
 {}
 
 RDORTPParam::~RDORTPParam()
@@ -20,13 +20,13 @@ RDORTPParam::~RDORTPParam()
 
 const std::string& RDORTPParam::name() const
 {
-	return RDOParam::name();
+    return RDOParam::name();
 }
 
 void RDORTPParam::writeModelStructure(std::ostream& stream) const
 {
-	stream << name() << " ";
-	getType()->writeModelStructure(stream);
+    stream << name() << " ";
+    getType()->writeModelStructure(stream);
 }
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

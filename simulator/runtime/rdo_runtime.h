@@ -4,7 +4,7 @@
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
-	#pragma warning(disable : 4786)
+    #pragma warning(disable : 4786)
 #endif // COMPILER_VISUAL_STUDIO
 #include <time.h>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -42,16 +42,16 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOResults
 {
 public:
-	RDOResults();
-	virtual ~RDOResults();
+    RDOResults();
+    virtual ~RDOResults();
 
-	void width(std::size_t w);
+    void width(std::size_t w);
 
-	template<class T>
-	RDOResults& operator<< (const T& value);
+    template<class T>
+    RDOResults& operator<< (const T& value);
 
-	virtual void          flush     () = 0;
-	virtual std::ostream& getOStream() = 0;
+    virtual void          flush     () = 0;
+    virtual std::ostream& getOStream() = 0;
 };
 
 class RDOEvent;
@@ -67,210 +67,210 @@ class RDORuntime: public RDOSimulatorTrace
 {
 DECLARE_FACTORY(RDORuntime);
 public:
-	void init  ();
-	void deinit();
+    void init  ();
+    void deinit();
 
-	typedef  std::vector<LPIResult>           LPIResultList;
-	typedef  std::vector<LPIResultTrace>      LPIResultTraceList;
-	typedef  std::vector<LPIResultWatchValue> LPIResultWatchValueList;
+    typedef  std::vector<LPIResult>           LPIResultList;
+    typedef  std::vector<LPIResultTrace>      LPIResultTraceList;
+    typedef  std::vector<LPIResultWatchValue> LPIResultWatchValueList;
 
-	Notify& notify();
-	Error& error();
-	RDOHotKey& hotkey();
+    Notify& notify();
+    Error& error();
+    RDOHotKey& hotkey();
 
-	LPRDORuntime clone() const;
-	void copyFrom(const LPRDORuntime& pOther);
-	bool equal(const LPRDORuntime& pOther) const;
+    LPRDORuntime clone() const;
+    void copyFrom(const LPRDORuntime& pOther);
+    bool equal(const LPRDORuntime& pOther) const;
 
-	void setConstValue(std::size_t constID, const RDOValue& constValue);
-	RDOValue getConstValue(std::size_t constID) const;
+    void setConstValue(std::size_t constID, const RDOValue& constValue);
+    RDOValue getConstValue(std::size_t constID) const;
 
-	void rdoInit(RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo, const LPIThreadProxy& pThreadProxy);
+    void rdoInit(RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo, const LPIThreadProxy& pThreadProxy);
 
-	RDOResults& getResults();
-	RDOResults& getResultsInfo();
+    RDOResults& getResults();
+    RDOResults& getResultsInfo();
 
-	double getTimeNow();
-	double getSeconds();
+    double getTimeNow();
+    double getSeconds();
 
-	std::size_t getCurrentTerm() const;
-	void  setCurrentTerm(std::size_t value);
+    std::size_t getCurrentTerm() const;
+    void  setCurrentTerm(std::size_t value);
 
-	LPIActivity& getCurrentActivity();
-	void setCurrentActivity(const LPIActivity& activity);
+    LPIActivity& getCurrentActivity();
+    void setCurrentActivity(const LPIActivity& activity);
 
-	void addRuntimeEvent    (LPIBaseOperationContainer pLogic, const LPIEvent&     pEvent    );
-	void addRuntimeRule     (LPIBaseOperationContainer pLogic, const LPIRule&      pRule     );
-	void addRuntimeOperation(LPIBaseOperationContainer pLogic, const LPIOperation& pOperation);
-	void addRuntimeResult   (const LPIResult&     pResult);
-	void addRuntimeFrame    (const LPRDOFRMFrame& pFrame);
+    void addRuntimeEvent    (LPIBaseOperationContainer pLogic, const LPIEvent&     pEvent    );
+    void addRuntimeRule     (LPIBaseOperationContainer pLogic, const LPIRule&      pRule     );
+    void addRuntimeOperation(LPIBaseOperationContainer pLogic, const LPIOperation& pOperation);
+    void addRuntimeResult   (const LPIResult&     pResult);
+    void addRuntimeFrame    (const LPRDOFRMFrame& pFrame);
 
-	LPRDOFRMFrame lastFrame() const;
+    LPRDOFRMFrame lastFrame() const;
 
-	const LPIResultList& getResult() const;
+    const LPIResultList& getResult() const;
 
-	void addInitCalc(const LPRDOCalc& initCalc);
+    void addInitCalc(const LPRDOCalc& initCalc);
 
-	RDOValue& getResParamValRaw(std::size_t resID, std::size_t paramID);
-	void setResParamVal(std::size_t resID, std::size_t paramID, const RDOValue& value);
+    RDOValue& getResParamValRaw(std::size_t resID, std::size_t paramID);
+    void setResParamVal(std::size_t resID, std::size_t paramID, const RDOValue& value);
 
 #ifdef _DEBUG
-	bool checkState();
-	void showResources(int node) const;
+    bool checkState();
+    void showResources(int node) const;
 #endif
 
-	void onEraseRes(std::size_t resourceID, const LPRDOEraseResRelCalc& pCalc);
-	LPRDOResource createNewResource(std::size_t type, RDOCalcCreateResource* calc);
-	LPRDOResource createNewResource(std::size_t type, bool trace);
-	void insertNewResource(const LPRDOResource& pResource);
+    void onEraseRes(std::size_t resourceID, const LPRDOEraseResRelCalc& pCalc);
+    LPRDOResource createNewResource(std::size_t type, RDOCalcCreateResource* calc);
+    LPRDOResource createNewResource(std::size_t type, bool trace);
+    void insertNewResource(const LPRDOResource& pResource);
 
-	RDOValue      getFuncArgument (std::size_t paramID) const;
-	LPRDOResource getGroupFuncRes () const;
-	void          pushFuncArgument(RDOValue arg);
-	void          pushGroupFunc   (const LPRDOResource& pResource);
-	void          popFuncArgument ();
-	void          popGroupFunc    ();
-	void          pushFuncTop     ();
-	void          resetFuncTop    (int numArg);
-	void          popFuncTop      ();
+    RDOValue      getFuncArgument (std::size_t paramID) const;
+    LPRDOResource getGroupFuncRes () const;
+    void          pushFuncArgument(RDOValue arg);
+    void          pushGroupFunc   (const LPRDOResource& pResource);
+    void          popFuncArgument ();
+    void          popGroupFunc    ();
+    void          pushFuncTop     ();
+    void          resetFuncTop    (int numArg);
+    void          popFuncTop      ();
 
-	virtual bool endCondition();
-	void setTerminateIf(const LPRDOCalc& pTerminateIfCalc);
+    virtual bool endCondition();
+    void setTerminateIf(const LPRDOCalc& pTerminateIfCalc);
 
-	virtual bool breakPoints();
-	void insertBreakPoint(const std::string& name, const LPRDOCalc& pCalc);
-	LPRDOCalc findBreakPoint(const std::string& name);
-	std::string getLastBreakPointName() const;
+    virtual bool breakPoints();
+    void insertBreakPoint(const std::string& name, const LPRDOCalc& pCalc);
+    LPRDOCalc findBreakPoint(const std::string& name);
+    std::string getLastBreakPointName() const;
 
-	LPRDOResource getResourceByID(std::size_t resourceID) const;
+    LPRDOResource getResourceByID(std::size_t resourceID) const;
 
-	void     setPatternParameter(std::size_t paramID, const RDOValue& paramValue);
-	RDOValue getPatternParameter(std::size_t paramID) const;
+    void     setPatternParameter(std::size_t paramID, const RDOValue& paramValue);
+    RDOValue getPatternParameter(std::size_t paramID) const;
 
-	typedef  std::vector<LPRDOFRMFrame>  FrameList;
-	FrameList m_frameList;
+    typedef  std::vector<LPRDOFRMFrame>  FrameList;
+    FrameList m_frameList;
 
-	virtual void onPutToTreeNode();
+    virtual void onPutToTreeNode();
 
-	rdo::simulation::report::RDOExitCode m_whyStop;
+    rdo::simulation::report::RDOExitCode m_whyStop;
 
-	virtual void onNothingMoreToDo();
-	virtual void onEndCondition();
-	virtual void onRuntimeError();
-	virtual void onUserBreak();
+    virtual void onNothingMoreToDo();
+    virtual void onEndCondition();
+    virtual void onRuntimeError();
+    virtual void onUserBreak();
 
-	virtual void postProcess();
+    virtual void postProcess();
 
-	enum FunBreakFlag
-	{
-		FBF_NONE = 0,
-		FBF_BREAK,
-		FBF_RETURN
-	};
+    enum FunBreakFlag
+    {
+        FBF_NONE = 0,
+        FBF_BREAK,
+        FBF_RETURN
+    };
 
-	void                setFunBreakFlag(const FunBreakFlag& flag);
-	const FunBreakFlag& getFunBreakFlag() const;
+    void                setFunBreakFlag(const FunBreakFlag& flag);
+    const FunBreakFlag& getFunBreakFlag() const;
 
-	LPRDOMemoryStack getMemoryStack();
+    LPRDOMemoryStack getMemoryStack();
 
-	typedef std::list<LPRDOResource> ResList;
-	typedef ResList::const_iterator  ResCIterator;
+    typedef std::list<LPRDOResource> ResList;
+    typedef ResList::const_iterator  ResCIterator;
 
-	void addResType(const LPRDOResourceTypeList& pResType);
-	const LPRDOResourceTypeList& getResType(std::size_t number) const;
+    void addResType(const LPRDOResourceTypeList& pResType);
+    const LPRDOResourceTypeList& getResType(std::size_t number) const;
 
-	const LPIThreadProxy& getThreadProxy() const;
+    const LPIThreadProxy& getThreadProxy() const;
 
-	void setStudioThread(RDOThread* pStudioThread);
+    void setStudioThread(RDOThread* pStudioThread);
 
-	rdo::animation::Frame* getPreparingFrame() const;
-	void setPreparingFrame(rdo::animation::Frame* pPreparingFrame);
-	void resetPreparingFrame();
+    rdo::animation::Frame* getPreparingFrame() const;
+    void setPreparingFrame(rdo::animation::Frame* pPreparingFrame);
+    void resetPreparingFrame();
 
 private:
-	RDORuntime(Error* pError);
-	virtual ~RDORuntime();
+    RDORuntime(Error* pError);
+    virtual ~RDORuntime();
 
-	typedef  RDOSimulatorTrace                   parent_type;
-	typedef  std::list<LPRDOCalc>                CalcList;
-	typedef  std::vector<RDOValue>               ValueList;
-	typedef  std::vector<LPRDOResourceTypeList>  ResourceTypeList;
-	typedef  std::vector<LPRDOResource>          ResourceListByID;
+    typedef  RDOSimulatorTrace                   parent_type;
+    typedef  std::list<LPRDOCalc>                CalcList;
+    typedef  std::vector<RDOValue>               ValueList;
+    typedef  std::vector<LPRDOResourceTypeList>  ResourceTypeList;
+    typedef  std::vector<LPRDOResource>          ResourceListByID;
 
-	ResourceTypeList    m_resourceTypeList;
-	ResourceListByID    m_resourceListByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
-	CalcList            m_initCalcList;
-	LPRDOMemoryStack    m_pMemoryStack;
-	FunBreakFlag        m_funBreakFlag;
-	LPIThreadProxy      m_pThreadProxy;
-	RDOThread*          m_pStudioThread;
-	Notify              m_notify;
-	Error*              m_pError;
-	RDOHotKey           m_hotKey;
+    ResourceTypeList    m_resourceTypeList;
+    ResourceListByID    m_resourceListByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
+    CalcList            m_initCalcList;
+    LPRDOMemoryStack    m_pMemoryStack;
+    FunBreakFlag        m_funBreakFlag;
+    LPIThreadProxy      m_pThreadProxy;
+    RDOThread*          m_pStudioThread;
+    Notify              m_notify;
+    Error*              m_pError;
+    RDOHotKey           m_hotKey;
 
 #ifdef _DEBUG
-	typedef  std::vector<ValueList>  State;
-	State  m_state;
+    typedef  std::vector<ValueList>  State;
+    State  m_state;
 #endif
 
-	PREDECLARE_POINTER(BreakPoint);
-	class BreakPoint
-		: public rdo::counter_reference
-		, public RDORuntimeObject
-	{
-	DECLARE_FACTORY(BreakPoint)
-	public:
-		const std::string& getName() const;
-		const LPRDOCalc& getCalc() const;
+    PREDECLARE_POINTER(BreakPoint);
+    class BreakPoint
+        : public rdo::counter_reference
+        , public RDORuntimeObject
+    {
+    DECLARE_FACTORY(BreakPoint)
+    public:
+        const std::string& getName() const;
+        const LPRDOCalc& getCalc() const;
 
-	private:
-		BreakPoint(const std::string& name, const LPRDOCalc& pCalc);
+    private:
+        BreakPoint(const std::string& name, const LPRDOCalc& pCalc);
 
-		std::string m_name;
-		LPRDOCalc m_pCalc;
-	};
+        std::string m_name;
+        LPRDOCalc m_pCalc;
+    };
 
-	typedef std::list<LPBreakPoint> BreakPointList;
+    typedef std::list<LPBreakPoint> BreakPointList;
 
-	BreakPointList  m_breakPointList;
-	LPBreakPoint    m_pLastActiveBreakPoint;
+    BreakPointList  m_breakPointList;
+    LPBreakPoint    m_pLastActiveBreakPoint;
 
-	ValueList         m_funcStack;
-	ResourceListByID  m_groupFuncStack;
-	int               m_currFuncTop;
-	int               m_savedFuncTop;
+    ValueList         m_funcStack;
+    ResourceListByID  m_groupFuncStack;
+    int               m_currFuncTop;
+    int               m_savedFuncTop;
 
-	virtual void onInit   ();
-	virtual void onDestroy();
+    virtual void onInit   ();
+    virtual void onDestroy();
 
-	virtual ResList getResourcesBeforeSim() const;
+    virtual ResList getResourcesBeforeSim() const;
 
-	LPIResultList            m_resultAllList;
-	LPIResultTraceList       m_resultTraceList;
-	LPIResultWatchValueList  m_resultWatchValueList;
-	LPIActivity              m_currActivity;
-	ValueList                m_patternParameterList;
+    LPIResultList            m_resultAllList;
+    LPIResultTraceList       m_resultTraceList;
+    LPIResultWatchValueList  m_resultWatchValueList;
+    LPIActivity              m_currActivity;
+    ValueList                m_patternParameterList;
 
-	time_t m_physicTime;
-	virtual void preProcess();
+    time_t m_physicTime;
+    virtual void preProcess();
 
-	RDOResults* m_resultList;
-	RDOResults* m_resultListInfo;
+    RDOResults* m_resultList;
+    RDOResults* m_resultListInfo;
 
-	LPRDOCalc m_pTerminateIfCalc;
-	ValueList m_constantList;
+    LPRDOCalc m_pTerminateIfCalc;
+    ValueList m_constantList;
 
-	void writeExitCode();
+    void writeExitCode();
 
-	virtual bool isKeyDown() const;
+    virtual bool isKeyDown() const;
 
-	virtual void onResetResult();
-	virtual void onCheckResult();
-	virtual void onAfterCheckResult();
+    virtual void onResetResult();
+    virtual void onCheckResult();
+    virtual void onAfterCheckResult();
 
-	std::size_t m_currentTerm;
+    std::size_t m_currentTerm;
 
-	rdo::animation::Frame* m_pPreparingFrame;
+    rdo::animation::Frame* m_pPreparingFrame;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

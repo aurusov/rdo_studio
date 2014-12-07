@@ -9,14 +9,14 @@
 class DockBuild: public DockFocusable
 {
 public:
-	typedef rdo::gui::editor::Build context_type;
+    typedef rdo::gui::editor::Build context_type;
 
-	DockBuild(QWidget* pParent);
-	virtual ~DockBuild();
+    DockBuild(QWidget* pParent);
+    virtual ~DockBuild();
 
-	void appendString(const QString& str);
-	void appendString(const rdo::simulation::report::FileMessage& message);
-	void clear();
+    void appendString(const QString& str);
+    void appendString(const rdo::simulation::report::FileMessage& message);
+    void clear();
 
-	context_type& getContext();
+    context_type& getContext();
 };

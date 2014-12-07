@@ -6,10 +6,10 @@
 namespace rdo {
 
 mouse_event::mouse_event(const std::string& name, double time, buttons button, int x, int y)
-	: event(name, time, event::mouse)
-	, m_button(button)
-	, m_x(x)
-	, m_y(y)
+    : event(name, time, event::mouse)
+    , m_button(button)
+    , m_x(x)
+    , m_y(y)
 {}
 
 mouse_event::~mouse_event()
@@ -17,32 +17,32 @@ mouse_event::~mouse_event()
 
 void mouse_event::setButton(buttons button)
 {
-	m_button = button;
+    m_button = button;
 }
 
 void mouse_event::setX(int x)
 {
-	m_x = x;
+    m_x = x;
 }
 
 void mouse_event::sety(int y)
 {
-	m_y = y;
+    m_y = y;
 }
 
 mouse_event::buttons mouse_event::getButton() const
 {
-	return m_button;
+    return m_button;
 }
 
 int mouse_event::getX() const
 {
-	return m_x;
+    return m_x;
 }
 
 int mouse_event::getY() const
 {
-	return m_y;
+    return m_y;
 }
 
 } // namespace rdo

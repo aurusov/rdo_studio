@@ -12,18 +12,18 @@ namespace rdo { namespace gui { namespace editor {
 class ModelAutoComplete
 {
 public:
-	ModelAutoComplete();
-	virtual ~ModelAutoComplete();
+    ModelAutoComplete();
+    virtual ~ModelAutoComplete();
 
-	ModelAutoComplete& operator =( const ModelAutoComplete& autoComplete );
-	bool operator ==( const ModelAutoComplete& autoComplete ) const;
-	bool operator !=( const ModelAutoComplete& autoComplete ) const;
+    ModelAutoComplete& operator =( const ModelAutoComplete& autoComplete );
+    bool operator ==( const ModelAutoComplete& autoComplete ) const;
+    bool operator !=( const ModelAutoComplete& autoComplete ) const;
 
-	void load(QSettings& settings);
-	void save(QSettings& settings) const;
+    void load(QSettings& settings);
+    void save(QSettings& settings) const;
 
-	bool useAutoComplete;
-	bool showFullList;
+    bool useAutoComplete;
+    bool showFullList;
 };
 
 QSettings& operator<< (QSettings& settings, const ModelAutoComplete& auto_complete);
@@ -35,19 +35,19 @@ QSettings& operator>> (QSettings& settings,       ModelAutoComplete& auto_comple
 class ModelMargin
 {
 public:
-	ModelMargin();
-	virtual ~ModelMargin();
+    ModelMargin();
+    virtual ~ModelMargin();
 
-	ModelMargin& operator =( const ModelMargin& margin );
-	bool operator ==( const ModelMargin& margin ) const;
-	bool operator !=( const ModelMargin& margin ) const;
+    ModelMargin& operator =( const ModelMargin& margin );
+    bool operator ==( const ModelMargin& margin ) const;
+    bool operator !=( const ModelMargin& margin ) const;
 
-	void load(QSettings& settings);
-	void save(QSettings& settings) const;
+    void load(QSettings& settings);
+    void save(QSettings& settings) const;
 
-	bool fold;
-	bool bookmark;
-	bool lineNumber;
+    bool fold;
+    bool bookmark;
+    bool lineNumber;
 };
 
 QSettings& operator<< (QSettings& settings, const ModelMargin& margin);
@@ -61,40 +61,40 @@ class ModelStyle: public ParserStyle
 protected:
 
 public:
-	enum Fold
-	{
-		F_NONE = 0,
-		F_PLUS,
-		F_PLUSCONNECTED,
-		F_ARROW,
-		F_ARROWCONNECTED,
-		F_BOXCONNECTED,
-		F_CIRCLECONNECTED
-	};
+    enum Fold
+    {
+        F_NONE = 0,
+        F_PLUS,
+        F_PLUSCONNECTED,
+        F_ARROW,
+        F_ARROWCONNECTED,
+        F_BOXCONNECTED,
+        F_CIRCLECONNECTED
+    };
 
-	ModelStyle();
-	~ModelStyle();
+    ModelStyle();
+    ~ModelStyle();
 
-	ModelStyle& operator =( const ModelStyle& style );
-	bool operator ==( const ModelStyle& style ) const;
-	bool operator !=( const ModelStyle& style ) const;
+    ModelStyle& operator =( const ModelStyle& style );
+    bool operator ==( const ModelStyle& style ) const;
+    bool operator !=( const ModelStyle& style ) const;
 
-	ModelAutoComplete autoComplete;
-	ModelMargin       margin;
+    ModelAutoComplete autoComplete;
+    ModelMargin       margin;
 
-	QColor foldFgColor;
-	QColor foldBgColor;
-	QColor errorBgColor;
-	Fold   foldStyle;
-	bool   commentFold;
+    QColor foldFgColor;
+    QColor foldBgColor;
+    QColor errorBgColor;
+    Fold   foldStyle;
+    bool   commentFold;
 
-	static ModelStyle getDefaultStyle();
-	static ModelStyle getCppStyle();
-	static ModelStyle getPascalStyle();
-	static ModelStyle getHtmlStyle();
-	static ModelStyle getClassicStyle();
-	static ModelStyle getTwilightStyle();
-	static ModelStyle getOceanStyle();
+    static ModelStyle getDefaultStyle();
+    static ModelStyle getCppStyle();
+    static ModelStyle getPascalStyle();
+    static ModelStyle getHtmlStyle();
+    static ModelStyle getClassicStyle();
+    static ModelStyle getTwilightStyle();
+    static ModelStyle getOceanStyle();
 
 };
 

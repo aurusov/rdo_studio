@@ -12,14 +12,14 @@ class RDOCalcConst: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcConst)
 public:
-	const RDOValue& getValue() const;
+    const RDOValue& getValue() const;
 
 private:
-	RDOCalcConst(const RDOValue& value);
+    RDOCalcConst(const RDOValue& value);
 
-	RDOValue m_value;
+    RDOValue m_value;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

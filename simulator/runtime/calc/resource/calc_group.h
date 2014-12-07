@@ -11,10 +11,10 @@ PREDECLARE_POINTER(RDOFunCalcGroup);
 class RDOFunCalcGroup: public RDOFunCalc
 {
 protected:
-	int        m_nResType;
-	LPRDOCalc  m_pCondition;
+    int        m_nResType;
+    LPRDOCalc  m_pCondition;
 
-	RDOFunCalcGroup(int nResType, const LPRDOCalc& pCondition);
+    RDOFunCalcGroup(int nResType, const LPRDOCalc& pCondition);
 };
 
 #define DEFINE_CALC_GROUP(CalcName)                                 \
@@ -23,10 +23,10 @@ class RDOFunCalc##CalcName: public RDOFunCalcGroup                  \
 {                                                                   \
 DECLARE_FACTORY(RDOFunCalc##CalcName)                               \
 private:                                                            \
-	RDOFunCalc##CalcName(int nResType, const LPRDOCalc& pCondition) \
-		: RDOFunCalcGroup(nResType, pCondition)                     \
-	{}                                                              \
-	DECLARE_ICalc;                                                  \
+    RDOFunCalc##CalcName(int nResType, const LPRDOCalc& pCondition) \
+        : RDOFunCalcGroup(nResType, pCondition)                     \
+    {}                                                              \
+    DECLARE_ICalc;                                                  \
 };
 
 DEFINE_CALC_GROUP(Exist);

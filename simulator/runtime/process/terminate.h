@@ -17,14 +17,14 @@ class RDOPROCTerminate: public RDOPROCBlock, public IInternalStatisticsManager, 
 {
 DECLARE_FACTORY(RDOPROCTerminate);
 private:
-	RDOPROCTerminate(const LPIPROCProcess& pProcess, const LPRDOCalc& pCalc);
+    RDOPROCTerminate(const LPIPROCProcess& pProcess, const LPRDOCalc& pCalc);
 
-	std::size_t m_terminatedTransactCount;
-	LPRDOCalc m_pTermCalc;
-	LPIInternalStatistics m_pStatistics;
+    std::size_t m_terminatedTransactCount;
+    LPRDOCalc m_pTermCalc;
+    LPIInternalStatistics m_pStatistics;
 
-	DECLARE_IBaseOperation;
-	DECLARE_IInternalStatisticsManager;
+    DECLARE_IBaseOperation;
+    DECLARE_IInternalStatisticsManager;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

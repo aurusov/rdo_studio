@@ -14,52 +14,52 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 class Function
-	: public IContextParamDefinitionManager
-	, public IContextFunctionBodyManager
-	, public Context
-	, public IContextFind
-	, public RDOParserSrcInfo
+    : public IContextParamDefinitionManager
+    , public IContextFunctionBodyManager
+    , public Context
+    , public IContextFind
+    , public RDOParserSrcInfo
 {
 DECLARE_FACTORY(Function);
 public:
-	typedef boost::optional<std::size_t> ParamID;
-	typedef std::vector<LPRDOParam> ParamList;
+    typedef boost::optional<std::size_t> ParamID;
+    typedef std::vector<LPRDOParam> ParamList;
 
-	void pushContext();
-	void popContext ();
+    void pushContext();
+    void popContext ();
 
-	LPRDOParam findParam(const std::string& paramName) const;
-	ParamID findParamID(const std::string& paramName) const;
+    LPRDOParam findParam(const std::string& paramName) const;
+    ParamID findParamID(const std::string& paramName) const;
 
-	const ParamList& getParams() const;
+    const ParamList& getParams() const;
 
-	LPExpression expression() const;
+    LPExpression expression() const;
 
 protected:
-	Function(const LPTypeInfo& pReturnType, const RDOParserSrcInfo& srcInfo);
-	virtual ~Function();
+    Function(const LPTypeInfo& pReturnType, const RDOParserSrcInfo& srcInfo);
+    virtual ~Function();
 
-	// TODO Для передачи значения по умолчанию алгоритмической функции. В идеале, это надо переложить на конвертор.
-	void setDefaultCalc(const rdo::runtime::LPRDOCalc& pDefaultValue);
+    // TODO Для передачи значения по умолчанию алгоритмической функции. В идеале, это надо переложить на конвертор.
+    void setDefaultCalc(const rdo::runtime::LPRDOCalc& pDefaultValue);
 
-	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+    virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 
 private:
-	LPFunctionType           m_pFunctionType;
-	LPTypeInfo               m_pReturnType;
-	ParamList                m_paramList;
-	LPContextFunctionBody    m_pContextFunctionBody;
-	rdo::runtime::LPRDOCalc  m_pBody;
-	rdo::runtime::LPRDOCalc  m_pDefaultValue;
+    LPFunctionType           m_pFunctionType;
+    LPTypeInfo               m_pReturnType;
+    ParamList                m_paramList;
+    LPContextFunctionBody    m_pContextFunctionBody;
+    rdo::runtime::LPRDOCalc  m_pBody;
+    rdo::runtime::LPRDOCalc  m_pDefaultValue;
 
-	void onPushParam(const LPRDOParam& pParam);
-	void setBody    (const rdo::runtime::LPRDOCalc& pBody);
+    void onPushParam(const LPRDOParam& pParam);
+    void setBody    (const rdo::runtime::LPRDOCalc& pBody);
 
-	ParamList::const_iterator find(const std::string& paramName) const;
-	LPFunctionType generateType() const;
+    ParamList::const_iterator find(const std::string& paramName) const;
+    LPFunctionType generateType() const;
 
-	DECLARE_IContextParamDefinitionManager;
-	DECLARE_IContextFunctionBodyManager;
+    DECLARE_IContextParamDefinitionManager;
+    DECLARE_IContextFunctionBodyManager;
 };
 DECLARE_POINTER(Function);
 

@@ -6,7 +6,7 @@
 namespace rdo {
 
 counter_reference::counter_reference()
-	: m_intrusive_counter(0)
+    : m_intrusive_counter(0)
 {}
 
 counter_reference::~counter_reference()

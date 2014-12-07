@@ -17,19 +17,19 @@ struct IContextParamDefinitionManager: public rdo::RefCounter<IContextParamDefin
 {
 DECLARE_FACTORY(IContextParamDefinitionManager)
 public:
-	virtual void pushParamDefinitionContext() = 0;
-	virtual void popParamDefinitionContext () = 0;
+    virtual void pushParamDefinitionContext() = 0;
+    virtual void popParamDefinitionContext () = 0;
 
 protected:
-	IContextParamDefinitionManager()
-	{}
-	virtual ~IContextParamDefinitionManager()
-	{}
+    IContextParamDefinitionManager()
+    {}
+    virtual ~IContextParamDefinitionManager()
+    {}
 };
 
 #define DECLARE_IContextParamDefinitionManager \
-	void pushParamDefinitionContext();         \
-	void popParamDefinitionContext ();
+    void pushParamDefinitionContext();         \
+    void popParamDefinitionContext ();
 
 // --------------------------------------------------------------------------------
 // -------------------- ContextParamDefinition
@@ -38,15 +38,15 @@ class ContextParamDefinition: public Context
 {
 DECLARE_FACTORY(ContextParamDefinition)
 public:
-	void pushParam(const LPRDOParam& pParam);
+    void pushParam(const LPRDOParam& pParam);
 
 private:
-	typedef  boost::function<void (const LPRDOParam&)>  OnPushParam;
+    typedef  boost::function<void (const LPRDOParam&)>  OnPushParam;
 
-	ContextParamDefinition(const OnPushParam& onPushParam);
-	virtual ~ContextParamDefinition();
+    ContextParamDefinition(const OnPushParam& onPushParam);
+    virtual ~ContextParamDefinition();
 
-	OnPushParam m_onPushParam;
+    OnPushParam m_onPushParam;
 };
 DECLARE_POINTER(ContextParamDefinition);
 

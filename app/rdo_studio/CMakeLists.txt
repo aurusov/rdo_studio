@@ -20,246 +20,246 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 ADD_SUBDIRECTORY(plugins)
 
 SET(MAIN_FILES
-	src/main.cpp
+    src/main.cpp
 )
 
 SET(STUDIO_PCH_FILES
-	pch/stdpch.cpp
-	pch/stdpch.h
+    pch/stdpch.cpp
+    pch/stdpch.h
 )
 
 SET(APPLICATION_FILES
-	src/application.cpp
-	src/application.h
-	src/shared_object_service.h
-	src/main_window.cpp
-	src/main_window.h
-	src/main_window_base.h
-	src/status_bar.cpp
-	src/status_bar.h
-	src/style.cpp
-	src/style.h
-	src/thread.cpp
-	src/thread.h
-	src/view_preferences.cpp
-	src/view_preferences.h
+    src/application.cpp
+    src/application.h
+    src/shared_object_service.h
+    src/main_window.cpp
+    src/main_window.h
+    src/main_window_base.h
+    src/status_bar.cpp
+    src/status_bar.h
+    src/style.cpp
+    src/style.h
+    src/thread.cpp
+    src/thread.h
+    src/view_preferences.cpp
+    src/view_preferences.h
 )
 
 SET(APPLICATION_ACTIONACTIVATOR_FILES
-	src/action_activator/action_activator.cpp
-	src/action_activator/action_activator.h
-	src/action_activator/action_activator_widget.cpp
-	src/action_activator/action_activator_widget.h
+    src/action_activator/action_activator.cpp
+    src/action_activator/action_activator.h
+    src/action_activator/action_activator_widget.cpp
+    src/action_activator/action_activator_widget.h
 )
 
 SET(DIALOG_FILES
-	src/dialog/about_dialog.cpp
-	src/dialog/about_dialog.h
-	src/dialog/file_association_dialog.cpp
-	src/dialog/file_association_dialog.h
-	src/dialog/find_dialog.cpp
-	src/dialog/find_dialog.h
-	src/dialog/find_replace_dialog.cpp
-	src/dialog/find_replace_dialog.h
-	src/dialog/goto_line_dialog.cpp
-	src/dialog/goto_line_dialog.h
-	src/dialog/new_model_dialog.cpp
-	src/dialog/new_model_dialog.h
+    src/dialog/about_dialog.cpp
+    src/dialog/about_dialog.h
+    src/dialog/file_association_dialog.cpp
+    src/dialog/file_association_dialog.h
+    src/dialog/find_dialog.cpp
+    src/dialog/find_dialog.h
+    src/dialog/find_replace_dialog.cpp
+    src/dialog/find_replace_dialog.h
+    src/dialog/goto_line_dialog.cpp
+    src/dialog/goto_line_dialog.h
+    src/dialog/new_model_dialog.cpp
+    src/dialog/new_model_dialog.h
 )
 
 SET(DOCK_FILES
-	src/dock/dock_build.cpp
-	src/dock/dock_build.h
-	src/dock/dock_chart_tree.cpp
-	src/dock/dock_chart_tree.h
-	src/dock/dock_debug.cpp
-	src/dock/dock_debug.h
-	src/dock/dock_find.cpp
-	src/dock/dock_find.h
-	src/dock/dock_focusable.cpp
-	src/dock/dock_focusable.h
-	src/dock/dock_frame.cpp
-	src/dock/dock_frame.h
-	src/dock/dock_results.cpp
-	src/dock/dock_results.h
-	src/dock/dock_trace.cpp
-	src/dock/dock_trace.h
+    src/dock/dock_build.cpp
+    src/dock/dock_build.h
+    src/dock/dock_chart_tree.cpp
+    src/dock/dock_chart_tree.h
+    src/dock/dock_debug.cpp
+    src/dock/dock_debug.h
+    src/dock/dock_find.cpp
+    src/dock/dock_find.h
+    src/dock/dock_focusable.cpp
+    src/dock/dock_focusable.h
+    src/dock/dock_frame.cpp
+    src/dock/dock_frame.h
+    src/dock/dock_results.cpp
+    src/dock/dock_results.h
+    src/dock/dock_trace.cpp
+    src/dock/dock_trace.h
 )
 
 SET(APPLICATION_PCH_FILES
-	pch/application_pch.cpp
-	pch/application_pch.h
+    pch/application_pch.cpp
+    pch/application_pch.h
 )
 
 SET(EDITOR_FILES
-	src/editor/edit.cpp
-	src/editor/edit.h
-	src/editor/edit_popup_menu.cpp
-	src/editor/edit_popup_menu.h
-	src/editor/edit_style.cpp
-	src/editor/edit_style.h
+    src/editor/edit.cpp
+    src/editor/edit.h
+    src/editor/edit_popup_menu.cpp
+    src/editor/edit_popup_menu.h
+    src/editor/edit_style.cpp
+    src/editor/edit_style.h
 )
 
 SET(EDITOR_DEBUG_FILES
-	src/editor/debug_edit.cpp
-	src/editor/debug_edit.h
+    src/editor/debug_edit.cpp
+    src/editor/debug_edit.h
 )
 
 SET(EDITOR_LEXER_FILES
-	src/editor/lexer/lexer_find.cpp
-	src/editor/lexer/lexer_find.h
-	src/editor/lexer/lexer_model.cpp
-	src/editor/lexer/lexer_model.h
-	src/editor/lexer/word_list_util.cpp
-	src/editor/lexer/word_list_util.h
+    src/editor/lexer/lexer_find.cpp
+    src/editor/lexer/lexer_find.h
+    src/editor/lexer/lexer_model.cpp
+    src/editor/lexer/lexer_model.h
+    src/editor/lexer/word_list_util.cpp
+    src/editor/lexer/word_list_util.h
 )
 
 SET(EDITOR_LOG_FILES
-	src/editor/log_edit.cpp
-	src/editor/log_edit.h
-	src/editor/log_edit_style.cpp
-	src/editor/log_edit_style.h
+    src/editor/log_edit.cpp
+    src/editor/log_edit.h
+    src/editor/log_edit_style.cpp
+    src/editor/log_edit_style.h
 )
 
 SET(EDITOR_LOG_BUILD_FILES
-	src/editor/build_edit.cpp
-	src/editor/build_edit.h
-	src/editor/build_edit_style.cpp
-	src/editor/build_edit_style.h
+    src/editor/build_edit.cpp
+    src/editor/build_edit.h
+    src/editor/build_edit_style.cpp
+    src/editor/build_edit_style.h
 )
 
 SET(EDITOR_LOG_FIND_FILES
-	src/editor/find_edit.cpp
-	src/editor/find_edit.h
-	src/editor/find_edit_style.cpp
-	src/editor/find_edit_style.h
+    src/editor/find_edit.cpp
+    src/editor/find_edit.h
+    src/editor/find_edit_style.cpp
+    src/editor/find_edit_style.h
 )
 
 SET(EDITOR_MODEL_FILES
-	src/editor/model_edit.cpp
-	src/editor/model_edit.h
-	src/editor/model_edit_style.cpp
-	src/editor/model_edit_style.h
+    src/editor/model_edit.cpp
+    src/editor/model_edit.h
+    src/editor/model_edit_style.cpp
+    src/editor/model_edit_style.h
 )
 
 SET(EDITOR_PARSER_FILES
-	src/editor/parser_edit.cpp
-	src/editor/parser_edit.h
-	src/editor/parser_edit_style.cpp
-	src/editor/parser_edit_style.h
+    src/editor/parser_edit.cpp
+    src/editor/parser_edit.h
+    src/editor/parser_edit_style.cpp
+    src/editor/parser_edit_style.h
 )
 
 SET(EDITOR_RESULTS_FILES
-	src/editor/results_edit.cpp
-	src/editor/results_edit.h
-	src/editor/results_edit_style.cpp
-	src/editor/results_edit_style.h
+    src/editor/results_edit.cpp
+    src/editor/results_edit.h
+    src/editor/results_edit_style.cpp
+    src/editor/results_edit_style.h
 )
 
 SET(EDITOR_PCH_FILES
-	pch/editor_pch.cpp
-	pch/editor_pch.h
+    pch/editor_pch.cpp
+    pch/editor_pch.h
 )
 
 SET(FRAME_FILES
-	src/frame/frame_manager.cpp
-	src/frame/frame_manager.h
-	src/frame/frame_options_view.cpp
-	src/frame/frame_options_view.h
-	src/frame/frame_style.cpp
-	src/frame/frame_style.h
-	src/frame/frame_tree_ctrl.cpp
-	src/frame/frame_tree_ctrl.h
-	src/frame/frame_view.cpp
-	src/frame/frame_view.h
+    src/frame/frame_manager.cpp
+    src/frame/frame_manager.h
+    src/frame/frame_options_view.cpp
+    src/frame/frame_options_view.h
+    src/frame/frame_style.cpp
+    src/frame/frame_style.h
+    src/frame/frame_tree_ctrl.cpp
+    src/frame/frame_tree_ctrl.h
+    src/frame/frame_view.cpp
+    src/frame/frame_view.h
 )
 
 SET(FRAME_PCH_FILES
-	pch/frame_pch.cpp
-	pch/frame_pch.h
+    pch/frame_pch.cpp
+    pch/frame_pch.h
 )
 
 SET(MODEL_FILES
-	src/model/model.cpp
-	src/model/model.h
-	src/model/model_tab_ctrl.cpp
-	src/model/model_tab_ctrl.h
-	src/model/model_view.cpp
-	src/model/model_view.h
+    src/model/model.cpp
+    src/model/model.h
+    src/model/model_tab_ctrl.cpp
+    src/model/model_tab_ctrl.h
+    src/model/model_view.cpp
+    src/model/model_view.h
 )
 
 SET(MODEL_PCH_FILES
-	pch/model_pch.cpp
-	pch/model_pch.h
+    pch/model_pch.cpp
+    pch/model_pch.h
 )
 
 SET(PLUGINS_FILES
-	src/plugins/plugin_info.cpp
-	src/plugins/plugin_info.h
-	src/plugins/plugin_interface.h
-	src/plugins/plugin_loader.cpp
-	src/plugins/plugin_loader.h
+    src/plugins/plugin_info.cpp
+    src/plugins/plugin_info.h
+    src/plugins/plugin_interface.h
+    src/plugins/plugin_loader.cpp
+    src/plugins/plugin_loader.h
 )
 
 SET(PLUGIN_LOADER_PCH_FILES
-	pch/plugin_loader_pch.cpp
-	pch/plugin_loader_pch.h
+    pch/plugin_loader_pch.cpp
+    pch/plugin_loader_pch.h
 )
 
 SET(TRACER_FILES
-	src/tracer/tracer.cpp
-	src/tracer/tracer.h
-	src/tracer/tracer_base.cpp
-	src/tracer/tracer_base.h
-	src/tracer/tracer_operation.cpp
-	src/tracer/tracer_operation.h
-	src/tracer/tracer_pattern.cpp
-	src/tracer/tracer_pattern.h
-	src/tracer/tracer_resource.cpp
-	src/tracer/tracer_resource.h
-	src/tracer/tracer_resource_type.cpp
-	src/tracer/tracer_resource_type.h
-	src/tracer/tracer_result.cpp
-	src/tracer/tracer_result.h
-	src/tracer/tracer_serie.cpp
-	src/tracer/tracer_serie.h
-	src/tracer/tracer_values.cpp
-	src/tracer/tracer_values.h
+    src/tracer/tracer.cpp
+    src/tracer/tracer.h
+    src/tracer/tracer_base.cpp
+    src/tracer/tracer_base.h
+    src/tracer/tracer_operation.cpp
+    src/tracer/tracer_operation.h
+    src/tracer/tracer_pattern.cpp
+    src/tracer/tracer_pattern.h
+    src/tracer/tracer_resource.cpp
+    src/tracer/tracer_resource.h
+    src/tracer/tracer_resource_type.cpp
+    src/tracer/tracer_resource_type.h
+    src/tracer/tracer_result.cpp
+    src/tracer/tracer_result.h
+    src/tracer/tracer_serie.cpp
+    src/tracer/tracer_serie.h
+    src/tracer/tracer_values.cpp
+    src/tracer/tracer_values.h
 )
 
 SET(TRACER_CHART_FILES
-	src/tracer/chart/chart_doc.cpp
-	src/tracer/chart/chart_doc.h
-	src/tracer/chart/chart_preferences.cpp
-	src/tracer/chart/chart_preferences.h
-	src/tracer/chart/chart_serie.cpp
-	src/tracer/chart/chart_serie.h
-	src/tracer/chart/chart_tree.cpp
-	src/tracer/chart/chart_tree.h
-	src/tracer/chart/chart_tree_item.cpp
-	src/tracer/chart/chart_tree_item.h
-	src/tracer/chart/chart_view.cpp
-	src/tracer/chart/chart_view.h
-	src/tracer/chart/chart_view_style.cpp
-	src/tracer/chart/chart_view_style.h
+    src/tracer/chart/chart_doc.cpp
+    src/tracer/chart/chart_doc.h
+    src/tracer/chart/chart_preferences.cpp
+    src/tracer/chart/chart_preferences.h
+    src/tracer/chart/chart_serie.cpp
+    src/tracer/chart/chart_serie.h
+    src/tracer/chart/chart_tree.cpp
+    src/tracer/chart/chart_tree.h
+    src/tracer/chart/chart_tree_item.cpp
+    src/tracer/chart/chart_tree_item.h
+    src/tracer/chart/chart_view.cpp
+    src/tracer/chart/chart_view.h
+    src/tracer/chart/chart_view_style.cpp
+    src/tracer/chart/chart_view_style.h
 )
 
 SET(TRACER_LOGGER_FILES
-	src/tracer/logger/tracer_logger_main_wnd.cpp
-	src/tracer/logger/tracer_logger_main_wnd.h
-	src/tracer/logger/tracer_logger_view.cpp
-	src/tracer/logger/tracer_logger_view.h
-	src/tracer/logger/tracer_logger_view_style.cpp
-	src/tracer/logger/tracer_logger_view_style.h
+    src/tracer/logger/tracer_logger_main_wnd.cpp
+    src/tracer/logger/tracer_logger_main_wnd.h
+    src/tracer/logger/tracer_logger_view.cpp
+    src/tracer/logger/tracer_logger_view.h
+    src/tracer/logger/tracer_logger_view_style.cpp
+    src/tracer/logger/tracer_logger_view_style.h
 )
 
 SET(TRACER_PCH_FILES
-	pch/tracer_pch.cpp
-	pch/tracer_pch.h
+    pch/tracer_pch.cpp
+    pch/tracer_pch.h
 )
 
 SET(QRC_FILES
-	res/rdo_studio.qrc
+    res/rdo_studio.qrc
 )
 
 QT5_ADD_RESOURCES(GENERATED_QRC_FILES ${QRC_FILES})
@@ -268,112 +268,112 @@ SET(APP_NAME RAO-studio)
 CONFIGURE_FILE(${CMAKE_MODULE_PATH}/build.version.cmake ${CMAKE_CURRENT_BINARY_DIR}/build_version.h)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 SET(RESOURCES_FILES
-	${CMAKE_CURRENT_BINARY_DIR}/build_version.h
-	${QRC_FILES}
+    ${CMAKE_CURRENT_BINARY_DIR}/build_version.h
+    ${QRC_FILES}
 )
 
 SET(RESOURCES_IMAGE_FILES
-	res/images/about.png
-	res/images/dock_build.png
-	res/images/dock_chart.png
-	res/images/dock_debug.png
-	res/images/dock_find.png
-	res/images/dock_frame.png
-	res/images/dock_process.png
-	res/images/dock_results.png
-	res/images/dock_trace.png
-	res/images/edit_copy.png
-	res/images/edit_copy_d.png
-	res/images/edit_cut.png
-	res/images/edit_cut_d.png
-	res/images/edit_paste.png
-	res/images/edit_paste_d.png
-	res/images/edit_redo.png
-	res/images/edit_redo_d.png
-	res/images/edit_undo.png
-	res/images/edit_undo_d.png
-	res/images/file_new.png
-	res/images/file_new_d.png
-	res/images/file_open.png
-	res/images/file_open_d.png
-	res/images/file_save.png
-	res/images/file_save_all.png
-	res/images/file_save_all_d.png
-	res/images/file_save_d.png
-	res/images/frameoptionsctrl.png
-	res/images/help_context.png
-	res/images/logo.png
-	res/images/mdi_chart.png
-	res/images/mdi_flowchart.png
-	res/images/mdi_frame.png
-	res/images/mdi_model.png
-	res/images/model_frame_next.png
-	res/images/model_frame_next_d.png
-	res/images/model_frame_prev.png
-	res/images/model_frame_prev_d.png
-	res/images/model_run.png
-	res/images/model_run_d.png
-	res/images/model_runtime_jump.png
-	res/images/model_runtime_jump_d.png
-	res/images/model_runtime_max_speed.png
-	res/images/model_runtime_max_speed_d.png
-	res/images/model_runtime_pause.png
-	res/images/model_runtime_pause_d.png
-	res/images/model_runtime_sync.png
-	res/images/model_runtime_sync_d.png
-	res/images/model_show_rate_dec.png
-	res/images/model_show_rate_dec_d.png
-	res/images/model_show_rate_dec_four.png
-	res/images/model_show_rate_dec_four_d.png
-	res/images/model_show_rate_inc.png
-	res/images/model_show_rate_inc_d.png
-	res/images/model_show_rate_inc_four.png
-	res/images/model_show_rate_inc_four_d.png
-	res/images/model_stop.png
-	res/images/model_stop_d.png
-	res/images/search_bookmark_next.png
-	res/images/search_bookmark_next_d.png
-	res/images/search_bookmark_prev.png
-	res/images/search_bookmark_prev_d.png
-	res/images/search_find.png
-	res/images/search_find_d.png
-	res/images/search_replace.png
-	res/images/search_replace_d.png
-	res/images/tree_chart_erased.png
-	res/images/tree_chart_root.png
-	res/images/tree_chart_sub_root_1.png
-	res/images/tree_chart_sub_root_2.png
-	res/images/tree_chart_sub_root_3.png
-	res/images/tree_chart_value.png
-	res/images/tree_frame_item.png
-	res/images/tree_frame_root.png
-	res/images/view_zoom_auto.png
-	res/images/view_zoom_auto_d.png
-	res/images/view_zoom_dec.png
-	res/images/view_zoom_dec_d.png
-	res/images/view_zoom_inc.png
-	res/images/view_zoom_inc_d.png
-	res/images/view_zoom_reset.png
-	res/images/view_zoom_reset_d.png
+    res/images/about.png
+    res/images/dock_build.png
+    res/images/dock_chart.png
+    res/images/dock_debug.png
+    res/images/dock_find.png
+    res/images/dock_frame.png
+    res/images/dock_process.png
+    res/images/dock_results.png
+    res/images/dock_trace.png
+    res/images/edit_copy.png
+    res/images/edit_copy_d.png
+    res/images/edit_cut.png
+    res/images/edit_cut_d.png
+    res/images/edit_paste.png
+    res/images/edit_paste_d.png
+    res/images/edit_redo.png
+    res/images/edit_redo_d.png
+    res/images/edit_undo.png
+    res/images/edit_undo_d.png
+    res/images/file_new.png
+    res/images/file_new_d.png
+    res/images/file_open.png
+    res/images/file_open_d.png
+    res/images/file_save.png
+    res/images/file_save_all.png
+    res/images/file_save_all_d.png
+    res/images/file_save_d.png
+    res/images/frameoptionsctrl.png
+    res/images/help_context.png
+    res/images/logo.png
+    res/images/mdi_chart.png
+    res/images/mdi_flowchart.png
+    res/images/mdi_frame.png
+    res/images/mdi_model.png
+    res/images/model_frame_next.png
+    res/images/model_frame_next_d.png
+    res/images/model_frame_prev.png
+    res/images/model_frame_prev_d.png
+    res/images/model_run.png
+    res/images/model_run_d.png
+    res/images/model_runtime_jump.png
+    res/images/model_runtime_jump_d.png
+    res/images/model_runtime_max_speed.png
+    res/images/model_runtime_max_speed_d.png
+    res/images/model_runtime_pause.png
+    res/images/model_runtime_pause_d.png
+    res/images/model_runtime_sync.png
+    res/images/model_runtime_sync_d.png
+    res/images/model_show_rate_dec.png
+    res/images/model_show_rate_dec_d.png
+    res/images/model_show_rate_dec_four.png
+    res/images/model_show_rate_dec_four_d.png
+    res/images/model_show_rate_inc.png
+    res/images/model_show_rate_inc_d.png
+    res/images/model_show_rate_inc_four.png
+    res/images/model_show_rate_inc_four_d.png
+    res/images/model_stop.png
+    res/images/model_stop_d.png
+    res/images/search_bookmark_next.png
+    res/images/search_bookmark_next_d.png
+    res/images/search_bookmark_prev.png
+    res/images/search_bookmark_prev_d.png
+    res/images/search_find.png
+    res/images/search_find_d.png
+    res/images/search_replace.png
+    res/images/search_replace_d.png
+    res/images/tree_chart_erased.png
+    res/images/tree_chart_root.png
+    res/images/tree_chart_sub_root_1.png
+    res/images/tree_chart_sub_root_2.png
+    res/images/tree_chart_sub_root_3.png
+    res/images/tree_chart_value.png
+    res/images/tree_frame_item.png
+    res/images/tree_frame_root.png
+    res/images/view_zoom_auto.png
+    res/images/view_zoom_auto_d.png
+    res/images/view_zoom_dec.png
+    res/images/view_zoom_dec_d.png
+    res/images/view_zoom_inc.png
+    res/images/view_zoom_inc_d.png
+    res/images/view_zoom_reset.png
+    res/images/view_zoom_reset_d.png
 )
 
 SET(RESOURCES_SCINTILLA_FILES
-	res/scintilla/ac_data.xpm
-	res/scintilla/ac_function.xpm
-	res/scintilla/ac_trace.xpm
+    res/scintilla/ac_data.xpm
+    res/scintilla/ac_function.xpm
+    res/scintilla/ac_trace.xpm
 )
 
 SET(RESOURCES_UI_FILES
-	res/ui/about_dialog.ui
-	res/ui/chart_preferences.ui
-	res/ui/file_association_dialog.ui
-	res/ui/find_dialog.ui
-	res/ui/find_replace_dialog.ui
-	res/ui/frame_options_widget.ui
-	res/ui/goto_line_dialog.ui
-	res/ui/main_window.ui
-	res/ui/new_model_dialog.ui
-	res/ui/view_preferenses.ui
+    res/ui/about_dialog.ui
+    res/ui/chart_preferences.ui
+    res/ui/file_association_dialog.ui
+    res/ui/find_dialog.ui
+    res/ui/find_replace_dialog.ui
+    res/ui/frame_options_widget.ui
+    res/ui/goto_line_dialog.ui
+    res/ui/main_window.ui
+    res/ui/new_model_dialog.ui
+    res/ui/view_preferenses.ui
 )
 QT5_WRAP_UI(GENERATED_RESOURCES_UI_FILES ${RESOURCES_UI_FILES})
 
@@ -391,39 +391,39 @@ ELSEIF (MINGW)
 ENDIF()
 
 SET(RDO_APP_MOC_FILES
-	src/dialog/about_dialog.h
-	src/dialog/file_association_dialog.h
-	src/dialog/find_dialog.h
-	src/dialog/find_replace_dialog.h
-	src/dialog/goto_line_dialog.h
-	src/dialog/new_model_dialog.h
-	src/dock/dock_focusable.h
-	src/main_window.h
-	src/view_preferences.h
+    src/dialog/about_dialog.h
+    src/dialog/file_association_dialog.h
+    src/dialog/find_dialog.h
+    src/dialog/find_replace_dialog.h
+    src/dialog/goto_line_dialog.h
+    src/dialog/new_model_dialog.h
+    src/dock/dock_focusable.h
+    src/main_window.h
+    src/view_preferences.h
 )
 
 SET(RDO_EDITOR_MOC_FILES
-	src/editor/edit.h
-	src/editor/log_edit.h
+    src/editor/edit.h
+    src/editor/log_edit.h
 )
 
 SET(RDO_FRAME_MOC_FILES
-	src/frame/frame_manager.h
-	src/frame/frame_tree_ctrl.h
-	src/frame/frame_view.h
+    src/frame/frame_manager.h
+    src/frame/frame_tree_ctrl.h
+    src/frame/frame_view.h
 )
 
 SET(RDO_MODEL_MOC_FILES
-	src/editor/model_edit.h
-	src/model/model.h
-	src/model/model_view.h
+    src/editor/model_edit.h
+    src/model/model.h
+    src/model/model_view.h
 )
 
 SET(RDO_TRACER_MOC_FILES
-	src/tracer/chart/chart_preferences.h
-	src/tracer/chart/chart_tree.h
-	src/tracer/chart/chart_view.h
-	src/tracer/logger/tracer_logger_view.h
+    src/tracer/chart/chart_preferences.h
+    src/tracer/chart/chart_tree.h
+    src/tracer/chart/chart_view.h
+    src/tracer/logger/tracer_logger_view.h
 )
 
 SET(QT_MOC_FLAGS)
@@ -431,121 +431,121 @@ QT5_GET_MOC_FLAGS(QT_MOC_FLAGS)
 
 SET(GENERATED_APP_MOC_FILES)
 FOREACH(RDO_APP_MOC_FILES_IT ${RDO_APP_MOC_FILES})
-	QT5_WRAP_CPP(GENERATED_RDO_APP_MOC_FILES_IT ${RDO_APP_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/application_pch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_APP_MOC_FILES_IT}")
-	SET(GENERATED_APP_MOC_FILES ${GENERATED_APP_MOC_FILES} ${GENERATED_RDO_APP_MOC_FILES_IT})
+    QT5_WRAP_CPP(GENERATED_RDO_APP_MOC_FILES_IT ${RDO_APP_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/application_pch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_APP_MOC_FILES_IT}")
+    SET(GENERATED_APP_MOC_FILES ${GENERATED_APP_MOC_FILES} ${GENERATED_RDO_APP_MOC_FILES_IT})
 ENDFOREACH()
 
 SET(GENERATED_EDITOR_MOC_FILES)
 FOREACH(RDO_EDITOR_MOC_FILES_IT ${RDO_EDITOR_MOC_FILES})
-	QT5_WRAP_CPP(GENERATED_RDO_EDITOR_MOC_FILES_IT ${RDO_EDITOR_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/editor_pch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_EDITOR_MOC_FILES_IT}")
-	SET(GENERATED_EDITOR_MOC_FILES ${GENERATED_EDITOR_MOC_FILES} ${GENERATED_RDO_EDITOR_MOC_FILES_IT})
+    QT5_WRAP_CPP(GENERATED_RDO_EDITOR_MOC_FILES_IT ${RDO_EDITOR_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/editor_pch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_EDITOR_MOC_FILES_IT}")
+    SET(GENERATED_EDITOR_MOC_FILES ${GENERATED_EDITOR_MOC_FILES} ${GENERATED_RDO_EDITOR_MOC_FILES_IT})
 ENDFOREACH()
 
 SET(GENERATED_FRAME_MOC_FILES)
 FOREACH(RDO_FRAME_MOC_FILES_IT ${RDO_FRAME_MOC_FILES})
-	QT5_WRAP_CPP(GENERATED_RDO_FRAME_MOC_FILES_IT ${RDO_FRAME_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/frame_pch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_FRAME_MOC_FILES_IT}")
-	SET(GENERATED_FRAME_MOC_FILES ${GENERATED_FRAME_MOC_FILES} ${GENERATED_RDO_FRAME_MOC_FILES_IT})
+    QT5_WRAP_CPP(GENERATED_RDO_FRAME_MOC_FILES_IT ${RDO_FRAME_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/frame_pch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_FRAME_MOC_FILES_IT}")
+    SET(GENERATED_FRAME_MOC_FILES ${GENERATED_FRAME_MOC_FILES} ${GENERATED_RDO_FRAME_MOC_FILES_IT})
 ENDFOREACH()
 
 SET(GENERATED_MODEL_MOC_FILES)
 FOREACH(RDO_MODEL_MOC_FILES_IT ${RDO_MODEL_MOC_FILES})
-	QT5_WRAP_CPP(GENERATED_RDO_MODEL_MOC_FILES_IT ${RDO_MODEL_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/model_pch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_MODEL_MOC_FILES_IT}")
-	SET(GENERATED_MODEL_MOC_FILES ${GENERATED_MODEL_MOC_FILES} ${GENERATED_RDO_MODEL_MOC_FILES_IT})
+    QT5_WRAP_CPP(GENERATED_RDO_MODEL_MOC_FILES_IT ${RDO_MODEL_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/model_pch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_MODEL_MOC_FILES_IT}")
+    SET(GENERATED_MODEL_MOC_FILES ${GENERATED_MODEL_MOC_FILES} ${GENERATED_RDO_MODEL_MOC_FILES_IT})
 ENDFOREACH()
 
 SET(GENERATED_TRACER_MOC_FILES)
 FOREACH(RDO_TRACER_MOC_FILES_IT ${RDO_TRACER_MOC_FILES})
-	QT5_WRAP_CPP(GENERATED_RDO_TRACER_MOC_FILES_IT ${RDO_TRACER_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/tracer_pch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_TRACER_MOC_FILES_IT}")
-	SET(GENERATED_TRACER_MOC_FILES ${GENERATED_TRACER_MOC_FILES} ${GENERATED_RDO_TRACER_MOC_FILES_IT})
+    QT5_WRAP_CPP(GENERATED_RDO_TRACER_MOC_FILES_IT ${RDO_TRACER_MOC_FILES_IT} OPTIONS ${QT_MOC_FLAGS} "-fapp/rdo_studio/pch/tracer_pch.h" "-futils/src/common/warning_disable.h" "-fapp/rdo_studio/${RDO_TRACER_MOC_FILES_IT}")
+    SET(GENERATED_TRACER_MOC_FILES ${GENERATED_TRACER_MOC_FILES} ${GENERATED_RDO_TRACER_MOC_FILES_IT})
 ENDFOREACH()
 
 SET(APP_SOURCE_FILES
-	${APPLICATION_FILES}
-	${APPLICATION_ACTIONACTIVATOR_FILES}
-	${DIALOG_FILES}
-	${DOCK_FILES}
-	${RESOURCES_FILES}
-	${RESOURCES_IMAGE_FILES}
-	${RESOURCES_SCINTILLA_FILES}
-	${RESOURCES_UI_FILES}
-	${APPLICATION_PCH_FILES}
-	${GENERATED_APP_MOC_FILES}
+    ${APPLICATION_FILES}
+    ${APPLICATION_ACTIONACTIVATOR_FILES}
+    ${DIALOG_FILES}
+    ${DOCK_FILES}
+    ${RESOURCES_FILES}
+    ${RESOURCES_IMAGE_FILES}
+    ${RESOURCES_SCINTILLA_FILES}
+    ${RESOURCES_UI_FILES}
+    ${APPLICATION_PCH_FILES}
+    ${GENERATED_APP_MOC_FILES}
 )
 
 SET(EDITOR_SOURCE_FILES
-	${EDITOR_FILES}
-	${EDITOR_DEBUG_FILES}
-	${EDITOR_LEXER_FILES}
-	${EDITOR_LOG_FILES}
-	${EDITOR_LOG_BUILD_FILES}
-	${EDITOR_LOG_FIND_FILES}
-	${EDITOR_PARSER_FILES}
-	${EDITOR_RESULTS_FILES}
-	${EDITOR_PCH_FILES}
-	${GENERATED_EDITOR_MOC_FILES}
+    ${EDITOR_FILES}
+    ${EDITOR_DEBUG_FILES}
+    ${EDITOR_LEXER_FILES}
+    ${EDITOR_LOG_FILES}
+    ${EDITOR_LOG_BUILD_FILES}
+    ${EDITOR_LOG_FIND_FILES}
+    ${EDITOR_PARSER_FILES}
+    ${EDITOR_RESULTS_FILES}
+    ${EDITOR_PCH_FILES}
+    ${GENERATED_EDITOR_MOC_FILES}
 )
 
 SET(FRAME_SOURCE_FILES
-	${FRAME_FILES}
-	${FRAME_PCH_FILES}
-	${GENERATED_FRAME_MOC_FILES}
+    ${FRAME_FILES}
+    ${FRAME_PCH_FILES}
+    ${GENERATED_FRAME_MOC_FILES}
 )
 
 SET(MODEL_SOURCE_FILES
-	${EDITOR_MODEL_FILES}
-	${MODEL_FILES}
-	${MODEL_PCH_FILES}
-	${GENERATED_MODEL_MOC_FILES}
+    ${EDITOR_MODEL_FILES}
+    ${MODEL_FILES}
+    ${MODEL_PCH_FILES}
+    ${GENERATED_MODEL_MOC_FILES}
 )
 
 SET(TRACER_SOURCE_FILES
-	${TRACER_FILES}
-	${TRACER_CHART_FILES}
-	${TRACER_LOGGER_FILES}
-	${TRACER_PCH_FILES}
-	${GENERATED_TRACER_MOC_FILES}
+    ${TRACER_FILES}
+    ${TRACER_CHART_FILES}
+    ${TRACER_LOGGER_FILES}
+    ${TRACER_PCH_FILES}
+    ${GENERATED_TRACER_MOC_FILES}
 )
 
 SET(PLUGIN_LOADER_SOURCE_FILES
-	${PLUGINS_FILES}
-	${PLUGIN_LOADER_PCH_FILES}
+    ${PLUGINS_FILES}
+    ${PLUGIN_LOADER_PCH_FILES}
 )
 
 SET(RDO_STUDIO_SOURCE_FILES
-	${MAIN_FILES}
-	${RESOURCES_WIN32_FILES}
-	${STUDIO_PCH_FILES}
+    ${MAIN_FILES}
+    ${RESOURCES_WIN32_FILES}
+    ${STUDIO_PCH_FILES}
 )
 
 ADD_EXECUTABLE(rdo_studio
-	${RDO_STUDIO_SOURCE_FILES}
-	${TEXT_FILES}
+    ${RDO_STUDIO_SOURCE_FILES}
+    ${TEXT_FILES}
 )
 
 ADD_LIBRARY(rdo_application STATIC
-	${APP_SOURCE_FILES}
-	${GENERATED_RESOURCES_UI_FILES}
-	${GENERATED_QRC_FILES}
+    ${APP_SOURCE_FILES}
+    ${GENERATED_RESOURCES_UI_FILES}
+    ${GENERATED_QRC_FILES}
 )
 
 ADD_LIBRARY(rdo_editor STATIC
-	${EDITOR_SOURCE_FILES}
+    ${EDITOR_SOURCE_FILES}
 )
 
 ADD_LIBRARY(rdo_frame STATIC
-	${FRAME_SOURCE_FILES}
+    ${FRAME_SOURCE_FILES}
 )
 
 ADD_LIBRARY(rdo_model STATIC
-	${MODEL_SOURCE_FILES}
+    ${MODEL_SOURCE_FILES}
 )
 
 ADD_LIBRARY(rdo_tracer STATIC
-	${TRACER_SOURCE_FILES}
+    ${TRACER_SOURCE_FILES}
 )
 
 ADD_LIBRARY(rdo_plugin_loader STATIC
-	${PLUGIN_LOADER_SOURCE_FILES}
+    ${PLUGIN_LOADER_SOURCE_FILES}
 )
 
 INCLUDE(${PROJECT_SOURCE_DIR}/app/rdo_studio/projects/common/rdo_studio.cmake)
@@ -661,172 +661,172 @@ INSTALL(TARGETS rdo_tracer        DESTINATION lib)
 
 IF(MSVC_IDE) # options for windows #
 
-	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
-	ADD_PCH("${RDO_STUDIO_SOURCE_FILES}"    "${STUDIO_PCH_FILES}"        app/rdo_studio pch stdpch)
-	ADD_PCH("${APP_SOURCE_FILES}"           "${APPLICATION_PCH_FILES}"   app/rdo_studio pch application_pch)
-	ADD_PCH("${EDITOR_SOURCE_FILES}"        "${EDITOR_PCH_FILES}"        app/rdo_studio pch editor_pch)
-	ADD_PCH("${FRAME_SOURCE_FILES}"         "${FRAME_PCH_FILES}"         app/rdo_studio pch frame_pch)
-	ADD_PCH("${MODEL_SOURCE_FILES}"         "${MODEL_PCH_FILES}"         app/rdo_studio pch model_pch)
-	ADD_PCH("${PLUGIN_LOADER_SOURCE_FILES}" "${PLUGIN_LOADER_PCH_FILES}" app/rdo_studio pch plugin_loader_pch)
-	ADD_PCH("${TRACER_SOURCE_FILES}"        "${TRACER_PCH_FILES}"        app/rdo_studio pch tracer_pch)
-	
-	SOURCE_GROUP("rdo_studio\\.doc" FILES
-		${DOC_FILES}
-	)
+    INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
+    ADD_PCH("${RDO_STUDIO_SOURCE_FILES}"    "${STUDIO_PCH_FILES}"        app/rdo_studio pch stdpch)
+    ADD_PCH("${APP_SOURCE_FILES}"           "${APPLICATION_PCH_FILES}"   app/rdo_studio pch application_pch)
+    ADD_PCH("${EDITOR_SOURCE_FILES}"        "${EDITOR_PCH_FILES}"        app/rdo_studio pch editor_pch)
+    ADD_PCH("${FRAME_SOURCE_FILES}"         "${FRAME_PCH_FILES}"         app/rdo_studio pch frame_pch)
+    ADD_PCH("${MODEL_SOURCE_FILES}"         "${MODEL_PCH_FILES}"         app/rdo_studio pch model_pch)
+    ADD_PCH("${PLUGIN_LOADER_SOURCE_FILES}" "${PLUGIN_LOADER_PCH_FILES}" app/rdo_studio pch plugin_loader_pch)
+    ADD_PCH("${TRACER_SOURCE_FILES}"        "${TRACER_PCH_FILES}"        app/rdo_studio pch tracer_pch)
+    
+    SOURCE_GROUP("rdo_studio\\.doc" FILES
+        ${DOC_FILES}
+    )
 
-	SOURCE_GROUP("rdo_studio\\.pch" FILES
-		${STUDIO_PCH_FILES}
-	)
+    SOURCE_GROUP("rdo_studio\\.pch" FILES
+        ${STUDIO_PCH_FILES}
+    )
 
-	SOURCE_GROUP("rdo_studio" FILES
-		${MAIN_FILES}
-	)
+    SOURCE_GROUP("rdo_studio" FILES
+        ${MAIN_FILES}
+    )
 
-	SOURCE_GROUP("rdo_studio\\.resources\\.win32" FILES
-		${RESOURCES_WIN32_FILES}
-	)
+    SOURCE_GROUP("rdo_studio\\.resources\\.win32" FILES
+        ${RESOURCES_WIN32_FILES}
+    )
 
-	SOURCE_GROUP("rdo_application\\.application" FILES
-		${APPLICATION_FILES}
-	)
+    SOURCE_GROUP("rdo_application\\.application" FILES
+        ${APPLICATION_FILES}
+    )
 
-	SOURCE_GROUP("rdo_application\\.application\\.action_activator" FILES
-		${APPLICATION_ACTIONACTIVATOR_FILES}
-	)
+    SOURCE_GROUP("rdo_application\\.application\\.action_activator" FILES
+        ${APPLICATION_ACTIONACTIVATOR_FILES}
+    )
 
-	SOURCE_GROUP("rdo_application\\.dialog" FILES
-		${DIALOG_FILES}
-	)
+    SOURCE_GROUP("rdo_application\\.dialog" FILES
+        ${DIALOG_FILES}
+    )
 
-	SOURCE_GROUP("rdo_application\\.dock" FILES
-		${DOCK_FILES}
-	)
+    SOURCE_GROUP("rdo_application\\.dock" FILES
+        ${DOCK_FILES}
+    )
 
-	SOURCE_GROUP("rdo_application\\.generated\\.ui" FILES
-		${GENERATED_RESOURCES_UI_FILES}
-	)
+    SOURCE_GROUP("rdo_application\\.generated\\.ui" FILES
+        ${GENERATED_RESOURCES_UI_FILES}
+    )
 
-	SOURCE_GROUP("rdo_application\\.generated\\.qrc" FILES
-		${GENERATED_QRC_FILES}
-	)
+    SOURCE_GROUP("rdo_application\\.generated\\.qrc" FILES
+        ${GENERATED_QRC_FILES}
+    )
 
-	SOURCE_GROUP("rdo_application\\.generated\\.moc" FILES
-		${GENERATED_APP_MOC_FILES}
-	)
+    SOURCE_GROUP("rdo_application\\.generated\\.moc" FILES
+        ${GENERATED_APP_MOC_FILES}
+    )
 
-	SOURCE_GROUP("rdo_application\\.resources" FILES
-		${RESOURCES_FILES}
-	)
+    SOURCE_GROUP("rdo_application\\.resources" FILES
+        ${RESOURCES_FILES}
+    )
 
-	SOURCE_GROUP("rdo_application\\.resources\\.images" FILES
-		${RESOURCES_IMAGE_FILES}
-	)
+    SOURCE_GROUP("rdo_application\\.resources\\.images" FILES
+        ${RESOURCES_IMAGE_FILES}
+    )
 
-	SOURCE_GROUP("rdo_application\\.resources\\.scintilla" FILES
-		${RESOURCES_SCINTILLA_FILES}
-	)
+    SOURCE_GROUP("rdo_application\\.resources\\.scintilla" FILES
+        ${RESOURCES_SCINTILLA_FILES}
+    )
 
-	SOURCE_GROUP("rdo_application\\.resources\\.ui" FILES
-		${RESOURCES_UI_FILES}
-	)
+    SOURCE_GROUP("rdo_application\\.resources\\.ui" FILES
+        ${RESOURCES_UI_FILES}
+    )
 
-	SOURCE_GROUP("rdo_application\\.pch" FILES
-		${APPLICATION_PCH_FILES}
-	)
-	
-	SOURCE_GROUP("rdo_editor\\.editor" FILES
-		${EDITOR_FILES}
-	)
+    SOURCE_GROUP("rdo_application\\.pch" FILES
+        ${APPLICATION_PCH_FILES}
+    )
+    
+    SOURCE_GROUP("rdo_editor\\.editor" FILES
+        ${EDITOR_FILES}
+    )
 
-	SOURCE_GROUP("rdo_editor\\.editor\\.debug" FILES
-		${EDITOR_DEBUG_FILES}
-	)
+    SOURCE_GROUP("rdo_editor\\.editor\\.debug" FILES
+        ${EDITOR_DEBUG_FILES}
+    )
 
-	SOURCE_GROUP("rdo_editor\\.editor\\.lexer" FILES
-		${EDITOR_LEXER_FILES}
-	)
+    SOURCE_GROUP("rdo_editor\\.editor\\.lexer" FILES
+        ${EDITOR_LEXER_FILES}
+    )
 
-	SOURCE_GROUP("rdo_editor\\.editor\\.log" FILES
-		${EDITOR_LOG_FILES}
-	)
+    SOURCE_GROUP("rdo_editor\\.editor\\.log" FILES
+        ${EDITOR_LOG_FILES}
+    )
 
-	SOURCE_GROUP("rdo_editor\\.editor\\.log\\.build" FILES
-		${EDITOR_LOG_BUILD_FILES}
-	)
+    SOURCE_GROUP("rdo_editor\\.editor\\.log\\.build" FILES
+        ${EDITOR_LOG_BUILD_FILES}
+    )
 
-	SOURCE_GROUP("rdo_editor\\.editor\\.log\\.find" FILES
-		${EDITOR_LOG_FIND_FILES}
-	)
+    SOURCE_GROUP("rdo_editor\\.editor\\.log\\.find" FILES
+        ${EDITOR_LOG_FIND_FILES}
+    )
 
-	SOURCE_GROUP("rdo_editor\\.editor\\.parser" FILES
-		${EDITOR_PARSER_FILES}
-	)
+    SOURCE_GROUP("rdo_editor\\.editor\\.parser" FILES
+        ${EDITOR_PARSER_FILES}
+    )
 
-	SOURCE_GROUP("rdo_editor\\.editor\\.results" FILES
-		${EDITOR_RESULTS_FILES}
-	)
+    SOURCE_GROUP("rdo_editor\\.editor\\.results" FILES
+        ${EDITOR_RESULTS_FILES}
+    )
 
-	SOURCE_GROUP("rdo_editor\\.generated\\.moc" FILES
-		${GENERATED_EDITOR_MOC_FILES}
-	)
+    SOURCE_GROUP("rdo_editor\\.generated\\.moc" FILES
+        ${GENERATED_EDITOR_MOC_FILES}
+    )
 
-	SOURCE_GROUP("rdo_editor\\.pch" FILES
-		${EDITOR_PCH_FILES}
-	)
-	
-	SOURCE_GROUP("rdo_frame\\.frame" FILES
-		${FRAME_FILES}
-	)
+    SOURCE_GROUP("rdo_editor\\.pch" FILES
+        ${EDITOR_PCH_FILES}
+    )
+    
+    SOURCE_GROUP("rdo_frame\\.frame" FILES
+        ${FRAME_FILES}
+    )
 
-	SOURCE_GROUP("rdo_frame\\.generated\\.moc" FILES
-		${GENERATED_FRAME_MOC_FILES}
-	)
+    SOURCE_GROUP("rdo_frame\\.generated\\.moc" FILES
+        ${GENERATED_FRAME_MOC_FILES}
+    )
 
-	SOURCE_GROUP("rdo_frame\\.pch" FILES
-		${FRAME_PCH_FILES}
-	)
-	
-	SOURCE_GROUP("rdo_model\\.editor" FILES
-		${EDITOR_MODEL_FILES}
-	)
+    SOURCE_GROUP("rdo_frame\\.pch" FILES
+        ${FRAME_PCH_FILES}
+    )
+    
+    SOURCE_GROUP("rdo_model\\.editor" FILES
+        ${EDITOR_MODEL_FILES}
+    )
 
-	SOURCE_GROUP("rdo_model\\.model" FILES
-		${MODEL_FILES}
-	)
+    SOURCE_GROUP("rdo_model\\.model" FILES
+        ${MODEL_FILES}
+    )
 
-	SOURCE_GROUP("rdo_model\\.generated\\.moc" FILES
-		${GENERATED_MODEL_MOC_FILES}
-	)
+    SOURCE_GROUP("rdo_model\\.generated\\.moc" FILES
+        ${GENERATED_MODEL_MOC_FILES}
+    )
 
-	SOURCE_GROUP("rdo_model\\.pch" FILES
-		${MODEL_PCH_FILES}
-	)
-	
-	SOURCE_GROUP("rdo_plugin_loader\\.plugins" FILES
-		${PLUGINS_FILES}
-	)
+    SOURCE_GROUP("rdo_model\\.pch" FILES
+        ${MODEL_PCH_FILES}
+    )
+    
+    SOURCE_GROUP("rdo_plugin_loader\\.plugins" FILES
+        ${PLUGINS_FILES}
+    )
 
-	SOURCE_GROUP("rdo_plugin_loader\\.pch" FILES
-		${PLUGIN_LOADER_PCH_FILES}
-	)
-	
-	SOURCE_GROUP("rdo_tracer\\.tracer" FILES
-		${TRACER_FILES}
-	)
+    SOURCE_GROUP("rdo_plugin_loader\\.pch" FILES
+        ${PLUGIN_LOADER_PCH_FILES}
+    )
+    
+    SOURCE_GROUP("rdo_tracer\\.tracer" FILES
+        ${TRACER_FILES}
+    )
 
-	SOURCE_GROUP("rdo_tracer\\.tracer\\.chart" FILES
-		${TRACER_CHART_FILES}
-	)
+    SOURCE_GROUP("rdo_tracer\\.tracer\\.chart" FILES
+        ${TRACER_CHART_FILES}
+    )
 
-	SOURCE_GROUP("rdo_tracer\\.tracer\\.logger" FILES
-		${TRACER_LOGGER_FILES}
-	)
+    SOURCE_GROUP("rdo_tracer\\.tracer\\.logger" FILES
+        ${TRACER_LOGGER_FILES}
+    )
 
-	SOURCE_GROUP("rdo_tracer\\.generated\\.moc" FILES
-		${GENERATED_TRACER_MOC_FILES}
-	)
+    SOURCE_GROUP("rdo_tracer\\.generated\\.moc" FILES
+        ${GENERATED_TRACER_MOC_FILES}
+    )
 
-	SOURCE_GROUP("rdo_tracer\\.pch" FILES
-		${TRACER_PCH_FILES}
-	)	
+    SOURCE_GROUP("rdo_tracer\\.pch" FILES
+        ${TRACER_PCH_FILES}
+    )    
 ENDIF()

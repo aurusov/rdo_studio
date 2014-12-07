@@ -14,21 +14,21 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOPROCAssign
 // --------------------------------------------------------------------------------
 RDOPROCAssign::RDOPROCAssign(LPIPROCProcess pProcess, const LPRDOCalc& pCalc)
-	: RDOPROCBlock(pProcess)
-	, pAssignCalc (pCalc   )
+    : RDOPROCBlock(pProcess)
+    , pAssignCalc (pCalc   )
 {}
 
 bool RDOPROCAssign::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
 {
-	return !m_transacts.empty();
+    return !m_transacts.empty();
 }
 
 IBaseOperation::BOResult RDOPROCAssign::onDoOperation(const LPRDORuntime& pRuntime)
 {
-	pAssignCalc->calcValue(pRuntime);
-	TRACE1("%7.1f ASSIGN\n", pRuntime->getCurrentTime());
-	m_transacts.front()->next();
-	return IBaseOperation::BOR_done;
+    pAssignCalc->calcValue(pRuntime);
+    TRACE1("%7.1f ASSIGN\n", pRuntime->getCurrentTime());
+    m_transacts.front()->next();
+    return IBaseOperation::BOR_done;
 }
 
 void RDOPROCAssign::onStart(const LPRDORuntime& /*pRuntime*/)
@@ -39,7 +39,7 @@ void RDOPROCAssign::onStop(const LPRDORuntime& /*pRuntime*/)
 
 IBaseOperation::BOResult RDOPROCAssign::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	return IBaseOperation::BOR_cant_run;
+    return IBaseOperation::BOR_cant_run;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

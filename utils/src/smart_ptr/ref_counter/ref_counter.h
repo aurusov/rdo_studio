@@ -11,7 +11,7 @@ template <class T>
 class RefCounter: public IRefCounter
 {
 public:
-	DECLARE_IRefCounter;
+    DECLARE_IRefCounter;
 };
 
 } // namespace rdo

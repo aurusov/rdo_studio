@@ -19,11 +19,11 @@ class RDOCalcDiv: public RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue
 {
 DECLARE_FACTORY(RDOCalcDiv);
 private:
-	typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator/ >, OperatorType::OT_ARITHM> parent_type;
+    typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator/ >, OperatorType::OT_ARITHM> parent_type;
 
-	RDOCalcDiv(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
+    RDOCalcDiv(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 DECLARE_POINTER(RDOCalcDiv);
 
@@ -32,9 +32,9 @@ class RDOCalcPlusEnumSafe: public RDOCalcPlus
 {
 DECLARE_FACTORY(RDOCalcPlusEnumSafe)
 private:
-	RDOCalcPlusEnumSafe(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
+    RDOCalcPlusEnumSafe(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 PREDECLARE_POINTER(RDOCalcMultEnumSafe);
@@ -42,9 +42,9 @@ class RDOCalcMultEnumSafe: public RDOCalcMult
 {
 DECLARE_FACTORY(RDOCalcMultEnumSafe)
 private:
-	RDOCalcMultEnumSafe(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
+    RDOCalcMultEnumSafe(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

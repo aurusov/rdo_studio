@@ -6,9 +6,9 @@
 // --------------------------------------------------------------------------------
 
 DockFocusable::DockFocusable(const QString& title, QWidget* pParent)
-	: super(title, pParent)
+    : super(title, pParent)
 {
-	connect(this, SIGNAL(visibilityChanged(bool)), this, SLOT(onVisibilityChanged(bool)));
+    connect(this, SIGNAL(visibilityChanged(bool)), this, SLOT(onVisibilityChanged(bool)));
 }
 
 DockFocusable::~DockFocusable()
@@ -16,12 +16,12 @@ DockFocusable::~DockFocusable()
 
 void DockFocusable::onVisibilityChanged(bool visible)
 {
-	if (visible)
-	{
-		widget()->setFocus();
-	}
-	else
-	{
-		widget()->clearFocus();
-	}
+    if (visible)
+    {
+        widget()->setFocus();
+    }
+    else
+    {
+        widget()->clearFocus();
+    }
 }

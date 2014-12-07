@@ -16,19 +16,19 @@ template <class T1, class T2>
 class BisonValuePair: public rdo::counter_reference
 {
 public:
-	const T1& getFirst () const;
-	const T2& getSecond() const;
+    const T1& getFirst () const;
+    const T2& getSecond() const;
 
 private:
-	typedef  BisonValuePair<T1, T2>  this_type;
-	DECLARE_FACTORY(this_type);
+    typedef  BisonValuePair<T1, T2>  this_type;
+    DECLARE_FACTORY(this_type);
 
-	BisonValuePair(const T1& first, const T2& second);
-	virtual ~BisonValuePair();
+    BisonValuePair(const T1& first, const T2& second);
+    virtual ~BisonValuePair();
 
-	typedef  std::pair<T1, T2>  Value;
+    typedef  std::pair<T1, T2>  Value;
 
-	Value m_value;
+    Value m_value;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

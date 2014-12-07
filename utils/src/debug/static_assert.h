@@ -14,6 +14,6 @@ template <>
 struct CompileTimeError<true> {};
 
 #define STATIC_ASSERT(expr) \
-	rdo::CompileTimeError<((expr) != 0)>();
+    rdo::CompileTimeError<((expr) != 0)>();
 
 } // namespace rdo

@@ -11,9 +11,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDODPTSome
 // --------------------------------------------------------------------------------
 RDODPTSome::RDODPTSome(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent)
-	: RDOLogicSimple(pRuntime, parent)
+    : RDOLogicSimple(pRuntime, parent)
 {
-	pRuntime->getFreeDPTId();
+    pRuntime->getFreeDPTId();
 }
 
 RDODPTSome::~RDODPTSome()

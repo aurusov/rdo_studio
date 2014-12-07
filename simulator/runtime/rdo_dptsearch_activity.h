@@ -14,13 +14,13 @@ class RDODPTSearchActivity: public IDPTSearchActivity, public RDOTraceableObject
 {
 DECLARE_FACTORY(RDODPTSearchActivity);
 private:
-	RDODPTSearchActivity(const LPIRule& rule, ValueTime valueTime, const LPRDOCalc& pCost);
+    RDODPTSearchActivity(const LPIRule& rule, ValueTime valueTime, const LPRDOCalc& pCost);
 
-	LPIRule                        m_rule;
-	LPRDOCalc                      m_pCost;
-	IDPTSearchActivity::ValueTime  m_valueTime;
+    LPIRule                        m_rule;
+    LPRDOCalc                      m_pCost;
+    IDPTSearchActivity::ValueTime  m_valueTime;
 
-	DECLARE_IDPTSearchActivity;
+    DECLARE_IDPTSearchActivity;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

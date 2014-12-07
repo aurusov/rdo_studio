@@ -12,41 +12,41 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOCalcSeqInit
 // --------------------------------------------------------------------------------
 RDOCalcSeqInit::RDOCalcSeqInit(int base, RandGenerator* gen)
-	: m_base(base)
-	, m_gen (gen )
+    : m_base(base)
+    , m_gen (gen )
 {}
 
 void RDOCalcSeqInit::setBase(int base)
 {
-	m_base = base;
+    m_base = base;
 }
 
 RDOValue RDOCalcSeqInit::doCalc(const LPRDORuntime& /*pRuntime*/)
 {
-	m_gen->setSeed(m_base);
-	return RDOValue();
+    m_gen->setSeed(m_base);
+    return RDOValue();
 }
 
 RDOCalcSeqInit::~RDOCalcSeqInit() 
 { 
-//	delete m_gen;
+//    delete m_gen;
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcSeqNext
 // --------------------------------------------------------------------------------
 RDOCalcSeqNext::Range::Range()
-	: m_min(0)
-	, m_max(0)
+    : m_min(0)
+    , m_max(0)
 {}
 
 RDOCalcSeqNext::Range::Range(const double& min, const double& max)
-	: m_min(min)
-	, m_max(max)
+    : m_min(min)
+    , m_max(max)
 {}
 
 RDOCalcSeqNext::RDOCalcSeqNext()
-	: m_res_real(true )
+    : m_res_real(true )
 {}
 
 // --------------------------------------------------------------------------------
@@ -54,18 +54,18 @@ RDOCalcSeqNext::RDOCalcSeqNext()
 // --------------------------------------------------------------------------------
 RDOValue RDOCalcSeqNextUniform::getNextValue(const LPRDORuntime& pRuntime)
 {
-	RDOValue from = pRuntime->getFuncArgument(0);
-	RDOValue to   = pRuntime->getFuncArgument(1);
-	if (from > to)
-	{
-		pRuntime->error().push(
-			rdo::format("Для последовательности типа uniform нижняя граница диапазона должна быть меньше либо равна верхней, текущие значения: %s..%s"
-				, from.getAsString().c_str()
-				, to  .getAsString().c_str())
-			, srcInfo()
-		);
-	}
-	return m_gen->next(from.getDouble(), to.getDouble());
+    RDOValue from = pRuntime->getFuncArgument(0);
+    RDOValue to   = pRuntime->getFuncArgument(1);
+    if (from > to)
+    {
+        pRuntime->error().push(
+            rdo::format("Для последовательности типа uniform нижняя граница диапазона должна быть меньше либо равна верхней, текущие значения: %s..%s"
+                , from.getAsString().c_str()
+                , to  .getAsString().c_str())
+            , srcInfo()
+        );
+    }
+    return m_gen->next(from.getDouble(), to.getDouble());
 }
 
 // --------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ RDOValue RDOCalcSeqNextUniform::getNextValue(const LPRDORuntime& pRuntime)
 // --------------------------------------------------------------------------------
 RDOValue RDOCalcSeqNextNormal::getNextValue(const LPRDORuntime& pRuntime)
 {
-	return m_gen->next(pRuntime->getFuncArgument(0).getDouble(), pRuntime->getFuncArgument(1).getDouble());
+    return m_gen->next(pRuntime->getFuncArgument(0).getDouble(), pRuntime->getFuncArgument(1).getDouble());
 }
 
 // --------------------------------------------------------------------------------
@@ -81,7 +81,7 @@ RDOValue RDOCalcSeqNextNormal::getNextValue(const LPRDORuntime& pRuntime)
 // --------------------------------------------------------------------------------
 RDOValue RDOCalcSeqNextExponential::getNextValue(const LPRDORuntime& pRuntime)
 {
-	return m_gen->next(pRuntime->getFuncArgument(0).getDouble());
+    return m_gen->next(pRuntime->getFuncArgument(0).getDouble());
 }
 
 // --------------------------------------------------------------------------------
@@ -89,20 +89,20 @@ RDOValue RDOCalcSeqNextExponential::getNextValue(const LPRDORuntime& pRuntime)
 // --------------------------------------------------------------------------------
 RDOValue RDOCalcSeqNextTriangular::getNextValue(const LPRDORuntime& pRuntime)
 {
-	RDOValue from = pRuntime->getFuncArgument(0);
-	RDOValue top  = pRuntime->getFuncArgument(1);
-	RDOValue to   = pRuntime->getFuncArgument(2);
-	if ((from > top) || (top > to))
-	{
-		pRuntime->error().push(
-			rdo::format("Для треуголного закона распределения нужно указать левую границу, точку под высотой треугольника, правую границу: %s, %s, %s"
-				, from.getAsString().c_str()
-				, top.getAsString().c_str()
-				, to.getAsString().c_str())
-			, srcInfo()
-		);
-	}
-	return m_gen->next(from.getDouble(), top.getDouble(), to.getDouble());
+    RDOValue from = pRuntime->getFuncArgument(0);
+    RDOValue top  = pRuntime->getFuncArgument(1);
+    RDOValue to   = pRuntime->getFuncArgument(2);
+    if ((from > top) || (top > to))
+    {
+        pRuntime->error().push(
+            rdo::format("Для треуголного закона распределения нужно указать левую границу, точку под высотой треугольника, правую границу: %s, %s, %s"
+                , from.getAsString().c_str()
+                , top.getAsString().c_str()
+                , to.getAsString().c_str())
+            , srcInfo()
+        );
+    }
+    return m_gen->next(from.getDouble(), top.getDouble(), to.getDouble());
 }
 
 // --------------------------------------------------------------------------------
@@ -110,7 +110,7 @@ RDOValue RDOCalcSeqNextTriangular::getNextValue(const LPRDORuntime& pRuntime)
 // --------------------------------------------------------------------------------
 RDOValue RDOCalcSeqNextByHist::getNextValue(const LPRDORuntime& /*pRuntime*/)
 {
-	return m_gen->next();
+    return m_gen->next();
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

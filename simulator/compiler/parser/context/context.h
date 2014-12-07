@@ -24,89 +24,89 @@ friend void ContextStack::push(LPContext pContext);
 friend void ContextStack::pop_not_safed();
 
 public:
-	static const std::string METHOD_GET;
-	static const std::string METHOD_TYPE_OF;
-	static const std::string METHOD_SET;
-	static const std::string METHOD_OPERATOR_BRACKETS;
-	static const std::string METHOD_OPERATOR_DOT;
+    static const std::string METHOD_GET;
+    static const std::string METHOD_TYPE_OF;
+    static const std::string METHOD_SET;
+    static const std::string METHOD_OPERATOR_BRACKETS;
+    static const std::string METHOD_OPERATOR_DOT;
 
-	typedef  boost::function<LPExpression ()> CreateExpressionFunction;
+    typedef  boost::function<LPExpression ()> CreateExpressionFunction;
 
-	template <class Function>
-	struct FunctionWrapper
-	{
-		FunctionWrapper(const Function& function);
-		Function function;
-	};
-	typedef  FunctionWrapper<CreateExpressionFunction>  CreateExpression;
+    template <class Function>
+    struct FunctionWrapper
+    {
+        FunctionWrapper(const Function& function);
+        Function function;
+    };
+    typedef  FunctionWrapper<CreateExpressionFunction>  CreateExpression;
 
-	struct Params: public std::map<std::string, boost::any>
-	{
-		static const std::string IDENTIFIER;
+    struct Params: public std::map<std::string, boost::any>
+    {
+        static const std::string IDENTIFIER;
 
-		template <class T>
-		T get(const std::string& name) const;
+        template <class T>
+        T get(const std::string& name) const;
 
-		std::string get(const std::string& name) const;
-		std::string identifier() const;
+        std::string get(const std::string& name) const;
+        std::string identifier() const;
 
-		bool exists(const std::string& name) const;
-	};
+        bool exists(const std::string& name) const;
+    };
 
-	class FindResult;
-	struct SwitchContext
-	{
-		friend class FindResult;
+    class FindResult;
+    struct SwitchContext
+    {
+        friend class FindResult;
 
-		LPContext  context;
-		Params     params;
+        LPContext  context;
+        Params     params;
 
-		SwitchContext(const LPContext& context);
-		SwitchContext(const LPContext& context, const Params& params);
+        SwitchContext(const LPContext& context);
+        SwitchContext(const LPContext& context, const Params& params);
 
-		operator bool() const;
+        operator bool() const;
 
-	private:
-		SwitchContext();
-	};
+    private:
+        SwitchContext();
+    };
 
-	class FindResult: public virtual rdo::counter_reference
-	{
-	DECLARE_FACTORY(FindResult);
+    class FindResult: public virtual rdo::counter_reference
+    {
+    DECLARE_FACTORY(FindResult);
 
-	public:
-		FindResult();
-		explicit FindResult(const CreateExpression& createExpression);
-		explicit FindResult(const SwitchContext& switchContext);
+    public:
+        FindResult();
+        explicit FindResult(const CreateExpression& createExpression);
+        explicit FindResult(const SwitchContext& switchContext);
 
-		operator bool() const;
+        operator bool() const;
 
-		const CreateExpressionFunction& getCreateExpression() const;
-		const SwitchContext& getSwitchContext() const;
+        const CreateExpressionFunction& getCreateExpression() const;
+        const SwitchContext& getSwitchContext() const;
 
-	private:
-		CreateExpressionFunction createExpression;
-		SwitchContext            switchContext;
-	};
-	DECLARE_POINTER(FindResult);
+    private:
+        CreateExpressionFunction createExpression;
+        SwitchContext            switchContext;
+    };
+    DECLARE_POINTER(FindResult);
 
-	template <class T>
-	rdo::intrusive_ptr<T> cast();
+    template <class T>
+    rdo::intrusive_ptr<T> cast();
 
-	template <class T>
-	rdo::interface_ptr<T> interface_cast();
+    template <class T>
+    rdo::interface_ptr<T> interface_cast();
 
-	LPFindResult find(const std::string& method, const Params& params, const RDOParserSrcInfo& srcInfo) const;
+    LPFindResult find(const std::string& method, const Params& params, const RDOParserSrcInfo& srcInfo) const;
 
 protected:
-	Context();
-	virtual ~Context();
+    Context();
+    virtual ~Context();
 
 private:
-	LPContextStack  m_pContextStack;
+    LPContextStack  m_pContextStack;
 
-	void setContextStack  (const LPContextStack& pContextStack);
-	void resetContextStack();
+    void setContextStack  (const LPContextStack& pContextStack);
+    void resetContextStack();
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

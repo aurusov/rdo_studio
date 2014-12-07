@@ -9,13 +9,13 @@
 // --------------------------------------------------------------------------------
 
 class ActionActivatorWidget
-	: public QWidget
-	, public ActionActivator
+    : public QWidget
+    , public ActionActivator
 {
 protected:
-	ActionActivatorWidget(QWidget* pParent);
-	virtual ~ActionActivatorWidget();
+    ActionActivatorWidget(QWidget* pParent);
+    virtual ~ActionActivatorWidget();
 
-	virtual void focusInEvent (QFocusEvent* pEvent);
-	virtual void focusOutEvent(QFocusEvent* pEvent);
+    virtual void focusInEvent (QFocusEvent* pEvent);
+    virtual void focusOutEvent(QFocusEvent* pEvent);
 };

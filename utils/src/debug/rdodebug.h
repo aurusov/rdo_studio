@@ -4,14 +4,14 @@
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
-	#ifdef RDO_MT
-		#include <afxwin.h>
-	#else
-		#include <windows.h>
-	#endif
+    #ifdef RDO_MT
+        #include <afxwin.h>
+    #else
+        #include <windows.h>
+    #endif
 #endif // COMPILER_VISUAL_STUDIO
 #ifdef COMPILER_GCC
-	#include <assert.h>
+    #include <assert.h>
 #endif // COMPILER_GCC
 
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -48,16 +48,16 @@ void StdError(const std::string& message);
 #ifdef COMPILER_VISUAL_STUDIO
 
 #define ASSERT(A) \
-	if (!(A)) \
-	{ \
-		StdError(rdo::format("ASSERT: line %d, source '%s', condition '%s'\n", __LINE__, __FILE__, #A)); \
-		::DebugBreak(); \
-	}
+    if (!(A)) \
+    { \
+        StdError(rdo::format("ASSERT: line %d, source '%s', condition '%s'\n", __LINE__, __FILE__, #A)); \
+        ::DebugBreak(); \
+    }
 
 template <typename Type>
 Type IdentityNeverReachHere(Type value)
 {
-	return value;
+    return value;
 }
 
 #define NEVER_REACH_HERE ASSERT(IdentityNeverReachHere(false))

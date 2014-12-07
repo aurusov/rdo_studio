@@ -10,41 +10,41 @@
 // --------------------------------------------------------------------------------
 
 class PluginGame5GenerateSituationDialog
-	: public QDialog
-	, public Ui_PluginGame5GenerateSituationDialog
+    : public QDialog
+    , public Ui_PluginGame5GenerateSituationDialog
 {Q_OBJECT
 
 public:
-	PluginGame5GenerateSituationDialog(QWidget* parent);
-	~PluginGame5GenerateSituationDialog();
+    PluginGame5GenerateSituationDialog(QWidget* parent);
+    ~PluginGame5GenerateSituationDialog();
 
-	std::vector<unsigned int> getBoardState() const;
+    std::vector<unsigned int> getBoardState() const;
 
 signals:
-	void buttonRandomClicked(bool solvabilityCheck);
+    void buttonRandomClicked(bool solvabilityCheck);
 
 public slots:
-	void onPluginAction();
+    void onPluginAction();
 
 private:
-	std::string evaluateBy() const;
-	std::string activityValue(int direction) const;
+    std::string evaluateBy() const;
+    std::string activityValue(int direction) const;
 
-	QString modelRTP() const;
-	QString modelRSS() const;
-	QString modelPAT() const;
-	QString modelDPT() const;
-	QString modelFUN() const;
+    QString modelRTP() const;
+    QString modelRSS() const;
+    QString modelPAT() const;
+    QString modelDPT() const;
+    QString modelFUN() const;
 
-	void clearAllTabs() const;
-	rdo::gui::model::Model* getCurrentModel() const;
-	void generateModel() const;
+    void clearAllTabs() const;
+    rdo::gui::model::Model* getCurrentModel() const;
+    void generateModel() const;
 
-	QStringList parseModelFUN() const;
+    QStringList parseModelFUN() const;
 
 private slots:
-	void callTilesOrderDialog();
-	void onClickOk();
-	void onClickHide(bool state);
-	void emitSolvabilityCheck();
+    void callTilesOrderDialog();
+    void onClickOk();
+    void onClickHide(bool state);
+    void emitSolvabilityCheck();
 };

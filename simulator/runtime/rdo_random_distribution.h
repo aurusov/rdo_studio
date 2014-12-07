@@ -13,114 +13,114 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RandGenerator
 {
 public:
-	virtual ~RandGenerator();
+    virtual ~RandGenerator();
 
-	void setSeed(long int seed = 123456789);
+    void setSeed(long int seed = 123456789);
 
-	double u01();
+    double u01();
 
 protected:
 
 #ifdef RDO_NATIVE_U01
-	std::uint32_t m_seed;
+    std::uint32_t m_seed;
 #else
-	long int m_seed;
+    long int m_seed;
 #endif
-	RandGenerator(long int seed = 123456789);
+    RandGenerator(long int seed = 123456789);
 };
 
 class RandGeneratorUniform: public RandGenerator
 {
 public:
-	RandGeneratorUniform(long int seed = 123456789);
+    RandGeneratorUniform(long int seed = 123456789);
 
-	double next(double from, double to);
+    double next(double from, double to);
 };
 
 class RandGeneratorExponential: public RandGenerator
 {
 public:
-	RandGeneratorExponential(long int seed = 123456789);
+    RandGeneratorExponential(long int seed = 123456789);
 
-	double next(double math);
+    double next(double math);
 };
 
 class RandGeneratorNormal: public RandGenerator
 {
 public:
-	RandGeneratorNormal(long int seed = 123456789);
+    RandGeneratorNormal(long int seed = 123456789);
 
-	double next(double av, double var);
+    double next(double av, double var);
 };
 
 class RandGeneratorTriangular: public RandGenerator
 {
 public:
-	RandGeneratorTriangular(long int seed = 123456789);
+    RandGeneratorTriangular(long int seed = 123456789);
 
-	double next(double from, double top, double to);
+    double next(double from, double top, double to);
 };
 
 class RandGeneratorCommonNext
 {
 public:
-	virtual ~RandGeneratorCommonNext();
-	virtual RDOValue next() = 0;
+    virtual ~RandGeneratorCommonNext();
+    virtual RDOValue next() = 0;
 
 protected:
-	RandGeneratorCommonNext();
+    RandGeneratorCommonNext();
 };
 
 class RandGeneratorByHist: public RandGeneratorUniform, public RandGeneratorCommonNext
 {
 protected:
-	double summ;
+    double summ;
 
-	RandGeneratorByHist(long int seed = 123456789);
+    RandGeneratorByHist(long int seed = 123456789);
 };
 
 class RandGeneratorByHistReal: public RandGeneratorByHist
 {
 public:
-	RandGeneratorByHistReal(long int seed = 123456789);
+    RandGeneratorByHistReal(long int seed = 123456789);
 
-	void addValues(double from, double to, double freq);
+    void addValues(double from, double to, double freq);
 
 private:
-	std::vector< double > m_from;
-	std::vector< double > m_to;
-	std::vector< double > m_freq;
+    std::vector< double > m_from;
+    std::vector< double > m_to;
+    std::vector< double > m_freq;
 
-	virtual RDOValue next();
+    virtual RDOValue next();
 };
 
 class RandGeneratorByHistEnum: public RandGeneratorByHist
 {
 public:
-	RandGeneratorByHistEnum(long int seed = 123456789);
+    RandGeneratorByHistEnum(long int seed = 123456789);
 
-	void addValues(RDOValue val, double freq);
+    void addValues(RDOValue val, double freq);
 
 private:
-	std::vector< RDOValue > m_vals;
-	std::vector< double >   m_freq;
+    std::vector< RDOValue > m_vals;
+    std::vector< double >   m_freq;
 
-	virtual RDOValue next();
+    virtual RDOValue next();
 };
 
 class RandGeneratorEnumerative: public RandGeneratorCommonNext
 {
 public:
-	RandGeneratorEnumerative();
-	virtual ~RandGeneratorEnumerative();
+    RandGeneratorEnumerative();
+    virtual ~RandGeneratorEnumerative();
 
-	void addValue(RDOValue val);
+    void addValue(RDOValue val);
 
 private:
-	std::vector<RDOValue>            m_vals;
-	std::vector<RDOValue>::size_type m_curr;
+    std::vector<RDOValue>            m_vals;
+    std::vector<RDOValue>::size_type m_curr;
 
-	virtual RDOValue next();
+    virtual RDOValue next();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

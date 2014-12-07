@@ -12,12 +12,12 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- TypeContext
 // --------------------------------------------------------------------------------
 TypeContext::TypeContext(const LPTypeInfo& pType)
-	: m_pType(pType)
+    : m_pType(pType)
 {}
 
 const LPTypeInfo& TypeContext::getTypeInfo() const
 {
-	return m_pType;
+    return m_pType;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

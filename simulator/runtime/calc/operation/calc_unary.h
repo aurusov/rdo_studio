@@ -11,13 +11,13 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalcUnaryBase: public RDOCalc
 {
 public:
-	template <class T>
-	static LPRDOCalc generateCalc(const RDOSrcInfo::Position& position, const LPRDOCalc& pUnaryCalc);
+    template <class T>
+    static LPRDOCalc generateCalc(const RDOSrcInfo::Position& position, const LPRDOCalc& pUnaryCalc);
 
 protected:
-	RDOCalcUnaryBase(const LPRDOCalc& pOperation);
+    RDOCalcUnaryBase(const LPRDOCalc& pOperation);
 
-	LPRDOCalc m_pOperation;
+    LPRDOCalc m_pOperation;
 };
 
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
@@ -25,17 +25,17 @@ class RDOCalcUnary: public RDOCalcUnaryBase
 {
 friend class rdo::Factory<RDOCalcUnary<ret_type, pOperator, CalcType> >;
 public:
-	enum { calc_type = CalcType };
-	typedef ret_type (RDOValue::*value_operator)() const;
+    enum { calc_type = CalcType };
+    typedef ret_type (RDOValue::*value_operator)() const;
 
-	static RDOSrcInfo     getStaticSrcInfo(const RDOSrcInfo::Position& position, const LPRDOCalc& pUnaryCalc);
-	static value_operator getOperation    ();
+    static RDOSrcInfo     getStaticSrcInfo(const RDOSrcInfo::Position& position, const LPRDOCalc& pUnaryCalc);
+    static value_operator getOperation    ();
 
 protected:
-	RDOCalcUnary(const RDOSrcInfo::Position& position, const LPRDOCalc& pOperation);
+    RDOCalcUnary(const RDOSrcInfo::Position& position, const LPRDOCalc& pOperation);
 
 private:
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 typedef RDOCalcUnary<RDOValue, &RDOValue::operator-, OperatorType::OT_ARITHM> RDOCalcUMinus;
@@ -47,15 +47,15 @@ class RDOCalcDoubleToIntByResult: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcDoubleToIntByResult)
 public:
-	void needRound();
+    void needRound();
 
 private:
-	RDOCalcDoubleToIntByResult(const LPRDOCalc& pOper);
+    RDOCalcDoubleToIntByResult(const LPRDOCalc& pOper);
 
-	bool m_round;
-	LPRDOCalc m_pOperation;
+    bool m_round;
+    LPRDOCalc m_pOperation;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 PREDECLARE_POINTER(RDOCalcInt);
@@ -63,11 +63,11 @@ class RDOCalcInt: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcInt)
 private:
-	RDOCalcInt(const LPRDOCalc& pOperation);
+    RDOCalcInt(const LPRDOCalc& pOperation);
 
-	LPRDOCalc m_pOperation;
+    LPRDOCalc m_pOperation;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -11,9 +11,9 @@
 class WordListUtil: public boost::noncopyable
 {
 public:
-	WordListUtil(const WordList& wordlist);
-	std::vector<std::string> getNearestWords(const std::string& userPattern) const;
+    WordListUtil(const WordList& wordlist);
+    std::vector<std::string> getNearestWords(const std::string& userPattern) const;
 
 private:
-	const WordList& wl;
+    const WordList& wl;
 };
