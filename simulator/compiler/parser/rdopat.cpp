@@ -730,9 +730,9 @@ std::vector<rdo::runtime::LPRDOCalc> fillDefaultParams(LPRDORTPResType pType, RD
 			rdo::runtime::LPRDOCalc pResCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
 				pResType->getNumber(),
 				nested_default_params,
-				false/** @todo задавать такую же трассировку, как у родительского ресурса */,
-				false/** @todo проверить, что ресурс временный */,
-				true /* ресурс является вложенным */
+				false, // TODO задавать такую же трассировку, как у родительского ресурса
+				false, // TODO проверить, что ресурс временный
+				true   // ресурс является вложенным
 			);
 			ASSERT(pResCalc);
 			params_default.push_back(pResCalc);
@@ -766,8 +766,8 @@ rdo::runtime::LPRDOCalc RDOPATPattern::createRelRes(bool trace) const
 		m_pCurrRelRes->getType()->getNumber(),
 		params_default,
 		trace,
-		false/** @todo проверить, что ресурс временный */,
-		false/* релеватный ресурс не может быть вложенным */,
+		false, // TODO проверить, что ресурс временный
+		false, // релеватный ресурс не может быть вложенным
 		m_pCurrRelRes->m_relResID
 	);
 	ASSERT(pCalc);

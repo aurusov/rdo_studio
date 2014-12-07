@@ -283,7 +283,7 @@ ProcGUIBlockTerminate::ProcGUIBlockTerminate(const LPProcGUIProcess& pProcess, c
 	ASSERT(pProcess );
 	ASSERT(m_pParams);
 
-	//! \todo добавить поддержку арифметических выражений
+	// TODO добавить поддержку арифметических выражений
 	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(static_cast<std::size_t>(m_pParams->getTermInc())));
 	ASSERT(pCalc);
 	m_pBlock = rdo::Factory<rdo::runtime::RDOPROCTerminate>::create(pProcess->getProcess().object_dynamic_cast<IPROCProcess>(), pCalc);
@@ -402,7 +402,7 @@ ProcGUISeize::ProcGUISeize(const LPProcGUIProcess& pProcess, const parser::LPRDO
 			rtp = rssList[resName].getType();
 			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, parser::RDOParserSrcInfo()))
 			{
-				//! \todo переделать
+				// TODO переделать
 				if (!rssList[resName].checkParserResourceType<parser::RDORSSResource>(pParser))
 				{
 					rdo::compiler::mbuilder::BlockForSeize::reobjectRes(rtp, resName);
@@ -512,7 +512,7 @@ ProcGUIRelease::ProcGUIRelease(const LPProcGUIProcess& pProcess, const parser::L
 			rtp = rssList[resName].getType();
 			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, parser::RDOParserSrcInfo()))
 			{
-				//! \todo переделать
+				// TODO переделать
 				if (!rssList[resName].checkParserResourceType<parser::RDORSSResource>(pParser))
 				{
 					rdo::compiler::mbuilder::BlockForSeize::reobjectRes(rtp, resName);

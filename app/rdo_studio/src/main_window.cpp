@@ -185,7 +185,7 @@ MainWindow::MainWindow()
 	updateMenuFileReopen();
 }
 
-//! todo не вызывается диструктор
+// TODO не вызывается диструктор
 MainWindow::~MainWindow()
 {}
 
