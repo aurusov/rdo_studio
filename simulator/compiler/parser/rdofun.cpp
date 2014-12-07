@@ -670,7 +670,7 @@ LPExpression contextConstant(const LPTypeInfo pTypeInfo, const int& number, cons
 
 }
 
-Context::LPFindResult RDOFUNConstant::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult RDOFUNConstant::onFindContext(const std::string& method, const Context::Params& /*params*/, const RDOParserSrcInfo& srcInfo) const
 {
     if (method == Context::METHOD_GET)
     {
@@ -924,7 +924,7 @@ LPExpression contextSequence(const std::string& name, const RDOParserSrcInfo& sr
 
 }
 
-Context::LPFindResult RDOFUNSequence::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
+Context::LPFindResult RDOFUNSequence::onFindContext(const std::string& method, const Context::Params& /*params*/, const RDOParserSrcInfo& srcInfo) const
 {
     if (method == Context::METHOD_GET)
     {

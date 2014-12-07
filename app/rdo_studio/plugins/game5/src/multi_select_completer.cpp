@@ -47,7 +47,7 @@ QString MultiSelectCompleter::pathFromIndex(const QModelIndex& index) const
     return path;
 }
 
-QStringList MultiSelectCompleter::splitPath(const QString& path) const
+QStringList MultiSelectCompleter::splitPath(const QString& /*path*/) const
 {
     QLineEdit* lineEdit = static_cast<QLineEdit*>(widget());
 

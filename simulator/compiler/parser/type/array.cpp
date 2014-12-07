@@ -87,7 +87,7 @@ LPRDOValue RDOArrayType::value_cast(const LPRDOValue& pFrom, const RDOParserSrcI
     return NULL;
 }
 
-rdo::runtime::LPRDOCalc RDOArrayType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& pType) const
+rdo::runtime::LPRDOCalc RDOArrayType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& /*pType*/) const
 {
     return pCalc;
 }

@@ -48,7 +48,7 @@ LPRDOValue RDOType__unknow::value_cast(const LPRDOValue& pFrom, const RDOParserS
     return LPRDOValue(NULL);
 }
 
-rdo::runtime::LPRDOCalc RDOType__unknow::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& pType) const
+rdo::runtime::LPRDOCalc RDOType__unknow::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& /*pType*/) const
 {
     return pCalc;
 }
@@ -92,7 +92,7 @@ LPRDOValue RDOType__void::value_cast(const LPRDOValue& pFrom, const RDOParserSrc
     return LPRDOValue(NULL);
 }
 
-rdo::runtime::LPRDOCalc RDOType__void::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& pType) const
+rdo::runtime::LPRDOCalc RDOType__void::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& /*pType*/) const
 {
     return pCalc;
 }
@@ -224,7 +224,7 @@ LPRDOValue RDOType__real::value_cast(const LPRDOValue& pFrom, const RDOParserSrc
     return pToValue;
 }
 
-rdo::runtime::LPRDOCalc RDOType__real::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& pType) const
+rdo::runtime::LPRDOCalc RDOType__real::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& /*pType*/) const
 {
     return pCalc;
 }
@@ -282,7 +282,7 @@ LPRDOValue RDOType__string::value_cast(const LPRDOValue& pFrom, const RDOParserS
     return pToValue;
 }
 
-rdo::runtime::LPRDOCalc RDOType__string::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& pType) const
+rdo::runtime::LPRDOCalc RDOType__string::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& /*pType*/) const
 {
     return pCalc;
 }
@@ -328,7 +328,7 @@ LPRDOValue RDOType__identificator::value_cast(const LPRDOValue& pFrom, const RDO
     return LPRDOValue(NULL);
 }
 
-rdo::runtime::LPRDOCalc RDOType__identificator::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& pType) const
+rdo::runtime::LPRDOCalc RDOType__identificator::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& /*pType*/) const
 {
     return pCalc;
 }
@@ -387,7 +387,7 @@ LPRDOValue RDOType__bool::value_cast(const LPRDOValue& pFrom, const RDOParserSrc
     return pToValue;
 }
 
-rdo::runtime::LPRDOCalc RDOType__bool::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& pType) const
+rdo::runtime::LPRDOCalc RDOType__bool::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& /*pType*/) const
 {
     return pCalc;
 }

@@ -1,10 +1,9 @@
 // ----------------------------------------------------------------------- PLATFORM
-#include <set>
-
 #include "utils/src/common/platform.h"
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <set>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/debug/rdodebug.h"
 #include "simulator/runtime/simtrace.h"

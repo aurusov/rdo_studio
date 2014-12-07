@@ -71,16 +71,14 @@ ParamInfo* TracerBase::getParamType(std::istream& stream)
     }
     else
     {
-        int i;
+        int i = 0;
         try
         {
-            //тип ресурса сначала пишет в поток его ID
+            // тип ресурса сначала пишет в поток его ID
             i = boost::lexical_cast<int>(parTypeName);
         }
         catch (const boost::bad_lexical_cast &)
-        {
-            //do nothing?
-        }
+        {}
         if (i)
         {
             parType = ParamInfo::PT_RESOURCE;

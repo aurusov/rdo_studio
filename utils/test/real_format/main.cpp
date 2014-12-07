@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_SUITE(RDORealFormatTest)
 
 BOOST_AUTO_TEST_CASE(MantissaPrecisionSet)
 {
-#if defined(COMPILER_VISUAL_STUDIO) or defined(COMPILER_MINGW)
+#if defined(COMPILER_VISUAL_STUDIO) || defined(COMPILER_MINGW)
     _set_output_format(_TWO_DIGIT_EXPONENT);
 #endif
 }

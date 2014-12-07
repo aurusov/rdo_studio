@@ -206,7 +206,7 @@ LPRDOValue RDORTPResType::value_cast(const LPRDOValue& pFrom, const RDOParserSrc
     return LPRDOValue(NULL);
 }
 
-rdo::runtime::LPRDOCalc RDORTPResType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& pType) const
+rdo::runtime::LPRDOCalc RDORTPResType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& /*pType*/) const
 {
     return pCalc;
 }

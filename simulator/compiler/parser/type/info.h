@@ -29,7 +29,9 @@ protected:
     virtual ~TypeInfo();
 
 private:
-    TypeInfo(const LPIType& pType, const RDOParserSrcInfo& srcInfo);
+	TypeInfo(const LPIType& pType, const RDOParserSrcInfo& srcInfo);
+
+	TypeInfo& operator=(const TypeInfo&);
 
     template <class T>
     static LPTypeInfo create(const RDOParserSrcInfo& srcInfo);

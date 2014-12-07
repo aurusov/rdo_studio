@@ -147,7 +147,7 @@ LPRDOValue RDOEnumType::value_cast(const LPRDOValue& pFrom, const RDOParserSrcIn
     return pToValue;
 }
 
-rdo::runtime::LPRDOCalc RDOEnumType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& pType) const
+rdo::runtime::LPRDOCalc RDOEnumType::calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPIType& /*pType*/) const
 {
     return pCalc;
 }
@@ -180,7 +180,7 @@ void RDOEnumType::add(const LPRDOValue& pNext)
 namespace
 {
 
-LPExpression contextUnknownEnum(const RDOEnumType::EnumItem& enumValue, std::size_t index, const RDOParserSrcInfo& srcInfo)
+LPExpression contextUnknownEnum(const RDOEnumType::EnumItem& enumValue, std::size_t /*index*/, const RDOParserSrcInfo& srcInfo)
 {
     LPTypeInfo typeInfo = rdo::Factory<TypeInfo>::delegate<RDOType__identificator>(srcInfo);
     return rdo::Factory<Expression>::create(
