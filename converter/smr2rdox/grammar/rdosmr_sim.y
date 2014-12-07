@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdosmr_sim.y
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date
-  \brief     Синтаксис описания информации о прогоне (режим анимации, инициализация списка событий, терминальное условие и т.д.)
-  \indent    4T
-*/
-
 %{
 #define YYPARSE_PARAM lexer
 #define YYLEX_PARAM lexer

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      split-test.yx
-  \author    Александровский Кирилл (k.alexandrovsky@gmail.com)
-  \date      03.10.2013
-  \brief     Тест для проверки правильности генерации файлов .y для двухпроходной компиляции
-  \indent    4T
-*/
-
 %{
 #define YYPARSE_PARAM lexer
 #define YYLEX_PARAM lexer

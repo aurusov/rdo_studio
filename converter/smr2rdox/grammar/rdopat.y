@@ -1,14 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdopat.y
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      12.07.2010
-  \brief     закладка PAT - описание образцов активностей модели
-  \indent    4T
-*/
-
 %{
 #define YYPARSE_PARAM lexer
 #define YYLEX_PARAM lexer
