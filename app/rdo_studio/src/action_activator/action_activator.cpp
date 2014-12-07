@@ -20,10 +20,8 @@ bool ActionActivator::isActivated() const
     return m_activated;
 }
 
-void ActionActivator::activate(QFocusEvent* pEvent)
+void ActionActivator::activate(QFocusEvent* /*pEvent*/)
 {
-    ASSERT(pEvent);
-
     if (!m_activated)
     {
         m_activated = true;
