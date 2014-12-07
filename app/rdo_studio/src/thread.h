@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2006-2012
-  \file      app/rdo_studio/src/thread.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      15.07.2006
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _RDO_STUDIO_THREAD_H_
 #define _RDO_STUDIO_THREAD_H_
 

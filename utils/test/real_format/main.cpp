@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      main.cpp
-  \author    Пройдаков Евгений (lord.tiran@gmail.com)
-  \date      13.05.2012
-  \brief     Тест точности вывода дробных чисел
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES

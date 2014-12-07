@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      context_param_definition.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      08.12.2012
-  \brief     Контекст описания параметров функции
-  \indent    4T
-*/
-
 #ifndef _SIMULATOR_COMPILER_PARSER_CONTEXT_FUNCTION_PARAM_DEFINITION_H_
 #define _SIMULATOR_COMPILER_PARSER_CONTEXT_FUNCTION_PARAM_DEFINITION_H_
 

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_pattern.h
-  \author    Барс Александр
-  \date      20.12.2011
-  \brief     Калки для паттернов
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_CALC_PATTERN_H_
 #define _LIB_RUNTIME_CALC_PATTERN_H_
 

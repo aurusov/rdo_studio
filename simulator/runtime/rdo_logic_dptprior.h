@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_logic_dptprior.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      04.11.2009
-  \brief     DPTPrior
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_LOGIC_DPTPRIOR_H_
 #define _LIB_RUNTIME_LOGIC_DPTPRIOR_H_
 
@@ -18,20 +9,12 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOOrderDPTPrior
-  \brief   Дисциплина очереди для приоритетных логик БЗ
-*/
 class RDOOrderDPTPrior
 {
 public:
 	static LPIBaseOperation sort(const LPRDORuntime& pRuntime, BaseOperationList& container);
 };
 
-/*!
-  \class   RDOLogicDPTPrior
-  \brief   Логика БЗ для DPTPrior
-*/
 class RDOLogicDPTPrior: public RDOLogic<RDOOrderDPTPrior>
 {
 protected:
@@ -42,10 +25,6 @@ protected:
 	{}
 };
 
-/*!
-  \class   RDODPTPrior
-  \brief   Точка принятия решений DPTPrior
-*/
 class RDODPTPrior: public RDOLogicDPTPrior, public RDOPatternPrior
 {
 DECLARE_FACTORY(RDODPTPrior);

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      stack-inl.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      12.12.2009
-  \brief     
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/debug/rdodebug.h"

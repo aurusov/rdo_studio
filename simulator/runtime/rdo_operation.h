@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_operation.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      18.08.2010
-  \brief     Операции
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_OPERATION_H_
 #define _LIB_RUNTIME_OPERATION_H_
 
@@ -25,10 +15,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class     RDOOperation
-  \brief     Операция - модифицированное продукционное правило
-*/
 class RDOOperation
 	: public IBaseOperation
 	, public IOperation

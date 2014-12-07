@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_logic_dptsearch.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      29.04.2008
-  \brief     DPTSearch
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
 // ---------------------------------------------------------------------------- PCH

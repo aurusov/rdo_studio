@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      tracer_resource_type.h
-  \author    Захаров Павел
-  \date      11.03.2003
-  \brief
-  \indent    4T
-*/
-
 #ifndef _RDO_STUDIO_TRACER_RESOURCE_TYPE_H_
 #define _RDO_STUDIO_TRACER_RESOURCE_TYPE_H_
 

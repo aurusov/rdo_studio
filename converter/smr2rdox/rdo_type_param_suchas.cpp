@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_type_param_suchas.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      09.01.2011
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES

@@ -1,14 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      rdoprocess.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      21.02.2012
-  \brief     Процессы
-  \indent    4T
-*/
-
 #ifndef _LIB_PARSER_PROCESS_H_
 #define _LIB_PARSER_PROCESS_H_
 

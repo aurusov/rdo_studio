@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      result_group.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      04.03.2011
-  \brief     Группы собираемых показателей
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_RESULT_GROUP_H_
 #define _LIB_RUNTIME_RESULT_GROUP_H_
 
@@ -18,10 +9,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class     RDOPMDResultGroup
-  \brief     Группа собираемых при моделировании показателей
-*/
 class RDOPMDResultGroup: public IResult, public IResultGroup
 {
 DECLARE_FACTORY(RDOPMDResultGroup);
@@ -29,11 +16,7 @@ private:
 	RDOPMDResultGroup(const std::string& name);
 	virtual ~RDOPMDResultGroup();
 
-	/*!
-	  \enum      State
-	  \brief     Состояние группы показателей
-	*/
-	enum State
+		enum State
 	{
 		RGS_STOP,
 		RGS_START

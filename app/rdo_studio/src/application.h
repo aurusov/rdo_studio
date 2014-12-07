@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      application.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      20.02.2003
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _RDO_STUDIO_APPLICATION_H_
 #define _RDO_STUDIO_APPLICATION_H_
 

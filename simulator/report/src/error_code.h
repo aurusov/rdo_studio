@@ -1,14 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      error_code.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
-  \date      16.02.2012
-  \brief     Коды окончания моделирования
-  \indent    4T
- */
-
 #ifndef _SIMULATOR_REPORT_ERROR_CODE_H_
 #define _SIMULATOR_REPORT_ERROR_CODE_H_
 

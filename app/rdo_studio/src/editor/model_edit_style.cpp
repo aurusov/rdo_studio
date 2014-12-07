@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      model_edit_style.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      20.02.2003
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/model_pch.h"
 // ----------------------------------------------------------------------- INCLUDES

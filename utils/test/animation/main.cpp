@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      main.cpp
-  \author    Пройдаков Евгений (lord.tiran@gmail.com)
-  \date      10.05.2009
-  \brief     Тест элемента animation common-библиотеки
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      thread_proxy_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      05.03.2011
-  \brief     Интерфейс IThreadProxy
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_THREAD_PROXY_I_H_
 #define _LIB_RUNTIME_THREAD_PROXY_I_H_
 
@@ -16,10 +7,6 @@
 #include "utils/src/smart_ptr/factory/factory.h"
 // --------------------------------------------------------------------------------
 
-/*!
-  \interface IThreadProxy
-  \brief     Интерфейс IThreadProxy
-*/
 PREDECLARE_OBJECT_INTERFACE(IThreadProxy)
 struct IThreadProxy: public rdo::RefCounter<IThreadProxy>
 {

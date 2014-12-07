@@ -1,14 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdocommon.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
-  \date      13.06.2009
-  \brief     Общесистемные функции и типы
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"

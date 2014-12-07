@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_arithm.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      13.03.2011
-  \brief     Арифметические операции
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_CALC_OPERATION_ARITHM_H_
 #define _LIB_RUNTIME_CALC_OPERATION_ARITHM_H_
 

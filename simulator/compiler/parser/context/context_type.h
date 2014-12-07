@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      simulator/compiler/parser/context/context_type.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      30.10.2010
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _RDOPARSER_CONTEXT_TYPE_H_
 #define _RDOPARSER_CONTEXT_TYPE_H_
 

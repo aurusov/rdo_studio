@@ -1,14 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      calc_create_resource.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      10.02.2012
-  \brief     RDOCalc для создания ресурсов
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_CALC_RESOURCE_CREATE_RESOURCE_H_
 #define _LIB_RUNTIME_CALC_RESOURCE_CREATE_RESOURCE_H_
 

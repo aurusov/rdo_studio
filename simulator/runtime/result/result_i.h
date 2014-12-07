@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      result_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      28.07.2009
-  \brief     Интерфейсы собираемых показателей
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_RESULT_I_H_
 #define _LIB_RUNTIME_RESULT_I_H_
 
@@ -17,10 +8,6 @@
 #include "simulator/runtime/rdo_resource.h"
 // --------------------------------------------------------------------------------
 
-/*!
-  \interface IResult
-  \brief     Базовый интерфейс собираемого показателя
-*/
 class IResult: public virtual rdo::counter_reference
 {
 public:
@@ -35,10 +22,6 @@ DECLARE_POINTER(IResult);
 	virtual void checkResult(const rdo::runtime::LPRDORuntime& Runtime); \
 	virtual void calcStat   (const rdo::runtime::LPRDORuntime& Runtime, std::ostream& stream);
 
-/*!
-  \interface IResultWatchQuant
-  \brief     Интерфейс собираемого показателя WatchQuant
-*/
 class IResultWatchQuant: public virtual rdo::counter_reference
 {
 public:
@@ -49,10 +32,6 @@ DECLARE_POINTER(IResultWatchQuant)
 #define DECLARE_IResultWatchQuant \
 	virtual void setLogicCalc(const rdo::runtime::LPRDOCalc& pLogicCalc);
 
-/*!
-  \interface IResultWatchValue
-  \brief     Интерфейс собираемого показателя WatchValue
-*/
 class IResultWatchValue: public virtual rdo::counter_reference
 {
 public:
@@ -67,10 +46,6 @@ DECLARE_POINTER(IResultWatchValue);
 	virtual void setLogicCalc       (const rdo::runtime::LPRDOCalc&     pLogicCalc ); \
 	virtual void setArithmCalc      (const rdo::runtime::LPRDOCalc&     pArithmCalc);
 
-/*!
-  \interface IResultGetValue
-  \brief     Интерфейс собираемого показателя GetValue
-*/
 class IResultGetValue: public virtual rdo::counter_reference
 {
 public:

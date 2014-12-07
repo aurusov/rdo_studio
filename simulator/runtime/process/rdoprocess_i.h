@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdoprocess_i.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      31.07.2009
-  \brief     RDOProcess interface
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_PROCESS_I_H_
 #define _LIB_RUNTIME_PROCESS_I_H_
 
@@ -21,10 +11,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 PREDECLARE_POINTER(RDOPROCTransact);
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \interface IPROCBlock
-  \brief     Интерфейс IPROCBlock
-*/
 PREDECLARE_POINTER(IPROCProcess)
 class IPROCBlock: public virtual rdo::counter_reference
 {
@@ -48,10 +34,6 @@ DECLARE_POINTER(IPROCBlock)
 	virtual void           transactGoOut(const LPTransact& pTransact); \
 	virtual LPIPROCProcess getProcess   () const;
 
-/*!
-  \interface IPROCProcess
-  \brief     Интерфейс IPROCProcess
-*/
 class IPROCProcess: public virtual rdo::counter_reference
 {
 public:

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2014
-  \file      calc_relevant.inl
-  \author    Богачев Павел (bogachev-pa@gmail.com)
-  \date      28.02.2014
-  \brief     RDOCalc для подбора релевантных ресурсов
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_runtime.h"

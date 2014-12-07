@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_array.h
-  \author    Чирков Михаил
-  \date      03.12.2010
-  \brief     Агрегатный тип данных - массив
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_CALC_ARRAY_H_
 #define _LIB_RUNTIME_CALC_ARRAY_H_
 

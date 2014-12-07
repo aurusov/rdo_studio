@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2013
-  \file      status_bar.h
-  \authors   Захаров Павел
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      09.04.2003
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _RDO_STUDIO_STATUS_BAR_H_
 #define _RDO_STUDIO_STATUS_BAR_H_
 

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file	    app/rdo_console/main.cpp
-  \author   Пройдаков Евгений (lord.tiran@gmail.com)
-  \date	    26.10.2011
-  \brief	Консольная версия RDO
-  \indent   4T
-*/
-
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/thread.hpp>
 #include <boost/format.hpp>

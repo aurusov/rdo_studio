@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      main_window.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      20.02.2003
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/application_pch.h"
 // ----------------------------------------------------------------------- INCLUDES

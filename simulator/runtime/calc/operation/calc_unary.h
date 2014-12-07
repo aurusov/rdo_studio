@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_unary.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      13.03.2011
-  \brief     Унарные операторы
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_CALC_OPERATION_UNARY_H_
 #define _LIB_RUNTIME_CALC_OPERATION_UNARY_H_
 
@@ -32,13 +22,6 @@ protected:
 	LPRDOCalc m_pOperation;
 };
 
-/*!
-  \class   RDOCalcUnary
-  \tparam  ret_type  Возвращаемое значение
-  \tparam  pOperator Оператор
-  \tparam  CalcType  Тип бинарного оператора
-  \brief   Базовый унарный оператор
-*/
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
 class RDOCalcUnary: public RDOCalcUnaryBase
 {

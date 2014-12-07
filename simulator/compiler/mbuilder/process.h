@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      process.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _MBUILDER_PROCESS_H_
 #define _MBUILDER_PROCESS_H_
 

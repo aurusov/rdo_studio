@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      11.06.2006
-  \brief     Определение интерфейса IBaseOperation
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
 // ---------------------------------------------------------------------------- PCH

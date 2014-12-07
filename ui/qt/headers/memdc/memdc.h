@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012-2012
-  \file      ui/qt/headers/memdc/memdc.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      12.07.2012
-  \brief     DeviceContext, созданный в памяти
-  \indent    4T
-*/
-
 #ifndef _UI_QT_MEMDC_H_
 #define _UI_QT_MEMDC_H_
 

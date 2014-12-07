@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      intrusive_ptr_interface_wrapper.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      22.09.2011
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _UTILS_SMART_PTR_INTRUSIVE_PTR_INTERFACE_WRAPPER_H_
 #define _UTILS_SMART_PTR_INTRUSIVE_PTR_INTERFACE_WRAPPER_H_
 

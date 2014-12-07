@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      statement.h
-  \authors   Поподьянец Евгений (kurt.gigacore@gmail.com)
-  \date      18.04.2012
-  \brief     Контекст выражений
-  \indent    4T
-*/
-
 #ifndef _CONTEXT_STATEMENT_H_
 #define _CONTEXT_STATEMENT_H_
 

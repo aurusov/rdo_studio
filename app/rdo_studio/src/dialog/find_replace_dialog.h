@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2013
-  \file      find_replace_dialog.h
-  \author    Романов Ярослав (robot.xet@gmail.com)
-  \date      11.01.2013
-  \brief     
-  \indent    4T
-  */
-
 #ifndef _RDO_STUDIO_DIALOG_FIND_REPLACE_DIALOG_H_
 #define _RDO_STUDIO_DIALOG_FIND_REPLACE_DIALOG_H_
 

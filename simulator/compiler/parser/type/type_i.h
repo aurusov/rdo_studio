@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      simulator/compiler/parser/type/type_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      06.12.2012
-  \brief
-  \indent    4T
-*/
-
 #ifndef _SIMULATOR_COMPILER_PARSER_TYPE_I_H_
 #define _SIMULATOR_COMPILER_PARSER_TYPE_I_H_
 

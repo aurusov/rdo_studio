@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      controller_console_options.cpp
-  \author    Пройдаков Евгений (lord.tiran@gmail.com)
-  \date      26.10.2011
-  \brief     Консольная версия RDO
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include <iostream>

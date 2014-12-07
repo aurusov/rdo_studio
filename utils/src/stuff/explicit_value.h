@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      explicit_value.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      21.01.2012
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _RDO_COMMON_EXPLICIT_VALUE_H_
 #define _RDO_COMMON_EXPLICIT_VALUE_H_
 

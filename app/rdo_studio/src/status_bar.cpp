@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2013
-  \file      status_bar.cpp
-  \authors   Захаров Павел
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      09.04.2003
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/application_pch.h"
 // ----------------------------------------------------------------------- INCLUDES

@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdofile.cpp
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
-  \date      07.11.2020
-  \brief
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES

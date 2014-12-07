@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      hotkey.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      09.01.2012
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_HOTKEY_H_
 #define _LIB_RUNTIME_HOTKEY_H_
 

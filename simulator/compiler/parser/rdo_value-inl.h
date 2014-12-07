@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      simulator/compiler/parser/rdo_value-inl.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      21.04.2010
-  \brief
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/type/atom.h"

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012-2012
-  \file      ui/abstract/headers/memdc/memdc.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      11.07.2012
-  \brief     Абстрактный DeviceContext, созданный в памяти
-  \indent    4T
-*/
-
 #ifndef _UI_ABSTRACT_MEMDC_H_
 #define _UI_ABSTRACT_MEMDC_H_
 

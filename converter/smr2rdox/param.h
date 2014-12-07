@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      param.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      09.01.2011
-  \brief
-  \indent    4T
-*/
-
 #ifndef _CONVERTOR_PARAM_H_
 #define _CONVERTOR_PARAM_H_
 

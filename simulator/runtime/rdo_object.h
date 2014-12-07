@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      simulator/runtime/rdo_object.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      30.01.2007
-  \brief     Определение базового класса для всех объектов RDORuntime
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_OBJECT_H_
 #define _LIB_RUNTIME_OBJECT_H_
 
@@ -21,10 +11,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class     RDORuntimeObject
-  \brief     Базовый класс для объектов Runtime
-*/
 class RDORuntimeObject
 {
 public:
@@ -35,11 +21,7 @@ public:
 class RDOSrcInfo
 {
 public:
-	/*!
-	  \struct    Position
-	  \brief     Позиция в тексте
-	*/
-	struct Position
+		struct Position
 	{
 		static const std::size_t UNDEFINE_POS  = std::size_t(~0);
 		static const std::size_t UNDEFINE_LINE = std::size_t(~0);

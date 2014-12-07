@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      animation_base.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      14.12.2012
-  \brief     Базовый класс объектов анимации парсера
-  \indent    4T
-*/
-
 #ifndef _SIMULATOR_COMPILER_PARSER_ANIMATION_BASE_H_
 #define _SIMULATOR_COMPILER_PARSER_ANIMATION_BASE_H_
 
