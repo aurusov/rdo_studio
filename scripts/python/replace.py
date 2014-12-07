@@ -3,7 +3,7 @@ import re
 
 def __get_filepaths(directory):
     file_paths = []
-    extensions = ['.cpp', '.h', '.l', '.y', '.xy']
+    extensions = ['.cpp', '.h', '.l', '.y', '.yx']
 
     for root, directories, files in os.walk(directory):
         for filename in files:

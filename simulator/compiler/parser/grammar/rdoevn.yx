@@ -1,16 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdoevn.yx
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \authors   Поподьянец Евгений (kurt.gigacore@gmail.com)
-  \authors   Александровский Кирилл (k.alexandrovsky@gmail.com)
-  \date      18.10.2013
-  \brief     Синтаксис компилятора РДО
-  \indent    4T
-*/
-
 %{
 #define YYPARSE_PARAM lexer
 #define YYLEX_PARAM lexer
