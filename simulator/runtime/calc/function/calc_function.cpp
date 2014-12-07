@@ -181,7 +181,7 @@ RDOValue RDOCalcFunctionCaller::doCalc(const LPRDORuntime& pRuntime)
 
     RDOValue value = m_pFunction->calcValue(pRuntime);
 
-	for (std::size_t i = 0; i <= m_paramList.size(); ++i)
+	for (std::size_t i = 0; i < m_paramList.size(); ++i)
     {
         pRuntime->popFuncArgument();
     }
