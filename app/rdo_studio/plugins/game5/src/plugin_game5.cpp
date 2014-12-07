@@ -160,7 +160,7 @@ void PluginGame5::pluginStopAction(QWidget* pParent)
     if (m_generateSituationDlg)
         delete m_generateSituationDlg;
 
-    if (m_graphDlg);
+    if (m_graphDlg)
         delete m_graphDlg;
 
     QToolBar* pluginGame5ToolBar = pParent->findChild<QToolBar*>(PLUGIN_TOOLBAR_NAME);
