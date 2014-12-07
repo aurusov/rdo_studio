@@ -16,7 +16,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 PREDECLARE_POINTER(RDOMatrixType    );
 PREDECLARE_POINTER(RDOMatrixIterator);
 
-//! Элемент матрицы
 PREDECLARE_POINTER(RDOMatrixValue);
 class RDOMatrixValue: public IAsString
 {
@@ -48,7 +47,6 @@ private:
 	LPRDOMatrixType  m_pMatrixType;
 };
 
-//! Итератор матрицы
 class RDOMatrixIterator: public RDOType, public IAsString
 {
 DECLARE_FACTORY(RDOMatrixIterator)
@@ -74,7 +72,6 @@ private:
 	Iterator  m_iterator;
 };
 
-//! Тип матрица
 class RDOMatrixType: public RDOType
 {
 DECLARE_FACTORY(RDOMatrixType);

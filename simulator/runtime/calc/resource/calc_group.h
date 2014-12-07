@@ -8,7 +8,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Базовый класс для групповых калков
 PREDECLARE_POINTER(RDOFunCalcGroup);
 class RDOFunCalcGroup: public RDOFunCalc
 {

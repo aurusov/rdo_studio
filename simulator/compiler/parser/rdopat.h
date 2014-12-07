@@ -225,7 +225,6 @@ public:
 	}
 
 protected:
-	//! Конструктор вызывается из RDOPatternKeyboard
 	RDOPatternOperation(bool trace, const RDOParserSrcInfo& name_src_info);
 
 	virtual void rel_res_insert (const LPRDORelevantResource& pRelevantResource);
@@ -304,10 +303,10 @@ public:
 	const std::string& name() const { return src_text(); };
 	virtual LPRDORTPResType getType() const = 0;
 
-	virtual rdo::runtime::LPRDOCalc                  createPreSelectRelResCalc           () = 0; //! Предварительный выбор ресурсов в самом списке рел. ресурсов
-	virtual rdo::runtime::LPRDOCalc                  createSelectResourceChoiceCalc      () = 0; //! Самый обыкновенный choice from + first/with_min/with_max
-	virtual rdo::runtime::LPRDOCalc                  createSelectFirstResourceChoiceCalc () = 0; //! common first, который не пашет
-	virtual rdo::runtime::LPIRDOSelectResourceCommon createSelectResourceCommonChoiceCalc() = 0; //! common with_min/with_max
+	virtual rdo::runtime::LPRDOCalc                  createPreSelectRelResCalc           () = 0; // Предварительный выбор ресурсов в самом списке рел. ресурсов
+	virtual rdo::runtime::LPRDOCalc                  createSelectResourceChoiceCalc      () = 0; // Самый обыкновенный choice from + first/with_min/with_max
+	virtual rdo::runtime::LPRDOCalc                  createSelectFirstResourceChoiceCalc () = 0; // common first, который не пашет
+	virtual rdo::runtime::LPIRDOSelectResourceCommon createSelectResourceCommonChoiceCalc() = 0; // common with_min/with_max
 
 	virtual bool isDirect() const = 0;
 

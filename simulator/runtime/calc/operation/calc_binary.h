@@ -9,7 +9,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Базовый класс для бинарных операторов
 class RDOCalcBinaryBase: public RDOCalc
 {
 public:
@@ -23,7 +22,6 @@ protected:
 	LPRDOCalc  m_pRight;
 };
 
-//! Константный бинарный оператор RDOValue
 template <typename ret_type, ret_type (RDOValue::*pMethod)(const RDOValue&) const>
 struct BinaryOperatorConstP1
 {
@@ -32,7 +30,6 @@ struct BinaryOperatorConstP1
 	static method_type method();
 };
 
-//! Неконстантный бинарный оператор RDOValue
 template <typename ret_type, ret_type (RDOValue::*pMethod)(const RDOValue&)>
 struct BinaryOperatorNonConstP1
 {
@@ -59,11 +56,6 @@ protected:
 	RDOCalcBinary(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
 
 private:
-	//! Выполняет бинарную операцию \ref value_operator над \ref m_pLeft и \ref m_pRight
-	//! \param pRuntime - указатель на объект runtime'а.
-	//!                   Используется для доступа к БД модели, системному времени, генерации ошибок и др.
-	//! \exception RDORuntimeException
-	//! \result Вычесленное калком значение
 	DECLARE_ICalc;
 };
 

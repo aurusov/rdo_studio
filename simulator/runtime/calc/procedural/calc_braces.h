@@ -8,7 +8,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Открывающая скобка
 PREDECLARE_POINTER(RDOCalcOpenBrace);
 class RDOCalcOpenBrace: public RDOCalc
 {
@@ -19,7 +18,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Закрывающая скобка
 PREDECLARE_POINTER(RDOCalcCloseBrace);
 class RDOCalcCloseBrace: public RDOCalc
 {
@@ -30,7 +28,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Окончание функции
 PREDECLARE_POINTER(RDOCalcFunEnd);
 class RDOCalcFunEnd: public RDOCalc
 {

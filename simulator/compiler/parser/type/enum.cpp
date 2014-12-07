@@ -43,11 +43,11 @@ LPIType RDOEnumType::type_cast(const LPIType& from, const RDOParserSrcInfo& from
 		case rdo::runtime::RDOType__int::t_enum:
 		{
 			LPRDOEnumType pEnum(const_cast<RDOEnumType*>(this));
-			//! Это один и тот же тип
+			// Это один и тот же тип
 			if (pEnum == from)
 				return pEnum;
 
-			//! Типы разные, сгенерим ошибку
+			// Типы разные, сгенерим ошибку
 			if (pEnum.compare(from.object_static_cast<RDOEnumType>()))
 			{
 				parser::g_error().push_only(src_info,     "Используются различные перечислимые типы с одинаковыми значениями");

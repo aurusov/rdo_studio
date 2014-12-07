@@ -13,20 +13,13 @@ class RDOCalcConst: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcConst)
 public:
-	//! Возвращает хранимую константу, может быть использован в parser-time
-	//! \result Значение константы
 	const RDOValue& getValue() const;
 
 private:
-	//! Инициализируется указанным значением переменную базового класса \ref RDOCalc::m_value
-	//! \param value - Значение константы
 	RDOCalcConst(const RDOValue& value);
 
 	RDOValue m_value;
 
-	//! Возвращает значение константы
-	//! \param pRuntime - Не используется
-	//! \result Значение константы
 	DECLARE_ICalc;
 };
 

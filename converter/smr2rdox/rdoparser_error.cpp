@@ -17,7 +17,7 @@ Error::Error()
 	: m_blocked(false)
 {}
 
-//! 1
+// 1
 void Error::error(const RDOParserSrcInfo& src_info, const std::string& message)
 {
 	if (blocked())
@@ -46,7 +46,7 @@ void Error::push_only(const RDOParserSrcInfo& src_info, const std::string& messa
 	}
 }
 
-//! 2
+// 2
 void Error::error(const RDOParserSrcInfo& src_info1, const RDOParserSrcInfo& src_info2, const std::string& message)
 {
 	if (blocked())
@@ -56,7 +56,7 @@ void Error::error(const RDOParserSrcInfo& src_info1, const RDOParserSrcInfo& src
 	throw RDOSyntaxException(m_errors.back().getText());
 }
 
-//! misc
+// misc
 void Error::push_done()
 {
 	if (blocked())

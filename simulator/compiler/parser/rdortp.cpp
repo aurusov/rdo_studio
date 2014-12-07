@@ -157,11 +157,11 @@ LPIType RDORTPResType::type_cast(const LPIType& pFrom, const RDOParserSrcInfo& f
 		{
 			LPIType pThisRTPType(const_cast<RDORTPResType*>(this));
 
-			//! Это один и тот же тип
+			// Это один и тот же тип
 			if (pThisRTPType == pFrom)
 				return pThisRTPType;
 
-			//! Типы разные, сгенерим ошибку
+			// Типы разные, сгенерим ошибку
 			parser::g_error().push_only(src_info,    "Несоответствие типов ресурсов");
 			parser::g_error().push_only(to_src_info, to_src_info.src_text());
 			parser::g_error().push_done();
@@ -188,11 +188,11 @@ LPRDOValue RDORTPResType::value_cast(const LPRDOValue& pFrom, const RDOParserSrc
 	{
 		LPIType pThisType = const_cast<RDORTPResType*>(this);
 
-		//! Это один и тот же тип
+		// Это один и тот же тип
 		if (pThisType == pRTPResType.object_dynamic_cast<IType>())
 			return pFrom;
 
-		//! Типы разные, сгенерим ошибку
+		// Типы разные, сгенерим ошибку
 		parser::g_error().push_only(src_info,    "Несоответствие типов ресурсов");
 		parser::g_error().push_only(to_src_info,  rdo::format(  "Ожидается: %s", to_src_info.src_text().c_str()));
 		parser::g_error().push_only(src_info,  rdo::format(  "Пришел: %s", pFrom->src_text().c_str()));

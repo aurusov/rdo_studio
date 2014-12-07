@@ -13,7 +13,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class std_fun_one_param {};
 class std_fun_two_param {};
 
-//! Функция с одним параметром
 template <class RT, class P1>
 class std_fun1
 {
@@ -24,7 +23,6 @@ public:
 	typedef  std_fun_one_param  param_count;
 };
 
-//! Функция с двумя параметрами
 template <class RT, class P1, class P2>
 class std_fun2
 {
@@ -45,7 +43,6 @@ struct GetParam<double> { static double getParam(const LPRDORuntime& pRuntime, s
 template <>
 struct GetParam<int>    { static int    getParam(const LPRDORuntime& pRuntime, std::size_t paramNumber); };
 
-//! Функции из пространства имен std C++
 template <class F>
 class RDOFunCalcStd: public RDOFunCalc
 {

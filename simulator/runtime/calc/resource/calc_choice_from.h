@@ -9,18 +9,16 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Выбор ресурсов
 PREDECLARE_POINTER(RDOSelectResourceCalc);
 class RDOSelectResourceCalc: public RDOCalc
 {
 public:
-	//! Способ выбора релевантного ресурса
 	enum Type
 	{
-		order_empty = 0, // Способ выбора не задан
-		order_first,     // Первый попавшийся (без предварительной сортировки)
-		order_with_min,  // С минимальным значением выражения
-		order_with_max   // С максимальным значением выражения
+		order_empty = 0,
+		order_first,
+		order_with_min,
+		order_with_max
 	};
 
 	typedef std::size_t ResourceID;
@@ -36,7 +34,6 @@ protected:
 	Type        m_orderType;
 };
 
-//! RDOCalc для оператора !Exist()
 PREDECLARE_POINTER(RDOSelectResourceNonExistCalc);
 class RDOSelectResourceNonExistCalc: public RDOSelectResourceCalc
 {
@@ -46,7 +43,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Выбор релевантного ресурса по имени ресурса
 PREDECLARE_POINTER(RDOSelectResourceDirectCalc);
 class RDOSelectResourceDirectCalc: public RDOSelectResourceCalc
 {
@@ -61,7 +57,6 @@ protected:
 	DECLARE_ICalc;
 };
 
-//! Выбор релевантного ресурса по типу
 PREDECLARE_POINTER(RDOSelectResourceByTypeCalc);
 class RDOSelectResourceByTypeCalc: public RDOSelectResourceCalc
 {
@@ -74,7 +69,6 @@ protected:
 	DECLARE_ICalc;
 };
 
-//! Интерфейс для выбора релевантных ресурсов
 PREDECLARE_OBJECT_INTERFACE(IRDOSelectResourceCommon)
 struct IRDOSelectResourceCommon: public rdo::RefCounter<IRDOSelectResourceCommon>
 {
@@ -89,7 +83,6 @@ protected:
 	virtual ~IRDOSelectResourceCommon();
 };
 
-//! Выбор
 PREDECLARE_POINTER(RDOSelectResourceCommonCalc);
 class RDOSelectResourceCommonCalc: public RDOCalc
 {
@@ -111,7 +104,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Выбор по имени ресурса
 PREDECLARE_POINTER(RDOSelectResourceDirectCommonCalc);
 class RDOSelectResourceDirectCommonCalc
 	: public RDOSelectResourceDirectCalc
@@ -127,7 +119,6 @@ private:
 	virtual ~RDOSelectResourceDirectCommonCalc();
 };
 
-//! Выбор по типу
 PREDECLARE_POINTER(RDOSelectResourceByTypeCommonCalc);
 class RDOSelectResourceByTypeCommonCalc
 	: public RDOSelectResourceByTypeCalc

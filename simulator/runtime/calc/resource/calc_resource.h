@@ -9,14 +9,12 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Вспомогательный класс для вытаскивания ресурса по ID и оборачивания его в RDOValue
 class RDOCalcGetResourceHelper
 {
 public:
 	static bool getResource(const LPRDORuntime& pRuntime, std::size_t resourceID, RDOValue& result);
 };
 
-//! Получение ресурса по ID
 PREDECLARE_POINTER(RDOCalcGetResourceByID);
 class RDOCalcGetResourceByID: public RDOCalc
 {
@@ -29,7 +27,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Получение параметр ресурса по калку ресурса и ID параметра
 PREDECLARE_POINTER(RDOCalcGetResourceParam);
 class RDOCalcGetResourceParam: public RDOCalc
 {
@@ -43,7 +40,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Параметры несуществующего ресурса
 PREDECLARE_POINTER(RDOCalcGetUnknowResParam);
 class RDOCalcGetUnknowResParam: public RDOCalc
 {
@@ -57,7 +53,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Установка значения параметра ресурса перед моделированием из SMR
 PREDECLARE_POINTER(RDOSetResourceParamCalc);
 class RDOSetResourceParamCalc: public RDOCalc
 {

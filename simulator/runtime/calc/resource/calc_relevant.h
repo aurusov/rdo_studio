@@ -9,7 +9,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Получить ресурс по ID релевантного ресурса
 PREDECLARE_POINTER(RDOGetResourceByRelevantResourceID);
 class RDOGetResourceByRelevantResourceID: public RDOCalc
 {
@@ -22,7 +21,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Удаление релевантного ресурса
 PREDECLARE_POINTER(RDOEraseResRelCalc);
 class RDOEraseResRelCalc: public RDOCalc
 {
@@ -39,7 +37,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Возвращает ресурс групповой функции
 PREDECLARE_POINTER(RDOCalcGetGroupFunctionResource);
 class RDOCalcGetGroupFunctionResource: public RDOCalc
 {

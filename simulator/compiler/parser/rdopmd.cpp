@@ -45,12 +45,12 @@ void RDOPMDResult::endOfCreation(const LPIResult& pResult)
 	LPRDOResultGroup pResultGroup = pContext->cast<RDOResultGroup>();
 	if (!pResultGroup)
 	{
-		//! Показатель создаётся не в контексте группы
-		//! Такое может быть из rdoproc_rss.y
+		// Показатель создаётся не в контексте группы
+		// Такое может быть из rdoproc_rss.y
 		pResultGroup = RDOParser::s_parser()->findResultGroup("");
 		if (!pResultGroup)
 		{
-			//! Нет даже группы по умолчанию
+			// Нет даже группы по умолчанию
 			pResultGroup = rdo::Factory<RDOResultGroup>::create();
 			ASSERT(pResultGroup);
 			pResultGroup->init(RDOParserSrcInfo());

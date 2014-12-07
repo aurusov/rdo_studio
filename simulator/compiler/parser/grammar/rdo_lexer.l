@@ -326,7 +326,7 @@ sprite                         return(RDO_sprite_call);
 			: rdo::compiler::parser::RDOParserSrcInfo(n1)
 	);
 	ASSERT(pType);
-	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
+	// TODO TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
 	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdo::compiler::parser::RDOValue>::create(name, pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()), pType)));
 	return RDO_STRING_CONST;
 }
@@ -362,7 +362,7 @@ sprite                         return(RDO_sprite_call);
 	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__int>(srcInfo);
 	ASSERT(pType);
 
-	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
+	// TODO TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
 	int value = 0;
 	try
 	{
@@ -399,7 +399,7 @@ sprite                         return(RDO_sprite_call);
 	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__int>(srcInfo);
 	ASSERT(pType);
 
-	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
+	// TODO TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
 	int value = 0;
 	try
 	{
@@ -432,7 +432,7 @@ sprite                         return(RDO_sprite_call);
 	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__real>(srcInfo);
 	ASSERT(pType);
 
-	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
+	// TODO TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
 	double value = 0;
 	try
 	{
@@ -458,7 +458,7 @@ true {
 		LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdo::compiler::parser::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);
-	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
+	// TODO TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
 	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::runtime::RDOValue(true), pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()), pType)));
 	return RDO_BOOL_CONST;
 }
@@ -468,7 +468,7 @@ false {
 		LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdo::compiler::parser::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);
-	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
+	// TODO TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
 	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::runtime::RDOValue(false), pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()), pType)));
 	return RDO_BOOL_CONST;
 }

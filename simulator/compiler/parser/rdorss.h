@@ -90,7 +90,7 @@ protected:
 	virtual ~RDORSSResource();
 
 	LPRDORTPResType m_pResType;
-	std::size_t m_id; //! in system
+	std::size_t m_id; // in system
 	ParamList m_paramList;
 	bool trace;
 	bool isNested;

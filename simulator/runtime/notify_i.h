@@ -7,7 +7,6 @@
 #include "utils/src/smart_ptr/ref_counter/counter_reference.h"
 // --------------------------------------------------------------------------------
 
-//! Получения уведомлений по подписке
 class INotify: public virtual rdo::counter_reference
 {
 public:

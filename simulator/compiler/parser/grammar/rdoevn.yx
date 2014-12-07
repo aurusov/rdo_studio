@@ -4082,7 +4082,7 @@ dpt_prior_begin
 	{
 		#PASS2
 		{
-			//! @todo а где признак трассировки для prior ?
+			// TODO а где признак трассировки для prior ?
 			LPRDOValue pName       = PARSER->stack().pop<RDOValue>($2);
 			LPRDOValue pParentName = PARSER->stack().pop<RDOValue>($4);
 			ASSERT(pName);
@@ -8538,7 +8538,7 @@ process_line
 			const bool traceFlag = true;
 
 			std::vector<rdo::runtime::LPRDOCalc> paramList;
-			//! \error вместо настоящих значений параметров транзакта просто 0
+			// ERROR вместо настоящих значений параметров транзакта просто 0
 			paramList.push_back(rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(0)));
 
 			rdo::runtime::LPRDOCalcCreateResource pCreateAndGoOnTransactCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
@@ -8796,17 +8796,17 @@ queue_param
 	{
 		#PASS2
 		{
-			//! Имя ресурса
+			// Имя ресурса
 			const std::string res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 			const RDOParserSrcInfo& info = @1;
 			// Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
-			//! Получили список всех типов ресурсов
+			// Получили список всех типов ресурсов
 			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
 			const std::string rtp_name = "QDEPART";
 			const std::string q_name = "Очередь_" + res_name;
-			//! Если ресурс существует, берем его тип и проверяем
+			// Если ресурс существует, берем его тип и проверяем
 			if (rssList[res_name].exist())
 			{
 				rtp = rssList[res_name].getType();
@@ -8817,7 +8817,7 @@ queue_param
 			}
 			else
 			{
-				//! Если тип "QDEPART" существует
+				// Если тип "QDEPART" существует
 				if (rtpList[rtp_name].exist())
 				{
 					rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
@@ -8862,16 +8862,16 @@ depart_param
 	{
 		#PASS2
 		{
-			//! Имя ресурса
+			// Имя ресурса
 			const std::string res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 			const RDOParserSrcInfo& info = @1;
-			//! Получили список всех ресурсов
+			// Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
-			//! Получили список всех типов ресурсов
+			// Получили список всех типов ресурсов
 			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
 			const std::string rtp_name = "QDEPART";
-			//! Если ресурс существует, берем его тип и проверяем
+			// Если ресурс существует, берем его тип и проверяем
 			if (rssList[res_name].exist())
 			{
 				rtp = rssList[res_name].getType();
@@ -8956,19 +8956,19 @@ seize_param
 	{
 		#PASS2
 		{
-			//! Имя ресурса
+			// Имя ресурса
 			const std::string res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 			const RDOParserSrcInfo& info = @1;
-			//! Получили список всех ресурсов
+			// Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
-			//! Если ресурс существует, берем его тип и проверяем
+			// Если ресурс существует, берем его тип и проверяем
 			if (rssList[res_name].exist())
 			{
 				rtp = rssList[res_name].getType();
 				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info))
 				{
-					//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
+					// TODO принятие решения об изменении типа должно происходить в rdoproc_rtp.y
 					if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
 					{
 						//здесь нужно переделать тип ресурса, а не ресурс
@@ -8978,12 +8978,12 @@ seize_param
 			}
 			else
 			{
-				//! Ресурс не найден, сформировать имя типа по имени ресурса
-				//! Сформировать имя типа по имени ресурса
+				// Ресурс не найден, сформировать имя типа по имени ресурса
+				// Сформировать имя типа по имени ресурса
 				const std::string rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
-				//! Получили список всех типов ресурсов
+				// Получили список всех типов ресурсов
 				rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
-				//! Нашли тип ресурса
+				// Нашли тип ресурса
 				if (rtpList[rtp_name].exist())
 				{
 					rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
@@ -9008,19 +9008,19 @@ seize_param
 	{
 		#PASS2
 		{
-			//! Имя ресурса
+			// Имя ресурса
 			const std::string res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
 			const RDOParserSrcInfo& info = @3;
-			//! Получили список всех ресурсов
+			// Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
-			//! Если ресурс существует, берем его тип и проверяем
+			// Если ресурс существует, берем его тип и проверяем
 			if (rssList[res_name].exist())
 			{
 				rtp = rssList[res_name].getType();
 				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info))
 				{
-					//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
+					// TODO принятие решения об изменении типа должно происходить в rdoproc_rtp.y
 					if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
 					{
 						rdo::compiler::mbuilder::BlockForSeize::reobjectRes(rtp, res_name);
@@ -9029,12 +9029,12 @@ seize_param
 			}
 			else
 			{
-				//! Ресурс не найден, сформировать имя типа по имени ресурса
-				//! Сформировать имя типа по имени ресурса
+				// Ресурс не найден, сформировать имя типа по имени ресурса
+				// Сформировать имя типа по имени ресурса
 				const std::string rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
-				//! Получили список всех типов ресурсов
+				// Получили список всех типов ресурсов
 				rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
-				//! Нашли тип ресурса
+				// Нашли тип ресурса
 				if (rtpList[rtp_name].exist())
 				{
 					rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
@@ -9069,10 +9069,10 @@ release_param
 	{
 		#PASS2
 		{
-			//! Имя ресурса
+			// Имя ресурса
 			const std::string res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 			const RDOParserSrcInfo& info = @1;
-			//! Получили список всех ресурсов
+			// Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
 			if (rssList[res_name].exist())
@@ -9080,7 +9080,7 @@ release_param
 				rtp = rssList[res_name].getType();
 				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info))
 				{
-					//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
+					// TODO принятие решения об изменении типа должно происходить в rdoproc_rtp.y
 					if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
 					{
 						rdo::compiler::mbuilder::BlockForSeize::reobjectRes(rtp, res_name);
@@ -9089,12 +9089,12 @@ release_param
 			}
 			else
 			{
-				//! Ресурс не найден, сформировать имя типа по имени ресурса
-				//! Сформировать имя типа по имени ресурса
+				// Ресурс не найден, сформировать имя типа по имени ресурса
+				// Сформировать имя типа по имени ресурса
 				const std::string rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
-				//! Получили список всех типов ресурсов
+				// Получили список всех типов ресурсов
 				rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
-				//! Нашли тип ресурса
+				// Нашли тип ресурса
 				if (rtpList[rtp_name].exist())
 				{
 					rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
@@ -9119,19 +9119,19 @@ release_param
 	{
 		#PASS2
 		{
-			//! Имя ресурса
+			// Имя ресурса
 			const std::string res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
 			const RDOParserSrcInfo& info = @3;
-			//! Получили список всех ресурсов
+			// Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 			rdo::compiler::mbuilder::RDOResType rtp;
-			//! Если ресурс существует берем его тип и проверяем
+			// Если ресурс существует берем его тип и проверяем
 			if (rssList[res_name].exist())
 			{
 				rtp = rssList[res_name].getType();
 				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info))
 				{
-					//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
+					// TODO принятие решения об изменении типа должно происходить в rdoproc_rtp.y
 					if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
 					{
 						rdo::compiler::mbuilder::BlockForSeize::reobjectRes(rtp, res_name);
@@ -9140,12 +9140,12 @@ release_param
 			}
 			else
 			{
-				//! Ресурс не найден, сформировать имя типа по имени ресурса
-				//! Сформировать имя типа по имени ресурса
+				// Ресурс не найден, сформировать имя типа по имени ресурса
+				// Сформировать имя типа по имени ресурса
 				const std::string rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
-				//! Получили список всех типов ресурсов
+				// Получили список всех типов ресурсов
 				rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
-				//! Нашли тип ресурса
+				// Нашли тип ресурса
 				if (rtpList[rtp_name].exist())
 				{
 					rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];

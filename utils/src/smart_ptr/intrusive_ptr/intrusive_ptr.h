@@ -28,13 +28,11 @@ public:
 
 	this_type& operator=(const this_type& sptr);
 
-	//! Сравнивает по указателям
 	template <class P>
 	bool operator==(const intrusive_ptr<P>& sptr) const;
 	template <class P>
 	bool operator!=(const intrusive_ptr<P>& sptr) const;
 
-	//! Сравнивает по значениям
 	template<class P>
 	bool compare(const intrusive_ptr<P>& sptr) const;
 

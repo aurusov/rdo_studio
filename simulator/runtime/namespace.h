@@ -5,8 +5,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-//! \namespace rdo::runtime
-//! \brief     Пространство имён рантайма
 #define  OPEN_RDO_RUNTIME_NAMESPACE  namespace rdo { namespace runtime {
 #define CLOSE_RDO_RUNTIME_NAMESPACE  }};
 

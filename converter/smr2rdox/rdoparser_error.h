@@ -34,15 +34,15 @@ public:
 
 	Error();
 
-	//! 1
+	// 1
 	void error(const RDOParserSrcInfo& src_info, const std::string& message);
 	void warning(const RDOParserSrcInfo& src_info, const std::string& message);
 	void push_only(const RDOParserSrcInfo& src_info, const std::string& message);
 
-	//! 2
+	// 2
 	void error (const RDOParserSrcInfo& src_info1, const RDOParserSrcInfo& src_info2, const std::string& message);
 
-	//! misc
+	// misc
 	void push_done();
 	void modify(const std::string& message);
 	void clear();

@@ -9,7 +9,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Пустая операция
 // TODO заменить на CalcNop ?
 PREDECLARE_POINTER(RDOCalcNoChange);
 class RDOCalcNoChange: public RDOCalc
@@ -20,7 +19,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Условный оператор if () then {}
 PREDECLARE_POINTER(RDOCalcIf);
 class RDOCalcIf: public RDOCalc
 {
@@ -42,7 +40,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Оператор цикла for
 PREDECLARE_POINTER(RDOCalcFor);
 class RDOCalcFor: public RDOCalc
 {
@@ -61,7 +58,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Оператор возврата return
 PREDECLARE_POINTER(RDOCalcFunReturn);
 class RDOCalcFunReturn: public RDOCalc
 {
@@ -73,7 +69,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Оператор возврата break
 PREDECLARE_POINTER(RDOCalcFunBreak);
 class RDOCalcFunBreak: public RDOCalc
 {
@@ -84,7 +79,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Простой список операторов
 PREDECLARE_POINTER(RDOCalcBaseStatementList);
 class RDOCalcBaseStatementList: public RDOCalc
 {
@@ -101,7 +95,6 @@ protected:
 	DECLARE_ICalc;
 };
 
-//! Останавливаемый список операторов
 PREDECLARE_POINTER(RDOCalcStatementList);
 class RDOCalcStatementList: public RDOCalcBaseStatementList
 {
@@ -112,7 +105,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Ловушка для break
 PREDECLARE_POINTER(RDOCalcBreakCatch);
 class RDOCalcBreakCatch: public RDOCalc
 {
@@ -128,7 +120,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Ловушка для return
 PREDECLARE_POINTER(RDOCalcReturnCatch);
 class RDOCalcReturnCatch: public RDOCalc
 {

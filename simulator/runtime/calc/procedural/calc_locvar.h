@@ -9,7 +9,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Создание локальной переменной
 PREDECLARE_POINTER(RDOCalcCreateLocalVariable);
 class RDOCalcCreateLocalVariable: public RDOCalc
 {
@@ -23,7 +22,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Получение значения локальной переменной
 PREDECLARE_POINTER(RDOCalcGetLocalVariable);
 class RDOCalcGetLocalVariable: public RDOCalc
 {
@@ -36,7 +34,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Установка значения локальной переменной
 class RDOCalcSetLocalVariable: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcSetLocalVariable)
@@ -50,7 +47,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Список локальных переменных
 PREDECLARE_POINTER(RDOCalcLocalVariableList);
 class RDOCalcLocalVariableList: public RDOCalc
 {

@@ -60,11 +60,11 @@ LPRDOType RDOEnumType::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo&
 		case rdo::runtime::RDOType__int::t_enum:
 		{
 			LPRDOEnumType pEnum(const_cast<RDOEnumType*>(this));
-			//! Это один и тот же тип
+			// Это один и тот же тип
 			if (pEnum == pFrom)
 				return pEnum;
 
-			//! Типы разные, сгенерим ошибку
+			// Типы разные, сгенерим ошибку
 			if (pEnum.compare(pFrom.object_static_cast<RDOEnumType>()))
 			{
 				rdo::converter::smr2rdox::g_error().push_only(src_info,     "Используются различные перечислимые типы с одинаковыми значениями");

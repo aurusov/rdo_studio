@@ -30,7 +30,7 @@ DECLARE_ATOM_TYPE_PARSER(string,        "string"       );
 // -------------------- RDOType
 // --------------------------------------------------------------------------------
 
-//! RDOType__unknow
+// RDOType__unknow
 LPRDOType RDOType__unknow::type_cast(const LPRDOType& /*pFrom*/, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& /*to_src_info*/, const RDOParserSrcInfo& src_info) const
 {
 	rdo::converter::smr2rdox::g_error().error(src_info, rdo::format("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к неизвестному типу", from_src_info.src_text().c_str()));
@@ -61,7 +61,7 @@ void RDOType__unknow::writeModelStructure(std::ostream& /*stream*/) const
 	NEVER_REACH_HERE;
 }
 
-//! RDOType__int
+// RDOType__int
 LPRDOType RDOType__int::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	switch (pFrom->type()->typeID())
@@ -117,7 +117,7 @@ void RDOType__int::writeModelStructure(std::ostream& stream) const
 	stream << "I" << std::endl;
 }
 
-//! RDOType__real
+// RDOType__real
 LPRDOType RDOType__real::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	switch (pFrom->type()->typeID())
@@ -167,7 +167,7 @@ void RDOType__real::writeModelStructure(std::ostream& stream) const
 	stream << "R" << std::endl;
 }
 
-//! RDOType__string
+// RDOType__string
 LPRDOType RDOType__string::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	switch (pFrom->type()->typeID())
@@ -216,7 +216,7 @@ void RDOType__string::writeModelStructure(std::ostream& stream) const
 	stream << "S" << std::endl;
 }
 
-//! RDOType__identificator
+// RDOType__identificator
 LPRDOType RDOType__identificator::type_cast(const LPRDOType& /*pFrom*/, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& /*to_src_info*/, const RDOParserSrcInfo& src_info) const
 {
 	rdo::converter::smr2rdox::g_error().error(src_info, rdo::format("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к идентификатору", from_src_info.src_text().c_str()));
@@ -247,7 +247,7 @@ void RDOType__identificator::writeModelStructure(std::ostream& /*stream*/) const
 	NEVER_REACH_HERE;
 }
 
-//! RDOType__bool
+// RDOType__bool
 LPRDOType RDOType__bool::type_cast(const LPRDOType& pFrom, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& to_src_info, const RDOParserSrcInfo& src_info) const
 {
 	switch (pFrom->type()->typeID())

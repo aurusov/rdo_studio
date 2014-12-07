@@ -483,7 +483,7 @@ void RDOThreadRepository::writeModelFilesInfo(boost::filesystem::ofstream& strea
 
 bool RDOThreadRepository::createFile(const boost::filesystem::path& name, boost::filesystem::ofstream& stream) const
 {
-	//! TODO: проверить name с русскими буквами
+	// TODO: проверить name с русскими буквами
 	std::stringstream backupDirName;
 	backupDirName << m_modelPath
 	              << boost::format("%1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d %7$s.%8$s")

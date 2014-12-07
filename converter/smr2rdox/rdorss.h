@@ -69,7 +69,7 @@ protected:
 	RDORSSResource(Converter* pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, int id = UNDEFINED_ID);
 
 	LPRDORTPResType m_pResType;
-	const int m_id; //! in system
+	const int m_id; // in system
 	ParamList m_paramList;
 	bool trace;
 

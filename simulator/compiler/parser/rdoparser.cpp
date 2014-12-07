@@ -152,7 +152,7 @@ void RDOParser::init()
 	ASSERT(pSMR);
 	setSMR(pSMR);
 
-	m_resultGeneratorID.get(); //! Для PMD нумерация с 1
+	m_resultGeneratorID.get(); // Для PMD нумерация с 1
 }
 
 void RDOParser::deinit()
@@ -320,8 +320,8 @@ Context::LPFindResult RDOParser::onFindContext(const std::string& method, const 
 			return rdo::Factory<FindResult>::create(SwitchContext(pSequence, params));
 		}
 
-		//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
-		//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
+		// Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
+		// перечислимых типах, поэтому какой именно из них выбрать - вопрос
 		{
 			ErrorBlockMonicker errorBlockMonicker;
 			for (const LPTypeInfo& type: m_preCastTypeList)
@@ -491,7 +491,7 @@ void RDOParser::beforeRun()
 
 void RDOParser::runRSSPost()
 {
-	//! В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
+	// В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
 #ifdef RDOSIM_COMPATIBLE
 	for (const auto& rtp: getRTPResTypes())
 	{
@@ -521,10 +521,10 @@ void RDOParser::runRSSPost()
 
 void RDOParser::runSMRPost()
 {
-	//! Калки, созданные в SMR
+	// Калки, созданные в SMR
 	for (const auto& calc: m_pSMR->getCalcList())
 		runtime()->addInitCalc(calc);
-	//! Планирование событий, описанных в SMR
+	// Планирование событий, описанных в SMR
 	for (const LPRDOPATPattern& pattern: getPATPatterns())
 	{
 		LPRDOPatternEvent event = pattern.object_dynamic_cast<RDOPatternEvent>();

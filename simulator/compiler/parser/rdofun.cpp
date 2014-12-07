@@ -467,7 +467,7 @@ LPRDOFUNArithm RDOFUNArithm::operator/ (const LPRDOFUNArithm& pSecond)
 	ASSERT(pType);
 
 	// TODO перевод вещественного в целое при делении. А что делать с умножением и т.д. ?
-	//! Ответ: с умножением надо делать тоже самое, только непонятно как
+	// Ответ: с умножением надо делать тоже самое, только непонятно как
 	if (pType->typeID() == rdo::runtime::RDOType::t_int)
 	{
 		rdo::runtime::LPRDOCalc pNewCalcDiv = pCalc;
@@ -1716,7 +1716,7 @@ void RDOFUNGroup::end()
 
 Context::LPFindResult RDOFUNGroup::onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const
 {
-	//! Тип ресурса внутри групповой функции
+	// Тип ресурса внутри групповой функции
 	if (method == Context::METHOD_OPERATOR_DOT)
 	{
 		if (getResType()->name() == params.identifier())
@@ -1776,7 +1776,7 @@ RDOFUNSelect::RDOFUNSelect(const RDOParserSrcInfo& res_info)
 	: RDOFUNGroup(RDOParserSrcInfo(res_info.src_text()))
 {}
 
-//! Сам Select как выборка по типу и условию
+// Сам Select как выборка по типу и условию
 void RDOFUNSelect::initSelect(LPRDOFUNLogic pCondition)
 {
 	m_pCalcSelect = rdo::Factory<rdo::runtime::RDOFunCalcSelect>::create(getResType().interface_dynamic_cast<rdo::runtime::IResourceType>(), getResType()->getNumber(), pCondition->getCalc());

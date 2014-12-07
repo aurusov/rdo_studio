@@ -1312,7 +1312,7 @@ void ViewPreferences::createPreview()
 	preview_chart_doc->setTitle(QString("график 1"));
 	preview_chart->setPreviwMode(true);
 	preview_chart->setStyle(&style_chart, false);
-	////initializing times vector
+
 	preview_times.push_back(Time(0, 3));
 	preview_times.push_back(Time(2, 3));
 	preview_times.push_back(Time(4, 3));

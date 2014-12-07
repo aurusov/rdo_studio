@@ -212,7 +212,7 @@ LPFuzzySet FuzzySet::operator|| (const LPFuzzySet& pSet)const
 // -------------------- MemberFunctionProperties
 // --------------------------------------------------------------------------------
 // TODO комментарии в *.h
-//! Декартово произведение (попарное) элементов двух множест с применением произвольной функции fun
+// Декартово произведение (попарное) элементов двух множест с применением произвольной функции fun
 LPFuzzySet MemberFunctionProperties::ext_binary(ExtBinaryFun fun, const LPFuzzySet& pSet1, const LPFuzzySet& pSet2)
 {
 	FuzzySet::FuzzySetDefinition values;
@@ -249,7 +249,7 @@ LPFuzzySet MemberFunctionProperties::ext_binary(ExtBinaryFun fun, const LPFuzzyS
 	return LPFuzzySet();
 }
 
-//! Преобразование элементов через произвольную функцию fun
+// Преобразование элементов через произвольную функцию fun
 LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFun fun, const LPFuzzySet& pSet)
 {
 	FuzzySet::FuzzySetDefinition values;

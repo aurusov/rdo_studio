@@ -11,7 +11,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Базовая групповая функция
 PREDECLARE_POINTER(RDOFunCalcSelect);
 class RDOFunCalcSelect: public RDOFunCalcGroup
 {
@@ -30,7 +29,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Базовая класс для операторов Select
 PREDECLARE_POINTER(RDOFunCalcSelectBase);
 class RDOFunCalcSelectBase: public RDOFunCalc
 {

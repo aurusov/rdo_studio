@@ -605,7 +605,7 @@ dpt_some_parent
 dpt_some_begin
 	: RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_parent dpt_some_trace
 	{
-		/// @todo а где признак трассировки для some ?
+		// TODO а где признак трассировки для some ?
 		LPRDOValue pName       = CONVERTER->stack().pop<RDOValue>($2);
 		LPRDOValue pParentName = CONVERTER->stack().pop<RDOValue>($4);
 		ASSERT(pName)
@@ -840,7 +840,7 @@ dpt_prior_parent
 dpt_prior_begin
 	: RDO_Decision_point RDO_IDENTIF_COLON RDO_prior dpt_prior_parent dpt_prior_trace
 	{
-		/// @todo а где признак трассировки для prior ?
+		// TODO а где признак трассировки для prior ?
 		LPRDOValue pName       = CONVERTER->stack().pop<RDOValue>($2);
 		LPRDOValue pParentName = CONVERTER->stack().pop<RDOValue>($4);
 		ASSERT(pName);

@@ -15,11 +15,10 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IDPTSearchActivity: public virtual rdo::counter_reference
 {
 public:
-	//! Время вычисления функции стоимости пути
 	enum ValueTime
 	{
-		vt_before, // до выполнения активности
-		vt_after   // после выполнения активности
+		vt_before,
+		vt_after
 	};
 
 	virtual LPIRule& rule() = 0;

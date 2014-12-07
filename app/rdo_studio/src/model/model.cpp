@@ -1237,8 +1237,8 @@ void Model::update()
 		if (pView)
 		{
 			// TODO qt: переделать модель отрисовки.
-			//! В pView::paintEvent запрашивать RT_RUNTIME_GET_FRAME, если был тик от таймера.
-			//! Иначе отрисовывать текущий буфер.
+			// В pView::paintEvent запрашивать RT_RUNTIME_GET_FRAME, если был тик от таймера.
+			// Иначе отрисовывать текущий буфер.
 			if (pView->isVisible())
 			{
 				try

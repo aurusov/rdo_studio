@@ -9,7 +9,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Размер массива
 PREDECLARE_POINTER(RDOCalcArraySize);
 class RDOCalcArraySize: public RDOCalc
 {
@@ -22,7 +21,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Возвращает элемент массива
 PREDECLARE_POINTER(RDOCalcArrayItem);
 class RDOCalcArrayItem: public RDOCalc
 {
@@ -36,7 +34,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Устанавливает элемент массива
 PREDECLARE_POINTER(RDOCalcSetArrayItem);
 class RDOCalcSetArrayItem: public RDOCalc
 {

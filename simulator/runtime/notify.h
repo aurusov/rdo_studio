@@ -11,11 +11,9 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Передача сообщений между объектами
 class Notify
 {
 public:
-	//! Типы сообщений
 	enum Type
 	{
 		RO_BEFOREDELETE = 0

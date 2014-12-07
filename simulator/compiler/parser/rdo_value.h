@@ -70,7 +70,6 @@ private:
  	template <class T>
 	void setPointer(const rdo::intrusive_ptr<T>& pObject);
 
-	//! Тип контейнера значения, размер определяется по максимальному размеру типа данных
 	typedef unsigned char Value[sizeof(rdo::intrusive_ptr_interface_wrapper<RDOValue>)];
 
 	Value                  m_buffer;

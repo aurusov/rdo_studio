@@ -64,7 +64,6 @@ LPExpression contextSetParam(const rdo::runtime::LPRDOCalc& getResource, const L
 {
 	rdo::runtime::LPRDOCalc setParamCalc = rdo::Factory<rdo::runtime::RDOSetResourceParam<setOperationType> >::create(getResource, paramID, rightValue);
 
-	//! Проверка на диапазон
 	LPRDOTypeIntRange pTypeIntRange = pTypeInfo->itype().object_dynamic_cast<RDOTypeIntRange>();
 	if (pTypeIntRange)
 	{

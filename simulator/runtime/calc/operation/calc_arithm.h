@@ -8,19 +8,14 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Оператор присваивания
 typedef RDOCalcBinary<BinaryOperatorNonConstP1<RDOValue&, &RDOValue::operator= >, OperatorType::OT_ARITHM> RDOCalcSet;  DECLARE_POINTER(RDOCalcSet);
 
-//! Бинарный оператор плюс
 typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator+ >, OperatorType::OT_ARITHM> RDOCalcPlus;  DECLARE_POINTER(RDOCalcPlus);
 
-//! Бинарный оператор минус
 typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator- >, OperatorType::OT_ARITHM> RDOCalcMinus; DECLARE_POINTER(RDOCalcMinus);
 
-//! Бинарный оператор умножить
 typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator* >, OperatorType::OT_ARITHM> RDOCalcMult;  DECLARE_POINTER(RDOCalcMult);
 
-//! Бинарный оператор разделить
 class RDOCalcDiv: public RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator/ >, OperatorType::OT_ARITHM>
 {
 DECLARE_FACTORY(RDOCalcDiv);
@@ -33,7 +28,6 @@ private:
 };
 DECLARE_POINTER(RDOCalcDiv);
 
-//! Бинарный оператор сложения по перечислению
 PREDECLARE_POINTER(RDOCalcPlusEnumSafe);
 class RDOCalcPlusEnumSafe: public RDOCalcPlus
 {
@@ -44,7 +38,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Бинарный оператор умножить по перечислению
 PREDECLARE_POINTER(RDOCalcMultEnumSafe);
 class RDOCalcMultEnumSafe: public RDOCalcMult
 {

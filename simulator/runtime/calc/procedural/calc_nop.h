@@ -8,7 +8,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Пустая операция
 PREDECLARE_POINTER(RDOCalcNop);
 class RDOCalcNop: public RDOCalc
 {

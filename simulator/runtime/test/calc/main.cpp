@@ -87,9 +87,9 @@ BOOST_AUTO_TEST_CASE(RDOCalc_RecursSimulator)
 				: m_value(value)
 			{}
 
-			//! Важно, чтобы тип был int, а не int&
-			//! Иначе результаты обоих функций будут по 1
-			//! А сейчас 1 и 120
+			// Важно, чтобы тип был int, а не int&
+			// Иначе результаты обоих функций будут по 1
+			// А сейчас 1 и 120
 			int value()
 			{
 				return m_value;
@@ -154,26 +154,26 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 
 		static LPRDOCalc create(MultOrder order)
 		{
-			//! ручная набивка тела функции вида
-			//!
-			//! int fun(int param)
-			//! {
-			//!     if (param == 1)
-			//!     {
-			//!        return 1;
-			//!     }
-			//!     else
-			//!     {
-			//!        return fun(param - 1) * param;
-			//!     }
-			//! }
+			// ручная набивка тела функции вида
+			//
+			// int fun(int param)
+			// {
+			//     if (param == 1)
+			//     {
+			//        return 1;
+			//     }
+			//     else
+			//     {
+			//        return fun(param - 1) * param;
+			//     }
+			// }
 
 			LPRDOCalcReturnCatch pReturnCatch = rdo::Factory<RDOCalcReturnCatch>::create();
 			BOOST_CHECK(pReturnCatch);
 
 			LPRDOCalc pGetFunParam = rdo::Factory<RDOCalcFuncParam>::create(0, RDOSrcInfo());
 
-			//! if (param == 1)
+			// if (param == 1)
 			LPRDOCalc pIFCondition;
 			{
 				LPRDOCalc pParamLeft = pGetFunParam;
@@ -189,16 +189,16 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 			LPRDOCalcIf pIf = rdo::Factory<RDOCalcIf>::create(pIFCondition);
 			BOOST_CHECK(pIf);
 
-			//! return 1
+			// return 1
 			LPRDOCalc pThen = rdo::Factory<RDOCalcFunReturn>::create(
 				rdo::Factory<RDOCalcConst>::create(RDOValue(int(1)))
 			);
 			BOOST_CHECK(pThen);
 
-			//! return fun(param - 1) * param
+			// return fun(param - 1) * param
 			LPRDOCalc pElse;
 			{
-				//! param - 1
+				// param - 1
 				LPRDOCalc pParamValue;
 				{
 					LPRDOCalc pParamLeft = pGetFunParam;
@@ -211,13 +211,13 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 				}
 				BOOST_CHECK(pParamValue);
 
-				//! Вызов fun(param - 1)
+				// Вызов fun(param - 1)
 				LPRDOCalc pFunctionCaller = caller(pReturnCatch, pParamValue);
 				BOOST_CHECK(pFunctionCaller);
 
-				//! fun(param - 1) * param
-				//! или
-				//! param * fun(param - 1)
+				// fun(param - 1) * param
+				// или
+				// param * fun(param - 1)
 				LPRDOCalc pMult;
 				switch (order)
 				{
@@ -239,7 +239,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 		}
 
 	private:
-		//! ручная набивка вызова функции int fun(5)
+		// ручная набивка вызова функции int fun(5)
 		static LPRDOCalc externalCaller(const LPRDOCalc& pBody)
 		{
 			LPRDOCalc pParam = rdo::Factory<RDOCalcConst>::create(RDOValue(int(5)));

@@ -104,7 +104,7 @@ void RDOParserRSSPost::parse(Converter* pParser)
 {
 	ASSERT(pParser);
 
-	//! В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
+	// В режиме совместимости со старым РДО создаем ресурсы по номерам их типов, а не по номерам самих ресурсов из RSS
 #ifdef RDOSIM_COMPATIBLE
 	for (const auto& rtp: pParser->getRTPResTypes())
 	{

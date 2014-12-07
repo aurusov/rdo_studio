@@ -204,8 +204,6 @@ private:
 };
 DECLARE_POINTER(RDOFUNConstant);
 
-//! Список арифметических выражений
-//! \details Используется для передачи параметров при вызове событий и функций
 PREDECLARE_POINTER(ArithmContainer);
 class ArithmContainer
 	: public rdo::counter_reference
@@ -255,6 +253,7 @@ private:
 	RDOParserSrcInfo  m_funseqName;
 	LPArithmContainer m_pArithmContainer;
 };
+
 // --------------------------------------------------------------------------------
 // -------------------- Последовательности
 // --------------------------------------------------------------------------------
@@ -606,8 +605,8 @@ private:
 	typedef  std::vector<LPRDOFUNCalculateIf>          CalculateIfList;
 
 	LPRDOParam               m_pReturn;
-	ElementList              m_elementList;     //! for list and table
-	CalculateIfList          m_calculateIfList; //! for algorithmic
+	ElementList              m_elementList;     // for list and table
+	CalculateIfList          m_calculateIfList; // for algorithmic
 	rdo::runtime::LPRDOCalc  m_pFunctionCalc;
 	LPContextMemory          m_pContextMemory;
 

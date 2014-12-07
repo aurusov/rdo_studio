@@ -134,12 +134,12 @@ static CORBA::Object_ptr getObjectReference(CORBA::ORB_ptr orb, const char* Obje
 
 	try
 	{
-		//! Obtain a reference to the root context of the Name service:
+		// Obtain a reference to the root context of the Name service:
 		CORBA::Object_var obj;
 
 		obj = orb->resolve_initial_references("NameService");
 
-		//! Narrow the reference returned.
+		// Narrow the reference returned.
 		rootContext = CosNaming::NamingContext::_narrow(obj);
 
 		if(CORBA::is_nil(rootContext))
@@ -155,31 +155,31 @@ static CORBA::Object_ptr getObjectReference(CORBA::ORB_ptr orb, const char* Obje
 	}
 	catch (const CORBA::ORB::InvalidName&)
 	{
-		//! This should not happen!
+		// This should not happen!
 		TRACE("Service required is invalid [does not exist].\n");
 		return CORBA::Object::_nil();
 	}
 
-	//! Create a name object, containing the name test/context:
+	// Create a name object, containing the name test/context:
 	CosNaming::Name name;
 	name.length(2);
-	name[0].id = (const char*)"RDO"; //! string copied
-	name[0].kind = (const char*)"RDO_context"; //! string copied
+	name[0].id = (const char*)"RDO"; // string copied
+	name[0].kind = (const char*)"RDO_context"; // string copied
 	name[1].id = (const char*)ObjectName;
 	name[1].kind = (const char*)"Object";
 
-	//! Note on kind: The kind field is used to indicate the type
-	//! of the object. This is to avoid conventions such as that used
-	//! by files (name.type -- e.g. test.ps = postscript etc.)
+	// Note on kind: The kind field is used to indicate the type
+	// of the object. This is to avoid conventions such as that used
+	// by files (name.type -- e.g. test.ps = postscript etc.)
 	try
 	{
-		//! Resolve the name to an object reference.
+		// Resolve the name to an object reference.
 		return rootContext->resolve(name);
 	}
 	catch(const CosNaming::NamingContext::NotFound&)
 	{
-		//! This exception is thrown if any of the components of the
-		//! path [contexts or the object] aren’t found:
+		// This exception is thrown if any of the components of the
+		// path [contexts or the object] aren’t found:
 		TRACE("Context not found.");
 	}
 	catch(const CORBA::TRANSIENT&)
@@ -195,14 +195,14 @@ static CORBA::Object_ptr getObjectReference(CORBA::ORB_ptr orb, const char* Obje
 	return CORBA::Object::_nil();
 }
 
-//! ----------------------------------------------------------------------------
-//! ---------- RDOParserCorbaRTP
-//! ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+// ---------- RDOParserCorbaRTP
+// ----------------------------------------------------------------------------
 void RDOParserCorbaRTP::parse(const LPRDOParser& pParser)
 {
-	//! Тут надо запросить все типы ресурсов у парного РДО,
-	//! вызвав с помощью корбы некий метод, который вернёт кучу структур
-	//! с описанием RTP и насоздавать этих типов
+	// Тут надо запросить все типы ресурсов у парного РДО,
+	// вызвав с помощью корбы некий метод, который вернёт кучу структур
+	// с описанием RTP и насоздавать этих типов
 
 	RDOParserSMRInfo parser;
 	parser.parse();
@@ -221,7 +221,7 @@ void RDOParserCorbaRTP::parse(const LPRDOParser& pParser)
 			int argc = 0;
 
 			CORBA::ORB_var         orb         = CORBA::ORB_init   (argc, NULL);
-			CORBA::Object_var      obj         = getObjectReference(orb,  left); //! может лучше right
+			CORBA::Object_var      obj         = getObjectReference(orb,  left); // может лучше right
 			RDOCorba_var rdocorbaref = RDOCorba::_narrow(obj);
 
 			//-------------------------------------------------------------
@@ -230,19 +230,19 @@ void RDOParserCorbaRTP::parse(const LPRDOParser& pParser)
 			RDOCorba::GetRTP_var tmp_rtp = rdocorbaref->getRDORTPlist(rtp_count);
 			RDOCorba::GetRTP_var my_rtpList(tmp_rtp);
 
-			//! Печатаем в файл на С для теста
+			// Печатаем в файл на С для теста
 			print_RTP(my_rtpList);
-			//!-------------------------------------------------------------
-			//! Добавляем к существующим типам ресурсов и выводим в трассировке
+			//-------------------------------------------------------------
+			// Добавляем к существующим типам ресурсов и выводим в трассировке
 	
-			//! Получили список всех описанных типов ресурсов
+			// Получили список всех описанных типов ресурсов
 			rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
 	
 			for (std::size_t i = 0; i < my_rtpList->length(); i++)
 			{
 				rdo::compiler::mbuilder::RDOResType rtp(my_rtpList[i].m_name.in());
 
-				//! Наполняем его параметрами
+				// Наполняем его параметрами
 				for (std::size_t j = 0; j != my_rtpList[i].m_param_count; j++)
 				{
 					switch (my_rtpList[i].m_param[j].m_type)
@@ -275,7 +275,7 @@ void RDOParserCorbaRTP::parse(const LPRDOParser& pParser)
 					}
 					case RDOCorba::enum_type:
 					{
-						//! Создадим список значений параметра перечислимого типа
+						// Создадим список значений параметра перечислимого типа
 						rdo::runtime::RDOEnumType::Enums enumList;
 
 						for (CORBA::Long k = 0; k < my_rtpList[i].m_param[j].m_var_enum_count ; k++)
@@ -283,7 +283,7 @@ void RDOParserCorbaRTP::parse(const LPRDOParser& pParser)
 							enumList.push_back(my_rtpList[i].m_param[j].m_var_enum[k].pd_data);
 						}
 
-						//! Создадим параметр перечислимого типа
+						// Создадим параметр перечислимого типа
 						rdo::compiler::mbuilder::RDOResType::Param par_enum(my_rtpList[i].m_param[j].m_name.in(), enumList);
 
 						//Добавляем, если есть значение по умолчанию
@@ -300,20 +300,20 @@ void RDOParserCorbaRTP::parse(const LPRDOParser& pParser)
 					}
 				}
 
-				//! Добавляем к существующим типам ресурсов
+				// Добавляем к существующим типам ресурсов
 				if (rtpList.append(rtp))
 				{
-					//! Добавили успешно
+					// Добавили успешно
 					TRACE("Еще один тип ресурсов добавился!!!\n");
 				}
 				else
 				{
-					//! Неудача, возможно, тип с таким именем уже есть
+					// Неудача, возможно, тип с таким именем уже есть
 					TRACE("Где-то есть ошибка или тип ресурса уже существует!!!\n");
 				}
 			}
 
-			//! Вывели все типы ресурсов (исключительно для теста)
+			// Вывели все типы ресурсов (исключительно для теста)
 			for (const auto& rtp: rtpList)
 			{
 				TRACE1("rtp.name = %s\n", rtp.name().c_str());
@@ -340,32 +340,32 @@ void RDOParserCorbaRTP::parse(const LPRDOParser& pParser)
 				}
 			}
 
-			//! -------------------------------------------------------------
+			// -------------------------------------------------------------
 			CORBA::Long rss_count = 0;
 
 			RDOCorba::GetRSS_var tmp_rss = rdocorbaref->getRDORSSPlist(rss_count);
 			RDOCorba::GetRSS_var my_rssList(tmp_rss);
 		
-			//! Печатаем в файл на С для теста:
+			// Печатаем в файл на С для теста:
 			print_RSS(my_rssList);
 
-			//! -------------------------------------------------------------
-			//! Добавляем к существующим ресурсам и выводим в трассировке
+			// -------------------------------------------------------------
+			// Добавляем к существующим ресурсам и выводим в трассировке
 
-			//! Переписали имеющиеся ресурсы в rssList
+			// Переписали имеющиеся ресурсы в rssList
 			rdo::compiler::mbuilder::RDOResourceList rssList(pParser);
 
 			for (std::size_t i = 0; i < my_rssList->length(); i++)
 			{
-				//! Нашли тип ресурса по известному имени и создали ресурс указанного типа
+				// Нашли тип ресурса по известному имени и создали ресурс указанного типа
 				rdo::compiler::mbuilder::RDOResType _rtp = rtpList[my_rssList[i].m_type.in()];
 				rdo::compiler::mbuilder::RDOResource rss(_rtp, my_rssList[i].m_name.in());
 
-				//! rdo::compiler::mbuilder::RDOResource::Params::const_iterator it_param = rss.begin();
+				// rdo::compiler::mbuilder::RDOResource::Params::const_iterator it_param = rss.begin();
 
 				for (std::size_t j = 0; j != my_rssList[i].m_param_count; j++)
 				{
-					//! Записываем начальные значения параметров ресурса
+					// Записываем начальные значения параметров ресурса
 					switch (my_rssList[i].m_param[j].m_type)
 					{
 					case RDOCorba::int_type:
@@ -385,21 +385,21 @@ void RDOParserCorbaRTP::parse(const LPRDOParser& pParser)
 					}												 
 				 }
 
-				//! Добавляем к существующим ресурсам
+				// Добавляем к существующим ресурсам
 				if (rssList.append<RDORSSResource>(rss))
 				{
-					//! Добавили успешно
+					// Добавили успешно
 					TRACE("Еще один ресурс добавился!!!\n");
 				}
 				else
 				{
-					//! Неудача
+					// Неудача
 					TRACE("Где-то есть ошибка или ресурс уже существует!!!\n");
 				} 
 			}
 
-			//! Вывели все ресурсы для теста
-			//! rdo::compiler::mbuilder::RDOResourceList rssList(&parser);
+			// Вывели все ресурсы для теста
+			// rdo::compiler::mbuilder::RDOResourceList rssList(&parser);
 			for (const auto& rss: rssList)
 			{
 				TRACE2("rss.name = %s: %s\n", rss.name().c_str(), rss.getType().name().c_str());
@@ -431,38 +431,38 @@ void RDOParserCorbaRTP::parse(const LPRDOParser& pParser)
 	}
 }
 
-//! ----------------------------------------------------------------------------
-//! ---------- RDOParserCorbaRSS
-//! ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+// ---------- RDOParserCorbaRSS
+// ----------------------------------------------------------------------------
 void RDOParserCorbaRSS::parse(const LPRDOParser& pParser)
 {
 /*
-	//! Тут надо запросить все ресурсы у парного РДО
+	// Тут надо запросить все ресурсы у парного РДО
 
-	//! Количество полученных ресурсов
+	// Количество полученных ресурсов
 	const std::size_t rss_count = 1;
 
-	//! Получили список всех типов ресурсов
+	// Получили список всех типов ресурсов
 	rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
-	//! Получили список всех ресурсов
+	// Получили список всех ресурсов
 	rdo::compiler::mbuilder::RDOResourceList rssList(pParser);
 
 	for (std::size_t i = 0; i < rss_count; i++)
 	{
-		//! Создали новый ресурс
+		// Создали новый ресурс
 		rdo::compiler::mbuilder::RDOResource rss(rtpList["Парикмахеры"], "MyRSS1");
-		//! Заполнили его параметры
+		// Заполнили его параметры
 		rss["длительность_max"] = 174;
-		//! Добавляем его к списку существующих
+		// Добавляем его к списку существующих
 		if (rssList.append<RDORSSResource>(rss))
 		{
-			//! Добавили успешно
+			// Добавили успешно
 		}
 		else
 		{
-			//! Неудача
+			// Неудача
 		}
-		//! Пример проверки ресурса на существование
+		// Пример проверки ресурса на существование
 		if (rssList.exist("qqq"))
 		{
 		}

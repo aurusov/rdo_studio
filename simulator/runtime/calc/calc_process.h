@@ -13,7 +13,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Передача транзакта в процесс и его запуск
 PREDECLARE_POINTER(RDOCalcProcessControl);
 class RDOCalcProcessControl: public RDOCalc
 {
@@ -27,7 +26,6 @@ private:
 	int m_relResNum;
 };
 
-//! Выполнение блока ASSIGN в процессе
 PREDECLARE_POINTER(RDOCalcProcAssign);
 class RDOCalcProcAssign: public RDOCalc
 {
@@ -41,7 +39,6 @@ private:
 	std::size_t m_param;
 };
 
-//! Получение значения терминального счетчика
 PREDECLARE_POINTER(RDOCalcGetTermNow);
 class RDOCalcGetTermNow: public RDOCalc
 {

@@ -10,7 +10,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Инициализация последовательности псевдослучайных чисел
 PREDECLARE_POINTER(RDOCalcSeqInit);
 class RDOCalcSeqInit: public RDOCalc
 {
@@ -28,7 +27,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Вычисляет следующее значение последовательности псевдослучайных чисел
 PREDECLARE_POINTER(RDOCalcSeqNext);
 class RDOCalcSeqNext: public RDOFunCalc
 {
@@ -51,7 +49,6 @@ protected:
 	virtual RDOValue getNextValue(const LPRDORuntime& pRuntime) = 0;
 };
 
-//! Псевдослучайное распределение
 template<class T>
 class RDOCalcRandomDistribution: public RDOCalcSeqNext
 {

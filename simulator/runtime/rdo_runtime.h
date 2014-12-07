@@ -40,7 +40,6 @@ struct Frame;
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Результаты моделирования
 class RDOResults
 {
 public:
@@ -65,7 +64,6 @@ PREDECLARE_POINTER(RDOFRMFrame);
 class RDOCalcCreateResource;
 PREDECLARE_POINTER(RDOEraseResRelCalc);
 
-//! Симулятор, вычислитель, рантайм машина
 class RDORuntime: public RDOSimulatorTrace
 {
 DECLARE_FACTORY(RDORuntime);
@@ -77,16 +75,11 @@ public:
 	typedef  std::vector<LPIResultTrace>      LPIResultTraceList;
 	typedef  std::vector<LPIResultWatchValue> LPIResultWatchValueList;
 
-	//! Подписка на внутренние сообщения
 	Notify& notify();
-
-	//! Формирование ошибок рантайма
 	Error& error();
-
-	//! Горячие клавиши
 	RDOHotKey& hotkey();
 
-	LPRDORuntime clone   () const;
+	LPRDORuntime clone() const;
 	void copyFrom(const LPRDORuntime& pOther);
 	bool equal(const LPRDORuntime& pOther) const;
 
@@ -119,7 +112,6 @@ public:
 
 	void addInitCalc(const LPRDOCalc& initCalc);
 
-	// Параметры ресурса
 	RDOValue& getResParamValRaw(std::size_t resID, std::size_t paramID);
 	void setResParamVal(std::size_t resID, std::size_t paramID, const RDOValue& value);
 
@@ -170,7 +162,7 @@ public:
 
 	virtual void postProcess();
 
-		enum FunBreakFlag
+	enum FunBreakFlag
 	{
 		FBF_NONE = 0,
 		FBF_BREAK,
@@ -222,7 +214,6 @@ private:
 	State  m_state;
 #endif
 
-	//! Точка останова
 	PREDECLARE_POINTER(BreakPoint);
 	class BreakPoint
 		: public rdo::counter_reference
@@ -267,8 +258,8 @@ private:
 	RDOResults* m_resultList;
 	RDOResults* m_resultListInfo;
 
-	LPRDOCalc       m_pTerminateIfCalc;
-	ValueList       m_constantList;
+	LPRDOCalc m_pTerminateIfCalc;
+	ValueList m_constantList;
 
 	void writeExitCode();
 

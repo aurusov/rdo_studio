@@ -15,7 +15,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 PREDECLARE_POINTER(FuzzySet);
 PREDECLARE_POINTER(DefineArea);
-//! Область определения
 
 PREDECLARE_POINTER(DefineArea);
 class DefineArea: public rdo::counter_reference
@@ -26,16 +25,15 @@ public:
 	typedef  boost::icl::interval<RDOValue>::type IntervalType;
 	typedef  boost::icl::interval_set<RDOValue> Domain;
 
-	DefineArea (); // типа бесконечность
+	DefineArea();
 	virtual ~DefineArea();
 private:
-	DefineArea(const RDOValue&);// 1 element
-	DefineArea(const RDOValue& leftBorder, const RDOValue& rightBorder); //;
+	DefineArea(const RDOValue&);
+	DefineArea(const RDOValue& leftBorder, const RDOValue& rightBorder);
 
 	Domain m_domain;
 };
 
-//! Нечеткое множество
 PREDECLARE_POINTER(FuzzySet);
 class FuzzySet: public rdo::counter_reference
 {
@@ -44,9 +42,9 @@ public:
 	typedef  std::pair<RDOValue, double>                              FuzzyItem;
 	typedef  std::map<FuzzyItem::first_type, FuzzyItem::second_type>  FuzzySetDefinition;
 
-	LPFuzzySet                                append     (const RDOValue& rdovalue, double appertain); // вставка с проверкой значения, если такое же есть - не вставит
+	LPFuzzySet                                append     (const RDOValue& rdovalue, double appertain);
 	LPFuzzySet                                operator() (const RDOValue& rdovalue, double appertain);
-	double&                                   operator[] (const RDOValue& rdovalue); // вставка без проверки значения
+	double&                                   operator[] (const RDOValue& rdovalue);
 	FuzzySetDefinition::const_iterator        find       (const RDOValue& rdovalue) const;
 	FuzzyItem                                 findValue  (const RDOValue& rdovalue) const;
 	FuzzySetDefinition::const_iterator        begin      () const;
@@ -81,7 +79,6 @@ private:
 PREDECLARE_POINTER(RDOValue);
 PREDECLARE_POINTER(RDOLingvoVariable);
 
-//! Свойства НМ:
 class MemberFunctionProperties
 {
 public:

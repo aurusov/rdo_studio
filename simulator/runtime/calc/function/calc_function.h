@@ -8,7 +8,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Базовый файл функций с закладки FUN
 PREDECLARE_POINTER(RDOFunCalc);
 class RDOFunCalc: public RDOCalc
 {
@@ -19,7 +18,6 @@ protected:
 	RDOFunCalc();
 };
 
-//! Табличная функция
 PREDECLARE_POINTER(RDOFuncTableCalc);
 class RDOFuncTableCalc: public RDOFunCalc
 {
@@ -38,7 +36,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Функция типа список
 PREDECLARE_POINTER(RDOFunListCalc);
 class RDOFunListCalc: public RDOFunCalc
 {
@@ -58,7 +55,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Алгоритмическая функция
 PREDECLARE_POINTER(RDOFunAlgorithmicCalc);
 class RDOFunAlgorithmicCalc: public RDOFunCalc
 {
@@ -75,7 +71,6 @@ protected:
 	DECLARE_ICalc;
 };
 
-//! Параметр функции
 PREDECLARE_POINTER(RDOCalcFuncParam);
 class RDOCalcFuncParam: public RDOCalc
 {
@@ -88,7 +83,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Получение константы с закладки FUN
 PREDECLARE_POINTER(RDOCalcGetConst);
 class RDOCalcGetConst: public RDOCalc
 {
@@ -101,7 +95,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Инициализация константы
 PREDECLARE_POINTER(RDOCalcSetConst);
 class RDOCalcSetConst: public RDOCalc
 {
@@ -115,7 +108,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Вызов функции (function-caller)
 PREDECLARE_POINTER(RDOCalcFunctionCaller);
 class RDOCalcFunctionCaller: public RDOCalc
 {

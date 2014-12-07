@@ -265,12 +265,12 @@ void RDOPMDWatchState::checkResult(const LPRDORuntime& pRuntime)
 	double currTime = pRuntime->getCurrentTime();
 	m_currentValue.duration += currTime - m_timePrev;
 
-	if (!m_currentValue.state && newValue) //! from FALSE to TRUE
+	if (!m_currentValue.state && newValue) // from FALSE to TRUE
 	{
 		m_currentValue = newValue;
 		m_wasChanged   = true;
 	}
-	else if (m_currentValue.state && !newValue) //! from TRUE to FALSE
+	else if (m_currentValue.state && !newValue) // from TRUE to FALSE
 	{
 		m_acc(m_currentValue.duration);
 		m_currentValue = newValue;

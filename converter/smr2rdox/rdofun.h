@@ -544,9 +544,9 @@ private:
 
 	LPRDOParam                 m_pReturn;
 	ParamList                  m_paramList;
-	ElementList                m_elementList;     //! for list and table
-	CalculateIfList            m_calculateIfList; //! for algorithmic
-	PostLinkedList             m_postLinkedList;  //! для рекурсивного вызова
+	ElementList                m_elementList;     // for list and table
+	CalculateIfList            m_calculateIfList; // for algorithmic
+	PostLinkedList             m_postLinkedList;  // для рекурсивного вызова
 	rdo::runtime::LPRDOFunCalc m_pFunctionCalc;
 };
 

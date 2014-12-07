@@ -15,7 +15,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 PREDECLARE_POINTER(RDOEnumType);
 
-//! Значение переменных в РДО
 class RDOValue
 {
 public:
@@ -105,7 +104,6 @@ public:
 	//void setArrayItem(const RDOValue& ind, const RDOValue& item);
 
 private:
-	//! Строковый тип данных
 	PREDECLARE_POINTER(string_class);
 	class string_class
 		: public rdo::counter_reference
@@ -116,7 +114,6 @@ private:
 		rdo::intrusive_ptr<string_class> clone() const;
 	};
 
-	//! Тип контейнера значения, размер определяется по максимальному размеру типа данных
 	typedef unsigned char Value[sizeof(rdo::intrusive_ptr_interface_wrapper<string_class>)];
 
 	Value m_value; // контейнер значения

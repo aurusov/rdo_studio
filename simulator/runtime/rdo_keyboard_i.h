@@ -16,13 +16,12 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IKeyboard: public virtual rdo::counter_reference
 {
 public:
-	//! Статуc нажатия клавиши
 	enum AddHotKeyResult
 	{
-		addhk_ok,       // клавиша нажата
-		addhk_already,  // клавиша уже нажата
-		addhk_notfound, // клавиша не найдена
-		addhk_dont	    // клавиша не нажата
+		addhk_ok,
+		addhk_already,
+		addhk_notfound,
+		addhk_dont
 	};
 	virtual bool hasHotKey() const = 0;
 	virtual AddHotKeyResult addHotKey(const rdo::runtime::LPRDORuntime& pRuntime, const std::string& hotKey) = 0;

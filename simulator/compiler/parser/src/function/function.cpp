@@ -182,7 +182,7 @@ void Function::setBody(const rdo::runtime::LPRDOCalc& pBody)
 		rdo::runtime::LPRDOCalc pCalcDefault = m_pDefaultValue;
 		if (!pCalcDefault)
 		{
-			//! Присвоить автоматическое значение по умолчанию, если оно не задано в явном виде
+			// Присвоить автоматическое значение по умолчанию, если оно не задано в явном виде
 			pCalcDefault = rdo::Factory<rdo::runtime::RDOCalcConst>::create(m_pReturnType->itype()->get_default());
 			ASSERT(pCalcDefault);
 			pCalcDefault->setSrcInfo(m_pReturnType->src_info());

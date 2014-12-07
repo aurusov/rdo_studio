@@ -41,7 +41,7 @@ LPIType RDOArrayType::type_cast(const LPIType& pFrom, const RDOParserSrcInfo& fr
 
 		if (pThisArrayType->getItemType()->itype()->type_cast(pFromArrayType->getItemType()->itype(), pFromArrayType->src_info(), pThisArrayType->src_info(), pFromArrayType->src_info()))
 		{
-			//! Это один и тот же тип
+			// Это один и тот же тип
 			return pThisArrayType;
 		}
 

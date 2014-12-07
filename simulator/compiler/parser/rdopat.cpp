@@ -97,13 +97,13 @@ std::string RDOPATPattern::typeToString(PatType type) const
 
 LPRDORelevantResource RDOPATPattern::findRelRes(const std::string& identifier, const RDOParserSrcInfo& srcInfo) const
 {
-	//! Релевантные ресурсы
+	// Релевантные ресурсы
 	LPRDORelevantResource pRelevantResource = findRelevantResource(identifier);
 	if (pRelevantResource)
 	{
 		if (!m_pCurrRelRes)
 		{
-			//! Внутри with_min-common-choice или $Time
+			// Внутри with_min-common-choice или $Time
 			if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_NonExist || pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Create)
 			{
 				RDOParser::s_parser()->error().error(srcInfo, rdo::format("Релевантный ресурс не может быть использован, т.к. он еще не существует: %s", pRelevantResource->name().c_str()));
@@ -111,8 +111,8 @@ LPRDORelevantResource RDOPATPattern::findRelRes(const std::string& identifier, c
 		}
 		else
 		{
-			//! Внутри $Body
-			//! Проверяем использование неинициализированного рел.ресурса (pRelevantResource) в Choice from другом рел.ресурсе (m_pCurrRelRes)
+			// Внутри $Body
+			// Проверяем использование неинициализированного рел.ресурса (pRelevantResource) в Choice from другом рел.ресурсе (m_pCurrRelRes)
 			if (m_pCurrRelRes->isChoiceFromState())
 			{
 				if (!pRelevantResource->m_alreadyHaveConverter && !pRelevantResource->isDirect())
@@ -128,10 +128,10 @@ LPRDORelevantResource RDOPATPattern::findRelRes(const std::string& identifier, c
 					RDOParser::s_parser()->error().error(srcInfo, rdo::format("Сразу после создания (Create) релевантный ресурс '%s' можно использовать только в конверторах, но не в условии выбора", pRelevantResource->name().c_str()));
 				}
 			}
-			//! Проверяем использование временного рел.ресурса внутри конвертора другого рел.ресурса
+			// Проверяем использование временного рел.ресурса внутри конвертора другого рел.ресурса
 			if (pRelevantResource->getType()->isTemporary())
 			{
-				//! В конверторе начала
+				// В конверторе начала
 				if (m_pCurrRelRes->m_currentState == RDORelevantResource::convertBegin)
 				{
 					if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Create && !pRelevantResource->m_alreadyHaveConverter)
@@ -147,7 +147,7 @@ LPRDORelevantResource RDOPATPattern::findRelRes(const std::string& identifier, c
 						RDOParser::s_parser()->error().error(srcInfo, rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", pRelevantResource->name().c_str()));
 					}
 				}
-				//! В конверторе конца
+				// В конверторе конца
 				if (m_pCurrRelRes->m_currentState == RDORelevantResource::convertEnd)
 				{
 					if (pRelevantResource->m_statusEnd == rdo::runtime::RDOResource::CS_Create && !pRelevantResource->m_alreadyHaveConverter)
@@ -585,11 +585,11 @@ void RDOPATPattern::end()
 
 	if (m_useCommonChoice)
 	{
-		//! first
-		//! Работает неправильно, а как обыкновенный first
+		// first
+		// Работает неправильно, а как обыкновенный first
 		if (!m_pCommonChoice)
 		{
-			//! first
+			// first
 			std::vector<rdo::runtime::LPIRDOSelectResourceCommon> resSelectors;
 			for (int i = 0; i < size; i++)
 			{
@@ -607,7 +607,7 @@ void RDOPATPattern::end()
 		}
 		else
 		{
-			//! with_min/with_max
+			// with_min/with_max
 			std::vector<rdo::runtime::LPIRDOSelectResourceCommon> resSelectors;
 			for (int i = 0; i < size; i++)
 			{
@@ -1123,10 +1123,10 @@ Context::LPFindResult RDORelevantResource::onFindContext(const std::string& meth
 		const std::size_t parNumb = getType()->getRTPParamNumber(paramName);
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 			return rdo::Factory<FindResult>::create();
-		//! Проверяем использование еще не инициализированного (только для Create) параметра рел. ресурса в его же конверторе
+		// Проверяем использование еще не инициализированного (только для Create) параметра рел. ресурса в его же конверторе
 		LPRDORTPParam pParam = getType()->findRTPParam(paramName);
 		ASSERT(pParam);
-		//! В конверторе начала
+		// В конверторе начала
 		if (m_currentState == RDORelevantResource::convertBegin && m_statusBegin == rdo::runtime::RDOResource::CS_Create)
 		{
 			if (!pParam->getDefined())
@@ -1137,7 +1137,7 @@ Context::LPFindResult RDORelevantResource::onFindContext(const std::string& meth
 				}
 			}
 		}
-		//! В конверторе конца
+		// В конверторе конца
 		if (m_currentState == RDORelevantResource::convertEnd && m_statusEnd == rdo::runtime::RDOResource::CS_Create)
 		{
 			if (!pParam->getDefined())

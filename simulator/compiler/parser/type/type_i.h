@@ -31,7 +31,7 @@ public:
 		const RDOParserSrcInfo& to_src_info,
 		const RDOParserSrcInfo& src_info
 	) const = 0;
-	//! calc_cast вызывается строго после type_cast, поэтому никаких RDOParserSrcInfo не передается
+	// calc_cast вызывается строго после type_cast, поэтому никаких RDOParserSrcInfo не передается
 	virtual rdo::runtime::LPRDOCalc calc_cast(
 		const rdo::runtime::LPRDOCalc& pCalc,
 		const LPIType& pType

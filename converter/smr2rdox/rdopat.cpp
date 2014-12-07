@@ -340,11 +340,11 @@ void RDOPATPattern::end()
 
 	if (m_useCommonChoice)
 	{
-		//! first
-		//! Работает неправильно, а как обыкновенный first
+		// first
+		// Работает неправильно, а как обыкновенный first
 		if (!m_pCommonChoice)
 		{
-			//! first
+			// first
 			std::vector<rdo::runtime::LPIRDOSelectResourceCommon> resSelectors;
 			for (int i = 0; i < size; i++)
 			{
@@ -362,7 +362,7 @@ void RDOPATPattern::end()
 		}
 		else
 		{
-			//! with_min/with_max
+			// with_min/with_max
 			std::vector<rdo::runtime::LPIRDOSelectResourceCommon> resSelectors;
 			for (int i = 0; i < size; i++)
 			{

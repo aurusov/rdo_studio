@@ -148,11 +148,11 @@ void RDOPROCQueue::createRuntime()
 	if (pResource)
 	{
 		const std::string res_name = pResource->name();
-		//! Получили список всех ресурсов
+		// Получили список всех ресурсов
 		rdo::compiler::mbuilder::RDOResourceList rssList(RDOParser::s_parser());
-		//! Создадим тип ресурса
+		// Создадим тип ресурса
 		rdo::compiler::mbuilder::RDOResType rtp = rssList[res_name].getType();
-		//! "длина_очереди"
+		// "длина_очереди"
 		const std::string rtp_param_name = rdo::runtime::RDOPROCQueue::getQueueParamName();
 		m_parserForRuntime.Id_res = pResource->getID();
 		m_parserForRuntime.Id_param = rtp.m_params[rtp_param_name].id();
@@ -186,11 +186,11 @@ void RDOPROCDepart::createRuntime()
 	if (pResource)
 	{
 		const std::string res_name = pResource->name();
-		//! Получили список всех ресурсов
+		// Получили список всех ресурсов
 		rdo::compiler::mbuilder::RDOResourceList rssList(RDOParser::s_parser());
-		//! Создадим тип ресурса
+		// Создадим тип ресурса
 		rdo::compiler::mbuilder::RDOResType rtp = rssList[res_name].getType();
-		//! "длина_очереди"
+		// "длина_очереди"
 		const std::string rtp_param_name = rdo::runtime::RDOPROCDepart::getDepartParamName();
 		m_parserForRuntime.Id_res = pResource->getID();
 		m_parserForRuntime.Id_param = rtp.m_params[rtp_param_name].id();
@@ -287,13 +287,13 @@ void RDOPROCRelease::createRuntime()
 		if (pResource)
 		{
 			const std::string res_name = pResource->name();
-			//! Получили список всех ресурсов
+			// Получили список всех ресурсов
 			rdo::compiler::mbuilder::RDOResourceList rssList(RDOParser::s_parser());
-			//! Создадим тип ресурса
+			// Создадим тип ресурса
 			rdo::compiler::mbuilder::RDOResType rtp = rssList[res_name].getType();
-			//! "Состояние"
+			// "Состояние"
 			const std::string rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
-			//! проверим его на наличие перечислимого параметра
+			// проверим его на наличие перечислимого параметра
 			if (!rtp.m_params[rtp_param_name].exist())
 			{
 				RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format("У типа ресурса '%s' нет параметра перечислимого типа '%s'", rtp.name().c_str(), rtp_param_name.c_str()));

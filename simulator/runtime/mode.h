@@ -8,14 +8,13 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Режимы моделирования
 enum RunTimeMode
 {
-	RTM_MaxSpeed,   // Максимальная производительность
-	RTM_Jump,       // Дискретная имитация
-	RTM_Sync,       // Синхронная имитация
-	RTM_Pause,      // Режим паузы
-	RTM_BreakPoint  // Режим точки остановки
+	RTM_MaxSpeed,
+	RTM_Jump,
+	RTM_Sync,
+	RTM_Pause,
+	RTM_BreakPoint
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

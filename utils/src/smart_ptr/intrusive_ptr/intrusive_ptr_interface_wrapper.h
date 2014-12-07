@@ -9,8 +9,6 @@
 
 namespace rdo {
 
-//! Оборачивает умный указатель в интерфейс
-//! tparam T - тип объекта, на который ссылается указатель
 template <class T>
 class intrusive_ptr_interface_wrapper: public rdo::intrusive_ptr<T>, public rdo::IRefCounter
 {

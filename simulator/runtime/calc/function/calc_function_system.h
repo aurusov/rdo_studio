@@ -8,7 +8,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Получение текущего модельного времени
 PREDECLARE_POINTER(RDOCalcGetTimeNow);
 class RDOCalcGetTimeNow: public RDOCalc
 {
@@ -16,7 +15,6 @@ DECLARE_FACTORY(RDOCalcGetTimeNow)
 DECLARE_ICalc;
 };
 
-//! Получение реального времени работы модели
 PREDECLARE_POINTER(RDOCalcGetSeconds);
 class RDOCalcGetSeconds: public RDOCalc
 {

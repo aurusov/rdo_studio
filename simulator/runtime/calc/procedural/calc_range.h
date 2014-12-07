@@ -8,7 +8,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Проверка на диапазон
 PREDECLARE_POINTER(RDOCalcCheckRange);
 class RDOCalcCheckRange: public RDOCalc
 {

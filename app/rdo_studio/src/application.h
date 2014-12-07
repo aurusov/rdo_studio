@@ -46,8 +46,8 @@ public:
 	MainWindowBase*  getIMainWnd();
 	MainWindowBase*  getStyle   ();
 
-	//! см. описание RDOKernelGUI
-	//! Главная треда самого приложения, т.е. кернет для win32-gui, но не кернел системы
+	// см. описание RDOKernelGUI
+	// Главная треда самого приложения, т.е. кернет для win32-gui, но не кернел системы
 	RDOThread*          m_pStudioGUI;
 
 	std::ofstream& log();

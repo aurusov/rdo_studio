@@ -234,7 +234,7 @@ RDODPTSome::~RDODPTSome()
 
 Context::LPFindResult RDODPTSome::onFindContext(const std::string& /*method*/, const Context::Params& /*params*/, const RDOParserSrcInfo& /*srcInfo*/) const
 {
-	//! Добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
+	// Добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
 	return rdo::Factory<FindResult>::create();
 }
 
@@ -257,7 +257,7 @@ RDODPTPrior::~RDODPTPrior()
 
 Context::LPFindResult RDODPTPrior::onFindContext(const std::string& /*method*/, const Context::Params& /*params*/, const RDOParserSrcInfo& /*srcInfo*/) const
 {
-	//! Добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
+	// Добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
 	return rdo::Factory<FindResult>::create();
 }
 
@@ -316,7 +316,7 @@ RDODPTSearch::~RDODPTSearch()
 
 Context::LPFindResult RDODPTSearch::onFindContext(const std::string& /*method*/, const Context::Params& /*params*/, const RDOParserSrcInfo& /*srcInfo*/) const
 {
-	//! Добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
+	// Добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
 	return rdo::Factory<FindResult>::create();
 }
 

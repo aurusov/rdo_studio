@@ -279,8 +279,8 @@ void RDOFUNArithm::init(const LPRDOValue& pValue)
 		return;
 	}
 
-	//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
-	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
+	// Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
+	// перечислимых типах, поэтому какой именно из них выбрать - вопрос
 	{ErrorBlockMonicker errorBlockMonicker;
 		const Converter::PreCastTypeList& typeList = Converter::s_converter()->getPreCastTypeList();
 		for (const auto& type: typeList)
@@ -294,7 +294,7 @@ void RDOFUNArithm::init(const LPRDOValue& pValue)
 		}
 	}
 
-	//! Ищем параметр релевантного ресурса
+	// Ищем параметр релевантного ресурса
 	if (Converter::s_converter()->getFileToParse() == rdo::converter::smr2rdox::PAT_IN)
 	{
 		LPRDOPATPattern pPattern = Converter::s_converter()->getLastPATPattern();
@@ -310,7 +310,7 @@ void RDOFUNArithm::init(const LPRDOValue& pValue)
 		}
 	}
 
-	//! Ищем параметры паттерна или функции по имени
+	// Ищем параметры паттерна или функции по имени
 	LPRDOParam pFunctionParam;
 	switch (Converter::s_converter()->getFileToParse())
 	{
@@ -319,7 +319,7 @@ void RDOFUNArithm::init(const LPRDOValue& pValue)
 	default                              : break;
 	}
 
-	//! Ищем константы по имени
+	// Ищем константы по имени
 	LPRDOFUNConstant pConstant = Converter::s_converter()->findFUNConstant(pValue->value().getIdentificator());
 
 	if (pConstant && pFunctionParam)
@@ -335,7 +335,7 @@ void RDOFUNArithm::init(const LPRDOValue& pValue)
 		return;
 	}
 
-	//! Ищем последовательность по имени
+	// Ищем последовательность по имени
 	LPRDOFUNSequence pSequence = Converter::s_converter()->findFUNSequence(pValue->value().getIdentificator());
 	if (pSequence && pFunctionParam)
 	{
@@ -356,7 +356,7 @@ void RDOFUNArithm::init(const LPRDOValue& pValue)
 
 	if (pFunctionParam)
 	{
-		//! Это параметр
+		// Это параметр
 		m_pValue = rdo::Factory<RDOValue>::create(pFunctionParam->getType()->type());
 		switch (Converter::s_converter()->getFileToParse())
 		{
@@ -380,7 +380,7 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
 	LPRDORSSResource pResource = Converter::s_converter()->findRSSResource(pResName->value().getIdentificator());
 	if (pResource)
 	{
-		//! Это ресурс с закладки RSS
+		// Это ресурс с закладки RSS
 		const std::size_t parNumb = pResource->getType()->getRTPParamNumber(pParName->value().getIdentificator());
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 		{
@@ -402,10 +402,10 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
 		m_pValue = rdo::Factory<RDOValue>::create(pResource->getType()->findRTPParam(pParName->value().getIdentificator())->getType()->type());
 		return;
 	}
-	//! Это не ресурс, но возможно, ресурс внутри групповой функции
+	// Это не ресурс, но возможно, ресурс внутри групповой функции
 	else if (!Converter::s_converter()->getFUNGroupStack().empty() && Converter::s_converter()->getFUNGroupStack().back()->getResType()->name() == pResName->value().getIdentificator())
 	{
-		//! Это ресурс внутри групповой функции
+		// Это ресурс внутри групповой функции
 		LPRDOFUNGroup pFUNGroup = Converter::s_converter()->getFUNGroupStack().back();
 		const std::size_t parNumb = pFUNGroup->getResType()->getRTPParamNumber(pParName->value().getIdentificator());
 		if (parNumb == RDORTPResType::UNDEFINED_PARAM)
@@ -419,18 +419,18 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
 	}
 	else
 	{
-		//! Возможно, это релевантный ресурс
+		// Возможно, это релевантный ресурс
 		switch (Converter::s_converter()->getFileToParse())
 		{
 		case rdo::converter::smr2rdox::PAT_IN:
 			if (Converter::s_converter()->getLastPATPattern() && Converter::s_converter()->getLastPATPattern()->findRelevantResource(pResName->value().getIdentificator()))
 			{
-				//! Это релевантный ресурс где-то в паттерне (with_min-common-choice, $Time, $Body)
+				// Это релевантный ресурс где-то в паттерне (with_min-common-choice, $Time, $Body)
 				LPRDOPATPattern       pPattern          = Converter::s_converter()->getLastPATPattern();
 				LPRDORelevantResource pRelevantResource = pPattern->findRelevantResource(pResName->value().getIdentificator());
 				if (!pPattern->m_pCurrRelRes)
 				{
-					//! Внутри with_min-common-choice или $Time
+					// Внутри with_min-common-choice или $Time
 					if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_NonExist || pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Create)
 					{
 						Converter::s_converter()->error().error(pResName->src_info(), rdo::format("Релевантный ресурс не может быть использован, т.к. он еще не существует: %s", pRelevantResource->name().c_str()));
@@ -438,8 +438,8 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
 				}
 				else
 				{
-					//! Внутри $Body
-					//! Проверяем использование неинициализированного рел.ресурса (pRelevantResource) в Choice from другом рел.ресурсе (pPattern->m_pCurrRelRes)
+					// Внутри $Body
+					// Проверяем использование неинициализированного рел.ресурса (pRelevantResource) в Choice from другом рел.ресурсе (pPattern->m_pCurrRelRes)
 					if (pPattern->m_pCurrRelRes->isChoiceFromState())
 					{
 						if (!pRelevantResource->m_alreadyHaveConverter && !pRelevantResource->isDirect())
@@ -455,10 +455,10 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
 							Converter::s_converter()->error().error(pResName->src_info(), rdo::format("Сразу после создания (Create) релевантный ресурс '%s' можно использовать только в конверторах, но не в условии выбора", pRelevantResource->name().c_str()));
 						}
 					}
-					//! Проверяем использование временного рел.ресурса внутри конвертора другого рел.ресурса
+					// Проверяем использование временного рел.ресурса внутри конвертора другого рел.ресурса
 					if (pRelevantResource->getType()->isTemporary())
 					{
-						//! В конверторе начала
+						// В конверторе начала
 						if (pPattern->m_pCurrRelRes->m_currentState == RDORelevantResource::convertBegin)
 						{
 							if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Create && !pRelevantResource->m_alreadyHaveConverter)
@@ -474,7 +474,7 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
 								Converter::s_converter()->error().error(pResName->src_info(), rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", pRelevantResource->name().c_str()));
 							}
 						}
-						//! В конверторе конца
+						// В конверторе конца
 						if (pPattern->m_pCurrRelRes->m_currentState == RDORelevantResource::convertEnd)
 						{
 							if (pRelevantResource->m_statusEnd == rdo::runtime::RDOResource::CS_Create && !pRelevantResource->m_alreadyHaveConverter)
@@ -491,11 +491,11 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
 							}
 						}
 					}
-					//! Проверяем использование еще не инициализированного (только для Create) параметра рел. ресурса в его же конверторе
+					// Проверяем использование еще не инициализированного (только для Create) параметра рел. ресурса в его же конверторе
 					LPRDORTPParam pParam = pPattern->m_pCurrRelRes->getType()->findRTPParam(pParName->value().getIdentificator());
 					if (pParam && pPattern->m_pCurrRelRes->name() == pResName->value().getIdentificator())
 					{
-						//! В конверторе начала
+						// В конверторе начала
 						if (pPattern->m_pCurrRelRes->m_currentState == RDORelevantResource::convertBegin && pPattern->m_pCurrRelRes->m_statusBegin == rdo::runtime::RDOResource::CS_Create)
 						{
 							if (!pPattern->m_pCurrRelRes->getParamSetList().find(pParName->value().getIdentificator()))
@@ -506,7 +506,7 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
 								}
 							}
 						}
-						//! В конверторе конца
+						// В конверторе конца
 						if (pPattern->m_pCurrRelRes->m_currentState == RDORelevantResource::convertEnd && pPattern->m_pCurrRelRes->m_statusEnd == rdo::runtime::RDOResource::CS_Create)
 						{
 							if (!pPattern->m_pCurrRelRes->getParamSetList().find(pParName->value().getIdentificator()))
@@ -539,7 +539,7 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
 			{
 				LPRDOPATPattern pPattern = Converter::s_converter()->getLastDPTSearch()->getLastActivity()->pattern();
 				if (pPattern && pPattern->findRelevantResource(pResName->value().getIdentificator())) {
-					//! Это ресурс, который используется в DPT (condition, term_condition, evaluate_by, value before, value after)
+					// Это ресурс, который используется в DPT (condition, term_condition, evaluate_by, value before, value after)
 					LPRDORelevantResource pRelevantResource = pPattern->findRelevantResource(pResName->value().getIdentificator());
 					const std::size_t parNumb = pRelevantResource->getType()->getRTPParamNumber(pParName->value().getIdentificator());
 					if (parNumb == RDORTPResType::UNDEFINED_PARAM)
@@ -556,7 +556,7 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
 			{
 				LPRDOPATPattern pPattern = Converter::s_converter()->getLastDPTPrior()->getLastActivity()->pattern();
 				if (pPattern && pPattern->findRelevantResource(pResName->value().getIdentificator())) {
-					//! Это ресурс, который используется в выражении приоритета активности DPTPrior
+					// Это ресурс, который используется в выражении приоритета активности DPTPrior
 					LPRDORelevantResource pRelevantResource = pPattern->findRelevantResource(pResName->value().getIdentificator());
 					const std::size_t parNumb = pRelevantResource->getType()->getRTPParamNumber(pParName->value().getIdentificator());
 					if (parNumb == RDORTPResType::UNDEFINED_PARAM)
@@ -655,7 +655,7 @@ LPRDOFUNArithm RDOFUNArithm::operator/ (const LPRDOFUNArithm& pSecond)
 {
 	GENERATE_ARITHM_CALC(Div, /, "Нельзя %s разделить на %s");
 	// TODO перевод вещественного в целое при делении. А что делать с умножением и т.д. ?
-	//! Ответ: с умножением надо делать тоже самое, только непонятно как
+	// Ответ: с умножением надо делать тоже самое, только непонятно как
 	if (pNewType->type()->typeID() == rdo::runtime::RDOType::t_int)
 	{
 		rdo::runtime::LPRDOCalc pNewCalcDiv = pNewCalc;
@@ -1633,7 +1633,7 @@ void RDOFUNFunction::createAlgorithmicCalc(const RDOParserSrcInfo& /* body_src_i
 		}
 		else if (!pConditionLast || pConditionLast->calcValue(Converter::s_converter()->runtime()).getAsBool())
 		{
-			//! Игнорируем чистые false-условия предыдущей проверкой
+			// Игнорируем чистые false-условия предыдущей проверкой
 			pFunAlgorithmicCalc->addCalcIf(pLogicCalc, m_calculateIfList[i]->getAction()->createCalc(m_pReturn->getType()));
 			cnt++;
 		}
@@ -1664,7 +1664,7 @@ void RDOFUNFunction::createAlgorithmicCalc(const RDOParserSrcInfo& /* body_src_i
 	}
 	if (!defaultFlag)
 	{
-		//! Присвоить автоматическое значение по умолчанию, если оно не задано в явном виде
+		// Присвоить автоматическое значение по умолчанию, если оно не задано в явном виде
 		rdo::runtime::LPRDOCalcConst pCalcCondition = rdo::Factory<rdo::runtime::RDOCalcConst>::create(1);
 		rdo::runtime::LPRDOCalcConst pCalcAction    = rdo::Factory<rdo::runtime::RDOCalcConst>::create(m_pReturn->getType()->type()->get_default()->value());
 		ASSERT(pCalcCondition);
@@ -1731,20 +1731,20 @@ RDOFUNSelect::RDOFUNSelect(const RDOParserSrcInfo& res_info)
 	: RDOFUNGroup(RDOParserSrcInfo(res_info.src_text()))
 {}
 
-//! Сам Select как выборка по типу и условию
+// Сам Select как выборка по типу и условию
 void RDOFUNSelect::initSelect(LPRDOFUNLogic pCondition)
 {
-	//! @warning rdo::runtime::LPRDOFunCalcSelect в рантайме меняет сигнатуру
-	//! Для конвертора знать про рантайм не обязательно, поэтому не создаём объект m_pCalcSelect
-	//! Конвертор проверялся на пятнашках, где вместо Exist использовался
-	//! $Condition Select(Фишка: Фишка.Номер <> Фишка.Местоположение).Exist(1 == 2)
-	//! Метод createFunSelectGroup отработал с нулевым m_pCalcSelect
+	// @warning rdo::runtime::LPRDOFunCalcSelect в рантайме меняет сигнатуру
+	// Для конвертора знать про рантайм не обязательно, поэтому не создаём объект m_pCalcSelect
+	// Конвертор проверялся на пятнашках, где вместо Exist использовался
+	// $Condition Select(Фишка: Фишка.Номер <> Фишка.Местоположение).Exist(1 == 2)
+	// Метод createFunSelectGroup отработал с нулевым m_pCalcSelect
 
 	//m_pCalcSelect = rdo::Factory<rdo::runtime::RDOFunCalcSelect>::create(getResType()->getNumber(), pCondition->getCalc());
 	//m_pCalcSelect->setSrcInfo(pCondition->src_info());
 }
 
-//! Групповая функция над выборкой Select'а
+// Групповая функция над выборкой Select'а
 LPRDOFUNLogic RDOFUNSelect::createFunSelectGroup(RDOFUNGroupLogic::FunGroupType funType, LPRDOFUNLogic& pCondition)
 {
 	ASSERT(pCondition);

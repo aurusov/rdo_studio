@@ -324,7 +324,7 @@ class RDOPROCBlockForQueue: public RDOPROCOperator
 protected:
 	RDOPROCBlockForQueue(const LPRDOPROCProcess& pProcess, const std::string& name);
 
-	//! m_parserForRuntime служит для передачи информации о параметре "Состояние" ресурса
+	// m_parserForRuntime служит для передачи информации о параметре "Состояние" ресурса
 	rdo::runtime::parser_for_Queue m_parserForRuntime;
 };
 
@@ -374,7 +374,7 @@ class RDOPROCBlockForSeize: public RDOPROCOperator
 protected:
 	RDOPROCBlockForSeize(const LPRDOPROCProcess& pProcess, const std::string& name);
 
-	//! m_parserForRuntime служит для передачи информации о параметре "Состояние" ресурса
+	// m_parserForRuntime служит для передачи информации о параметре "Состояние" ресурса
 	rdo::runtime::parser_for_Seize m_parserForRuntime;
 };
 

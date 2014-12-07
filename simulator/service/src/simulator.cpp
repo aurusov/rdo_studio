@@ -71,10 +71,10 @@ public:
 
 rdo::compiler::parser::RDOCorba::GetRTP* RDOCorba_i::getRDORTPlist(::CORBA::Long& rtp_count)
 {
-	//! Создаем список структур для хранения информации об искомых типах ресурсов
+	// Создаем список структур для хранения информации об искомых типах ресурсов
 	rdo::compiler::parser::RDOCorba::GetRTP_var my_rtpList = new rdo::compiler::parser::RDOCorba::GetRTP;
 
-	//! Получаем необходимые нам данные о типах ресурсов РДО
+	// Получаем необходимые нам данные о типах ресурсов РДО
 	kernel->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &my_rtpList);
 
 	return my_rtpList._retn();
@@ -82,10 +82,10 @@ rdo::compiler::parser::RDOCorba::GetRTP* RDOCorba_i::getRDORTPlist(::CORBA::Long
 
 rdo::compiler::parser::RDOCorba::GetRSS* RDOCorba_i::getRDORSSPlist(::CORBA::Long& rss_count)
 {
-	//! Создаем список структур для хранения информации об искомых ресурсах
+	// Создаем список структур для хранения информации об искомых ресурсах
 	rdo::compiler::parser::RDOCorba::GetRSS_var my_rssList = new rdo::compiler::parser::RDOCorba::GetRSS;
 
-	//! Получаем необходимые нам данные о ресурсах РДО
+	// Получаем необходимые нам данные о ресурсах РДО
 	kernel->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RSS, &my_rssList);
 
 	return my_rssList._retn();
@@ -97,11 +97,11 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 
 	try
 	{
-		//! Obtain a reference to the root context of the Name service:
+		// Obtain a reference to the root context of the Name service:
 		CORBA::Object_var obj;
 		obj = orb->resolve_initial_references("NameService");
 
-		//! Narrow the reference returned.
+		// Narrow the reference returned.
 		rootContext = CosNaming::NamingContext::_narrow(obj);
 		if (CORBA::is_nil(rootContext))
 		{
@@ -116,34 +116,34 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 	}
 	catch (const CORBA::ORB::InvalidName&)
 	{
-		//! This should not happen!
+		// This should not happen!
 		TRACE("Service required is invalid [does not exist].");
 		return 0;
 	}
 
 	try
 	{
-		//! Bind a context called "test" to the root context:
+		// Bind a context called "test" to the root context:
 		CosNaming::Name contextName;
 		contextName.length(1);
-		contextName[0].id = (const char*)"RDO"; //! string copied
-		contextName[0].kind = (const char*)"RDO_context"; //! string copied
+		contextName[0].id = (const char*)"RDO"; // string copied
+		contextName[0].kind = (const char*)"RDO_context"; // string copied
 
-		//! Note on kind: The kind field is used to indicate the type
-		//! of the object. This is to avoid conventions such as that used
-		//! by files (name.type -- e.g. test.ps = postscript etc.)
+		// Note on kind: The kind field is used to indicate the type
+		// of the object. This is to avoid conventions such as that used
+		// by files (name.type -- e.g. test.ps = postscript etc.)
 		CosNaming::NamingContext_var testContext;
 
 		try
 		{
-			//! Bind the context to root.
+			// Bind the context to root.
 			testContext = rootContext->bind_new_context(contextName);
 		}
 		catch(const CosNaming::NamingContext::AlreadyBound&)
 		{
-			//! If the context already exists, this exception will be raised.
-			//! In this case, just resolve the name and assign testContext
-			//! to the object returned:
+			// If the context already exists, this exception will be raised.
+			// In this case, just resolve the name and assign testContext
+			// to the object returned:
 			CORBA::Object_var obj;
 			obj = rootContext->resolve(contextName);
 
@@ -156,12 +156,12 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 			}
 		}
 
-		//! Bind objref with name Echo to the testContext:
+		// Bind objref with name Echo to the testContext:
 		CosNaming::Name objectName;
 		objectName.length(1);
 
-		//! rdo::compiler::parser::RDOParserSMRInfo parser;
-		//! parser.parse();
+		// rdo::compiler::parser::RDOParserSMRInfo parser;
+		// parser.parse();
 
 		objectName[0].id = ModelName;
 		objectName[0].kind = (const char*)"Object";
@@ -175,15 +175,15 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, co
 			testContext->rebind(objectName, objref);
 		}
 
-		//! Note: Using rebind() will overwrite any Object previously bound
-		//! to /test/Echo with obj.
-		//! Alternatively, bind() can be used, which will raise a
-		//! CosNaming::NamingContext::AlreadyBound exception if the name
-		//! supplied is already bound to an object.
-		//! Amendment: When using OrbixNames, it is necessary to first try bind
-		//! and then rebind, as rebind on it’s own will throw a NotFoundexception if
-		//! the Name has not already been bound. [This is incorrect behaviour -
-		//! it should just bind].
+		// Note: Using rebind() will overwrite any Object previously bound
+		// to /test/Echo with obj.
+		// Alternatively, bind() can be used, which will raise a
+		// CosNaming::NamingContext::AlreadyBound exception if the name
+		// supplied is already bound to an object.
+		// Amendment: When using OrbixNames, it is necessary to first try bind
+		// and then rebind, as rebind on it’s own will throw a NotFoundexception if
+		// the Name has not already been bound. [This is incorrect behaviour -
+		// it should just bind].
 	}
 	catch(const CORBA::TRANSIENT&)
 	{
@@ -214,12 +214,12 @@ std::size_t RDOThreadCorba::corbaRunThreadFun(void* pParam)
 
 		PortableServer::ObjectId_var myrdocorbaid = poa->activate_object(myrdocorba);
 
-		//! Obtain a reference to the object, and register it in
-		//! the naming service.
+		// Obtain a reference to the object, and register it in
+		// the naming service.
 		obj = myrdocorba->_this();
 
 		const char* ModelName = "ЦЕХ";
-		//! const char* ModelName = "СКЛАД";
+		// const char* ModelName = "СКЛАД";
 
 		if (!bindObjectToName(g_orb, obj, ModelName))
 		{
@@ -256,13 +256,13 @@ RDOThreadCorba::RDOThreadCorba()
 	: RDOThreadMT             ("RDOThreadCorba")
 	, thread_corbaRunThreadFun(NULL            )
 {
-	//! Место для регистации сообщений корбе
+	// Место для регистации сообщений корбе
 	after_constructor();
 }
 
 void RDOThreadCorba::proc(RDOMessageInfo& msg)
 {
-	//! Место для обработки сообщений корбе
+	// Место для обработки сообщений корбе
 }
 
 void RDOThreadCorba::start()
@@ -271,7 +271,7 @@ void RDOThreadCorba::start()
 	trace(thread_name + " corba begin");
 #endif
 
-	//! Место для запуска корбы
+	// Место для запуска корбы
 	thread_corbaRunThreadFun = AfxBeginThread(corbaRunThreadFun, this, THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);
 	thread_corbaRunThreadFun->m_bAutoDelete = false;
 	thread_corbaRunThreadFun->ResumeThread();
@@ -290,7 +290,7 @@ void RDOThreadCorba::idle()
 		return;
 	}
 #endif
-	//! Вот тут основная работа корбы
+	// Вот тут основная работа корбы
 }
 
 void RDOThreadCorba::stop()
@@ -298,7 +298,7 @@ void RDOThreadCorba::stop()
 #ifdef TR_TRACE
 	trace(thread_name + " stop begin");
 #endif
-	//! Место для остановки корбы
+	// Место для остановки корбы
 	if (g_orb != CORBA::ORB::_nil())
 	{
 		try
@@ -338,7 +338,7 @@ void RDOThreadCorba::stop()
 #endif
 }
 
-} //! namespace rdoCorba
+} // namespace rdoCorba
 
 #endif // CORBA_ENABLE
 
@@ -617,7 +617,7 @@ void RDOThreadRunTime::start()
 	rdo::runtime::RDOResults* pResults;
 	rdo::runtime::RDOResults* pResultsInfo;
 
-	//! Creating tracer and results
+	// Creating tracer and results
 	pTracer = new rdo::service::simulation::RDORuntimeTracer(m_pSimulator);
 
 	m_pSimulator->m_resultString.str("");
@@ -626,13 +626,13 @@ void RDOThreadRunTime::start()
 	m_pSimulator->m_resultInfoString.str("");
 	pResultsInfo = new rdo::service::simulation::RDOSimResultInformer(m_pSimulator->m_resultInfoString);
 
-	//! RDO config initialization
+	// RDO config initialization
 	m_pSimulator->m_pRuntime->hotkey().clear();
 	m_pSimulator->m_pRuntime->setStartTime     (m_pSimulator->m_pParser->getSMR()->getRunStartTime  ());
 	m_pSimulator->m_pRuntime->setTraceStartTime(m_pSimulator->m_pParser->getSMR()->getTraceStartTime());
 	m_pSimulator->m_pRuntime->setTraceEndTime  (m_pSimulator->m_pParser->getSMR()->getTraceEndTime  ());
 
-	//! Modelling
+	// Modelling
 	m_pSimulator->m_canTrace = true;
 
 	try
@@ -685,7 +685,7 @@ void RDOThreadRunTime::idle()
 	{
 		if (m_runtimeError || !m_pSimulator->m_pRuntime->rdoNext())
 		{
-			LPRDOThreadRunTime pThis(this); //! Увеличим на себя ссылку, чтобы нас не удалил симулятор раньше времени
+			LPRDOThreadRunTime pThis(this); // Увеличим на себя ссылку, чтобы нас не удалил симулятор раньше времени
 			RDOThreadMT::sendMessage(this, RT_THREAD_CLOSE);
 		}
 	}
@@ -1047,24 +1047,24 @@ void RDOThreadSimulator::proc(RDOMessageInfo& msg)
 		{
 			if (msg.from == m_pThreadRuntime.get())
 			{
-				//! rdo::simulation::report::EC_ParserError   - Не используется в run-time
-				//! rdo::simulation::report::EC_ModelNotFound - Не используется в run-time
-				//! rdo::simulation::report::EC_UserBreak     - Устанавливается в m_pSimulator, перехват RT_THREAD_STOP_AFTER не срабатывает
+				// rdo::simulation::report::EC_ParserError   - Не используется в run-time
+				// rdo::simulation::report::EC_ModelNotFound - Не используется в run-time
+				// rdo::simulation::report::EC_UserBreak     - Устанавливается в m_pSimulator, перехват RT_THREAD_STOP_AFTER не срабатывает
 				m_exitCode = m_pRuntime->m_whyStop;
 				if (!m_pThreadRuntime->runtimeError())
 				{
-					//! Остановились сами нормально
+					// Остановились сами нормально
 					broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
 					closeModel();
 				}
 				else
 				{
-					//! Остановились сами, но не нормально
+					// Остановились сами, но не нормально
 					broadcastMessage(RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR);
 					closeModel();
 				}
-				//! Треда удаляется сама, надо удалить её событие
-				//! Делается это без мутексов, т.к. thread_destroy не должна использоваться в m_pThreadRuntime пока обрабатывается RT_THREAD_STOP_AFTER
+				// Треда удаляется сама, надо удалить её событие
+				// Делается это без мутексов, т.к. thread_destroy не должна использоваться в m_pThreadRuntime пока обрабатывается RT_THREAD_STOP_AFTER
 #ifdef RDO_MT
 				delete m_pThreadRuntime->thread_destroy;
 				m_pThreadRuntime->thread_destroy = NULL;
@@ -1146,7 +1146,7 @@ void RDOThreadSimulator::terminateModel()
 {
 	if (m_pThreadRuntime)
 	{
-		//! Перестали реагировать на остановку run-time-треды, т.к. закрываем её сами
+		// Перестали реагировать на остановку run-time-треды, т.к. закрываем её сами
 #ifdef RDO_MT
 		notifies_mutex.Lock();
 #endif
@@ -1164,7 +1164,7 @@ void RDOThreadSimulator::terminateModel()
 #endif
 		m_pThreadRuntime = NULL;
 
-		//! Опять начали реагировать на остановку run-time-треды, чтобы обнаружить нормальное завершение модели (или по run-time-error)
+		// Опять начали реагировать на остановку run-time-треды, чтобы обнаружить нормальное завершение модели (или по run-time-error)
 #ifdef RDO_MT
 		notifies_mutex.Lock();
 #endif
@@ -1297,7 +1297,7 @@ void RDOThreadSimulator::codeCompletion()
 
 void RDOThreadSimulator::corbaGetRTP(rdo::compiler::parser::RDOCorba::GetRTP_var& my_rtpList)
 {
-	//! Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
+	// Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
 	rdo::compiler::parser::RDOParserCorba parser;
 	try
 	{
@@ -1310,10 +1310,10 @@ void RDOThreadSimulator::corbaGetRTP(rdo::compiler::parser::RDOCorba::GetRTP_var
 
 	::CORBA::Long i = 0, j = 0;
 
-	//! Пробежались по всем типам и переписали в RTPList
+	// Пробежались по всем типам и переписали в RTPList
 	rdo::compiler::mbuilder::RDOResTypeList rtpList(&parser);
 
-	//! Считаем количество типов ресурсов
+	// Считаем количество типов ресурсов
 	rdo::compiler::mbuilder::RDOResTypeList::List::const_iterator rtp_it = rtpList.begin();
 
 	::CORBA::Long rtp_count = 0;
@@ -1324,15 +1324,15 @@ void RDOThreadSimulator::corbaGetRTP(rdo::compiler::parser::RDOCorba::GetRTP_var
 		++rtp_it;
 	}
 
-	//! Выделяем пямять под последовательность
+	// Выделяем пямять под последовательность
 	my_rtpList->length(rtp_count);
 
-	//! Снова возвращаемся в начало списка типов ресурсов
+	// Снова возвращаемся в начало списка типов ресурсов
 	rtp_it = rtpList.begin();
 
 	while (rtp_it != rtpList.end())
 	{
-		//! Создаем текстовую структуру
+		// Создаем текстовую структуру
 
 		my_rtpList[i].m_name = CORBA::string_dup(rtp_it->name().c_str());
 
@@ -1341,7 +1341,7 @@ void RDOThreadSimulator::corbaGetRTP(rdo::compiler::parser::RDOCorba::GetRTP_var
 		else
 			my_rtpList[i].m_type=rdo::compiler::parser::RDOCorba::rt_temporary;
 
-		//! Считаем количество параметров i-го типа ресурса
+		// Считаем количество параметров i-го типа ресурса
 		rdo::compiler::mbuilder::RDOResType::ParamList::List::const_iterator param_it = rtp_it->m_params.begin();
 		my_rtpList[i].m_param_count = 0;
 
@@ -1351,15 +1351,15 @@ void RDOThreadSimulator::corbaGetRTP(rdo::compiler::parser::RDOCorba::GetRTP_var
 			++param_it;
 		}
 
-		//! Выделяем память под последовательность параметров i-го типа ресурсов
+		// Выделяем память под последовательность параметров i-го типа ресурсов
 		my_rtpList[i].m_param.length(my_rtpList[i].m_param_count);
 
-		//! Снова возвращаемся в начало списка параметров i-го типа ресурсов
+		// Снова возвращаемся в начало списка параметров i-го типа ресурсов
 		param_it = rtp_it->m_params.begin();
 
 		while (param_it != rtp_it->m_params.end())
 		{
-			//! Добавляем в структуру параметр!!!!!!!!!!!!!!!!
+			// Добавляем в структуру параметр!!!!!!!!!!!!!!!!
 			my_rtpList[i].m_param[j].m_name = CORBA::string_dup(param_it->name().c_str());
 
 			my_rtpList[i].m_param[j].m_range_int = 0;
@@ -1412,7 +1412,7 @@ void RDOThreadSimulator::corbaGetRTP(rdo::compiler::parser::RDOCorba::GetRTP_var
 				{
 					my_rtpList[i].m_param[j].m_type = rdo::compiler::parser::RDOCorba::enum_type;
 
-					//! Считаем количество значений перечислимого типа
+					// Считаем количество значений перечислимого типа
 					rdo::runtime::RDOEnumType::CIterator enum_it = param_it->getEnum()->getEnums().begin();
 
 					CORBA::Long k = 0;
@@ -1423,7 +1423,7 @@ void RDOThreadSimulator::corbaGetRTP(rdo::compiler::parser::RDOCorba::GetRTP_var
 						enum_it++;
 					}
 
-					//! Выделяем память под последовательность значений j-го параметра перечислимого типа i-го типа ресурсов
+					// Выделяем память под последовательность значений j-го параметра перечислимого типа i-го типа ресурсов
 					my_rtpList[i].m_param[j].m_var_enum.length(k);
 
 					enum_it = param_it->getEnum()->getEnums().begin();
@@ -1461,7 +1461,7 @@ void RDOThreadSimulator::corbaGetRTP(rdo::compiler::parser::RDOCorba::GetRTP_var
 
 void RDOThreadSimulator::corbaGetRSS(rdo::compiler::parser::RDOCorba::GetRSS_var& my_rssList)
 {
-	//! Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
+	// Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
 	rdo::compiler::parser::RDOParserCorba parser;
 	try
 	{
@@ -1472,33 +1472,33 @@ void RDOThreadSimulator::corbaGetRSS(rdo::compiler::parser::RDOCorba::GetRSS_var
 	catch (const rdo::runtime::RDORuntimeException&)
 	{}
 
-	//! Пробежались по всем ресурсам и переписали в RSSList
+	// Пробежались по всем ресурсам и переписали в RSSList
 	rdo::compiler::mbuilder::RDOResourceList rssList(&parser);
 	rdo::compiler::mbuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
 
 	::CORBA::Long i = 0, j = 0;
 	::CORBA::Long rss_count = 0;
 
-	//! Считаем количество ресурсов
+	// Считаем количество ресурсов
 	while (rss_it != rssList.end())
 	{
 		++rss_count;
 		++rss_it;
 	}
 
-	//! Выделяем пямять под последовательность
+	// Выделяем пямять под последовательность
 	my_rssList->length(rss_count);
 
-	//! Снова возвращаемся в начало списка типов ресурсов
+	// Снова возвращаемся в начало списка типов ресурсов
 	rss_it = rssList.begin();
 
 	while (rss_it != rssList.end())
 	{
-		//! Заполняем значения структуры
+		// Заполняем значения структуры
 		my_rssList[i].m_name = CORBA::string_dup(rss_it->name().c_str());
 		my_rssList[i].m_type = CORBA::string_dup(rss_it->getType().name().c_str());
 
-		//! Считаем количество параметров i-го типа ресурса
+		// Считаем количество параметров i-го типа ресурса
 		rdo::compiler::mbuilder::RDOResource::Params::const_iterator param_it = rss_it->begin();
 
 		my_rssList[i].m_param_count = 0;
@@ -1509,10 +1509,10 @@ void RDOThreadSimulator::corbaGetRSS(rdo::compiler::parser::RDOCorba::GetRSS_var
 			++param_it;
 		}
 
-		//! Выделяем память под последовательность параметров i-го ресурса
+		// Выделяем память под последовательность параметров i-го ресурса
 		my_rssList[i].m_param.length(my_rssList[i].m_param_count);
 
-		//! Снова возвращаемся в начало списка параметров i-го ресурса
+		// Снова возвращаемся в начало списка параметров i-го ресурса
 		param_it = rss_it->begin();
 
 		while (param_it != rss_it->end())
@@ -1558,7 +1558,7 @@ void RDOThreadSimulator::corbaGetRSS(rdo::compiler::parser::RDOCorba::GetRSS_var
 	}
 
 /*
-	//! Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
+	// Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
 	rdo::compiler::parser::RDOParserCorba parser;
 	try
 	{
@@ -1569,15 +1569,15 @@ void RDOThreadSimulator::corbaGetRSS(rdo::compiler::parser::RDOCorba::GetRSS_var
 	catch (const rdo::runtime::RDORuntimeException&)
 	{}
 
-	//! Пробежались по всем ресурсам и переписали в RSSList
+	// Пробежались по всем ресурсам и переписали в RSSList
 	rdo::compiler::mbuilder::RDOResourceList rssList(&parser);
 	rdo::compiler::mbuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
 	while (rss_it != rssList.end())
 	{
-		//! Создаем текстовую структуру
+		// Создаем текстовую структуру
 		RSS rss;
 		rss.m_name = rss_it->name();
-		//! Запоминаем в списке
+		// Запоминаем в списке
 		RSSList->push_back(rss);
 		rss_it++;
 	}

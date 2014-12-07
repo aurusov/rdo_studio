@@ -9,7 +9,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Базовая калка для управления событиями
 PREDECLARE_POINTER(RDOCalcEvent);
 class RDOCalcEvent: public RDOCalc
 {
@@ -21,7 +20,6 @@ protected:
 	LPIEvent m_pEvent;
 };
 
-//! Планирование события
 PREDECLARE_POINTER(RDOCalcEventPlan);
 class RDOCalcEventPlan: public RDOCalcEvent
 {
@@ -35,7 +33,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Остановка события
 PREDECLARE_POINTER(RDOCalcEventStop);
 class RDOCalcEventStop: public RDOCalcEvent
 {

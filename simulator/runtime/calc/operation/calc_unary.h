@@ -9,7 +9,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Базовый класс для унарного оператора
 class RDOCalcUnaryBase: public RDOCalc
 {
 public:
@@ -40,13 +39,10 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Унарный оператор плюс
 typedef RDOCalcUnary<RDOValue, &RDOValue::operator-, OperatorType::OT_ARITHM> RDOCalcUMinus;
 
-//! Оператор праобразования вещественного числа в целое
 typedef RDOCalcUnary<int, &RDOValue::getInt, OperatorType::OT_ARITHM> RDOCalcDoubleToInt;
 
-//! Преобразование вещественного в целое по типу lvalue
 PREDECLARE_POINTER(RDOCalcDoubleToIntByResult);
 class RDOCalcDoubleToIntByResult: public RDOCalc
 {
@@ -63,7 +59,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Приведение к целому
 PREDECLARE_POINTER(RDOCalcInt);
 class RDOCalcInt: public RDOCalc
 {

@@ -19,7 +19,7 @@ TreeRoot::TreeRoot(const LPRDORuntime& pRuntime, RDODPTSearch* pDP)
 	, m_rootNode          (NULL    )
 	, m_targetNode        (NULL    )
 	, m_theRealSimulator  (pRuntime)
-	, m_nodesInGraphCount (1       ) //! Учёт начальной вершины
+	, m_nodesInGraphCount (1       ) // Учёт начальной вершины
 	, m_expandedNodesCount(0       )
 	, m_fullNodesCount    (0       )
 	, m_sizeof_dpt        (0       )

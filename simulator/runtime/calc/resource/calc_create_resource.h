@@ -10,13 +10,12 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Создание нового ресурса
 PREDECLARE_POINTER(RDOCalcCreateResource);
 class RDOCalcCreateResource: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcCreateResource)
 private:
-	//! relResID == ~0 для ресурсов, создаваемых при инициализации модели
+	// relResID == ~0 для ресурсов, создаваемых при инициализации модели
 	RDOCalcCreateResource(
 		std::size_t resourceTypeID,
 		const std::vector<LPRDOCalc>& rParamCalcList,
@@ -38,7 +37,5 @@ private:
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-//#include "simulator/runtime/calc/resource/calc_choice_from-inl.h"
 
 #endif // _LIB_RUNTIME_CALC_RESOURCE_CREATE_RESOURCE_H_

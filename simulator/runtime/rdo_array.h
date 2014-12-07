@@ -18,7 +18,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 PREDECLARE_POINTER(RDOArrayType    );
 PREDECLARE_POINTER(RDOArrayIterator);
 
-//! Элемент массива
 PREDECLARE_POINTER(RDOArrayValue);
 class RDOArrayValue: public IAsString
 {
@@ -52,7 +51,6 @@ private:
 	LPRDOArrayType  m_pArrayType;
 };
 
-//! Итератор массива
 class RDOArrayIterator: public RDOType, public IAsString
 {
 DECLARE_FACTORY(RDOArrayIterator)
@@ -78,7 +76,6 @@ private:
 	Iterator  m_iterator;
 };
 
-//! Тип массив
 class RDOArrayType: public RDOType
 {
 DECLARE_FACTORY(RDOArrayType);

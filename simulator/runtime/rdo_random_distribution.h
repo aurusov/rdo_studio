@@ -9,7 +9,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Законы распределения псевдослучайных чисел в стиле РДО
 #define RDO_NATIVE_U01
 
 class RandGenerator
