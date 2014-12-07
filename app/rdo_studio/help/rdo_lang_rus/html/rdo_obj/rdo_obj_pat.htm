@@ -21,12 +21,15 @@ function toggle_display(e)
 	<DIV>
 		<H1>ОПИСАНИЕ ОБРАЗЦОВ</H1>
 		<P><B>Образцы</B> представляют собой шаблоны, по которым в <A href="../rdo_terms.htm">модели</A> заводятся <A href="rdo_obj_dpt.htm">активности</A> <A href="rdo_obj_dpt.htm">точкек принятия решений</A>. Подобно тому, как <A href="../rdo_base/rdo_base_res_types.htm">типы ресурсов</A> определяют структуру базы данных программы, образцы определяют структуру её базы знаний. Они представляют собой знания о функционировании моделируемой системы (знания о предметной области), записанные в виде модифицированных продукционных правил в соответствии с синтаксисом языка. Описание всех образцов содержится в <A href="../rdo_terms.htm#object">объекте</A> образцов (с расширением <FONT class="syntax">.pat</FONT>). <FONT style="color: FF0000">На основании одного образца в системе может быть заведено несколько активностей, но <B>самостоятельного значения образцы не имеют</B>. Имитатор в процессе моделирования обрабатывает именно активности, а не образцы, поэтому если какой-либо образец был описан в объекте образцов, но ни разу не упоминался в активностях, то он никогда не будет использован.</FONT> Описание образца имеет следующий формат:</P>
-		<PRE class="syntax"><code class="rdo">$Pattern <A class="syntax" href="#pat_name">&lt;имя_образца&gt;</A> : <A class="syntax" href="#pat_type">&lt;тип_образца&gt;</A> [ <A class="syntax" href="../rdo_res/rdo_res_trace_descr.htm">&lt;признак_трассировки&gt;</A> ]
-[ $Parameters <A class="syntax" href="#param_desc">&lt;описание_параметров_образца&gt;</A> ]
-$Relevant_resources <A class="syntax" href="#rel_res_desc">&lt;описание_релевантных_ресурсов_образца&gt;</A>
-[ <A class="syntax" href="#pat_choice_type" style="color: FF0000">&lt;способ_выбора&gt;</A> ]
+		<PRE class="syntax"><code class="rdo">$Pattern <A class="syntax" href="#pat_name">&lt;имя_образца&gt;</A>: <A class="syntax" href="#pat_type">&lt;тип_образца&gt;</A> [<A class="syntax" href="../rdo_res/rdo_res_trace_descr.htm">&lt;признак_трассировки&gt;</A>]
+[$Parameters
+    <A class="syntax" href="#param_desc">&lt;описание_параметров_образца&gt;</A>]
+$Relevant_resources
+    <A class="syntax" href="#rel_res_desc">&lt;описание_релевантных_ресурсов_образца&gt;</A>
+    [<A class="syntax" href="#pat_choice_type" style="color: FF0000">&lt;способ_выбора&gt;</A>]
 $Time = <A class="syntax" href="#time_expr">&lt;выражение_времени&gt;</A>
-$Body <A class="syntax" href="#pattern_body">&lt;тело_образца&gt;</A>
+$Body
+    <A class="syntax" href="#pattern_body">&lt;тело_образца&gt;</A>
 $End</code></PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="pat_name"></A><I>имя_образца</I></DT>
@@ -61,8 +64,8 @@ $End</code></PRE>
 			</DD>
 			<DT class="syntax"><A name="param_desc"></A><I>описание_параметров_образца</I></DT>
 			<DD class="syntax">Описание параметров образца имеет следующий формат:
-				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#param_name">&lt;имя_параметра&gt;</A> : <A class="syntax" href="#param_type">&lt;тип_параметра&gt;</A> [ = <A class="syntax" href="#param_def_val">&lt;значение_по_умолчанию&gt;</A> ]
-{ &lt;имя_параметра&gt; : &lt;тип_параметра&gt; [ = &lt;значение_по_умолчанию&gt; ] }</code></PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#param_name">&lt;имя_параметра&gt;</A>: <A class="syntax" href="#param_type">&lt;тип_параметра&gt;</A> [= <A class="syntax" href="#param_def_val">&lt;значение_по_умолчанию&gt;</A>]
+{&lt;имя_параметра&gt;: &lt;тип_параметра&gt; [= &lt;значение_по_умолчанию&gt;]}</code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="param_name"></A><I>имя_параметра</I></DT>
 					<DD class="syntax">Имя параметра образца представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех параметров и не должны совпадать с ранее определенными именами. Имя параметра может совпадать с именем параметра другого образца.</DD>
@@ -74,11 +77,10 @@ $End</code></PRE>
 				<P>Параметры в образце любого типа могут отсутствовать, в этом случае зарезервированное слово <FONT class="syntax">$Parameters</FONT> не указывают.</P>
 			</DD>
 			<DT class="syntax"><A name="rel_res_desc"></A><I>описание_релевантных_ресурсов_образца</I></DT>
-			<DD class="syntax">Описание релевантных ресурсов для образцов типа <A href="#pat_type">операция</A> и <A href="#pat_type">клавиатурная операция</A> имеет следующий формат:
-				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#rel_res_name">&lt;имя_релевантного_ресурса&gt;</A> : <A class="syntax" href="#rel_res_describer">&lt;описатель&gt;</A>
-<A class="syntax" href="#conv_beg_stat">&lt;статус_конвертора_начала&gt;</A> <A class="syntax" href="#conv_end_stat">&lt;статус_конвертора_конца&gt;</A></code></PRE>
-				<P>Описание релевантных ресурсов образца для образцов типа <A href="#pat_type">событие</A>, <A href="#pat_type">нерегулярное событие</A> и <A href="#pat_type">продукционное правило</A> имеет следующий формат:</P>
-				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#rel_res_name">&lt;имя_релевантного_ресурса&gt;</A> : <A class="syntax" href="#rel_res_describer">&lt;описатель&gt;</A> <A class="syntax" href="#conv_stat">&lt;статус_конвертора&gt;</A></code></PRE>
+			<DD class="syntax">Описание релевантных ресурсов для образцов типа <A href="#pat_type"></A><b>операция</b> и <A href="#pat_type"></A><b>клавиатурная операция</b> имеет следующий формат:
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#rel_res_name">&lt;имя_релевантного_ресурса&gt;</A>: <A class="syntax" href="#rel_res_describer">&lt;описатель&gt;</A> <A class="syntax" href="#conv_beg_stat">&lt;статус_конвертора_начала&gt;</A> <A class="syntax" href="#conv_end_stat">&lt;статус_конвертора_конца&gt;</A></code></PRE>
+				<P>Описание релевантных ресурсов образца для образцов типа <A href="#pat_type"></A><b>событие</b> и <A href="#pat_type"></A><b>продукционное правило</b> имеет следующий формат:</P>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#rel_res_name">&lt;имя_релевантного_ресурса&gt;</A>: <A class="syntax" href="#rel_res_describer">&lt;описатель&gt;</A> <A class="syntax" href="#conv_stat">&lt;статус_конвертора&gt;</A></code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="rel_res_name"></A><I>имя_релевантного_ресурса</I></DT>
 					<DD class="syntax">Имя релевантного ресурса образца представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех релевантных ресурсов и не должны совпадать с ранее определенными именами. Имя релевантного ресурса может совпадать с именем релевантного ресурса другого образца.</DD>
@@ -118,32 +120,32 @@ $End</code></PRE>
 						<TD class="visible" width="80%">Состояние релевантного ресурса не изменяется</TD>
 					</TR>
 				</TABLE>
-				<P>Статусы <FONT class="syntax">Create</FONT>, <FONT class="syntax">Erase</FONT> и <FONT class="syntax">NonExist</FONT> допустимы только для <A href="../rdo_base/rdo_base_res_types.htm#temporary">ресурсов временного вида</A>, при этом, в качестве описателя может использоваться только имя <A href="../rdo_base/rdo_base_res_types.htm">типа ресурса</A>. Статусы <FONT class="syntax">NoChange</FONT>, <FONT class="syntax">Erase</FONT> и <FONT class="syntax">NonExist</FONT> недопустимы в образцах типа событие и нерегулярное событие. Статус <FONT class="syntax">NonExist</FONT> недопустим в продукционном правиле. В образцах типа событие и нерегулярное событие статус <FONT class="syntax">Keep</FONT> допустим только в случае, если описатель есть имя <A href="../rdo_base/rdo_base_resources.htm">ресурса</A>.</P>
+				<P>Статусы <FONT class="syntax">Create</FONT>, <FONT class="syntax">Erase</FONT> и <FONT class="syntax">NonExist</FONT> допустимы только для <A href="../rdo_base/rdo_base_res_types.htm#temporary">ресурсов временного вида</A>, при этом, в качестве описателя может использоваться только имя <A href="../rdo_base/rdo_base_res_types.htm">типа ресурса</A>. Статусы <FONT class="syntax">NoChange</FONT>, <FONT class="syntax">Erase</FONT> и <FONT class="syntax">NonExist</FONT> недопустимы в образцах типа событие. Статус <FONT class="syntax">NonExist</FONT> недопустим в продукционном правиле. В образцах типа событие статус <FONT class="syntax">Keep</FONT> допустим только в случае, если описатель есть имя <A href="../rdo_base/rdo_base_resources.htm">ресурса</A>.</P>
 				<P><A name="conv_comp"></A>В образцах <A href="#pat_type">операций</A> и <A href="#pat_type">клавиатурных операций</A> возможны следующие сочетания статусов начала и конца:</P>
 				<TABLE class="visible" cols="2">
 					<TR valign="top">
-						<TH align="left" width="50%">Статус конвертора начала</TH>
-						<TH align="left" width="50%">Статус конвертора конца</TH>
+						<TH align="left" width="20%">Статус конвертора начала</TH>
+						<TH align="left" width="80%">Статус конвертора конца</TH>
 					</TR>
 					<TR valign="top">
-						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Keep</FONT></TD>
-						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Keep<BR>Erase<BR>NoChange</FONT></TD>
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Keep</FONT></TD>
+						<TD class="visible" NOWRAP width="80%"><FONT class="syntax">Keep<BR>Erase<BR>NoChange</FONT></TD>
 					</TR>
 					<TR valign="top">
-						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Create</FONT></TD>
-						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Keep<BR>Erase<BR>NoChange</FONT></TD>
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Create</FONT></TD>
+						<TD class="visible" NOWRAP width="80%"><FONT class="syntax">Keep<BR>Erase<BR>NoChange</FONT></TD>
 					</TR>
 					<TR valign="top">
-						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Erase</FONT></TD>
-						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">NonExist</FONT></TD>
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Erase</FONT></TD>
+						<TD class="visible" NOWRAP width="80%"><FONT class="syntax">NonExist</FONT></TD>
 					</TR>
 					<TR valign="top">
-						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">NonExist</FONT></TD>
-						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Create</FONT></TD>
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">NonExist</FONT></TD>
+						<TD class="visible" NOWRAP width="80%"><FONT class="syntax">Create</FONT></TD>
 					</TR>
 					<TR valign="top">
-						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">NoChange</FONT></TD>
-						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Keep<BR>Erase<BR>NoChange</FONT></TD>
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">NoChange</FONT></TD>
+						<TD class="visible" NOWRAP width="80%"><FONT class="syntax">Keep<BR>Erase<BR>NoChange</FONT></TD>
 					</TR>
 				</TABLE>
 			</DD>
@@ -179,99 +181,94 @@ $End</code></PRE>
 		</DL>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
 		<DIV style="display:none" id="v1">
-		<PRE class="syntax"><code class="rdo">$Pattern Образец_1 : operation
+		<PRE class="syntax"><code class="rdo">$Pattern Образец_1: operation
 $Parameters
-  Количество : integer = 10
+    Количество: integer = 10
 $Relevant_resources
-  Рел_ресурс_1 : Ресурс_1      NoChange    NoChange
-  Рел_ресурс_2 : Ресурс_2      NoChange    Keep
-  Рел_ресурс_3 : Тип_1         Keep        Keep
-$Time =  Количество * 0.5 + Функция_1(Количество + 1, 5.0) +
-         2.0 * (Ресурс_1.Параметр_2 + Рел_ресурс_3.Параметр_1)
+    Рел_ресурс_1: Ресурс_1 NoChange NoChange
+    Рел_ресурс_2: Ресурс_2 NoChange Keep
+    Рел_ресурс_3: Тип_1    Keep     Keep
+$Time = Количество * 0.5 + Функция_1(Количество + 1, 5.0) + 2.0 * (Ресурс_1.Параметр_2 + Рел_ресурс_3.Параметр_1)
 $Body
-  Рел_ресурс_1
-    Choice from    Рел_ресурс_1.Параметр_1 &gt; 0 and
-                   Рел_ресурс_1.Параметр_5 = Свободен
-    first
-  Рел_ресурс_2
-    Choice NoCheck first
+Рел_ресурс_1:
+    Choice from Рел_ресурс_1.Параметр_1 &gt; 0 and
+                Рел_ресурс_1.Параметр_5 == Свободен
+
+Рел_ресурс_2:
+    Choice NoCheck
     Convert_end
-      Параметр_1 += Количество;
-      Параметр_3 set Таблица_2(Значение_4, 2);
-      Параметр_6 NoChange;
-  Рел_ресурс_3
-    Choice from
-         Рел_ресурс_3.Параметр_1 + Рел_ресурс_2.Параметр_1 &gt;=
-         Количество and [Рел_ресурс_1.Параметр_5 = Свободен or
-         Рел_ресурс_1.Параметр_5 = Разгрузка]
-    with_max (Рел_ресурс_3.Параметр_1 * Рел_ресурс_3.Параметр_4)
+        Параметр_1 += Количество;
+        Параметр_3 = Таблица_2(Значение_4, 2);
+        Параметр_6 NoChange;
+
+Рел_ресурс_3:
+    Choice from Рел_ресурс_3.Параметр_1 + Рел_ресурс_2.Параметр_1 &gt;= Количество and
+               [Рел_ресурс_1.Параметр_5 == Свободен or Рел_ресурс_1.Параметр_5 == Разгрузка]
+    with_max(Рел_ресурс_3.Параметр_1 * Рел_ресурс_3.Параметр_4)
     Convert_begin
-      Параметр_1 set Рел_ресурс_3.Параметр_1 +
-                     Рел_ресурс_2.Параметр_1 + Рел_ресурс_1.Параметр_1;
-      Параметр_5 = Занят;
+        Параметр_1 = Рел_ресурс_3.Параметр_1 + Рел_ресурс_2.Параметр_1 + Рел_ресурс_1.Параметр_1;
+        Параметр_5 = Занят;
     Convert_end
-      Параметр_4 set Последовательность_3(Рел_ресурс_3.Параметр_2, 0.2);
-      Параметр_5 set Свободен;
+        Параметр_4 = Последовательность_3(Рел_ресурс_3.Параметр_2, 0.2);
+        Параметр_5 = Свободен;
 $End
 
-$Pattern Образец_2 : rule
+$Pattern Образец_2: rule
 $Parameters
-  Количество : integer
-  Число : real = 2.5
+    Количество: integer
+    Число     : real = 2.5
 $Relevant_resources
-  Рел_ресурс_1 : Ресурс_1      NoChange
-  Рел_ресурс_2 : Тип_1         Keep
+    Рел_ресурс_1: Ресурс_1 NoChange
+    Рел_ресурс_2: Тип_1    Keep
 $Body
-  Рел_ресурс_1
-    Choice from    Рел_ресурс_1.Параметр_1 &gt; 0 and
-                   Рел_ресурс_1.Параметр_5 = Свободен
-    first
-  Рел_ресурс_2
-    Choice from    Рел_ресурс_2.Параметр_1 &gt;= Количество and
-                   [Рел_ресурс_1.Параметр_5 = Свободен or
-                   Рел_ресурс_1.Параметр_5 = Разгрузка]
-    with_max (Рел_ресурс_2.Параметр_1 * Рел_ресурс_2.Параметр_4)
+Рел_ресурс_1:
+    Choice from Рел_ресурс_1.Параметр_1 &gt; 0 and
+                Рел_ресурс_1.Параметр_5 == Свободен
+
+Рел_ресурс_2:
+    Choice from Рел_ресурс_2.Параметр_1 &gt;= Количество and
+               [Рел_ресурс_1.Параметр_5 == Свободен or Рел_ресурс_1.Параметр_5 == Разгрузка]
+    with_max(Рел_ресурс_2.Параметр_1 * Рел_ресурс_2.Параметр_4)
     Convert_rule
-      Параметр_4 set Число + Последовательность_3(Рел_ресурс_2.
-                                                  Параметр_2, 0.2);
-      Параметр_5 = Свободен;
+        Параметр_4 = Число + Последовательность_3(Рел_ресурс_2.Параметр_2, 0.2);
+        Параметр_5 = Свободен;
 $End
 
 $Pattern Событие_прихода_клиента: event trace
 $Relevant_resources
-	_Парикмахерская: Парикмахерская Keep
+    _Парикмахерская: Парикмахерская Keep
 $Body
-  _Парикмахерская
-	Convert_event
-		Событие_прихода_клиента.Planning(Time_now + Интервал_прихода(30));
-		if (состояние_парикмахера == Свободен and количество_в_очереди == 0)
-		{
-			состояние_парикмахера = Занят;
-			Событие_окончания_обслуживания_клиента.planning(Time_now + Длительность_обслуживания( 20, 40 ));
-		}
-		else 
-			количество_в_очереди += 1;
+_Парикмахерская:
+    Convert_event
+        Событие_прихода_клиента.Planning(Time_now + Интервал_прихода(30));
+        if (состояние_парикмахера == Свободен and количество_в_очереди == 0)
+        {
+            состояние_парикмахера = Занят;
+            Событие_окончания_обслуживания_клиента.planning(Time_now + Длительность_обслуживания(20, 40));
+        }
+        else
+        {
+            количество_в_очереди += 1;
+        }
 $End
 
-$Pattern Образец_3 : rule
+$Pattern Образец_3: rule
 $Parameters
-  Количество : integer
+    Количество: integer
 $Relevant_resources
-  Рел_ресурс_1 : Тип_1      NoChange
-  Рел_ресурс_2 : Тип_2      Keep
-  with_max (Рел_ресурс_1.Параметр_1 * Количество +
-            Рел_ресурс_2.Параметр_1 * Рел_ресурс_2.Параметр_4)
+    Рел_ресурс_1: Тип_1 NoChange
+    Рел_ресурс_2: Тип_2 Keep
+    with_max(Рел_ресурс_1.Параметр_1 * Количество + Рел_ресурс_2.Параметр_1 * Рел_ресурс_2.Параметр_4)
 $Body
-  Рел_ресурс_1
-    Choice from    Рел_ресурс_1.Параметр_1 &gt; 0 and
-                   Рел_ресурс_1.Параметр_5 = Свободен
-  Рел_ресурс_2
-    Choice from    Рел_ресурс_2.Параметр_1 &gt;= Количество and
-                   [Рел_ресурс_1.Параметр_5 = Свободен or
-                    Рел_ресурс_1.Параметр_5 = Разгрузка]
+Рел_ресурс_1:
+    Choice from Рел_ресурс_1.Параметр_1 &gt; 0 and Рел_ресурс_1.Параметр_5 == Свободен
+
+Рел_ресурс_2:
+    Choice from Рел_ресурс_2.Параметр_1 &gt;= Количество and
+               [Рел_ресурс_1.Параметр_5 == Свободен or Рел_ресурс_1.Параметр_5 == Разгрузка]
     Convert_rule
-      Параметр_4 set Функция_1(Рел_ресурс_2.Параметр_2, 0.2);
-      Параметр_5 set Свободен;
+      Параметр_4 = Функция_1(Рел_ресурс_2.Параметр_2, 0.2);
+      Параметр_5 = Свободен;
 $End</code></PRE>
 	</DIV>
 	<H4>См. также</H4>

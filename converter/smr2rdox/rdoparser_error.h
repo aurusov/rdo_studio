@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdoparser_error.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      09.02.2010
-  \brief     основан на rdoparser.h/cpp
-  \indent    4T
-*/
-
 #ifndef _CONVERTOR_RDOCONVERTER_ERROR_H_
 #define _CONVERTOR_RDOCONVERTER_ERROR_H_
 

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      local_variable_context.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      16.12.2012
-  \brief     Контекст инициализации списка локальных переменных: integer i, j;
-  \indent    4T
-*/
-
 #ifndef _SIMULATOR_COMPILER_PARSER_FUNCTION_LOCAL_VARIABLE_CONTEXT_H_
 #define _SIMULATOR_COMPILER_PARSER_FUNCTION_LOCAL_VARIABLE_CONTEXT_H_
 

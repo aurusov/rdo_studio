@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      main.cpp
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Клеванец Игорь (impus@hotbox.ru)
-  \date      2.10.2011
-  \brief     Тест законов распределения
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES

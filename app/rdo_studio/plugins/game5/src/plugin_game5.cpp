@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      app/rdo_studio/plugins/game5/src/plugin_game5.cpp
-  \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
-  \date      22.09.2013
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -124,7 +115,7 @@ void PluginGame5::pluginStartAction(QWidget* pParent, const std::string& command
 {
 	if (!g_pApp)
 	{
-		g_pApp = static_cast<Application*>(qApp);
+		g_pApp    = static_cast<Application*>(qApp);
 		g_pModel  = g_pApp->getMainWndUI()->getModel();
 		g_pTracer = g_pApp->getTracer();
 		kernel    = g_pApp->getKernel();
@@ -164,29 +155,39 @@ void PluginGame5::pluginStopAction(QWidget* pParent)
 	delete pluignAction;
 
 	if (pluginMenu->isEmpty())
-	{
 		delete pluginMenu;
-	}
 
-	ASSERT(m_generateSituationDlg);
-	delete m_generateSituationDlg;
-	ASSERT(m_graphDlg);
-	delete m_graphDlg;
+	if (m_generateSituationDlg)
+		delete m_generateSituationDlg;
+
+	if (m_graphDlg);
+		delete m_graphDlg;
+
 	QToolBar* pluginGame5ToolBar = pParent->findChild<QToolBar*>(PLUGIN_TOOLBAR_NAME);
-	ASSERT(pluginGame5ToolBar);
-	delete pluginGame5ToolBar;
-	disconnect(g_pModel, &rdo::gui::model::Model::stopped,
-	           this    , &PluginGame5::reemitGraphDlgAction);
-	disconnect(g_pModel, &rdo::gui::model::Model::actionUpdated,
-	           this    , &PluginGame5::enablePluginActions);
+	if (pluginGame5ToolBar)
+		delete pluginGame5ToolBar;
+
+	if (g_pApp->getMainWndUI())
+	{
+		rdo::gui::model::Model* pModel = g_pApp->getMainWndUI()->getModel();
+		if (pModel)
+		{
+			disconnect(pModel, &rdo::gui::model::Model::stopped,
+			           this  , &PluginGame5::reemitGraphDlgAction);
+			disconnect(pModel, &rdo::gui::model::Model::actionUpdated,
+			           this  , &PluginGame5::enablePluginActions);
+		}
+	}
 }
 
 void PluginGame5::executeCommand(const std::string& commandLine)
 {
-	if (!g_pModel || !g_pApp)
+	if (!g_pApp || !g_pApp->getMainWndUI() || !g_pApp->getMainWndUI()->getModel())
 		return;
 
-	if (!g_pModel->getTab())
+	rdo::gui::model::Model* pModel = g_pApp->getMainWndUI()->getModel();
+
+	if (!pModel->getTab())
 		return;
 
 	QStringList positionList = QString::fromStdString(commandLine).split(' ', QString::SkipEmptyParts);
@@ -198,17 +199,17 @@ void PluginGame5::executeCommand(const std::string& commandLine)
 	Board board;
 	board.setTilesPositon(newState);
 
-	for (int i = 0; i < g_pModel->getTab()->tabBar()->count(); i++)
+	for (int i = 0; i < pModel->getTab()->tabBar()->count(); i++)
 	{
-		g_pModel->getTab()->getItemEdit(i)->clearAll();
+		pModel->getTab()->getItemEdit(i)->clearAll();
 	}
-	g_pModel->getTab()->getItemEdit(rdo::model::RTP)->appendText(PluginGame5ModelGenerator::modelRTP(board));
-	g_pModel->getTab()->getItemEdit(rdo::model::RSS)->appendText(PluginGame5ModelGenerator::modelRSS(board));
-	g_pModel->getTab()->getItemEdit(rdo::model::PAT)->appendText(PluginGame5ModelGenerator::modelPAT());
-	g_pModel->getTab()->getItemEdit(rdo::model::DPT)->appendText(PluginGame5ModelGenerator::modelDPT(board));
-	g_pModel->getTab()->getItemEdit(rdo::model::FUN)->appendText(PluginGame5ModelGenerator::modelFUN(board));
+	pModel->getTab()->getItemEdit(rdo::model::RTP)->appendText(PluginGame5ModelGenerator::modelRTP(board));
+	pModel->getTab()->getItemEdit(rdo::model::RSS)->appendText(PluginGame5ModelGenerator::modelRSS(board));
+	pModel->getTab()->getItemEdit(rdo::model::PAT)->appendText(PluginGame5ModelGenerator::modelPAT());
+	pModel->getTab()->getItemEdit(rdo::model::DPT)->appendText(PluginGame5ModelGenerator::modelDPT(board));
+	pModel->getTab()->getItemEdit(rdo::model::FUN)->appendText(PluginGame5ModelGenerator::modelFUN(board));
 
-	g_pModel->saveModel();
+	pModel->saveModel();
 	g_pApp->quit();
 }
 
@@ -292,9 +293,11 @@ void PluginGame5::initToolBar(MainWindow* pParent) const
 
 	pParent->addToolBar(Qt::TopToolBarArea, pluginToolBar);
 
+	rdo::gui::model::Model* pModel = g_pApp->getMainWndUI()->getModel();
+
 	connect(generateSituationDlgAction, &QAction::triggered,
 	        m_generateSituationDlg    , &PluginGame5GenerateSituationDialog::onPluginAction);
-	connect(g_pModel, &rdo::gui::model::Model::stopped,
+	connect(pModel, &rdo::gui::model::Model::stopped,
 	        this    , &PluginGame5::reemitGraphDlgAction);
 	connect(graphDlgAction, &QAction::triggered,
 	        this          , &PluginGame5::reemitGraphDlgAction);
@@ -304,7 +307,7 @@ void PluginGame5::initToolBar(MainWindow* pParent) const
 	        graphDlgAction, &QAction::setEnabled);
 	connect(this, &PluginGame5::setGenerateSituationDlgActionEnabled,
 	        generateSituationDlgAction, &QAction::setEnabled);
-	connect(g_pModel, &rdo::gui::model::Model::actionUpdated,
+	connect(pModel, &rdo::gui::model::Model::actionUpdated,
 	        this    , &PluginGame5::enablePluginActions);
 }
 
@@ -321,6 +324,11 @@ void PluginGame5::reemitGraphDlgAction()
 
 void PluginGame5::enablePluginActions()
 {
-	emit setGraphDlgActionEnabled(g_pModel->canRun());
-	emit setGenerateSituationDlgActionEnabled(g_pModel->canRun());
+	if (!g_pApp || !g_pApp->getMainWndUI() || !g_pApp->getMainWndUI()->getModel())
+		return;
+
+	rdo::gui::model::Model* pModel = g_pApp->getMainWndUI()->getModel();
+
+	emit setGraphDlgActionEnabled(pModel->canRun());
+	emit setGenerateSituationDlgActionEnabled(pModel->canRun());
 }

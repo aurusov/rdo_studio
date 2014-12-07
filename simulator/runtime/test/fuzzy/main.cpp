@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      main.cpp
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
-  \date      10.05.2009
-  \brief     Тест нечёткой логики
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES

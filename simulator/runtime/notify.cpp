@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      notify.cpp
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      08.01.2012
-  \brief     
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"

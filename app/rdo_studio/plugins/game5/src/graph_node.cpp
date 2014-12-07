@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      app/rdo_studio/plugins/game5/src/graph_node.cpp
-  \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
-  \date      22.09.2013
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -14,6 +5,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QStyleOption>
+#include <QFontMetrics>
 #include <list>
 #include <math.h>
 #include "utils/src/common/warning_enable.h"
@@ -41,19 +33,21 @@ namespace
 		return newFont;
 	}
 
-	const double LEVEL_OF_LOW_DETAIL   = 0.8;
+	const double LEVEL_OF_LOW_DETAIL = 0.8;
+	const double LOW_DETAIL_MULTIPLIER = 1.5;
 	const double LEVEL_OF_LOWER_DETAIL = 0.6;
-    const double WIDTH_MARGIN = 4;
-    const double HEIGHT_MARGIN = 4;
+	const double LOWER_DETAIL_MULTIPLIER = 3.0;
+	const double WIDTH_MARGIN = 4;
+	const double HEIGHT_MARGIN = 4;
 } // end anonymous namespace
 
 GraphNode::GraphNode(const GraphNodeInfo& info, GraphNode* parentGraphNode, int width, int height)
-    : GraphNodeInfo      (info)
-    , m_pParentGraphNode (parentGraphNode)
-    , m_graphOnLevelOrder(0)
-    , m_isChecked        (false)
-    , m_width            (width + WIDTH_MARGIN)
-    , m_height           (height + HEIGHT_MARGIN)
+	: GraphNodeInfo      (info)
+	, m_pParentGraphNode (parentGraphNode)
+	, m_graphOnLevelOrder(0)
+	, m_isChecked        (false)
+	, m_width            (width + WIDTH_MARGIN)
+	, m_height           (height + HEIGHT_MARGIN)
 {
 	setFlag(ItemIsMovable);
 	setFlag(ItemSendsGeometryChanges);
@@ -100,20 +94,20 @@ void GraphNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*optio
 	{
 		if (levelOfDetail < LEVEL_OF_LOWER_DETAIL)
 		{
-			QString textStr = generateNodeTextSmallView(m_nodeID);
-			painter->setFont(fontSizeMultiply(sceneFont, 3));
+			QString textStr = generateNodeTextLowerDetalization(m_nodeID);
+			painter->setFont(fontSizeMultiply(sceneFont, LOWER_DETAIL_MULTIPLIER));
 			painter->drawText(nodeRect, Qt::AlignCenter, textStr);
 		}
 		else
 		{
-			QString textStr = generateNodeTextMediumView(m_nodeID, m_pathCost, m_restPathCost, m_moveCost);
-			painter->setFont(fontSizeMultiply(sceneFont, 1.5));
+			QString textStr = generateNodeTextLowDetalization(m_nodeID, m_pathCost, m_restPathCost, m_moveCost);
+			painter->setFont(fontSizeMultiply(sceneFont, LOW_DETAIL_MULTIPLIER));
 			painter->drawText(nodeRect, Qt::AlignCenter, textStr);
 		}
 	}
 	else
 	{
-		QString textStr = generateNodeTextLargeView(m_nodeID, m_pathCost, m_restPathCost, m_moveCost, m_relevantTile, m_tileMoveTo, m_moveDirection);
+		QString textStr = generateNodeTextNormalDetalization(m_nodeID, m_pathCost, m_restPathCost, m_moveCost, m_relevantTile, m_tileMoveTo, m_moveDirection);
 		painter->drawText(nodeRect, Qt::AlignCenter, textStr);
 	}
 	painter->setFont(sceneFont);
@@ -295,7 +289,7 @@ void GraphNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mEvent)
 	QGraphicsItem::mouseDoubleClickEvent(mEvent);
 }
 
-QString GraphNode::generateNodeTextLargeView(int nodeID, int pathCost, int restPathCost, int moveCost, int relevantTile, int tileMoveTo, const QString& moveDirection)
+QString GraphNode::generateNodeTextNormalDetalization(int nodeID, int pathCost, int restPathCost, int moveCost, int relevantTile, int tileMoveTo, const QString& moveDirection)
 {
 	return QString("%1 (%2/%3/%4)\nФишка %5 = %6\n%7").arg(
 			QString::number(nodeID), QString::number(pathCost), QString::number(restPathCost), QString::number(moveCost),
@@ -303,14 +297,55 @@ QString GraphNode::generateNodeTextLargeView(int nodeID, int pathCost, int restP
 			moveDirection);
 }
 
-QString GraphNode::generateNodeTextMediumView(int nodeID, int pathCost, int restPathCost, int moveCost)
+QString GraphNode::generateNodeTextLowDetalization(int nodeID, int pathCost, int restPathCost, int moveCost)
 {
 	return QString("%1\n%2/%3/%4").arg(
 			QString::number(nodeID),
 			QString::number(pathCost), QString::number(restPathCost), QString::number(moveCost));
 }
 
-QString GraphNode::generateNodeTextSmallView(int nodeID)
+QString GraphNode::generateNodeTextLowerDetalization(int nodeID)
 {
 	return QString("%1").arg(QString::number(nodeID));
+}
+
+QRect GraphNode::calcTextWidth(const QString& text, const QFont& baseFont, Detalization detalization)
+{
+	QFontMetrics fontMetrics = QFontMetrics(baseFont);
+	switch (detalization)
+	{
+		case Detalization::Low :
+			fontMetrics = QFontMetrics(fontSizeMultiply(baseFont, LOW_DETAIL_MULTIPLIER));
+			break;
+
+		case Detalization::Lower :
+			fontMetrics = QFontMetrics(fontSizeMultiply(baseFont, LOWER_DETAIL_MULTIPLIER));
+			break;
+
+		case Detalization::Normal :
+			break;
+	}
+
+	return fontMetrics.boundingRect(QRect(), Qt::AlignCenter, text);;
+}
+
+QRect GraphNode::calcNodeRect(const GraphNodeInfo& info, const QFont& baseFont)
+{
+	const QString nodeTextNormalD = generateNodeTextNormalDetalization(
+			info.m_nodeID, info.m_pathCost, info.m_restPathCost, info.m_moveCost, info.m_relevantTile, info.m_tileMoveTo, info.m_moveDirection);
+	const QString nodeTextLowD = generateNodeTextLowDetalization(
+			info.m_nodeID, info.m_pathCost, info.m_restPathCost, info.m_moveCost);
+	const QString nodeTextLowerD = generateNodeTextLowerDetalization(info.m_nodeID);
+
+	const QRect nodeRectNormalD = calcTextWidth(nodeTextNormalD, baseFont, Detalization::Normal);
+	const QRect nodeRectLowD = calcTextWidth(nodeTextLowD, baseFont, Detalization::Low);
+	const QRect nodeRectLowerD = calcTextWidth(nodeTextLowerD, baseFont, Detalization::Lower);
+
+	QRect nodeRect = QRect();
+	const int width = std::max(nodeRectNormalD.width(), std::max(nodeRectLowD.width(), nodeRectLowerD.width()));
+	const int height = std::max(nodeRectNormalD.height(), std::max(nodeRectLowD.height(), nodeRectLowerD.height()));
+	nodeRect.setWidth(width);
+	nodeRect.setHeight(height);
+
+	return nodeRect;
 }

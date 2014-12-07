@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2009-2012
-  \file      main.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      01.05.2012
-  \brief     Тест для калков
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES

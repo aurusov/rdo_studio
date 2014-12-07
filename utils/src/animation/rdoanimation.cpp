@@ -1,14 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdoanimation.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Копнин Андрей (kopninandrey@gmail.com)
-  \date      13.06.2009
-  \brief     Описание объектов анимации, которые передаются от симулятора к GUI для отрисовки
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/animation/rdoanimation.h"

@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      simulator/runtime/rdo_matrix.h
-  \authors   Чирков Михаил
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      01.10.2010
-  \brief     Матрица
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_MATRIX_H_
 #define _LIB_RUNTIME_MATRIX_H_
 

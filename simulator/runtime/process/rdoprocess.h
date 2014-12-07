@@ -1,14 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdoprocess.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \authors   etc.
-  \date      11.06.2006
-  \brief     Процесснные операторы РДО
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_PROCESS_H_
 #define _LIB_RUNTIME_PROCESS_H_
 
@@ -26,10 +15,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOPROCBlock
-  \brief   Базовый класс для процессных блоков (операторов) РДО
-*/
 class RDOPROCBlock: public IPROCBlock, public IBaseOperation
 {
 friend class RDOPROCTransact;
@@ -46,10 +31,6 @@ protected:
 	DECLARE_IPROCBlock;
 };
 
-/*!
-  \class   RDOPROCProcess
-  \brief   Процесс в РДО
-*/
 class RDOPROCProcess: public RDOLogicSimple, public IPROCProcess, public RDOPatternPrior
 {
 DECLARE_FACTORY(RDOPROCProcess)
@@ -70,10 +51,6 @@ private:
 
 PREDECLARE_POINTER(RDOPROCResource);
 
-/*!
-  \class   RDOPROCTransact
-  \brief   Транзакт в РДО
-*/
 class RDOPROCTransact: public RDOResource
 {
 DECLARE_FACTORY(RDOPROCTransact);
@@ -94,10 +71,6 @@ private:
 	LPRDOPROCResource  m_res;
 };
 
-/*!
-  \class   RDOPROCResource
-  \brief   Процессный ресурс РДО - обслуживает транзакты в процессах
-*/
 class RDOPROCResource: public RDOResource
 {
 DECLARE_FACTORY(RDOPROCResource);

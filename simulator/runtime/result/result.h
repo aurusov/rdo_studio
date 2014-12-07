@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      result.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      29.01.2007
-  \brief     Собираемые при моделированиии показатели
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_RESULT_H_
 #define _LIB_RUNTIME_RESULT_H_
 
@@ -47,11 +37,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class     RDOPMDResult
-  \brief     Базовый собираемый показатель
-  \todo      Дать классу адекватное англоязычное имя
-*/
 class RDOPMDResult: public RDOResultTrace, public IName
 {
 protected:
@@ -66,10 +51,6 @@ private:
 	std::string m_name;
 };
 
-/*!
-  \class     RDOPMDWatchPar
-  \brief     Собираемый показатель типа WatchPar
-*/
 class RDOPMDWatchPar: public RDOPMDResult, public IResult, public IModelStructure, public INotify
 {
 DECLARE_FACTORY(RDOPMDWatchPar);
@@ -125,10 +106,6 @@ private:
 	DECLARE_IModelStructure;
 };
 
-/*!
-  \class     RDOPMDWatchState
-  \brief     Собираемый показатель типа WatchState
-*/
 class RDOPMDWatchState: public RDOPMDResult, public IResult, public IModelStructure
 {
 DECLARE_FACTORY(RDOPMDWatchState);
@@ -174,10 +151,6 @@ private:
 	DECLARE_IModelStructure;
 };
 
-/*!
-  \class     RDOPMDWatchQuant
-  \brief     Собираемый показатель типа WatchQuant
-*/
 class RDOPMDWatchQuant: public RDOPMDResult, public IResult, public IResultWatchQuant, public IModelStructure
 {
 DECLARE_FACTORY(RDOPMDWatchQuant);
@@ -230,10 +203,6 @@ private:
 	DECLARE_IModelStructure;
 };
 
-/*!
-  \class     RDOPMDWatchValue
-  \brief     Собираемый показатель типа WatchValue
-*/
 class RDOPMDWatchValue: public RDOPMDResult, public IResult, public IResultWatchValue, public IModelStructure
 {
 DECLARE_FACTORY(RDOPMDWatchValue);
@@ -265,10 +234,6 @@ private:
 	DECLARE_IModelStructure;
 };
 
-/*!
-  \class     RDOPMDGetValue
-  \brief     Собираемый показатель типа GetValue
-*/
 class RDOPMDGetValue: public RDOPMDResult, public IResult, public IResultGetValue, public IModelStructure
 {
 DECLARE_FACTORY(RDOPMDGetValue);

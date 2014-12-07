@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      keyboard.h
-  \authors   Евгений Пройдаков (lord.tiran@gmail.com)
-  \date      16.05.2007
-  \brief     keyboard virtual codes definitions
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_KEYBOARD_REDEFINE_H_
 #define _LIB_RUNTIME_KEYBOARD_REDEFINE_H_
 

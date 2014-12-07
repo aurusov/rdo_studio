@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_simulator.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      19.04.2008
-  \brief     Симулятор РДО
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_SIMULATOR_H_
 #define _LIB_RUNTIME_SIMULATOR_H_
 
@@ -20,10 +10,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class     RDOSimulator
-  \brief     Один из базовых классов для RDORuntime
-*/
 class RDOSimulator: public RDOSimulatorBase
 {
 public:

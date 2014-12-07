@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      simulator/compiler/parser/rdo_logic_base.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Клеванец Игорь (impus@hotbox.ru)
-  \date      5.02.2012
-  \brief     Базовый класс для точек принятия решений
-  \indent    4T
-*/
-
 #ifndef _PARSER_LOGIC_BASE_H_
 #define _PARSER_LOGIC_BASE_H_
 

@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_logic.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      13.03.2011
-  \brief     Логические операторы
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES

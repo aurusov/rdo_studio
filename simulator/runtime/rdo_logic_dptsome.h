@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_logic_dptsome.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      04.11.2009
-  \brief     DPTSome
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_LOGIC_DPTSOME_H_
 #define _LIB_RUNTIME_LOGIC_DPTSOME_H_
 
@@ -18,10 +9,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDODPTSome
-  \brief   Точка принятия решений DPTSome
-*/
 class RDODPTSome: public RDOLogicSimple, public RDOPatternPrior
 {
 DECLARE_FACTORY(RDODPTSome);

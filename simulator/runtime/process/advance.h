@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      advance-inl.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      12.02.2012
-  \brief     Процессный оператор ADVANCE
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_PROCESS_ADVANCE_H_
 #define _LIB_RUNTIME_PROCESS_ADVANCE_H_
 
@@ -24,22 +14,13 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOPROCAdvance
-  \brief   Процессный блок ADVANCE
-*/
 class RDOPROCAdvance: public RDOPROCBlock, public IInternalStatisticsManager
 {
 DECLARE_FACTORY(RDOPROCAdvance);
 protected:
 	LPRDOCalc pDelayCalc;
 
-	/*!
-	  \struct  LeaveTr
-	  \brief   Время ухода транзакта
-	  \todo    что это?
-	*/
-	struct LeaveTr
+		struct LeaveTr
 	{
 		LPRDOPROCTransact transact;
 		double            timeLeave;

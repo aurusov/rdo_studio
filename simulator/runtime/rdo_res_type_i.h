@@ -1,14 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_res_type_i.h
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \authors   Александровский Кирилл (k.alexandrovsky@gmail.com)
-  \date      05.06.2011
-  \brief     Интерфейс для типов ресурсов
-  \details   Типы ресурсов - фабрики ресурсов. См. паттерн "Фабричный метод"
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_RES_TYPE_I_H_
 #define _LIB_RUNTIME_RES_TYPE_I_H_
 
@@ -24,10 +13,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 PREDECLARE_POINTER(RDORuntime );
 PREDECLARE_POINTER(RDOResource);
 
-/*!
-  \interface IResourceType
-  \brief     Предоставляет фабричный метод createRes()
-*/
 PREDECLARE_OBJECT_INTERFACE(IResourceType)
 struct IResourceType: public rdo::RefCounter<IResourceType>
 {

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_fuzzy.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      24.07.2008
-  \brief     Нечеткая логика
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES

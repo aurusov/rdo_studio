@@ -1,14 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      main.cpp
-  \authors   Чирков Михаил
-  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      01.10.2010
-  \brief     Тест матриц
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES

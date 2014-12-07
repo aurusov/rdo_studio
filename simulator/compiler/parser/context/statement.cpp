@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      statement.cpp
-  \authors   Поподьянец Евгений (kurt.gigacore@gmail.com)
-  \date      18.04.2012
-  \brief     Контекст выражений
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES

@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      seize_release.cpp
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      12.02.2012
-  \brief     Процессные операторы SEIZE и RELEASE
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES

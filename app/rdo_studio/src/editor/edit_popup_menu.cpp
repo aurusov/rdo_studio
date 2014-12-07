@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      edit_popup_menu.cpp
-  \author    Романов Ярослав (robot.xet@gmail.com)
-  \date      25.01.2013
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/editor_pch.h"
 // ----------------------------------------------------------------------- INCLUDES

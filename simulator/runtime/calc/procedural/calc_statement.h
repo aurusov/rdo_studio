@@ -1,14 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_statement.h
-  \authors   Чирков Михаил
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \authors   Поподьянец Евгений (kurt.gigacore@gmail.com)
-  \date      16.04.2011
-  \brief     Инструкции
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_CALC_PROCEDURAL_STATEMENT_H_
 #define _LIB_RUNTIME_CALC_PROCEDURAL_STATEMENT_H_
 

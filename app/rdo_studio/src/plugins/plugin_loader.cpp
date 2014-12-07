@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      app/rdo_studio/src/plugins/plugin_loader.cpp
-  \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
-  \date      22.09.2013
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/plugin_loader_pch.h"
 // ----------------------------------------------------------------------- INCLUDES

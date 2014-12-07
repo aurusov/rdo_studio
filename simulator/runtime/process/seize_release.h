@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      seize_release.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      12.02.2012
-  \brief     Процессные операторы SEIZE и RELEASE
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_PROCESS_SEIZE_RELEASE_H_
 #define _LIB_RUNTIME_PROCESS_SEIZE_RELEASE_H_
 
@@ -24,10 +14,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \struct  runtime_for_Seize
-  \brief   Вспомогательный класс для оператора SEIZE в Runtime
-*/
 struct runtime_for_Seize
 {
 	LPRDOPROCResource  rss;
@@ -37,20 +23,12 @@ struct runtime_for_Seize
 	RDOValue           enum_break;
 };
 
-/*!
-  \struct  parser_for_Seize
-  \brief   Вспомогательный класс для оператора SEIZE в Parser
-*/
 struct parser_for_Seize
 {
 	int Id_res;
 	int Id_param;
 };
 
-/*!
-  \class   RDOPROCBlockForSeize
-  \brief   Вспомогательный класс для процессного оператора SEIZE
-*/
 class RDOPROCBlockForSeize: public RDOPROCBlock
 {
 public:
@@ -67,10 +45,6 @@ protected:
 	void _onStart(const LPRDORuntime& pRuntime);
 };
 
-/*!
-  \class   RDOPROCSeize
-  \brief   Процессный блок SEIZE
-*/
 class RDOPROCSeize: public RDOPROCBlockForSeize
 {
 DECLARE_FACTORY(RDOPROCSeize);
@@ -85,10 +59,6 @@ private:
 	DECLARE_IBaseOperation;
 };
 
-/*!
-  \class   RDOPROCRelease
-  \brief   Процессный блок RELEASE
-*/
 class RDOPROCRelease: public RDOPROCBlockForSeize
 {
 DECLARE_FACTORY(RDOPROCRelease);

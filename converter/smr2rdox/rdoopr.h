@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdoopr.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date
-  \brief
-  \indent    4T
-*/
-
 #ifndef _CONVERTOR_RDOOPR_H_
 #define _CONVERTOR_RDOOPR_H_
 

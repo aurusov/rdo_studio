@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_braces.h
-  \author    Чирков Михаил
-  \date      16.04.2011
-  \brief     Список инструкций в стиле C++
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_CALC_PROCEDURAL_BRACES_H_
 #define _LIB_RUNTIME_CALC_PROCEDURAL_BRACES_H_
 

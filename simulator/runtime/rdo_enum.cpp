@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_enum.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      18.04.2009
-  \brief     Перечисления
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES

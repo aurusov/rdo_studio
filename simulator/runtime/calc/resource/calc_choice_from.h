@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_choice_from.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      13.03.2011
-  \brief     RDOCalc для подбора релевантных ресурсов и создания ресурсов
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_CALC_RESOURCE_CHOICE_FROM_H_
 #define _LIB_RUNTIME_CALC_RESOURCE_CHOICE_FROM_H_
 

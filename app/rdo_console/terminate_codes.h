@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      terminate_codes.h
-  \author    Пройдаков Евгений (lord.tiran@gmail.com)
-  \date      26.10.2011
-  \brief     Консольная версия RDO
-  \indent    4T
-*/
-
 #ifndef _TERMINATE_CODES_H_
 #define _TERMINATE_CODES_H_
 

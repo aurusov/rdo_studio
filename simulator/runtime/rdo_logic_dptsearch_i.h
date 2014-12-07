@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_logic_dptsearch_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      08.08.2009
-  \brief     DPTSearch
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_LOGIC_DPTSEARCH_I_H_
 #define _LIB_RUNTIME_LOGIC_DPTSEARCH_I_H_
 
@@ -15,10 +6,6 @@
 #include "simulator/runtime/rdo_dptsearch_activity_i.h"
 // --------------------------------------------------------------------------------
 
-/*!
-  \interface IDPTSearchLogic
-  \brief     Инерфейс IDPTSearchLogic
-*/
 class IDPTSearchLogic: public virtual rdo::counter_reference
 {
 public:

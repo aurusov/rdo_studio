@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      tracer_base.h
-  \author    Захаров Павел
-  \date      01.04.2003
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _RDO_STUDIO_TRACER_BASE_H_
 #define _RDO_STUDIO_TRACER_BASE_H_
 

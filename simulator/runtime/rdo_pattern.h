@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_pattern.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      13.04.2008
-  \brief     Описание базового класса для образцов всех типов активностей и событий
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_PATTERN_H_
 #define _LIB_RUNTIME_PATTERN_H_
 
@@ -26,10 +16,6 @@ class RDOEvent;
 class RDORule;
 class RDOKeyboard;
 
-/*!
-  \class     RDOPattern
-  \brief     Базовый класс для паттернов активностей и событий
-*/
 PREDECLARE_POINTER(RDOPattern);
 class RDOPattern
 	: public virtual rdo::counter_reference
@@ -56,10 +42,6 @@ protected:
 	bool runCalcsBool(CalcList& calcList, const LPRDORuntime& pRuntime);
 };
 
-/*!
-  \class     RDOPatternEvent
-  \brief     Паттерн событий
-*/
 class RDOPatternEvent: public RDOPattern
 {
 DECLARE_FACTORY(RDOPatternEvent);
@@ -89,10 +71,6 @@ private:
 };
 DECLARE_POINTER(RDOPatternEvent);
 
-/*!
-  \class     RDOPatternRule
-  \brief     Паттерн активностей типа rule
-*/
 class RDOPatternRule: public RDOPattern
 {
 DECLARE_FACTORY(RDOPatternRule);
@@ -124,10 +102,6 @@ private:
 };
 DECLARE_POINTER(RDOPatternRule);
 
-/*!
-  \class     RDOPatternOperation
-  \brief     Паттерн активностей типа operation
-*/
 class RDOPatternOperation: public RDOPattern
 {
 DECLARE_FACTORY(RDOPatternOperation);
@@ -173,10 +147,6 @@ private:
 };
 DECLARE_POINTER(RDOPatternOperation);
 
-/*!
-  \class     RDOPatternKeyboard
-  \brief     Паттерн активностей типа keyboard
-*/
 class RDOPatternKeyboard: public RDOPatternOperation
 {
 DECLARE_FACTORY(RDOPatternKeyboard);

@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdopat.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date
-  \brief
-  \indent    4T
-*/
-
 #ifndef _CONVERTOR_RDOPAT_H_
 #define _CONVERTOR_RDOPAT_H_
 

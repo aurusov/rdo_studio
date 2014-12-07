@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      word_list_util.cpp
-  \author    Романов Ярослав (robot.xet@gmail.com)
-  \date      29.09.2012
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/editor_pch.h"
 // ----------------------------------------------------------------------- INCLUDES

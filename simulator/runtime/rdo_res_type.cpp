@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      rdo_res_type.cpp
-  \author    Александровский Кирилл (k.alexandrovsky@gmail.com)
-  \date      13.05.2013
-  \brief     Типы ресурсов в rdo::runtime
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES

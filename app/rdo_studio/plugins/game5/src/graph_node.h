@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      app/rdo_studio/plugins/game5/src/graph_node.h
-  \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
-  \date      22.09.2013
-  \brief
-  \indent    4T
-*/
-
 #ifndef _RDO_PLUGIN_GAME_5_GRAPH_NODE_H_
 #define _RDO_PLUGIN_GAME_5_GRAPH_NODE_H_
 
@@ -29,6 +20,8 @@ public:
 	~GraphNode();
 
 	enum { Type = rdo::plugin::game5::TypeID::GRAPH_NODE };
+	enum Detalization {Normal, Low, Lower};
+
 	virtual int type() const { return Type; }
 
 	virtual QRectF boundingRect() const;
@@ -63,10 +56,12 @@ public:
 
 	QPointF getBorderPointByAngle(double angle) const;
 
-	static QString generateNodeTextLargeView (int nodeID, int pathCost, int restPathCost, int moveCost,
-	                                          int relevantTile, int tileMoveTo, const QString& moveDirection);
-	static QString generateNodeTextMediumView(int nodeID, int pathCost, int restPathCost, int moveCost);
-	static QString generateNodeTextSmallView (int nodeID);
+	static QString generateNodeTextNormalDetalization(int nodeID, int pathCost, int restPathCost, int moveCost,
+			int relevantTile, int tileMoveTo, const QString& moveDirection);
+	static QString generateNodeTextLowDetalization(int nodeID, int pathCost, int restPathCost, int moveCost);
+	static QString generateNodeTextLowerDetalization(int nodeID);
+	static QRect calcTextWidth(const QString& text, const QFont& baseFont, Detalization detalization);
+	static QRect calcNodeRect(const GraphNodeInfo& info, const QFont& baseFont);
 
 signals:
 	void clickedNode(GraphNode* node);

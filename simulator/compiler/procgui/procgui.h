@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      procgui.h
-  \author    Шувалов Андрей
-  \date      22.04.2011
-  \brief
-  \indent    4T
-*/
-
 #ifndef _SIMULATOR_COMPILER_GUI_PROCGUI_H_
 #define _SIMULATOR_COMPILER_GUI_PROCGUI_H_
 

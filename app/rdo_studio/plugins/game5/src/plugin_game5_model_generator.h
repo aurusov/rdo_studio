@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2014
-  \file      app/rdo_studio/plugins/game5/src/plugin_game5_model_generator.h
-  \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
-  \date      19.05.2014
-  \brief
-  \indent    4T
-*/
-
 #ifndef PLUGIN_GAME5_MODEL_GENERATOR_H
 #define PLUGIN_GAME5_MODEL_GENERATOR_H
 

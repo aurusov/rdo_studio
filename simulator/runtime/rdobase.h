@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdobase.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      11.06.2006
-  \brief     Управление симулятором
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_BASE_H_
 #define _LIB_RUNTIME_BASE_H_
 
@@ -32,10 +23,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class     RDOSimulatorBase
-  \brief     Один из базовых классов для RDORuntime
-*/
 PREDECLARE_POINTER(RDOSimulatorBase);
 class RDOSimulatorBase: public rdo::counter_reference
 {

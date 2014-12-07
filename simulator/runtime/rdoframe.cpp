@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdoframe.cpp
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Копнин Андрей (kopninandrey@gmail.com)
-  \date      07.12.2008
-  \brief     Кадры РДО модели
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES

@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      simulator/runtime/rdo_logic-inl.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      03.10.2009
-  \brief     Логика - контейнер БЗ
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES

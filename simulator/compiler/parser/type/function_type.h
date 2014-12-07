@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      function_type.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      04.12.2012
-  \brief     Тип функции
-  \indent    4T
-*/
-
 #ifndef _RDOPARSER_TYPE_FUNCTION_TYPE_H_
 #define _RDOPARSER_TYPE_FUNCTION_TYPE_H_
 

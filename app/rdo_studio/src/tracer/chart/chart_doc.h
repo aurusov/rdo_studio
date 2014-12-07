@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      chart_doc.h
-  \author    Захаров Павел
-  \date      20.02.2003
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _RDO_STUDIO_TRACER_CHART_DOC_H_
 #define _RDO_STUDIO_TRACER_CHART_DOC_H_
 

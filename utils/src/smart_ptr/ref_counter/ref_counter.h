@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      ref_counter.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      21.09.2011
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _UTILS_SMART_PTR_REF_COUNTER_H_
 #define _UTILS_SMART_PTR_REF_COUNTER_H_
 

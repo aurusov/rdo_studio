@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_random_distribution.cpp
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      02.08.2011
-  \brief     Датчики псевдослучайных чисел
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES

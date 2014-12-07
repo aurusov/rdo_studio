@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2014
-  \file      set_operation_type.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      06.01.2014
-  \brief     Типы операторов присваивания
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES

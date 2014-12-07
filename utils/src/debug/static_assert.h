@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      static_assert.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      08.03.2010
-  \brief     Основан на классе CompileTimeError из <a href="http://lib.mexmat.ru/books/7498">Александреску</a>
-  \indent    4T
-*/
-
 #ifndef _UTILS_STATIC_ASSERT_H_
 #define _UTILS_STATIC_ASSERT_H_
 

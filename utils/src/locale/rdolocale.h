@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      rdolocale.h
-  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      20.10.2012
-  \brief     Настройка локали для РДО
-  \indent    4T
-*/
-
 #ifndef _UTILS_LOCALE_H_
 #define _UTILS_LOCALE_H_
 

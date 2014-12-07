@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_event_i.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      23.05.2010
-  \brief     Интерфейс событий
-  \indent    4T
-*/
-
 #pragma once
 
 // ----------------------------------------------------------------------- INCLUDES

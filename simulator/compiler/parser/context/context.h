@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      context.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      06.06.2010
-  \brief
-  \indent    4T
-*/
-
 #ifndef _RDOPARSER_CONTEXT_H_
 #define _RDOPARSER_CONTEXT_H_
 

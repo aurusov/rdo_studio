@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      range.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      22.12.2012
-  \brief     
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- INCLUDES
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- SYNOPSIS

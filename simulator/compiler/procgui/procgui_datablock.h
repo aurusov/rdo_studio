@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      procgui_datablock.h
-  \author    Шувалов Андрей
-  \date      04.05.2011
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _SIMULATOR_COMPILER_GUI_DATABLOCK_H_
 #define _SIMULATOR_COMPILER_GUI_DATABLOCK_H_
 

@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_function.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      17.12.2011
-  \brief     Функции с закладки FUN
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_CALC_FUNCTION_H_
 #define _LIB_RUNTIME_CALC_FUNCTION_H_
 

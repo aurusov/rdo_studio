@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_memory.h
-  \author    Чирков Михаил
-  \date      02.12.2010
-  \brief     Память
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_MEMORY_H_
 #define _LIB_RUNTIME_MEMORY_H_
 
@@ -20,10 +11,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class     RDOMemory
-  \brief     Память
-*/
 PREDECLARE_POINTER(RDOMemory);
 class RDOMemory: public rdo::counter_reference
 {
@@ -42,10 +29,6 @@ private:
 	LocalMemory m_localMemory;
 };
 
-/*!
-  \class     RDOMemoryStack
-  \brief     Стэк памяти
-*/
 PREDECLARE_POINTER(RDOMemoryStack);
 class RDOMemoryStack: public rdo::counter_reference
 {

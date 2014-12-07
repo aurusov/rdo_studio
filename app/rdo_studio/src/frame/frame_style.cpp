@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      frame_style.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      18.04.2003
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/frame_pch.h"
 // ----------------------------------------------------------------------- INCLUDES

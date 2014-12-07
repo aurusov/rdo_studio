@@ -1,14 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_runtime.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      16.05.2007
-  \brief     RDORuntime
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_RUNTIME_H_
 #define _LIB_RUNTIME_RUNTIME_H_
 
@@ -181,11 +170,7 @@ public:
 
 	virtual void postProcess();
 
-	/*!
-	  \enum      FunBreakFlag
-	  \brief     Флаг остановки функции
-	*/
-	enum FunBreakFlag
+		enum FunBreakFlag
 	{
 		FBF_NONE = 0,
 		FBF_BREAK,

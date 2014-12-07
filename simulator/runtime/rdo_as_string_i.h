@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2014
-  \file      rdo_as_string_i.h
-  \author    Богачев Павел <bogachev-pa@gmail.com>
-  \date      18.04.2014
-  \brief     Интерфейс для получения объекта как строки
-  \details
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_AS_STRING_I_H
 #define _LIB_RUNTIME_AS_STRING_I_H
 
@@ -19,10 +9,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \interface IAsString
-  \brief     Предоставляет метод asString()
-*/
 struct IAsString: public virtual rdo::counter_reference
 {
 DECLARE_FACTORY(IAsString);

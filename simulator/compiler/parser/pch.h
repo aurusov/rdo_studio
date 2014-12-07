@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      simulator/compiler/parser/pch.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _PARSER_PCH_H_
 #define _PARSER_PCH_H_
 

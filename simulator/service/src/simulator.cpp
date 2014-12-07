@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      simulator.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date
-  \brief
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"

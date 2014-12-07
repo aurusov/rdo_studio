@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2014
-  \file      calc_binary.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      02.05.2014
-  \brief     Бинарные операторы
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES

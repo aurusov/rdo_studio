@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      goto_line_dialog.h
-  \author    Романов Ярослав (robot.xet@gmail.com)
-  \date      04.01.2013
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _RDO_STUDIO_DIALOG_GO_TO_NEXT_LINE_DIALOG_H_
 #define _RDO_STUDIO_DIALOG_GO_TO_NEXT_LINE_DIALOG_H_
 

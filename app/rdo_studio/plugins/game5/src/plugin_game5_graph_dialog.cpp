@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      app/rdo_studio/plugins/game5/src/plugin_game5_graph_dialog.cpp
-  \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
-  \date      22.09.2013
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -42,7 +33,7 @@ namespace
 } // end anonymous namespace
 
 PluginGame5GraphDialog::PluginGame5GraphDialog(QWidget * pParent)
-	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
+	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowMaximizeButtonHint| Qt::WindowCloseButtonHint)
 	, m_traceTimeStamp(getTraceTimeStamp())
 	, m_clickedNode(NULL)
 	, m_nodeWidth(0)
@@ -151,11 +142,16 @@ std::vector<GraphNodeInfo> PluginGame5GraphDialog::parseTrace(const std::vector<
 		pos += regExp.matchedLength();
 	}
 
+	const QFont sceneFont = graphWidget->scene()->font();
 	std::vector<GraphNodeInfo> parsingResult;
 	if (!list.empty())
 	{
 		parsingResult.resize(list.size() + 1);
 		parsingResult[0] = GraphNodeInfo(1, 0, 0, 0, "Начало поиска", 0, 0, 0, 0, 0, startBoardState);
+
+		QRect nodeRect = GraphNode::calcNodeRect(parsingResult[0], sceneFont);
+		m_nodeWidth  = nodeRect.width();
+		m_nodeHeight = nodeRect.height();
 	}
 	for (const QString& string: list)
 	{
@@ -190,18 +186,9 @@ std::vector<GraphNodeInfo> PluginGame5GraphDialog::parseTrace(const std::vector<
 		                                              moveDirectionText, moveCost, relevantTile, graphLevel,
 		                                              tileMoveFrom, tileMoveTo, boardState);
 
-		const QString nodeTextLV = GraphNode::generateNodeTextLargeView(
-				graphNodeId, pathCost, restPathCost, moveCost, relevantTile, tileMoveTo, moveDirectionText);
-		const QString nodeTextMV = GraphNode::generateNodeTextMediumView(
-				graphNodeId, pathCost, restPathCost, moveCost);
-		const QString nodeTextSV = GraphNode::generateNodeTextSmallView(graphNodeId);
-
-		const QFontMetrics fontMetrics = QFontMetrics(graphWidget->scene()->font());
-		const QRect nodeRectLV = fontMetrics.boundingRect(QRect(), Qt::AlignCenter, nodeTextLV);
-		const QRect nodeRectMV = fontMetrics.boundingRect(QRect(), Qt::AlignCenter, nodeTextMV);
-		const QRect nodeRectSV = fontMetrics.boundingRect(QRect(), Qt::AlignCenter, nodeTextSV);
-		m_nodeWidth  = std::max(nodeRectLV.width() , std::max(nodeRectMV.width() , std::max(nodeRectSV.width() , m_nodeWidth )));
-		m_nodeHeight = std::max(nodeRectLV.height(), std::max(nodeRectMV.height(), std::max(nodeRectSV.height(), m_nodeHeight)));
+		QRect nodeRect = GraphNode::calcNodeRect(parsingResult[graphNodeIndex], sceneFont);
+		m_nodeWidth  = std::max(nodeRect.width(), m_nodeWidth);
+		m_nodeHeight = std::max(nodeRect.height(), m_nodeHeight);
 	}
 
 	for (int nodeId: getSolutionNodes())

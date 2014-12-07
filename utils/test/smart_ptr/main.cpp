@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      main.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
-  \date      14.07.2009
-  \brief     Тест умных указателей
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES

@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_sequence.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      13.03.2011
-  \brief     Последовательности
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_CALC_SEQUENCE_H_
 #define _LIB_RUNTIME_CALC_SEQUENCE_H_
 
@@ -74,10 +64,6 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \def     DEFINE_RANDON_DISTRIBUTION
-  \brief   Макрос для разных законов распределения
-*/
 #define DEFINE_RANDON_DISTRIBUTION(CalcName, Distribution)                     \
 PREDECLARE_POINTER(RDOCalcSeqNext##CalcName);                                  \
 class RDOCalcSeqNext##CalcName: public RDOCalcRandomDistribution<Distribution> \
@@ -91,34 +77,14 @@ private:                                                                       \
 	virtual RDOValue getNextValue(const LPRDORuntime& pRuntime);               \
 };
 
-/*!
-  \class   RDOCalcSeqNextUniform
-  \brief   Следующее значение псевдослучайной величины, распределенной равномерно
-*/
 DEFINE_RANDON_DISTRIBUTION(Uniform, RandGeneratorUniform);
 
-/*!
-  \class   RDOCalcSeqNextNormal
-  \brief   Следующее значение псевдослучайной величины, распределенной по нормальному закону
-*/
 DEFINE_RANDON_DISTRIBUTION(Normal, RandGeneratorNormal);
 
-/*!
-  \class   RDOCalcSeqNextExponential
-  \brief   Следующее значение псевдослучайной величины, распределенной по экспоненциальному закону
-*/
 DEFINE_RANDON_DISTRIBUTION(Exponential, RandGeneratorExponential);
 
-/*!
-  \class   RDOCalcSeqNextTriangular
-  \brief   Следующее значение псевдослучайной величины, распределенной по треугольному закону
-*/
 DEFINE_RANDON_DISTRIBUTION(Triangular, RandGeneratorTriangular);
 
-/*!
-  \class   RDOCalcSeqNextByHist
-  \brief   Следующее значение псевдослучайной величины, распределенной по заданной гистограмме
-*/
 DEFINE_RANDON_DISTRIBUTION(ByHist, RandGeneratorCommonNext);
 
 CLOSE_RDO_RUNTIME_NAMESPACE

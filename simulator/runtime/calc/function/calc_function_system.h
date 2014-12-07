@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_function_system.h
-  \author    Барс Александр
-  \date      20.12.2011
-  \brief     Системные функции
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_CALC_FUNCTION_SYSTEM_H_
 #define _LIB_RUNTIME_CALC_FUNCTION_SYSTEM_H_
 

@@ -1,14 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_base.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      16.05.2007
-  \brief     Вычислитель
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_CALC_BASE_H_
 #define _LIB_RUNTIME_CALC_BASE_H_
 
@@ -28,12 +17,6 @@ PREDECLARE_POINTER(RDORuntime);
 //! \defgroup calc      Общая группа калков
 //! \defgroup calc_base Абстрактный калк
 
-/*!
-  \class    RDOCalc
-  \brief    Абстрактный "вычислитель", он же калк.
-  \details  Cкомпилированная модель состоит из последовательоности калков, так же как и скомпилированная программа состоит из ассемблеровских команд. Данный класс описывает базовый, абстрактный калк.
-  \ingroup  calc calc_base
-*/
 PREDECLARE_POINTER(RDOCalc);
 class RDOCalc: public rdo::counter_reference
 {

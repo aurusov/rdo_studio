@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_activity_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      01.08.2009
-  \brief     Интерфейс IActivity
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_ACTIVITY_I_H_
 #define _LIB_RUNTIME_ACTIVITY_I_H_
 
@@ -15,10 +6,6 @@
 #include "simulator/runtime/calc/calc_base.h"
 // --------------------------------------------------------------------------------
 
-/*!
-  \interface IActivity
-  \brief     Интерфейс IActivity
-*/
 class IActivity: public virtual rdo::counter_reference
 {
 public:
@@ -33,10 +20,6 @@ DECLARE_POINTER(IActivity);
 	virtual int getResByRelRes(std::size_t rel_res_id) const;        \
 	virtual void setRelRes(std::size_t rel_res_id, std::size_t res_id);
 
-/*!
-  \interface IActivityTrace
-  \brief     Интерфейс IActivityTrace
-*/
 class IActivityTrace: public virtual rdo::counter_reference
 {
 public:
@@ -49,10 +32,6 @@ DECLARE_POINTER(IActivityTrace)
 	virtual std::string traceResourcesList(char prefix, const rdo::runtime::LPRDORuntime& pRuntime); \
 	virtual std::string traceResourcesListNumbers(const rdo::runtime::LPRDORuntime& pRuntime, bool show_create_index);
 
-/*!
-  \interface IActivityPatternTrace
-  \brief     Интерфейс IActivityPatternTrace
-*/
 class IActivityPatternTrace: public virtual rdo::counter_reference
 {
 public:

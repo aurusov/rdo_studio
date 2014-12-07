@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_binary.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      13.03.2011
-  \brief     Бинарные операторы
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_CALC_OPERATION_BINARY_H_
 #define _LIB_RUNTIME_CALC_OPERATION_BINARY_H_
 
@@ -51,13 +41,6 @@ struct BinaryOperatorNonConstP1
 	static method_type method();
 };
 
-/*!
-  \class   RDOCalcBinary
-  \tparam  ret_type  Возвращаемое значение
-  \tparam  pOperator Оператор
-  \tparam  CalcType  Тип бинарного оператора
-  \brief   Бинарный оператор
-*/
 template <class F, typename OperatorType::Type CalcType>
 class RDOCalcBinary: public RDOCalcBinaryBase
 {

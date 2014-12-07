@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdodptrtime.cpp
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      22.07.2011
-  \brief     Runtime трассировка для DPTSearch
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES

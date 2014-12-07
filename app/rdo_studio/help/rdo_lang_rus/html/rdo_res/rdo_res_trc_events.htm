@@ -47,7 +47,10 @@
 			<DD class="syntax">Время наступления события в формате вещественного числа.</DD>
 			<DT class="syntax"><A name="ev_info"></A><I>информация_о_событии</I></DT>
 			<DD class="syntax">Далее следует информация о событии, которая зависит от типа события:
-				<P><BR><A name="ser_ev"></A><B>Для служебных событий</B> эта информация включает в себя только номер служебного события. В данной версии системы имеется только четыре служебных события:</P>
+				<H2>Для служебных событий</H2>
+				<PRE class="syntax"><code class="rdo">ES 0 1
+ES 0 3</code></PRE>
+				<P><A name="ser_ev"></A>Информация содержит номер служебного события:</P>
 				<TABLE class="visible">
 					<TR valign="top">
 						<TH align="left" width="20%">Номер служебного события</TH>
@@ -70,9 +73,16 @@
 						<TD class="visible" width="80%">Завершение процесса поиска на графе состояний в точке принятия решений</TD>
 					</TR>
 				</TABLE>
-				<P><BR><A name="start_end"></A><B>Для событий начала и окончания действий</B> информация о событии имеет следующий формат:</P>
-				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#ev_num">&lt;номер_действия&gt;</A> <A class="syntax" href="#ev_opr_num">&lt;номер_активности&gt;</A> <A class="syntax" href="#ev_pat_num">&lt;номер_образца&gt;</A>
-<A class="syntax" href="#ev_rel_res_num">&lt;количество_релевантных_ресурсов&gt;</A> <A class="syntax" href="#ev_rel_res_list">&lt;список_номеров&gt;</A></code></PRE>
+
+				<H2>Для операций</H2>
+				<PRE class="syntax"><code class="rdo">EB 0.645131 1 17 19 5  88 6 3 5 58
+...
+EF 0.673214 1 17 19 5  88 6 3 5 58</code></PRE>
+				<PRE class="syntax"><code class="rdo"><A class="syntax" href="#ev_num">&lt;номер_действия&gt;</A>
+<A class="syntax" href="#ev_opr_num">&lt;номер_активности&gt;</A>
+<A class="syntax" href="#ev_pat_num">&lt;номер_образца&gt;</A>
+<A class="syntax" href="#ev_rel_res_num">&lt;количество_релевантных_ресурсов&gt;</A>
+<A class="syntax" href="#ev_rel_res_list">&lt;список_номеров&gt;</A></code></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="ev_num"></A><I>номер_действия</I></DT>
 					<DD class="syntax">Номер действия - это внутренний номер, который имеет действие в имитаторе. Этот номер необходим, чтобы связать события начала и окончания одного и того же действия, другой полезной информации он не несет.</DD>
@@ -81,14 +91,23 @@
 					<DT class="syntax"><A name="ev_rel_res_num"></A><A name="ev_rel_res_list"></A><I>количество_релевантных_ресурсов, список_номеров</I></DT>
 					<DD class="syntax">Количество <A href="../rdo_obj/rdo_obj_pat.htm#rel_res_desc">релевантных ресурсов</A> действия и список их номеров.</DD>
 				</DL>
-				<P><BR><A name="ir_ev"></A><B>Для событий и нерегулярных событий</B> информация о событиях имеет следующий формат:</P>
-				<PRE class="syntax"><code class="rdo">&lt;номер_события&gt; &lt;номер_образца&gt;
-&lt;количество_релевантных_ресурсов&gt; &lt;список_номеров&gt;</code></PRE>
+
+				<H2>Для нерегулярных событий</H2>
+				<PRE class="syntax"><code class="rdo">EI 0.220589 2 2 1  2</code></PRE>
+				<PRE class="syntax"><code class="rdo">&lt;номер_события&gt;
+&lt;номер_образца&gt;
+&lt;количество_релевантных_ресурсов&gt;
+&lt;список_номеров&gt;</code></PRE>
 				<DL class="syntax"><DT class="syntax"></A><I>номер_события, номер_образца</I></DT>
 				<DD class="syntax">Для обыкновенных событий номер события и номер образца совпадают.</DD></DL>
-				<P><BR><A name="rule"></A><B>Для продукционных правил</B> информация о событии имеет следующий формат:</P>
-				<PRE class="syntax"><code class="rdo">&lt;номер_действия&gt; &lt;номер_активности&gt; &lt;номер_образца&gt;
-&lt;количество_релевантных_ресурсов&gt; &lt;список_номеров&gt;</code></PRE>
+
+				<H2>Для продукционных правил</H2>
+				<PRE class="syntax"><code class="rdo">ER 0.220589 1 1 3 3  39 2 87</code></PRE>
+				<PRE class="syntax"><code class="rdo">&lt;номер_действия&gt;
+&lt;номер_активности&gt;
+&lt;номер_образца&gt;
+&lt;количество_релевантных_ресурсов&gt;
+&lt;список_номеров&gt;</code></PRE>
 				<DL class="syntax"><DT class="syntax"><I>номер_действия</I></DT>
 				<DD class="syntax">В текущей версии РДО поле <I>номер_действия</I> для продукционных правил рудиментарно и всегда равно единице.</DD></DL>
 			</DD>

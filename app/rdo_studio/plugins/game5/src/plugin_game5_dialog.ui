@@ -58,7 +58,7 @@
          <item row="2" column="0" colspan="2">
           <widget class="QRadioButton" name="radioButtonDistance">
            <property name="text">
-            <string>Растояния_фишек_до_места</string>
+            <string>Растояния_фишек_до_места()</string>
            </property>
           </widget>
          </item>
@@ -75,7 +75,7 @@
          <item row="1" column="0" colspan="2">
           <widget class="QRadioButton" name="radioButtonQuantity">
            <property name="text">
-            <string>Кол_во_фишек_не_на_месте</string>
+            <string>Кол_во_фишек_не_на_месте()</string>
            </property>
           </widget>
          </item>

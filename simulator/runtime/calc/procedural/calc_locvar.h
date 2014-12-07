@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_locvar.h
-  \author    Чирков Михаил
-  \date      03.12.2010
-  \brief     Локальные переменные
-  \indent    4T
-*/
-
 #ifndef _LIB_RUNTIME_CALC_PROCEDURAL_LOCVAR_H_
 #define _LIB_RUNTIME_CALC_PROCEDURAL_LOCVAR_H_
 

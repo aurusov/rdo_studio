@@ -1,14 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      rdoprocess.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      21.02.2012
-  \brief     Процессы
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES

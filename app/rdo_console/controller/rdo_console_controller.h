@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_console_controller.h
-  \author    Пройдаков Евгений (lord.tiran@gmail.com)
-  \date      26.10.2011
-  \brief     Консольная версия RDO
-  \indent    4T
-*/
-
 #ifndef _RDO_STUDIO_CONSOLE_CONTROLLER_H_
 #define _RDO_STUDIO_CONSOLE_CONTROLLER_H_
 

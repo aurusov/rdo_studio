@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      model_edit_style.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      20.02.2003
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _RDO_STUDIO_EDITOR_MODEL_EDIT_STYLE_H_
 #define _RDO_STUDIO_EDITOR_MODEL_EDIT_STYLE_H_
 

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/view_preferences.h
-  \author    Романов Ярослав (robot.xet@gmail.com)
-  \date      27.11.2012
-  \brief     
-  \indent    4T
-*/
-
 #ifndef _RDO_STUDIO_VIEW_PREFERENCES_H_
 #define _RDO_STUDIO_VIEW_PREFERENCES_H_
 
