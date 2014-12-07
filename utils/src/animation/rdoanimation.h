@@ -16,17 +16,17 @@ struct FrameItem
 	//! \details Тип элемента
 	enum Type
 	{
-		FIT_NULL   , //!< Пустой
-		FIT_TEXT   , //!< Текст
-		FIT_LINE   , //!< Линия
-		FIT_TRIANG , //!< Треугольник
-		FIT_RECT   , //!< Прямоугольник
-		FIT_R_RECT , //!< Прямоугольник со скруглёнными краями
-		FIT_CIRCLE , //!< Окружности
-		FIT_ELLIPSE, //!< Эллипс
-		FIT_BMP    , //!< Картинка
-		FIT_S_BMP  , //!< Смасштабированная картинка
-		FIT_ACTIVE   //!< Область активности
+		FIT_NULL   , // Пустой
+		FIT_TEXT   , // Текст
+		FIT_LINE   , // Линия
+		FIT_TRIANG , // Треугольник
+		FIT_RECT   , // Прямоугольник
+		FIT_R_RECT , // Прямоугольник со скруглёнными краями
+		FIT_CIRCLE , // Окружности
+		FIT_ELLIPSE, // Эллипс
+		FIT_BMP    , // Картинка
+		FIT_S_BMP  , // Смасштабированная картинка
+		FIT_ACTIVE   // Область активности
 	};
 
 	//! \param type - тип элемента
@@ -48,10 +48,10 @@ private:
 //! \details Хранит RGB-цвет и признак прозрачности
 struct Color
 {
-	unsigned char m_r; //!< Красная составляющая цвета
-	unsigned char m_g; //!< Зелёная составляющая цвета
-	unsigned char m_b; //!< Синяя составляющая цвета
-	bool m_transparent; //!< Признак прозрачности
+	unsigned char m_r; // Красная составляющая цвета
+	unsigned char m_g; // Зелёная составляющая цвета
+	unsigned char m_b; // Синяя составляющая цвета
+	bool m_transparent; // Признак прозрачности
 
 	//! \details Создаёт прозрачный цвет. Значения других атрибутов неопределены.
 	Color();
@@ -77,8 +77,8 @@ struct Color
 //! \details Используется для хранения цветов переднего плана и фона элемента анимации
 struct ColoredElement
 {
-	Color m_background; //!< Цвет фона
-	Color m_foreground; //!< Цвет переднего плана
+	Color m_background; // Цвет фона
+	Color m_foreground; // Цвет переднего плана
 
 	//! Конструктор копии
 	//! \param color - цвет, на основе которого создаётся новый
@@ -99,8 +99,8 @@ struct ColoredElement
 //! \details Начало системы координат - левый верхний угол
 struct Point
 {
-	double m_x; //!< Координата x
-	double m_y; //!< Координата y
+	double m_x; // Координата x
+	double m_y; // Координата y
 
 	//! Конструктор копии
 	//! \param point - точка, на основе которой создаётся новый
@@ -120,8 +120,8 @@ struct Point
 //! Размер
 struct Size
 {
-	double m_width;  //!< Ширина
-	double m_height; //!< Высота
+	double m_width;  // Ширина
+	double m_height; // Высота
 
 	//! \details Создаёт объект нулевых размеров
 	Size();
@@ -144,8 +144,8 @@ struct Size
 //! Вписанный в прямоуголник элемент
 struct BoundedElement
 {
-	Point  m_point; //!< Координата элемента
-	Size   m_size;  //!< Размер элемента
+	Point  m_point; // Координата элемента
+	Size   m_size;  // Размер элемента
 
 	//! Конструктор копии
 	//! \param rect - прямоуголник, на основе которой создаётся новый
@@ -165,7 +165,7 @@ struct BoundedElement
 //! Радиус окружности
 struct Radius
 {
-	double m_radius; //!< Радиус
+	double m_radius; // Радиус
 
 	//! Конструктор копии
 	//! \param radius - радиус, на основе которой создаётся новый
@@ -191,13 +191,13 @@ struct TextElement
 	//! \details Тип выравнивания текста
 	enum TextAlign
 	{
-		TETA_LEFT,   //!< По левому краю
-		TETA_RIGHT,  //!< По правому краю
-		TETA_CENTER  //!< По центру
+		TETA_LEFT,   // По левому краю
+		TETA_RIGHT,  // По правому краю
+		TETA_CENTER  // По центру
 	};
 
-	std::string m_text; //!< Строка текста
-	TextAlign m_align; //!< Тип выравнивания
+	std::string m_text; // Строка текста
+	TextAlign m_align; // Тип выравнивания
 
 	//! Создаёт объект текста
 	//! \param rect  - область вывода
@@ -211,9 +211,9 @@ struct TextElement
 //! \details Используется для реализации команды анимации <tt>line[x1, y1, x2, y2, цвет]</tt>
 struct LineElement: public FrameItem
 {
-	Point  m_point1; //!< Начальная точка
-	Point  m_point2; //!< Конечная точка
-	Color  m_color;  //!< Цвет отрезка
+	Point  m_point1; // Начальная точка
+	Point  m_point2; // Конечная точка
+	Color  m_color;  // Цвет отрезка
 
 	//! Создаёт отрезок
 	//! \param point1 - начальная точка
@@ -233,9 +233,9 @@ struct TriangElement
 	: public FrameItem
 	, public ColoredElement
 {
-	Point  m_point1; //!< Первая точка треугольника
-	Point  m_point2; //!< Вторая точка треугольника
-	Point  m_point3; //!< Третья точка треугольника
+	Point  m_point1; // Первая точка треугольника
+	Point  m_point2; // Вторая точка треугольника
+	Point  m_point3; // Третья точка треугольника
 
 	//! Создаёт треугольник
 	//! \param point1 - первая точка треугольника
@@ -277,8 +277,8 @@ struct CircleElement
 	: public FrameItem
 	, public ColoredElement
 {
-	Point  m_center; //!< Центр окружности
-	Radius m_radius; //!< Радиус окружности
+	Point  m_center; // Центр окружности
+	Radius m_radius; // Радиус окружности
 
 	//! Создаёт окружность
 	//! \param center - центр окружности
@@ -304,9 +304,9 @@ struct EllipseElement
 //! \details Используется для реализации команды анимации <tt>bitmap[x, y, имя_файла_битовой_карты [, имя_файла_маски]]</tt>
 struct BmpElement: public FrameItem
 {
-	Point m_point; //!< Координата левого верхнего угла картинки
-	std::string m_bmp_name; //!< Имя файла картинки
-	std::string m_mask_name; //!< Имя файла маски картинки
+	Point m_point; // Координата левого верхнего угла картинки
+	std::string m_bmp_name; // Имя файла картинки
+	std::string m_mask_name; // Имя файла маски картинки
 
 	//! Создаёт картинку
 	//! \param point     - координата левого верхнего угла картинки
@@ -324,8 +324,8 @@ struct ScaledBmpElement
 	: public FrameItem
 	, public BoundedElement
 {
-	std::string m_bmp_name; //!< Имя файла картинки
-	std::string m_mask_name; //!< Имя файла маски картинки
+	std::string m_bmp_name; // Имя файла картинки
+	std::string m_mask_name; // Имя файла маски картинки
 
 	//! Создаёт картинку
 	//! \param rect      - координаты и размер фигуры
@@ -343,7 +343,7 @@ struct ActiveElement
 	: public FrameItem
 	, public BoundedElement
 {
-	std::string m_opr_name; //!< Имя клавиатурной операции
+	std::string m_opr_name; // Имя клавиатурной операции
 
 	//! Создаёт активную область
 	//! \param rect      - координаты и размер области
@@ -364,12 +364,12 @@ struct NullElement: public FrameItem
 //!          Аналог $Frame, но содержит только те элементы, которые необходимо вывести
 struct Frame
 {
-	typedef std::vector<FrameItem*> Elements; //!< Тип контейнера элементов анимации
+	typedef std::vector<FrameItem*> Elements; // Тип контейнера элементов анимации
 
-	Color m_bgColor; //!< Цвет фона фрейма
-	std::string m_bgImageName; //!< Имя фоновой картинки
-	Size m_size; //!< Размер фрейма
-	Elements m_elements; //!< Список элементов анимации
+	Color m_bgColor; // Цвет фона фрейма
+	std::string m_bgImageName; // Имя фоновой картинки
+	Size m_size; // Размер фрейма
+	Elements m_elements; // Список элементов анимации
 
 	//! \details Удаляет все элементы
 	~Frame();

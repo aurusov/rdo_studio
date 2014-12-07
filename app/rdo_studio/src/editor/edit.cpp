@@ -526,7 +526,7 @@ void Edit::findNext(const QString& findWhat, bool searchDown, bool matchCase, bo
 		m_firstFoundPos = -1;
 		m_haveFound     = false;
 		showFindWarning(findWhat);
-		//! @todo возможно, надо убрать
+		// TODO возможно, надо убрать
 		setFocus();
 	}
 	else
@@ -540,7 +540,7 @@ void Edit::findNext(const QString& findWhat, bool searchDown, bool matchCase, bo
 			m_firstFoundPos = -1;
 			m_haveFound     = false;
 			showFindWarning(findWhat);
-			//! @todo возможно, надо убрать
+			// TODO возможно, надо убрать
 			setFocus();
 			return;
 		}
@@ -691,7 +691,7 @@ void Edit::replaceAll(const QString& findWhat, const QString& replaceWhat, bool 
 	else
 	{
 		showFindWarning(findWhat);
-		//! @todo возможно, надо убрать
+		// TODO возможно, надо убрать
 		setFocus();
 	}
 }
@@ -801,7 +801,7 @@ void Edit::onCopyAsRTF(QMimeData* pMimeData)
 
 	QByteArray ba;
 	ba.append(result.c_str());
-	//! @todo для линуха надо будет использовать "text/rtf" ?
+	// TODO для линуха надо будет использовать "text/rtf" ?
 	pMimeData->setData("Rich Text Format", ba);
 }
 
@@ -1008,7 +1008,7 @@ std::string Edit::saveAsRTF(int start, int end) const
 	bool prevCR = false;
 	int styleCurrent = -1;
 
-	//! @todo убрать копипаст
+	// TODO убрать копипаст
 	char* word = new char[end - start + 1];
 	TextRange tr;
 	tr.lpstrText  = word;

@@ -24,7 +24,7 @@ RDOResource::RDOResource(const LPRDORuntime& /*pRuntime*/, const ParamList& para
 	appendParams(paramList.begin(), paramList.end());
 }
 
-/// @todo копирующий конструктор не используется - нужен ли он?
+// TODO копирующий конструктор не используется - нужен ли он?
 RDOResource::RDOResource(const LPRDORuntime& /*pRuntime*/, const RDOResource& copy)
 	: RDORuntimeObject   (                 )
 	, RDOTraceableObject (copy.traceable(), copy.getTraceID(), copy.traceId())
@@ -38,7 +38,7 @@ RDOResource::RDOResource(const LPRDORuntime& /*pRuntime*/, const RDOResource& co
 	, m_isNested         (copy.m_isNested    )
 {
 	appendParams(copy.m_paramList.begin(), copy.m_paramList.end());
-/// @todo посмотреть history и принять решение о комментарии
+// TODO посмотреть history и принять решение о комментарии
 //	getRuntime()->incrementResourceIdReference( getTraceID() );
 }
 
@@ -153,7 +153,7 @@ std::string RDOResource::traceResourceState(char prefix, const LPRDORuntime& pRu
 
 void RDOResource::setRuntime(const LPRDORuntime& /*pRuntime*/)
 {
-	/// @todo походу надо удалить метод
+	// TODO походу надо удалить метод
 	NEVER_REACH_HERE;
 }
 

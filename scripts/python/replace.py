@@ -6,6 +6,8 @@ def __get_filepaths(directory):
 
     for root, directories, files in os.walk(directory):
         for filename in files:
+            if 'thirdparty' in root:
+                continue
             extension = os.path.splitext(filename)[1]
             if extension == '.cpp' or extension == '.h':
                 filepath = os.path.join(root, filename)
@@ -13,13 +15,22 @@ def __get_filepaths(directory):
 
     return file_paths
 
+def __remove_headers(pattern, text):
+    return pattern.sub(r'', text)
+
+def __remove_doxygen(text):
+    text = re.sub(r'(.*)\/\/\!(\s)?<(.*)', r'\1//\3', text)
+    return text
+
 full_file_paths = __get_filepaths(os.path.abspath('../../'))
-pattern = re.compile(r'\/\*\!(?:[^\n]*(\n+))+?(\s*)?(.*)\*\/(\n+)', re.VERBOSE | re.MULTILINE)
+remove_headers_pattern = re.compile(r'\/\*\!(?:[^\n]*(\n+))+?(\s*)?(.*)\*\/(\n+)', re.VERBOSE | re.MULTILINE)
+
 for file in full_file_paths:
     print (file)
     ifile = open(file, 'r')
     text = ifile.read()
     ifile.close()
-    text = pattern.sub(r'', text)
+    text = __remove_headers(remove_headers_pattern, text)
+    text = __remove_doxygen(text)
     ofile = open(file, 'w')
     ofile.write(text)

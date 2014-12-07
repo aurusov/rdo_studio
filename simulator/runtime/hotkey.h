@@ -12,7 +12,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Горячие клавиши
 class RDOHotKey
 {
 public:
@@ -24,17 +23,12 @@ private:
 public:
 	static const std::size_t UNDEFINED_KEY = std::size_t(~0);
 
-	//! Вспомогательный класс
 	class Toolkit
 	{
 	public:
-		//! Конструктор, заполняет таблицу клавиш
 		Toolkit();
 		virtual ~Toolkit();
 
-		//! Переводит имя клавиши в код клавиши
-		//! @param  keyName - имя клавиши
-		//! @result код клавиши в операционной системе
 		KeyCode codeFromString(const std::string& keyName) const;
 
 	private:
@@ -42,52 +36,28 @@ public:
 		KeySet m_keyList;
 	};
 
-	//! Используемые в моделе клавиши, список формируется в момент компиляции
 	class KeyInModelList
 	{
 	public:
-		//! Добавляет используемую в моделе клавишу
-		//! @param  keyCode - код клавиши
-		//! @result true, если код добавлен успешно
 		bool insert(const KeyCode& keyCode);
 
-		//! Проверяет наличие клавиши
-		//! @param  keyCode - код клавиши
-		//! @result true, если код найден в списке
 		bool check(const KeyCode& keyCode) const;
 
 	private:
 		KeyList m_keyList;
 	};
 
-	//! Список текущих нажатых клавиш
 	class KeyDownList
 	{
 	public:
 		KeyDownList();
 		virtual ~KeyDownList();
 
-		//! Фиксирует нажатие клавиши
-		//! @param  keyCode - код клавиши
-		//! @result true, если клавиша добавлена в список нажатых
 		bool down(const KeyCode& keyCode);
-
-		//! Фиксирует отжатие клавиши
-		//! @param  keyCode - код клавиши
 		void up(const KeyCode& keyCode);
 
-		//! Проверяет, есть ли клавиша в списке нажатых
-		//! @param  keyCode - код клавиши
-		//! @param  shift   - признак нажатого Shift'а
-		//! @param  control - признак нажатого Ctrl'а
-		//! @result true, если клавиша есть в списке нажатых
 		bool isPressed(const KeyCode& keyCode, bool shift, bool control);
-
-		//! Результат других методов
-		//! @result true, если \ref down или \ref isPressed вернули true в момент совего вызова
 		bool isFound() const;
-
-		//! Очищает список текущих нажатых клавиш
 		void clear();
 
 	private:
@@ -95,24 +65,13 @@ public:
 		bool m_keyFound;
 	};
 
-	//! Обрабатывает клики мышкой на активные области, содержит только список текущих нажатых
 	class AreaList
 	{
 	public:
-		//! Фиксирует нажатие на область
-		//! @param areaName - имя области
 		void  click(const std::string& areaName);
 
-		//! Проверяет было ли нажатие на область
-		//! @param  areaName - имя области
-		//! @result true, если было нажатие
 		bool check(const std::string& areaName);
-
-		//! Проверяет было ли нажатие хотя бы на одну область
-		//! @result true, если было нажатие
 		bool empty() const;
-
-		//! Очищает список
 		void clear();
 
 	private:
@@ -123,27 +82,13 @@ public:
 	RDOHotKey();
 	virtual ~RDOHotKey();
 
-	//! Очищает нажатые клавиши и активные области
 	void clear();
 
-	//! Возвращает вспомогательный класс
-	//! @result вспомогательный класс
 	const Toolkit& toolkit() const;
-
-	//! Возвращает используемые в моделе клавиши
-	//! @result используемые в моделе клавиши
 	KeyInModelList& keyInModel();
-
-	//! Возвращает список текущих нажатых клавиш
-	//! @result список текущих нажатых клавиш
 	KeyDownList& keyDown();
-
-	//! Возвращает список текущий нажатых активных областей
-	//! @result список текущий нажатых активных областей
 	AreaList& areaList();
 
-	//! Проверяет факт нажатия клавиши или выбора активной области
-	//! @result true, если была нажата клавиша или активная область
 	bool isKeyDown() const;
 
 private:

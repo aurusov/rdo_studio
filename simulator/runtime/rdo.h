@@ -13,7 +13,7 @@ PREDECLARE_POINTER(RDORuntime)
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-/// @todo Надо бы сделать IBaseOperation базовым для всех возможных логик
+// TODO Надо бы сделать IBaseOperation базовым для всех возможных логик
 
 class IBaseOperation: public virtual rdo::counter_reference
 {
@@ -21,10 +21,10 @@ public:
 	//! Статуc состояния операции
 	enum BOResult
 	{
-		BOR_cant_run       = 0, //!< операция не может быть запущена
-		BOR_planned_and_run,    //!< операция запланирована и выполняется
-		BOR_must_continue  ,    //!< операция может быть продолжена
-		BOR_done                //!< операция выполнена
+		BOR_cant_run       = 0, // операция не может быть запущена
+		BOR_planned_and_run,    // операция запланирована и выполняется
+		BOR_must_continue  ,    // операция может быть продолжена
+		BOR_done                // операция выполнена
 	};
 
 		virtual void onStart(const rdo::runtime::LPRDORuntime& pRuntime) = 0;

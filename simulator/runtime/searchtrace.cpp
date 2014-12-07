@@ -79,7 +79,7 @@ TreeNodeTrace::TreeNodeTrace(const LPRDORuntime& pRuntime, TreeNode* i_parent, T
 
 void TreeNodeTrace::onSearchOpenNode(const LPRDORuntime& pRuntime)
 {
-	/// @todo использовать явный cast
+	// TODO использовать явный cast
 	RDODPTSearchTrace* dpTrace = (RDODPTSearchTrace *)m_root->m_dp;
 	if (dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_tops || dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all)
 	{

@@ -39,8 +39,8 @@ protected:
 
 private:
 	LPTypeInfo               m_pType;
-	LPRDOValue               m_pValue; //! < Используется или m_pValue или m_pCalc
-	rdo::runtime::LPRDOCalc  m_pCalc;  //! < Более красивое решение: завести парсеровский калк
+	LPRDOValue               m_pValue; // Используется или m_pValue или m_pCalc
+	rdo::runtime::LPRDOCalc  m_pCalc;  // Более красивое решение: завести парсеровский калк
 };
 
 // --------------------------------------------------------------------------------

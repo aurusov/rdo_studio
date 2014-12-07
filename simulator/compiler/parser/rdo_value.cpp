@@ -16,7 +16,7 @@ RDOValue::RDOValue()
 	: RDOParserSrcInfo()
 	, m_value         (rdo::runtime::RDOValue(rdo::runtime::g_unknow.object_parent_cast<rdo::runtime::RDOType>()))
 {
-	//! @todo RDOParserSrcInfo() для TypeInfo реально неопределёно, добавить соответствующий конструктор
+	// TODO RDOParserSrcInfo() для TypeInfo реально неопределёно, добавить соответствующий конструктор
 	LPRDOValue pValue = getUnknow(RDOParserSrcInfo());
 	ASSERT(pValue);
 

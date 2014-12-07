@@ -38,11 +38,11 @@ public:
 	void setText(const std::string& text);
 
 private:
-	std::string m_text; //!< Текст сообщения
-	rdo::model::FileType m_file; //!< Файл с ошибкой
-	std::size_t m_line; //!< Номер строки с ошибкой
-	std::size_t m_pos; //!< Позиция ошибки в строке
-	Type m_type; //!<  Тип сообщения
+	std::string m_text; // Текст сообщения
+	rdo::model::FileType m_file; // Файл с ошибкой
+	std::size_t m_line; // Номер строки с ошибкой
+	std::size_t m_pos; // Позиция ошибки в строке
+	Type m_type; //  Тип сообщения
 };
 
 }}} // namespace rdo::simulation::report

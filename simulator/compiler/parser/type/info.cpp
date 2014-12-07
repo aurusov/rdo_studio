@@ -73,7 +73,7 @@ const LPIType& TypeInfo::itype() const
 
 LPTypeInfo TypeInfo::type_cast(const LPTypeInfo& pFrom, const RDOParserSrcInfo& src_info) const
 {
-	/// @todo TypeInfo убрать параметр из src_info()
+	// TODO TypeInfo убрать параметр из src_info()
 	LPIType pType = itype()->type_cast(pFrom->itype(), pFrom->src_info(src_info), this->src_info(src_info), src_info);
 	ASSERT(pType);
 	LPTypeInfo pTypeInfo = rdo::Factory<TypeInfo>::create(pType, this->src_info(src_info));

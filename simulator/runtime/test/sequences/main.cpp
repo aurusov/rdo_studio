@@ -22,28 +22,28 @@ typedef std::vector<double> Container;
 typedef std::vector<std::size_t> ContainerInt;
 
 const double       g_pi                  = 3.141592653589793;
-const long int     g_seed                = 123456789;               //!< база генератора
-const std::string  g_filePath            = "../../test/sequences/"; //!< путь к файлам относительно проекта
-const std::string  g_fileNormalName      = "data_normal.txt";       //!< файл данных
-const std::string  g_fileUniformName     = "data_uniform.txt";      //!< файл данных
-const std::string  g_fileExponentialName = "data_exponential.txt";  //!< файл данных
-const std::string  g_fileTriangularName  = "data_trinagular.txt";   //!< файл данных
+const long int     g_seed                = 123456789;               // база генератора
+const std::string  g_filePath            = "../../test/sequences/"; // путь к файлам относительно проекта
+const std::string  g_fileNormalName      = "data_normal.txt";       // файл данных
+const std::string  g_fileUniformName     = "data_uniform.txt";      // файл данных
+const std::string  g_fileExponentialName = "data_exponential.txt";  // файл данных
+const std::string  g_fileTriangularName  = "data_trinagular.txt";   // файл данных
 
-const std::size_t g_count                = 100000;                     //!< количество генерируемых данных
-const double      g_main                 = 10.0;                       //!< параметр закона экспоненциального и нормального
-const double      g_var                  = 1.0;                        //!< параметр закона нормального
-const double      g_from                 = 1.0;                        //!< параметр закона равномерного и треугольного
-const double      g_to                   = 7.0;                        //!< параметр закона равномерного и треугольного
-const double      g_top                  = 5.0;                        //!< параметр закона треугольного
+const std::size_t g_count                = 100000;                     // количество генерируемых данных
+const double      g_main                 = 10.0;                       // параметр закона экспоненциального и нормального
+const double      g_var                  = 1.0;                        // параметр закона нормального
+const double      g_from                 = 1.0;                        // параметр закона равномерного и треугольного
+const double      g_to                   = 7.0;                        // параметр закона равномерного и треугольного
+const double      g_top                  = 5.0;                        // параметр закона треугольного
 #if defined(ARCHITECTURE_X86)
-const std::size_t g_precision            = 20;                         //!< точность вещественного числа при выводе в поток
+const std::size_t g_precision            = 20;                         // точность вещественного числа при выводе в поток
 #elif defined(ARCHITECTURE_AMD64) || defined(ARCHITECTURE_ARM)
-const std::size_t g_precision            = 14;                         //!< точность вещественного числа при выводе в поток
+const std::size_t g_precision            = 14;                         // точность вещественного числа при выводе в поток
 #endif
 
-const std::size_t g_countOfExamples      = 2000;                       //!< количество чисел в выборке
-const std::size_t g_countOfR             = 39;                         //!< число разрядов
-const double      g_ksiEtalon            = 50.9985;                    //!< табличное значение. 95% вероятность того, что это действительно тот самый закон распределения
+const std::size_t g_countOfExamples      = 2000;                       // количество чисел в выборке
+const std::size_t g_countOfR             = 39;                         // число разрядов
+const double      g_ksiEtalon            = 50.9985;                    // табличное значение. 95% вероятность того, что это действительно тот самый закон распределения
 
 // --------------------------------------------------------------------------------
 // -------Templates

@@ -6,7 +6,7 @@
 // --------------------------------------------------------------------------------
 
 #ifndef COMPILER_VISUAL_STUDIO
-	//! @todo А что на самом деле делать под линухами ?
+	// TODO А что на самом деле делать под линухами ?
 	const std::size_t VK_SHIFT = 0x10;
 	const std::size_t VK_CONTROL = 0x11;
 #endif

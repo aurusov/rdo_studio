@@ -64,7 +64,7 @@ public:
 		nfi_found_loser  = 2
 	};
 
-	/// @todo задокументировать функцию
+	// TODO задокументировать функцию
 	// return 0 - no such simulator, 1 - exist better, 2 - exist not better
 	NodeFoundInfo CheckIfExistBetter(const LPRDORuntime& pChildRuntime, double useCost, TreeNode** better );
 	void ReCostSubTree(double cost);

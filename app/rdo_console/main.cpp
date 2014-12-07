@@ -232,7 +232,7 @@ void process_event(rdo::console_controller* pAppController, event_container& con
 				break;
 
 			case rdo::event::mouse:
-				/// @todo : complete me
+				// TODO : complete me
 				NEVER_REACH_HERE;
 				break;
 

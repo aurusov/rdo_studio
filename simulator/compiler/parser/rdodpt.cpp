@@ -352,7 +352,7 @@ void RDODPTSearch::end()
 	}
 	m_closed = true;
 
-	//! @todo проверить, можно ли избавиться от повторения этой строки. Уже есть в RDOLogicBase::end()
+	// TODO проверить, можно ли избавиться от повторения этой строки. Уже есть в RDOLogicBase::end()
 	RDOParser::s_parser()->contextStack()->pop<RDODPTSearch>();
 }
 

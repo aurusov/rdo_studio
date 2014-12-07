@@ -577,7 +577,7 @@ void RDOPATPattern::end()
 		LPRDORelevantResource pCurrRelRes = m_relResList.at(i);
 		if (!pCurrRelRes->m_alreadyHaveConverter)
 		{
-			/// @todo А почему нельзя сделать warning ? Возможно, есть жесткое требование недопустить пустого рел. ресурса.
+			// TODO А почему нельзя сделать warning ? Возможно, есть жесткое требование недопустить пустого рел. ресурса.
 			parser::g_error().error(pCurrRelRes->src_info(), rdo::format("Релевантный ресурс '%s' не используется в образце '%s'", pCurrRelRes->name().c_str(), name().c_str()));
 		}
 		m_pPatRuntime->addPreSelectRelRes(pCurrRelRes->createPreSelectRelResCalc());

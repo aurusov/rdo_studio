@@ -50,7 +50,7 @@ void RDOPMDResult::endOfCreation(const LPIResult& pResult)
 		trace->setTraceID(Converter::s_converter()->getPMD_id());
 	}
 	Converter::s_converter()->insertPMDResult(this);
-	/// @todo перенести в конструктор rdo::runtime::RDOPMDResult
+	// TODO перенести в конструктор rdo::runtime::RDOPMDResult
 	Converter::s_converter()->runtime()->addRuntimeResult(m_pResult);
 }
 

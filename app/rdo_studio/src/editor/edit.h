@@ -32,7 +32,7 @@ public:
 	Edit(QWidget* pParent);
 	virtual ~Edit();
 
-	//! @todo Вынести класс в отдельный модуль
+	// TODO Вынести класс в отдельный модуль
 	class Group
 	{
 	public:

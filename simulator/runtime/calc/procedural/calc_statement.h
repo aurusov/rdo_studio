@@ -10,7 +10,7 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Пустая операция
-//! @todo заменить на CalcNop ?
+// TODO заменить на CalcNop ?
 PREDECLARE_POINTER(RDOCalcNoChange);
 class RDOCalcNoChange: public RDOCalc
 {

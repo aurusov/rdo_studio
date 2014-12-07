@@ -119,9 +119,9 @@ private:
 	//! Тип контейнера значения, размер определяется по максимальному размеру типа данных
 	typedef unsigned char Value[sizeof(rdo::intrusive_ptr_interface_wrapper<string_class>)];
 
-	Value m_value; //!< контейнер значения
-	LPRDOType m_pType; //!< тип значения
-	bool m_undefined; //!< неопределенность значения
+	Value m_value; // контейнер значения
+	LPRDOType m_pType; // тип значения
+	bool m_undefined; // неопределенность значения
 
 	void set        (const RDOValue& rdovalue);
 	void deleteValue();

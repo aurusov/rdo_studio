@@ -115,7 +115,7 @@ double RDORuntime::getTimeNow()
 
 double RDORuntime::getSeconds()
 {
-	/// @todo использовать явный cast()
+	// TODO использовать явный cast()
 	return (double)(time(NULL) - m_physicTime);
 }
 
@@ -560,7 +560,7 @@ void RDORuntime::onInit()
 
 void RDORuntime::onDestroy()
 {
-	/// @todo Дима, почему у первого ресурса счетчик на 1 больше, чем у других ?
+	// TODO Дима, почему у первого ресурса счетчик на 1 больше, чем у других ?
 	m_resourceListByID.clear();
 	m_resourceTypeList.clear();
 

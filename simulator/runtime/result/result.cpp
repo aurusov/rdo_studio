@@ -508,7 +508,7 @@ void RDOPMDWatchValue::checkResourceErased(const LPRDOResource& pResource)
 	{
 		m_currValue  = m_pArithmCalc->calcValue(m_pRuntime);
 		m_wasChanged = true;
-		traceResult(); /// @todo убрать отсюда ? (и перенести DECLARE_IResultTrace в приват)
+		traceResult(); // TODO убрать отсюда ? (и перенести DECLARE_IResultTrace в приват)
 //		pRuntime->getTracer()->writeResult(pRuntime, this);
 		m_acc(m_currValue.getDouble());
 		return;

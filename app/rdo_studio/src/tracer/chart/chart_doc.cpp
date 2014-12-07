@@ -195,17 +195,17 @@ void ChartDoc::addSerie(const LPSerie& pSerie)
 
 		try
 		{
-			//! @todo qt
+			// TODO qt
 			//g_pApp->BeginWaitCursor();
 
 			std::for_each(pSerie->begin(), pSerie->end(), boost::bind(&ChartDoc::insertValue, this, _1));
 
-			//! @todo qt
+			// TODO qt
 			//g_pApp->EndWaitCursor();
 		}
 		catch (...)
 		{
-			//! @todo qt
+			// TODO qt
 			//g_pApp->EndWaitCursor();
 		}
 

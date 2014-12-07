@@ -225,7 +225,7 @@ Application::~Application()
 
 	if (m_autoExitByModel)
 	{
-		//! @todo qt
+		// TODO qt
 		//return m_exitCode;
 	}
 }

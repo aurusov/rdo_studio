@@ -304,7 +304,7 @@ bool RDOResource::fillParserResourceParams(parser::LPRDORSSResource& pToParserRS
 		parser::LPRDOValue pValue = Factory<parser::RDOValue>::create(value, pToParserRSS->src_info(), value_it->second->typeInfo());
 		ASSERT(pValue);
 		pValue = param.type()->value_cast(pValue);
-		/// @todo а почему тут toParserRSS->src_info(), а не value_it->src_info() ?
+		// TODO а почему тут toParserRSS->src_info(), а не value_it->src_info() ?
 		pValue->setSrcInfo(pToParserRSS->src_info());
 		pToParserRSS->addParam(pValue);
 	}

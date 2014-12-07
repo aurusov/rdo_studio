@@ -24,7 +24,7 @@ console_controller::console_controller()
 	, m_exitCode(rdo::simulation::report::EC_OK)
 {
 	notifies.push_back(RT_REPOSITORY_MODEL_OPEN_ERROR       );
-	notifies.push_back(RT_RUNTIME_MODEL_START_BEFORE        ); /// @todo : wait
+	notifies.push_back(RT_RUNTIME_MODEL_START_BEFORE        ); // TODO : wait
 	notifies.push_back(RT_RUNTIME_MODEL_STOP_AFTER          );
 	notifies.push_back(RT_SIMULATOR_PARSE_OK                );
 	notifies.push_back(RT_SIMULATOR_PARSE_ERROR             );

@@ -40,7 +40,7 @@ protected:
 	Function(const LPTypeInfo& pReturnType, const RDOParserSrcInfo& srcInfo);
 	virtual ~Function();
 
-	//! @todo Для передачи значения по умолчанию алгоритмической функции. В идеале, это надо переложить на конвертор.
+	// TODO Для передачи значения по умолчанию алгоритмической функции. В идеале, это надо переложить на конвертор.
 	void setDefaultCalc(const rdo::runtime::LPRDOCalc& pDefaultValue);
 
 	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;

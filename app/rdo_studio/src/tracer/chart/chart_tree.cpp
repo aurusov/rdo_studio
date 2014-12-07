@@ -105,7 +105,7 @@ void ChartTree::createItem(const LPChartTreeItem& parent, const LPChartTreeItem&
 	QTreeWidgetItem* pCtrlItem = new QTreeWidgetItem(&parent->getCtrlItem());
 	pCtrlItem->setText(0, name);
 	pCtrlItem->setIcon(0, m_iconList[iconType]);
-	//! @todo smart_ptr
+	// TODO smart_ptr
 	const ChartTreeItem* pRawItem = item.get();
 	pCtrlItem->setData(0, Qt::UserRole, QVariant::fromValue(pRawItem));
 	item->setCtrlItem(pCtrlItem);

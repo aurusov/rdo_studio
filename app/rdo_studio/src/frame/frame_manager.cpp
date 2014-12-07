@@ -44,7 +44,7 @@ Manager::Manager(const OnChangeFrame& onChangeFrame)
 	, m_changed(false)
 	, m_onChangeFrame(onChangeFrame)
 {
-	//! @todo А почему объект не удаляется ? Это происходит автоматически ?
+	// TODO А почему объект не удаляется ? Это происходит автоматически ?
 
 	QObject::connect(g_pApp->getMainWndUI()->mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(onSubWindowActivated(QMdiSubWindow*)));
 

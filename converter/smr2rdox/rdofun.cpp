@@ -632,7 +632,7 @@ LPRDOType RDOFUNArithm::getPreType(const LPRDOFUNArithm& pSecond)
 		Converter::s_converter()->error().error(pSecond->src_info(), rdo::format("Неизвестный идентификатор: %s", pSecond->value()->value().getIdentificator().c_str()));
 	}
 
-	/// @todo смущают два одинаковых src_info(), проверить и доказать правильность
+	// TODO смущают два одинаковых src_info(), проверить и доказать правильность
 	return type()->type_cast(pSecond->type(), pSecond->src_info(), src_info(), src_info());
 }
 
@@ -654,7 +654,7 @@ LPRDOFUNArithm RDOFUNArithm::operator* (const LPRDOFUNArithm& pSecond)
 LPRDOFUNArithm RDOFUNArithm::operator/ (const LPRDOFUNArithm& pSecond)
 {
 	GENERATE_ARITHM_CALC(Div, /, "Нельзя %s разделить на %s");
-	/// @todo перевод вещественного в целое при делении. А что делать с умножением и т.д. ?
+	// TODO перевод вещественного в целое при делении. А что делать с умножением и т.д. ?
 	//! Ответ: с умножением надо делать тоже самое, только непонятно как
 	if (pNewType->type()->typeID() == rdo::runtime::RDOType::t_int)
 	{

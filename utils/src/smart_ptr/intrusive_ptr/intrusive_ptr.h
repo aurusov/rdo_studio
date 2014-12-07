@@ -62,7 +62,7 @@ public:
 	template <class P>
 	interface_ptr<P> interface_dynamic_cast() const;
 
-	/// @todo переместить в protected
+	// TODO переместить в protected
 	T* get();
 	const T* get() const;
 

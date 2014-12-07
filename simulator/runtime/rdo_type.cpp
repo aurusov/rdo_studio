@@ -23,7 +23,7 @@ RDOType::TypeID RDOType::typeID() const
 	return m_typeID;
 }
 
-/// @todo внимание макрос!
+// TODO внимание макрос!
 
 #define DEFINE_ATOM_TYPE_DEFAULT_VALUE(Type) rdo::intrusive_ptr<RDOType__##Type> g_##Type = rdo::Factory<RDOType__##Type>::create();
 

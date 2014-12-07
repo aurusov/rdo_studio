@@ -40,7 +40,7 @@ void TabCtrl::createPage(QWidget* pView, const QString& name)
 
 	pPage->setEditorStyle(&g_pApp->getStyle()->style_editor);
 	pPage->show();
-	//! @todo qt
+	// TODO qt
 	//pPage->getContext().setPopupMenu(&pView->popupMenu);
 
 	m_group.insert(pPage);

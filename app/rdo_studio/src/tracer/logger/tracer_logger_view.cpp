@@ -893,7 +893,7 @@ void LogView::paintEvent(QPaintEvent* pEvent)
 
 				++it;
 
-				//! @todo необходимо ли, когда colors не указатель?
+				// TODO необходимо ли, когда colors не указатель?
 				//if (i == selectedLine() && !m_focusOnly)
 				//{
 				//	colors = NULL;

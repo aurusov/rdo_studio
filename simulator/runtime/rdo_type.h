@@ -37,7 +37,7 @@ private:
 	TypeID  m_typeID;
 };
 
-/// @todo внимание макрос!
+// TODO внимание макрос!
 #define DEFINE_ATOM_TYPE(Type)        \
 class RDOType__##Type: public RDOType \
 {                                     \

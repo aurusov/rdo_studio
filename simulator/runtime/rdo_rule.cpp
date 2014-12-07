@@ -91,7 +91,7 @@ bool RDORule::onCheckCondition(const LPRDORuntime& pRuntime)
 		ASSERT(pClone);
 		if (onDoOperation(pClone) != IBaseOperation::BOR_done)
 		{
-			/// @todo Реакция на плохой onDoOperation - это вообще-то спортный вопрос
+			// TODO Реакция на плохой onDoOperation - это вообще-то спортный вопрос
 			return false;
 		}
 		if (pClone->equal(pRuntime))

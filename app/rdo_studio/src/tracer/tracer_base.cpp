@@ -373,7 +373,7 @@ std::string TracerBase::getNextValue(std::string& line)
 	std::string result;
 	if (line[posStart] == '[')
 	{
-		//! @todo Массив просто игнорируется, график по нему не строится. Заплатка.
+		// TODO Массив просто игнорируется, график по нему не строится. Заплатка.
 		posEnd = line.find_first_of(']', posStart);
 		result = "0";
 	}

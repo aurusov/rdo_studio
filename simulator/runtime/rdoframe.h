@@ -82,7 +82,6 @@ public:
 	{
 	DECLARE_FACTORY(RDOFRMColor)
 	public:
-		//! @brief  Цвет фигуры
 		enum ColorType
 		{
 			CT_NONE,
@@ -112,7 +111,7 @@ public:
 	};
 	friend class RDOFRMColor;
 
-		PREDECLARE_POINTER(RDOFRMRulet);
+	PREDECLARE_POINTER(RDOFRMRulet);
 	class RDOFRMRulet: public RDOCalc
 	{
 	DECLARE_FACTORY(RDOFRMRulet)
@@ -121,7 +120,7 @@ public:
 		const LPRDOFRMPosition& getX() const;
 		const LPRDOFRMPosition& getY() const;
 
-		//! @todo Добавлен для обратной совместимости
+		// TODO Добавлен для обратной совместимости
 		const RDOSrcInfo& src_info() const;
 
 	private:
@@ -520,7 +519,7 @@ public:
 
 	void setBackgroundColor(const LPRDOFRMColor& pBgColor);
 
-	//! @todo Нужно спрятатть в приват и поправить симулятор, из которого метод вызывается
+	// TODO Нужно спрятатть в приват и поправить симулятор, из которого метод вызывается
 	DECLARE_IRDOFRMItemGetBitmap;
 
 private:
