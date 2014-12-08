@@ -39,11 +39,13 @@ private:
     struct GraphInfo
     {
         GraphInfo(QString solutionCost = "", QString numberOfOpenNodes = "", QString totalNumberOfNodes = "");
-		GraphInfo& operator= (const GraphInfo&);
 
         const QString solutionCost;
         const QString numberOfOpenNodes;
         const QString totalNumberOfNodes;
+
+    private:
+        GraphInfo& operator= (const GraphInfo&);
     };
 
     QString m_traceTimeStamp;
