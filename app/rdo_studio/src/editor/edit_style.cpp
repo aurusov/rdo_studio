@@ -15,8 +15,8 @@ EditTab::EditTab()
 {
     tabSize         = 4;
     indentSize      = 4;
-    useTabs         = true;
-    tabIndents      = true;
+    useTabs         = false;
+    tabIndents      = false;
     backspaceUntabs = false;
     autoIndent      = true;
 }

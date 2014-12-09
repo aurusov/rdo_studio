@@ -312,7 +312,7 @@ void MainWindow::createInsertMenu()
         std::make_pair(
             "RSS",
             MenuItemList
-                (MenuItem("RSS", "rss.txt", 13))
+                (MenuItem("RSS", "rss.txt", 16))
                 ("$Resources")("trace")("no_trace")("$End")
         )
     );
@@ -331,7 +331,7 @@ void MainWindow::createInsertMenu()
             MenuItemList
                 (MenuItem("FUN algorithmic", "fun_algorithmic.txt", 10))
                 (MenuItem("SQN", "fun_sequence.txt", 10))
-                (MenuItem("CNS", "fun_const.txt", 12))
+                (MenuItem("CNS", "fun_const.txt", 15))
                 ("$Function")("$Type")("algorithmic")("list")("table")("normal")("uniform")("exponential")
                 ("triangular")("by_hist")("enumerative")("$Parameters")("$Body")("$Sequence")("$Constant")
                 ("$End")
@@ -341,9 +341,9 @@ void MainWindow::createInsertMenu()
         std::make_pair(
             "DPT",
             MenuItemList
-                (MenuItem("DPT some", "dtp_some.txt", 16))
-                (MenuItem("DPT prior", "dtp_prior.txt", 16))
-                (MenuItem("DPT search", "dtp_search.txt", 16))
+                (MenuItem("DPT some", "dpt_some.txt", 16))
+                (MenuItem("DPT prior", "dpt_prior.txt", 16))
+                (MenuItem("DPT search", "dpt_search.txt", 16))
                 ("$Decision_point")("some")("search")("prior")("no_trace")("trace_stat")("trace_tops")("trace_all")
                 ("$Condition")("$Term_condition")("$Evaluate_by")("$Compare_tops")("YES")("NO")("$Activities")
                 ("value before")("value after")("$End")
@@ -362,7 +362,7 @@ void MainWindow::createInsertMenu()
         std::make_pair(
             "PMD",
             MenuItemList
-                (MenuItem("PMD", "pmd.txt", 11))
+                (MenuItem("PMD", "pmd.txt", 14))
                 ("$Results")("watch_par")("watch_state")("watch_quant")("watch_value")("get_value")("trace")
                 ("no_trace")("$End")
         )
