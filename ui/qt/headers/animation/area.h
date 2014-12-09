@@ -11,16 +11,16 @@
 
 namespace rdo
 {
-	namespace gui
-	{
-		namespace animation
-		{
-			struct Area
-			{
-				QRect  m_rect;
-			};
-			typedef  std::map<QString, Area>  AreaList;
+    namespace gui
+    {
+        namespace animation
+        {
+            struct Area
+            {
+                QRect  m_rect;
+            };
+            typedef  std::map<QString, Area>  AreaList;
 
-		} // namespace animation
-	} // namespace gui
+        } // namespace animation
+    } // namespace gui
 } // namespace rdo

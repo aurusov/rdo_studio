@@ -4,7 +4,7 @@
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
-#	pragma warning (disable:4512)
+#    pragma warning (disable:4512)
 #endif // COMPILER_VISUAL_STUDIO
 
 #include <boost/program_options.hpp>
@@ -20,30 +20,30 @@ namespace po = boost::program_options;
 class ControllerConsoleOptions
 {
 public:
-	ControllerConsoleOptions(int argc, char* argv[]);
-	~ControllerConsoleOptions();
+    ControllerConsoleOptions(int argc, char* argv[]);
+    ~ControllerConsoleOptions();
 
-	void parseOptions();
+    void parseOptions();
 
-	boost::filesystem::path getModelFileName () const;
-	boost::filesystem::path getScriptFileName() const;
+    boost::filesystem::path getModelFileName () const;
+    boost::filesystem::path getScriptFileName() const;
 
-	bool helpQuery() const;
-	bool convertQuery() const;
+    bool helpQuery() const;
+    bool convertQuery() const;
 
 private:
-	po::options_description m_options;
-	po::variables_map m_variables;
-	bool m_help;
-	bool m_convert;
+    po::options_description m_options;
+    po::variables_map m_variables;
+    bool m_help;
+    bool m_convert;
 
-	void createGeneralOptions(po::options_description& options);
-	void createConvertorOptions(po::options_description& options);
-	void createAdditionalOptions(po::options_description& options);
+    void createGeneralOptions(po::options_description& options);
+    void createConvertorOptions(po::options_description& options);
+    void createAdditionalOptions(po::options_description& options);
 };
 
 } // namespace rdo
 
 #ifdef COMPILER_VISUAL_STUDIO
-#	pragma warning (default:4512)
+#    pragma warning (default:4512)
 #endif // COMPILER_VISUAL_STUDIO

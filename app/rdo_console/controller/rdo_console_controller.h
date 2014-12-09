@@ -14,46 +14,46 @@ namespace rdo {
 class console_controller: public RDOThread
 {
 public:
-	typedef  std::list<std::string>  StringList;
+    typedef  std::list<std::string>  StringList;
 
-	console_controller();
-	virtual ~console_controller();
+    console_controller();
+    virtual ~console_controller();
 
-	bool finished() const;
-	bool converted() const;
-	bool simulationSuccessfully();
+    bool finished() const;
+    bool converted() const;
+    bool simulationSuccessfully();
 
-	bool buildError() const;
-	bool runtimeError() const;
-	bool convertorError() const;
+    bool buildError() const;
+    bool runtimeError() const;
+    bool convertorError() const;
 
-	void getBuildLogList(StringList& list) const;
-
-private:
-	typedef rdo::simulation::report::FileMessage FileMessage;
-	typedef rdo::simulation::report::RDOExitCode RDOExitCode;
+    void getBuildLogList(StringList& list) const;
 
 private:
-	void proc(RDOMessageInfo& msg);
-	void fillBuildLogList(std::vector<FileMessage>& errors);
+    typedef rdo::simulation::report::FileMessage FileMessage;
+    typedef rdo::simulation::report::RDOExitCode RDOExitCode;
 
 private:
-	enum SimulatorState
-	{
-		SS_UNDEFINED,
-		SS_IN_PROGRESS,
-		SS_FINISHED
-	};
+    void proc(RDOMessageInfo& msg);
+    void fillBuildLogList(std::vector<FileMessage>& errors);
 
-	SimulatorState m_state;
-	bool m_converted;
-	bool m_buildError;
-	bool m_runtimeError;
-	bool m_convertorError;
-	RDOExitCode m_exitCode;
-	StringList m_buildLogList;
+private:
+    enum SimulatorState
+    {
+        SS_UNDEFINED,
+        SS_IN_PROGRESS,
+        SS_FINISHED
+    };
 
-	mutable boost::mutex m_stateMutex;
+    SimulatorState m_state;
+    bool m_converted;
+    bool m_buildError;
+    bool m_runtimeError;
+    bool m_convertorError;
+    RDOExitCode m_exitCode;
+    StringList m_buildLogList;
+
+    mutable boost::mutex m_stateMutex;
 };
 
 } // namespace rdo

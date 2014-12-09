@@ -17,17 +17,17 @@ namespace rdo {
 class event_xml_parser
 {
 public:
-	typedef std::map< event::etime, boost::shared_ptr<event> > event_container;
+    typedef std::map< event::etime, boost::shared_ptr<event> > event_container;
 
 public:
-	bool register_parser(const std::string& name, boost::shared_ptr<event_xml_reader> reader);
+    bool register_parser(const std::string& name, boost::shared_ptr<event_xml_reader> reader);
 
-	void parse(std::istream& stream, event_container& list) const;
+    void parse(std::istream& stream, event_container& list) const;
 
 private:
-	typedef std::map<std::string, boost::shared_ptr<event_xml_reader>> parsers;
+    typedef std::map<std::string, boost::shared_ptr<event_xml_reader>> parsers;
 
-	parsers m_parsers;
+    parsers m_parsers;
 };
 
 } // namespace rdo

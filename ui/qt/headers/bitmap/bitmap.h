@@ -11,16 +11,16 @@
 
 namespace rdo
 {
-	namespace gui
-	{
-		class Bitmap
-		{
-		public:
-			static QPixmap transparent(const QPixmap& bitmap, const QPixmap& mask);
-			static QImage  transparent(const QImage&  bitmap, const QImage&  mask);
-		};
+    namespace gui
+    {
+        class Bitmap
+        {
+        public:
+            static QPixmap transparent(const QPixmap& bitmap, const QPixmap& mask);
+            static QImage  transparent(const QImage&  bitmap, const QImage&  mask);
+        };
 
-		typedef  std::map<QString, QPixmap>  BitmapList;
+        typedef  std::map<QString, QPixmap>  BitmapList;
 
-	} // namespace gui
+    } // namespace gui
 } // namespace rdo

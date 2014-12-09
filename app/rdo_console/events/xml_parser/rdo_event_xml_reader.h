@@ -13,9 +13,9 @@ class event;
 class event_xml_reader
 {
 public:
-	virtual ~event_xml_reader();
+    virtual ~event_xml_reader();
 
-	virtual event* read(const boost::property_tree::ptree& pt) const = 0;
+    virtual event* read(const boost::property_tree::ptree& pt) const = 0;
 };
 
 } // namespace rdo

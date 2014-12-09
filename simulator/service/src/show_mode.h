@@ -11,9 +11,9 @@ namespace simulation {
 //! Режимы анимации
 enum ShowMode
 {
-	SM_NoShow,    // Без анимации
-	SM_Animation, // С анимацией
-	SM_Monitor    // Анимация и модель на паузе
+    SM_NoShow,    // Без анимации
+    SM_Animation, // С анимацией
+    SM_Monitor    // Анимация и модель на паузе
 };
 
 }}} // namespace rdo::service::simulation

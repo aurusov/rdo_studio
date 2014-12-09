@@ -72,7 +72,7 @@ QRectF GraphNode::boundingRect() const
 void GraphNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget* /*widget*/)
 {
     QFont sceneFont = painter->font();
-	QRect nodeRect(int(-m_width / 2.), int(-m_height / 2.), int(m_width), int(m_height));
+    QRect nodeRect(int(-m_width / 2.), int(-m_height / 2.), int(m_width), int(m_height));
     painter->setPen(QPen(Qt::black, 0));
     if (m_isChecked)
     {

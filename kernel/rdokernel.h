@@ -41,52 +41,52 @@ friend void RDOThread::broadcastMessage( RDOTreadMessage message, void* param, b
 friend class Application;
 
 protected:
-	RDOKernel();           // Создание и удаление через статические методы
-	virtual ~RDOKernel();
+    RDOKernel();           // Создание и удаление через статические методы
+    virtual ~RDOKernel();
 
-	virtual void proc( RDOMessageInfo& msg );
-	virtual void start();
+    virtual void proc( RDOMessageInfo& msg );
+    virtual void start();
 
-	typedef std::list<RDOThread*> RDOThreadList;
-	RDOThreadList threads;
+    typedef std::list<RDOThread*> RDOThreadList;
+    RDOThreadList threads;
 #ifdef RDO_MT
-	mutable CMutex threads_mutex;
+    mutable CMutex threads_mutex;
 #endif
-//	std::list< RDOTreadMethod > methods;
-//	CMutex methods_mutex;
-//	void method_registration( RDOTreadMethod& msg ); // thread-safety
+//    std::list< RDOTreadMethod > methods;
+//    CMutex methods_mutex;
+//    void method_registration( RDOTreadMethod& msg ); // thread-safety
 
-	RDOThread*                                     thread_studio;
-	rdo::runtime::RDOThreadRunTime*                thread_runtime;
-	rdo::service::simulation::RDOThreadSimulator*  thread_simulator;
-	rdo::service::simulation::RDOThreadCodeComp*   thread_codecomp;
-	rdo::repository::RDOThreadRepository*          thread_repository;
+    RDOThread*                                     thread_studio;
+    rdo::runtime::RDOThreadRunTime*                thread_runtime;
+    rdo::service::simulation::RDOThreadSimulator*  thread_simulator;
+    rdo::service::simulation::RDOThreadCodeComp*   thread_codecomp;
+    rdo::repository::RDOThreadRepository*          thread_repository;
 
 
 #ifdef CORBA_ENABLE
-	rdoCorba::RDOThreadCorba*           thread_corba;
+    rdoCorba::RDOThreadCorba*           thread_corba;
 #endif
 
 
-	void registration( RDOThread* thread );
-	void unregistered( RDOThread* thread );
+    void registration( RDOThread* thread );
+    void unregistered( RDOThread* thread );
 
 public:
-	static void init();
-	static void close();
+    static void init();
+    static void close();
 
 #ifdef RDO_ST
-	virtual void idle();
+    virtual void idle();
 #endif
 
-	RDOThread*                                     studio    () const { return thread_studio;     }
-	rdo::runtime::RDOThreadRunTime*                runtime   () const { return thread_runtime;    }
-	rdo::service::simulation::RDOThreadSimulator*  simulator () const { return thread_simulator;  }
-	rdo::service::simulation::RDOThreadCodeComp*   codecomp  () const { return thread_codecomp;   }
-	rdo::repository::RDOThreadRepository*          repository() const { return thread_repository; }
+    RDOThread*                                     studio    () const { return thread_studio;     }
+    rdo::runtime::RDOThreadRunTime*                runtime   () const { return thread_runtime;    }
+    rdo::service::simulation::RDOThreadSimulator*  simulator () const { return thread_simulator;  }
+    rdo::service::simulation::RDOThreadCodeComp*   codecomp  () const { return thread_codecomp;   }
+    rdo::repository::RDOThreadRepository*          repository() const { return thread_repository; }
 
 #ifdef CORBA_ENABLE
-	rdoCorba::RDOThreadCorba*                      corba     () const { return thread_corba;      }
+    rdoCorba::RDOThreadCorba*                      corba     () const { return thread_corba;      }
 #endif
 };
 
@@ -107,17 +107,17 @@ class RDOKernelGUI: public RDOThread
 friend virtual bool RDOThreadGUI::processMessages();
 
 protected:
-	RDOKernelGUI(const std::string& _thread_name); // Создание и удаление через потомков
-	virtual ~RDOKernelGUI();
+    RDOKernelGUI(const std::string& _thread_name); // Создание и удаление через потомков
+    virtual ~RDOKernelGUI();
 
-	virtual void proc( RDOMessageInfo& msg );
-	virtual void idle();
+    virtual void proc( RDOMessageInfo& msg );
+    virtual void idle();
 
-	std::list< RDOThread* > threads;
+    std::list< RDOThread* > threads;
 
-	void registration( RDOThread* thread );
-	void unregistered( RDOThread* thread );
-	void update_notifies();
+    void registration( RDOThread* thread );
+    void unregistered( RDOThread* thread );
+    void update_notifies();
 };
 #else
 typedef RDOKernel RDOKernelGUI;
