@@ -104,6 +104,7 @@ SET(FUN_FILES
 
 SET(INTERFACES_FILES
     rdo_model_i.h
+    rdo_as_string_i.h
 )
 
 SET(PCH_FILES
