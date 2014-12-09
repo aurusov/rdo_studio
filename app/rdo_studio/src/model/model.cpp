@@ -138,16 +138,16 @@ Model::Model()
     m_modelTemplates[2] = modelTemplate;
 
     modelTemplate.clear();
-    modelTemplate[rdo::model::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.rtp", 98);
-    modelTemplate[rdo::model::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.rss", 58);
-    modelTemplate[rdo::model::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.evn", 67);
-    modelTemplate[rdo::model::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.pat", 89);
-    modelTemplate[rdo::model::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.dpt", 132);
-    modelTemplate[rdo::model::PRC] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.prc", 75);
-    modelTemplate[rdo::model::FRM] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.frm", 84);
-    modelTemplate[rdo::model::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.fun", 44);
+    modelTemplate[rdo::model::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.rtp", 168);
+    modelTemplate[rdo::model::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.rss", 95);
+    modelTemplate[rdo::model::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.evn", 108);
+    modelTemplate[rdo::model::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.pat", 150);
+    modelTemplate[rdo::model::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.dpt", 230);
+    modelTemplate[rdo::model::PRC] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.prc", 128);
+    modelTemplate[rdo::model::FRM] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.frm", 148);
+    modelTemplate[rdo::model::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.fun", 71);
     modelTemplate[rdo::model::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.smr");
-    modelTemplate[rdo::model::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.pmd", 43);
+    modelTemplate[rdo::model::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.pmd", 69);
     m_modelTemplates[3] = modelTemplate;
 
     modelTemplate.clear();
