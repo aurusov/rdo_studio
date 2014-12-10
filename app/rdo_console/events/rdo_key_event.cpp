@@ -6,7 +6,7 @@
 namespace rdo {
 
 key_event::key_event(const std::string& name, double time, states state, int key_code)
-    : event(name, time, event::key)
+    : event(name, time, event::types::key)
     , m_state(state)
     , m_key_code(key_code)
 {}

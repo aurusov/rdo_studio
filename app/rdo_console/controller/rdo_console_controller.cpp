@@ -16,7 +16,7 @@ using namespace rdo::simulation::report;
 
 console_controller::console_controller()
     : RDOThread("RDOThreadStudioConsoleController")
-    , m_state(SS_UNDEFINED)
+    , m_state(SimulatorState::UNDEFINED)
     , m_converted(false)
     , m_buildError(false)
     , m_runtimeError(false)
@@ -47,7 +47,7 @@ bool console_controller::finished() const
     bool res = true;
     {
         MUTEXT_PROTECTION(m_stateMutex);
-        res = (m_state == SS_FINISHED);
+        res = (m_state == SimulatorState::FINISHED);
     }
     return res;
 }
@@ -93,14 +93,14 @@ void console_controller::proc(RDOThread::RDOMessageInfo& msg)
     case RDOThread::RT_RUNTIME_MODEL_START_BEFORE:
         {
             MUTEXT_PROTECTION(m_stateMutex);
-            m_state = SS_IN_PROGRESS;
+            m_state = SimulatorState::IN_PROGRESS;
         }
         break;
 
     case RDOThread::RT_RUNTIME_MODEL_STOP_AFTER:
         {
             MUTEXT_PROTECTION(m_stateMutex);
-            m_state = SS_FINISHED;
+            m_state = SimulatorState::FINISHED;
         }
         break;
 

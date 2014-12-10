@@ -10,7 +10,7 @@ namespace rdo {
 class mouse_event: public event
 {
 public:
-    enum buttons
+    enum class buttons
     {
         none,
         left,

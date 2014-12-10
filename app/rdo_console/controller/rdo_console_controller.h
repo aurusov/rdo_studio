@@ -38,11 +38,11 @@ private:
     void fillBuildLogList(std::vector<FileMessage>& errors);
 
 private:
-    enum SimulatorState
+    enum class SimulatorState
     {
-        SS_UNDEFINED,
-        SS_IN_PROGRESS,
-        SS_FINISHED
+        UNDEFINED,
+        IN_PROGRESS,
+        FINISHED
     };
 
     SimulatorState m_state;

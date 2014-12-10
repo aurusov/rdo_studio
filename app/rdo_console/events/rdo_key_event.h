@@ -7,11 +7,10 @@
 
 namespace rdo {
 
-/// base event class
 class key_event: public event
 {
 public:
-    enum states
+    enum class states
     {
         press = 0,
         release

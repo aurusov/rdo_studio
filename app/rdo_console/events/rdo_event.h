@@ -9,11 +9,10 @@
 
 namespace rdo {
 
-/// base event class
 class event
 {
 public:
-    enum types {
+    enum class types {
         none,
         key,
         mouse
@@ -22,7 +21,7 @@ public:
     typedef double etime;
 
 public:
-    event(const std::string& name, etime time, types type = none);
+    event(const std::string& name, etime time, types type = types::none);
     virtual ~event();
 
     void setName(const std::string& name);

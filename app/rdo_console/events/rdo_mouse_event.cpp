@@ -6,7 +6,7 @@
 namespace rdo {
 
 mouse_event::mouse_event(const std::string& name, double time, buttons button, int x, int y)
-    : event(name, time, event::mouse)
+    : event(name, time, event::types::mouse)
     , m_button(button)
     , m_x(x)
     , m_y(y)

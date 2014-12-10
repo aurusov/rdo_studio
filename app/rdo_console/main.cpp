@@ -192,6 +192,17 @@ bool run(rdo::console_controller* pAppController, event_container& container)
     return pAppController->simulationSuccessfully();
 }
 
+RDOThread::RDOTreadMessage getMessageType(rdo::key_event::states state)
+{
+    switch (state)
+    {
+    case rdo::key_event::states::press: return RDOThread::RT_RUNTIME_KEY_DOWN;
+    case rdo::key_event::states::release: return RDOThread::RT_RUNTIME_KEY_UP;
+    }
+
+    throw std::runtime_error("Unexpected event state");
+}
+
 void process_event(rdo::console_controller* pAppController, event_container& container)
 {
     double runtime_time = 0;
@@ -212,26 +223,17 @@ void process_event(rdo::console_controller* pAppController, event_container& con
 
             switch (type)
             {
-            case rdo::event::key:
+            case rdo::event::types::key:
                 {
-                std::size_t code = static_cast<rdo::key_event*>(it->second.get())->getKeyCode();
+                    std::size_t code = static_cast<rdo::key_event*>(it->second.get())->getKeyCode();
                     rdo::key_event::states state = static_cast<rdo::key_event*>(it->second.get())->getState();
 
-                    rdo::console_controller::RDOTreadMessage message_type;
-                    switch (state)
-                    {
-                    case rdo::key_event::press:
-                        message_type = RDOThread::RT_RUNTIME_KEY_DOWN;
-                        break;
-                    case rdo::key_event::release:
-                        message_type = RDOThread::RT_RUNTIME_KEY_UP;
-                        break;
-                    }
+                    const rdo::console_controller::RDOTreadMessage message_type = getMessageType(state);
                     pAppController->broadcastMessage(message_type, &code);
                 }
                 break;
 
-            case rdo::event::mouse:
+            case rdo::event::types::mouse:
                 // TODO : complete me
                 NEVER_REACH_HERE;
                 break;
