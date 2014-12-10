@@ -6,6 +6,7 @@
 #include "kernel/rdokernel.h"
 #include "simulator/service/src/simulator.h"
 #include "simulator/report/src/build_edit_line_info.h"
+#include "simulator/report/src/error_code.h"
 #include "app/rdo_console/controller/rdo_console_controller.h"
 // --------------------------------------------------------------------------------
 
@@ -14,14 +15,13 @@ using namespace rdo::simulation::report;
 
 #define MUTEXT_PROTECTION(A) boost::lock_guard<boost::mutex> lg_##__LINE__(A);
 
-console_controller::console_controller()
+ConsoleController::ConsoleController()
     : RDOThread("RDOThreadStudioConsoleController")
-    , m_state(SimulatorState::UNDEFINED)
-    , m_converted(false)
-    , m_buildError(false)
-    , m_runtimeError(false)
-    , m_convertorError(false)
-    , m_exitCode(rdo::simulation::report::EC_OK)
+    , state(SimulatorState::UNDEFINED)
+    , converted(false)
+    , buildError(false)
+    , runtimeError(false)
+    , convertorError(false)
 {
     notifies.push_back(RT_REPOSITORY_MODEL_OPEN_ERROR       );
     notifies.push_back(RT_RUNTIME_MODEL_START_BEFORE        ); // TODO : wait
@@ -39,51 +39,52 @@ console_controller::console_controller()
     after_constructor();
 }
 
-console_controller::~console_controller()
+ConsoleController::~ConsoleController()
 {}
 
-bool console_controller::finished() const
+bool ConsoleController::isFinished() const
 {
     bool res = true;
     {
-        MUTEXT_PROTECTION(m_stateMutex);
-        res = (m_state == SimulatorState::FINISHED);
+        MUTEXT_PROTECTION(stateMutex);
+        res = (state == SimulatorState::FINISHED);
     }
     return res;
 }
 
-bool console_controller::converted() const
+bool ConsoleController::isConverted() const
 {
-    return m_converted;
+    return converted;
 }
 
-bool console_controller::simulationSuccessfully()
+bool ConsoleController::isSimulationSuccessfully()
 {
-    sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
-    return m_exitCode == rdo::simulation::report::EC_OK;
+    rdo::simulation::report::RDOExitCode exitCode;
+    sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &exitCode);
+    return exitCode == rdo::simulation::report::EC_OK;
 }
 
-bool console_controller::buildError() const
+bool ConsoleController::isBuildError() const
 {
-    return m_buildError;
+    return buildError;
 }
 
-bool console_controller::runtimeError() const
+bool ConsoleController::isRuntimeError() const
 {
-    return m_runtimeError;
+    return runtimeError;
 }
 
-bool console_controller::convertorError() const
+bool ConsoleController::isConvertorError() const
 {
-    return m_convertorError;
+    return convertorError;
 }
 
-void console_controller::getBuildLogList(StringList& list) const
+void ConsoleController::getBuildLog(std::list<std::string>& list) const
 {
-    list = m_buildLogList;
+    list = buildLog;
 }
 
-void console_controller::proc(RDOThread::RDOMessageInfo& msg)
+void ConsoleController::proc(RDOThread::RDOMessageInfo& msg)
 {
     switch (msg.message)
     {
@@ -92,15 +93,15 @@ void console_controller::proc(RDOThread::RDOMessageInfo& msg)
 
     case RDOThread::RT_RUNTIME_MODEL_START_BEFORE:
         {
-            MUTEXT_PROTECTION(m_stateMutex);
-            m_state = SimulatorState::IN_PROGRESS;
+            MUTEXT_PROTECTION(stateMutex);
+            state = SimulatorState::IN_PROGRESS;
         }
         break;
 
     case RDOThread::RT_RUNTIME_MODEL_STOP_AFTER:
         {
-            MUTEXT_PROTECTION(m_stateMutex);
-            m_state = SimulatorState::FINISHED;
+            MUTEXT_PROTECTION(stateMutex);
+            state = SimulatorState::FINISHED;
         }
         break;
 
@@ -109,10 +110,10 @@ void console_controller::proc(RDOThread::RDOMessageInfo& msg)
 
     case RDOThread::RT_SIMULATOR_PARSE_ERROR:
         {
-            m_buildError = true;
+            buildError = true;
             std::vector<FileMessage> errors;
             sendMessage(kernel->simulator(), RT_SIMULATOR_GET_ERRORS, &errors);
-            fillBuildLogList(errors);
+            appendToBuildLog(errors);
         }
         break;
 
@@ -126,22 +127,22 @@ void console_controller::proc(RDOThread::RDOMessageInfo& msg)
         break;
 
     case RDOThread::RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR:
-        m_runtimeError = true;
+        runtimeError = true;
         break;
 
     case RDOThread::RT_CONVERTOR_NONE:
-        m_converted = true;
-        m_convertorError = false;
+        converted = true;
+        convertorError = false;
         break;
 
     case RDOThread::RT_CONVERTOR_OK:
-        m_converted = true;
-        m_convertorError = false;
+        converted = true;
+        convertorError = false;
         break;
 
     case RDOThread::RT_CONVERTOR_ERROR:
-        m_converted = true;
-        m_convertorError = true;
+        converted = true;
+        convertorError = true;
         break;
 
     default:
@@ -149,12 +150,12 @@ void console_controller::proc(RDOThread::RDOMessageInfo& msg)
     }
 }
 
-void console_controller::fillBuildLogList(std::vector<FileMessage>& errors)
+void ConsoleController::appendToBuildLog(std::vector<FileMessage>& errors)
 {
     for (const FileMessage& error: errors)
     {
         const BuildEditLineInfo info(error);
         const std::string line = info.getMessage();
-        m_buildLogList.push_back(line);
+        buildLog.push_back(line);
     }
 }

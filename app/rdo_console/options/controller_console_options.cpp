@@ -12,8 +12,8 @@
 using namespace rdo;
 
 ControllerConsoleOptions::ControllerConsoleOptions(int argc, char *argv[])
-    : m_help(false)
-    , m_convert(false)
+    : help(false)
+    , convert(false)
 {
     const po::options_description options_header(boost::str(boost::format("%1%\n\n%2%")
         % rdo::version::g_versionName
@@ -29,15 +29,15 @@ ControllerConsoleOptions::ControllerConsoleOptions(int argc, char *argv[])
     po::options_description options_additional("Compatibility options (skipped in console version)");
     createAdditionalOptions(options_additional);
 
-    m_options.add(options_header);
-    m_options.add(options_general);
-    m_options.add(options_convertor);
-    m_options.add(options_additional);
+    options.add(options_header);
+    options.add(options_general);
+    options.add(options_convertor);
+    options.add(options_additional);
 
     try
     {
-        po::store(po::parse_command_line(argc, argv, m_options), m_variables);
-        po::notify(m_variables);
+        po::store(po::parse_command_line(argc, argv, options), variables);
+        po::notify(variables);
     }
     catch (const std::exception& e)
     {
@@ -51,38 +51,38 @@ ControllerConsoleOptions::~ControllerConsoleOptions()
 
 void ControllerConsoleOptions::parseOptions()
 {
-    if ((m_variables.empty() || m_variables.count(HELP_COMMAND)) &&
-            !m_variables.count(LANGUAGE_COMMAND) &&
-            !m_variables.count(VERSION_COMMAND))
+    if ((variables.empty() || variables.count(HELP_COMMAND)) &&
+        !variables.count(LANGUAGE_COMMAND) &&
+        !variables.count(VERSION_COMMAND))
     {
         std::stringstream stream;
-        stream << m_options;
+        stream << options;
         rdo::locale::cout(stream.str());
-        m_help = true;
+        help = true;
     }
-    else if (m_variables.count(LANGUAGE_COMMAND))
+    else if (variables.count(LANGUAGE_COMMAND))
     {
         const std::string message("rdo language v" + RDO_LANGUAGE_VERSION + " ( supported rdox )");
         rdo::locale::cout(message);
-        m_help = true;
+        help = true;
     }
-    else if (m_variables.count(VERSION_COMMAND))
+    else if (variables.count(VERSION_COMMAND))
     {
         rdo::locale::cout(rdo::version::g_versionName);
-        m_help = true;
+        help = true;
     }
-    else if(m_variables.count(CONVERTOR_COMMAND))
+    else if(variables.count(CONVERTOR_COMMAND))
     {
-        m_convert = true;
+        convert = true;
     }
 }
 
 boost::filesystem::path ControllerConsoleOptions::getModelFileName() const
 {
     boost::filesystem::path result;
-    if (m_variables.count(MODEL_COMMAND))
+    if (variables.count(MODEL_COMMAND))
     {
-        std::string modelFileName = m_variables[MODEL_COMMAND].as<std::string>();
+        std::string modelFileName = variables[MODEL_COMMAND].as<std::string>();
 #if defined(OST_WINDOWS)
         modelFileName = rdo::locale::convertFromCLocale(modelFileName);
 #elif defined(OST_LINUX)
@@ -96,9 +96,9 @@ boost::filesystem::path ControllerConsoleOptions::getModelFileName() const
 boost::filesystem::path ControllerConsoleOptions::getScriptFileName() const
 {
     boost::filesystem::path result;
-    if (m_variables.count(SCRIPT_COMMAND))
+    if (variables.count(SCRIPT_COMMAND))
     {
-        std::string eventsFileName = m_variables[SCRIPT_COMMAND].as<std::string>();
+        std::string eventsFileName = variables[SCRIPT_COMMAND].as<std::string>();
 #if defined(OST_WINDOWS)
         eventsFileName = rdo::locale::convertFromCLocale(eventsFileName);
 #elif defined(OST_LINUX)
@@ -111,12 +111,12 @@ boost::filesystem::path ControllerConsoleOptions::getScriptFileName() const
 
 bool ControllerConsoleOptions::helpQuery() const
 {
-    return m_help;
+    return help;
 }
 
 bool ControllerConsoleOptions::convertQuery() const
 {
-    return m_convert;
+    return convert;
 }
 
 void ControllerConsoleOptions::createGeneralOptions(po::options_description& options)

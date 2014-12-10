@@ -22,15 +22,15 @@
 #include "app/rdo_console/terminate_codes.h"
 // --------------------------------------------------------------------------------
 
-typedef std::list<std::string> string_list;
-typedef rdo::event_xml_parser::event_container event_container;
+typedef std::list<std::string> Strings;
+typedef rdo::EventXmlParser::Events Events;
 
 const boost::filesystem::path LOG_FILE_NAME = "log.txt";
 
-void read_events(std::istream& stream, event_container& container);
-void write_build_log(std::ostream& stream, const string_list& list);
-bool run(rdo::console_controller* pAppController, event_container& container);
-void process_event(rdo::console_controller* pAppController, event_container& container);
+void readEvents(std::istream& stream, Events& container);
+void writeBuildLog(std::ostream& stream, const Strings& list);
+bool run(rdo::ConsoleController* pAppController, Events& container);
+void processEvent(rdo::ConsoleController* pAppController, Events& container);
 
 int main(int argc, char* argv[])
 {
@@ -65,10 +65,11 @@ int main(int argc, char* argv[])
     }
 
     // read events
-    event_container container;
-    if (eventExist) {
+    Events container;
+    if (eventExist)
+    {
         boost::filesystem::ifstream stream(eventsFileName, std::ios::out);
-        read_events(stream, container);
+        readEvents(stream, container);
     }
 
     // simulation
@@ -76,7 +77,7 @@ int main(int argc, char* argv[])
     new rdo::service::simulation::RDOThreadSimulator();
     new rdo::repository::RDOThreadRepository();
 
-    rdo::console_controller* pAppController = new rdo::console_controller();
+    rdo::ConsoleController* pAppController = new rdo::ConsoleController();
 
     rdo::repository::RDOThreadRepository::OpenFile data(modelFileName);
     pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
@@ -86,10 +87,10 @@ int main(int argc, char* argv[])
         bool converted = false;
         while (!converted)
         {
-            converted = pAppController->converted();
+            converted = pAppController->isConverted();
             boost::this_thread::sleep(boost::posix_time::milliseconds(500));
         }
-        if (pAppController->convertorError())
+        if (pAppController->isConvertorError())
         {
             exit(TERMINATION_WITH_AN_ERROR_CONVERTOR_ERROR);
         }
@@ -100,17 +101,17 @@ int main(int argc, char* argv[])
 
     bool simulationSuccessfully = false;
 
-    const bool buildError = pAppController->buildError();
+    const bool buildError = pAppController->isBuildError();
     if (buildError)
     {
-        string_list buildList;
-        pAppController->getBuildLogList(buildList);
+        Strings buildList;
+        pAppController->getBuildLog(buildList);
 
         const boost::filesystem::path fileName = modelFileName.parent_path() / LOG_FILE_NAME;
         boost::filesystem::remove(fileName);
         boost::filesystem::ofstream stream(fileName, std::ios::out);
 
-        write_build_log(stream, buildList);
+        writeBuildLog(stream, buildList);
 
         std::cerr << "Build model error" << std::endl;
         exitCode = TERMINATION_WITH_AN_ERROR_PARSE_MODEL_ERROR;
@@ -137,7 +138,7 @@ int main(int argc, char* argv[])
     return exitCode;
 }
 
-void read_events(std::istream& stream, event_container& container)
+void readEvents(std::istream& stream, Events& container)
 {
     container.clear();
 
@@ -145,9 +146,9 @@ void read_events(std::istream& stream, event_container& container)
     {
         exit(TERMINATION_WITH_APP_RUNTIME_ERROR);
     }
-    rdo::event_xml_parser parser;
-    parser.register_parser("key", boost::shared_ptr<rdo::event_xml_reader>(new rdo::key_event_xml_reader));
-    parser.register_parser("mouse", boost::shared_ptr<rdo::event_xml_reader>(new rdo::mouse_event_xml_reader));
+    rdo::EventXmlParser parser;
+    parser.registerParser("key", std::make_shared<rdo::KeyEventXmlReader>());
+    parser.registerParser("mouse", std::make_shared<rdo::MouseEventXmlReader>());
 
     try
     {
@@ -159,58 +160,58 @@ void read_events(std::istream& stream, event_container& container)
     }
 }
 
-void write_build_log(std::ostream& stream, const string_list& list)
+void writeBuildLog(std::ostream& stream, const Strings& list)
 {
     if (stream.fail())
     {
         exit(TERMINATION_WITH_APP_RUNTIME_ERROR);
     }
-    for (const string_list::value_type& line: list)
+    for (const Strings::value_type& line: list)
     {
         stream << line.c_str() << std::endl;
     }
 }
 
-bool run(rdo::console_controller* pAppController, event_container& container)
+bool run(rdo::ConsoleController* pAppController, Events& container)
 {
     pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN);
 
     rdo::runtime::RunTimeMode runtimeMode = rdo::runtime::RTM_MaxSpeed;
     pAppController->broadcastMessage(RDOThread::RT_RUNTIME_SET_MODE, &runtimeMode);
 
-    while (!pAppController->finished())
+    while (!pAppController->isFinished())
     {
         kernel->idle();
 
-        if (pAppController->runtimeError())
+        if (pAppController->isRuntimeError())
         {
             rdo::locale::cout("Run-time error");
             exit(TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR);
         }
-        process_event(pAppController, container);
+        processEvent(pAppController, container);
     }
-    return pAppController->simulationSuccessfully();
+    return pAppController->isSimulationSuccessfully();
 }
 
-RDOThread::RDOTreadMessage getMessageType(rdo::key_event::states state)
+RDOThread::RDOTreadMessage getMessageType(rdo::KeyEvent::State state)
 {
     switch (state)
     {
-    case rdo::key_event::states::press: return RDOThread::RT_RUNTIME_KEY_DOWN;
-    case rdo::key_event::states::release: return RDOThread::RT_RUNTIME_KEY_UP;
+    case rdo::KeyEvent::State::PRESS: return RDOThread::RT_RUNTIME_KEY_DOWN;
+    case rdo::KeyEvent::State::RELEASE: return RDOThread::RT_RUNTIME_KEY_UP;
     }
 
     throw std::runtime_error("Unexpected event state");
 }
 
-void process_event(rdo::console_controller* pAppController, event_container& container)
+void processEvent(rdo::ConsoleController* pAppController, Events& container)
 {
     double runtime_time = 0;
     pAppController->broadcastMessage(RDOThread::RT_RUNTIME_GET_TIMENOW, &runtime_time);
 
     if(!container.empty())
     {
-        event_container::const_iterator it = container.begin();
+        Events::const_iterator it = container.begin();
         if (it->first < runtime_time)
         {
             const std::string eventName = boost::str(boost::format("process event : name : %1%  |  time : %2%")
@@ -219,21 +220,21 @@ void process_event(rdo::console_controller* pAppController, event_container& con
             );
             rdo::locale::cout(eventName);
 
-            rdo::event::types type = it->second->getType();
+            rdo::Event::Type type = it->second->getType();
 
             switch (type)
             {
-            case rdo::event::types::key:
+            case rdo::Event::Type::KEY:
                 {
-                    std::size_t code = static_cast<rdo::key_event*>(it->second.get())->getKeyCode();
-                    rdo::key_event::states state = static_cast<rdo::key_event*>(it->second.get())->getState();
+                    std::size_t code = static_cast<rdo::KeyEvent*>(it->second.get())->getKeyCode();
+                    rdo::KeyEvent::State state = static_cast<rdo::KeyEvent*>(it->second.get())->getState();
 
-                    const rdo::console_controller::RDOTreadMessage message_type = getMessageType(state);
+                    const rdo::ConsoleController::RDOTreadMessage message_type = getMessageType(state);
                     pAppController->broadcastMessage(message_type, &code);
                 }
                 break;
 
-            case rdo::event::types::mouse:
+            case rdo::Event::Type::MOUSE:
                 // TODO : complete me
                 NEVER_REACH_HERE;
                 break;

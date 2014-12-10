@@ -2,20 +2,21 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/property_tree/ptree.hpp>
+#include <memory>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo {
 
-class event;
+class Event;
 
-class event_xml_reader
+class EventXmlReader
 {
 public:
-    virtual ~event_xml_reader();
+    virtual ~EventXmlReader();
 
-    virtual event* read(const boost::property_tree::ptree& pt) const = 0;
+    virtual std::shared_ptr<Event> read(const boost::property_tree::ptree& pt) const = 0;
 };
 
 } // namespace rdo

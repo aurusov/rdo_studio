@@ -6,21 +6,21 @@
 
 namespace rdo {
 
-mouse_event_xml_reader::~mouse_event_xml_reader()
+MouseEventXmlReader::~MouseEventXmlReader()
 {}
 
-event* mouse_event_xml_reader::read(const boost::property_tree::ptree& pt) const
+std::shared_ptr<Event> MouseEventXmlReader::read(const boost::property_tree::ptree& pt) const
 {
-    const std::string name = pt.get<std::string>("<xmlattr>.name", "");
-    const double time = pt.get<double>("<xmlattr>.time", 0.0);
+    const auto name = pt.get<std::string>("<xmlattr>.name", "");
+    const auto time = pt.get<Event::Time>("<xmlattr>.time", 0.0);
 
-    const boost::property_tree::ptree& param = pt.get_child("param");
+    const auto& param = pt.get_child("param");
 
-    const int button = param.get<int>("<xmlattr>.button");
-    const int x = param.get<int>("<xmlattr>.x");
-    const int y = param.get<int>("<xmlattr>.y");
+    const auto button = param.get<int>("<xmlattr>.button");
+    const auto x = param.get<int>("<xmlattr>.x");
+    const auto y = param.get<int>("<xmlattr>.y");
 
-    return new mouse_event(name, time, static_cast<mouse_event::buttons>(button), x, y);
+    return std::make_shared<MouseEvent>(name, time, static_cast<MouseEvent::Button>(button), x, y);
 }
 
 } // namespace rdo

@@ -7,33 +7,32 @@
 
 namespace rdo {
 
-class mouse_event: public event
+class MouseEvent: public Event
 {
 public:
-    enum class buttons
+    enum class Button
     {
-        none,
-        left,
-        right,
-        middle
+        NONE,
+        LEFT,
+        RIGHT,
+        MIDDLE
     };
 
-    mouse_event(const std::string& name, double time, buttons button, int x, int y);
-    virtual ~mouse_event();
+    MouseEvent(const std::string& name, Time time, Button button, int x, int y);
+    virtual ~MouseEvent();
 
-    void setButton(buttons button);
+    void setButton(Button button);
     void setX(int x);
     void sety(int y);
 
-    buttons getButton() const;
+    Button getButton() const;
     int getX() const;
     int getY() const;
 
 private:
-    buttons m_button;
-
-    int m_x;
-    int m_y;
+    Button button;
+    int x;
+    int y;
 };
 
 } // namespace rdo

@@ -9,32 +9,33 @@
 
 namespace rdo {
 
-class event
+class Event
 {
 public:
-    enum class types {
-        none,
-        key,
-        mouse
+    enum class Type
+    {
+        NONE,
+        KEY,
+        MOUSE
     };
 
-    typedef double etime;
+    typedef double Time;
 
 public:
-    event(const std::string& name, etime time, types type = types::none);
-    virtual ~event();
+    Event(const std::string& name, Time time, Type type = Type::NONE);
+    virtual ~Event();
 
     void setName(const std::string& name);
-    void setTime(etime time);
+    void setTime(Time time);
 
-    std::string getName() const;
-    etime getTime() const;
-    types getType() const;
+    const std::string& getName() const;
+    Time getTime() const;
+    Type getType() const;
 
 private:
-    std::string m_name;
-    etime m_time;
-    types m_type;
+    std::string name;
+    Time time;
+    Type type;
 };
 
 } // namespace rdo

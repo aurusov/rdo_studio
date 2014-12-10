@@ -25,17 +25,17 @@ public:
 
     void parseOptions();
 
-    boost::filesystem::path getModelFileName () const;
+    boost::filesystem::path getModelFileName() const;
     boost::filesystem::path getScriptFileName() const;
 
     bool helpQuery() const;
     bool convertQuery() const;
 
 private:
-    po::options_description m_options;
-    po::variables_map m_variables;
-    bool m_help;
-    bool m_convert;
+    po::options_description options;
+    po::variables_map variables;
+    bool help;
+    bool convert;
 
     void createGeneralOptions(po::options_description& options);
     void createConvertorOptions(po::options_description& options);

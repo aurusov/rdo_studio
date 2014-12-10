@@ -7,12 +7,12 @@
 
 namespace rdo {
 
-class mouse_event_xml_reader: public event_xml_reader
+class MouseEventXmlReader: public EventXmlReader
 {
 public:
-    virtual ~mouse_event_xml_reader();
+    virtual ~MouseEventXmlReader();
 
-    virtual event* read(const boost::property_tree::ptree& pt) const;
+    virtual std::shared_ptr<Event> read(const boost::property_tree::ptree& pt) const;
 };
 
 } // namespace rdo
