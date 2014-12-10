@@ -13,20 +13,19 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOCalcCreateResource
 // --------------------------------------------------------------------------------
 RDOCalcCreateResource::RDOCalcCreateResource(
-    std::size_t resourceTypeID,
-    const std::vector<LPRDOCalc>& rParamCalcList,
-    bool traceFlag,
-    bool permanentFlag,
-    bool isNested,
-    std::size_t relResID,
-    boost::optional<std::size_t> resourceID
-)
-    : m_resourceTypeID(resourceTypeID)
+        std::size_t resourceTypeID,
+        const std::vector<LPRDOCalc>& rParamCalcList,
+        bool traceFlag,
+        bool permanentFlag,
+        bool isNested,
+        std::size_t relResID,
+        boost::optional<std::size_t> resourceID)
+    : m_resourceID    (resourceID    )
+    , m_resourceTypeID(resourceTypeID)
     , m_traceFlag     (traceFlag     )
     , m_permanentFlag (permanentFlag )
-    , m_isNested      (isNested      )
     , m_relResID      (relResID      )
-    , m_resourceID    (resourceID    )
+    , m_isNested      (isNested      )
 {
     m_paramCalcList.insert(m_paramCalcList.begin(), rParamCalcList.begin(), rParamCalcList.end());
     // попытка создавать постоянные ресурсы динамически
