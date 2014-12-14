@@ -62,7 +62,7 @@ class RDOFUNLogic
 DECLARE_FACTORY(RDOFUNLogic);
 friend class RDOFUNArithm;
 public:
-    rdo::runtime::LPRDOCalc getCalc(rdo::runtime::RDOType::TypeID id = rdo::runtime::RDOType::t_real);
+    rdo::runtime::LPRDOCalc getCalc(rdo::runtime::RDOType::Type id = rdo::runtime::RDOType::Type::REAL);
 
     LPRDOFUNLogic operator && (const LPRDOFUNLogic& pSecond);
     LPRDOFUNLogic operator || (const LPRDOFUNLogic& pSecond);
@@ -110,7 +110,7 @@ public:
     const LPRDOValue&             value     () const { return m_pValue;                   }
     LPRDOType                     type      () const { return m_pValue->type();           }
     LPRDOEnumType                 enumType  () const { return type().object_static_cast<RDOEnumType>(); }
-    rdo::runtime::RDOType::TypeID typeID    () const { return type()->type()->typeID();   }
+    rdo::runtime::RDOType::Type typeID    () const { return type()->type()->typeID();   }
 
     virtual void setSrcInfo(const RDOParserSrcInfo& src_info);
     virtual void setSrcPos (const RDOSrcInfo::Position& position);

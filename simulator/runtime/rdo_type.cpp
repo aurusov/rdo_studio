@@ -11,14 +11,14 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOType
 // --------------------------------------------------------------------------------
-RDOType::RDOType(TypeID typeID)
+RDOType::RDOType(Type typeID)
     : m_typeID(typeID)
 {}
 
 RDOType::~RDOType()
 {}
 
-RDOType::TypeID RDOType::typeID() const
+RDOType::Type RDOType::typeID() const
 {
     return m_typeID;
 }
@@ -27,18 +27,12 @@ RDOType::TypeID RDOType::typeID() const
 
 #define DEFINE_ATOM_TYPE_DEFAULT_VALUE(Type) rdo::intrusive_ptr<RDOType__##Type> g_##Type = rdo::Factory<RDOType__##Type>::create();
 
-DEFINE_ATOM_TYPE_DEFAULT_VALUE(unknow);
-
-DEFINE_ATOM_TYPE_DEFAULT_VALUE(void);
-
-DEFINE_ATOM_TYPE_DEFAULT_VALUE(identificator);
-
-DEFINE_ATOM_TYPE_DEFAULT_VALUE(int);
-
-DEFINE_ATOM_TYPE_DEFAULT_VALUE(real);
-
-DEFINE_ATOM_TYPE_DEFAULT_VALUE(bool);
-
-DEFINE_ATOM_TYPE_DEFAULT_VALUE(string);
+DEFINE_ATOM_TYPE_DEFAULT_VALUE(UNKNOW);
+DEFINE_ATOM_TYPE_DEFAULT_VALUE(EMPTY);
+DEFINE_ATOM_TYPE_DEFAULT_VALUE(IDENTIFICATOR);
+DEFINE_ATOM_TYPE_DEFAULT_VALUE(INT);
+DEFINE_ATOM_TYPE_DEFAULT_VALUE(REAL);
+DEFINE_ATOM_TYPE_DEFAULT_VALUE(BOOL);
+DEFINE_ATOM_TYPE_DEFAULT_VALUE(STRING);
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -109,32 +109,32 @@ private:                                                   \
 // --------------------------------------------------------------------------------
 MBUILDER_OBJECT(RDOResType)
 public:
-    enum Type
+    enum class Kind
     {
-        rt_permanent,
-        rt_temporary
+        PERMANENT,
+        TEMPORARY
     };
     // Проинициализировать по существующему типу
     RDOResType(const parser::LPRDORTPResType& rtp);
     // Создать новый тип
-    RDOResType(const std::string& name, Type type = rt_permanent);
+    RDOResType(const std::string& name, Kind kind = Kind::PERMANENT);
 
     MBUILDER_OBJECT(Param)
     friend class RDOResType;
     public:
         explicit Param(const parser::LPRDORTPParam& param);
         explicit Param(const std::string& name, const parser::LPTypeInfo& pType,  const parser::LPRDOValue& pDefault);
-        explicit Param(const std::string& name, const rdo::intrusive_ptr<parser::RDOType__int>&  pType, const parser::LPRDOValue& pDefault = parser::LPRDOValue(NULL));
-        explicit Param(const std::string& name, const rdo::intrusive_ptr<parser::RDOType__real>& pType, const parser::LPRDOValue& pDefault = parser::LPRDOValue(NULL));
+        explicit Param(const std::string& name, const rdo::intrusive_ptr<parser::RDOType__INT>& pType, const parser::LPRDOValue& pDefault = parser::LPRDOValue(NULL));
+        explicit Param(const std::string& name, const rdo::intrusive_ptr<parser::RDOType__REAL>& pType, const parser::LPRDOValue& pDefault = parser::LPRDOValue(NULL));
         explicit Param(const std::string& name, const rdo::runtime::RDOEnumType::Enums& enums, const parser::LPRDOValue& pDefault = parser::LPRDOValue(NULL));
 
         const parser::LPTypeInfo& type() const { return m_pType; }
-        const rdo::runtime::RDOType::TypeID typeID () const { return m_pType->typeID(); }
+        const rdo::runtime::RDOType::Type typeID () const { return m_pType->typeID(); }
         std::string typeStr() const;
 
         int id() const { return m_id; }
 
-        bool hasRange() const { return (m_pMin && m_pMax) ? m_pMin->typeID() != rdo::runtime::RDOType::t_unknow && m_pMax->typeID() != rdo::runtime::RDOType::t_unknow : false; }
+        bool hasRange() const { return (m_pMin && m_pMax) ? m_pMin->typeID() != rdo::runtime::RDOType::Type::UNKNOW && m_pMax->typeID() != rdo::runtime::RDOType::Type::UNKNOW : false; }
         const parser::LPRDOValue& getMin() const { return m_pMin; }
         const parser::LPRDOValue& getMax() const { return m_pMax; }
         void setRange(const parser::LPRDOValue& pMin, const parser::LPRDOValue& pMax);
@@ -145,7 +145,7 @@ public:
 
         parser::LPRDOEnumType getEnum() const
         {
-            ASSERT(typeID() == rdo::runtime::RDOType::t_enum);
+            ASSERT(typeID() == rdo::runtime::RDOType::Type::ENUM);
             return type()->itype().object_static_cast<parser::RDOEnumType>();
         }
 
@@ -187,12 +187,12 @@ public:
     };
     ParamList m_params;
 
-    Type getType() const { return m_type; }
-    bool isPermanent() const { return m_type == rt_permanent; }
+    Kind getKind() const { return m_kind; }
+    bool isPermanent() const { return m_kind == Kind::PERMANENT; }
     std::size_t id() const { return m_id; }
 
 private:
-    Type m_type;
+    Kind m_kind;
     std::size_t m_id;
 };
 
@@ -321,7 +321,6 @@ public:
         mbuilderRSSNew.m_exist = true;
         m_list.push_back(mbuilderRSSNew);
 
-        //! Удалим старый
         m_pParser->removeRSSResource(parserRSSPrev);
         m_list.erase(mbuilderRSSPrevIt);
 

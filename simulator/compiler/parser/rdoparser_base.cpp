@@ -8,22 +8,21 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 RDOParserItem::RDOParserItem()
-    : m_type      (rdo::model::PAT)
+    : m_type      (rdo::FileType::PAT)
     , m_parser_fun(NULL)
     , m_lexer_fun (NULL)
-    , m_from      (sf_repository)
+    , m_from      (StreamFrom::REPOSITORY)
 {}
 
 RDOParserItem::RDOParserItem(
-        rdo::model::FileType type,
-        t_bison_parse_fun            parser_fun,
-        t_flex_lexer_fun             lexer_fun,
-        StreamFrom                   from
-)
-    : m_type      (type      )
+        rdo::FileType type,
+        t_bison_parse_fun parser_fun,
+        t_flex_lexer_fun lexer_fun,
+        StreamFrom from)
+    : m_type      (type)
     , m_parser_fun(parser_fun)
-    , m_lexer_fun (lexer_fun )
-    , m_from      (from      )
+    , m_lexer_fun (lexer_fun)
+    , m_from      (from)
 {}
 
 RDOParserItem::~RDOParserItem()

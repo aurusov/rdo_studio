@@ -35,22 +35,22 @@ DECLARE_FACTORY(MyClass)
 public:
     int m_a;
 
-    enum { DAFAUL_VALUE = 1 };
+    enum { DEFAULT_VALUE = 1 };
 
 protected:
-     MyClass(): m_a(DAFAUL_VALUE) { g_pLog->push_back( m_a); }
-    ~MyClass()                    { g_pLog->push_back(-m_a); }
+     MyClass(): m_a(DEFAULT_VALUE) { g_pLog->push_back( m_a); }
+    ~MyClass()                     { g_pLog->push_back(-m_a); }
 };
 
 PREDECLARE_OBJECT_INTERFACE(IMyClass21)
 struct IMyClass21: public rdo::RefCounter<IMyClass21>
 {
-    enum { DAFAUL_VALUE = 21 };
+    enum { DEFAULT_VALUE = 21 };
 
     virtual void ifun21() = 0;
 
-             IMyClass21() { g_pLog->push_back( DAFAUL_VALUE); }
-    virtual ~IMyClass21() { g_pLog->push_back(-DAFAUL_VALUE); }
+             IMyClass21() { g_pLog->push_back( DEFAULT_VALUE); }
+    virtual ~IMyClass21() { g_pLog->push_back(-DEFAULT_VALUE); }
 };
 
 #define DECLARE_IMyClass21 \
@@ -65,7 +65,7 @@ DECLARE_FACTORY(MyClass2)
 public:
     int m_b;
 
-    enum { DAFAUL_VALUE = 2 };
+    enum { DEFAULT_VALUE = 2 };
 
     bool operator==(const MyClass2& obj) const
     {
@@ -73,8 +73,8 @@ public:
     }
 
 protected:
-     MyClass2(): m_b(DAFAUL_VALUE) { g_pLog->push_back( m_b); }
-    ~MyClass2()                    { g_pLog->push_back(-m_b); }
+     MyClass2(): m_b(DEFAULT_VALUE) { g_pLog->push_back( m_b); }
+    ~MyClass2()                     { g_pLog->push_back(-m_b); }
 
     DECLARE_IMyClass21;
 };
@@ -89,10 +89,10 @@ class MyClass3: public rdo::counter_reference
 public:
     int m_c;
 
-    enum { DAFAUL_VALUE = 3 };
+    enum { DEFAULT_VALUE = 3 };
 
-     MyClass3(): m_c(DAFAUL_VALUE) { g_pLog->push_back( m_c); }
-    ~MyClass3()                    { g_pLog->push_back(-m_c); }
+     MyClass3(): m_c(DEFAULT_VALUE) { g_pLog->push_back( m_c); }
+    ~MyClass3()                     { g_pLog->push_back(-m_c); }
 
     LPMyClass3 returnThis()
     {
@@ -106,11 +106,11 @@ DECLARE_FACTORY(MyClass4)
 public:
     int m_d;
 
-    enum { DAFAUL_VALUE = 4 };
+    enum { DEFAULT_VALUE = 4 };
 
 private:
-     MyClass4(): m_d(DAFAUL_VALUE) { g_pLog->push_back( m_d); }
-    ~MyClass4()                    { g_pLog->push_back(-m_d); }
+     MyClass4(): m_d(DEFAULT_VALUE) { g_pLog->push_back( m_d); }
+    ~MyClass4()                     { g_pLog->push_back(-m_d); }
 };
 DECLARE_POINTER(MyClass4)
 
@@ -122,16 +122,16 @@ BOOST_AUTO_TEST_CASE(DefaultConstructor)
     {
         LPMyClass pMyClass = rdo::Factory<MyClass>::create();
         BOOST_CHECK(pMyClass);
-        BOOST_CHECK(pMyClass->m_a == MyClass::DAFAUL_VALUE);
+        BOOST_CHECK(pMyClass->m_a == MyClass::DEFAULT_VALUE);
 
         pMyClass->m_a = 3;
         BOOST_CHECK(pMyClass->m_a == 3);
-        pMyClass->m_a = MyClass::DAFAUL_VALUE;
+        pMyClass->m_a = MyClass::DEFAULT_VALUE;
     }
     BOOST_CHECK(log.size() == 2);
     auto it = log.begin();
-    BOOST_CHECK(*it     ==  MyClass::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -MyClass::DAFAUL_VALUE);
+    BOOST_CHECK(*it     ==  MyClass::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -MyClass::DEFAULT_VALUE);
 }
 
 BOOST_AUTO_TEST_CASE(CastSmartPtrToBool)
@@ -143,8 +143,8 @@ BOOST_AUTO_TEST_CASE(CastSmartPtrToBool)
     }
     BOOST_CHECK(log.size() == 2);
     auto it = log.begin();
-    BOOST_CHECK(*it     ==  MyClass::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -MyClass::DAFAUL_VALUE);
+    BOOST_CHECK(*it     ==  MyClass::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -MyClass::DEFAULT_VALUE);
 }
 
 BOOST_AUTO_TEST_CASE(OperatorPtrEqual)
@@ -175,10 +175,10 @@ BOOST_AUTO_TEST_CASE(OperatorPtrEqual)
     }
     BOOST_CHECK(log.size() == 4);
     auto it = log.begin();
-    BOOST_CHECK(*it     ==  MyClass::DAFAUL_VALUE              );
-    BOOST_CHECK(*(++it) ==  MyClass::DAFAUL_VALUE              );
-    BOOST_CHECK(*(++it) == -MyClass::DAFAUL_VALUE              );
-    BOOST_CHECK(*(++it) == -MyClass::DAFAUL_VALUE * MULTIPLEXER);
+    BOOST_CHECK(*it     ==  MyClass::DEFAULT_VALUE              );
+    BOOST_CHECK(*(++it) ==  MyClass::DEFAULT_VALUE              );
+    BOOST_CHECK(*(++it) == -MyClass::DEFAULT_VALUE              );
+    BOOST_CHECK(*(++it) == -MyClass::DEFAULT_VALUE * MULTIPLEXER);
 }
 
 BOOST_AUTO_TEST_CASE(CreateSmartPtrByThis)
@@ -196,8 +196,8 @@ BOOST_AUTO_TEST_CASE(CreateSmartPtrByThis)
     }
     BOOST_CHECK(log.size() == 2);
     auto it = log.begin();
-    BOOST_CHECK(*it     ==  MyClass3::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -MyClass3::DAFAUL_VALUE);
+    BOOST_CHECK(*it     ==  MyClass3::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -MyClass3::DEFAULT_VALUE);
 }
 
 BOOST_AUTO_TEST_CASE(StaticCast)
@@ -210,20 +210,20 @@ BOOST_AUTO_TEST_CASE(StaticCast)
         pMyClass2->m_b *= MULTIPLEXER;
 
         LPMyClass pMyClass = pMyClass2.object_static_cast<MyClass>();
-        BOOST_CHECK(pMyClass->m_a == MyClass::DAFAUL_VALUE * MULTIPLEXER);
+        BOOST_CHECK(pMyClass->m_a == MyClass::DEFAULT_VALUE * MULTIPLEXER);
 
         ++pMyClass->m_a;
-        BOOST_CHECK(pMyClass->m_a == MyClass::DAFAUL_VALUE * MULTIPLEXER + 1);
+        BOOST_CHECK(pMyClass->m_a == MyClass::DEFAULT_VALUE * MULTIPLEXER + 1);
         BOOST_CHECK(pMyClass->m_a == pMyClass2->m_a);
     }
     BOOST_CHECK(log.size() == 6);
     auto it = log.begin();
-    BOOST_CHECK(*it     ==  IMyClass21 ::DAFAUL_VALUE                   );
-    BOOST_CHECK(*(++it) ==   MyClass   ::DAFAUL_VALUE                   );
-    BOOST_CHECK(*(++it) ==   MyClass2  ::DAFAUL_VALUE                   );
-    BOOST_CHECK(*(++it) == -(MyClass2  ::DAFAUL_VALUE * MULTIPLEXER    ));
-    BOOST_CHECK(*(++it) == -(MyClass   ::DAFAUL_VALUE * MULTIPLEXER + 1));
-    BOOST_CHECK(*(++it) == -(IMyClass21::DAFAUL_VALUE                  ));
+    BOOST_CHECK(*it     ==  IMyClass21 ::DEFAULT_VALUE                   );
+    BOOST_CHECK(*(++it) ==   MyClass   ::DEFAULT_VALUE                   );
+    BOOST_CHECK(*(++it) ==   MyClass2  ::DEFAULT_VALUE                   );
+    BOOST_CHECK(*(++it) == -(MyClass2  ::DEFAULT_VALUE * MULTIPLEXER    ));
+    BOOST_CHECK(*(++it) == -(MyClass   ::DEFAULT_VALUE * MULTIPLEXER + 1));
+    BOOST_CHECK(*(++it) == -(IMyClass21::DEFAULT_VALUE                  ));
 }
 
 BOOST_AUTO_TEST_CASE(InterfaceCast)
@@ -248,14 +248,14 @@ BOOST_AUTO_TEST_CASE(InterfaceCast)
     }
     BOOST_CHECK(log.size() == 8);
     auto it = log.begin();
-    BOOST_CHECK(*it     ==  IMyClass21::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) ==  MyClass   ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) ==  MyClass2  ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) ==  CHECK1                  );
-    BOOST_CHECK(*(++it) == -MyClass2  ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -MyClass   ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -IMyClass21::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) ==  CHECK2                  );
+    BOOST_CHECK(*it     ==  IMyClass21::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) ==  MyClass   ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) ==  MyClass2  ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) ==  CHECK1                   );
+    BOOST_CHECK(*(++it) == -MyClass2  ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -MyClass   ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -IMyClass21::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) ==  CHECK2                   );
 }
 
 BOOST_AUTO_TEST_CASE(InterfaceCastThroughChild)
@@ -278,16 +278,16 @@ BOOST_AUTO_TEST_CASE(InterfaceCastThroughChild)
     }
     BOOST_CHECK(log.size() == 10);
     auto it = log.begin();
-    BOOST_CHECK(*it     ==  IMyClass21::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) ==  MyClass   ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) ==  MyClass2  ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) ==  MyClass4  ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) ==  CHECK1                  );
-    BOOST_CHECK(*(++it) == -MyClass4  ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -MyClass2  ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -MyClass   ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -IMyClass21::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) ==  CHECK2                  );
+    BOOST_CHECK(*it     ==  IMyClass21::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) ==  MyClass   ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) ==  MyClass2  ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) ==  MyClass4  ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) ==  CHECK1                   );
+    BOOST_CHECK(*(++it) == -MyClass4  ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -MyClass2  ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -MyClass   ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -IMyClass21::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) ==  CHECK2                   );
 }
 
 BOOST_AUTO_TEST_CASE(CompareSmartPtr)
@@ -311,14 +311,14 @@ BOOST_AUTO_TEST_CASE(CompareSmartPtr)
     }
     BOOST_CHECK(log.size() == 8);
     auto it = log.begin();
-    BOOST_CHECK(*it     ==  IMyClass21::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) ==  MyClass   ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) ==  MyClass2  ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) ==  MyClass3  ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -MyClass3  ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -MyClass2  ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -MyClass   ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -IMyClass21::DAFAUL_VALUE);
+    BOOST_CHECK(*it     ==  IMyClass21::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) ==  MyClass   ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) ==  MyClass2  ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) ==  MyClass3  ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -MyClass3  ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -MyClass2  ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -MyClass   ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -IMyClass21::DEFAULT_VALUE);
 }
 
 BOOST_AUTO_TEST_CASE(CompareSmartPtrByValue)
@@ -339,18 +339,18 @@ BOOST_AUTO_TEST_CASE(CompareSmartPtrByValue)
     }
     BOOST_CHECK(log.size() == 12);
     auto it = log.begin();
-    BOOST_CHECK(*it     ==  IMyClass21::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) ==  MyClass   ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) ==  MyClass2  ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) ==  IMyClass21::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) ==  MyClass   ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) ==  MyClass2  ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -MyClass2  ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -MyClass   ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -IMyClass21::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -MyClass2  ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -MyClass   ::DAFAUL_VALUE);
-    BOOST_CHECK(*(++it) == -IMyClass21::DAFAUL_VALUE);
+    BOOST_CHECK(*it     ==  IMyClass21::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) ==  MyClass   ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) ==  MyClass2  ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) ==  IMyClass21::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) ==  MyClass   ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) ==  MyClass2  ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -MyClass2  ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -MyClass   ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -IMyClass21::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -MyClass2  ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -MyClass   ::DEFAULT_VALUE);
+    BOOST_CHECK(*(++it) == -IMyClass21::DEFAULT_VALUE);
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDOSmartPrtTest

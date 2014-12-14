@@ -25,7 +25,7 @@ DockFind::~DockFind()
 
 void DockFind::appendString(
     const QString& str,
-    rdo::model::FileType fileType,
+    rdo::FileType fileType,
     int lineNumber, int posInLine)
 {
     rdo::simulation::report::LogEditLineInfo* pLine = new rdo::simulation::report::LogEditLineInfo(

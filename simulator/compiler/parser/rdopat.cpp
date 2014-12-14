@@ -83,15 +83,15 @@ void RDOPATPattern::popContext()
     RDOParser::s_parser()->contextStack()->pop<RDOPATPattern>();
 }
 
-std::string RDOPATPattern::typeToString(PatType type) const
+std::string RDOPATPattern::typeToString(Type type)
 {
     switch (type)
     {
-    case PT_Event    : return "событие";
-    case PT_Rule     : return "продукционное правило";
-    case PT_Operation: return "операция";
-    case PT_Keyboard : return "клавиатурная операция";
-    default          : return "неизвестный";
+    case Type::EVENT    : return "событие";
+    case Type::RULE     : return "продукционное правило";
+    case Type::OPERATION: return "операция";
+    case Type::KEYBOARD : return "клавиатурная операция";
+    default: return "неизвестный";
     }
 }
 
@@ -293,11 +293,11 @@ void RDOPATPattern::rel_res_insert(const LPRDORelevantResource& pRelevantResourc
 
     switch (getType())
     {
-    case PT_Event    : getPatRuntime<rdo::runtime::RDOPatternEvent    >()->addConvertorStatus     (pRelevantResource->m_statusBegin); break;
-    case PT_Rule     : getPatRuntime<rdo::runtime::RDOPatternRule     >()->addConvertorStatus     (pRelevantResource->m_statusBegin); break;
-    case PT_Operation: getPatRuntime<rdo::runtime::RDOPatternOperation>()->addConvertorBeginStatus(pRelevantResource->m_statusBegin); break;
-    case PT_Keyboard : getPatRuntime<rdo::runtime::RDOPatternKeyboard >()->addConvertorBeginStatus(pRelevantResource->m_statusBegin); break;
-    default          : parser::g_error().error(src_info(), "Неизвестный тип образца");
+    case Type::EVENT    : getPatRuntime<rdo::runtime::RDOPatternEvent    >()->addConvertorStatus     (pRelevantResource->m_statusBegin); break;
+    case Type::RULE     : getPatRuntime<rdo::runtime::RDOPatternRule     >()->addConvertorStatus     (pRelevantResource->m_statusBegin); break;
+    case Type::OPERATION: getPatRuntime<rdo::runtime::RDOPatternOperation>()->addConvertorBeginStatus(pRelevantResource->m_statusBegin); break;
+    case Type::KEYBOARD : getPatRuntime<rdo::runtime::RDOPatternKeyboard >()->addConvertorBeginStatus(pRelevantResource->m_statusBegin); break;
+    default: parser::g_error().error(src_info(), "Неизвестный тип образца");
     }
     m_relResList.push_back(pRelevantResource);
 }
@@ -349,11 +349,11 @@ void RDOPATPattern::addParamSetCalc(const rdo::runtime::LPRDOCalc& pCalc)
 {
     switch (getType())
     {
-    case PT_Event    : getPatRuntime<rdo::runtime::RDOPatternEvent>()->addConvertorCalc(pCalc); break;
-    case PT_Rule     : getPatRuntime<rdo::runtime::RDOPatternRule >()->addConvertorCalc(pCalc); break;
-    case PT_Operation: NEVER_REACH_HERE;
-    case PT_Keyboard : NEVER_REACH_HERE;
-    default          : parser::g_error().error(src_info(), "Неизвестный тип образца");
+    case Type::EVENT    : getPatRuntime<rdo::runtime::RDOPatternEvent>()->addConvertorCalc(pCalc); break;
+    case Type::RULE     : getPatRuntime<rdo::runtime::RDOPatternRule >()->addConvertorCalc(pCalc); break;
+    case Type::OPERATION: NEVER_REACH_HERE;
+    case Type::KEYBOARD : NEVER_REACH_HERE;
+    default: parser::g_error().error(src_info(), "Неизвестный тип образца");
     }
 }
 
@@ -479,9 +479,9 @@ void RDOPATPattern::setTime(LPRDOFUNArithm& arithm)
 {
     switch (getType())
     {
-    case PT_Operation: getPatRuntime<rdo::runtime::RDOPatternOperation>()->setTime(arithm->createCalc(NULL)); break;
-    case PT_Keyboard : getPatRuntime<rdo::runtime::RDOPatternKeyboard >()->setTime(arithm->createCalc(NULL)); break;
-    default          : parser::g_error().error(src_info(), rdo::format("Для образца типа %s недопустимо использование выражения времени", typeToString(getType()).c_str()));
+    case Type::OPERATION: getPatRuntime<rdo::runtime::RDOPatternOperation>()->setTime(arithm->createCalc(NULL)); break;
+    case Type::KEYBOARD : getPatRuntime<rdo::runtime::RDOPatternKeyboard >()->setTime(arithm->createCalc(NULL)); break;
+    default: parser::g_error().error(src_info(), rdo::format("Для образца типа %s недопустимо использование выражения времени", typeToString(getType()).c_str()));
     }
 }
 
@@ -489,11 +489,11 @@ void RDOPATPattern::addChoiceFromCalc(const rdo::runtime::LPRDOCalc& pCalc)
 {
     switch (getType())
     {
-    case PT_Event    : getPatRuntime<rdo::runtime::RDOPatternEvent    >()->addPreSelectRelRes(pCalc); break;
-    case PT_Rule     : getPatRuntime<rdo::runtime::RDOPatternRule     >()->addChoiceFromCalc (pCalc); break;
-    case PT_Operation: getPatRuntime<rdo::runtime::RDOPatternOperation>()->addChoiceFromCalc (pCalc); break;
-    case PT_Keyboard : getPatRuntime<rdo::runtime::RDOPatternKeyboard >()->addChoiceFromCalc (pCalc); break;
-    default          : parser::g_error().error(src_info(), rdo::format("Для образца типа %s недопустимо использование условния выбора", typeToString(getType()).c_str()));
+    case Type::EVENT    : getPatRuntime<rdo::runtime::RDOPatternEvent    >()->addPreSelectRelRes(pCalc); break;
+    case Type::RULE     : getPatRuntime<rdo::runtime::RDOPatternRule     >()->addChoiceFromCalc (pCalc); break;
+    case Type::OPERATION: getPatRuntime<rdo::runtime::RDOPatternOperation>()->addChoiceFromCalc (pCalc); break;
+    case Type::KEYBOARD : getPatRuntime<rdo::runtime::RDOPatternKeyboard >()->addChoiceFromCalc (pCalc); break;
+    default: parser::g_error().error(src_info(), rdo::format("Для образца типа %s недопустимо использование условния выбора", typeToString(getType()).c_str()));
     }
 }
 
@@ -888,8 +888,8 @@ std::string RDOPatternRule::getWarningMessage_EmptyConvertor(const std::string& 
 // -------------------- RDOPatternOperation
 // --------------------------------------------------------------------------------
 RDOPatternOperation::RDOPatternOperation(const RDOParserSrcInfo& name_src_info, bool trace)
-    : RDOPATPattern  (name_src_info )
-    , m_convertorType(convert_unknow)
+    : RDOPATPattern  (name_src_info)
+    , m_convertorType(ConvertorType::UNKNOW)
 {
     m_pPatRuntime = rdo::Factory<rdo::runtime::RDOPatternOperation>::create(trace);
     ASSERT(m_pPatRuntime);
@@ -897,8 +897,8 @@ RDOPatternOperation::RDOPatternOperation(const RDOParserSrcInfo& name_src_info, 
 }
 
 RDOPatternOperation::RDOPatternOperation(bool /*trace*/, const RDOParserSrcInfo& name_src_info)
-    : RDOPATPattern  (name_src_info )
-    , m_convertorType(convert_unknow)
+    : RDOPATPattern  (name_src_info)
+    , m_convertorType(ConvertorType::UNKNOW)
 {}
 
 void RDOPatternOperation::rel_res_insert(const LPRDORelevantResource& pRelevantResource)
@@ -1022,17 +1022,17 @@ void RDOPatternOperation::addRelResConvertBeginEnd(bool trace_begin, const LPExp
 {
     if (pBeginStatementList)
     {
-        m_convertorType = convert_begin;
+        m_convertorType = ConvertorType::CONVERT_BEGIN;
         ASSERT(m_pCurrRelRes);
         addRelResConvert(trace_begin, pBeginStatementList, convertor_begin_pos, trace_begin_pos, m_pCurrRelRes->m_statusBegin);
-        m_convertorType = convert_unknow;
+        m_convertorType = ConvertorType::UNKNOW;
     }
     if (pEndStatementList)
     {
-        m_convertorType = convert_end;
+        m_convertorType = ConvertorType::CONVERT_END;
         ASSERT(m_pCurrRelRes);
         addRelResConvert(trace_end, pEndStatementList, convertor_end_pos, trace_end_pos, m_pCurrRelRes->m_statusEnd);
-        m_convertorType = convert_unknow;
+        m_convertorType = ConvertorType::UNKNOW;
     }
 }
 
@@ -1040,9 +1040,9 @@ void RDOPatternOperation::addParamSetCalc(const rdo::runtime::LPRDOCalc& pCalc)
 {
     switch (m_convertorType)
     {
-    case convert_begin: getPatRuntime<rdo::runtime::RDOPatternOperation>()->addConvertorBeginCalc(pCalc); break;
-    case convert_end  : getPatRuntime<rdo::runtime::RDOPatternOperation>()->addConvertorEndCalc  (pCalc); break;
-    default           : NEVER_REACH_HERE;
+    case ConvertorType::CONVERT_BEGIN: getPatRuntime<rdo::runtime::RDOPatternOperation>()->addConvertorBeginCalc(pCalc); break;
+    case ConvertorType::CONVERT_END  : getPatRuntime<rdo::runtime::RDOPatternOperation>()->addConvertorEndCalc  (pCalc); break;
+    default: NEVER_REACH_HERE;
     }
 }
 
@@ -1050,9 +1050,9 @@ std::string RDOPatternOperation::getErrorMessage_NotNeedConvertor(const std::str
 {
     switch (m_convertorType)
     {
-    case convert_begin: return rdo::format("Для релевантного ресурса '%s' не требуется конвертор начала (Convert_begin), т.к. его статус: %s", name.c_str(), RDOPATPattern::StatusToStr(status).c_str()); break;
-    case convert_end  : return rdo::format("Для релевантного ресурса '%s' не требуется конвертор конца (Convert_end), т.к. его статус: %s", name.c_str(), RDOPATPattern::StatusToStr(status).c_str()); break;
-    default           : NEVER_REACH_HERE;
+    case ConvertorType::CONVERT_BEGIN: return rdo::format("Для релевантного ресурса '%s' не требуется конвертор начала (Convert_begin), т.к. его статус: %s", name.c_str(), RDOPATPattern::StatusToStr(status).c_str()); break;
+    case ConvertorType::CONVERT_END  : return rdo::format("Для релевантного ресурса '%s' не требуется конвертор конца (Convert_end), т.к. его статус: %s", name.c_str(), RDOPATPattern::StatusToStr(status).c_str()); break;
+    default: NEVER_REACH_HERE;
     }
     return std::string();
 }
@@ -1061,9 +1061,9 @@ std::string RDOPatternOperation::getWarningMessage_EmptyConvertor(const std::str
 {
     switch (m_convertorType)
     {
-    case convert_begin: return rdo::format("Для релевантного ресурса '%s' указан пустой конвертор начала (Convert_begin), хотя его статус: %s", name.c_str(), RDOPATPattern::StatusToStr(status).c_str()); break;
-    case convert_end  : return rdo::format("Для релевантного ресурса '%s' указан пустой конвертор конца (Convert_end), хотя его статус: %s", name.c_str(), RDOPATPattern::StatusToStr(status).c_str()); break;
-    default           : NEVER_REACH_HERE;
+    case ConvertorType::CONVERT_BEGIN: return rdo::format("Для релевантного ресурса '%s' указан пустой конвертор начала (Convert_begin), хотя его статус: %s", name.c_str(), RDOPATPattern::StatusToStr(status).c_str()); break;
+    case ConvertorType::CONVERT_END  : return rdo::format("Для релевантного ресурса '%s' указан пустой конвертор конца (Convert_end), хотя его статус: %s", name.c_str(), RDOPATPattern::StatusToStr(status).c_str()); break;
+    default: NEVER_REACH_HERE;
     }
     return std::string();
 }
@@ -1217,7 +1217,7 @@ rdo::runtime::LPRDOCalc RDORelevantResource::getChoiceCalc()
 {
     if (m_pChoiceFrom && m_pChoiceFrom->m_type == RDOPATChoiceFrom::ch_from)
     {
-        return m_pChoiceFrom->m_pLogic->getCalc(rdo::runtime::RDOType::t_int);
+        return m_pChoiceFrom->m_pLogic->getCalc(rdo::runtime::RDOType::Type::INT);
     }
     return NULL;
 }

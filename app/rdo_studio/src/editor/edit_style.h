@@ -64,7 +64,6 @@ QSettings& operator>> (QSettings& settings,       EditWindow& window);
 class EditStyle: public style::StyleBase
 {
 public:
-    
     enum Bookmark
     {
         B_NONE = 0,
@@ -77,16 +76,16 @@ public:
     EditStyle();
     ~EditStyle();
 
-    EditStyle& operator =( const EditStyle& style );
-    bool operator ==( const EditStyle& style ) const;
-    bool operator !=( const EditStyle& style ) const;
+    EditStyle& operator= (const EditStyle& style);
+    bool operator== (const EditStyle& style) const;
+    bool operator!= (const EditStyle& style) const;
 
-    virtual bool styleDefault( const int styleType ) const;
-    virtual bool styleUsing( const int styleType ) const;
-    virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
-    virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
-    virtual std::string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
-    virtual std::string styleBGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+    virtual bool styleDefault(const int styleType) const;
+    virtual bool styleUsing(const int styleType) const;
+    virtual bool styleBold(const int styleType = STYLE_DEFAULT) const;
+    virtual bool styleItalic(const int styleType = STYLE_DEFAULT) const;
+    virtual std::string styleFGColorToHEX(const int styleType = STYLE_DEFAULT) const;
+    virtual std::string styleBGColorToHEX(const int styleType = STYLE_DEFAULT) const;
 
     static EditStyle getDefaultStyle();
     static EditStyle getClassicStyle();

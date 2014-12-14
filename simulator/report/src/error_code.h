@@ -8,7 +8,6 @@ namespace rdo {
 namespace simulation {
 namespace report {
 
-//! Код окончания компиляции или прогона модели
 enum RDOExitCode
 {
     EC_OK = 0, // Модель скомпилировалась или завершилась без ошибок

@@ -41,7 +41,7 @@ namespace
             {
                 for (size_t i = 0; i < RDOFileType_ENUM_SIZE; i++)
                 {
-                    std::string fileExtension = rdo::model::getFileTypeString(rdo::model::FileType(i));
+                    std::string fileExtension = rdo::getFileTypeString(rdo::FileType(i));
                     boost::algorithm::to_lower(fileExtension);
                     const std::string fileName = pModel->getName().toStdString() + "." + fileExtension;
                     const boost::filesystem::path filePath = modelFolder / fileName;
@@ -56,7 +56,7 @@ namespace
         catch (const boost::filesystem::filesystem_error& error)
         {
             const std::string system_what = error.boost::system::system_error::what();
-            const std::string system_what_utf = 
+            const std::string system_what_utf =
 #if defined(OST_WINDOWS)
                 rdo::locale::convertFromCLocale(system_what, rdo::locale::get().system());
 #elif defined(OST_LINUX)
@@ -203,11 +203,11 @@ void PluginGame5::executeCommand(const std::string& commandLine)
     {
         pModel->getTab()->getItemEdit(i)->clearAll();
     }
-    pModel->getTab()->getItemEdit(rdo::model::RTP)->appendText(PluginGame5ModelGenerator::modelRTP(board));
-    pModel->getTab()->getItemEdit(rdo::model::RSS)->appendText(PluginGame5ModelGenerator::modelRSS(board));
-    pModel->getTab()->getItemEdit(rdo::model::PAT)->appendText(PluginGame5ModelGenerator::modelPAT());
-    pModel->getTab()->getItemEdit(rdo::model::DPT)->appendText(PluginGame5ModelGenerator::modelDPT(board));
-    pModel->getTab()->getItemEdit(rdo::model::FUN)->appendText(PluginGame5ModelGenerator::modelFUN(board));
+    pModel->getTab()->getItemEdit(rdo::FileType::RTP)->appendText(PluginGame5ModelGenerator::modelRTP(board));
+    pModel->getTab()->getItemEdit(rdo::FileType::RSS)->appendText(PluginGame5ModelGenerator::modelRSS(board));
+    pModel->getTab()->getItemEdit(rdo::FileType::PAT)->appendText(PluginGame5ModelGenerator::modelPAT());
+    pModel->getTab()->getItemEdit(rdo::FileType::DPT)->appendText(PluginGame5ModelGenerator::modelDPT(board));
+    pModel->getTab()->getItemEdit(rdo::FileType::FUN)->appendText(PluginGame5ModelGenerator::modelFUN(board));
 
     pModel->saveModel();
     g_pApp->quit();

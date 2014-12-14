@@ -28,7 +28,15 @@ public slots:
 
 private:
     std::string evaluateBy() const;
-    std::string activityValue(int direction) const;
+
+    enum class MoveDirection
+    {
+        UP,
+        DOWN,
+        RIGHT,
+        LEFT
+    };
+    std::string activityValue(MoveDirection direction) const;
 
     QString modelRTP() const;
     QString modelRSS() const;

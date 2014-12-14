@@ -29,9 +29,9 @@ inline void RDOValue::setPointer(const rdo::intrusive_ptr<T>& pObject)
     ASSERT(m_pType);
     ASSERT(pObject);
     ASSERT(
-        typeID() == rdo::runtime::RDOType::t_string        ||
-        typeID() == rdo::runtime::RDOType::t_identificator ||
-        typeID() == rdo::runtime::RDOType::t_pointer
+        typeID() == rdo::runtime::RDOType::Type::STRING        ||
+        typeID() == rdo::runtime::RDOType::Type::IDENTIFICATOR ||
+        typeID() == rdo::runtime::RDOType::Type::POINTER
     );
 
     new (&m_buffer) rdo::intrusive_ptr_interface_wrapper<T>(pObject);
@@ -54,9 +54,9 @@ template <class T>
 inline const rdo::intrusive_ptr<T>& RDOValue::get() const
 {
     ASSERT(
-        typeID() == rdo::runtime::RDOType::t_string        ||
-        typeID() == rdo::runtime::RDOType::t_identificator ||
-        typeID() == rdo::runtime::RDOType::t_pointer
+        typeID() == rdo::runtime::RDOType::Type::STRING        ||
+        typeID() == rdo::runtime::RDOType::Type::IDENTIFICATOR ||
+        typeID() == rdo::runtime::RDOType::Type::POINTER
     );
 
     return __get<rdo::intrusive_ptr_interface_wrapper<T> >();

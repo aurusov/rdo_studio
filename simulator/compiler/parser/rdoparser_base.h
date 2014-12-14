@@ -25,13 +25,13 @@ class RDOParserItem: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOParserItem);
 public:
-    enum StreamFrom
+    enum class StreamFrom
     {
-        sf_repository,
-        sf_editor
+        REPOSITORY,
+        EDITOR
     };
 
-    rdo::model::FileType m_type;
+    rdo::FileType m_type;
 
     t_bison_parse_fun m_parser_fun;
     t_flex_lexer_fun  m_lexer_fun;
@@ -45,14 +45,14 @@ public:
 protected:
     RDOParserItem();
     RDOParserItem(
-        rdo::model::FileType type,
-        t_bison_parse_fun            parser_fun,
-        t_flex_lexer_fun             lexer_fun,
-        StreamFrom                   from = sf_repository
+        rdo::FileType type,
+        t_bison_parse_fun parser_fun,
+        t_flex_lexer_fun lexer_fun,
+        StreamFrom from = StreamFrom::REPOSITORY
     );
     virtual ~RDOParserItem();
 
-    StreamFrom m_from;
+    const StreamFrom m_from;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

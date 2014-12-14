@@ -13,24 +13,24 @@ namespace rdo { namespace gui { namespace tracer {
 class ParamInfo
 {
 public:
-    enum ParamType
+    enum class Type
     {
-        PT_INTEGER = 0,
-        PT_REAL,
-        PT_ENUMERATIVE,
-        PT_BOOL,
-        PT_ARRAY,
-        PT_STRING,
-        PT_RESOURCE
+        INTEGER = 0,
+        REAL,
+        ENUMERATIVE,
+        BOOL,
+        ARRAY,
+        STRING,
+        RESOURCE
     };
 
-    ParamInfo(const ParamType type);
+    ParamInfo(const Type type);
     virtual ~ParamInfo();
 
     const QString& getName() const;
     void           setName(const QString& name);
 
-    ParamType getParamType() const;
+    Type getParamType() const;
 
     int addEnumValue(const std::string& value);
     int addStringValue(const std::string& value);
@@ -40,9 +40,9 @@ public:
 private:
     typedef std::vector<std::string> EnumValueList;
 
-    QString        m_name;
+    QString m_name;
     EnumValueList* m_enumValueList;
-    ParamType      m_paramType;
+    Type m_paramType;
 };
 
 // --------------------------------------------------------------------------------
@@ -52,9 +52,10 @@ class ResourceType: public ChartTreeItem
 {
 DECLARE_FACTORY(ResourceType)
 public:
-    enum Kind
+    enum class Kind
     {
-        RDOTK_PERMANENT = 0, RDOTK_TEMPORARY
+        PERMANENT = 0,
+        TEMPORARY
     };
 
     const QString& getName() const;

@@ -87,58 +87,58 @@ Radius::Radius(double radius)
     : m_radius(radius)
 {}
 
-TextElement::TextElement(const BoundedElement& rect, const ColoredElement& color, const std::string& text, TextAlign align)
-    : FrameItem     (FIT_TEXT)
-    , BoundedElement(rect    )
-    , ColoredElement(color   )
-    , m_text        (text    )
-    , m_align       (align   )
+TextElement::TextElement(const BoundedElement& rect, const ColoredElement& color, const std::string& text, Align align)
+    : FrameItem     (FrameItem::Type::TEXT)
+    , BoundedElement(rect)
+    , ColoredElement(color)
+    , m_text        (text)
+    , m_align       (align)
 {}
 
 LineElement::LineElement(const Point& point1, const Point& point2, const Color& color)
-    : FrameItem(FIT_LINE)
-    , m_point1 (point1  )
-    , m_point2 (point2  )
-    , m_color  (color   )
+    : FrameItem(FrameItem::Type::LINE)
+    , m_point1 (point1)
+    , m_point2 (point2)
+    , m_color  (color)
 {}
 
 TriangElement::TriangElement(const Point& point1, const Point& point2, const Point& point3, const ColoredElement& color)
-    : FrameItem     (FIT_TRIANG)
-    , ColoredElement(color     )
-    , m_point1      (point1    )
-    , m_point2      (point2    )
-    , m_point3      (point3    )
+    : FrameItem     (FrameItem::Type::TRIANG)
+    , ColoredElement(color)
+    , m_point1      (point1)
+    , m_point2      (point2)
+    , m_point3      (point3)
 {}
 
 RectElement::RectElement(const BoundedElement& rect, const ColoredElement& color)
-    : FrameItem     (FIT_RECT)
-    , BoundedElement(rect    )
-    , ColoredElement(color   )
+    : FrameItem     (FrameItem::Type::RECT)
+    , BoundedElement(rect)
+    , ColoredElement(color)
 {}
 
 RoundRectElement::RoundRectElement(const BoundedElement& rect, const ColoredElement& color)
-    : FrameItem     (FIT_R_RECT)
-    , BoundedElement(rect      )
-    , ColoredElement(color     )
+    : FrameItem     (FrameItem::Type::ROUND_RECT)
+    , BoundedElement(rect)
+    , ColoredElement(color)
 {}
 
 CircleElement::CircleElement(const Point& center, const Radius& radius, const ColoredElement& color)
-    : FrameItem     (FIT_CIRCLE)
-    , ColoredElement(color     )
-    , m_center      (center    )
-    , m_radius      (radius    )
+    : FrameItem     (FrameItem::Type::CIRCLE)
+    , ColoredElement(color)
+    , m_center      (center)
+    , m_radius      (radius)
 {}
 
 EllipseElement::EllipseElement(const BoundedElement& rect, const ColoredElement& color)
-    : FrameItem     (FIT_ELLIPSE)
-    , BoundedElement(rect       )
-    , ColoredElement(color      )
+    : FrameItem     (FrameItem::Type::ELLIPSE)
+    , BoundedElement(rect)
+    , ColoredElement(color)
 {}
 
 BmpElement::BmpElement(const Point& point, const std::string& bmp_name, const std::string& mask_name)
-    : FrameItem  (FIT_BMP  )
-    , m_point    (point    )
-    , m_bmp_name (bmp_name )
+    : FrameItem  (FrameItem::Type::BMP)
+    , m_point    (point)
+    , m_bmp_name (bmp_name)
     , m_mask_name(mask_name)
 {}
 
@@ -148,9 +148,9 @@ bool BmpElement::hasMask() const
 }
 
 ScaledBmpElement::ScaledBmpElement(const BoundedElement& rect, const std::string& bmp_name, const std::string& mask_name)
-    : FrameItem     (FIT_S_BMP)
-    , BoundedElement(rect     )
-    , m_bmp_name    (bmp_name )
+    : FrameItem     (FrameItem::Type::S_BMP)
+    , BoundedElement(rect)
+    , m_bmp_name    (bmp_name)
     , m_mask_name   (mask_name)
 {}
 
@@ -160,13 +160,13 @@ bool ScaledBmpElement::hasMask() const
 }
 
 ActiveElement::ActiveElement(const BoundedElement& rect, const std::string& opr_name)
-    : FrameItem     (FIT_ACTIVE)
-    , BoundedElement(rect      )
-    , m_opr_name    (opr_name  )
+    : FrameItem     (FrameItem::Type::ACTIVE)
+    , BoundedElement(rect)
+    , m_opr_name    (opr_name)
 {}
 
 NullElement::NullElement()
-    : FrameItem(FIT_NULL)
+    : FrameItem(FrameItem::Type::NONE)
 {}
 
 Frame::~Frame()

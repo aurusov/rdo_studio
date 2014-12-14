@@ -11,19 +11,19 @@ namespace animation {
 
 struct FrameItem
 {
-    enum Type
+    enum class Type
     {
-        FIT_NULL,
-        FIT_TEXT,
-        FIT_LINE,
-        FIT_TRIANG,
-        FIT_RECT,
-        FIT_R_RECT,
-        FIT_CIRCLE,
-        FIT_ELLIPSE,
-        FIT_BMP,
-        FIT_S_BMP,
-        FIT_ACTIVE
+        NONE,
+        TEXT,
+        LINE,
+        TRIANG,
+        RECT,
+        ROUND_RECT,
+        CIRCLE,
+        ELLIPSE,
+        BMP,
+        S_BMP,
+        ACTIVE
     };
 
     FrameItem(Type type);
@@ -131,17 +131,17 @@ struct TextElement
     , public BoundedElement
     , public ColoredElement
 {
-    enum TextAlign
+    enum class Align
     {
-        TETA_LEFT,
-        TETA_RIGHT,
-        TETA_CENTER
+        LEFT,
+        RIGHT,
+        CENTER
     };
 
     std::string m_text;
-    TextAlign m_align;
+    Align m_align;
 
-    TextElement(const BoundedElement& rect, const ColoredElement& color, const std::string& text, TextAlign align);
+    TextElement(const BoundedElement& rect, const ColoredElement& color, const std::string& text, Align align);
 };
 
 struct LineElement: public FrameItem

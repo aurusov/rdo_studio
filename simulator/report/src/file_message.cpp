@@ -7,7 +7,7 @@ namespace rdo {
 namespace simulation {
 namespace report {
 
-FileMessage::FileMessage(const std::string& text, rdo::model::FileType file, std::size_t line, std::size_t pos, Type type)
+FileMessage::FileMessage(const std::string& text, rdo::FileType file, std::size_t line, std::size_t pos, Type type)
     : m_text(text)
     , m_file(file)
     , m_line(line)
@@ -20,7 +20,7 @@ std::string FileMessage::getText() const
     return m_text;
 }
 
-rdo::model::FileType FileMessage::getFileType() const
+rdo::FileType FileMessage::getFileType() const
 {
     return m_file;
 }

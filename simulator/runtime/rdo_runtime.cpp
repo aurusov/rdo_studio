@@ -469,7 +469,7 @@ void RDORuntime::insertNewResource(const LPRDOResource& pResource)
         {
             error().push(RDOSyntaxMessage(
                 "Внутренняя ошибка: insertNewResource",
-                rdo::model::PAT,
+                rdo::FileType::PAT,
                 0,
                 0
             ));
@@ -480,7 +480,7 @@ void RDORuntime::insertNewResource(const LPRDOResource& pResource)
     {
         error().push(RDOSyntaxMessage(
             "Сработало лицензионное ограничение на количество ресурсов. Обратитесь за приобритением полной версии",
-            rdo::model::PAT,
+            rdo::FileType::PAT,
             0,
             0
         ));

@@ -25,7 +25,7 @@ LocalVariable::LocalVariable(const LPRDOValue& pName, const LPExpression& pExpre
     ASSERT(m_pName      );
     ASSERT(m_pExpression);
 
-    if (m_pExpression->typeInfo()->typeID() == rdo::runtime::RDOType::t_unknow)
+    if (m_pExpression->typeInfo()->typeID() == rdo::runtime::RDOType::Type::UNKNOW)
     {
         parser::g_error().error(m_pExpression->typeInfo()->src_info(), "У данного типа нет значения поумолчанию");
     }

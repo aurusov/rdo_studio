@@ -39,17 +39,17 @@ void Param::getCaptions(std::vector<std::string>& captions, const int valueCount
 {
     switch (getParamInfo()->getParamType())
     {
-    case ParamInfo::PT_INTEGER:
+    case ParamInfo::Type::INTEGER:
         Serie::getCaptionsInt(captions, valueCount);
         break;
 
-    case ParamInfo::PT_REAL:
+    case ParamInfo::Type::REAL:
         Serie::getCaptionsDouble(captions, valueCount);
         break;
 
-    case ParamInfo::PT_ENUMERATIVE:
-    case ParamInfo::PT_BOOL:
-    case ParamInfo::PT_STRING:
+    case ParamInfo::Type::ENUMERATIVE:
+    case ParamInfo::Type::BOOL:
+    case ParamInfo::Type::STRING:
     {
         Serie::getCaptions(captions, valueCount);
         int delta = getParamInfo()->getEnumCount();
@@ -74,8 +74,9 @@ void Param::getCaptions(std::vector<std::string>& captions, const int valueCount
         }
         break;
     }
-    case ParamInfo::PT_ARRAY:
-        NEVER_REACH_HERE;
+    case ParamInfo::Type::ARRAY:
+    case ParamInfo::Type::RESOURCE:
+            break;
     }
 }
 
@@ -163,18 +164,18 @@ void Resource::setParams(std::string& line, Time* const pTime, const int eventIn
         {
             switch (m_pResourceType->getParamInfo(i)->getParamType())
             {
-            case ParamInfo::PT_BOOL:
+            case ParamInfo::Type::BOOL:
                 newValue = nextValue == "true" ? 1.0 : 0.0;
                 break;
 
-            case ParamInfo::PT_STRING:
+            case ParamInfo::Type::STRING:
                 newValue = m_pResourceType->getParamInfo(i)->addStringValue(nextValue);
                 break;
 
-            case ParamInfo::PT_RESOURCE:
+            case ParamInfo::Type::RESOURCE:
                 newValue = 0;
                 break;
-                
+
             default:
                 newValue = boost::lexical_cast<double>(nextValue);
                 break;

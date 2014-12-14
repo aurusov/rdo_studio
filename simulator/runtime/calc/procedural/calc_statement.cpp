@@ -141,7 +141,7 @@ RDOValue RDOCalcBaseStatementList::doCalc(const LPRDORuntime& pRuntime)
     for (const auto& calc: m_calcStatementList)
     {
         RDOValue tempValue = calc->calcValue(pRuntime);
-        if (tempValue.typeID() != RDOType::t_unknow)
+        if (tempValue.typeID() != RDOType::Type::UNKNOW)
         {
             value = tempValue;
         }

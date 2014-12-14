@@ -19,7 +19,7 @@ RDOTypeParam::RDOTypeParam(const LPRDOType& pType, const RDOParserSrcInfo& src_i
     ASSERT(m_pType);
     setSrcText(m_pType->name());
 
-    if (m_pType->type()->typeID() == rdo::runtime::RDOType::t_enum)
+    if (m_pType->type()->typeID() == rdo::runtime::RDOType::Type::ENUM)
     {
         Converter::s_converter()->insertPreCastType(this);
     }

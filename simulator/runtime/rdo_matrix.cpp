@@ -107,17 +107,17 @@ void RDOMatrixValue::setItem(const RDOValue& index, const RDOValue& item)
 // -------------------- RDOMatrixIterator
 // --------------------------------------------------------------------------------
 RDOMatrixIterator::RDOMatrixIterator(const LPRDOMatrixIterator& pIterator)
-    : RDOType   (RDOType::t_pointer   )
+    : RDOType   (RDOType::Type::POINTER   )
     , m_iterator(pIterator->m_iterator)
 {}
 
 RDOMatrixIterator::RDOMatrixIterator(const RDOMatrixIterator& iterator)
-    : RDOType   (RDOType::t_pointer )
+    : RDOType   (RDOType::Type::POINTER )
     , m_iterator(iterator.m_iterator)
 {}
 
 RDOMatrixIterator::RDOMatrixIterator(const Iterator& iterator)
-    : RDOType   (RDOType::t_pointer)
+    : RDOType   (RDOType::Type::POINTER)
     , m_iterator(iterator          )
 {}
 
@@ -173,7 +173,7 @@ std::string RDOMatrixIterator::asString() const
 // -------------------- RDOMatrixType
 // --------------------------------------------------------------------------------
 RDOMatrixType::RDOMatrixType(const LPItemType& pItemType)
-    : RDOType    (RDOType::t_pointer)
+    : RDOType    (RDOType::Type::POINTER)
     , m_pItemType(pItemType         )
 {}
 

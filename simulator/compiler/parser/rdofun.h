@@ -82,7 +82,7 @@ class RDOFUNLogic: public RDOFUNBase
 DECLARE_FACTORY(RDOFUNLogic);
 friend class RDOFUNArithm;
 public:
-    rdo::runtime::LPRDOCalc getCalc(rdo::runtime::RDOType::TypeID id = rdo::runtime::RDOType::t_real);
+    rdo::runtime::LPRDOCalc getCalc(rdo::runtime::RDOType::Type id = rdo::runtime::RDOType::Type::REAL);
 
     LPRDOFUNLogic operator && (const LPRDOFUNLogic& pSecond);
     LPRDOFUNLogic operator || (const LPRDOFUNLogic& pSecond);
@@ -141,7 +141,7 @@ public:
     rdo::runtime::RDOValue        const_value() const;
 
     LPRDOEnumType                 enumType  () const { return typeInfo()->itype().object_static_cast<RDOEnumType>(); }
-    rdo::runtime::RDOType::TypeID typeID    () const { return typeInfo()->typeID(); }
+    rdo::runtime::RDOType::Type typeID    () const { return typeInfo()->typeID(); }
 
     virtual void setSrcInfo(const RDOParserSrcInfo& srcInfo );
     virtual void setSrcPos (const RDOSrcInfo::Position& position);
@@ -651,24 +651,24 @@ class RDOFUNGroupLogic
 {
 DECLARE_FACTORY(RDOFUNGroupLogic)
 public:
-    enum FunGroupType
+    enum class Type
     {
-        fgt_unknow    = 0,
-        fgt_exist     = 1,
-        fgt_notexist  = 2,
-        fgt_forall    = 3,
-        fgt_notforall = 4,
-        fgt_empty     = 5,
-        fgt_size      = 6,
-        fgt_array     = 7
+        UNKNOW    = 0,
+        EXIST     = 1,
+        NOTEXIST  = 2,
+        FORALL    = 3,
+        NOTFORALL = 4,
+        EMPTY     = 5,
+        SIZE      = 6,
+        ARRAY     = 7
     };
 
     LPRDOFUNLogic createFunLogic(LPRDOFUNLogic& pCondition);
 
 private:
-    RDOFUNGroupLogic(FunGroupType funType, const RDOParserSrcInfo& res_info);
+    RDOFUNGroupLogic(Type type, const RDOParserSrcInfo& res_info);
 
-    const int m_funType;
+    const Type m_type;
 };
 DECLARE_POINTER(RDOFUNGroupLogic);
 

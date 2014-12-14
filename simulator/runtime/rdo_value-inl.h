@@ -13,9 +13,9 @@ inline RDOValue::RDOValue(const LPRDOType& pType, const rdo::intrusive_ptr<T>& p
 
     ASSERT(m_pType);
     ASSERT(
-        typeID() == RDOType::t_string        ||
-        typeID() == RDOType::t_identificator ||
-        typeID() == RDOType::t_pointer
+        typeID() == RDOType::Type::STRING        ||
+        typeID() == RDOType::Type::IDENTIFICATOR ||
+        typeID() == RDOType::Type::POINTER
     );
     new (&m_value) rdo::intrusive_ptr_interface_wrapper<T>(pObject);
     setUndefined(false);

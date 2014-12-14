@@ -181,8 +181,8 @@ void RDOParserSTDFUN::parse(const LPRDOParser& /*pParser*/)
     typedef rdo::runtime::RDOFunCalcStd<StdFun_I_II> Function_I_II;
     typedef rdo::runtime::RDOFunCalcStd<StdFun_I_D>  Function_I_D;
 
-    LPTypeInfo  intType     = rdo::Factory<TypeInfo>::delegate<RDOType__int >(RDOParserSrcInfo());
-    LPTypeInfo  realType    = rdo::Factory<TypeInfo>::delegate<RDOType__real>(RDOParserSrcInfo());
+    LPTypeInfo  intType     = rdo::Factory<TypeInfo>::delegate<RDOType__INT >(RDOParserSrcInfo());
+    LPTypeInfo  realType    = rdo::Factory<TypeInfo>::delegate<RDOType__REAL>(RDOParserSrcInfo());
     LPRDOParam  pIntReturn  = rdo::Factory<RDOParam>::create(RDOParserSrcInfo(), intType );
     LPRDOParam  pRealReturn = rdo::Factory<RDOParam>::create(RDOParserSrcInfo(), realType);
     

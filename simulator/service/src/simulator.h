@@ -76,7 +76,8 @@ public:
     RDOThreadCorba();
 
 private:
-    virtual ~RDOThreadCorba() {}; //! Чтобы нельзя было удалить через delete
+    virtual ~RDOThreadCorba()
+    {}
     virtual void proc(RDOMessageInfo& msg);
     virtual void idle();
     virtual void start();
@@ -86,7 +87,7 @@ private:
     static std::size_t corbaRunThreadFun(void* pParam);
 };
 
-} //! namespace rdoCorba
+} // namespace rdoCorba
 
 #endif // CORBA_ENABLE
 
@@ -143,7 +144,7 @@ private:
     uint64_t m_timeStart;
 
     RDOThreadRunTime();
-    virtual ~RDOThreadRunTime() //! Чтобы нельзя было удалить через delete
+    virtual ~RDOThreadRunTime()
     {};
 
     virtual void proc   (RDOMessageInfo& msg);
@@ -213,8 +214,8 @@ private:
     void terminateModel();
     void closeModel    ();
 
-    ShowMode m_showMode; //! current show mode
-    double   m_showRate; //! current show mode
+    ShowMode m_showMode;
+    double   m_showRate;
 
     std::stringstream m_resultString;
     std::stringstream m_resultInfoString;
@@ -230,7 +231,7 @@ private:
 #endif // CORBA_ENABLE
 
 protected:
-    virtual ~RDOThreadSimulator(); //! Чтобы нельзя было удалить через delete помещаем его в protected
+    virtual ~RDOThreadSimulator();
 
     virtual void proc(RDOMessageInfo& msg);
 
@@ -257,10 +258,10 @@ public:
 
     struct GetList
     {
-        enum Type
+        enum class Type
         {
-            frames,
-            bitmaps
+            FRAMES,
+            BITMAPS
         };
 
         typedef std::list<std::string> StringList;
@@ -283,7 +284,7 @@ class RDOThreadCodeComp: public RDOThreadMT
 protected:
     rdo::compiler::parser::LPRDOParser m_pParser;
 
-    virtual ~RDOThreadCodeComp(); //! Чтобы нельзя было удалить через delete помещаем его в protected
+    virtual ~RDOThreadCodeComp();
     virtual void proc(RDOMessageInfo& msg);
 
 public:
@@ -291,12 +292,12 @@ public:
 
     struct GetCodeComp: public boost::noncopyable
     {
-        rdo::model::FileType m_file;
+        rdo::FileType m_file;
         int m_pos_x;
         int m_pos_y;
         std::string& m_result;
 
-        GetCodeComp(rdo::model::FileType file, int pos_x, int pos_y, std::string& result)
+        GetCodeComp(rdo::FileType file, int pos_x, int pos_y, std::string& result)
             : m_file  (file  )
             , m_pos_x (pos_x )
             , m_pos_y (pos_y )

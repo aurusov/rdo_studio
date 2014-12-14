@@ -320,7 +320,7 @@ sprite                         return(RDO_sprite_call);
     const std::string n1(YYText());
     const int len = n1.length();
     const std::string name(std::string(n1, 1, len-2));
-    rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__string>(
+    rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__STRING>(
         LEXER->m_lploc
             ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, n1)
             : rdo::compiler::parser::RDOParserSrcInfo(n1)
@@ -359,7 +359,7 @@ sprite                         return(RDO_sprite_call);
             : rdo::compiler::parser::RDOParserSrcInfo(yText)
     );
 
-    rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__int>(srcInfo);
+    rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__INT>(srcInfo);
     ASSERT(pType);
 
     // TODO TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
@@ -396,7 +396,7 @@ sprite                         return(RDO_sprite_call);
             : rdo::compiler::parser::RDOParserSrcInfo(yText)
     );
 
-    rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__int>(srcInfo);
+    rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__INT>(srcInfo);
     ASSERT(pType);
 
     // TODO TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
@@ -429,7 +429,7 @@ sprite                         return(RDO_sprite_call);
             : rdo::compiler::parser::RDOParserSrcInfo(yText)
     );
 
-    rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__real>(srcInfo);
+    rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__REAL>(srcInfo);
     ASSERT(pType);
 
     // TODO TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
@@ -454,7 +454,7 @@ sprite                         return(RDO_sprite_call);
 }
 
 true {
-    rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__bool>(
+    rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__BOOL>(
         LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdo::compiler::parser::RDOParserSrcInfo(YYText())
     );
     ASSERT(pType);
@@ -464,7 +464,7 @@ true {
 }
 
 false {
-    rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__bool>(
+    rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__BOOL>(
         LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdo::compiler::parser::RDOParserSrcInfo(YYText())
     );
     ASSERT(pType);

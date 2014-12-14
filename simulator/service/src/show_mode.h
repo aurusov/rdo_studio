@@ -8,12 +8,11 @@ namespace rdo {
 namespace service {
 namespace simulation {
 
-//! Режимы анимации
-enum ShowMode
+enum class ShowMode
 {
-    SM_NoShow,    // Без анимации
-    SM_Animation, // С анимацией
-    SM_Monitor    // Анимация и модель на паузе
+    NoShow,    // Без анимации
+    Animation, // С анимацией
+    Monitor    // Анимация и модель на паузе
 };
 
 }}} // namespace rdo::service::simulation

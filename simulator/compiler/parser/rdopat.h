@@ -51,18 +51,18 @@ friend class RDOOPROperation;
 friend class RDODPTActivity;
 
 public:
-    enum PatType
+    enum class Type
     {
-        PT_Event,
-        PT_Rule,
-        PT_Operation,
-        PT_Keyboard
+        EVENT,
+        RULE,
+        OPERATION,
+        KEYBOARD
     };
-    virtual PatType getType() const = 0;
+    virtual Type getType() const = 0;
 
     typedef std::vector<LPRDORelevantResource> RelResList;
 
-    bool isHaveConvertEnd() const { return getType() == PT_Operation || getType() == PT_Keyboard; }
+    bool isHaveConvertEnd() const { return getType() == Type::OPERATION || getType() == Type::KEYBOARD; }
 
     const rdo::runtime::LPRDOPattern& getPatRuntime() const { return m_pPatRuntime; }
     template<class T>
@@ -133,7 +133,7 @@ private:
     std::size_t m_currentRelResIndex;
     LPContextMemory m_pContextMemory;
 
-    std::string typeToString(PatType type) const;
+    static std::string typeToString(Type type);
     void addChoiceFromCalc(const rdo::runtime::LPRDOCalc& pCalc);
     LPRDORelevantResource findRelRes(const std::string& identifier, const RDOParserSrcInfo& srcInfo) const;
 
@@ -155,9 +155,9 @@ public:
     {
         return 'I';
     }
-    virtual PatType getType() const
+    virtual Type getType() const
     {
-        return PT_Event;
+        return Type::EVENT;
     }
 
     rdo::runtime::LPRDOCalc  getBeforeStartModelPlaning() const;
@@ -190,9 +190,9 @@ public:
     {
         return 'R';
     };
-    virtual PatType getType() const
+    virtual Type getType() const
     {
-        return PT_Rule;
+        return Type::RULE;
     }
 
 protected:
@@ -218,9 +218,9 @@ public:
     {
         return 'A';
     };
-    virtual PatType getType() const
+    virtual Type getType() const
     {
-        return PT_Operation;
+        return Type::OPERATION;
     }
 
 protected:
@@ -235,11 +235,11 @@ protected:
 private:
     RDOPatternOperation(const RDOParserSrcInfo& name_src_info, bool trace);
 
-    enum ConvertorType
+    enum class ConvertorType
     {
-        convert_unknow,
-        convert_begin,
-        convert_end
+        UNKNOW,
+        CONVERT_BEGIN,
+        CONVERT_END
     };
     ConvertorType m_convertorType;
 };
@@ -255,9 +255,9 @@ public:
     {
         return 'K';
     };
-    virtual PatType getType() const
+    virtual Type getType() const
     {
-        return PT_Keyboard;
+        return Type::KEYBOARD;
     }
 
 private:

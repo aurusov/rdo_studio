@@ -91,7 +91,7 @@ public:
     bool isUndefined () const;
 
     const LPRDOType& type() const;
-    RDOType::TypeID typeID() const;
+    RDOType::Type typeID() const;
 
     RDOValue clone() const;
 

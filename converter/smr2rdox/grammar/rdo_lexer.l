@@ -307,7 +307,7 @@ set                    return(RDO_set);
     LEXER->setvalue(CONVERTER->stack().push(
         rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
             name,
-            rdo::Factory<rdo::converter::smr2rdox::RDOType__string>::create(),
+            rdo::Factory<rdo::converter::smr2rdox::RDOType__STRING>::create(),
             LEXER->m_lploc
                 ? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, n1)
                 : rdo::converter::smr2rdox::RDOParserSrcInfo(n1)
@@ -379,7 +379,7 @@ set                    return(RDO_set);
     LEXER->setvalue(CONVERTER->stack().push(
         rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
             value,
-            rdo::Factory<rdo::converter::smr2rdox::RDOType__int>::create(),
+            rdo::Factory<rdo::converter::smr2rdox::RDOType__INT>::create(),
             srcInfo
         )
     ));
@@ -410,7 +410,7 @@ set                    return(RDO_set);
     LEXER->setvalue(CONVERTER->stack().push(
         rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
             value,
-            rdo::Factory<rdo::converter::smr2rdox::RDOType__real>::create(),
+            rdo::Factory<rdo::converter::smr2rdox::RDOType__REAL>::create(),
             srcInfo
         )
     ));
@@ -441,7 +441,7 @@ set                    return(RDO_set);
     LEXER->setvalue(CONVERTER->stack().push(
         rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
             value,
-            rdo::Factory<rdo::converter::smr2rdox::RDOType__int>::create(),
+            rdo::Factory<rdo::converter::smr2rdox::RDOType__INT>::create(),
             srcInfo
         )
     ));
@@ -454,7 +454,7 @@ true {
     LEXER->setvalue(CONVERTER->stack().push(
         rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
             rdo::runtime::RDOValue(true),
-            rdo::Factory<rdo::converter::smr2rdox::RDOType__bool>::create(),
+            rdo::Factory<rdo::converter::smr2rdox::RDOType__BOOL>::create(),
             LEXER->m_lploc
                 ? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, YYText())
                 : rdo::converter::smr2rdox::RDOParserSrcInfo(YYText())
@@ -469,7 +469,7 @@ false {
     LEXER->setvalue(CONVERTER->stack().push(
         rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
             rdo::runtime::RDOValue(false),
-            rdo::Factory<rdo::converter::smr2rdox::RDOType__bool>::create(),
+            rdo::Factory<rdo::converter::smr2rdox::RDOType__BOOL>::create(),
             LEXER->m_lploc
                 ? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, YYText())
                 : rdo::converter::smr2rdox::RDOParserSrcInfo(YYText())

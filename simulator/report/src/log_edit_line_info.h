@@ -12,7 +12,7 @@ namespace report {
 class LogEditLineInfo : public FileMessage
 {
 public:
-    LogEditLineInfo(const std::string& text, rdo::model::FileType file, std::size_t line, std::size_t pos, Type type);
+    LogEditLineInfo(const std::string& text, rdo::FileType file, std::size_t line, std::size_t pos, Type type);
     explicit LogEditLineInfo(const FileMessage& message);
     explicit LogEditLineInfo(const std::string& message);
     virtual ~LogEditLineInfo();

@@ -30,7 +30,7 @@ bool BlockForQueue::checkType(RDOResType rtp, const parser::RDOParserSrcInfo& /*
         parser::RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format("У типа ресурса '%s' нет параметра integer '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
 
     const RDOResType::Param& param = rtp.m_params[rtp_param_name];
-    if (param.typeID() != rdo::runtime::RDOType::t_int)
+    if (param.typeID() != rdo::runtime::RDOType::Type::INT)
         parser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format("У типа ресурса '%s' параметр '%s' не является параметром int", rtp.name().c_str(), rtp_param_name.c_str()));
 
     parser::LPRDORTPResType pResType = parser::RDOParser::s_parser()->findRTPResType(rtp.name());
@@ -55,7 +55,7 @@ RDOResType BlockForQueue::createType(const std::string& rtp_name, const parser::
     // Создадим тип ресурса
     RDOResType rtp(rtp_name);
     // Создадим параметр типа integer
-    RDOResType::Param param(rtp_param_name, rdo::Factory<parser::RDOType__int>::create(), pDefaultValue);
+    RDOResType::Param param(rtp_param_name, rdo::Factory<parser::RDOType__INT>::create(), pDefaultValue);
     rtp.m_params.append(param);
     // Добавим тип ресурса
     if (!rtpList.append(rtp))
@@ -89,7 +89,7 @@ bool BlockForSeize::checkType(RDOResType rtp, const parser::RDOParserSrcInfo& in
     const RDOResType::Param& param = rtp.m_params[rtp_param_name];
     // Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
     // Для начала проверим тип параметра
-    if (param.typeID() != rdo::runtime::RDOType::t_enum)
+    if (param.typeID() != rdo::runtime::RDOType::Type::ENUM)
         parser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format("У типа ресурса '%s' параметр '%s' не является параметром перечислимого типа", rtp.name().c_str(), rtp_param_name.c_str()));
 
     // Теперь проверим сами значения

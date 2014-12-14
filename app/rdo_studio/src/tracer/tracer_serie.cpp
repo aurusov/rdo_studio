@@ -82,7 +82,7 @@ Serie::Kind Serie::getKind() const
 
 bool Serie::isTemporaryResourceParam() const
 {
-    return m_kind == SK_PARAM && ((Param*)this)->getResource()->getType()->getKind() == ResourceType::RDOTK_TEMPORARY;
+    return m_kind == SK_PARAM && ((Param*)this)->getResource()->getType()->getKind() == ResourceType::Kind::TEMPORARY;
 }
 
 void Serie::addValue(Value* const pValue)

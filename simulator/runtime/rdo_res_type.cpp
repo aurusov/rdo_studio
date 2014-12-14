@@ -8,7 +8,7 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 RDOResourceTypeList::RDOResourceTypeList(std::size_t number, const LPRDORuntime& pRuntime)
-    : RDOType           (t_pointer)
+    : RDOType(Type::POINTER)
     , RDOTraceableObject(false, number, rdo::toString(number + 1))
 {
     rdo::intrusive_ptr<RDOResourceTypeList> pThis(this);

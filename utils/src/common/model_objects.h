@@ -6,9 +6,8 @@
 // --------------------------------------------------------------------------------
 
 namespace rdo {
-namespace model {
 
-enum FileType
+enum class FileType
 {
     RTP = 0,
     RSS,
@@ -28,4 +27,4 @@ enum FileType
 
 std::string getFileTypeString(FileType type);
 
-}} // namespace rdo::model
+} // namespace rdo

@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_SUITE(RDOCommonAnimation_Test)
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationFrame)
 {
-    rdo::animation::FrameItem::Type frameItemType = rdo::animation::FrameItem::FIT_NULL;
+    rdo::animation::FrameItem::Type frameItemType = rdo::animation::FrameItem::Type::NONE;
     rdo::animation::FrameItem frameItem(frameItemType);
 
     BOOST_CHECK(frameItem.getType() == frameItemType);
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationTextElement)
     rdo::animation::BoundedElement boundedElement(point, size);
     const std::string text("RDO");
 
-    rdo::animation::TextElement::TextAlign align = rdo::animation::TextElement::TETA_CENTER;
+    rdo::animation::TextElement::Align align = rdo::animation::TextElement::Align::CENTER;
 
     rdo::animation::TextElement textElement(boundedElement, elem, text, align);
 

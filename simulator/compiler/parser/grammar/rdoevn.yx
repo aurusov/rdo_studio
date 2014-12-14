@@ -555,8 +555,8 @@ type_declaration
         LPTypeInfo pType;
         if (pRange)
         {
-            if (pRange->getMin()->typeID() != rdo::runtime::RDOType::t_int ||
-                pRange->getMax()->typeID() != rdo::runtime::RDOType::t_int)
+            if (pRange->getMin()->typeID() != rdo::runtime::RDOType::Type::INT ||
+                pRange->getMax()->typeID() != rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, "Диапазон целого типа должен быть целочисленным");
             }
@@ -566,7 +566,7 @@ type_declaration
         }
         else
         {
-            pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@1, @2));
+            pType = rdo::Factory<TypeInfo>::delegate<RDOType__INT>(RDOParserSrcInfo(@1, @2));
         }
         ASSERT(pType);
         $$ = PARSER->stack().push(pType);
@@ -583,14 +583,14 @@ type_declaration
         }
         else
         {
-            pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(RDOParserSrcInfo(@1, @2));
+            pType = rdo::Factory<TypeInfo>::delegate<RDOType__REAL>(RDOParserSrcInfo(@1, @2));
         }
         ASSERT(pType);
         $$ = PARSER->stack().push(pType);
     }
     | RDO_string
     {
-        LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__string>(RDOParserSrcInfo(@1));
+        LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__STRING>(RDOParserSrcInfo(@1));
         ASSERT(pType);
         $$ = PARSER->stack().push(pType);
     }
@@ -605,7 +605,7 @@ type_declaration
     }
     | RDO_bool
     {
-        LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(RDOParserSrcInfo(@1));
+        LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__BOOL>(RDOParserSrcInfo(@1));
         ASSERT(pType);
         $$ = PARSER->stack().push(pType);
     }
@@ -1383,8 +1383,8 @@ pat_rel_res
             ASSERT(pPattern);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     LPRDOValue pRelName  = PARSER->stack().pop<RDOValue>($2);
                     LPRDOValue pTypeName = PARSER->stack().pop<RDOValue>($3);
@@ -1394,12 +1394,12 @@ pat_rel_res
                     pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), (rdo::runtime::RDOResource::ConvertStatus)$4, (rdo::runtime::RDOResource::ConvertStatus)$5, @4, @5);
                     break;
                 }
-                case RDOPATPattern::PT_Event:
+                case RDOPATPattern::Type::EVENT:
                 {
                     PARSER->error().error(@5, "У события нет события конца, а значит и второго статуса конвертора");
                     break;
                 }
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     PARSER->error().error(@5, "У продукционного правила нет события конца, а значит и второго статуса конвертора");
                     break;
@@ -1417,8 +1417,8 @@ pat_rel_res
             ASSERT(pPattern);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     LPRDOValue pRelName  = PARSER->stack().pop<RDOValue>($2);
                     LPRDOValue pTypeName = PARSER->stack().pop<RDOValue>($3);
@@ -1428,12 +1428,12 @@ pat_rel_res
                     pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), (rdo::runtime::RDOResource::ConvertStatus)$4, (rdo::runtime::RDOResource::ConvertStatus)$5, @4, @5);
                     break;
                 }
-                case RDOPATPattern::PT_Event:
+                case RDOPATPattern::Type::EVENT:
                 {
                     PARSER->error().error(@5, "У события нет события конца, а значит и второго статуса конвертора");
                     break;
                 }
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     PARSER->error().error(@5, "У продукционного правила нет события конца, а значит и второго статуса конвертора");
                     break;
@@ -1451,14 +1451,14 @@ pat_rel_res
             ASSERT(pPattern);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     PARSER->error().error(@4, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr((rdo::runtime::RDOResource::ConvertStatus)$4).c_str()));
                     break;
                 }
-                case RDOPATPattern::PT_Event:
-                case RDOPATPattern::PT_Rule :
+                case RDOPATPattern::Type::EVENT:
+                case RDOPATPattern::Type::RULE :
                 {
                     LPRDOValue pRelName  = PARSER->stack().pop<RDOValue>($2);
                     LPRDOValue pTypeName = PARSER->stack().pop<RDOValue>($3);
@@ -1481,14 +1481,14 @@ pat_rel_res
             ASSERT(pPattern);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     PARSER->error().error(@4, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr((rdo::runtime::RDOResource::ConvertStatus)$4).c_str()));
                     break;
                 }
-                case RDOPATPattern::PT_Event:
-                case RDOPATPattern::PT_Rule :
+                case RDOPATPattern::Type::EVENT:
+                case RDOPATPattern::Type::RULE :
                 {
                     LPRDOValue pRelName  = PARSER->stack().pop<RDOValue>($2);
                     LPRDOValue pTypeName = PARSER->stack().pop<RDOValue>($3);
@@ -1511,8 +1511,8 @@ pat_rel_res
             ASSERT(pPattern);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     LPRDOValue pRelName  = PARSER->stack().pop<RDOValue>($2);
                     LPRDOValue pTypeName = PARSER->stack().pop<RDOValue>($3);
@@ -1526,12 +1526,12 @@ pat_rel_res
                     pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::CS_NoChange, (rdo::runtime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
                     break;
                 }
-                case RDOPATPattern::PT_Event:
+                case RDOPATPattern::Type::EVENT:
                 {
                     PARSER->error().error(@4, "У события нет события конца, а значит и второго статуса конвертора");
                     break;
                 }
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     PARSER->error().error(@4, "У продукционного правила нет события конца, а значит и второго статуса конвертора");
                     break;
@@ -1549,8 +1549,8 @@ pat_rel_res
             ASSERT(pPattern);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     LPRDOValue pRelName  = PARSER->stack().pop<RDOValue>($2);
                     LPRDOValue pTypeName = PARSER->stack().pop<RDOValue>($3);
@@ -1564,12 +1564,12 @@ pat_rel_res
                     pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::CS_NoChange, (rdo::runtime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
                     break;
                 }
-                case RDOPATPattern::PT_Event:
+                case RDOPATPattern::Type::EVENT:
                 {
                     PARSER->error().error(@4, "У события нет события конца, а значит и второго статуса конвертора");
                     break;
                 }
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     PARSER->error().error(@4, "У продукционного правила нет события конца, а значит и второго статуса конвертора");
                     break;
@@ -1587,8 +1587,8 @@ pat_rel_res
             ASSERT(pPattern);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     LPRDOValue pRelName  = PARSER->stack().pop<RDOValue>($2);
                     LPRDOValue pTypeName = PARSER->stack().pop<RDOValue>($3);
@@ -1626,12 +1626,12 @@ pat_rel_res
                     pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::CS_NoChange, rdo::runtime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
                     break;
                 }
-                case RDOPATPattern::PT_Event:
+                case RDOPATPattern::Type::EVENT:
                 {
                     PARSER->error().error(@3, "У события нет события конца, а значит и второго статуса конвертора");
                     break;
                 }
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     PARSER->error().error(@3, "У продукционного правила нет события конца, а значит и второго статуса конвертора");
                     break;
@@ -1649,8 +1649,8 @@ pat_rel_res
             ASSERT(pPattern);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     LPRDOValue pRelName  = PARSER->stack().pop<RDOValue>($2);
                     LPRDOValue pTypeName = PARSER->stack().pop<RDOValue>($3);
@@ -1688,12 +1688,12 @@ pat_rel_res
                     pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::CS_NoChange, rdo::runtime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
                     break;
                 }
-                case RDOPATPattern::PT_Event:
+                case RDOPATPattern::Type::EVENT:
                 {
                     PARSER->error().error(@3, "У события нет события конца, а значит и второго статуса конвертора");
                     break;
                 }
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     PARSER->error().error(@3, "У продукционного правила нет события конца, а значит и второго статуса конвертора");
                     break;
@@ -1711,14 +1711,14 @@ pat_rel_res
             ASSERT(pPattern);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     PARSER->error().error(@3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).c_str()));
                     break;
                 }
-                case RDOPATPattern::PT_Event:
-                case RDOPATPattern::PT_Rule :
+                case RDOPATPattern::Type::EVENT:
+                case RDOPATPattern::Type::RULE :
                 {
                     LPRDOValue pRelName  = PARSER->stack().pop<RDOValue>($2);
                     LPRDOValue pTypeName = PARSER->stack().pop<RDOValue>($3);
@@ -1745,14 +1745,14 @@ pat_rel_res
             ASSERT(pPattern);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     PARSER->error().error(@3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).c_str()));
                     break;
                 }
-                case RDOPATPattern::PT_Event:
-                case RDOPATPattern::PT_Rule :
+                case RDOPATPattern::Type::EVENT:
+                case RDOPATPattern::Type::RULE :
                 {
                     LPRDOValue pRelName  = PARSER->stack().pop<RDOValue>($2);
                     LPRDOValue pTypeName = PARSER->stack().pop<RDOValue>($3);
@@ -1779,8 +1779,8 @@ pat_rel_res
             ASSERT(pPattern);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     LPRDOValue pRelName  = PARSER->stack().pop<RDOValue>($2);
                     LPRDOValue pTypeName = PARSER->stack().pop<RDOValue>($3);
@@ -1799,12 +1799,12 @@ pat_rel_res
                     pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdo::runtime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
                     break;
                 }
-                case RDOPATPattern::PT_Event:
+                case RDOPATPattern::Type::EVENT:
                 {
                     PARSER->error().error(@4, "У события нет события конца, а значит и второго статуса конвертора");
                     break;
                 }
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     PARSER->error().error(@4, "У продукционного правила нет события конца, а значит и второго статуса конвертора");
                     break;
@@ -1822,8 +1822,8 @@ pat_rel_res
             ASSERT(pPattern);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     LPRDOValue pRelName  = PARSER->stack().pop<RDOValue>($2);
                     LPRDOValue pTypeName = PARSER->stack().pop<RDOValue>($3);
@@ -1842,12 +1842,12 @@ pat_rel_res
                     pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdo::runtime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
                     break;
                 }
-                case RDOPATPattern::PT_Event:
+                case RDOPATPattern::Type::EVENT:
                 {
                     PARSER->error().error(@4, "У события нет события конца, а значит и второго статуса конвертора");
                     break;
                 }
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     PARSER->error().error(@4, "У продукционного правила нет события конца, а значит и второго статуса конвертора");
                     break;
@@ -1924,18 +1924,18 @@ pat_rel_res
             ASSERT(pPattern);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     PARSER->error().error(@5, "Ожидается способ выбора (first/with_min/with_max) или $Body");
                     break;
                 }
-                case RDOPATPattern::PT_Event:
+                case RDOPATPattern::Type::EVENT:
                 {
                     PARSER->error().error(@5, "Ожидается способ выбора (first/with_min/with_max) или $Body");
                     break;
                 }
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     PARSER->error().error(@4, @5, rdo::format("Ожидается статус конвертора конца, найдено: %s", LEXER->YYText()));
                     break;
@@ -1951,18 +1951,18 @@ pat_rel_res
             ASSERT(pPattern);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     PARSER->error().error(@5, "Ожидается способ выбора (first/with_min/with_max) или $Body");
                     break;
                 }
-                case RDOPATPattern::PT_Event:
+                case RDOPATPattern::Type::EVENT:
                 {
                     PARSER->error().error(@5, "Ожидается способ выбора (first/with_min/with_max) или $Body");
                     break;
                 }
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     PARSER->error().error(@4, @5, rdo::format("Ожидается статус конвертора конца, найдено: %s", LEXER->YYText()));
                     break;
@@ -1978,18 +1978,18 @@ pat_rel_res
             ASSERT(pPattern);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     PARSER->error().error(@4, "Ожидается способ выбора (first/with_min/with_max) или $Body");
                     break;
                 }
-                case RDOPATPattern::PT_Event:
+                case RDOPATPattern::Type::EVENT:
                 {
                     PARSER->error().error(@4, "Ожидается способ выбора (first/with_min/with_max) или $Body");
                     break;
                 }
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     PARSER->error().error(@3, @4, rdo::format("Ожидается статус конвертора конца, найдено: %s", LEXER->YYText()));
                     break;
@@ -2005,18 +2005,18 @@ pat_rel_res
             ASSERT(pPattern);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     PARSER->error().error(@4, "Ожидается способ выбора (first/with_min/with_max) или $Body");
                     break;
                 }
-                case RDOPATPattern::PT_Event:
+                case RDOPATPattern::Type::EVENT:
                 {
                     PARSER->error().error(@4, "Ожидается способ выбора (first/with_min/with_max) или $Body");
                     break;
                 }
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     PARSER->error().error(@3, @4, rdo::format("Ожидается статус конвертора конца, найдено: %s", LEXER->YYText()));
                     break;
@@ -2064,7 +2064,7 @@ pat_common_choice
         #PASS2
         {
             LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
-            if (pPattern->getType() == RDOPATPattern::PT_Event)
+            if (pPattern->getType() == RDOPATPattern::Type::EVENT)
             {
                 PARSER->error().error(@2, "В событиях не используется способ выбора релевантных ресурсов");
             }
@@ -2080,7 +2080,7 @@ pat_common_choice
         #PASS2
         {
             LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
-            if (pPattern->getType() == RDOPATPattern::PT_Event)
+            if (pPattern->getType() == RDOPATPattern::Type::EVENT)
             {
                 PARSER->error().error(@2, "В событиях не используется способ выбора релевантных ресурсов");
             }
@@ -2100,7 +2100,7 @@ pat_common_choice
         #PASS2
         {
             LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
-            if ( pPattern->getType() == RDOPATPattern::PT_Event)
+            if ( pPattern->getType() == RDOPATPattern::Type::EVENT)
             {
                 PARSER->error().error(@2, "В событиях не используется способ выбора релевантных ресурсов");
             }
@@ -2139,8 +2139,8 @@ pat_time
             LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     PARSER->error().error(@2, "Перед $Body пропущено ключевое слово $Time");
                     break;
@@ -2158,12 +2158,12 @@ pat_time
             LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Event:
+                case RDOPATPattern::Type::EVENT:
                 {
                     PARSER->error().error(@2, "Поле $Time не используется в событии");
                     break;
                 }
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     PARSER->error().error(@2, "Поле $Time не используется в продукционном правиле");
                     break;
@@ -2207,18 +2207,18 @@ pat_time
             LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     PARSER->error().error(@2, rdo::format("Ожидается $Body, найдено: %s", LEXER->YYText()));
                     break;
                 }
-                case RDOPATPattern::PT_Event:
+                case RDOPATPattern::Type::EVENT:
                 {
                     PARSER->error().error(@2, rdo::format("Ожидается $Body, найдено: %s", LEXER->YYText()));
                     break;
                 }
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     PARSER->error().error(@2, rdo::format("Ожидается $Time, найдено: %s", LEXER->YYText()));
                     break;
@@ -2475,18 +2475,18 @@ pat_convert
             {
                 switch (pPattern->getType())
                 {
-                    case RDOPATPattern::PT_Event:
+                    case RDOPATPattern::Type::EVENT:
                     {
                         PARSER->error().error(@1, rdo::format("%s ожидается ключевое слово Convert_event для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
                         break;
                     }
-                    case RDOPATPattern::PT_Rule:
+                    case RDOPATPattern::Type::RULE:
                     {
                         PARSER->error().error(@1, rdo::format("%s ожидается ключевое слово Convert_rule для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
                         break;
                     }
-                    case RDOPATPattern::PT_Operation:
-                    case RDOPATPattern::PT_Keyboard :
+                    case RDOPATPattern::Type::OPERATION:
+                    case RDOPATPattern::Type::KEYBOARD :
                     {
                         PARSER->error().error(@1, rdo::format("%s ожидается ключевое слово Convert_begin для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
                         break;
@@ -2497,14 +2497,14 @@ pat_convert
             {
                 switch (pPattern->getType())
                 {
-                    case RDOPATPattern::PT_Event:
-                    case RDOPATPattern::PT_Rule:
+                    case RDOPATPattern::Type::EVENT:
+                    case RDOPATPattern::Type::RULE:
                     {
                         PARSER->error().error(@1, "Внутренняя ошибка");
                         break;
                     }
-                    case RDOPATPattern::PT_Operation:
-                    case RDOPATPattern::PT_Keyboard :
+                    case RDOPATPattern::Type::OPERATION:
+                    case RDOPATPattern::Type::KEYBOARD :
                     {
                         PARSER->error().error(@1, rdo::format("%s ожидается ключевое слово Convert_end для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
                         break;
@@ -2521,14 +2521,14 @@ pat_convert
         {
             LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
             ASSERT(pPattern);
-            if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
+            if (pPattern->getType() != RDOPATPattern::Type::OPERATION && pPattern->getType() != RDOPATPattern::Type::KEYBOARD)
             {
                 std::string type = "";
                 switch (pPattern->getType())
                 {
-                case RDOPATPattern::PT_Event: type = "событии";               break;
-                case RDOPATPattern::PT_Rule : type = "продукционном правиле"; break;
-                default                     : break;
+                case RDOPATPattern::Type::EVENT: type = "событии";               break;
+                case RDOPATPattern::Type::RULE : type = "продукционном правиле"; break;
+                default: break;
                 }
                 PARSER->error().error(@2, rdo::format("Ключевое слово Convert_begin может быть использовано в обыкновенной или клавиатурной операции, но не в %s '%s'", type.c_str(), pPattern->name().c_str()));
             }
@@ -2568,14 +2568,14 @@ pat_convert
         {
             LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
             ASSERT(pPattern);
-            if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
+            if (pPattern->getType() != RDOPATPattern::Type::OPERATION && pPattern->getType() != RDOPATPattern::Type::KEYBOARD)
             {
                 std::string type = "";
                 switch (pPattern->getType())
                 {
-                case RDOPATPattern::PT_Event: type = "событии";               break;
-                case RDOPATPattern::PT_Rule : type = "продукционном правиле"; break;
-                default                     : break;
+                case RDOPATPattern::Type::EVENT: type = "событии";               break;
+                case RDOPATPattern::Type::RULE : type = "продукционном правиле"; break;
+                default: break;
                 }
                 PARSER->error().error(@2, rdo::format("Ключевое слово Convert_end может быть использовано в обыкновенной и клавиатурной операции, но не в %s '%s'", type.c_str(), pPattern->name().c_str()));
             }
@@ -2615,14 +2615,14 @@ pat_convert
         {
             LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
             ASSERT(pPattern);
-            if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
+            if (pPattern->getType() != RDOPATPattern::Type::OPERATION && pPattern->getType() != RDOPATPattern::Type::KEYBOARD)
             {
                 std::string type = "";
                 switch (pPattern->getType())
                 {
-                case RDOPATPattern::PT_Event: type = "событии";               break;
-                case RDOPATPattern::PT_Rule : type = "продукционном правиле"; break;
-                default                     : break;
+                case RDOPATPattern::Type::EVENT: type = "событии";               break;
+                case RDOPATPattern::Type::RULE : type = "продукционном правиле"; break;
+                default: break;
                 }
                 PARSER->error().error(@2, rdo::format("Ключевые слова Convert_begin и Convert_end могут быть использованы в обыкновенной и клавиатурной операции, но не в %s '%s'", type.c_str(), pPattern->name().c_str()));
             }
@@ -2683,15 +2683,15 @@ pat_convert
         {
             LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
             ASSERT(pPattern);
-            if (pPattern->getType() != RDOPATPattern::PT_Rule)
+            if (pPattern->getType() != RDOPATPattern::Type::RULE)
             {
                 std::string type = "";
                 switch (pPattern->getType())
                 {
-                case RDOPATPattern::PT_Event    : type = "событии";               break;
-                case RDOPATPattern::PT_Operation: type = "операции";              break;
-                case RDOPATPattern::PT_Keyboard : type = "клавиатурной операции"; break;
-                default                         : break;
+                case RDOPATPattern::Type::EVENT    : type = "событии";               break;
+                case RDOPATPattern::Type::OPERATION: type = "операции";              break;
+                case RDOPATPattern::Type::KEYBOARD : type = "клавиатурной операции"; break;
+                default: break;
                 }
                 PARSER->error().error(@2, rdo::format("Ключевое слово Convert_rule может быть использовано в продукционном правиле, но не в %s '%s'", type.c_str(), pPattern->name().c_str()));
             }
@@ -2735,15 +2735,15 @@ pat_convert
             LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
             ASSERT(pPattern);
 
-            if (pPattern->getType() != RDOPATPattern::PT_Event)
+            if (pPattern->getType() != RDOPATPattern::Type::EVENT)
             {
                 std::string type = "";
                 switch (pPattern->getType())
                 {
-                case RDOPATPattern::PT_Rule     : type = "продукционном правиле"; break;
-                case RDOPATPattern::PT_Operation: type = "операции";              break;
-                case RDOPATPattern::PT_Keyboard : type = "клавиатурной операции"; break;
-                default                         : break;
+                case RDOPATPattern::Type::RULE     : type = "продукционном правиле"; break;
+                case RDOPATPattern::Type::OPERATION: type = "операции";              break;
+                case RDOPATPattern::Type::KEYBOARD : type = "клавиатурной операции"; break;
+                default: break;
                 }
                 PARSER->error().error(@2, rdo::format("Ключевое слово Convert_event может быть использовано в событии, но не в %s '%s'", type.c_str(), pPattern->name().c_str()));
             }
@@ -2872,7 +2872,7 @@ nochange_statement
             rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcNoChange>::create();
             ASSERT(pCalc);
 
-            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(RDOParserSrcInfo(@1));
             ASSERT(pType);
 
             LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -2915,7 +2915,7 @@ stopping_statement
             rdo::runtime::LPRDOCalcEventStop pCalc = pEvent->stoping();
             pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Остановка события %s", pEvent->name().c_str())));
 
-            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(RDOParserSrcInfo(@1));
             ASSERT(pType);
 
             LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -2983,7 +2983,7 @@ planning_statement
             rdo::runtime::LPRDOCalcEventPlan pEventPlan = pEvent->planning(pCalcTime, pParamList);
             pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format("Планирование события %s в момент времени %s", pEvent->name().c_str(), pCalcTime->srcInfo().src_text().c_str())));
 
-            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(RDOParserSrcInfo(@1));
             ASSERT(pType);
 
             LPExpression pExpression = rdo::Factory<Expression>::create(pType, pEventPlan, RDOParserSrcInfo(@1));
@@ -3057,7 +3057,7 @@ process_input_statement
             rdo::runtime::LPRDOCalcProcessControl pCalc = rdo::Factory<rdo::runtime::RDOCalcProcessControl>::create(pBlock, pRelRes->m_relResID);
             ASSERT(pCalc);
 
-            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(RDOParserSrcInfo(@1));
             ASSERT(pType);
 
             LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -3094,7 +3094,7 @@ watch_start
             rdo::runtime::LPRDOCalcWatchGroupStart pCalc = rdo::Factory<rdo::runtime::RDOCalcWatchGroupStart>::create(pResultGroup->getRuntime());
             ASSERT(pCalc);
 
-            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(RDOParserSrcInfo(@1));
             ASSERT(pType);
 
             LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -3124,7 +3124,7 @@ watch_stop
             rdo::runtime::LPRDOCalcWatchGroupStop pCalc = rdo::Factory<rdo::runtime::RDOCalcWatchGroupStop>::create(pResultGroup->getRuntime());
             ASSERT(pCalc);
 
-            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(RDOParserSrcInfo(@1));
             ASSERT(pType);
 
             LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -5295,28 +5295,28 @@ frm_text_align
     {
         #PASS2
         {
-            $$ = rdo::animation::TextElement::TETA_LEFT;
+            $$ = (int)rdo::animation::TextElement::Align::LEFT;
         }
     }
     | '<'
     {
         #PASS2
         {
-            $$ = rdo::animation::TextElement::TETA_LEFT;
+            $$ = (int)rdo::animation::TextElement::Align::LEFT;
         }
     }
     | '='
     {
         #PASS2
         {
-            $$ = rdo::animation::TextElement::TETA_CENTER;
+            $$ = (int)rdo::animation::TextElement::Align::CENTER;
         }
     }
     | '>'
     {
         #PASS2
         {
-            $$ = rdo::animation::TextElement::TETA_RIGHT;
+            $$ = (int)rdo::animation::TextElement::Align::RIGHT;
         }
     }
     ;
@@ -5445,7 +5445,7 @@ frm_text
         {
             LPRDOFRMText pText = PARSER->stack().pop<RDOFRMText>($1);
             ASSERT(pText);
-            pText->setText((rdo::animation::TextElement::TextAlign)$2, PARSER->stack().pop<RDOFUNArithm>($3)->createCalc());
+            pText->setText((rdo::animation::TextElement::Align)$2, PARSER->stack().pop<RDOFUNArithm>($3)->createCalc());
             $$ = PARSER->stack().push(pText);
         }
     }
@@ -5455,7 +5455,7 @@ frm_text
         {
             LPRDOFRMText pText = PARSER->stack().pop<RDOFRMText>($1);
             ASSERT(pText);
-            pText->setText((rdo::animation::TextElement::TextAlign)$2, PARSER->stack().pop<RDOValue>($3)->value().getString());
+            pText->setText((rdo::animation::TextElement::Align)$2, PARSER->stack().pop<RDOValue>($3)->value().getString());
             $$ = PARSER->stack().push(pText);
         }
     }
@@ -6507,7 +6507,7 @@ frm_active
             }
             else
             {
-                if (pActivity->pattern()->getType() != RDOPATPattern::PT_Keyboard)
+                if (pActivity->pattern()->getType() != RDOPATPattern::Type::KEYBOARD)
                 {
                     PARSER->error().push_only(@2, rdo::format("Активность '%s' должна быть клавиатурной", pActivity->name().c_str()));
                     PARSER->error().push_only(pActivity->src_info(), "См. акивность");
@@ -7274,11 +7274,11 @@ fun_seq_by_hist_body_real
         {
             RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
             ASSERT(pHeader);
-            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::REAL && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
             }
-            if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
             }
@@ -7293,11 +7293,11 @@ fun_seq_by_hist_body_real
         {
             RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
             ASSERT(pHeader);
-            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::REAL && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
             }
-            if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
             }
@@ -7312,11 +7312,11 @@ fun_seq_by_hist_body_real
         {
             RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
             ASSERT(pHeader);
-            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::REAL && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
             }
-            if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
             }
@@ -7331,11 +7331,11 @@ fun_seq_by_hist_body_real
         {
             RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
             ASSERT(pHeader);
-            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::REAL && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
             }
-            if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
             }
@@ -7350,7 +7350,7 @@ fun_seq_by_hist_body_real
         {
             RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
             ASSERT(pHeader);
-            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::REAL && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
             }
@@ -7365,11 +7365,11 @@ fun_seq_by_hist_body_real
         {
             RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
             ASSERT(pHeader);
-            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::REAL && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
             }
-            if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
             }
@@ -7384,11 +7384,11 @@ fun_seq_by_hist_body_real
         {
             RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
             ASSERT(pHeader);
-            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::REAL && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
             }
-            if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() == rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->getHeader()->src_text().c_str()));
             }
@@ -7403,7 +7403,7 @@ fun_seq_by_hist_body_real
         {
             RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
             ASSERT(pHeader);
-            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::REAL && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
             }
@@ -7420,7 +7420,7 @@ fun_seq_by_hist_body_real
             ASSERT(pSequence);
             RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
             ASSERT(pHeader);
-            if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
+            if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
             }
@@ -7436,7 +7436,7 @@ fun_seq_by_hist_body_real
             ASSERT(pSequence);
             RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
             ASSERT(pHeader);
-            if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
+            if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
             }
@@ -7452,7 +7452,7 @@ fun_seq_by_hist_body_real
             ASSERT(pSequence);
             RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
             ASSERT(pHeader);
-            if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
+            if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
             }
@@ -7468,7 +7468,7 @@ fun_seq_by_hist_body_real
             ASSERT(pSequence);
             RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
             ASSERT(pHeader);
-            if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
+            if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
             }
@@ -7494,7 +7494,7 @@ fun_seq_by_hist_body_real
             ASSERT(pSequence);
             RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
             ASSERT(pHeader);
-            if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
+            if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
             }
@@ -7510,7 +7510,7 @@ fun_seq_by_hist_body_real
             ASSERT(pSequence);
             RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
             ASSERT(pHeader);
-            if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_int)
+            if (pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@3, rdo::format("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными", pHeader->src_text().c_str()));
             }
@@ -7534,7 +7534,7 @@ fun_seq_by_hist_body_real
         {
             RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
             ASSERT(pHeader);
-            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::REAL && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
             }
@@ -7547,7 +7547,7 @@ fun_seq_by_hist_body_real
         {
             RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
             ASSERT(pHeader);
-            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::REAL && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
             }
@@ -7560,7 +7560,7 @@ fun_seq_by_hist_body_real
         {
             RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
             ASSERT(pHeader);
-            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::REAL && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
             }
@@ -7573,7 +7573,7 @@ fun_seq_by_hist_body_real
         {
             RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
             ASSERT(pHeader);
-            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::REAL && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
             }
@@ -7586,7 +7586,7 @@ fun_seq_by_hist_body_real
         {
             RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
             ASSERT(pHeader);
-            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::REAL && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
             }
@@ -7599,7 +7599,7 @@ fun_seq_by_hist_body_real
         {
             RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
             ASSERT(pHeader);
-            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::REAL && pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::INT)
             {
                 PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
             }
@@ -7666,7 +7666,7 @@ fun_seq_by_hist_body_enum
         {
             RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
             ASSERT(pHeader);
-            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_enum)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::ENUM)
             {
                 PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
             }
@@ -7681,7 +7681,7 @@ fun_seq_by_hist_body_enum
         {
             RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
             ASSERT(pHeader);
-            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_enum)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::ENUM)
             {
                 PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
             }
@@ -7716,7 +7716,7 @@ fun_seq_by_hist_body_enum
         {
             RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
             ASSERT(pHeader);
-            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_enum)
+            if (pHeader->getHeader()->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::ENUM)
             {
                 PARSER->error().error(@2, rdo::format("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s", pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
             }
@@ -8349,9 +8349,9 @@ process_begin
             if (!rtpList[transactName].exist())
             {
                 // Создадим тип ресурса-транзакта
-                rdo::compiler::mbuilder::RDOResType rtp(transactName, rdo::compiler::mbuilder::RDOResType::rt_temporary);
+                rdo::compiler::mbuilder::RDOResType rtp(transactName, rdo::compiler::mbuilder::RDOResType::Kind::TEMPORARY);
                 // Добавим параметр Время_создания
-                rdo::compiler::mbuilder::RDOResType::Param param(rtp_param_name, rdo::Factory<RDOType__real>::create());
+                rdo::compiler::mbuilder::RDOResType::Param param(rtp_param_name, rdo::Factory<RDOType__REAL>::create());
                 rtp.m_params.append(param);
                 // Добавим тип ресурса
                 if (!rtpList.append(rtp))
@@ -8366,7 +8366,7 @@ process_begin
             {
                 // Проверим тип на временность
                 const rdo::compiler::mbuilder::RDOResType& rtp = rtpList[transactName];
-                if (rtp.getType() != rdo::compiler::mbuilder::RDOResType::rt_temporary)
+                if (rtp.getKind() != rdo::compiler::mbuilder::RDOResType::Kind::TEMPORARY)
                 {
                     PARSER->error().push_only(transact->src_info(), rdo::format("Типа транзакта '%s' должен быть временным", rtp.name().c_str()));
                     PARSER->error().push_only(rtp.src_info(), "См. тип");
@@ -8379,7 +8379,7 @@ process_begin
                     PARSER->error().error(rtp.src_info(), rdo::format("У типа ресурса '%s' нет требуемого параметра '%s'", rtp.name().c_str(), rtp_param_name.c_str()));
                 }
                 // Параметр есть, надо проверить на тип
-                if (rtp.m_params[rtp_param_name].typeID() != rdo::runtime::RDOType::t_real)
+                if (rtp.m_params[rtp_param_name].typeID() != rdo::runtime::RDOType::Type::REAL)
                 {
                     PARSER->error().error(rtp.src_info(), rdo::format("У типа ресурса '%s' параметр '%s' не является вещественным типом", rtp.name().c_str(), rtp_param_name.c_str()));
                 }
@@ -8929,7 +8929,7 @@ term_param
         {
             LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($1);
             ASSERT(pArithm);
-            if (pArithm->typeInfo()->typeID() == rdo::runtime::RDOType::t_int)
+            if (pArithm->typeInfo()->typeID() == rdo::runtime::RDOType::Type::INT)
             {
                 rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(NULL);
                 LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), "TERMINATE", pCalc);
@@ -9540,15 +9540,15 @@ smr_main
 smr_show_mode
     : RDO_NoShow
     {
-        $$ = rdo::service::simulation::SM_NoShow;
+        $$ = (int)rdo::service::simulation::ShowMode::NoShow;
     }
     | RDO_Monitor
     {
-        $$ = rdo::service::simulation::SM_Monitor;
+        $$ = (int)rdo::service::simulation::ShowMode::Monitor;
     }
     | RDO_Animation
     {
-        $$ = rdo::service::simulation::SM_Animation;
+        $$ = (int)rdo::service::simulation::ShowMode::Animation;
     }
     ;
 
@@ -9599,7 +9599,7 @@ return_statement
     {
         #PASS2
         {
-            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(RDOParserSrcInfo(@1));
             ASSERT(pType);
 
             rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(0));
@@ -9813,7 +9813,7 @@ statement_list
             rdo::runtime::LPRDOCalcStatementList pCalcStatementList = rdo::Factory<rdo::runtime::RDOCalcStatementList>::create();
             ASSERT(pCalcStatementList);
 
-            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo());
+            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(RDOParserSrcInfo());
             ASSERT(pType);
 
             LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcStatementList, RDOParserSrcInfo());
@@ -9852,7 +9852,7 @@ empty_statement
             rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcNoChange>::create();
             ASSERT(pCalc);
 
-            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(RDOParserSrcInfo(@1));
             ASSERT(pType);
 
             LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -9893,7 +9893,7 @@ set_statement
             rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
 
             params[Expression::CONTEXT_PARAM_SET_EXPRESSION] = rdo::Factory<Expression>::create(
-                rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@2)),
+                rdo::Factory<TypeInfo>::delegate<RDOType__INT>(RDOParserSrcInfo(@2)),
                 rdo::Factory<rdo::runtime::RDOCalcConst>::create(1),
                 RDOParserSrcInfo(@2)
             );
@@ -10017,7 +10017,7 @@ set_array_item_statement
             ASSERT(pArrayItemCalc);
 
             LPExpression setExpression = rdo::Factory<Expression>::create(
-                rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1, @6)),
+                rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(RDOParserSrcInfo(@1, @6)),
                 pArrayItemCalc,
                 RDOParserSrcInfo(@1, @6)
             );
@@ -10184,7 +10184,7 @@ if_condition
             rdo::runtime::LPRDOCalc pConditionCalc = pCondition->getCalc();
             ASSERT(pConditionCalc);
 
-            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(RDOParserSrcInfo(@1));
             ASSERT(pType);
 
             rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcIf>::create(pConditionCalc);
@@ -10291,7 +10291,7 @@ for_header
                 pEqualExpression->calc()      );
             ASSERT(pCalc);
 
-            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1, @8));
+            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(RDOParserSrcInfo(@1, @8));
             ASSERT(pType);
 
             LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1, @8));
@@ -10320,7 +10320,7 @@ for_header
             LPExpression pEqualExpression = PARSER->stack().pop<Expression>($7);
             ASSERT(pEqualExpression);
 
-            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1, @8));
+            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(RDOParserSrcInfo(@1, @8));
             ASSERT(pType);
 
             rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcFor>::create(
@@ -10354,7 +10354,7 @@ break_statement
                 rdo::runtime::LPRDOCalc pCalcBreak = rdo::Factory<rdo::runtime::RDOCalcFunBreak>::create();
                 ASSERT(pCalcBreak);
 
-                LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+                LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(RDOParserSrcInfo(@1));
                 ASSERT(pType);
 
                 LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcBreak, RDOParserSrcInfo(@1));
@@ -10862,7 +10862,7 @@ fun_arithm
                 PARSER->error().error(@1, rdo::format("'%s' не является массивом", name.c_str()));
             }
 
-            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@1));
+            LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__INT>(RDOParserSrcInfo(@1));
             ASSERT(pType);
 
             LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -11068,28 +11068,28 @@ fun_group_keyword
     {
         #PASS2
         {
-            $$ = RDOFUNGroupLogic::fgt_exist;
+            $$ = (int)RDOFUNGroupLogic::Type::EXIST;
         }
     }
     | RDO_Not_Exist
     {
         #PASS2
         {
-            $$ = RDOFUNGroupLogic::fgt_notexist;
+            $$ = (int)RDOFUNGroupLogic::Type::NOTEXIST;
         }
     }
     | RDO_For_All
     {
         #PASS2
         {
-            $$ = RDOFUNGroupLogic::fgt_forall;
+            $$ = (int)RDOFUNGroupLogic::Type::FORALL;
         }
     }
     | RDO_Not_For_All
     {
         #PASS2
         {
-            $$ = RDOFUNGroupLogic::fgt_notforall;
+            $$ = (int)RDOFUNGroupLogic::Type::NOTFORALL;
         }
     }
     ;
@@ -11101,7 +11101,7 @@ fun_group_header
         {
             LPRDOValue pValue = PARSER->stack().pop<RDOValue>($3);
             ASSERT(pValue);
-            $$ = PARSER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, pValue->src_info()));
+            $$ = PARSER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::Type)$1, pValue->src_info()));
         }
     }
     | fun_group_keyword '(' error
@@ -11256,28 +11256,28 @@ fun_select_keyword
     {
         #PASS2
         {
-            $$ = RDOFUNGroupLogic::fgt_exist;
+            $$ = (int)RDOFUNGroupLogic::Type::EXIST;
         }
     }
     | RDO_Not_Exist
     {
         #PASS2
         {
-            $$ = RDOFUNGroupLogic::fgt_notexist;
+            $$ = (int)RDOFUNGroupLogic::Type::NOTEXIST;
         }
     }
     | RDO_For_All
     {
         #PASS2
         {
-            $$ = RDOFUNGroupLogic::fgt_forall;
+            $$ = (int)RDOFUNGroupLogic::Type::FORALL;
         }
     }
     | RDO_Not_For_All
     {
         #PASS2
         {
-            $$ = RDOFUNGroupLogic::fgt_notforall;
+            $$ = (int)RDOFUNGroupLogic::Type::NOTFORALL;
         }
     }
     ;
@@ -11295,7 +11295,7 @@ fun_select_logic
             RDOParserSrcInfo srcInfo(@3, @5, "");
 
             Context::Params params;
-            params["FunGroupType"] = (RDOFUNGroupLogic::FunGroupType)$3;
+            params["FunGroupType"] = (RDOFUNGroupLogic::Type)$3;
             params["GroupLogic"] = pLogic;
             Context::LPFindResult result = PARSER->context()->find("select()", params, srcInfo);
             LPExpression pExpression = result->getCreateExpression()();
@@ -11330,7 +11330,7 @@ fun_select_logic
             RDOParserSrcInfo srcInfo(@3, @5, "");
 
             Context::Params params;
-            params["FunGroupType"] = RDOFUNGroupLogic::fgt_empty;
+            params["FunGroupType"] = RDOFUNGroupLogic::Type::EMPTY;
             Context::LPFindResult result = PARSER->context()->find("select()", params, srcInfo);
             LPExpression pExpression = result->getCreateExpression()();
             ASSERT(pExpression);
@@ -11381,7 +11381,7 @@ fun_select_arithm
             RDOParserSrcInfo srcInfo(@3, @5, "");
 
             Context::Params params;
-            params["FunGroupType"] = RDOFUNGroupLogic::fgt_size;
+            params["FunGroupType"] = RDOFUNGroupLogic::Type::SIZE;
             Context::LPFindResult result = PARSER->context()->find("select()", params, srcInfo);
             LPExpression pExpression = result->getCreateExpression()();
             ASSERT(pExpression);
@@ -11415,7 +11415,7 @@ fun_select_arithm
             RDOParserSrcInfo srcInfo(@3, @5, "");
 
             Context::Params params;
-            params["FunGroupType"] = RDOFUNGroupLogic::fgt_array;
+            params["FunGroupType"] = RDOFUNGroupLogic::Type::ARRAY;
             Context::LPFindResult result = PARSER->context()->find("select()", params, srcInfo);
             LPExpression pExpression = result->getCreateExpression()();
             ASSERT(pExpression);

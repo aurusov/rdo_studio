@@ -36,10 +36,10 @@ void cnv_smr_sim_error(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*messag
 // -------------------- RDOSMR
 // --------------------------------------------------------------------------------
 RDOSMR::RDOSMR(const std::string& modelName)
-    : m_showMode      (rdo::service::simulation::SM_NoShow)
-    , m_frameNumber   (1 )
+    : m_showMode      (rdo::service::simulation::ShowMode::NoShow)
+    , m_frameNumber   (1)
     , m_showRate      (60)
-    , m_runStartTime  (0 )
+    , m_runStartTime  (0)
     , m_traceStartTime(rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
     , m_traceEndTime  (rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
 {

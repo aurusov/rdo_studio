@@ -240,7 +240,7 @@ class RDOFRMText
 {
 DECLARE_FACTORY(RDOFRMText)
 public:
-    typedef rdo::animation::TextElement::TextAlign Align;
+    typedef rdo::animation::TextElement::Align Align;
 
     void setText(Align align, const LPRDOCalc& pValue);
     void setText(Align align, const std::string& text);

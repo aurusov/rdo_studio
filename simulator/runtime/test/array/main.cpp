@@ -21,35 +21,29 @@ typedef std::pair<rdo::runtime::LPRDOArrayValue, rdo::runtime::RDOValue> Array;
 
 Array createArray(const Container& data)
 {
-    rdo::runtime::LPRDOArrayType  pType  = rdo::Factory<rdo::runtime::RDOArrayType>::create(rdo::runtime::g_int);
+    rdo::runtime::LPRDOArrayType pType = rdo::Factory<rdo::runtime::RDOArrayType>::create(rdo::runtime::g_INT);
     ASSERT(pType);
     rdo::runtime::LPRDOArrayValue pValue = rdo::Factory<rdo::runtime::RDOArrayValue>::create(pType);
     ASSERT(pValue);
 
     for (const auto& item: data)
-    {
         pValue->push_back(rdo::runtime::RDOValue(item));
-    }
 
     return std::make_pair(pValue, rdo::runtime::RDOValue(pType, pValue));
 }
 
 std::string getString(const rdo::runtime::LPRDOArrayValue& pArray, const rdo::runtime::LPRDOArrayIterator& pIt)
 {
-    if (!pIt->equal(pArray->end()))
-    {
-        return pIt->getValue().getAsString();
-    }
-    return "";
+    return !pIt->equal(pArray->end())
+            ? pIt->getValue().getAsString()
+            : std::string();
 }
 
 std::string getString(const rdo::runtime::RDOValue& it, const rdo::runtime::RDOValue& end)
 {
-    if (it != end)
-    {
-        return it.getAsString();
-    }
-    return "";
+    return it != end
+            ? it.getAsString()
+            : std::string();
 }
 
 BOOST_AUTO_TEST_CASE(ArrayTestCreate)
@@ -83,9 +77,8 @@ BOOST_AUTO_TEST_CASE(ArrayTestIteratorPrePlus)
     std::string result;
     rdo::runtime::LPRDOArrayIterator pIt = array.first->begin();
     while (!pIt->equal(array.first->end()))
-    {
         result += getString(array.first, pIt->preInc(1));
-    }
+
     BOOST_CHECK(result == "23");
 }
 
@@ -96,9 +89,8 @@ BOOST_AUTO_TEST_CASE(ArrayTestIteratorPostPlus)
     std::string result;
     rdo::runtime::LPRDOArrayIterator pIt = array.first->begin();
     while (!pIt->equal(array.first->end()))
-    {
         result += getString(array.first, pIt->postInc(1));
-    }
+
     BOOST_CHECK(result == "123");
 }
 
@@ -109,9 +101,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestIteratorPreMinus)
     std::string result;
     rdo::runtime::LPRDOArrayIterator pIt = array.first->end();
     do
-    {
         result += getString(array.first, pIt->preInc(-1));
-    }
     while (!pIt->equal(array.first->begin()));
 
     BOOST_CHECK(result == "321");
@@ -124,9 +114,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestIteratorPostMinus)
     std::string result;
     rdo::runtime::LPRDOArrayIterator pIt = array.first->end();
     do
-    {
         result += getString(array.first, pIt->postInc(-1));
-    }
     while (!pIt->equal(array.first->begin()));
 
     BOOST_CHECK(result == "32");
@@ -144,9 +132,8 @@ BOOST_AUTO_TEST_CASE(ArrayTestValuePrePlus)
     BOOST_CHECK(it != end);
 
     while (it != end)
-    {
         result += getString(++it, end);
-    }
+
     BOOST_CHECK(result == "23");
 }
 
@@ -162,9 +149,8 @@ BOOST_AUTO_TEST_CASE(ArrayTestValuePostPlus)
     BOOST_CHECK(it != end);
 
     while (it != end)
-    {
         result += getString(it++, end);
-    }
+
     BOOST_CHECK(result == "123");
 }
 
@@ -183,9 +169,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestValuePreMinus)
     BOOST_CHECK(it == end  );
 
     do
-    {
         result += getString(--it, end);
-    }
     while (it != begin);
     BOOST_CHECK(result == "321");
 }
@@ -205,9 +189,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestValuePostMinus)
     BOOST_CHECK(it == end  );
 
     do
-    {
         result += getString(it--, end);
-    }
     while (it != begin);
     BOOST_CHECK(result == "32");
 }
@@ -235,15 +217,11 @@ BOOST_AUTO_TEST_CASE(ArrayTestSetItem)
     catch (const rdo::runtime::RDORuntimeException& ex)
     {
         if (!ex.message().empty())
-        {
             found = ex.message() == "Выход за пределы массива";
-        }
     }
 
     if (!found)
-    {
         BOOST_CHECK(false);
-    }
 }
 
 BOOST_AUTO_TEST_CASE(ArrayTestGetItem)
@@ -267,15 +245,11 @@ BOOST_AUTO_TEST_CASE(ArrayTestGetItem)
     catch (const rdo::runtime::RDORuntimeException& ex)
     {
         if (!ex.message().empty())
-        {
             found = ex.message() == "Выход за пределы массива";
-        }
     }
 
     if (!found)
-    {
         BOOST_CHECK(false);
-    }
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Array_Test

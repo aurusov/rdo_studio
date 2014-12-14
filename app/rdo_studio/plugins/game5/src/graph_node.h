@@ -18,10 +18,14 @@ public:
     GraphNode(const GraphNodeInfo& info, GraphNode* parentGraphNode, int width, int height);
     ~GraphNode();
 
-    enum { Type = rdo::plugin::game5::TypeID::GRAPH_NODE };
-    enum Detalization {Normal, Low, Lower};
+    enum class Detalization
+    {
+        NORMAL,
+        LOW,
+        LOWER
+    };
 
-    virtual int type() const { return Type; }
+    virtual int type() const { return rdo::plugin::game5::TypeID::GRAPH_NODE; }
 
     virtual QRectF boundingRect() const;
     virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);

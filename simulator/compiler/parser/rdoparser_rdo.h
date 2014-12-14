@@ -28,7 +28,7 @@ public:
     std::string text() const;
 
 protected:
-    RDOParserRDOItem(rdo::model::FileType _type, t_bison_parse_fun _parser_fun, t_flex_lexer_fun _lexer_fun, StreamFrom from = sf_repository);
+    RDOParserRDOItem(rdo::FileType _type, t_bison_parse_fun _parser_fun, t_flex_lexer_fun _lexer_fun, StreamFrom from = StreamFrom::REPOSITORY);
     virtual ~RDOParserRDOItem();
 
     RDOLexer* m_pLexer;

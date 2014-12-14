@@ -519,11 +519,11 @@ RDOFRMText::RDOFRMText(
         const RDOFRMSprite::LPRDOFRMColor&    pBgColor,
         const RDOFRMSprite::LPRDOFRMColor&    pFgColor
     )
-    : RDOFRMItem        (pSprite                               )
-    , RDOFRMBoundingItem(pX, pY, pWidth, pHeight               )
-    , RDOFRMColoredItem (pBgColor, pFgColor                    )
-    , m_align           (rdo::animation::TextElement::TETA_LEFT)
-    , m_isTextString    (true                                  )
+    : RDOFRMItem        (pSprite)
+    , RDOFRMBoundingItem(pX, pY, pWidth, pHeight)
+    , RDOFRMColoredItem (pBgColor, pFgColor)
+    , m_align           (rdo::animation::TextElement::Align::LEFT)
+    , m_isTextString    (true)
 {}
 
 RDOFRMText::~RDOFRMText()

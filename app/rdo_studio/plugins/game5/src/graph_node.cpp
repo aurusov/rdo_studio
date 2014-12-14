@@ -314,15 +314,15 @@ QRect GraphNode::calcTextWidth(const QString& text, const QFont& baseFont, Detal
     QFontMetrics fontMetrics = QFontMetrics(baseFont);
     switch (detalization)
     {
-        case Detalization::Low :
+        case Detalization::LOW :
             fontMetrics = QFontMetrics(fontSizeMultiply(baseFont, LOW_DETAIL_MULTIPLIER));
             break;
 
-        case Detalization::Lower :
+        case Detalization::LOWER :
             fontMetrics = QFontMetrics(fontSizeMultiply(baseFont, LOWER_DETAIL_MULTIPLIER));
             break;
 
-        case Detalization::Normal :
+        case Detalization::NORMAL :
             break;
     }
 
@@ -337,9 +337,9 @@ QRect GraphNode::calcNodeRect(const GraphNodeInfo& info, const QFont& baseFont)
             info.m_nodeID, info.m_pathCost, info.m_restPathCost, info.m_moveCost);
     const QString nodeTextLowerD = generateNodeTextLowerDetalization(info.m_nodeID);
 
-    const QRect nodeRectNormalD = calcTextWidth(nodeTextNormalD, baseFont, Detalization::Normal);
-    const QRect nodeRectLowD = calcTextWidth(nodeTextLowD, baseFont, Detalization::Low);
-    const QRect nodeRectLowerD = calcTextWidth(nodeTextLowerD, baseFont, Detalization::Lower);
+    const QRect nodeRectNormalD = calcTextWidth(nodeTextNormalD, baseFont, Detalization::NORMAL);
+    const QRect nodeRectLowD = calcTextWidth(nodeTextLowD, baseFont, Detalization::LOW);
+    const QRect nodeRectLowerD = calcTextWidth(nodeTextLowerD, baseFont, Detalization::LOWER);
 
     QRect nodeRect = QRect();
     const int width = std::max(nodeRectNormalD.width(), std::max(nodeRectLowD.width(), nodeRectLowerD.width()));

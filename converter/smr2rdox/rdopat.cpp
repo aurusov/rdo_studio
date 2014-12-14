@@ -773,7 +773,7 @@ rdo::runtime::LPRDOCalc RDORelevantResource::getChoiceCalc()
 {
     if (m_pChoiceFrom && m_pChoiceFrom->m_type == RDOPATChoiceFrom::ch_from)
     {
-        return m_pChoiceFrom->m_pLogic->getCalc(rdo::runtime::RDOType::t_int);
+        return m_pChoiceFrom->m_pLogic->getCalc(rdo::runtime::RDOType::Type::INT);
     }
     return NULL;
 }

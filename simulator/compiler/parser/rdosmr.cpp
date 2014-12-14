@@ -16,7 +16,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- RDOSMR
 // --------------------------------------------------------------------------------
 RDOSMR::RDOSMR()
-    : m_showMode      (rdo::service::simulation::SM_NoShow)
+    : m_showMode      (rdo::service::simulation::ShowMode::NoShow)
     , m_frameNumber   (1 )
     , m_showRate      (60)
     , m_runStartTime  (0 )

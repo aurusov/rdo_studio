@@ -53,15 +53,15 @@ inline const LPRDOTypeRangeRange& RDOTypeRange<T>::range() const
 }
 
 template<>
-inline LPRDOValue RDOTypeRange<RDOType__int>::get_default() const
+inline LPRDOValue RDOTypeRange<RDOType__INT>::get_default() const
 {
-    return rdo::Factory<RDOValue>::create(m_pRange->getMin()->value(), rdo::Factory<RDOType__int>::create(), RDOParserSrcInfo());
+    return rdo::Factory<RDOValue>::create(m_pRange->getMin()->value(), rdo::Factory<RDOType__INT>::create(), RDOParserSrcInfo());
 }
 
 template<>
-inline LPRDOValue RDOTypeRange<RDOType__real>::get_default() const
+inline LPRDOValue RDOTypeRange<RDOType__REAL>::get_default() const
 {
-    return rdo::Factory<RDOValue>::create(m_pRange->getMin()->value(), rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo());
+    return rdo::Factory<RDOValue>::create(m_pRange->getMin()->value(), rdo::Factory<RDOType__REAL>::create(), RDOParserSrcInfo());
 }
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

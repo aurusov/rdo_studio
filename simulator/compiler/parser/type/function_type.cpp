@@ -13,13 +13,13 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- FunctionParamType
 // --------------------------------------------------------------------------------
 FunctionParamType::FunctionParamType(const ParamList& paramList, const RDOParserSrcInfo& srcInfo)
-    : RDOType(t_unknow)
+    : RDOType(Type::UNKNOW)
     , RDOParserSrcInfo(srcInfo)
     , m_paramList(paramList)
 {
     if (m_paramList.empty())
     {
-        LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(srcInfo);
+        LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(srcInfo);
         ASSERT(pType);
         m_paramList.push_back(pType);
     }
@@ -40,10 +40,10 @@ const rdo::runtime::LPRDOType& FunctionParamType::type() const
     return s_Type;
 }
 
-rdo::runtime::RDOType::TypeID FunctionParamType::typeID() const
+rdo::runtime::RDOType::Type FunctionParamType::typeID() const
 {
     NEVER_REACH_HERE;
-    return rdo::runtime::RDOType::t_unknow;
+    return rdo::runtime::RDOType::Type::UNKNOW;
 }
 
 std::string FunctionParamType::name() const
@@ -108,12 +108,12 @@ void FunctionParamType::writeModelStructure(std::ostream& stream) const
 // --------------------------------------------------------------------------------
 FunctionType::FunctionType(const LPTypeInfo& pReturnType, const LPFunctionParamType& pParamType, const RDOParserSrcInfo& srcInfo)
     : RDOType(pReturnType->typeID())
-    , RDOParserSrcInfo(srcInfo    )
-    , m_pReturnType   (pReturnType)
-    , m_pParamType    (pParamType )
+    , RDOParserSrcInfo(srcInfo)
+    , m_pReturnType(pReturnType)
+    , m_pParamType(pParamType)
 {
     ASSERT(m_pReturnType);
-    ASSERT(m_pParamType );
+    ASSERT(m_pParamType);
 }
 
 FunctionType::~FunctionType()
@@ -124,7 +124,7 @@ rdo::runtime::LPRDOType FunctionType::type() const
     return m_pReturnType->type();
 }
 
-rdo::runtime::RDOType::TypeID FunctionType::typeID() const
+rdo::runtime::RDOType::Type FunctionType::typeID() const
 {
     return m_pReturnType->typeID();
 }

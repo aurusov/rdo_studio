@@ -17,11 +17,11 @@ OPEN_COMPILER_MBUILDER_NAMESPACE
 // ---- Собирает все параметры существующего в памяти типа ресурса
 // --------------------------------------------------------------------------------
 RDOResType::RDOResType(const parser::LPRDORTPResType& rtp)
-    : parser::RDOParserSrcInfo(rtp->src_info()                )
-    , m_name (rtp->name()                                     )
-    , m_exist(true                                            )
-    , m_type (rtp->isPermanent() ? rt_permanent : rt_temporary)
-    , m_id   (rtp->getNumber()                                )
+    : parser::RDOParserSrcInfo(rtp->src_info())
+    , m_name (rtp->name())
+    , m_exist(true)
+    , m_kind (rtp->isPermanent() ? Kind::PERMANENT : Kind::TEMPORARY)
+    , m_id   (rtp->getNumber())
 {
     for (const auto& parser_param: rtp->getParams())
     {
@@ -33,15 +33,15 @@ RDOResType::RDOResType(const parser::LPRDORTPResType& rtp)
 
 RDOResType::Param::Param(const parser::LPRDORTPParam& param)
     : parser::RDOParserSrcInfo(param->src_info())
-    , m_name    (param->name()                  )
-    , m_exist   (true                           )
-    , m_pType   (param->getTypeInfo()           )
-    , m_pDefault(param->getDefault()            )
-    , m_id      (-1                             )
+    , m_name    (param->name())
+    , m_exist   (true)
+    , m_pType   (param->getTypeInfo())
+    , m_pDefault(param->getDefault())
+    , m_id      (-1)
 {
     switch (typeID())
     {
-        case rdo::runtime::RDOType::t_int:
+        case rdo::runtime::RDOType::Type::INT:
         {
             parser::LPRDOTypeIntRange pRange = param->getTypeInfo()->itype().object_dynamic_cast<parser::RDOTypeIntRange>();
             if (pRange)
@@ -51,7 +51,7 @@ RDOResType::Param::Param(const parser::LPRDORTPParam& param)
             }
             break;
         }
-        case rdo::runtime::RDOType::t_real:
+        case rdo::runtime::RDOType::Type::REAL:
         {
             parser::LPRDOTypeRealRange pRange = param->getTypeInfo()->itype().object_dynamic_cast<parser::RDOTypeRealRange>();
             if (pRange)
@@ -69,10 +69,10 @@ RDOResType::Param::Param(const parser::LPRDORTPParam& param)
 // --------------------------------------------------------------------------------
 // ---- Инициализация *нового* типа ресурса
 // --------------------------------------------------------------------------------
-RDOResType::RDOResType(const std::string& name, Type type)
-    : m_name (name     )
-    , m_exist(false    )
-    , m_type (type     )
+RDOResType::RDOResType(const std::string& name, Kind kind)
+    : m_name (name)
+    , m_exist(false)
+    , m_kind (kind)
     , m_id   (std::size_t(~0))
 {}
 
@@ -88,36 +88,36 @@ bool RDOResType::ParamList::append(Param& param)
 }
 
 RDOResType::Param::Param(const std::string& name, const parser::LPTypeInfo& pType, const parser::LPRDOValue& pDefault)
-    : m_name    (name    )
-    , m_exist   (true    )
-    , m_pType   (pType   )
+    : m_name    (name)
+    , m_exist   (true)
+    , m_pType   (pType)
     , m_pDefault(pDefault)
-    , m_id      (-1      )
+    , m_id      (-1)
 {}
 
-RDOResType::Param::Param(const std::string& name, const rdo::intrusive_ptr<parser::RDOType__int>& pType, const parser::LPRDOValue& pDefault)
-    : m_name    (name    )
-    , m_exist   (true    )
+RDOResType::Param::Param(const std::string& name, const rdo::intrusive_ptr<parser::RDOType__INT>& pType, const parser::LPRDOValue& pDefault)
+    : m_name    (name)
+    , m_exist   (true)
     , m_pDefault(pDefault)
-    , m_id      (-1      )
+    , m_id      (-1)
 {
     initType(pType);
 }
 
-RDOResType::Param::Param(const std::string& name, const rdo::intrusive_ptr<parser::RDOType__real>& pType, const parser::LPRDOValue& pDefault)
-    : m_name    (name    )
-    , m_exist   (true    )
+RDOResType::Param::Param(const std::string& name, const rdo::intrusive_ptr<parser::RDOType__REAL>& pType, const parser::LPRDOValue& pDefault)
+    : m_name    (name)
+    , m_exist   (true)
     , m_pDefault(pDefault)
-    , m_id      (-1      )
+    , m_id      (-1)
 {
     initType(pType);
 }
 
 RDOResType::Param::Param(const std::string& name, const rdo::runtime::RDOEnumType::Enums& enums, const parser::LPRDOValue& pDefault)
-    : m_name    (name    )
-    , m_exist   (true    )
+    : m_name    (name)
+    , m_exist   (true)
     , m_pDefault(pDefault)
-    , m_id      (-1      )
+    , m_id      (-1)
 {
     initType(enums);
 }
@@ -190,7 +190,7 @@ bool RDOResTypeList::appendAfter(RDOResType& rtp, const parser::LPRDORTPResType&
         ASSERT(pDefault);
         switch (param.typeID())
         {
-            case rdo::runtime::RDOType::t_int:
+            case rdo::runtime::RDOType::Type::INT:
             {
                 if (param.hasRange())
                 {
@@ -204,7 +204,7 @@ bool RDOResTypeList::appendAfter(RDOResType& rtp, const parser::LPRDORTPResType&
                 }
                 break;
             }
-            case rdo::runtime::RDOType::t_real:
+            case rdo::runtime::RDOType::Type::REAL:
             {
                 if (param.hasRange())
                 {
@@ -218,7 +218,7 @@ bool RDOResTypeList::appendAfter(RDOResType& rtp, const parser::LPRDORTPResType&
                 }
                 break;
             }
-            case rdo::runtime::RDOType::t_enum:
+            case rdo::runtime::RDOType::Type::ENUM:
             {
                 pParamType = param.type();
                 break;
@@ -247,10 +247,10 @@ bool RDOResTypeList::appendAfter(RDOResType& rtp, const parser::LPRDORTPResType&
 // --------------------------------------------------------------------------------
 RDOResource::RDOResource(const parser::LPRDORSSResource& rss)
     : parser::RDOParserSrcInfo(rss->src_info())
-    , m_name (rss->name()                     )
-    , m_exist(true                            )
-    , m_rtp  (rss->getType()                  )
-    , m_id   (rss->getID()                    )
+    , m_name (rss->name())
+    , m_exist(true)
+    , m_rtp  (rss->getType())
+    , m_id   (rss->getID())
 {
     if (m_rtp.m_params.size() == rss->params().size())
     {
@@ -315,9 +315,9 @@ bool RDOResource::fillParserResourceParams(parser::LPRDORSSResource& pToParserRS
 // ---- Инициализация *нового* ресурса
 // --------------------------------------------------------------------------------
 RDOResource::RDOResource(const RDOResType& rtp, const std::string& name)
-    : m_name (name                                )
-    , m_exist(false                               )
-    , m_rtp  (rtp                                 )
+    : m_name (name)
+    , m_exist(false)
+    , m_rtp  (rtp)
     , m_id   (parser::RDORSSResource::UNDEFINED_ID)
 {
     for (const auto& param: m_rtp.m_params)

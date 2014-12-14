@@ -61,7 +61,7 @@ public:
     const rdo::runtime::LPRDOType&        type() const { return m_pType;           }
     const rdo::runtime::LPRDOType& operator-> () const { return m_pType;           }
 
-    rdo::runtime::RDOType::TypeID      typeID() const { return m_pType->typeID(); }
+    rdo::runtime::RDOType::Type      typeID() const { return m_pType->typeID(); }
 
     virtual rdo::runtime::LPRDOCalc calc_cast(const rdo::runtime::LPRDOCalc& pCalc, const LPRDOType& /*pType*/) const
     {
@@ -99,11 +99,11 @@ public:                                  \
 };                                       \
 DECLARE_POINTER(RDOType__##Type);
 
-DEFINE_ATOM_TYPE_CONVERTER(unknow       );
-DEFINE_ATOM_TYPE_CONVERTER(identificator);
-DEFINE_ATOM_TYPE_CONVERTER(int          );
-DEFINE_ATOM_TYPE_CONVERTER(real         );
-DEFINE_ATOM_TYPE_CONVERTER(bool         );
-DEFINE_ATOM_TYPE_CONVERTER(string       );
+DEFINE_ATOM_TYPE_CONVERTER(UNKNOW);
+DEFINE_ATOM_TYPE_CONVERTER(IDENTIFICATOR);
+DEFINE_ATOM_TYPE_CONVERTER(INT);
+DEFINE_ATOM_TYPE_CONVERTER(REAL);
+DEFINE_ATOM_TYPE_CONVERTER(BOOL);
+DEFINE_ATOM_TYPE_CONVERTER(STRING);
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

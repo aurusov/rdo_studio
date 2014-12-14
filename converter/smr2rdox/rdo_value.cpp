@@ -15,25 +15,25 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 RDOValue::RDOValue(const int& value, const RDOParserSrcInfo& src_info)
     : RDOParserSrcInfo(src_info)
     , m_value(value)
-    , m_type (rdo::Factory<RDOType__int>::create())
+    , m_type(rdo::Factory<RDOType__INT>::create())
 {}
 
 RDOValue::RDOValue(const std::size_t& value, const RDOParserSrcInfo& src_info)
     : RDOParserSrcInfo(src_info)
     , m_value(value)
-    , m_type (rdo::Factory<RDOType__int>::create())
+    , m_type(rdo::Factory<RDOType__INT>::create())
 {}
 
 RDOValue::RDOValue(const double& value, const RDOParserSrcInfo& src_info)
     : RDOParserSrcInfo(src_info)
-    , m_value(value )
-    , m_type (rdo::Factory<RDOType__real>::create())
+    , m_value(value)
+    , m_type(rdo::Factory<RDOType__REAL>::create())
 {}
 
 RDOValue::RDOValue(const std::string& value, const RDOParserSrcInfo& src_info)
     : RDOParserSrcInfo(src_info)
-    , m_value         (value   )
-    , m_type          (rdo::Factory<RDOType__string>::create())
+    , m_value(value)
+    , m_type(rdo::Factory<RDOType__STRING>::create())
 {}
 
 RDOValue::RDOValue(const LPRDOValue& pValue)
@@ -44,28 +44,28 @@ RDOValue::RDOValue(const LPRDOValue& pValue)
 
 RDOValue::RDOValue(const rdo::runtime::RDOValue& value, const LPRDOType& type, const RDOParserSrcInfo& src_info)
     : RDOParserSrcInfo(src_info)
-    , m_value         (value   )
-    , m_type          (type    )
+    , m_value(value)
+    , m_type(type)
 {}
 
 RDOValue::RDOValue(const LPRDOType& type, const RDOParserSrcInfo& src_info)
-    : RDOParserSrcInfo(src_info    )
-    , m_value         (type->type())
-    , m_type          (type        )
+    : RDOParserSrcInfo(src_info)
+    , m_value(type->type())
+    , m_type(type)
 {}
 
 // Для t_identificator известно только имя, но не тип
 RDOValue::RDOValue(const RDOParserSrcInfo& src_info)
     : RDOParserSrcInfo(src_info)
-    , m_value         (rdo::runtime::RDOValue(src_info.src_text(), rdo::runtime::g_identificator))
-    , m_type          (rdo::Factory<RDOType__identificator>::create())
+    , m_value(rdo::runtime::RDOValue(src_info.src_text(), rdo::runtime::g_IDENTIFICATOR))
+    , m_type(rdo::Factory<RDOType__IDENTIFICATOR>::create())
 {}
 
 // Неопределенный тип
 RDOValue::RDOValue()
     : RDOParserSrcInfo()
-    , m_value         (rdo::runtime::RDOValue(rdo::runtime::g_unknow.object_parent_cast<rdo::runtime::RDOType>()))
-    , m_type          (rdo::Factory<RDOType__unknow>::create())
+    , m_value(rdo::runtime::RDOValue(rdo::runtime::g_UNKNOW.object_parent_cast<rdo::runtime::RDOType>()))
+    , m_type(rdo::Factory<RDOType__UNKNOW>::create())
 {}
 
 const LPRDOType& RDOValue::type() const
@@ -73,7 +73,7 @@ const LPRDOType& RDOValue::type() const
     return m_type;
 }
 
-rdo::runtime::RDOType::TypeID RDOValue::typeID() const
+rdo::runtime::RDOType::Type RDOValue::typeID() const
 {
     return m_type->type()->typeID();
 }
@@ -90,16 +90,16 @@ const rdo::runtime::RDOValue* RDOValue::operator->() const
 
 bool RDOValue::defined() const
 {
-    return m_value.typeID() != rdo::runtime::RDOType::t_unknow;
+    return m_value.typeID() != rdo::runtime::RDOType::Type::UNKNOW;
 }
 
 bool RDOValue::constant() const
 {
     return
-        m_value.typeID() == rdo::runtime::RDOType::t_int  ||
-        m_value.typeID() == rdo::runtime::RDOType::t_real ||
-        m_value.typeID() == rdo::runtime::RDOType::t_bool ||
-        m_value.typeID() == rdo::runtime::RDOType::t_string;
+        m_value.typeID() == rdo::runtime::RDOType::Type::INT  ||
+        m_value.typeID() == rdo::runtime::RDOType::Type::REAL ||
+        m_value.typeID() == rdo::runtime::RDOType::Type::BOOL ||
+        m_value.typeID() == rdo::runtime::RDOType::Type::STRING;
 }
 
 LPRDOValue RDOValue::getIdentificator(const std::string& identificator)

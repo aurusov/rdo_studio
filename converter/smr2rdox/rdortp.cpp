@@ -44,7 +44,7 @@ void RDORTPResType::addParam(const LPRDORTPParam& param)
     m_params.push_back(param);
 }
 
-void RDORTPResType::addParam(const std::string& /*param_name*/, rdo::runtime::RDOType::TypeID /*param_typeID*/)
+void RDORTPResType::addParam(const std::string& /*param_name*/, rdo::runtime::RDOType::Type /*param_typeID*/)
 {
     NEVER_REACH_HERE;
 }

@@ -62,9 +62,7 @@ void RDOPMDResult::endOfCreation(const LPIResult& pResult)
 
     LPITrace pTrace = m_pResult.object_dynamic_cast<ITrace>();
     if (pTrace)
-    {
         pTrace->setTraceID(RDOParser::s_parser()->getPMD_id());
-    }
 }
 
 // --------------------------------------------------------------------------------
@@ -123,9 +121,7 @@ LPRDOPMDResult RDOResultGroup::find(const std::string& resultName) const
     for (const auto& result: m_resultList)
     {
         if (result->name() == resultName)
-        {
             return result;
-        }
     }
     return NULL;
 }
@@ -166,36 +162,34 @@ void RDOPMDWatchPar::init(bool trace, const RDOParserSrcInfo& res_src_info, cons
     checkParam(pParam);
 
     rdo::runtime::LPRDOCalc pResCalc =
-        rdo::Factory<rdo::runtime::RDOCalcGetResourceByID>::create(pResource->getID());
+            rdo::Factory<rdo::runtime::RDOCalcGetResourceByID>::create(pResource->getID());
     endOfCreation(rdo::Factory<rdo::runtime::RDOPMDWatchPar>::create(
-        RDOParser::s_parser()->runtime(),
-        src_text(),
-        trace,
-        res_src_info.src_text(),
-        par_src_info.src_text(),
-        pResCalc,
-        pResource->getType()->getRTPParamNumber(par_src_info.src_text())
-        ));
+            RDOParser::s_parser()->runtime(),
+            src_text(),
+            trace,
+            res_src_info.src_text(),
+            par_src_info.src_text(),
+            pResCalc,
+            pResource->getType()->getRTPParamNumber(par_src_info.src_text())));
 }
 
 void RDOPMDWatchPar::initFromParam(bool trace, const LPRDORTPParam& pParam, const rdo::runtime::LPRDOCalc& pResCalc, const std::size_t paramNum)
 {
     const std::string resName;
     endOfCreation(rdo::Factory<rdo::runtime::RDOPMDWatchPar>::create(
-        RDOParser::s_parser()->runtime(),
-        src_text(),
-        trace,
-        resName,
-        pParam->src_info().src_text(),
-        pResCalc,
-        paramNum
-        ));
+            RDOParser::s_parser()->runtime(),
+            src_text(),
+            trace,
+            resName,
+            pParam->src_info().src_text(),
+            pResCalc,
+            paramNum));
 }
 
 void RDOPMDWatchPar::checkParam(const LPRDORTPParam& pParam)
 {
-    const rdo::runtime::RDOType::TypeID typeID = pParam->getTypeInfo()->typeID();
-    if (typeID != rdo::runtime::RDOType::t_int && typeID != rdo::runtime::RDOType::t_real)
+    const rdo::runtime::RDOType::Type typeID = pParam->getTypeInfo()->typeID();
+    if (typeID != rdo::runtime::RDOType::Type::INT && typeID != rdo::runtime::RDOType::Type::REAL)
     {
         RDOParser::s_parser()->error().push_only(
             pParam->src_info(),
@@ -218,7 +212,11 @@ RDOPMDWatchState::~RDOPMDWatchState()
 
 void RDOPMDWatchState::init(bool trace, LPRDOFUNLogic pLogic)
 {
-    endOfCreation(rdo::Factory<rdo::runtime::RDOPMDWatchState>::create(RDOParser::s_parser()->runtime(), src_text(), trace, pLogic->getCalc()));
+    endOfCreation(
+            rdo::Factory<rdo::runtime::RDOPMDWatchState>::create(RDOParser::s_parser()->runtime(),
+            src_text(),
+            trace,
+            pLogic->getCalc()));
 }
 
 // --------------------------------------------------------------------------------
@@ -230,8 +228,11 @@ RDOPMDWatchTemp::RDOPMDWatchTemp(const RDOParserSrcInfo& src_info, const RDOPars
     LPRDORTPResType pResType = RDOParser::s_parser()->findRTPResType(res_type_src_info.src_text());
     if (!pResType)
     {
-        RDOParser::s_parser()->error().error(res_type_src_info, rdo::format("Тип ресурса '%s' не найден", res_type_src_info.src_text().c_str()));
+        RDOParser::s_parser()->error().error(
+                res_type_src_info,
+                rdo::format("Тип ресурса '%s' не найден", res_type_src_info.src_text().c_str()));
     }
+
     if (!pResType->isTemporary())
     {
         RDOParser::s_parser()->error().push_only(res_type_src_info, "Показатель собирает информацию по временным ресурсам (temporary)");
@@ -255,9 +256,16 @@ RDOPMDWatchQuant::~RDOPMDWatchQuant()
 
 void RDOPMDWatchQuant::init(bool trace, const RDOParserSrcInfo& res_type_src_info)
 {
-    m_pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(res_type_src_info.src_text()));
+    m_pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(
+            RDOFUNGroupLogic::Type::UNKNOW,
+            RDOParserSrcInfo(res_type_src_info.src_text()));
     ASSERT(m_pGroupLogic);
-    endOfCreation(rdo::Factory<rdo::runtime::RDOPMDWatchQuant>::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_type_src_info.src_text(), m_pGroupLogic->getResType()->getNumber()));
+    endOfCreation(
+            rdo::Factory<rdo::runtime::RDOPMDWatchQuant>::create(RDOParser::s_parser()->runtime(),
+            src_text(),
+            trace,
+            res_type_src_info.src_text(),
+            m_pGroupLogic->getResType()->getNumber()));
 }
 
 void RDOPMDWatchQuant::setLogic(LPRDOFUNLogic& pLogic)
@@ -288,16 +296,24 @@ RDOPMDWatchValue::~RDOPMDWatchValue()
 
 void RDOPMDWatchValue::init(bool trace, const RDOParserSrcInfo& res_type_src_info)
 {
-    m_pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(res_type_src_info.src_text()));
+    m_pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(
+            RDOFUNGroupLogic::Type::UNKNOW,
+            RDOParserSrcInfo(res_type_src_info.src_text()));
     ASSERT(m_pGroupLogic);
-    endOfCreation(rdo::Factory<rdo::runtime::RDOPMDWatchValue>::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_type_src_info.src_text(), m_pGroupLogic->getResType()->getNumber()));
+
+    endOfCreation(
+            rdo::Factory<rdo::runtime::RDOPMDWatchValue>::create(RDOParser::s_parser()->runtime(),
+            src_text(),
+            trace,
+            res_type_src_info.src_text(),
+            m_pGroupLogic->getResType()->getNumber()));
 }
 
 void RDOPMDWatchValue::setLogic(LPRDOFUNLogic& pLogic, LPRDOFUNArithm& pArithm)
 {
     LPIResultWatchValue pWatch = m_pResult.object_dynamic_cast<IResultWatchValue>();
     ASSERT(pWatch);
-    pWatch->setLogicCalc (pLogic->getCalc()    );
+    pWatch->setLogicCalc(pLogic->getCalc());
     pWatch->setArithmCalc(pArithm->createCalc());
     m_pGroupLogic->end();
 }
@@ -306,7 +322,7 @@ void RDOPMDWatchValue::setLogicNoCheck(LPRDOFUNArithm& pArithm)
 {
     LPIResultWatchValue pWatch = m_pResult.object_dynamic_cast<IResultWatchValue>();
     ASSERT(pWatch);
-    pWatch->setLogicCalc (rdo::Factory<rdo::runtime::RDOCalcConst>::create(1));
+    pWatch->setLogicCalc(rdo::Factory<rdo::runtime::RDOCalcConst>::create(1));
     pWatch->setArithmCalc(pArithm->createCalc());
     m_pGroupLogic->end();
 }
@@ -323,7 +339,10 @@ RDOPMDGetValue::~RDOPMDGetValue()
 
 void RDOPMDGetValue::init(LPRDOFUNArithm pArithm)
 {
-    endOfCreation(rdo::Factory<rdo::runtime::RDOPMDGetValue>::create(RDOParser::s_parser()->runtime(), src_text(), pArithm->createCalc()));
+    endOfCreation(
+            rdo::Factory<rdo::runtime::RDOPMDGetValue>::create(RDOParser::s_parser()->runtime(),
+            src_text(),
+            pArithm->createCalc()));
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

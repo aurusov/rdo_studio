@@ -61,7 +61,7 @@ rdo::runtime::LPRDOType TypeInfo::type() const
     return m_pType.object_dynamic_cast<rdo::runtime::RDOType>();
 }
 
-rdo::runtime::RDOType::TypeID TypeInfo::typeID() const
+rdo::runtime::RDOType::Type TypeInfo::typeID() const
 {
     return type()->typeID();
 }

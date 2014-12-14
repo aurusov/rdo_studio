@@ -21,7 +21,7 @@ typedef std::pair<rdo::runtime::LPRDOMatrixValue, rdo::runtime::RDOValue> Matrix
 
 Matrix createMatrix(const Container& data)
 {
-    rdo::runtime::LPRDOMatrixType  pType  = rdo::Factory<rdo::runtime::RDOMatrixType>::create(rdo::runtime::g_int);
+    rdo::runtime::LPRDOMatrixType pType = rdo::Factory<rdo::runtime::RDOMatrixType>::create(rdo::runtime::g_INT);
     ASSERT(pType);
     rdo::runtime::LPRDOMatrixValue pValue = rdo::Factory<rdo::runtime::RDOMatrixValue>::create(pType);
     ASSERT(pValue);

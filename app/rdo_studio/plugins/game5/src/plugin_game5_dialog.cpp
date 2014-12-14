@@ -16,17 +16,6 @@
 #include "app/rdo_studio/plugins/game5/src/multi_select_completer.h"
 // --------------------------------------------------------------------------------
 
-namespace
-{
-    enum moveDirection
-    {
-        MOVE_UP = 0,
-        MOVE_DOWN,
-        MOVE_RIGHT,
-        MOVE_LEFT
-    };
-} // end anonymous namespace
-
 PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* pParent)
     : QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 {
@@ -49,8 +38,8 @@ PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* 
 
     rdo::gui::model::Model* pModel = getCurrentModel();
     clearAllTabs();
-    pModel->getTab()->getItemEdit(rdo::model::FUN)->clearAll();
-    pModel->getTab()->getItemEdit(rdo::model::FUN)->appendText(modelFUN());
+    pModel->getTab()->getItemEdit(rdo::FileType::FUN)->clearAll();
+    pModel->getTab()->getItemEdit(rdo::FileType::FUN)->appendText(modelFUN());
 
     connect(buttonHide        , &QPushButton::toggled, this, &PluginGame5GenerateSituationDialog::onClickHide         );
     connect(buttonSetLineup   , &QPushButton::clicked, this, &PluginGame5GenerateSituationDialog::callTilesOrderDialog);
@@ -112,32 +101,32 @@ std::string PluginGame5GenerateSituationDialog::evaluateBy() const
     }
 }
 
-std::string PluginGame5GenerateSituationDialog::activityValue(int direction) const
+std::string PluginGame5GenerateSituationDialog::activityValue(MoveDirection direction) const
 {
     QString costValue;
     QString calcSwitcher;
     switch (direction)
     {
-        case MOVE_DOWN:
+        case MoveDirection::DOWN:
             costValue    = moveDownCost->getLineEdit().text();
             calcSwitcher = moveDownCalcSwitcher->currentText();
             break;
-        case MOVE_LEFT:
+        case MoveDirection::LEFT:
             costValue    = moveLeftCost->getLineEdit().text();
             calcSwitcher = moveLeftCalcSwitcher->currentText();
             break;
-        case MOVE_RIGHT:
+        case MoveDirection::RIGHT:
             costValue    = moveRightCost->getLineEdit().text();
             calcSwitcher = moveRightCalcSwitcher->currentText();
             break;
-        case MOVE_UP:
+        case MoveDirection::UP:
             costValue    = moveUpCost->getLineEdit().text();
             calcSwitcher = moveUpCalcSwitcher->currentText();
             break;
         default:
             break;
     }
-    const QString string = calcSwitcher + " " + costValue ;
+    const QString string = calcSwitcher + " " + costValue;
     return string.toStdString();
 }
 
@@ -158,8 +147,14 @@ QString PluginGame5GenerateSituationDialog::modelPAT() const
 
 QString PluginGame5GenerateSituationDialog::modelDPT() const
 {
-    return PluginGame5ModelGenerator::modelDPT(*gameBoard, evaluateBy(), checkBoxCopareTop->isChecked(), activityValue(MOVE_LEFT),
-                                               activityValue(MOVE_RIGHT), activityValue(MOVE_DOWN), activityValue(MOVE_UP));
+    return PluginGame5ModelGenerator::modelDPT(
+            *gameBoard,
+            evaluateBy(),
+            checkBoxCopareTop->isChecked(),
+            activityValue(MoveDirection::LEFT),
+            activityValue(MoveDirection::RIGHT),
+            activityValue(MoveDirection::DOWN),
+            activityValue(MoveDirection::UP));
 }
 
 QString PluginGame5GenerateSituationDialog::modelFUN() const
@@ -172,7 +167,7 @@ void PluginGame5GenerateSituationDialog::clearAllTabs() const
     rdo::gui::model::Model* pModel = getCurrentModel();
     for (int i = 0; i < pModel->getTab()->tabBar()->count(); i++)
     {
-        if (i != rdo::model::FUN)
+        if (i != (int)rdo::FileType::FUN)
         {
             pModel->getTab()->getItemEdit(i)->clearAll();
         }
@@ -193,10 +188,10 @@ void PluginGame5GenerateSituationDialog::generateModel() const
     {
         clearAllTabs();
 
-        pModel->getTab()->getItemEdit(rdo::model::RTP)->appendText(modelRTP());
-        pModel->getTab()->getItemEdit(rdo::model::RSS)->appendText(modelRSS());
-        pModel->getTab()->getItemEdit(rdo::model::PAT)->appendText(modelPAT());
-        pModel->getTab()->getItemEdit(rdo::model::DPT)->appendText(modelDPT());
+        pModel->getTab()->getItemEdit(rdo::FileType::RTP)->appendText(modelRTP());
+        pModel->getTab()->getItemEdit(rdo::FileType::RSS)->appendText(modelRSS());
+        pModel->getTab()->getItemEdit(rdo::FileType::PAT)->appendText(modelPAT());
+        pModel->getTab()->getItemEdit(rdo::FileType::DPT)->appendText(modelDPT());
     }
 }
 
@@ -212,7 +207,7 @@ QStringList PluginGame5GenerateSituationDialog::parseModelFUN() const
 {
     rdo::gui::model::Model* pModel = getCurrentModel();
     std::stringstream txtStream;
-    pModel->getTab()->getItemEdit(rdo::model::FUN)->save(txtStream);
+    pModel->getTab()->getItemEdit(rdo::FileType::FUN)->save(txtStream);
     QString tabStr = QString::fromStdString(txtStream.str());
     QRegExp regExp("(\\$Function)(\\s*)([A-Za-z0-9_А-Яа-я\\$]*)(\\s*):");
 

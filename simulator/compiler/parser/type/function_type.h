@@ -33,7 +33,7 @@ private:
     ParamList  m_paramList;
 
     virtual const rdo::runtime::LPRDOType& type() const;
-    virtual rdo::runtime::RDOType::TypeID typeID() const;
+    virtual rdo::runtime::RDOType::Type typeID() const;
 
     DECLARE_IType;
     DECLARE_IModelStructure;
@@ -62,7 +62,7 @@ private:
     LPFunctionParamType  m_pParamType;
 
     virtual rdo::runtime::LPRDOType type() const;
-    virtual rdo::runtime::RDOType::TypeID typeID() const;
+    virtual rdo::runtime::RDOType::Type typeID() const;
 
     DECLARE_IType;
     DECLARE_IModelStructure;

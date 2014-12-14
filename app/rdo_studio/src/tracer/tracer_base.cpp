@@ -41,33 +41,33 @@ TracerBase::~TracerBase()
 
 ParamInfo* TracerBase::getParamType(std::istream& stream)
 {
-    boost::optional<ParamInfo::ParamType> parType;
+    boost::optional<ParamInfo::Type> parType;
 
     std::string parTypeName;
     stream >> parTypeName;
     if (parTypeName == "E")
     {
-        parType = ParamInfo::PT_ENUMERATIVE;
+        parType = ParamInfo::Type::ENUMERATIVE;
     }
     else if (parTypeName == "I")
     {
-        parType = ParamInfo::PT_INTEGER;
+        parType = ParamInfo::Type::INTEGER;
     }
     else if (parTypeName == "R")
     {
-        parType = ParamInfo::PT_REAL;
+        parType = ParamInfo::Type::REAL;
     }
     else if (parTypeName == "B")
     {
-        parType = ParamInfo::PT_BOOL;
+        parType = ParamInfo::Type::BOOL;
     }
     else if (parTypeName == "A")
     {
-        parType = ParamInfo::PT_ARRAY;
+        parType = ParamInfo::Type::ARRAY;
     }
     else if (parTypeName == "S")
     {
-        parType = ParamInfo::PT_STRING;
+        parType = ParamInfo::Type::STRING;
     }
     else
     {
@@ -81,7 +81,7 @@ ParamInfo* TracerBase::getParamType(std::istream& stream)
         {}
         if (i)
         {
-            parType = ParamInfo::PT_RESOURCE;
+            parType = ParamInfo::Type::RESOURCE;
             //потом его имя
             stream >> parTypeName;
             //потом число его параметров
@@ -95,7 +95,7 @@ ParamInfo* TracerBase::getParamType(std::istream& stream)
     ASSERT(parType.is_initialized());
 
     ParamInfo* pParam = new ParamInfo(parType.get());
-    if (parType == ParamInfo::PT_ENUMERATIVE)
+    if (parType == ParamInfo::Type::ENUMERATIVE)
     {
         std::size_t enumCount;
         stream >> enumCount;
@@ -109,12 +109,12 @@ ParamInfo* TracerBase::getParamType(std::istream& stream)
             pParam->addEnumValue(enumName);
         }
     }
-    else if (parType == ParamInfo::PT_BOOL)
+    else if (parType == ParamInfo::Type::BOOL)
     {
         pParam->addEnumValue("false");
         pParam->addEnumValue("true");
     }
-    else if (parType == ParamInfo::PT_ARRAY)
+    else if (parType == ParamInfo::Type::ARRAY)
     {
         ParamInfo* pArrayItem = getParamType(stream);
         (void)pArrayItem;
@@ -135,7 +135,7 @@ ParamInfo* TracerBase::getParam(std::istream& stream)
 
 void TracerBase::addResourceType(std::string&, std::istream& stream)
 {
-    LPResourceType pResourceType = rdo::Factory<ResourceType>::create(ResourceType::RDOTK_PERMANENT);
+    LPResourceType pResourceType = rdo::Factory<ResourceType>::create(ResourceType::Kind::PERMANENT);
     std::string resourceTypeName;
     stream >> resourceTypeName;
     pResourceType->setName(QString::fromStdString(resourceTypeName));

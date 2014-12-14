@@ -10,11 +10,11 @@ using namespace rdo::gui::tracer;
 // --------------------------------------------------------------------------------
 // -------------------- ParamInfo
 // --------------------------------------------------------------------------------
-ParamInfo::ParamInfo(const ParamType type)
+ParamInfo::ParamInfo(const Type type)
     : m_enumValueList(NULL)
     , m_paramType(type)
 {
-    if (m_paramType == PT_ENUMERATIVE || m_paramType == PT_BOOL || m_paramType == PT_STRING)
+    if (m_paramType == Type::ENUMERATIVE || m_paramType == Type::BOOL || m_paramType == Type::STRING)
     {
         m_enumValueList = new EnumValueList();
     }
@@ -38,7 +38,7 @@ void ParamInfo::setName(const QString& name)
     m_name = name;
 }
 
-ParamInfo::ParamType ParamInfo::getParamType() const
+ParamInfo::Type ParamInfo::getParamType() const
 {
     return m_paramType;
 }

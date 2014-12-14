@@ -642,9 +642,9 @@ void RDOThreadRunTime::start()
         m_pSimulator->m_pRuntime->rdoInit(pTracer, pResults, pResultsInfo, pThis.interface_cast<IThreadProxy>());
         switch (m_pSimulator->m_pParser->getSMR()->getShowMode())
         {
-            case rdo::service::simulation::SM_NoShow   : m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_MaxSpeed); break;
-            case rdo::service::simulation::SM_Animation: m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_Sync    ); break;
-            case rdo::service::simulation::SM_Monitor  : m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_Pause   ); break;
+        case rdo::service::simulation::ShowMode::NoShow   : m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_MaxSpeed); break;
+        case rdo::service::simulation::ShowMode::Animation: m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_Sync    ); break;
+        case rdo::service::simulation::ShowMode::Monitor  : m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_Pause   ); break;
         }
         m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pParser->getSMR()->getShowRate());
     }
@@ -831,14 +831,12 @@ void RDOThreadRunTime::sendMessage(ThreadID threadID, std::size_t messageID, voi
     RDOThread* pThread;
     switch (threadID)
     {
-    case TID_REPOSITORY: pThread = kernel->repository(); break;
-    default            : pThread = NULL; break;
+    case ThreadID::REPOSITORY: pThread = kernel->repository(); break;
+    default: pThread = NULL; break;
     }
 
     if (pThread)
-    {
         RDOThreadMT::sendMessage(pThread, static_cast<RDOTreadMessage>(messageID), pParam);
-    }
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
@@ -1006,7 +1004,7 @@ void RDOThreadSimulator::proc(RDOMessageInfo& msg)
             GetList* getlist = static_cast<GetList*>(msg.param);
             switch (getlist->m_type)
             {
-                case GetList::frames:
+                case GetList::Type::FRAMES:
                 {
                     if (m_pRuntime)
                     {
@@ -1018,7 +1016,7 @@ void RDOThreadSimulator::proc(RDOMessageInfo& msg)
                     }
                     break;
                 }
-                case GetList::bitmaps:
+                case GetList::Type::BITMAPS:
                 {
                     if (m_pRuntime)
                     {
@@ -1215,7 +1213,7 @@ void RDOThreadSimulator::parseSMRFileInfo(rdo::converter::smr2rdox::RDOSMRFileIn
     try
     {
         rdo::converter::smr2rdox::RDOParserModel converter;
-        rdo::repository::RDOThreadRepository::FileInfo fileInfo(rdo::model::SMR);
+        rdo::repository::RDOThreadRepository::FileInfo fileInfo(rdo::FileType::SMR);
         kernel->sendMessage(kernel->repository(), RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
         rdo::converter::smr2rdox::RDOParserModel::Result res = converter.convert(fileInfo.m_fullName, info);
         switch (res)
@@ -1336,7 +1334,7 @@ void RDOThreadSimulator::corbaGetRTP(rdo::compiler::parser::RDOCorba::GetRTP_var
 
         my_rtpList[i].m_name = CORBA::string_dup(rtp_it->name().c_str());
 
-        if ((rtp_it->getType()) == rdo::compiler::mbuilder::RDOResType::rt_permanent)
+        if ((rtp_it->getType()) == rdo::compiler::mbuilder::RDOResType::PERMANENT)
             my_rtpList[i].m_type=rdo::compiler::parser::RDOCorba::rt_permanent;
         else
             my_rtpList[i].m_type=rdo::compiler::parser::RDOCorba::rt_temporary;
@@ -1372,7 +1370,7 @@ void RDOThreadSimulator::corbaGetRTP(rdo::compiler::parser::RDOCorba::GetRTP_var
 
             switch (param_it->typeID())
             {
-                case rdo::runtime::RDOType::t_int:
+                case rdo::runtime::RDOType::Type::INT:
                 {
                     my_rtpList[i].m_param[j].m_type = rdo::compiler::parser::RDOCorba::int_type;
 
@@ -1390,7 +1388,7 @@ void RDOThreadSimulator::corbaGetRTP(rdo::compiler::parser::RDOCorba::GetRTP_var
                     }
                     break;
                 }
-                case rdo::runtime::RDOType::t_real:
+                case rdo::runtime::RDOType::Type::REAL:
                 {
                     my_rtpList[i].m_param[j].m_type = rdo::compiler::parser::RDOCorba::double_type;
 
@@ -1408,7 +1406,7 @@ void RDOThreadSimulator::corbaGetRTP(rdo::compiler::parser::RDOCorba::GetRTP_var
                     }
                     break;
                 }
-                case rdo::runtime::RDOType::t_enum:
+                case rdo::runtime::RDOType::Type::ENUM:
                 {
                     my_rtpList[i].m_param[j].m_type = rdo::compiler::parser::RDOCorba::enum_type;
 
@@ -1521,7 +1519,7 @@ void RDOThreadSimulator::corbaGetRSS(rdo::compiler::parser::RDOCorba::GetRSS_var
 
             switch (param_it->second.typeID())
             {
-                case rdo::runtime::RDOType::t_int:
+                case rdo::runtime::RDOType::Type::INT:
                 {
 
                     my_rssList[i].m_param[j].m_int = param_it->second->getInt();
@@ -1529,7 +1527,7 @@ void RDOThreadSimulator::corbaGetRSS(rdo::compiler::parser::RDOCorba::GetRSS_var
 
                     break;
                 }
-                case rdo::runtime::RDOType::t_real:
+                case rdo::runtime::RDOType::Type::REAL:
                 {
 
                     my_rssList[i].m_param[j].m_double = param_it->second->getDouble();
@@ -1537,7 +1535,7 @@ void RDOThreadSimulator::corbaGetRSS(rdo::compiler::parser::RDOCorba::GetRSS_var
 
                     break;
                 }
-                case rdo::runtime::RDOType::t_enum:
+                case rdo::runtime::RDOType::Type::ENUM:
                 {
 
                     my_rssList[i].m_param[j].m_enum = param_it->second->getAsString().c_str();

@@ -21,7 +21,7 @@ class RDOValue
 DECLARE_FACTORY(RDOValue);
 public:
     const LPRDOType& type() const;
-    rdo::runtime::RDOType::TypeID typeID() const;
+    rdo::runtime::RDOType::Type typeID() const;
     const rdo::runtime::RDOValue& value() const;
     const rdo::runtime::RDOValue* operator->() const;
 

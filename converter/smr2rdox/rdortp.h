@@ -42,7 +42,7 @@ public:
     bool isTemporary() const { return !m_permanent; };
 
     void addParam(const LPRDORTPParam& param);
-    void addParam(const std::string& param_name, rdo::runtime::RDOType::TypeID param_typeID);
+    void addParam(const std::string& param_name, rdo::runtime::RDOType::Type param_typeID);
     LPRDORTPParam findRTPParam(const std::string& paramName) const;
     void finish();
 

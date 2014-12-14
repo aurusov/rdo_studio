@@ -229,7 +229,7 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(const LPProcGUIProcess& pProcess, con
         // Создадим тип ресурса
         rdo::compiler::mbuilder::RDOResType rtp(rtpName);
         // Добавим параметр Время_создания
-        rdo::compiler::mbuilder::RDOResType::Param param(rtpParamName, rdo::Factory<parser::RDOType__real>::create());
+        rdo::compiler::mbuilder::RDOResType::Param param(rtpParamName, rdo::Factory<parser::RDOType__REAL>::create());
         rtp.m_params.append(param);
         // Добавим тип ресурса
         if (!rtpList.append(rtp))

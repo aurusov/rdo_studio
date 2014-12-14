@@ -117,7 +117,7 @@ LPFunctionType Function::generateType() const
     if (paramTypeList.empty())
     {
         paramTypeList.push_back(
-            rdo::Factory<TypeInfo>::delegate<RDOType__void>(src_info())
+            rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(src_info())
         );
     }
 
@@ -142,7 +142,7 @@ void Function::popFunctionBodyContext()
 {
     ASSERT(m_pContextFunctionBody);
 
-    if (m_pReturnType->typeID() != rdo::runtime::RDOType::t_void)
+    if (m_pReturnType->typeID() != rdo::runtime::RDOType::Type::EMPTY)
     {
         if (!m_pContextFunctionBody->getReturnFlag())
         {
@@ -177,7 +177,7 @@ void Function::setBody(const rdo::runtime::LPRDOCalc& pBody)
     pCalcStatementList->addCalcStatement(pBody);
     pCalcStatementList->addCalcStatement(pCalcCloseBrace);
 
-    if (m_pReturnType->typeID() != rdo::runtime::RDOType::t_void && !m_pContextFunctionBody->getReturnFlag())
+    if (m_pReturnType->typeID() != rdo::runtime::RDOType::Type::EMPTY && !m_pContextFunctionBody->getReturnFlag())
     {
         rdo::runtime::LPRDOCalc pCalcDefault = m_pDefaultValue;
         if (!pCalcDefault)
@@ -234,8 +234,8 @@ Context::LPFindResult Function::onFindContext(const std::string& method, const C
         LPRDOParam pParam = findParam(identifier);
         if (pParam)
         {
-            rdo::runtime::RDOType::TypeID typeID = pParam->getTypeInfo()->typeID();
-            if (typeID == rdo::runtime::RDOType::t_identificator || typeID == rdo::runtime::RDOType::t_unknow)
+            rdo::runtime::RDOType::Type typeID = pParam->getTypeInfo()->typeID();
+            if (typeID == rdo::runtime::RDOType::Type::IDENTIFICATOR || typeID == rdo::runtime::RDOType::Type::UNKNOW)
             {
                 RDOParser::s_parser()->error().push_only(
                     srcInfo,

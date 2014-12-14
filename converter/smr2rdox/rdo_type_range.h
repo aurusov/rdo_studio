@@ -55,8 +55,8 @@ private:
 
     DECLARE_ITypeConverter;
 };
-typedef RDOTypeRange<RDOType__int>  RDOTypeIntRange;
-typedef RDOTypeRange<RDOType__real> RDOTypeRealRange;
+typedef RDOTypeRange<RDOType__INT>  RDOTypeIntRange;
+typedef RDOTypeRange<RDOType__REAL> RDOTypeRealRange;
 DECLARE_POINTER(RDOTypeIntRange);
 DECLARE_POINTER(RDOTypeRealRange);
 

@@ -98,9 +98,9 @@ const RDORTPResType::ParamList& RDORTPResType::getParams() const
     return m_params;
 }
 
-runtime::RDOType::TypeID RDORTPResType::typeID() const
+runtime::RDOType::Type RDORTPResType::typeID() const
 {
-    return runtime::RDOType::t_pointer;
+    return runtime::RDOType::Type::POINTER;
 }
 
 LPRDORSSResource RDORTPResType::createRes(const LPRDOParser& pParser, const RDOParserSrcInfo& src_info)
@@ -117,7 +117,7 @@ void RDORTPResType::addParam(const LPRDORTPParam& param)
     m_params.push_back(param);
 }
 
-void RDORTPResType::addParam(const std::string& /*param_name*/, rdo::runtime::RDOType::TypeID /*param_typeID*/)
+void RDORTPResType::addParam(const std::string& /*param_name*/, rdo::runtime::RDOType::Type /*param_typeID*/)
 {}
 
 LPRDORTPParam RDORTPResType::findRTPParam(const std::string& paramName) const
@@ -153,7 +153,7 @@ LPIType RDORTPResType::type_cast(const LPIType& pFrom, const RDOParserSrcInfo& f
 {
     switch (pFrom.object_dynamic_cast<rdo::runtime::RDOType>()->typeID())
     {
-    case rdo::runtime::RDOType::t_pointer:
+    case rdo::runtime::RDOType::Type::POINTER:
         {
             LPIType pThisRTPType(const_cast<RDORTPResType*>(this));
 

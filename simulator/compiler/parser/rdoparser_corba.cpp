@@ -249,7 +249,7 @@ void RDOParserCorbaRTP::parse(const LPRDOParser& pParser)
                     {
                     case RDOCorba::int_type:
                     {
-                        rdo::compiler::mbuilder::RDOResType::Param par_int(my_rtpList[i].m_param[j].m_name.in(), rdo::Factory<RDOType__int>::create());
+                        rdo::compiler::mbuilder::RDOResType::Param par_int(my_rtpList[i].m_param[j].m_name.in(), rdo::Factory<RDOType__INT>::create());
 
                         if (my_rtpList[i].m_param[j].m_range_int == 1)
                             par_int.setRange(RDOValue(my_rtpList[i].m_param[j].m_min_int), RDOValue(my_rtpList[i].m_param[j].m_max_int));
@@ -262,7 +262,7 @@ void RDOParserCorbaRTP::parse(const LPRDOParser& pParser)
                     }
                     case RDOCorba::double_type:
                     {
-                        rdo::compiler::mbuilder::RDOResType::Param par_double(my_rtpList[i].m_param[j].m_name.in(), rdo::Factory<RDOType__real>::create());
+                        rdo::compiler::mbuilder::RDOResType::Param par_double(my_rtpList[i].m_param[j].m_name.in(), rdo::Factory<RDOType__REAL>::create());
 
                         if (my_rtpList[i].m_param[j].m_range_double == 1)
                             par_double.setRange(RDOValue(my_rtpList[i].m_param[j].m_min_double), RDOValue(my_rtpList[i].m_param[j].m_max_double));
@@ -330,7 +330,7 @@ void RDOParserCorbaRTP::parse(const LPRDOParser& pParser)
                     }
                     TRACE1("%s\n", info.c_str());
 
-                    if (param.typeID() ==  rdo::runtime::RDOType::t_enum)
+                    if (param.typeID() ==  rdo::runtime::RDOType::Type::ENUM)
                     {
                         for (const auto& enumValue: param.getEnum()->getEnums())
                         {

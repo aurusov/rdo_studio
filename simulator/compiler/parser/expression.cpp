@@ -87,7 +87,7 @@ LPRDOValue Expression::constant() const
 // --------------------------------------------------------------------------------
 ExpressionEmpty::ExpressionEmpty()
     : Expression(
-        rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo()),
+        rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(RDOParserSrcInfo()),
         rdo::runtime::LPRDOCalc(),
         RDOParserSrcInfo()
     )

@@ -403,8 +403,8 @@ param_type
         LPRDOTypeParam pType;
         if (pRange)
         {
-            if (pRange->getMin()->typeID() != rdo::runtime::RDOType::t_int ||
-                pRange->getMax()->typeID() != rdo::runtime::RDOType::t_int)
+            if (pRange->getMin()->typeID() != rdo::runtime::RDOType::Type::INT ||
+                pRange->getMax()->typeID() != rdo::runtime::RDOType::Type::INT)
             {
                 CONVERTER->error().error(@2, "Диапазон целого типа должен быть целочисленным");
             }
@@ -414,7 +414,7 @@ param_type
         }
         else
         {
-            pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create(), RDOParserSrcInfo(@1, @2));
+            pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__INT>::create(), RDOParserSrcInfo(@1, @2));
         }
         ASSERT(pType);
         $$ = CONVERTER->stack().push(pType);
@@ -431,20 +431,20 @@ param_type
         }
         else
         {
-            pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo(@1, @2));
+            pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__REAL>::create(), RDOParserSrcInfo(@1, @2));
         }
         ASSERT(pType);
         $$ = CONVERTER->stack().push(pType);
     }
     | RDO_string
     {
-        LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__string>::create(), RDOParserSrcInfo(@1));
+        LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__STRING>::create(), RDOParserSrcInfo(@1));
         ASSERT(pType);
         $$ = CONVERTER->stack().push(pType);
     }
     | RDO_bool
     {
-        LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__bool>::create(), RDOParserSrcInfo(@1));
+        LPRDOTypeParam pType = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__BOOL>::create(), RDOParserSrcInfo(@1));
         ASSERT(pType);
         $$ = CONVERTER->stack().push(pType);
     }

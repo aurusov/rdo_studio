@@ -44,7 +44,7 @@ namespace
 LPExpression contextSetTrace(const rdo::runtime::LPRDOCalc& getResource, bool traceValue, const RDOParserSrcInfo& srcInfo)
 {
     return rdo::Factory<Expression>::create(
-        rdo::Factory<TypeInfo>::delegate<RDOType__void>(srcInfo),
+        rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(srcInfo),
         rdo::Factory<rdo::runtime::RDOCalcSetResourceTrace>::create(getResource, traceValue),
         srcInfo
     );

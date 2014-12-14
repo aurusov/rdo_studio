@@ -451,7 +451,7 @@ void Model::onEditCompleteWord()
     std::sort(prioritySortedKwList.begin(), prioritySortedKwList.end(), functor);
 
     std::string foundKeyWords = "";
-    for (string_list::const_iterator it = prioritySortedKwList.begin(); it != prioritySortedKwList.end(); ++it) 
+    for (string_list::const_iterator it = prioritySortedKwList.begin(); it != prioritySortedKwList.end(); ++it)
     {
         foundKeyWords += (*it);
         if (it != prioritySortedKwList.end() - 1)
@@ -474,7 +474,7 @@ void Model::onEditCompleteWord()
         }
     }
 
-    if (list) 
+    if (list)
     {
         std::string startKeyWord       = "";
         std::string startKeyWordScroll = stWord;
@@ -599,17 +599,17 @@ void Model::onHelpContext()
         {
             switch(pTab->getCurrentRDOItem())
             {
-            case rdo::model::RTP: keyword = "rtp"; break;
-            case rdo::model::RSS: keyword = "rss"; break;
-            case rdo::model::EVN: keyword = "evn"; break;
-            case rdo::model::PAT: keyword = "pat"; break;
-            case rdo::model::DPT: keyword = "dpt"; break;
-            case rdo::model::PRC: keyword = "prc"; break;
-            case rdo::model::FRM: keyword = "frm"; break;
-            case rdo::model::FUN: keyword = "fun"; break;
-            case rdo::model::SMR: keyword = "smr"; break;
-            case rdo::model::PMD: keyword = "pmd"; break;
-            default:                   keyword = ""; break;
+            case rdo::FileType::RTP: keyword = "rtp"; break;
+            case rdo::FileType::RSS: keyword = "rss"; break;
+            case rdo::FileType::EVN: keyword = "evn"; break;
+            case rdo::FileType::PAT: keyword = "pat"; break;
+            case rdo::FileType::DPT: keyword = "dpt"; break;
+            case rdo::FileType::PRC: keyword = "prc"; break;
+            case rdo::FileType::FRM: keyword = "frm"; break;
+            case rdo::FileType::FUN: keyword = "fun"; break;
+            case rdo::FileType::SMR: keyword = "smr"; break;
+            case rdo::FileType::PMD: keyword = "pmd"; break;
+            default: keyword = ""; break;
             }
         }
     }

@@ -14,7 +14,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 RDOValue::RDOValue()
     : RDOParserSrcInfo()
-    , m_value         (rdo::runtime::RDOValue(rdo::runtime::g_unknow.object_parent_cast<rdo::runtime::RDOType>()))
+    , m_value         (rdo::runtime::RDOValue(rdo::runtime::g_UNKNOW.object_parent_cast<rdo::runtime::RDOType>()))
 {
     // TODO RDOParserSrcInfo() для TypeInfo реально неопределёно, добавить соответствующий конструктор
     LPRDOValue pValue = getUnknow(RDOParserSrcInfo());
@@ -28,9 +28,9 @@ RDOValue::RDOValue()
 // Для t_identificator известно только имя, но не тип
 RDOValue::RDOValue(const RDOParserSrcInfo& src_info)
     : RDOParserSrcInfo(src_info                                                              )
-    , m_value         (rdo::runtime::RDOValue(src_info.src_text(), rdo::runtime::g_identificator))
+    , m_value         (rdo::runtime::RDOValue(src_info.src_text(), rdo::runtime::g_IDENTIFICATOR))
 {
-    m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__identificator>(src_info);
+    m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__IDENTIFICATOR>(src_info);
     ASSERT(m_pType);
 }
 
@@ -45,7 +45,7 @@ RDOValue::RDOValue(const LPRDOValue& pValue)
 
     switch (typeID())
     {
-    case rdo::runtime::RDOType::t_pointer:
+    case rdo::runtime::RDOType::Type::POINTER:
         reinterpret_cast<rdo::LPIRefCounter>(&m_buffer)->addref();
         break;
 
@@ -58,28 +58,28 @@ RDOValue::RDOValue(const rdo::explicit_value<int>& value, const RDOParserSrcInfo
     : RDOParserSrcInfo(src_info)
     , m_value         (value   )
 {
-    m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(src_info);
+    m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__INT>(src_info);
 }
 
 RDOValue::RDOValue(const rdo::explicit_value<std::size_t>& value, const RDOParserSrcInfo& src_info)
     : RDOParserSrcInfo(src_info)
     , m_value         (value   )
 {
-    m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(src_info);
+    m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__INT>(src_info);
 }
 
 RDOValue::RDOValue(const rdo::explicit_value<double>& value, const RDOParserSrcInfo& src_info)
     : RDOParserSrcInfo(src_info)
     , m_value         (value   )
 {
-    m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(src_info);
+    m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__REAL>(src_info);
 }
 
 RDOValue::RDOValue(const rdo::explicit_value<std::string>& value, const RDOParserSrcInfo& src_info)
     : RDOParserSrcInfo(src_info)
     , m_value         (value   )
 {
-    m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__string>(src_info);
+    m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__STRING>(src_info);
 }
 
 RDOValue::RDOValue(const LPTypeInfo& pType)
@@ -111,7 +111,7 @@ const LPTypeInfo& RDOValue::typeInfo() const
     return m_pType;
 }
 
-rdo::runtime::RDOType::TypeID RDOValue::typeID() const
+rdo::runtime::RDOType::Type RDOValue::typeID() const
 {
     return m_pType->typeID();
 }
@@ -128,25 +128,25 @@ const rdo::runtime::RDOValue& RDOValue::value() const
 
 bool RDOValue::defined() const
 {
-    return m_value.typeID() != rdo::runtime::RDOType::t_unknow;
+    return m_value.typeID() != rdo::runtime::RDOType::Type::UNKNOW;
 }
 
 bool RDOValue::constant() const
 {
-    if (m_value.typeID() == rdo::runtime::RDOType::t_int     ||
-        m_value.typeID() == rdo::runtime::RDOType::t_real    ||
-        m_value.typeID() == rdo::runtime::RDOType::t_bool    ||
-        m_value.typeID() == rdo::runtime::RDOType::t_string)
+    if (m_value.typeID() == rdo::runtime::RDOType::Type::INT     ||
+        m_value.typeID() == rdo::runtime::RDOType::Type::REAL    ||
+        m_value.typeID() == rdo::runtime::RDOType::Type::BOOL    ||
+        m_value.typeID() == rdo::runtime::RDOType::Type::STRING)
     {
         return true;
     }
 
-    if (m_value.typeID() == rdo::runtime::RDOType::t_identificator && m_value.getIdentificator() == "*")
+    if (m_value.typeID() == rdo::runtime::RDOType::Type::IDENTIFICATOR && m_value.getIdentificator() == "*")
     {
         return true;
     }
 
-    if (m_value.typeID() == rdo::runtime::RDOType::t_pointer)
+    if (m_value.typeID() == rdo::runtime::RDOType::Type::POINTER)
     {
         return m_value.isType<rdo::runtime::RDOArrayType>();
     }
@@ -162,7 +162,7 @@ LPRDOValue RDOValue::getIdentificator(const std::string& identificator)
 LPRDOValue RDOValue::getUnknow(const RDOParserSrcInfo& src_info)
 {
     return rdo::Factory<RDOValue>::create(
-        rdo::Factory<TypeInfo>::delegate<RDOType__unknow>(src_info),
+        rdo::Factory<TypeInfo>::delegate<RDOType__UNKNOW>(src_info),
         src_info
     );
 }

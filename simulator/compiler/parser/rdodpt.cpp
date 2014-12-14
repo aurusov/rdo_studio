@@ -107,7 +107,7 @@ void RDODPTActivity::endParam(const YYLTYPE& param_pos)
         }
         RDOParser::s_parser()->error().push_done();
     }
-    if (m_pPattern->getType() == RDOPATPattern::PT_Keyboard)
+    if (m_pPattern->getType() == RDOPATPattern::Type::KEYBOARD)
     {
         LPIKeyboard pKeyboard = m_pActivity.object_dynamic_cast<IKeyboard>();
         ASSERT(pKeyboard);
@@ -139,15 +139,15 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, const
 {
     switch (pattern()->getType())
     {
-    case RDOPATPattern::PT_Rule:
+    case RDOPATPattern::Type::RULE:
         m_pActivity = pattern()->getPatRuntime<rdo::runtime::RDOPatternRule>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name()).object_dynamic_cast<IActivity>();
         break;
 
-    case RDOPATPattern::PT_Operation:
+    case RDOPATPattern::Type::OPERATION:
         m_pActivity = pattern()->getPatRuntime<rdo::runtime::RDOPatternOperation>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name()).object_dynamic_cast<IActivity>();
         break;
 
-    case RDOPATPattern::PT_Keyboard:
+    case RDOPATPattern::Type::KEYBOARD:
         m_pActivity = pattern()->getPatRuntime<rdo::runtime::RDOPatternKeyboard>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name()).object_dynamic_cast<IActivity>();
         break;
 
@@ -163,7 +163,7 @@ RDODPTActivityHotKey::~RDODPTActivityHotKey()
 
 void RDODPTActivityHotKey::addHotKey(const std::string& hotKey, const YYLTYPE& hotkey_pos)
 {
-    if (pattern()->getType() != RDOPATPattern::PT_Keyboard)
+    if (pattern()->getType() != RDOPATPattern::Type::KEYBOARD)
     {
         RDOParser::s_parser()->error().push_only(hotkey_pos, "Горячие клавиши используются только в клавиатурных операциях");
         RDOParser::s_parser()->error().push_only(pattern()->src_info(), "См. образец");
@@ -268,7 +268,7 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, const
     : RDODPTActivity(src_info, pattern_src_info   )
     , m_value       (IDPTSearchActivity::vt_before)
 {
-    if (pattern()->getType() != RDOPATPattern::PT_Rule)
+    if (pattern()->getType() != RDOPATPattern::Type::RULE)
     {
         RDOParser::s_parser()->error().push_only(this->src_info(), "Только продукционные правила могут быть использованы в точке принятия решений типа search");
         RDOParser::s_parser()->error().push_only(pattern()->src_info(), "См. образец");

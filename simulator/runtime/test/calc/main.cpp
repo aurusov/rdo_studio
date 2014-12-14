@@ -144,12 +144,12 @@ BOOST_AUTO_TEST_CASE(RDOCalc_RecursSimulator)
 
 BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 {
-    struct generator
+    struct Generator
     {
-        enum MultOrder
+        enum class MultOrder
         {
-            MO_FUN_PARAM,
-            MO_PARAM_FUN
+            FUN_PARAM,
+            PARAM_FUN
         };
 
         static LPRDOCalc create(MultOrder order)
@@ -221,8 +221,8 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
                 LPRDOCalc pMult;
                 switch (order)
                 {
-                case MO_FUN_PARAM: pMult = rdo::Factory<RDOCalcMult>::create(pFunctionCaller, pGetFunParam); break;
-                case MO_PARAM_FUN: pMult = rdo::Factory<RDOCalcMult>::create(pGetFunParam, pFunctionCaller); break;
+                case MultOrder::FUN_PARAM: pMult = rdo::Factory<RDOCalcMult>::create(pFunctionCaller, pGetFunParam); break;
+                case MultOrder::PARAM_FUN: pMult = rdo::Factory<RDOCalcMult>::create(pGetFunParam, pFunctionCaller); break;
                 }
                 BOOST_CHECK(pMult);
 
@@ -264,11 +264,11 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 
     Error error;
 
-    RDOValue resultFunParam = generator::create(generator::MO_FUN_PARAM)->calcValue(rdo::Factory<RDORuntime>::create(&error));
+    RDOValue resultFunParam = Generator::create(Generator::MultOrder::FUN_PARAM)->calcValue(rdo::Factory<RDORuntime>::create(&error));
     std::string resultFunParamStr = resultFunParam.getAsString();
     BOOST_CHECK(resultFunParam.getInt() == 120);
 
-    RDOValue resultParamFun = generator::create(generator::MO_PARAM_FUN)->calcValue(rdo::Factory<RDORuntime>::create(&error));
+    RDOValue resultParamFun = Generator::create(Generator::MultOrder::PARAM_FUN)->calcValue(rdo::Factory<RDORuntime>::create(&error));
     std::string resultParamFunStr = resultParamFun.getAsString();
     BOOST_CHECK(resultParamFun.getInt() == 120);
 }

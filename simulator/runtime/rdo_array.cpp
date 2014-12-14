@@ -120,17 +120,17 @@ LPRDOArrayValue RDOArrayValue::clone() const
 // -------------------- RDOArrayIterator
 // --------------------------------------------------------------------------------
 RDOArrayIterator::RDOArrayIterator(const LPRDOArrayIterator& pIterator)
-    : RDOType   (RDOType::t_pointer   )
+    : RDOType   (RDOType::Type::POINTER   )
     , m_iterator(pIterator->m_iterator)
 {}
 
 RDOArrayIterator::RDOArrayIterator(const RDOArrayIterator& iterator)
-    : RDOType   (RDOType::t_pointer )
+    : RDOType   (RDOType::Type::POINTER )
     , m_iterator(iterator.m_iterator)
 {}
 
 RDOArrayIterator::RDOArrayIterator(const Iterator& iterator)
-    : RDOType   (RDOType::t_pointer)
+    : RDOType   (RDOType::Type::POINTER)
     , m_iterator(iterator          )
 {}
 
@@ -186,7 +186,7 @@ std::string RDOArrayIterator::asString() const
 // -------------------- RDOArrayType
 // --------------------------------------------------------------------------------
 RDOArrayType::RDOArrayType(const LPItemType& pItemType)
-    : RDOType    (RDOType::t_pointer)
+    : RDOType    (RDOType::Type::POINTER)
     , m_pItemType(pItemType         )
 {}
 

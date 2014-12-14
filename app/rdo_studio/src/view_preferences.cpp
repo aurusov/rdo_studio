@@ -17,7 +17,7 @@ bool ViewPreferences::null_wordwrap      = false;
 bool ViewPreferences::null_horzscrollbar = true;
 bool ViewPreferences::null_warning       = true;
 bool ViewPreferences::null_commentfold   = false;
-EditStyle::Bookmark ViewPreferences::null_bookmarkstyle = EditStyle::B_NONE;
+EditStyle::Bookmark ViewPreferences::null_bookmarkstyle = EditStyle::Bookmark::B_NONE;
 ModelStyle::Fold    ViewPreferences::null_foldstyle     = ModelStyle::F_NONE;
 QColor ViewPreferences::null_fg_color = QColor(0x00, 0x00, 0x00);
 QColor ViewPreferences::null_bg_color = QColor(0xFF, 0xFF, 0xFF);
@@ -36,7 +36,7 @@ ViewPreferences::ViewPreferences(QWidget* pParent)
     connect(buttonOk, SIGNAL(clicked()), this, SLOT(onOkButton()));
     connect(buttonCancel, SIGNAL(clicked()), this, SLOT(onCancelButton()));
     connect(buttonApply, SIGNAL(clicked()), this, SLOT(onApplyButton()));
-    
+
     m_setup           = g_pApp->getFileAssociationSetup();
     m_checkInFuture   = g_pApp->getFileAssociationCheckInFuture();
     m_openLastProject = g_pApp->getOpenLastProject();
@@ -98,11 +98,11 @@ ViewPreferences::ViewPreferences(QWidget* pParent)
     switchPreviewComboBox->addItem("Chart",   IT_CHART);
     switchPreviewComboBox->addItem("Frame",   IT_FRAME);
 
-    bookmarkComboBox->addItem("Нет",           EditStyle::B_NONE);
-    bookmarkComboBox->addItem("Круг",          EditStyle::B_CIRCLE);
-    bookmarkComboBox->addItem("Прямоугольник", EditStyle::B_RECT);
-    bookmarkComboBox->addItem("Овал",          EditStyle::B_ROUNDRECT);
-    bookmarkComboBox->addItem("Стрелка",       EditStyle::B_ARROW);
+    bookmarkComboBox->addItem("Нет",           EditStyle::Bookmark::B_NONE);
+    bookmarkComboBox->addItem("Круг",          EditStyle::Bookmark::B_CIRCLE);
+    bookmarkComboBox->addItem("Прямоугольник", EditStyle::Bookmark::B_RECT);
+    bookmarkComboBox->addItem("Овал",          EditStyle::Bookmark::B_ROUNDRECT);
+    bookmarkComboBox->addItem("Стрелка",       EditStyle::Bookmark::B_ARROW);
 
     foldComboBox->addItem("Нет",             ModelStyle::F_NONE);
     foldComboBox->addItem("Плюс",            ModelStyle::F_PLUS);
@@ -210,7 +210,7 @@ void ViewPreferences::onCheckInput(const QString& /*text*/)
         horzIndentLineEdit->text().toInt() >= 1 &&
         vertIndentLineEdit->text().toInt() >= 1 &&
         tickWidthLineEdit->text().toInt() >= 1;
-        
+
     buttonOk->setEnabled(check);
     buttonApply->setEnabled(check);
 }
@@ -218,7 +218,7 @@ void ViewPreferences::onCheckInput(const QString& /*text*/)
 void ViewPreferences::onCodeCompUse(int state)
 {
     style_editor.autoComplete.useAutoComplete = state == Qt::Checked ? true : false;
-    
+
     switch(state)
     {
     case 0:
@@ -509,7 +509,7 @@ void ViewPreferences::onWordWrap(int state)
 {
     StyleItem* item = getStyleItem();
     item->wordwrap = state == Qt::Checked ? true : false;
-        
+
     switch(item->type)
     {
     case IT_EDITOR:
@@ -712,7 +712,7 @@ void ViewPreferences::onTickWidth(const QString& text)
 
 void ViewPreferences::onThemeComboBox(int index)
 {
-    switch (getStyleProperty()->item->type) 
+    switch (getStyleProperty()->item->type)
     {
     case IT_ROOT:
         if (index == 1) {
@@ -735,7 +735,7 @@ void ViewPreferences::onThemeComboBox(int index)
         }
         break;
     case IT_EDITOR:
-        switch (index) 
+        switch (index)
         {
         case 1: style_editor = ModelStyle::getDefaultStyle();  style_editor.font = StyleFont::getDefaultFont(); break;
         case 2: style_editor = ModelStyle::getCppStyle();      style_editor.font = StyleFont::getDefaultFont(); break;
@@ -867,7 +867,7 @@ void ViewPreferences::updateTheme()
             themeComboBox->setCurrentIndex(0);
         }
         break;
-    case IT_DEBUG: 
+    case IT_DEBUG:
         if ( style_debug == EditStyle::getDefaultStyle() && style_debug.font == StyleFont::getDefaultFont()) {
             themeComboBox->setCurrentIndex(1);
         } else if ( style_debug == EditStyle::getClassicStyle() && style_debug.font == StyleFont::getClassicFont()) {
@@ -995,7 +995,7 @@ void ViewPreferences::updateDialog()
         );
     style_editor.autoComplete.showFullList
         ? radioButtonFullList->toggle()
-        : radioButtonNearestWords->toggle();    
+        : radioButtonNearestWords->toggle();
     useTabSymbolCheckBox->setCheckState(style_editor.tab.useTabs
         ? Qt::Checked
         : Qt::Unchecked
@@ -1028,13 +1028,13 @@ void ViewPreferences::updateStyleTab()
         fontComboBox->setCurrentIndex(-1);
     }
     fontSizeComboBox->setCurrentIndex(fontSizeComboBox->findText(QString::number(prop->item->font_size)));
-    
+
     if(fgColorComboBox->findData(prop->fg_color) == -1)
     {
         insertColor(prop->fg_color, QString::fromStdString(rdo::format("[%d, %d, %d]", prop->fg_color.red(), prop->fg_color.green(), prop->fg_color.blue())), fgColorComboBox);
     }
     fgColorComboBox->setCurrentIndex(fgColorComboBox->findData(prop->fg_color));
-    
+
     QColor bgColor(prop->bg_color.blue(), prop->bg_color.green(), prop->bg_color.red());
     if(bgColorComboBox->findData(prop->bg_color) == -1)
     {
@@ -1071,7 +1071,7 @@ void ViewPreferences::updateStyleTab()
         }
         else
             fontSizeComboBox->setCurrentIndex(-1);
-        
+
         if((all_font_name == style_editor.font.name)  &&
            (all_font_name == style_debug.font.name)   &&
            (all_font_name == style_build.font.name)   &&
@@ -1237,7 +1237,7 @@ void ViewPreferences::updatePreview()
 
     preview_debug->setEditorStyle(&style_debug);
     preview_debug->repaint();
-    
+
     preview_trace->view().setStyle(&style_trace);
     preview_trace->repaint();
 
@@ -1271,7 +1271,7 @@ void ViewPreferences::createPreview()
     preview_build = new Build(previewStackedWidget->currentWidget());
     preview_build->setEditorStyle(&style_build);
     preview_build->appendLine(new BuildEditLineInfo("Компиляция..."));
-    preview_build->appendLine(new BuildEditLineInfo(rdo::simulation::report::FileMessage("Неправильное значение параметра: 4", rdo::model::PAT, 40, 0)));
+    preview_build->appendLine(new BuildEditLineInfo(rdo::simulation::report::FileMessage("Неправильное значение параметра: 4", rdo::FileType::PAT, 40, 0)));
     preview_build->appendLine(new BuildEditLineInfo("найдено ошибок: 1, предупреждений: 0"));
     preview_build->gotoNext();
     previewStackedWidget->addWidget(preview_build);
@@ -1299,8 +1299,8 @@ void ViewPreferences::createPreview()
     preview_find->setEditorStyle(&style_find);
     preview_find->setKeyword("$Time");
     preview_find->appendLine(new LogEditLineInfo("Поиск '$Time'..."));
-    preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage("$Time = Равномерный(0.25, 0.75)", rdo::model::PAT, 3, 0)));
-    preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage("$Time = Нормальный(0.45, 0.2)", rdo::model::PAT, 13, 0)));
+    preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage("$Time = Равномерный(0.25, 0.75)", rdo::FileType::PAT, 3, 0)));
+    preview_find->appendLine(new LogEditLineInfo(rdo::simulation::report::FileMessage("$Time = Нормальный(0.45, 0.2)", rdo::FileType::PAT, 13, 0)));
     preview_find->appendLine(new LogEditLineInfo("'2' раз было найдено."));
     preview_find->gotoNext();
     previewStackedWidget->addWidget(preview_find);
@@ -1795,7 +1795,7 @@ ViewPreferences::IntVector ViewPreferences::selectedRows() const
     std::vector<int> sortedRows;
     for (const QModelIndex& index: pluginInfoTable->selectionModel()->selectedRows())
     {
-        sortedRows.push_back(index.row()); 
+        sortedRows.push_back(index.row());
     }
 
     std::sort(sortedRows.begin(), sortedRows.end());

@@ -13,7 +13,7 @@ OPEN_RDO_PARSER_NAMESPACE
 RDOFRMCommandList::RDOFRMCommandList(const RDOParserSrcInfo& srcInfo)
 {
     m_pFunction = rdo::Factory<Function>::create(
-        rdo::Factory<TypeInfo>::delegate<RDOType__void>(srcInfo),
+        rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(srcInfo),
         srcInfo
     );
     ASSERT(m_pFunction);
@@ -75,7 +75,7 @@ LPExpression RDOFRMCommandList::generateExpression(const rdo::runtime::LPRDOCalc
 {
     ASSERT(pCalc);
 
-    LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(srcInfo);
+    LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(srcInfo);
     ASSERT(pType);
 
     LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, srcInfo);

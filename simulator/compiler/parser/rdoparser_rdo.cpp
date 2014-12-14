@@ -23,7 +23,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserRDOItem
 // --------------------------------------------------------------------------------
-RDOParserRDOItem::RDOParserRDOItem(rdo::model::FileType type, t_bison_parse_fun parser_fun, t_flex_lexer_fun lexer_fun, StreamFrom from)
+RDOParserRDOItem::RDOParserRDOItem(rdo::FileType type, t_bison_parse_fun parser_fun, t_flex_lexer_fun lexer_fun, StreamFrom from)
     : RDOParserItem(type, parser_fun, lexer_fun, from)
     , m_pLexer(NULL)
 {}
@@ -44,23 +44,23 @@ void RDOParserRDOItem::parse(const LPRDOParser& pParser)
     std::stringstream in_stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
     switch (m_from)
     {
-    case sf_repository:
+    case StreamFrom::REPOSITORY:
         {
             rdo::repository::RDOThreadRepository::FileData fileData(m_type, in_stream);
             kernel->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
             break;
         }
-    case sf_editor:
+
+    case StreamFrom::EDITOR:
         {
             rdo::repository::RDOThreadRepository::FileData fileData(m_type, in_stream);
             kernel->sendMessage(kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &fileData);
             break;
         }
     }
+
     if (in_stream.good())
-    {
         parse(pParser, in_stream);
-    }
 }
 
 void RDOParserRDOItem::parse(const LPRDOParser& pParser, std::istream& in_stream)
@@ -74,9 +74,8 @@ void RDOParserRDOItem::parse(const LPRDOParser& pParser, std::istream& in_stream
     if (m_pLexer)
     {
         if (m_parser_fun)
-        {
             m_parser_fun(m_pLexer);
-        }
+
         delete m_pLexer;
         m_pLexer = NULL;
     }
@@ -91,13 +90,9 @@ RDOLexer* RDOParserRDOItem::getLexer(const LPRDOParser& pParser, std::istream* i
 std::size_t RDOParserRDOItem::lexer_loc_line()
 {
     if (m_pLexer)
-    {
         return m_pLexer->m_lploc ? m_pLexer->m_lploc->m_first_line : m_pLexer->lineno();
-    }
     else
-    {
         return std::size_t(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
-    }
 }
 
 std::size_t RDOParserRDOItem::lexer_loc_pos()

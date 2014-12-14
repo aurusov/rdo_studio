@@ -17,8 +17,7 @@ public:
      GraphEdge(GraphNode& sourceNode, GraphNode& destNode);
     ~GraphEdge();
 
-    enum { Type = rdo::plugin::game5::TypeID::GRAPH_EDGE };
-    virtual int type() const { return Type; }
+    virtual int type() const { return rdo::plugin::game5::TypeID::GRAPH_EDGE; }
 
 private:
     GraphNode& source;

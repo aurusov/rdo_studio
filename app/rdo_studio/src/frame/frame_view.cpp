@@ -174,17 +174,17 @@ void Content::update(
         ASSERT(pCurrElement);
         switch (pCurrElement->getType())
         {
-        case rdo::animation::FrameItem::FIT_TEXT   : elementText     (static_cast<rdo::animation::TextElement*>(pCurrElement)); break;
-        case rdo::animation::FrameItem::FIT_RECT   : elementRect     (static_cast<rdo::animation::RectElement*>(pCurrElement)); break;
-        case rdo::animation::FrameItem::FIT_R_RECT : elementRoundRect(static_cast<rdo::animation::RoundRectElement*>(pCurrElement)); break;
-        case rdo::animation::FrameItem::FIT_LINE   : elementLine     (static_cast<rdo::animation::LineElement*>(pCurrElement)); break;
-        case rdo::animation::FrameItem::FIT_TRIANG : elementTriang   (static_cast<rdo::animation::TriangElement*>(pCurrElement)); break;
-        case rdo::animation::FrameItem::FIT_CIRCLE : elementCircle   (static_cast<rdo::animation::CircleElement*>(pCurrElement)); break;
-        case rdo::animation::FrameItem::FIT_ELLIPSE: elementEllipse  (static_cast<rdo::animation::EllipseElement*>(pCurrElement)); break;
-        case rdo::animation::FrameItem::FIT_BMP    : elementBMP      (static_cast<rdo::animation::BmpElement*>(pCurrElement), bitmapList, bitmapGeneratedList); break;
-        case rdo::animation::FrameItem::FIT_S_BMP  : elementSBMP     (static_cast<rdo::animation::ScaledBmpElement*>(pCurrElement), bitmapList, bitmapGeneratedList); break;
-        case rdo::animation::FrameItem::FIT_ACTIVE : elementActive   (static_cast<rdo::animation::ActiveElement*>(pCurrElement), areaList); break;
-        case rdo::animation::FrameItem::FIT_NULL   : break;
+        case rdo::animation::FrameItem::Type::TEXT   : elementText     (static_cast<rdo::animation::TextElement*>(pCurrElement)); break;
+        case rdo::animation::FrameItem::Type::RECT   : elementRect     (static_cast<rdo::animation::RectElement*>(pCurrElement)); break;
+        case rdo::animation::FrameItem::Type::ROUND_RECT : elementRoundRect(static_cast<rdo::animation::RoundRectElement*>(pCurrElement)); break;
+        case rdo::animation::FrameItem::Type::LINE   : elementLine     (static_cast<rdo::animation::LineElement*>(pCurrElement)); break;
+        case rdo::animation::FrameItem::Type::TRIANG : elementTriang   (static_cast<rdo::animation::TriangElement*>(pCurrElement)); break;
+        case rdo::animation::FrameItem::Type::CIRCLE : elementCircle   (static_cast<rdo::animation::CircleElement*>(pCurrElement)); break;
+        case rdo::animation::FrameItem::Type::ELLIPSE: elementEllipse  (static_cast<rdo::animation::EllipseElement*>(pCurrElement)); break;
+        case rdo::animation::FrameItem::Type::BMP    : elementBMP      (static_cast<rdo::animation::BmpElement*>(pCurrElement), bitmapList, bitmapGeneratedList); break;
+        case rdo::animation::FrameItem::Type::S_BMP  : elementSBMP     (static_cast<rdo::animation::ScaledBmpElement*>(pCurrElement), bitmapList, bitmapGeneratedList); break;
+        case rdo::animation::FrameItem::Type::ACTIVE : elementActive   (static_cast<rdo::animation::ActiveElement*>(pCurrElement), areaList); break;
+        case rdo::animation::FrameItem::Type::NONE   : break;
         }
     }
 
@@ -290,9 +290,9 @@ void Content::elementText(rdo::animation::TextElement* pElement)
     int flags = Qt::TextSingleLine | Qt::AlignVCenter;
     switch (pElement->m_align)
     {
-    case rdo::animation::TextElement::TETA_LEFT  : flags |= Qt::AlignLeft;    break;
-    case rdo::animation::TextElement::TETA_RIGHT : flags |= Qt::AlignRight;   break;
-    case rdo::animation::TextElement::TETA_CENTER: flags |= Qt::AlignHCenter; break;
+    case rdo::animation::TextElement::Align::LEFT  : flags |= Qt::AlignLeft;    break;
+    case rdo::animation::TextElement::Align::RIGHT : flags |= Qt::AlignRight;   break;
+    case rdo::animation::TextElement::Align::CENTER: flags |= Qt::AlignHCenter; break;
     }
 
     QRectF rect(

@@ -144,7 +144,7 @@ private:
         ModelTemplateItem(const QString& resName);
         ModelTemplateItem(const QString& resName, std::size_t position);
     };
-    typedef  std::map<rdo::model::FileType, ModelTemplateItem>  ModelTemplate;
+    typedef  std::map<rdo::FileType, ModelTemplateItem>  ModelTemplate;
     typedef  std::map<int, ModelTemplate>                               ModelTemplateList;
     ModelTemplateList m_modelTemplates;
 

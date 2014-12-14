@@ -54,7 +54,7 @@ public:
     LPRDORSSResource createRes(const LPRDOParser& pParser, const RDOParserSrcInfo& src_info);
 
     void addParam(const LPRDORTPParam& param);
-    void addParam(const std::string& param_name, rdo::runtime::RDOType::TypeID param_typeID);
+    void addParam(const std::string& param_name, rdo::runtime::RDOType::Type param_typeID);
     LPRDORTPParam findRTPParam(const std::string& paramName) const;
 
     std::size_t getRTPParamNumber(const std::string& paramName) const;
@@ -77,7 +77,7 @@ private:
     boost::optional<Subtype> m_subtype;
     ParamList m_params;
 
-    virtual runtime::RDOType::TypeID typeID() const;
+    virtual runtime::RDOType::Type typeID() const;
     virtual LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDORTPResType);

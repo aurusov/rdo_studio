@@ -13,7 +13,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 RDOCalcConst::RDOCalcConst(const RDOValue& value)
     : m_value(value)
 {
-    ASSERT(m_value.typeID() != RDOType::t_unknow);
+    ASSERT(m_value.typeID() != RDOType::Type::UNKNOW);
 }
 
 const RDOValue& RDOCalcConst::getValue() const

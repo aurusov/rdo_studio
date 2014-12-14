@@ -117,81 +117,81 @@ Model::Model()
     setIsRunning(m_GUI_IS_RUNNING);
 
     ModelTemplate modelTemplate;
-    modelTemplate[rdo::model::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_0/template_0.smr");
+    modelTemplate[rdo::FileType::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_0/template_0.smr");
     m_modelTemplates[0] = modelTemplate;
 
     modelTemplate.clear();
-    modelTemplate[rdo::model::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_1/template_1.smr");
+    modelTemplate[rdo::FileType::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_1/template_1.smr");
     m_modelTemplates[1] = modelTemplate;
 
     modelTemplate.clear();
-    modelTemplate[rdo::model::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.rtp", 15);
-    modelTemplate[rdo::model::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.rss", 12);
-    modelTemplate[rdo::model::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.evn", 9);
-    modelTemplate[rdo::model::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.pat", 9);
-    modelTemplate[rdo::model::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.dpt", 16);
-    modelTemplate[rdo::model::PRC] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.prc", 10);
-    modelTemplate[rdo::model::FRM] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.frm", 7);
-    modelTemplate[rdo::model::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.fun", 10);
-    modelTemplate[rdo::model::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.smr");
-    modelTemplate[rdo::model::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.pmd", 10);
+    modelTemplate[rdo::FileType::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.rtp", 15);
+    modelTemplate[rdo::FileType::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.rss", 12);
+    modelTemplate[rdo::FileType::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.evn", 9);
+    modelTemplate[rdo::FileType::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.pat", 9);
+    modelTemplate[rdo::FileType::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.dpt", 16);
+    modelTemplate[rdo::FileType::PRC] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.prc", 10);
+    modelTemplate[rdo::FileType::FRM] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.frm", 7);
+    modelTemplate[rdo::FileType::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.fun", 10);
+    modelTemplate[rdo::FileType::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.smr");
+    modelTemplate[rdo::FileType::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.pmd", 10);
     m_modelTemplates[2] = modelTemplate;
 
     modelTemplate.clear();
-    modelTemplate[rdo::model::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.rtp", 168);
-    modelTemplate[rdo::model::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.rss", 95);
-    modelTemplate[rdo::model::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.evn", 108);
-    modelTemplate[rdo::model::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.pat", 150);
-    modelTemplate[rdo::model::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.dpt", 230);
-    modelTemplate[rdo::model::PRC] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.prc", 128);
-    modelTemplate[rdo::model::FRM] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.frm", 148);
-    modelTemplate[rdo::model::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.fun", 71);
-    modelTemplate[rdo::model::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.smr");
-    modelTemplate[rdo::model::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.pmd", 69);
+    modelTemplate[rdo::FileType::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.rtp", 168);
+    modelTemplate[rdo::FileType::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.rss", 95);
+    modelTemplate[rdo::FileType::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.evn", 108);
+    modelTemplate[rdo::FileType::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.pat", 150);
+    modelTemplate[rdo::FileType::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.dpt", 230);
+    modelTemplate[rdo::FileType::PRC] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.prc", 128);
+    modelTemplate[rdo::FileType::FRM] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.frm", 148);
+    modelTemplate[rdo::FileType::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.fun", 71);
+    modelTemplate[rdo::FileType::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.smr");
+    modelTemplate[rdo::FileType::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.pmd", 69);
     m_modelTemplates[3] = modelTemplate;
 
     modelTemplate.clear();
-    modelTemplate[rdo::model::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.rtp");
-    modelTemplate[rdo::model::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.rss");
-    modelTemplate[rdo::model::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.evn");
-    modelTemplate[rdo::model::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.pat");
-    modelTemplate[rdo::model::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.dpt");
-    modelTemplate[rdo::model::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.fun");
-    modelTemplate[rdo::model::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.smr");
-    modelTemplate[rdo::model::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.pmd");
+    modelTemplate[rdo::FileType::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.rtp");
+    modelTemplate[rdo::FileType::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.rss");
+    modelTemplate[rdo::FileType::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.evn");
+    modelTemplate[rdo::FileType::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.pat");
+    modelTemplate[rdo::FileType::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.dpt");
+    modelTemplate[rdo::FileType::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.fun");
+    modelTemplate[rdo::FileType::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.smr");
+    modelTemplate[rdo::FileType::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.pmd");
     m_modelTemplates[4] = modelTemplate;
 
     modelTemplate.clear();
-    modelTemplate[rdo::model::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.rtp");
-    modelTemplate[rdo::model::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.rss");
-    modelTemplate[rdo::model::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.evn");
-    modelTemplate[rdo::model::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.pat");
-    modelTemplate[rdo::model::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.dpt");
-    modelTemplate[rdo::model::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.fun");
-    modelTemplate[rdo::model::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.smr");
-    modelTemplate[rdo::model::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.pmd");
+    modelTemplate[rdo::FileType::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.rtp");
+    modelTemplate[rdo::FileType::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.rss");
+    modelTemplate[rdo::FileType::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.evn");
+    modelTemplate[rdo::FileType::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.pat");
+    modelTemplate[rdo::FileType::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.dpt");
+    modelTemplate[rdo::FileType::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.fun");
+    modelTemplate[rdo::FileType::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.smr");
+    modelTemplate[rdo::FileType::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.pmd");
     m_modelTemplates[5] = modelTemplate;
 
     modelTemplate.clear();
-    modelTemplate[rdo::model::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.rtp");
-    modelTemplate[rdo::model::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.rss");
-    modelTemplate[rdo::model::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.evn");
-    modelTemplate[rdo::model::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.pat");
-    modelTemplate[rdo::model::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.dpt");
-    modelTemplate[rdo::model::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.fun");
-    modelTemplate[rdo::model::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.smr");
-    modelTemplate[rdo::model::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.pmd");
+    modelTemplate[rdo::FileType::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.rtp");
+    modelTemplate[rdo::FileType::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.rss");
+    modelTemplate[rdo::FileType::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.evn");
+    modelTemplate[rdo::FileType::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.pat");
+    modelTemplate[rdo::FileType::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.dpt");
+    modelTemplate[rdo::FileType::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.fun");
+    modelTemplate[rdo::FileType::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.smr");
+    modelTemplate[rdo::FileType::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.pmd");
     m_modelTemplates[6] = modelTemplate;
 
     modelTemplate.clear();
-    modelTemplate[rdo::model::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.rtp");
-    modelTemplate[rdo::model::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.rss");
-    modelTemplate[rdo::model::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.evn");
-    modelTemplate[rdo::model::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.pat");
-    modelTemplate[rdo::model::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.dpt");
-    modelTemplate[rdo::model::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.fun");
-    modelTemplate[rdo::model::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.smr");
-    modelTemplate[rdo::model::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.pmd");
+    modelTemplate[rdo::FileType::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.rtp");
+    modelTemplate[rdo::FileType::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.rss");
+    modelTemplate[rdo::FileType::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.evn");
+    modelTemplate[rdo::FileType::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.pat");
+    modelTemplate[rdo::FileType::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.dpt");
+    modelTemplate[rdo::FileType::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.fun");
+    modelTemplate[rdo::FileType::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.smr");
+    modelTemplate[rdo::FileType::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.pmd");
     m_modelTemplates[7] = modelTemplate;
 
     notifies.push_back(RT_STUDIO_MODEL_GET_TEXT             );
@@ -479,7 +479,7 @@ void Model::show_result()
     QString str = QString::fromStdString(modelResults.str());
     if (!str.isEmpty())
     {
-        rdo::repository::RDOThreadRepository::FileInfo data(rdo::model::PMV);
+        rdo::repository::RDOThreadRepository::FileInfo data(rdo::FileType::PMV);
         g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
         if (!data.m_described)
         {
@@ -531,7 +531,7 @@ bool Model::openModel(const QString& modelName)
     if (data.m_result && !m_openError && !m_smrEmptyError)
     {
         std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
-        rdo::repository::RDOThreadRepository::FileData fileData(rdo::model::PMV, stream);
+        rdo::repository::RDOThreadRepository::FileData fileData(rdo::FileType::PMV, stream);
         g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
         g_pApp->getIMainWnd()->getDockResults().appendString(QString::fromStdString(stream.str()));
         g_pApp->getIMainWnd()->getDockDebug().appendString("Загрузка модели... ok\n");
@@ -666,7 +666,7 @@ void Model::newModelFromRepository()
     setHasModel(true);
 
     createView();
-    rdo::repository::RDOThreadRepository::FileInfo data_smr(rdo::model::RDOX);
+    rdo::repository::RDOThreadRepository::FileInfo data_smr(rdo::FileType::RDOX);
     g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
     setName(QString::fromStdWString(data_smr.m_name.wstring()));
 
@@ -721,7 +721,7 @@ void Model::openModelFromRepository()
     setHasModel(true);
 
     createView();
-    rdo::repository::RDOThreadRepository::FileInfo data_smr(rdo::model::RDOX);
+    rdo::repository::RDOThreadRepository::FileInfo data_smr(rdo::FileType::RDOX);
     g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
     setName(QString::fromStdWString(data_smr.m_name.wstring()));
 
@@ -735,7 +735,7 @@ void Model::openModelFromRepository()
         pEdit->clearAll();
         std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
         bool canLoad = true;
-        rdo::model::FileType type = m_pView->getTab().indexToType(i);
+        rdo::FileType type = m_pView->getTab().indexToType(i);
         if (m_pView->getTab().typeSupported(type))
         {
             rdo::repository::RDOThreadRepository::FileData fileData(type, stream);
@@ -765,15 +765,15 @@ void Model::openModelFromRepository()
                 QString objName;
                 switch (type)
                 {
-                case rdo::model::RTP: objName = "типы ресурсов";          break;
-                case rdo::model::RSS: objName = "ресурсы";                break;
-                case rdo::model::EVN: objName = "события";                break;
-                case rdo::model::PAT: objName = "образцы";                break;
-                case rdo::model::DPT: objName = "точки принятия решений"; break;
-                case rdo::model::FRM: objName = "кадры";                  break;
-                case rdo::model::FUN: objName = "функции";                break;
-                case rdo::model::PMD: objName = "описание показателей";   break;
-                default                  : objName = "неизвестный объект";     break;
+                case rdo::FileType::RTP: objName = "типы ресурсов";          break;
+                case rdo::FileType::RSS: objName = "ресурсы";                break;
+                case rdo::FileType::EVN: objName = "события";                break;
+                case rdo::FileType::PAT: objName = "образцы";                break;
+                case rdo::FileType::DPT: objName = "точки принятия решений"; break;
+                case rdo::FileType::FRM: objName = "кадры";                  break;
+                case rdo::FileType::FUN: objName = "функции";                break;
+                case rdo::FileType::PMD: objName = "описание показателей";   break;
+                default: objName = "неизвестный объект"; break;
                 }
                 if (!objName.isEmpty())
                 {
@@ -797,13 +797,13 @@ void Model::openModelFromRepository()
 void Model::saveModelToRepository()
 {
     bool smr_modified = false;
-    editor::Model* pSmrEdit = m_pView->getTab().getItemEdit(rdo::model::SMR);
+    editor::Model* pSmrEdit = m_pView->getTab().getItemEdit(rdo::FileType::SMR);
     if (pSmrEdit->isModify())
     {
         std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
         pSmrEdit->save(stream);
         m_smrEmptyError = false;
-        rdo::repository::RDOThreadRepository::FileData fileData(rdo::model::SMR, stream);
+        rdo::repository::RDOThreadRepository::FileData fileData(rdo::FileType::SMR, stream);
         g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &fileData);
         if (m_smrEmptyError)
         {
@@ -834,18 +834,18 @@ void Model::saveModelToRepository()
                 std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
                 pEdit->save(stream);
                 g_pApp->getMainWndUI()->statusBar()->stepProgress();
-                rdo::model::FileType type = m_pView->getTab().indexToType(i);
+                rdo::FileType type = m_pView->getTab().indexToType(i);
                 switch (type)
                 {
-                case rdo::model::RTP:
-                case rdo::model::RSS:
-                case rdo::model::EVN:
-                case rdo::model::PAT:
-                case rdo::model::DPT:
-                case rdo::model::PRC:
-                case rdo::model::FRM:
-                case rdo::model::FUN:
-                case rdo::model::PMD:
+                case rdo::FileType::RTP:
+                case rdo::FileType::RSS:
+                case rdo::FileType::EVN:
+                case rdo::FileType::PAT:
+                case rdo::FileType::DPT:
+                case rdo::FileType::PRC:
+                case rdo::FileType::FRM:
+                case rdo::FileType::FUN:
+                case rdo::FileType::PMD:
                     {
                         rdo::repository::RDOThreadRepository::FileData fileData(type, stream);
                         g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &fileData);
@@ -860,7 +860,7 @@ void Model::saveModelToRepository()
         g_pApp->getMainWndUI()->statusBar()->endProgress();
     }
 
-    rdo::repository::RDOThreadRepository::FileInfo data(rdo::model::RDOX);
+    rdo::repository::RDOThreadRepository::FileInfo data(rdo::FileType::RDOX);
     g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
     setName(QString::fromStdWString(data.m_name.wstring()));
 
@@ -875,7 +875,7 @@ void Model::saveModelToRepository()
 
 QString Model::getFullName() const
 {
-    rdo::repository::RDOThreadRepository::FileInfo data(rdo::model::RDOX);
+    rdo::repository::RDOThreadRepository::FileInfo data(rdo::FileType::RDOX);
     g_pApp->m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
     return QString::fromStdWString(data.m_fullName.wstring());
 }
@@ -949,8 +949,8 @@ void Model::afterModelStart()
 
         std::list<std::string> frames;
         std::list<std::string> bitmaps;
-        rdo::service::simulation::RDOThreadSimulator::GetList getListFrames (rdo::service::simulation::RDOThreadSimulator::GetList::frames,  &frames );
-        rdo::service::simulation::RDOThreadSimulator::GetList getListBitmaps(rdo::service::simulation::RDOThreadSimulator::GetList::bitmaps, &bitmaps);
+        rdo::service::simulation::RDOThreadSimulator::GetList getListFrames (rdo::service::simulation::RDOThreadSimulator::GetList::Type::FRAMES,  &frames );
+        rdo::service::simulation::RDOThreadSimulator::GetList getListBitmaps(rdo::service::simulation::RDOThreadSimulator::GetList::Type::BITMAPS, &bitmaps);
         sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListFrames );
         sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListBitmaps);
         for (const std::string& name: bitmaps)

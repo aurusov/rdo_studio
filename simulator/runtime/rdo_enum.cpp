@@ -15,11 +15,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOEnumType
 // --------------------------------------------------------------------------------
 RDOEnumType::RDOEnumType()
-    : RDOType(RDOType::t_enum)
+    : RDOType(RDOType::Type::ENUM)
 {}
 
 RDOEnumType::RDOEnumType(const Enums& enums)
-    : RDOType(RDOType::t_enum)
+    : RDOType(RDOType::Type::ENUM)
     , m_enum (enums          )
 {}
 

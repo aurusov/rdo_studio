@@ -67,7 +67,7 @@ const LPExpression& RDOFUNBase::expression() const
 RDOFUNLogic::RDOFUNLogic(const LPRDOFUNArithm& pArithm)
     : RDOFUNBase(pArithm->expression())
 {
-    if (pArithm->typeID() != rdo::runtime::RDOType::t_bool)
+    if (pArithm->typeID() != rdo::runtime::RDOType::Type::BOOL)
     {
         RDOParser::s_parser()->error().error(src_info(), rdo::format("Ожидается логическое выражение, найдено: %s", src_text().c_str()));
     }
@@ -102,7 +102,7 @@ RDOFUNLogic::~RDOFUNLogic()
 LPRDOFUNLogic RDOFUNLogic::generateTrue(const RDOParserSrcInfo& srcInfo)
 {
     LPExpression pExpression = rdo::Factory<Expression>::create(
-        rdo::Factory<TypeInfo>::delegate<RDOType__bool>(srcInfo),
+        rdo::Factory<TypeInfo>::delegate<RDOType__BOOL>(srcInfo),
         rdo::Factory<rdo::runtime::RDOCalcConst>::create(true),
         srcInfo
     );
@@ -114,9 +114,9 @@ LPRDOFUNLogic RDOFUNLogic::generateTrue(const RDOParserSrcInfo& srcInfo)
     return pLogic;
 }
 
-rdo::runtime::LPRDOCalc RDOFUNLogic::getCalc(rdo::runtime::RDOType::TypeID id)
+rdo::runtime::LPRDOCalc RDOFUNLogic::getCalc(rdo::runtime::RDOType::Type id)
 {
-    if (id != rdo::runtime::RDOType::t_real)
+    if (id != rdo::runtime::RDOType::Type::REAL)
     {
         m_intOrDouble.roundCalc();
     }
@@ -128,7 +128,7 @@ LPRDOFUNLogic RDOFUNLogic::createLogic(const rdo::runtime::LPRDOCalc& pCalc)
     ASSERT(pCalc);
 
     LPExpression pExpression = rdo::Factory<Expression>::create(
-        rdo::Factory<TypeInfo>::delegate<RDOType__bool>(pCalc->srcInfo()),
+        rdo::Factory<TypeInfo>::delegate<RDOType__BOOL>(pCalc->srcInfo()),
         pCalc,
         pCalc->srcInfo()
     );
@@ -399,7 +399,7 @@ LPRDOFUNLogic RDOFUNArithm::generateLogic(const LPRDOFUNArithm& pSecond, const s
     ASSERT(pCalc);
 
     LPExpression pExpression = rdo::Factory<Expression>::create(
-        rdo::Factory<TypeInfo>::delegate<RDOType__bool>(pCalc->srcInfo()),
+        rdo::Factory<TypeInfo>::delegate<RDOType__BOOL>(pCalc->srcInfo()),
         pCalc,
         pCalc->srcInfo()
     );
@@ -422,21 +422,21 @@ rdo::runtime::RDOValue RDOFUNArithm::const_value() const
 
 LPTypeInfo RDOFUNArithm::getPreType(const LPRDOFUNArithm& pSecond)
 {
-    if (typeID() == rdo::runtime::RDOType::t_unknow)
+    if (typeID() == rdo::runtime::RDOType::Type::UNKNOW)
     {
         RDOParser::s_parser()->error().error(src_info(), rdo::format("Внутренная ошибка парсера: неопределенное значение арифметического выражения: %s", src_text().c_str()));
     }
-    if (pSecond->typeID() == rdo::runtime::RDOType::t_unknow)
+    if (pSecond->typeID() == rdo::runtime::RDOType::Type::UNKNOW)
     {
         RDOParser::s_parser()->error().error(pSecond->src_info(), rdo::format("Внутренная ошибка парсера: неопределенное значение арифметического выражения: %s", pSecond->src_text().c_str()));
     }
-    if (typeID() == rdo::runtime::RDOType::t_identificator)
+    if (typeID() == rdo::runtime::RDOType::Type::IDENTIFICATOR)
     {
         rdo::runtime::LPRDOCalcConst pCalc = calc().object_dynamic_cast<rdo::runtime::RDOCalcConst>();
         ASSERT(pCalc);
         RDOParser::s_parser()->error().error(src_info(), rdo::format("Неизвестный идентификатор: %s", const_value().getIdentificator().c_str()));
     }
-    if (pSecond->typeID() == rdo::runtime::RDOType::t_identificator)
+    if (pSecond->typeID() == rdo::runtime::RDOType::Type::IDENTIFICATOR)
     {
         RDOParser::s_parser()->error().error(pSecond->src_info(), rdo::format("Неизвестный идентификатор: %s", pSecond->const_value().getIdentificator().c_str()));
     }
@@ -468,7 +468,7 @@ LPRDOFUNArithm RDOFUNArithm::operator/ (const LPRDOFUNArithm& pSecond)
 
     // TODO перевод вещественного в целое при делении. А что делать с умножением и т.д. ?
     // Ответ: с умножением надо делать тоже самое, только непонятно как
-    if (pType->typeID() == rdo::runtime::RDOType::t_int)
+    if (pType->typeID() == rdo::runtime::RDOType::Type::INT)
     {
         rdo::runtime::LPRDOCalc pNewCalcDiv = pCalc;
         pCalc = rdo::Factory<rdo::runtime::RDOCalcDoubleToIntByResult>::create(pNewCalcDiv);
@@ -481,7 +481,7 @@ LPRDOFUNArithm RDOFUNArithm::operator/ (const LPRDOFUNArithm& pSecond)
     );
     ASSERT(pExpression);
     LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
-    if (pType->typeID() == rdo::runtime::RDOType::t_int)
+    if (pType->typeID() == rdo::runtime::RDOType::Type::INT)
     {
         rdo::runtime::LPRDOCalcDoubleToIntByResult pResult = pCalc.object_static_cast<rdo::runtime::RDOCalcDoubleToIntByResult>();
         pArithm->m_intOrDouble.push_back(pResult);
@@ -562,15 +562,15 @@ void RDOFUNArithm::wrongVarInitialization(const LPRDOValue& name)
 
 rdo::runtime::LPRDOCalc RDOFUNArithm::createCalc(const LPTypeInfo& pForType)
 {
-    if (typeID() != rdo::runtime::RDOType::t_identificator)
+    if (typeID() != rdo::runtime::RDOType::Type::IDENTIFICATOR)
     {
         if (!pForType)
         {
             return m_pExpression->calc();
         }
-        if (pForType->typeID() != rdo::runtime::RDOType::t_int)
+        if (pForType->typeID() != rdo::runtime::RDOType::Type::INT)
         {
-            if (pForType->typeID() == rdo::runtime::RDOType::t_enum)
+            if (pForType->typeID() == rdo::runtime::RDOType::Type::ENUM)
             {
                 m_intOrDouble.roundCalc();
             }
@@ -585,7 +585,7 @@ rdo::runtime::LPRDOCalc RDOFUNArithm::createCalc(const LPTypeInfo& pForType)
             return pCalc;
         }
     }
-    else if (typeID() == rdo::runtime::RDOType::t_identificator && !pForType)
+    else if (typeID() == rdo::runtime::RDOType::Type::IDENTIFICATOR && !pForType)
     {
         RDOParser::s_parser()->error().error(src_info(), rdo::format("Неизвестный идентификатор: %s", const_value().getAsString().c_str()));
     }
@@ -708,7 +708,7 @@ LPFunctionParamType ArithmContainer::getType() const
     if (paramList.empty())
     {
         paramList.push_back(
-            rdo::Factory<TypeInfo>::delegate<RDOType__void>(src_info())
+            rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(src_info())
         );
     }
 
@@ -770,7 +770,7 @@ LPExpression RDOFUNParams::createCallExpression(const LPExpression& pExpression)
     ArithmContainer::Container::const_iterator arithmIt = m_pArithmContainer->getContainer().begin();
     for (const LPTypeInfo& pFuncParam: pFunctionParamType->paramList())
     {
-        if (pFuncParam->typeID() != rdo::runtime::RDOType::t_void)
+        if (pFuncParam->typeID() != rdo::runtime::RDOType::Type::EMPTY)
         {
             LPRDOFUNArithm pArithm = *arithmIt;
             ASSERT(pArithm);
@@ -869,7 +869,7 @@ void RDOFUNSequence::initResult()
     m_pNextCalc->m_res_real = true;
     switch (m_pHeader->getTypeInfo()->typeID())
     {
-        case rdo::runtime::RDOType::t_int:
+        case rdo::runtime::RDOType::Type::INT:
         {
             LPRDOTypeIntRange pRange = m_pHeader->getTypeInfo()->itype().object_dynamic_cast<RDOTypeIntRange>();
             if (pRange)
@@ -878,7 +878,7 @@ void RDOFUNSequence::initResult()
             }
             break;
         }
-        case rdo::runtime::RDOType::t_real:
+        case rdo::runtime::RDOType::Type::REAL:
         {
             m_pNextCalc->m_res_real = true;
             LPRDOTypeRealRange pRange = m_pHeader->getTypeInfo()->itype().object_dynamic_cast<RDOTypeRealRange>();
@@ -942,7 +942,7 @@ Context::LPFindResult RDOFUNSequence::onFindContext(const std::string& method, c
 RDOFUNSequenceUniform::RDOFUNSequenceUniform(const LPRDOFUNSequenceHeader& pHeader, int seed)
     : RDOFUNSequence(pHeader, seed)
 {
-    if (m_pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_enum)
+    if (m_pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::Type::ENUM)
     {
         RDOParser::s_parser()->error().error(src_info(), rdo::format("Последовательность '%s' может возвращять значения только целого или вещественного типа", src_text().c_str()));
     }
@@ -967,7 +967,7 @@ LPRDOFUNArithm RDOFUNSequenceUniform::createCallCalc(LPRDOFUNParams& pParamList,
     rdo::runtime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(m_pNextCalc);
     ASSERT(pFuctionCall);
 
-    LPTypeInfo              pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(RDOParserSrcInfo());
+    LPTypeInfo              pType = rdo::Factory<TypeInfo>::delegate<RDOType__REAL>(RDOParserSrcInfo());
     rdo::runtime::LPRDOCalc pArg1 = pParamList->getCalc(0, pType);
     rdo::runtime::LPRDOCalc pArg2 = pParamList->getCalc(1, pType);
 
@@ -983,7 +983,7 @@ LPRDOFUNArithm RDOFUNSequenceUniform::createCallCalc(LPRDOFUNParams& pParamList,
     LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
     ASSERT(pArithm);
     pArithm->setSrcInfo(seqSrcInfo);
-    if (pArithm->typeID() == rdo::runtime::RDOType::t_enum)
+    if (pArithm->typeID() == rdo::runtime::RDOType::Type::ENUM)
     {
         RDOParser::s_parser()->error().error(src_info(), "Внутренняя ошибка парсера");
     }
@@ -996,7 +996,7 @@ LPRDOFUNArithm RDOFUNSequenceUniform::createCallCalc(LPRDOFUNParams& pParamList,
 RDOFUNSequenceExponential::RDOFUNSequenceExponential(const LPRDOFUNSequenceHeader& pHeader, int seed)
     : RDOFUNSequence(pHeader, seed)
 {
-    if (m_pHeader->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int && m_pHeader->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real)
+    if (m_pHeader->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::INT && m_pHeader->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::REAL)
     {
         RDOParser::s_parser()->error().error(src_info(), rdo::format("Последовательность '%s' может возвращять значения только целого или вещественного типа", src_text().c_str()));
     }
@@ -1021,7 +1021,7 @@ LPRDOFUNArithm RDOFUNSequenceExponential::createCallCalc(LPRDOFUNParams& pParamL
     rdo::runtime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(m_pNextCalc);
     ASSERT(pFuctionCall);
 
-    LPTypeInfo              pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(RDOParserSrcInfo());
+    LPTypeInfo              pType = rdo::Factory<TypeInfo>::delegate<RDOType__REAL>(RDOParserSrcInfo());
     rdo::runtime::LPRDOCalc pArg1 = pParamList->getCalc(0, pType);
 
     pFuctionCall->addParameter(pArg1);
@@ -1035,7 +1035,7 @@ LPRDOFUNArithm RDOFUNSequenceExponential::createCallCalc(LPRDOFUNParams& pParamL
     LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
     ASSERT(pArithm);
     pArithm->setSrcInfo(seqSrcInfo);
-    if (pArithm->typeID() == rdo::runtime::RDOType::t_enum)
+    if (pArithm->typeID() == rdo::runtime::RDOType::Type::ENUM)
     {
         RDOParser::s_parser()->error().error(src_info(), "Внутренняя ошибка парсера");
     }
@@ -1048,7 +1048,7 @@ LPRDOFUNArithm RDOFUNSequenceExponential::createCallCalc(LPRDOFUNParams& pParamL
 RDOFUNSequenceNormal::RDOFUNSequenceNormal(const LPRDOFUNSequenceHeader& pHeader, int seed)
     : RDOFUNSequence(pHeader, seed)
 {
-    if (m_pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::t_enum)
+    if (m_pHeader->getTypeInfo()->typeID() == rdo::runtime::RDOType::Type::ENUM)
     {
         RDOParser::s_parser()->error().error(src_info(), rdo::format("Последовательность '%s' может возвращять значения только целого или вещественного типа", src_text().c_str()));
     }
@@ -1073,7 +1073,7 @@ LPRDOFUNArithm RDOFUNSequenceNormal::createCallCalc(LPRDOFUNParams& pParamList, 
     rdo::runtime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(m_pNextCalc);
     ASSERT(pFuctionCall);
 
-    LPTypeInfo              pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(RDOParserSrcInfo());
+    LPTypeInfo              pType = rdo::Factory<TypeInfo>::delegate<RDOType__REAL>(RDOParserSrcInfo());
     rdo::runtime::LPRDOCalc pArg1 = pParamList->getCalc(0, pType);
     rdo::runtime::LPRDOCalc pArg2 = pParamList->getCalc(1, pType);
 
@@ -1089,7 +1089,7 @@ LPRDOFUNArithm RDOFUNSequenceNormal::createCallCalc(LPRDOFUNParams& pParamList, 
     LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
     ASSERT(pArithm);
     pArithm->setSrcInfo(seqSrcInfo);
-    if (pArithm->typeID() == rdo::runtime::RDOType::t_enum)
+    if (pArithm->typeID() == rdo::runtime::RDOType::Type::ENUM)
     {
         RDOParser::s_parser()->error().error(src_info(), "Внутренняя ошибка парсера");
     }
@@ -1102,7 +1102,7 @@ LPRDOFUNArithm RDOFUNSequenceNormal::createCallCalc(LPRDOFUNParams& pParamList, 
 RDOFUNSequenceTriangular::RDOFUNSequenceTriangular(const LPRDOFUNSequenceHeader& pHeader, int seed)
     : RDOFUNSequence(pHeader, seed)
 {
-    if (m_pHeader->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_int && m_pHeader->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_real)
+    if (m_pHeader->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::INT && m_pHeader->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::REAL)
     {
         RDOParser::s_parser()->error().error(src_info(), rdo::format("Последовательность '%s' может возвращять значения только целого или вещественного типа", src_text().c_str()));
     }
@@ -1127,7 +1127,7 @@ LPRDOFUNArithm RDOFUNSequenceTriangular::createCallCalc(LPRDOFUNParams& pParamLi
     rdo::runtime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(m_pNextCalc);
     ASSERT(pFuctionCall);
 
-    LPTypeInfo              pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(RDOParserSrcInfo());
+    LPTypeInfo              pType = rdo::Factory<TypeInfo>::delegate<RDOType__REAL>(RDOParserSrcInfo());
     rdo::runtime::LPRDOCalc pArg1 = pParamList->getCalc(0, pType);
     rdo::runtime::LPRDOCalc pArg2 = pParamList->getCalc(1, pType);
     rdo::runtime::LPRDOCalc pArg3 = pParamList->getCalc(2, pType);
@@ -1145,7 +1145,7 @@ LPRDOFUNArithm RDOFUNSequenceTriangular::createCallCalc(LPRDOFUNParams& pParamLi
     LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
     ASSERT(pArithm);
     pArithm->setSrcInfo(seqSrcInfo);
-    if (pArithm->typeID() == rdo::runtime::RDOType::t_enum)
+    if (pArithm->typeID() == rdo::runtime::RDOType::Type::ENUM)
     {
         RDOParser::s_parser()->error().error(src_info(), "Внутренняя ошибка парсера");
     }
@@ -1370,7 +1370,7 @@ RDOFUNFunctionListElementReal::RDOFUNFunctionListElementReal(const YYLTYPE& posi
 
 rdo::runtime::LPRDOCalcConst RDOFUNFunctionListElementReal::createResultCalc(const LPTypeInfo& pRetType, const RDOParserSrcInfo& src_pos) const
 {
-    LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(src_info());
+    LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__REAL>(src_info());
     ASSERT(pType);
     rdo::runtime::LPRDOCalcConst pCalcConst = rdo::Factory<rdo::runtime::RDOCalcConst>::create(
         pRetType->value_cast(
@@ -1392,7 +1392,7 @@ RDOFUNFunctionListElementInt::RDOFUNFunctionListElementInt(const YYLTYPE& positi
 
 rdo::runtime::LPRDOCalcConst RDOFUNFunctionListElementInt::createResultCalc(const LPTypeInfo& pRetType, const RDOParserSrcInfo& src_pos) const
 {
-    LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(src_info());
+    LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__INT>(src_info());
     ASSERT(pType);
     rdo::runtime::LPRDOCalcConst pCalcConst = rdo::Factory<rdo::runtime::RDOCalcConst>::create(
         pRetType->value_cast(
@@ -1547,11 +1547,11 @@ void RDOFUNFunction::createListCalc()
                     RDOParser::s_parser()->error().error(pListElement->src_info(), rdo::format("Перед знаком равенства ожидаются значения для параметров: %s", str.c_str()));
                 }
             }
-            rdo::runtime::LPRDOCalcFuncParam pFuncParam   = rdo::Factory<rdo::runtime::RDOCalcFuncParam>::create(currParamNumber, pParam->src_info());
+            rdo::runtime::LPRDOCalcFuncParam pFuncParam = rdo::Factory<rdo::runtime::RDOCalcFuncParam>::create(currParamNumber, pParam->src_info());
             ASSERT(pFuncParam);
-            rdo::runtime::LPRDOCalcIsEqual   pCompareCalc = pListElement->createIsEqualCalc(pParam->getTypeInfo(), pFuncParam, pListElement->src_info());
+            rdo::runtime::LPRDOCalcIsEqual pCompareCalc = pListElement->createIsEqualCalc(pParam->getTypeInfo(), pFuncParam, pListElement->src_info());
             ASSERT(pCompareCalc);
-            rdo::runtime::LPRDOCalc          pAndCalc     = rdo::Factory<rdo::runtime::RDOCalcAnd>::create(pCaseCalc, pCompareCalc);
+            rdo::runtime::LPRDOCalc pAndCalc = rdo::Factory<rdo::runtime::RDOCalcAnd>::create(pCaseCalc, pCompareCalc);
             ASSERT(pAndCalc);
             pCaseCalc = pAndCalc;
             ++elem_it;
@@ -1606,7 +1606,7 @@ void RDOFUNFunction::createTableCalc(const YYLTYPE& elements_pos)
         rdo::runtime::LPRDOCalcFuncParam pFuncParam = rdo::Factory<rdo::runtime::RDOCalcFuncParam>::create(currParam, pFunctionParam->src_info());
         ASSERT(pFuncParam);
         rdo::runtime::LPRDOCalc pValue2 = pFuncParam;
-        if (pFunctionParam->getTypeInfo()->typeID() != rdo::runtime::RDOType::t_enum)
+        if (pFunctionParam->getTypeInfo()->typeID() != rdo::runtime::RDOType::Type::ENUM)
         {
             rdo::runtime::LPRDOCalcConst pCalcConst1 = rdo::Factory<rdo::runtime::RDOCalcConst>::create(1);
             pCalcConst1->setSrcInfo(pFunctionParam->src_info());
@@ -1620,7 +1620,7 @@ void RDOFUNFunction::createTableCalc(const YYLTYPE& elements_pos)
 
         switch (pFunctionParam->getTypeInfo()->typeID())
         {
-        case rdo::runtime::RDOType::t_int:
+        case rdo::runtime::RDOType::Type::INT:
             if (dynamic_cast<const RDOTypeIntRange*>(pFunctionParam->getTypeInfo()->itype().get()))
             {
                 LPRDOTypeIntRange pRange = pFunctionParam->getTypeInfo()->itype().object_dynamic_cast<RDOTypeIntRange>();
@@ -1635,7 +1635,7 @@ void RDOFUNFunction::createTableCalc(const YYLTYPE& elements_pos)
                 RDOParser::s_parser()->error().error(pFunctionParam->getTypeInfo()->src_info(), "Для параметра табличной функции должен быть задан допустимый диапазон");
             }
             break;
-        case rdo::runtime::RDOType::t_enum:
+        case rdo::runtime::RDOType::Type::ENUM:
             range *= pFunctionParam->getTypeInfo()->itype().object_dynamic_cast<RDOEnumType>()->getValues().size();
             break;
         default:
@@ -1656,7 +1656,7 @@ void RDOFUNFunction::createTableCalc(const YYLTYPE& elements_pos)
     {
         LPRDOFUNFunctionListElement pListElement = m_elementList.at(currElem);
         ASSERT(pListElement);
-        rdo::runtime::LPRDOCalcConst  pResultCalc  = pListElement->createResultCalc(m_pReturn->getTypeInfo(), pListElement->src_info());
+        rdo::runtime::LPRDOCalcConst pResultCalc = pListElement->createResultCalc(m_pReturn->getTypeInfo(), pListElement->src_info());
         ASSERT(pResultCalc);
         pFuncTableCalc->addResultCalc(pResultCalc);
     }
@@ -1737,26 +1737,26 @@ Context::LPFindResult RDOFUNGroup::onFindContext(const std::string& method, cons
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNGroupLogic
 // --------------------------------------------------------------------------------
-RDOFUNGroupLogic::RDOFUNGroupLogic(FunGroupType funType, const RDOParserSrcInfo& res_info)
+RDOFUNGroupLogic::RDOFUNGroupLogic(Type type, const RDOParserSrcInfo& res_info)
     : RDOFUNGroup(res_info)
-    , m_funType  (funType )
+    , m_type(type)
 {}
 
 LPRDOFUNLogic RDOFUNGroupLogic::createFunLogic(LPRDOFUNLogic& pCondition)
 {
     rdo::runtime::LPRDOFunCalcGroup pCalc;
-    switch (m_funType)
+    switch (m_type)
     {
-    case fgt_exist    : setSrcText("Exist("     + getResType()->name() + ": " + pCondition->src_text() + ")"); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcExist    >::create(getResType()->getNumber(), pCondition->getCalc()); break;
-    case fgt_notexist : setSrcText("NotExist("  + getResType()->name() + ": " + pCondition->src_text() + ")"); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcNotExist >::create(getResType()->getNumber(), pCondition->getCalc()); break;
-    case fgt_forall   : setSrcText("ForAll("    + getResType()->name() + ": " + pCondition->src_text() + ")"); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcForAll   >::create(getResType()->getNumber(), pCondition->getCalc()); break;
-    case fgt_notforall: setSrcText("NotForAll(" + getResType()->name() + ": " + pCondition->src_text() + ")"); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcNotForAll>::create(getResType()->getNumber(), pCondition->getCalc()); break;
+    case Type::EXIST    : setSrcText("Exist("     + getResType()->name() + ": " + pCondition->src_text() + ")"); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcExist    >::create(getResType()->getNumber(), pCondition->getCalc()); break;
+    case Type::NOTEXIST : setSrcText("NotExist("  + getResType()->name() + ": " + pCondition->src_text() + ")"); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcNotExist >::create(getResType()->getNumber(), pCondition->getCalc()); break;
+    case Type::FORALL   : setSrcText("ForAll("    + getResType()->name() + ": " + pCondition->src_text() + ")"); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcForAll   >::create(getResType()->getNumber(), pCondition->getCalc()); break;
+    case Type::NOTFORALL: setSrcText("NotForAll(" + getResType()->name() + ": " + pCondition->src_text() + ")"); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcNotForAll>::create(getResType()->getNumber(), pCondition->getCalc()); break;
     default: RDOParser::s_parser()->error().error(src_info(), "Внутренная ошибка: несуществующий тип функции");
     }
     end();
 
     LPExpression pExpression = rdo::Factory<Expression>::create(
-        rdo::Factory<TypeInfo>::delegate<RDOType__bool>(pCalc->srcInfo()),
+        rdo::Factory<TypeInfo>::delegate<RDOType__BOOL>(pCalc->srcInfo()),
         pCalc,
         pCalc->srcInfo()
     );
@@ -1807,61 +1807,61 @@ Context::LPFindResult RDOFUNSelect::onFindContext(const std::string& method, con
         rdo::runtime::LPRDOCalc selectCalc;
         LPTypeInfo selectType;
 
-        switch (params.get<RDOFUNGroupLogic::FunGroupType>("FunGroupType"))
+        switch (params.get<RDOFUNGroupLogic::Type>("FunGroupType"))
         {
-        case RDOFUNGroupLogic::fgt_exist:
+        case RDOFUNGroupLogic::Type::EXIST:
         {
             LPRDOFUNLogic pCondition = params.get<LPRDOFUNLogic>("GroupLogic");
             const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".Exist(" + pCondition->src_text() + ")");
             selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectExist>::create(m_pCalcSelect, pCondition->getCalc());
             selectCalc->setSrcInfo(src_info());
-            selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
+            selectType = rdo::Factory<TypeInfo>::delegate<RDOType__BOOL>(selectCalc->srcInfo());
             break;
         }
-        case RDOFUNGroupLogic::fgt_notexist:
+        case RDOFUNGroupLogic::Type::NOTEXIST:
         {
             LPRDOFUNLogic pCondition = params.get<LPRDOFUNLogic>("GroupLogic");
             const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".NotExist(" + pCondition->src_text() + ")");
             selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotExist>::create(m_pCalcSelect, pCondition->getCalc());
             selectCalc->setSrcInfo(src_info());
-            selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
+            selectType = rdo::Factory<TypeInfo>::delegate<RDOType__BOOL>(selectCalc->srcInfo());
             break;
         }
-        case RDOFUNGroupLogic::fgt_forall:
+        case RDOFUNGroupLogic::Type::FORALL:
         {
             LPRDOFUNLogic pCondition = params.get<LPRDOFUNLogic>("GroupLogic");
             const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".ForAll(" + pCondition->src_text() + ")");
             selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectForAll>::create(m_pCalcSelect, pCondition->getCalc());
             selectCalc->setSrcInfo(src_info());
-            selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
+            selectType = rdo::Factory<TypeInfo>::delegate<RDOType__BOOL>(selectCalc->srcInfo());
             break;
         }
-        case RDOFUNGroupLogic::fgt_notforall:
+        case RDOFUNGroupLogic::Type::NOTFORALL:
         {
             LPRDOFUNLogic pCondition = params.get<LPRDOFUNLogic>("GroupLogic");
             const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".NotForAll(" + pCondition->src_text() + ")");
             selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotForAll>::create(m_pCalcSelect, pCondition->getCalc());
             selectCalc->setSrcInfo(src_info());
-            selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
+            selectType = rdo::Factory<TypeInfo>::delegate<RDOType__BOOL>(selectCalc->srcInfo());
             break;
         }
-        case RDOFUNGroupLogic::fgt_empty:
+        case RDOFUNGroupLogic::Type::EMPTY:
         {
             const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".Empty(" + srcInfo.src_text() + ")");
             selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectEmpty>::create(m_pCalcSelect);
             selectCalc->setSrcInfo(src_info());
-            selectType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(selectCalc->srcInfo());
+            selectType = rdo::Factory<TypeInfo>::delegate<RDOType__BOOL>(selectCalc->srcInfo());
             break;
         }
-        case RDOFUNGroupLogic::fgt_size:
+        case RDOFUNGroupLogic::Type::SIZE:
         {
             const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".Size(" + srcInfo.src_text() + ")");
             selectCalc = rdo::Factory<rdo::runtime::RDOFunCalcSelectSize>::create(m_pCalcSelect);
             selectCalc->setSrcInfo(src_info());
-            selectType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(srcInfo);
+            selectType = rdo::Factory<TypeInfo>::delegate<RDOType__INT>(srcInfo);
             break;
         }
-        case RDOFUNGroupLogic::fgt_array:
+        case RDOFUNGroupLogic::Type::ARRAY:
         {
             const_cast<RDOFUNSelect*>(this)->setSrcText(src_text() + ".Array(" + srcInfo.src_text() + ")");
             LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(rdo::Factory<TypeInfo>::create(getResType(), srcInfo), srcInfo);

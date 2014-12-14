@@ -11,9 +11,9 @@ struct IThreadProxy: public rdo::RefCounter<IThreadProxy>
 {
 DECLARE_FACTORY(IThreadProxy)
 public:
-    enum ThreadID
+    enum class ThreadID
     {
-        TID_REPOSITORY
+        REPOSITORY
     };
     virtual void sendMessage(ThreadID threadID, std::size_t messageID, void* pParam) = 0;
 

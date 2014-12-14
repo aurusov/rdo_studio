@@ -24,7 +24,7 @@ class RDOValue
 DECLARE_FACTORY(RDOValue);
 public:
     const LPTypeInfo&              typeInfo() const;
-    rdo::runtime::RDOType::TypeID  typeID  () const;
+    rdo::runtime::RDOType::Type  typeID  () const;
      rdo::runtime::RDOValue&       value   ();
     const rdo::runtime::RDOValue&  value   () const;
 

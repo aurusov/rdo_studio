@@ -215,15 +215,15 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 smr_show_mode
     : RDO_NoShow
     {
-        $$ = rdo::service::simulation::SM_NoShow;
+        $$ = (int)rdo::service::simulation::ShowMode::NoShow;
     }
     | RDO_Monitor
     {
-        $$ = rdo::service::simulation::SM_Monitor;
+        $$ = (int)rdo::service::simulation::ShowMode::Monitor;
     }
     | RDO_Animation
     {
-        $$ = rdo::service::simulation::SM_Animation;
+        $$ = (int)rdo::service::simulation::ShowMode::Animation;
     }
     ;
 
