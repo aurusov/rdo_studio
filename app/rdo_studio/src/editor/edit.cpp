@@ -238,11 +238,11 @@ void Edit::setEditorStyle(EditStyle* pStyle)
     QColor bookmarkBgColor = style->bookmarkBgColor;
     switch (style->bookmarkStyle)
     {
-        case EditStyle::B_NONE     : defineMarker(m_sciMarkerBookmark, SC_MARK_EMPTY    , bookmarkFgColor, bookmarkBgColor); break;
-        case EditStyle::B_CIRCLE   : defineMarker(m_sciMarkerBookmark, SC_MARK_CIRCLE   , bookmarkFgColor, bookmarkBgColor); break;
-        case EditStyle::B_RECT     : defineMarker(m_sciMarkerBookmark, SC_MARK_SMALLRECT, bookmarkFgColor, bookmarkBgColor); break;
-        case EditStyle::B_ROUNDRECT: defineMarker(m_sciMarkerBookmark, SC_MARK_ROUNDRECT, bookmarkFgColor, bookmarkBgColor); break;
-        case EditStyle::B_ARROW    : defineMarker(m_sciMarkerBookmark, SC_MARK_ARROW    , bookmarkFgColor, bookmarkBgColor); break;
+    case EditStyle::Bookmark::NONE     : defineMarker(m_sciMarkerBookmark, SC_MARK_EMPTY    , bookmarkFgColor, bookmarkBgColor); break;
+    case EditStyle::Bookmark::CIRCLE   : defineMarker(m_sciMarkerBookmark, SC_MARK_CIRCLE   , bookmarkFgColor, bookmarkBgColor); break;
+    case EditStyle::Bookmark::RECT     : defineMarker(m_sciMarkerBookmark, SC_MARK_SMALLRECT, bookmarkFgColor, bookmarkBgColor); break;
+    case EditStyle::Bookmark::ROUNDRECT: defineMarker(m_sciMarkerBookmark, SC_MARK_ROUNDRECT, bookmarkFgColor, bookmarkBgColor); break;
+    case EditStyle::Bookmark::ARROW    : defineMarker(m_sciMarkerBookmark, SC_MARK_ARROW    , bookmarkFgColor, bookmarkBgColor); break;
     }
 
     // ----------
@@ -256,47 +256,47 @@ void Edit::setGroup(Group* pGroup)
     m_pGroup = pGroup;
 }
 
-void Edit::onEditUndo() 
+void Edit::onEditUndo()
 {
     sendEditor(SCI_UNDO);
 }
 
-void Edit::onEditRedo() 
+void Edit::onEditRedo()
 {
     sendEditor(SCI_REDO);
 }
 
-void Edit::onEditCut() 
+void Edit::onEditCut()
 {
     sendEditor(SCI_CUT);
 }
 
-void Edit::onEditCopy() 
+void Edit::onEditCopy()
 {
     sendEditor(SCI_COPY);
 }
 
-void Edit::onEditPaste() 
+void Edit::onEditPaste()
 {
     sendEditor(SCI_PASTE);
 }
 
-void Edit::onEditDel() 
+void Edit::onEditDel()
 {
     sendEditor(SCI_CLEAR);
 }
 
-void Edit::onEditSelectAll() 
+void Edit::onEditSelectAll()
 {
     sendEditor(SCI_SELECTALL);
 }
 
-void Edit::onEditUpperCase() 
+void Edit::onEditUpperCase()
 {
     sendEditor(SCI_UPPERCASE);
 }
 
-void Edit::onEditLowerCase() 
+void Edit::onEditLowerCase()
 {
     sendEditor(SCI_LOWERCASE);
 }
@@ -370,7 +370,7 @@ void Edit::ensureRangeVisible(int posStart, int posEnd, bool enforcePolicy) cons
     }
 }
 
-void Edit::onSearchFind() 
+void Edit::onSearchFind()
 {
     m_findSettings.what = QString::fromStdString(getCurrentOrSelectedWord());
 
@@ -385,7 +385,7 @@ void Edit::onSearchFind()
 
     if(m_pGroup)
     {
-        m_findSettings.what.isEmpty() 
+        m_findSettings.what.isEmpty()
             ? m_findSettings.what = m_pGroup->findStr
             : m_pGroup->findStr = m_findSettings.what;
         m_findReplaceSettings.searchDown = m_pGroup->bSearchDown;
@@ -415,7 +415,7 @@ void Edit::onFindDlgClose()
     m_pFindDialog = NULL;
 }
 
-void Edit::onSearchFindNext() 
+void Edit::onSearchFindNext()
 {
     findNext(
         m_pGroup->findStr.isEmpty()
@@ -427,7 +427,7 @@ void Edit::onSearchFindNext()
     );
 }
 
-void Edit::onSearchFindPrevious() 
+void Edit::onSearchFindPrevious()
 {
     findNext(
         m_pGroup->findStr.isEmpty()
@@ -439,7 +439,7 @@ void Edit::onSearchFindPrevious()
     );
 }
 
-void Edit::onSearchFindNextCurrent() 
+void Edit::onSearchFindNextCurrent()
 {
     if (m_pGroup)
     {
@@ -449,7 +449,7 @@ void Edit::onSearchFindNextCurrent()
     }
 }
 
-void Edit::onSearchFindPreviousCurrent() 
+void Edit::onSearchFindPreviousCurrent()
 {
     if (m_pGroup)
     {
@@ -552,7 +552,7 @@ void Edit::findNext(const QString& findWhat, bool searchDown, bool matchCase, bo
     }
 }
 
-void Edit::onSearchReplace() 
+void Edit::onSearchReplace()
 {
     m_findReplaceSettings.what = QString::fromStdString(getCurrentOrSelectedWord());
 
@@ -566,10 +566,10 @@ void Edit::onSearchReplace()
             boost::bind(&Edit::onFindReplaceDlgClose,      this)
         );
     }
-    
+
     if(m_pGroup)
     {
-        m_findReplaceSettings.what.isEmpty() 
+        m_findReplaceSettings.what.isEmpty()
             ? m_findReplaceSettings.what = m_pGroup->findStr
             : m_pGroup->findStr = m_findReplaceSettings.what;
         m_findReplaceSettings.searchDown = m_pGroup->bSearchDown;
@@ -604,7 +604,7 @@ void Edit::onFindReplaceDlgReplace(const FindReplaceDialog::Settings& settings)
     }
     if ((!getSelection().empty() && !m_haveFound) || (!getCurrentWord().empty() && !m_haveFound))
     {
-        findNext(m_findReplaceSettings.what, m_findReplaceSettings.searchDown, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);    
+        findNext(m_findReplaceSettings.what, m_findReplaceSettings.searchDown, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
     }
     replace(m_findReplaceSettings.what, m_findReplaceSettings.byWhat, m_findReplaceSettings.searchDown, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
     updateActionFind(isActivated());
@@ -1348,12 +1348,12 @@ void Edit::onUpdateEditGUI()
     onUpdateActions(isActivated());
 }
 
-void Edit::onViewShowWhiteSpace() 
+void Edit::onViewShowWhiteSpace()
 {
     methodOfGroup(boost::bind(&Edit::setViewWhiteSpace, _1, !isViewWhiteSpace()));
 }
 
-void Edit::onViewShowEndOfLine() 
+void Edit::onViewShowEndOfLine()
 {
     methodOfGroup(boost::bind(&Edit::setViewEndOfLine, _1, !isViewEndOfLine()));
 }
@@ -1369,13 +1369,13 @@ void Edit::onViewZoomInc()
     onUpdateActions(isActivated());
 }
 
-void Edit::onViewZoomDec() 
+void Edit::onViewZoomDec()
 {
     methodOfGroup(boost::bind(&Edit::zoomOut, _1));
     onUpdateActions(isActivated());
 }
 
-void Edit::onViewZoomReset() 
+void Edit::onViewZoomReset()
 {
     methodOfGroup(boost::bind(&Edit::resetZoom, _1));
     onUpdateActions(isActivated());

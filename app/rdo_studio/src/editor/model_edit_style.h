@@ -61,15 +61,15 @@ class ModelStyle: public ParserStyle
 protected:
 
 public:
-    enum Fold
+    enum class Fold
     {
-        F_NONE = 0,
-        F_PLUS,
-        F_PLUSCONNECTED,
-        F_ARROW,
-        F_ARROWCONNECTED,
-        F_BOXCONNECTED,
-        F_CIRCLECONNECTED
+        NONE = 0,
+        PLUS,
+        PLUS_CONNECTED,
+        ARROW,
+        ARROW_CONNECTED,
+        BOX_CONNECTED,
+        CIRCLE_CONNECTED
     };
 
     ModelStyle();

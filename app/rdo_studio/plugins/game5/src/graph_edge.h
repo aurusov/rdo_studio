@@ -5,7 +5,7 @@
 #include <QGraphicsObject>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/plugins/game5/src/graph_items_types.h"
+#include "app/rdo_studio/plugins/game5/src/graph_items_type.h"
 // --------------------------------------------------------------------------------
 
 class GraphNode;
@@ -17,7 +17,7 @@ public:
      GraphEdge(GraphNode& sourceNode, GraphNode& destNode);
     ~GraphEdge();
 
-    virtual int type() const { return rdo::plugin::game5::TypeID::GRAPH_EDGE; }
+    virtual int type() const { return static_cast<int>(rdo::plugin::game5::GraphItemType::EDGE); }
 
 private:
     GraphNode& source;

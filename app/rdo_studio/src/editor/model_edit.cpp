@@ -101,7 +101,7 @@ void Model::setEditorStyle(ModelStyle* pStyle)
     QColor foldBgColor = style->foldBgColor;
     switch (style->foldStyle)
     {
-    case ModelStyle::F_NONE:
+    case ModelStyle::Fold::NONE:
         defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_EMPTY, foldFgColor, foldBgColor);
         defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_EMPTY, foldFgColor, foldBgColor);
         defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY, foldFgColor, foldBgColor);
@@ -111,7 +111,7 @@ void Model::setEditorStyle(ModelStyle* pStyle)
         defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY, foldFgColor, foldBgColor);
         break;
 
-    case ModelStyle::F_PLUS:
+    case ModelStyle::Fold::PLUS:
         defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_MINUS, foldFgColor, foldBgColor);
         defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_PLUS , foldFgColor, foldBgColor);
         defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY, foldFgColor, foldBgColor);
@@ -121,7 +121,7 @@ void Model::setEditorStyle(ModelStyle* pStyle)
         defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY, foldFgColor, foldBgColor);
         break;
 
-    case ModelStyle::F_PLUSCONNECTED:
+    case ModelStyle::Fold::PLUS_CONNECTED:
         defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_MINUS  , foldFgColor, foldBgColor);
         defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_PLUS   , foldFgColor, foldBgColor);
         defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE  , foldFgColor, foldBgColor);
@@ -131,7 +131,7 @@ void Model::setEditorStyle(ModelStyle* pStyle)
         defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER, foldFgColor, foldBgColor);
         break;
 
-    case ModelStyle::F_ARROW:
+    case ModelStyle::Fold::ARROW:
         defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_ARROWDOWN, foldFgColor, foldBgColor);
         defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_ARROW    , foldFgColor, foldBgColor);
         defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY    , foldFgColor, foldBgColor);
@@ -141,7 +141,7 @@ void Model::setEditorStyle(ModelStyle* pStyle)
         defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY    , foldFgColor, foldBgColor);
         break;
 
-    case ModelStyle::F_ARROWCONNECTED:
+    case ModelStyle::Fold::ARROW_CONNECTED:
         defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_ARROWDOWN, foldFgColor, foldBgColor);
         defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_ARROW    , foldFgColor, foldBgColor);
         defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE    , foldFgColor, foldBgColor);
@@ -151,7 +151,7 @@ void Model::setEditorStyle(ModelStyle* pStyle)
         defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER  , foldFgColor, foldBgColor);
         break;
 
-    case ModelStyle::F_BOXCONNECTED:
+    case ModelStyle::Fold::BOX_CONNECTED:
         defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_BOXMINUS, foldFgColor, foldBgColor);
         defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_BOXPLUS , foldFgColor, foldBgColor);
         defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE   , foldFgColor, foldBgColor);
@@ -161,7 +161,7 @@ void Model::setEditorStyle(ModelStyle* pStyle)
         defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER , foldFgColor, foldBgColor);
         break;
 
-    case ModelStyle::F_CIRCLECONNECTED:
+    case ModelStyle::Fold::CIRCLE_CONNECTED:
         defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_CIRCLEMINUS, foldFgColor, foldBgColor);
         defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_CIRCLEPLUS , foldFgColor, foldBgColor);
         defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE      , foldFgColor, foldBgColor);
@@ -207,15 +207,12 @@ void Model::expand(int& line, bool doExpand, bool force, int visLevels, int leve
         else
         {
             if (doExpand)
-            {
                 sendEditor(SCI_SHOWLINES, line, line);
-            }
         }
         int levelLine = level;
         if (levelLine == -1)
-        {
             levelLine = sendEditor(SCI_GETFOLDLEVEL, line);
-        }
+
         if (levelLine & SC_FOLDLEVELHEADERFLAG)
         {
             if (force)
@@ -234,9 +231,7 @@ void Model::expand(int& line, bool doExpand, bool force, int visLevels, int leve
                 if (doExpand)
                 {
                     if (!sendEditor(SCI_GETFOLDEXPANDED, line))
-                    {
                         sendEditor(SCI_SETFOLDEXPANDED, line, 1);
-                    }
                     expand(line, true, force, visLevels - 1);
                 }
                 else
@@ -257,16 +252,12 @@ void Model::foldChanged(int line, int levelNow, int levelPrev) const
     if (levelNow & SC_FOLDLEVELHEADERFLAG)
     {
         if (!(levelPrev & SC_FOLDLEVELHEADERFLAG))
-        {
             sendEditor(SCI_SETFOLDEXPANDED, line, 1);
-        }
     }
     else if (levelPrev & SC_FOLDLEVELHEADERFLAG)
     {
         if (!sendEditor(SCI_GETFOLDEXPANDED, line))
-        {
             expand(line, true, false, 0, levelPrev);
-        }
     }
 }
 

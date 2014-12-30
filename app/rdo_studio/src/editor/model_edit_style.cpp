@@ -147,7 +147,7 @@ ModelStyle::ModelStyle():
 
     errorBgColor = QColor( 0xFF, 0x80, 0x80 );
 
-    foldStyle   = F_PLUS;
+    foldStyle   = Fold::PLUS;
     commentFold = false;
 }
 
@@ -158,7 +158,7 @@ ModelStyle::~ModelStyle()
 ModelStyle& ModelStyle::operator =( const ModelStyle& style )
 {
     ParserStyle::operator=( style );
-    
+
     foldFgColor = style.foldFgColor;
     foldBgColor = style.foldBgColor;
 
@@ -205,7 +205,7 @@ ModelStyle ModelStyle::getCppStyle()
     style.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
     style.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
 
-    style.foldStyle   = F_PLUS;
+    style.foldStyle   = Fold::PLUS;
     style.commentFold = false;
 
     return style;
@@ -220,7 +220,7 @@ ModelStyle ModelStyle::getPascalStyle()
     style.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
     style.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
 
-    style.foldStyle   = F_PLUS;
+    style.foldStyle   = Fold::PLUS;
     style.commentFold = false;
 
     return style;
@@ -235,7 +235,7 @@ ModelStyle ModelStyle::getHtmlStyle()
     style.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
     style.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
 
-    style.foldStyle   = F_PLUS;
+    style.foldStyle   = Fold::PLUS;
     style.commentFold = false;
 
     return style;
@@ -250,7 +250,7 @@ ModelStyle ModelStyle::getClassicStyle()
     style.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
     style.errorBgColor = QColor( 0xE6, 0x05, 0xF8 );
 
-    style.foldStyle   = F_PLUS;
+    style.foldStyle   = Fold::PLUS;
     style.commentFold = false;
 
     return style;
@@ -265,7 +265,7 @@ ModelStyle ModelStyle::getTwilightStyle()
     style.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
     style.errorBgColor = QColor( 0xFF, 0x80, 0x80 );
 
-    style.foldStyle   = F_PLUS;
+    style.foldStyle   = Fold::PLUS;
     style.commentFold = false;
 
     return style;
@@ -280,7 +280,7 @@ ModelStyle ModelStyle::getOceanStyle()
     style.foldBgColor  = QColor( 0x00, 0x00, 0x00 );
     style.errorBgColor = QColor( 0xFF, 0xFF, 0x00 );
 
-    style.foldStyle   = F_PLUS;
+    style.foldStyle   = Fold::PLUS;
     style.commentFold = false;
 
     return style;
@@ -296,7 +296,7 @@ QSettings& operator<< (QSettings& settings, const ModelStyle& style)
     settings.setValue("fold_fg_color", style.foldFgColor.name());
     settings.setValue("fold_bg_color", style.foldBgColor.name());
     settings.setValue("error_bg_color", style.errorBgColor.name());
-    settings.setValue("fold_style", style.foldStyle);
+    settings.setValue("fold_style", static_cast<int>(style.foldStyle));
     settings.setValue("comment_fold", style.commentFold);
     settings.endGroup();
 
@@ -320,7 +320,7 @@ QSettings& operator>> (QSettings& settings, ModelStyle& style)
     style.foldFgColor  = QColor(settings.value("fold_fg_color", style.foldFgColor.name()).toString());
     style.foldBgColor  = QColor(settings.value("fold_bg_color", style.foldBgColor.name()).toString());
     style.errorBgColor = QColor(settings.value("error_bg_color", style.errorBgColor.name()).toString());
-    style.foldStyle    = (ModelStyle::Fold)settings.value("fold_style", style.foldStyle).toInt();
+    style.foldStyle    = static_cast<ModelStyle::Fold>(settings.value("fold_style", static_cast<int>(style.foldStyle)).toInt());
     style.commentFold  = settings.value("comment_fold", style.commentFold).toBool() ? true : false;
     settings.endGroup();
 

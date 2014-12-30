@@ -11,10 +11,10 @@ namespace rdo {
 namespace plugin {
 namespace game5 {
 
-enum TypeID
+enum class GraphItemType
 {
-    GRAPH_NODE = QGraphicsItem::UserType + 1,
-    GRAPH_EDGE = QGraphicsItem::UserType + 2,
+    NODE = QGraphicsItem::UserType + 1,
+    EDGE = QGraphicsItem::UserType + 2,
 };
 
 }}} // namespace rdo::plugin::game5

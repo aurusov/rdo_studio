@@ -93,79 +93,67 @@ private slots:
     void updateButtonsState ();
 
 private:
-    enum StyleType
+    enum class ItemType
     {
-        ST_CURRENT = 0,
-        ST_DEFAULT,
-        ST_CPP,
-        ST_PASCAL,
-        ST_HTML,
-        ST_CLASSIC,
-        ST_TWILIGHT,
-        ST_OCEAN
-    };
-
-    enum ItemType
-    {
-        IT_ROOT = 0,
-        IT_EDITOR,
-        IT_BUILD,
-        IT_DEBUG,
-        IT_LOG,
-        IT_RESULT,
-        IT_FIND,
-        IT_CHART,
-        IT_FRAME,
-        IT_EDITOR_PLAINTEXT,
-        IT_EDITOR_IDENTIFICATOR,
-        IT_EDITOR_KEYWORD,
-        IT_EDITOR_FUNCTION,
-        IT_EDITOR_TRACE,
-        IT_EDITOR_COLOR,
-        IT_EDITOR_COMMENT,
-        IT_EDITOR_NUMBER,
-        IT_EDITOR_STRING,
-        IT_EDITOR_OPERATOR,
-        IT_EDITOR_CARET,
-        IT_EDITOR_TEXTSELECTION,
-        IT_EDITOR_BOOKMARK,
-        IT_EDITOR_FOLD,
-        IT_EDITOR_ERROR,
-        IT_BUILD_TEXT,
-        IT_BUILD_SELECTEDLINE,
-        IT_LOG_ES,
-        IT_LOG_EB,
-        IT_LOG_EF,
-        IT_LOG_EI,
-        IT_LOG_ER,
-        IT_LOG_RC,
-        IT_LOG_RE,
-        IT_LOG_RK,
-        IT_LOG_V,
-        IT_LOG_STATUS,
-        IT_LOG_DPS,
-        IT_LOG_SB,
-        IT_LOG_SO,
-        IT_LOG_STN,
-        IT_LOG_STD,
-        IT_LOG_STR,
-        IT_LOG_SRC,
-        IT_LOG_SRE,
-        IT_LOG_SRK,
-        IT_LOG_SD,
-        IT_LOG_SES,
-        IT_LOG_SEN,
-        IT_LOG_SEM,
-        IT_LOG_SEF,
-        IT_LOG_SEU,
-        IT_FIND_SEARCHTEXT,
-        IT_CHART_AXIS,
-        IT_CHART_TITLE,
-        IT_CHART_LEGEND,
-        IT_CHART_CHART,
-        IT_CHART_TIME,
-        IT_FRAME_BORDER,
-        IT_FRAME_BACKGROUND
+        ROOT = 0,
+        EDITOR,
+        BUILD,
+        DEBUG,
+        LOG,
+        RESULT,
+        FIND,
+        CHART,
+        FRAME,
+        EDITOR_PLAINTEXT,
+        EDITOR_IDENTIFICATOR,
+        EDITOR_KEYWORD,
+        EDITOR_FUNCTION,
+        EDITOR_TRACE,
+        EDITOR_COLOR,
+        EDITOR_COMMENT,
+        EDITOR_NUMBER,
+        EDITOR_STRING,
+        EDITOR_OPERATOR,
+        EDITOR_CARET,
+        EDITOR_TEXTSELECTION,
+        EDITOR_BOOKMARK,
+        EDITOR_FOLD,
+        EDITOR_ERROR,
+        BUILD_TEXT,
+        BUILD_SELECTEDLINE,
+        LOG_ES,
+        LOG_EB,
+        LOG_EF,
+        LOG_EI,
+        LOG_ER,
+        LOG_RC,
+        LOG_RE,
+        LOG_RK,
+        LOG_V,
+        LOG_STATUS,
+        LOG_DPS,
+        LOG_SB,
+        LOG_SO,
+        LOG_STN,
+        LOG_STD,
+        LOG_STR,
+        LOG_SRC,
+        LOG_SRE,
+        LOG_SRK,
+        LOG_SD,
+        LOG_SES,
+        LOG_SEN,
+        LOG_SEM,
+        LOG_SEF,
+        LOG_SEU,
+        FIND_SEARCHTEXT,
+        CHART_AXIS,
+        CHART_TITLE,
+        CHART_LEGEND,
+        CHART_CHART,
+        CHART_TIME,
+        FRAME_BORDER,
+        FRAME_BACKGROUND
     };
 
     class StyleItem;
@@ -174,7 +162,7 @@ private:
     {
     public:
         StyleItem* item;
-        int identificator;
+        ItemType identificator;
 
         rdo::gui::style::StyleFont::style& font_style;
 
@@ -183,7 +171,7 @@ private:
         QColor& fg_disable_color;
         QColor& bg_disable_color;
 
-        StyleProperty(StyleItem* item, int identificator, rdo::gui::style::StyleFont::style& font_style, QColor& fg_color, QColor& bg_color, QColor& fg_disable_color = null_fg_color, QColor& bg_disable_color = null_bg_color)
+        StyleProperty(StyleItem* item, ItemType identificator, rdo::gui::style::StyleFont::style& font_style, QColor& fg_color, QColor& bg_color, QColor& fg_disable_color = null_fg_color, QColor& bg_disable_color = null_bg_color)
             : item(item)
             , identificator(identificator)
             , font_style(font_style)
@@ -380,7 +368,7 @@ private:
     StyleProperty* getStyleProperty();
     StyleItem* getStyleItem();
     QTreeWidgetItem* createTreeItem (QTreeWidgetItem* parent, const QString& name, ItemType itemType);
-    
+
     void apply();
     void checkAllData();
 

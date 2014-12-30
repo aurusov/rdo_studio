@@ -64,13 +64,13 @@ QSettings& operator>> (QSettings& settings,       EditWindow& window);
 class EditStyle: public style::StyleBase
 {
 public:
-    enum Bookmark
+    enum class Bookmark
     {
-        B_NONE = 0,
-        B_CIRCLE,
-        B_RECT,
-        B_ROUNDRECT,
-        B_ARROW
+        NONE = 0,
+        CIRCLE,
+        RECT,
+        ROUNDRECT,
+        ARROW
     };
 
     EditStyle();

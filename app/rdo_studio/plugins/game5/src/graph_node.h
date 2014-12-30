@@ -5,7 +5,7 @@
 #include <QGraphicsObject>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/plugins/game5/src/graph_items_types.h"
+#include "app/rdo_studio/plugins/game5/src/graph_items_type.h"
 #include "app/rdo_studio/plugins/game5/src/graph_node_info.h"
 // --------------------------------------------------------------------------------
 
@@ -25,7 +25,7 @@ public:
         LOWER
     };
 
-    virtual int type() const { return rdo::plugin::game5::TypeID::GRAPH_NODE; }
+    virtual int type() const { return static_cast<int>(rdo::plugin::game5::GraphItemType::NODE); }
 
     virtual QRectF boundingRect() const;
     virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);

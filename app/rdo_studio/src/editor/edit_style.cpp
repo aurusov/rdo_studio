@@ -167,7 +167,7 @@ EditStyle::EditStyle()
     bookmarkBgColor  = QColor( 0x00, 0xFF, 0xFF );
 
     defaultStyle  = StyleFont::NONE;
-    bookmarkStyle = EditStyle::B_CIRCLE;
+    bookmarkStyle = EditStyle::Bookmark::CIRCLE;
 }
 
 EditStyle::~EditStyle()
@@ -176,7 +176,7 @@ EditStyle::~EditStyle()
 EditStyle& EditStyle::operator =( const EditStyle& style )
 {
     StyleBase::operator=( style );
-    
+
     defaultColor    = style.defaultColor;
     backgroundColor = style.backgroundColor;
 
@@ -188,7 +188,7 @@ EditStyle& EditStyle::operator =( const EditStyle& style )
     defaultStyle = style.defaultStyle;
 
     bookmarkStyle = style.bookmarkStyle;
-    
+
     tab    = style.tab;
     window = style.window;
 
@@ -265,7 +265,7 @@ EditStyle EditStyle::getClassicStyle()
     style.bookmarkBgColor  = QColor( 0x80, 0x80, 0x00 );
 
     style.defaultStyle  = StyleFont::NONE;
-    style.bookmarkStyle = EditStyle::B_CIRCLE;
+    style.bookmarkStyle = EditStyle::Bookmark::CIRCLE;
 
     return style;
 }
@@ -283,7 +283,7 @@ EditStyle EditStyle::getTwilightStyle()
     style.bookmarkBgColor  = QColor( 0x00, 0x00, 0xFF );
 
     style.defaultStyle  = StyleFont::NONE;
-    style.bookmarkStyle = EditStyle::B_CIRCLE;
+    style.bookmarkStyle = EditStyle::Bookmark::CIRCLE;
 
     return style;
 }
@@ -301,7 +301,7 @@ EditStyle EditStyle::getOceanStyle()
     style.bookmarkBgColor  = QColor( 0xBA, 0xCC, 0xFC );
 
     style.defaultStyle  = StyleFont::NONE;
-    style.bookmarkStyle = EditStyle::B_CIRCLE;
+    style.bookmarkStyle = EditStyle::Bookmark::CIRCLE;
 
     return style;
 }
@@ -332,7 +332,7 @@ QSettings& operator<< (QSettings& settings, const EditStyle& style)
     settings.setValue("bookmark_fg_color", style.bookmarkFgColor.name());
     settings.setValue("bookmark_bg_color", style.bookmarkBgColor.name());
     settings.setValue("default_style", style.defaultStyle);
-    settings.setValue("bookmark_style", style.bookmarkStyle);
+    settings.setValue("bookmark_style", static_cast<int>(style.bookmarkStyle));
     settings.endGroup();
 
     return settings;
@@ -340,8 +340,8 @@ QSettings& operator<< (QSettings& settings, const EditStyle& style)
 
 QSettings& operator>> (QSettings& settings, EditStyle& style)
 {
-    settings >> static_cast<StyleBase&>(style);    
-    
+    settings >> static_cast<StyleBase&>(style);
+
     settings.beginGroup("tab");
     settings >> style.tab;
     settings.endGroup();
@@ -357,7 +357,7 @@ QSettings& operator>> (QSettings& settings, EditStyle& style)
     style.bookmarkFgColor  = QColor(settings.value("bookmark_fg_color", style.bookmarkFgColor.name()).toString());
     style.bookmarkBgColor  = QColor(settings.value("bookmark_bg_color", style.bookmarkBgColor.name()).toString());
     style.defaultStyle     = static_cast<StyleFont::style>(settings.value("default_style", style.defaultStyle).toInt());
-    style.bookmarkStyle    = static_cast<EditStyle::Bookmark>(settings.value("bookmark_style", style.bookmarkStyle).toInt());
+    style.bookmarkStyle    = static_cast<EditStyle::Bookmark>(settings.value("bookmark_style", static_cast<int>(style.bookmarkStyle)).toInt());
     settings.endGroup();
 
     return settings;
