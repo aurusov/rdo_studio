@@ -223,7 +223,7 @@ dpt_main
             @2.m_first_seek,
             @2.m_last_seek,
             0,
-            IDocument::PRC
+            IDocument::Type::PRC
         );
         ASSERT(pProcessMove);
         CONVERTER->insertDocUpdate(pProcessMove);
@@ -240,11 +240,11 @@ dpt_main
 dpt_search_trace
     : /* empty */
     {
-        $$ = rdo::runtime::RDODPTSearchTrace::DPT_no_trace;
+        $$ = static_cast<int>(rdo::runtime::RDODPTSearchTrace::TraceFlag::NO_TRACE);
     }
     | RDO_no_trace
     {
-        $$ = rdo::runtime::RDODPTSearchTrace::DPT_no_trace;
+        $$ = static_cast<int>(rdo::runtime::RDODPTSearchTrace::TraceFlag::NO_TRACE);
     }
     | RDO_trace
     {
@@ -252,15 +252,15 @@ dpt_search_trace
     }
     | RDO_trace_stat
     {
-        $$ = rdo::runtime::RDODPTSearchTrace::DPT_trace_stat;
+        $$ = static_cast<int>(rdo::runtime::RDODPTSearchTrace::TraceFlag::TRACE_STAT);
     }
     | RDO_trace_tops
     {
-        $$ = rdo::runtime::RDODPTSearchTrace::DPT_trace_tops;
+        $$ = static_cast<int>(rdo::runtime::RDODPTSearchTrace::TraceFlag::TRACE_TOPS);
     }
     | RDO_trace_all
     {
-        $$ = rdo::runtime::RDODPTSearchTrace::DPT_trace_all;
+        $$ = static_cast<int>(rdo::runtime::RDODPTSearchTrace::TraceFlag::TRACE_ALL);
     }
     ;
 
@@ -304,18 +304,18 @@ dpt_search_begin
             {
                 LPILogic pParent = pParentDPTPrior->getLogic();
                 ASSERT(pParent);
-                pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag*>(&$5), pParent);
+                pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::TraceFlag*>(&$5), pParent);
             }
             else if (pParentDPTSome)
             {
                 LPILogic pParent = pParentDPTSome->getLogic();
                 ASSERT(pParent);
-                pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag*>(&$5), pParent);
+                pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::TraceFlag*>(&$5), pParent);
             }
         }
         else
         {
-            pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag*>(&$5));
+            pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::TraceFlag*>(&$5));
         }
         ASSERT(pDPTSearch);
         $$ = CONVERTER->stack().push(pDPTSearch);
@@ -475,13 +475,13 @@ dpt_search_descr_value
     {
         LPRDODPTSearch pDPTSearch = CONVERTER->getLastDPTSearch();
         ASSERT(pDPTSearch);
-        pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_before, CONVERTER->stack().pop<RDOFUNArithm>($2), @1);
+        pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::CostTime::BEFORE, CONVERTER->stack().pop<RDOFUNArithm>($2), @1);
     }
     | RDO_value_after fun_arithm
     {
         LPRDODPTSearch pDPTSearch = CONVERTER->getLastDPTSearch();
         ASSERT(pDPTSearch);
-        pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_after, CONVERTER->stack().pop<RDOFUNArithm>($2), @1);
+        pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::CostTime::AFTER, CONVERTER->stack().pop<RDOFUNArithm>($2), @1);
     }
     | RDO_value_before error
     {
@@ -1455,10 +1455,10 @@ fun_arithm_func_call_pars
 // -------------------- Групповые выражения
 // --------------------------------------------------------------------------------
 fun_group_keyword
-    : RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
-    | RDO_Not_Exist   { $$ = RDOFUNGroupLogic::fgt_notexist;  }
-    | RDO_For_All     { $$ = RDOFUNGroupLogic::fgt_forall;    }
-    | RDO_Not_For_All { $$ = RDOFUNGroupLogic::fgt_notforall; }
+    : RDO_Exist       { $$ = static_cast<int>(RDOFUNGroupLogic::Type::EXIST);     }
+    | RDO_Not_Exist   { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTEXIST);  }
+    | RDO_For_All     { $$ = static_cast<int>(RDOFUNGroupLogic::Type::FORALL);    }
+    | RDO_Not_For_All { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTFORALL); }
     ;
 
 fun_group_header
@@ -1466,7 +1466,7 @@ fun_group_header
     {
         LPRDOValue pValue = CONVERTER->stack().pop<RDOValue>($3);
         ASSERT(pValue);
-        $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, pValue->src_info()));
+        $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create(static_cast<RDOFUNGroupLogic::Type>($1), pValue->src_info()));
     }
     | fun_group_keyword '(' error
     {
@@ -1576,10 +1576,10 @@ fun_select_body
     ;
 
 fun_select_keyword
-    : RDO_Exist            { $$ = RDOFUNGroupLogic::fgt_exist;     }
-    | RDO_Not_Exist        { $$ = RDOFUNGroupLogic::fgt_notexist;  }
-    | RDO_For_All        { $$ = RDOFUNGroupLogic::fgt_forall;    }
-    | RDO_Not_For_All    { $$ = RDOFUNGroupLogic::fgt_notforall; }
+    : RDO_Exist          { $$ = static_cast<int>(RDOFUNGroupLogic::Type::EXIST);     }
+    | RDO_Not_Exist      { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTEXIST);  }
+    | RDO_For_All        { $$ = static_cast<int>(RDOFUNGroupLogic::Type::FORALL);    }
+    | RDO_Not_For_All    { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTFORALL); }
     ;
 
 fun_select_logic
@@ -1590,7 +1590,7 @@ fun_select_logic
         ASSERT(pSelect);
         ASSERT(pLogic );
         pSelect->setSrcPos(@1, @6);
-        LPRDOFUNLogic pLogicSelect = pSelect->createFunSelectGroup((RDOFUNGroupLogic::FunGroupType)$3, pLogic);
+        LPRDOFUNLogic pLogicSelect = pSelect->createFunSelectGroup(static_cast<RDOFUNGroupLogic::Type>($3), pLogic);
         ASSERT(pLogicSelect);
         $$ = CONVERTER->stack().push(pLogicSelect);
     }

@@ -15,20 +15,28 @@ class PluginInfo: public rdo::counter_reference
 {
 DECLARE_FACTORY(PluginInfo);
 public:
-    PluginInfo(const QString& name, QPluginLoader* loader, bool autoload, const QUuid& GUID, 
-               const QString& author, const QString& version, int state);
+    enum class State
+    {
+        UNIQUE = -52,
+        ID_ONLY_MATCHED,
+        EXACT_MATCHED,
+        DELETED
+    };
+
+    PluginInfo(const QString& name, QPluginLoader* loader, bool autoload, const QUuid& GUID,
+               const QString& author, const QString& version, PluginInfo::State state);
     ~PluginInfo();
     const QString& getName    () const;
     const QString& getAuthor  () const;
     const QString& getVersion () const;
     bool           getAutoload() const;
     const QUuid&   getGUID    () const;
-    int            getState   () const;
+    State          getState   () const;
     bool           isActive   () const;
     QPluginLoader* getLoader  ();
-    
+
     void setAutoload(bool value);
-    void setState   (int  value);
+    void setState   (PluginInfo::State  value);
     void setActive  (bool value);
 
     bool pluginSignInfoIsEqual(const PluginInfo& pluginInfo);
@@ -42,7 +50,7 @@ private:
     QUuid          pluginGUID;
     QString        pluginAuthor;
     QString        pluginVersion;
-    int            pluginState;
+    State          pluginState;
     bool           pluginIsActive;
 };
 
@@ -52,20 +60,6 @@ class PluginInfoList
     , public std::list<LPPluginInfo>
 {
     DECLARE_FACTORY(PluginInfo);
-};
-
-namespace rdo
-{
-    namespace plugin
-    {
-        enum LoadState
-        {
-            Unique = -52,
-            IdOnlyMatched,
-            ExactMatched,
-            Deleted
-        };
-    }
 };
 
 Q_DECLARE_METATYPE(LPPluginInfo)

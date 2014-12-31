@@ -20,7 +20,7 @@ public:
     const ErrorList& list() const;
 
 private:
-    typedef rdo::simulation::report::FileMessage RDOSyntaxMessage;
+    typedef rdo::simulation::report::FileMessage SyntaxMessage;
 
     ErrorList m_errorList;
 };

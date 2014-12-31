@@ -28,22 +28,22 @@ void Document::create(const boost::filesystem::path& filePath, const boost::file
     m_modelName = modelName;
 }
 
-void Document::init(rdo::converter::smr2rdox::RDOFileTypeIn type, std::ifstream& stream)
+void Document::init(rdo::converter::smr2rdox::FileTypeIn type, std::ifstream& stream)
 {
     Type typeOut;
     switch (type)
     {
-    case rdo::converter::smr2rdox::PAT_IN: typeOut = PAT; break;
-    case rdo::converter::smr2rdox::RTP_IN: typeOut = RTP; break;
-    case rdo::converter::smr2rdox::RSS_IN: typeOut = RSS; break;
-    case rdo::converter::smr2rdox::OPR_IN: typeOut = OPR; break;
-    case rdo::converter::smr2rdox::FRM_IN: typeOut = FRM; break;
-    case rdo::converter::smr2rdox::FUN_IN: typeOut = FUN; break;
-    case rdo::converter::smr2rdox::DPT_IN: typeOut = DPT; break;
-    case rdo::converter::smr2rdox::SMR_IN: typeOut = SMR; break;
-    case rdo::converter::smr2rdox::PMD_IN: typeOut = PMD; break;
-    case rdo::converter::smr2rdox::PMV_IN: typeOut = PMV; break;
-    default                              : typeOut = UNDEFINED; NEVER_REACH_HERE; break;
+    case rdo::converter::smr2rdox::FileTypeIn::PAT: typeOut = Type::PAT; break;
+    case rdo::converter::smr2rdox::FileTypeIn::RTP: typeOut = Type::RTP; break;
+    case rdo::converter::smr2rdox::FileTypeIn::RSS: typeOut = Type::RSS; break;
+    case rdo::converter::smr2rdox::FileTypeIn::OPR: typeOut = Type::OPR; break;
+    case rdo::converter::smr2rdox::FileTypeIn::FRM: typeOut = Type::FRM; break;
+    case rdo::converter::smr2rdox::FileTypeIn::FUN: typeOut = Type::FUN; break;
+    case rdo::converter::smr2rdox::FileTypeIn::DPT: typeOut = Type::DPT; break;
+    case rdo::converter::smr2rdox::FileTypeIn::SMR: typeOut = Type::SMR; break;
+    case rdo::converter::smr2rdox::FileTypeIn::PMD: typeOut = Type::PMD; break;
+    case rdo::converter::smr2rdox::FileTypeIn::PMV: typeOut = Type::PMV; break;
+    default: typeOut = Type::UNDEFINED; NEVER_REACH_HERE; break;
     }
     LPMemoryStream streamOut = getMemoryStream(typeOut);
     streamOut->init(stream);
@@ -99,21 +99,21 @@ Document::TypeOut Document::typeToOut(const Type& typeIn) const
 {
     switch (typeIn)
     {
-    case PAT: return rdo::converter::smr2rdox::PAT_OUT;
-    case RTP: return rdo::converter::smr2rdox::RTP_OUT;
-    case RSS: return rdo::converter::smr2rdox::RSS_OUT;
-    case FRM: return rdo::converter::smr2rdox::FRM_OUT;
-    case FUN: return rdo::converter::smr2rdox::FUN_OUT;
-    case DPT: return rdo::converter::smr2rdox::DPT_OUT;
-    case SMR: return rdo::converter::smr2rdox::SMR_OUT;
-    case PMD: return rdo::converter::smr2rdox::PMD_OUT;
-    case PMV: return rdo::converter::smr2rdox::PMV_OUT;
-    case TRC: return rdo::converter::smr2rdox::TRC_OUT;
-    case EVN: return rdo::converter::smr2rdox::EVN_OUT;
-    case PRC: return rdo::converter::smr2rdox::PRC_OUT;
-    default : break;
+    case Type::PAT: return rdo::converter::smr2rdox::FileTypeOut::PAT;
+    case Type::RTP: return rdo::converter::smr2rdox::FileTypeOut::RTP;
+    case Type::RSS: return rdo::converter::smr2rdox::FileTypeOut::RSS;
+    case Type::FRM: return rdo::converter::smr2rdox::FileTypeOut::FRM;
+    case Type::FUN: return rdo::converter::smr2rdox::FileTypeOut::FUN;
+    case Type::DPT: return rdo::converter::smr2rdox::FileTypeOut::DPT;
+    case Type::SMR: return rdo::converter::smr2rdox::FileTypeOut::SMR;
+    case Type::PMD: return rdo::converter::smr2rdox::FileTypeOut::PMD;
+    case Type::PMV: return rdo::converter::smr2rdox::FileTypeOut::PMV;
+    case Type::TRC: return rdo::converter::smr2rdox::FileTypeOut::TRC;
+    case Type::EVN: return rdo::converter::smr2rdox::FileTypeOut::EVN;
+    case Type::PRC: return rdo::converter::smr2rdox::FileTypeOut::PRC;
+    default: break;
     }
-    return rdo::converter::smr2rdox::UNDEFINED_OUT;
+    return rdo::converter::smr2rdox::FileTypeOut::UNDEFINED;
 }
 
 void Document::close()
@@ -121,7 +121,7 @@ void Document::close()
     for (const auto& memory: m_memoryFileList)
     {
         TypeOut typeOut = typeToOut(memory.first);
-        if (typeOut != rdo::converter::smr2rdox::UNDEFINED_OUT)
+        if (typeOut != rdo::converter::smr2rdox::FileTypeOut::UNDEFINED)
         {
             LPFileStream pFileStream = getFileStream(typeOut);
             ASSERT(pFileStream);
@@ -140,18 +140,18 @@ boost::filesystem::path Document::getName(TypeOut typeOut) const
     boost::filesystem::path extension;
     switch (typeOut)
     {
-    case rdo::converter::smr2rdox::PAT_OUT: extension = "pat"; break;
-    case rdo::converter::smr2rdox::RTP_OUT: extension = "rtp"; break;
-    case rdo::converter::smr2rdox::RSS_OUT: extension = "rss"; break;
-    case rdo::converter::smr2rdox::FRM_OUT: extension = "frm"; break;
-    case rdo::converter::smr2rdox::FUN_OUT: extension = "fun"; break;
-    case rdo::converter::smr2rdox::DPT_OUT: extension = "dpt"; break;
-    case rdo::converter::smr2rdox::SMR_OUT: extension = "smr"; break;
-    case rdo::converter::smr2rdox::PMD_OUT: extension = "pmd"; break;
-    case rdo::converter::smr2rdox::PMV_OUT: extension = "pmv"; break;
-    case rdo::converter::smr2rdox::TRC_OUT: extension = "trc"; break;
-    case rdo::converter::smr2rdox::EVN_OUT: extension = "evn"; break;
-    case rdo::converter::smr2rdox::PRC_OUT: extension = "prc"; break;
+    case rdo::converter::smr2rdox::FileTypeOut::PAT: extension = "pat"; break;
+    case rdo::converter::smr2rdox::FileTypeOut::RTP: extension = "rtp"; break;
+    case rdo::converter::smr2rdox::FileTypeOut::RSS: extension = "rss"; break;
+    case rdo::converter::smr2rdox::FileTypeOut::FRM: extension = "frm"; break;
+    case rdo::converter::smr2rdox::FileTypeOut::FUN: extension = "fun"; break;
+    case rdo::converter::smr2rdox::FileTypeOut::DPT: extension = "dpt"; break;
+    case rdo::converter::smr2rdox::FileTypeOut::SMR: extension = "smr"; break;
+    case rdo::converter::smr2rdox::FileTypeOut::PMD: extension = "pmd"; break;
+    case rdo::converter::smr2rdox::FileTypeOut::PMV: extension = "pmv"; break;
+    case rdo::converter::smr2rdox::FileTypeOut::TRC: extension = "trc"; break;
+    case rdo::converter::smr2rdox::FileTypeOut::EVN: extension = "evn"; break;
+    case rdo::converter::smr2rdox::FileTypeOut::PRC: extension = "prc"; break;
     default: NEVER_REACH_HERE;
     }
 
@@ -227,18 +227,15 @@ std::string Document::get(Type type, std::size_t from, std::size_t to)
 void Document::MemoryStream::init(std::ifstream& stream)
 {
     if (!m_buffer.empty())
-    {
         return;
-    }
 
     for (;;)
     {
         char byte;
         stream.get(byte);
         if (stream.eof())
-        {
             break;
-        }
+
         m_buffer.push_back(byte);
     }
 }

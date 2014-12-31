@@ -91,7 +91,7 @@ void RDOActivity::updateConvertStatus(const LPRDORuntime& pRuntime, const std::v
             res->setState(status_list[i]);
             switch (status_list[i])
             {
-            case RDOResource::CS_Create:
+            case RDOResource::ConvertStatus::CREATE:
                 {
                     res->makeTemporary(true);
                     break;
@@ -127,7 +127,7 @@ std::string RDOActivity::traceResourcesListNumbers(const LPRDORuntime& /*pRuntim
     for (std::list<LPRDOResource>::const_iterator i = m_relevantResources.begin(); i != m_relevantResources.end(); ++i)
     {
 #ifdef RDOSIM_COMPATIBLE
-        if (*i && (show_create_index || (!show_create_index && (*i)->getState() != RDOResource::CS_Create)))
+        if (*i && (show_create_index || (!show_create_index && (*i)->getState() != RDOResource::ConvertStatus::CREATE)))
         {
 #else
         if (*i)

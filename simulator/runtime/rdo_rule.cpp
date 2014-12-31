@@ -89,7 +89,7 @@ bool RDORule::onCheckCondition(const LPRDORuntime& pRuntime)
         m_traceOFF = true;
         LPRDORuntime pClone = pRuntime->clone();
         ASSERT(pClone);
-        if (onDoOperation(pClone) != IBaseOperation::BOR_done)
+        if (onDoOperation(pClone) != IBaseOperation::ResultCode::DONE)
         {
             // TODO Реакция на плохой onDoOperation - это вообще-то спортный вопрос
             return false;
@@ -103,16 +103,16 @@ bool RDORule::onCheckCondition(const LPRDORuntime& pRuntime)
     return result;
 }
 
-IBaseOperation::BOResult RDORule::onDoOperation(const LPRDORuntime& pRuntime)
+IBaseOperation::ResultCode RDORule::onDoOperation(const LPRDORuntime& pRuntime)
 {
     onBeforeRule(pRuntime);
     convertRule (pRuntime);
     onAfterRule (pRuntime, false);
-    return IBaseOperation::BOR_done;
+    return IBaseOperation::ResultCode::DONE;
 }
 
 void                     RDORule::onStart   (const LPRDORuntime& /*pRuntime*/) {}
 void                     RDORule::onStop    (const LPRDORuntime& /*pRuntime*/) {}
-IBaseOperation::BOResult RDORule::onContinue(const LPRDORuntime& /*pRuntime*/) { return IBaseOperation::BOR_cant_run; }
+IBaseOperation::ResultCode RDORule::onContinue(const LPRDORuntime& /*pRuntime*/) { return IBaseOperation::ResultCode::CANNOT_RUN; }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

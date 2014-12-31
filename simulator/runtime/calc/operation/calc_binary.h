@@ -40,9 +40,9 @@ struct BinaryOperatorNonConstP1
 template <class F, typename OperatorType::Type CalcType>
 class RDOCalcBinary: public RDOCalcBinaryBase
 {
-friend class rdo::Factory<RDOCalcBinary<F, CalcType> >;
+friend class rdo::Factory<RDOCalcBinary<F, CalcType>>;
 public:
-    enum { calc_type = CalcType };
+    static const auto calc_type = CalcType;
     typedef F caller_type;
 
     LPRDOCalc      getLeft        () const;

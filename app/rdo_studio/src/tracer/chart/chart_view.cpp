@@ -372,7 +372,7 @@ void ChartView::dragEnterEvent(QDragEnterEvent* pEvent)
     if (pEvent->mimeData()->hasFormat("ChartSerie"))
     {
         QByteArray serieData = pEvent->mimeData()->data("ChartSerie");
-        m_pddSerie = (Serie*)serieData.toULongLong();    
+        m_pddSerie = (Serie*)serieData.toULongLong();
         if(!getDocument()->serieExists(m_pddSerie))
         {
             pEvent->acceptProposedAction();
@@ -495,7 +495,7 @@ void ChartView::setFromTo()
                 {
                     m_drawToEventCount = m_drawToX.eventCount;
                 }
-                
+
             }
             int pos = m_SM_X.position + m_chartRect.width();
             for (; it != doc->getTimes().end(); ++it)
@@ -805,7 +805,7 @@ void ChartView::onChartTimeWrap()
 
 void ChartView::onUserUpdateChartView(ChartDoc::Update updateType)
 {
-    if (doUnwrapTime() || updateType != ChartDoc::U_TIME_TICKS)
+    if (doUnwrapTime() || updateType != ChartDoc::Update::TIME_TICKS)
     {
         updateView();
     }

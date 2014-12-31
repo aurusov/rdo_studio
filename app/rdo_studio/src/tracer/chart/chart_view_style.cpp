@@ -176,8 +176,8 @@ QSettings& operator>> (QSettings& settings, ChartViewStyle& style)
     style.legendFgColor = QColor(settings.value("legend_fg_color", style.legendFgColor.name()).toString());
     style.chartBgColor  = QColor(settings.value("chart_bg_color", style.chartBgColor.name()).toString());
     style.timeBgColor   = QColor(settings.value("time_bg_color", style.timeBgColor.name()).toString());
-    style.titleStyle    = static_cast<StyleFont::style>(settings.value("title_style", style.titleStyle).toInt());
-    style.legendStyle   = static_cast<StyleFont::style>(settings.value("legend_style", style.legendStyle).toInt());
+    style.titleStyle    = static_cast<StyleFont::Style>(settings.value("title_style", style.titleStyle).toInt());
+    style.legendStyle   = static_cast<StyleFont::Style>(settings.value("legend_style", style.legendStyle).toInt());
     settings.endGroup();
 
     settings.beginGroup("fonts_ticks");

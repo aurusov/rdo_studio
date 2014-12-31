@@ -11,9 +11,9 @@ OPEN_COMPILER_GUI_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlock
 // --------------------------------------------------------------------------------
-RPShapeDataBlock::RPShapeDataBlock(RPShapeDataBlock::zakonRaspr zakon, const std::string& name)
-    : m_zakon(zakon)
-    , m_name (name )
+RPShapeDataBlock::RPShapeDataBlock(RPShapeDataBlock::RandomDistribution randomDistribution, const std::string& name)
+    : m_randomDistribution(randomDistribution)
+    , m_name(name)
 {}
 
 void RPShapeDataBlock::setDisp(double disp)
@@ -39,7 +39,7 @@ void RPShapeDataBlock::setMax(double max)
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlockCreate
 // --------------------------------------------------------------------------------
-RPShapeDataBlockCreate::RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, const std::string& name)
+RPShapeDataBlockCreate::RPShapeDataBlockCreate(RPShapeDataBlock::RandomDistribution zakon, const std::string& name)
     : RPShapeDataBlock(zakon, name)
 {}
 
@@ -79,7 +79,7 @@ void RPShapeDataBlockTerminate::setStatistics(const rdo::runtime::LPIInternalSta
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlockProcess
 // --------------------------------------------------------------------------------
-RPShapeDataBlockProcess::RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, const std::string& name)
+RPShapeDataBlockProcess::RPShapeDataBlockProcess(RPShapeDataBlock::RandomDistribution zakon, const std::string& name)
     : RPShapeDataBlock(zakon,name)
 {}
 

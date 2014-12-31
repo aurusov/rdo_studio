@@ -28,7 +28,13 @@ public:
     void load(QSettings& settings);
     void save(QSettings& settings) const;
 
-    enum style { NONE = 0x00, BOLD = 0x01, ITALIC = 0x02, UNDERLINE = 0x04 };
+    enum Style
+    {
+        NONE = 0x00,
+        BOLD = 0x01,
+        ITALIC = 0x02,
+        UNDERLINE = 0x04
+    };
 
     std::string name;
     int size;
@@ -58,7 +64,7 @@ public:
     bool operator !=(const StyleBase& style) const;
 
     StyleFont font;
-    StyleFont::style defaultStyle;
+    StyleFont::Style defaultStyle;
 
     QColor defaultColor;
     QColor backgroundColor;

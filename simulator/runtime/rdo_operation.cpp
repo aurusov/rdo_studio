@@ -56,7 +56,7 @@ bool RDOOperation::onCheckCondition(const LPRDORuntime& pRuntime)
     return choiceFrom(pRuntime);
 }
 
-IBaseOperation::BOResult RDOOperation::onDoOperation(const LPRDORuntime& pRuntime)
+IBaseOperation::ResultCode RDOOperation::onDoOperation(const LPRDORuntime& pRuntime)
 {
     LPIOperation newOper = rdo::Factory<RDOOperation>::create(pRuntime, *this);
     newOper->onBeforeOperationBegin(pRuntime);
@@ -76,7 +76,7 @@ IBaseOperation::BOResult RDOOperation::onDoOperation(const LPRDORuntime& pRuntim
         boost::bind(&IEvent::onMakePlaned, event.get(), pRuntime, params)
     );
     newOper->onAfterOperationBegin(pRuntime);
-    return IBaseOperation::BOR_planned_and_run;
+    return IBaseOperation::ResultCode::PLANNED_AND_RUN;
 }
 
 void RDOOperation::onMakePlaned(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& params)
@@ -159,54 +159,54 @@ bool mustBeExist(RDOResource::ConvertStatus status_begin, RDOResource::ConvertSt
 {
     switch (status_begin)
     {
-    case RDOResource::CS_Keep:
+    case RDOResource::ConvertStatus::KEEP:
         switch (status_end)
         {
-        case RDOResource::CS_Keep    : return true;
-        case RDOResource::CS_Create  : NEVER_REACH_HERE;
-        case RDOResource::CS_Erase   : return true;
-        case RDOResource::CS_NonExist: NEVER_REACH_HERE;
-        case RDOResource::CS_NoChange: return true;
+        case RDOResource::ConvertStatus::KEEP    : return true;
+        case RDOResource::ConvertStatus::CREATE  : NEVER_REACH_HERE;
+        case RDOResource::ConvertStatus::ERASE   : return true;
+        case RDOResource::ConvertStatus::NONEXIST: NEVER_REACH_HERE;
+        case RDOResource::ConvertStatus::NOCHANGE: return true;
         default: NEVER_REACH_HERE;
         }
-    case RDOResource::CS_Create:
+    case RDOResource::ConvertStatus::CREATE:
         switch (status_end)
         {
-        case RDOResource::CS_Keep    : return true;
-        case RDOResource::CS_Create  : NEVER_REACH_HERE;
-        case RDOResource::CS_Erase   : return true;
-        case RDOResource::CS_NonExist: NEVER_REACH_HERE;
-        case RDOResource::CS_NoChange: return true;
+        case RDOResource::ConvertStatus::KEEP    : return true;
+        case RDOResource::ConvertStatus::CREATE  : NEVER_REACH_HERE;
+        case RDOResource::ConvertStatus::ERASE   : return true;
+        case RDOResource::ConvertStatus::NONEXIST: NEVER_REACH_HERE;
+        case RDOResource::ConvertStatus::NOCHANGE: return true;
         default: NEVER_REACH_HERE;
         }
-    case RDOResource::CS_Erase:
+    case RDOResource::ConvertStatus::ERASE:
         switch (status_end)
         {
-        case RDOResource::CS_Keep    : NEVER_REACH_HERE;
-        case RDOResource::CS_Create  : NEVER_REACH_HERE;
-        case RDOResource::CS_Erase   : NEVER_REACH_HERE;
-        case RDOResource::CS_NonExist: return false;
-        case RDOResource::CS_NoChange: NEVER_REACH_HERE;
+        case RDOResource::ConvertStatus::KEEP    : NEVER_REACH_HERE;
+        case RDOResource::ConvertStatus::CREATE  : NEVER_REACH_HERE;
+        case RDOResource::ConvertStatus::ERASE   : NEVER_REACH_HERE;
+        case RDOResource::ConvertStatus::NONEXIST: return false;
+        case RDOResource::ConvertStatus::NOCHANGE: NEVER_REACH_HERE;
         default: NEVER_REACH_HERE;
         }
-    case RDOResource::CS_NonExist:
+    case RDOResource::ConvertStatus::NONEXIST:
         switch (status_end)
         {
-        case RDOResource::CS_Keep    : NEVER_REACH_HERE;
-        case RDOResource::CS_Create  : return false;
-        case RDOResource::CS_Erase   : NEVER_REACH_HERE;
-        case RDOResource::CS_NonExist: NEVER_REACH_HERE;
-        case RDOResource::CS_NoChange: NEVER_REACH_HERE;
+        case RDOResource::ConvertStatus::KEEP    : NEVER_REACH_HERE;
+        case RDOResource::ConvertStatus::CREATE  : return false;
+        case RDOResource::ConvertStatus::ERASE   : NEVER_REACH_HERE;
+        case RDOResource::ConvertStatus::NONEXIST: NEVER_REACH_HERE;
+        case RDOResource::ConvertStatus::NOCHANGE: NEVER_REACH_HERE;
         default: NEVER_REACH_HERE;
         }
-    case RDOResource::CS_NoChange:
+    case RDOResource::ConvertStatus::NOCHANGE:
         switch (status_end)
         {
-        case RDOResource::CS_Keep    : return true;
-        case RDOResource::CS_Create  : NEVER_REACH_HERE;
-        case RDOResource::CS_Erase   : return true;
-        case RDOResource::CS_NonExist: NEVER_REACH_HERE;
-        case RDOResource::CS_NoChange: return true;
+        case RDOResource::ConvertStatus::KEEP    : return true;
+        case RDOResource::ConvertStatus::CREATE  : NEVER_REACH_HERE;
+        case RDOResource::ConvertStatus::ERASE   : return true;
+        case RDOResource::ConvertStatus::NONEXIST: NEVER_REACH_HERE;
+        case RDOResource::ConvertStatus::NOCHANGE: return true;
         default: NEVER_REACH_HERE;
         }
     default: NEVER_REACH_HERE;
@@ -247,6 +247,6 @@ void RDOOperation::decrementRelevantResourceReference(const LPRDORuntime& pRunti
 void                     RDOOperation::onBeforeOperationBegin(const LPRDORuntime& /*pRuntime*/) {}
 void                     RDOOperation::onStart               (const LPRDORuntime& /*pRuntime*/) {}
 void                     RDOOperation::onStop                (const LPRDORuntime& /*pRuntime*/) {}
-IBaseOperation::BOResult RDOOperation::onContinue            (const LPRDORuntime& /*pRuntime*/) { return IBaseOperation::BOR_cant_run; }
+IBaseOperation::ResultCode RDOOperation::onContinue            (const LPRDORuntime& /*pRuntime*/) { return IBaseOperation::ResultCode::CANNOT_RUN; }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

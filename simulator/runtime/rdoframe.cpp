@@ -26,12 +26,12 @@ IRDOFRMItemGetBitmap::~IRDOFRMItemGetBitmap()
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMColor
 // --------------------------------------------------------------------------------
-RDOFRMSprite::RDOFRMColor::RDOFRMColor(ColorType type)
+RDOFRMSprite::RDOFRMColor::RDOFRMColor(Type type)
     : m_type(type)
 {}
 
 RDOFRMSprite::RDOFRMColor::RDOFRMColor(unsigned char red, unsigned char green, unsigned char blue, const RDOSrcInfo& srcInfo)
-    : m_type(CT_RGB)
+    : m_type(Type::RGB)
 {
     m_pRedCalc = rdo::Factory<RDOCalcConst>::create((int)red);
     m_pGreenCalc = rdo::Factory<RDOCalcConst>::create((int)green);
@@ -45,7 +45,7 @@ RDOFRMSprite::RDOFRMColor::RDOFRMColor(unsigned char red, unsigned char green, u
 }
 
 RDOFRMSprite::RDOFRMColor::RDOFRMColor(const LPRDOCalc& pRedCalc, const LPRDOCalc& pGreenCalc, const LPRDOCalc& pBlueCalc)
-    : m_type      (CT_RGB    )
+    : m_type      (Type::RGB    )
     , m_pRedCalc  (pRedCalc  )
     , m_pGreenCalc(pGreenCalc)
     , m_pBlueCalc (pBlueCalc )
@@ -62,18 +62,18 @@ rdo::animation::Color RDOFRMSprite::RDOFRMColor::getColor(const LPRDORuntime& pR
 {
     switch (m_type)
     {
-    case CT_NONE        : return rdo::animation::Color(50, 200, 50);
-    case CT_RGB         : return rdo::animation::Color
+    case Type::NONE        : return rdo::animation::Color(50, 200, 50);
+    case Type::RGB         : return rdo::animation::Color
                           (
                             (unsigned char)m_pRedCalc  ->calcValue(pRuntime).getUInt(),
                             (unsigned char)m_pGreenCalc->calcValue(pRuntime).getUInt(),
                             (unsigned char)m_pBlueCalc ->calcValue(pRuntime).getUInt()
                           );
-    case CT_TRANSPARENT : return rdo::animation::Color();
-    case CT_LAST_BG     : return pSprite->m_colorLastBg;
-    case CT_LAST_FG     : return pSprite->m_colorLastFg;
-    case CT_LAST_BG_TEXT: return pSprite->m_colorLastBgText;
-    case CT_LAST_FG_TEXT: return pSprite->m_colorLastFgText;
+    case Type::TRANSPARENT_COLOR : return rdo::animation::Color();
+    case Type::LAST_BG     : return pSprite->m_colorLastBg;
+    case Type::LAST_FG     : return pSprite->m_colorLastFg;
+    case Type::LAST_BG_TEXT: return pSprite->m_colorLastBgText;
+    case Type::LAST_FG_TEXT: return pSprite->m_colorLastFgText;
     default             : NEVER_REACH_HERE;
     }
     return rdo::animation::Color();
@@ -192,33 +192,33 @@ void RDOFRMSprite::getBitmaps(IRDOFRMItemGetBitmap::ImageNameList& list) const
     }
 }
 
-void RDOFRMSprite::setColorLastBG(RDOFRMColor::ColorType type, const rdo::animation::Color& lastBg)
+void RDOFRMSprite::setColorLastBG(RDOFRMColor::Type type, const rdo::animation::Color& lastBg)
 {
-    if (type == RDOFRMColor::CT_RGB)
+    if (type == RDOFRMColor::Type::RGB)
     {
         m_colorLastBg = lastBg;
     }
 }
 
-void RDOFRMSprite::setColorLastFG(RDOFRMColor::ColorType type, const rdo::animation::Color& lastFg)
+void RDOFRMSprite::setColorLastFG(RDOFRMColor::Type type, const rdo::animation::Color& lastFg)
 {
-    if (type == RDOFRMColor::CT_RGB)
+    if (type == RDOFRMColor::Type::RGB)
     {
         m_colorLastFg = lastFg;
     }
 }
 
-void RDOFRMSprite::setColorLastBGText(RDOFRMColor::ColorType type, const rdo::animation::Color& lastBgText)
+void RDOFRMSprite::setColorLastBGText(RDOFRMColor::Type type, const rdo::animation::Color& lastBgText)
 {
-    if (type == RDOFRMColor::CT_RGB)
+    if (type == RDOFRMColor::Type::RGB)
     {
         m_colorLastBgText = lastBgText;
     }
 }
 
-void RDOFRMSprite::setColorLastFGText(RDOFRMColor::ColorType type, const rdo::animation::Color& lastFgText)
+void RDOFRMSprite::setColorLastFGText(RDOFRMColor::Type type, const rdo::animation::Color& lastFgText)
 {
-    if (type == RDOFRMColor::CT_RGB)
+    if (type == RDOFRMColor::Type::RGB)
     {
         m_colorLastFgText = lastFgText;
     }
@@ -285,11 +285,11 @@ void RDOFRMSprite::insertRulet(const LPRDOFRMRulet& pRulet)
 // --------------------------------------------------------------------------------
 RDOFRMSprite::RDOFRMPosition::RDOFRMPosition()
     : RDORuntimeObject()
-    , m_type   (PT_ABSOLUTE)
+    , m_type   (Type::ABSOLUTE_POSITION)
     , m_ruletID(0          )
 {}
 
-RDOFRMSprite::RDOFRMPosition::RDOFRMPosition(const LPRDOCalc& pCalc, PositionType type, int ruletID)
+RDOFRMSprite::RDOFRMPosition::RDOFRMPosition(const LPRDOCalc& pCalc, Type type, int ruletID)
     : RDORuntimeObject()
     , m_pCalc  (pCalc  )
     , m_type   (type   )
@@ -299,7 +299,7 @@ RDOFRMSprite::RDOFRMPosition::RDOFRMPosition(const LPRDOCalc& pCalc, PositionTyp
 RDOFRMSprite::RDOFRMPosition::~RDOFRMPosition()
 {}
 
-RDOFRMSprite::RDOFRMPosition::PositionType RDOFRMSprite::RDOFRMPosition::getType() const
+RDOFRMSprite::RDOFRMPosition::Type RDOFRMSprite::RDOFRMPosition::getType() const
 {
     return m_type;
 }
@@ -314,10 +314,10 @@ int RDOFRMSprite::RDOFRMPosition::getX(const LPRDORuntime& pRuntime, const LPRDO
     RDOValue res = m_pCalc->calcValue(pRuntime);
     switch (m_type)
     {
-    case RDOFRMPosition::PT_DELTA  : res += pSprite->m_lastX;                        break;
-    case RDOFRMPosition::PT_GABARIT: res += pSprite->m_lastX + pSprite->m_lastWidth; break;
-    case RDOFRMPosition::PT_MULT   : res *= pSprite->m_lastX;                        break;
-    case RDOFRMPosition::PT_RULET  : res += pSprite->getRuletX(pRuntime, m_ruletID); break;
+    case RDOFRMPosition::Type::DELTA  : res += pSprite->m_lastX;                        break;
+    case RDOFRMPosition::Type::GABARIT: res += pSprite->m_lastX + pSprite->m_lastWidth; break;
+    case RDOFRMPosition::Type::MULT   : res *= pSprite->m_lastX;                        break;
+    case RDOFRMPosition::Type::RULET  : res += pSprite->getRuletX(pRuntime, m_ruletID); break;
     default                        : break;
     }
     return res.getInt();
@@ -328,10 +328,10 @@ int RDOFRMSprite::RDOFRMPosition::getY(const LPRDORuntime& pRuntime, const LPRDO
     RDOValue res = m_pCalc->calcValue(pRuntime);
     switch (m_type)
     {
-    case RDOFRMPosition::PT_DELTA  : res += pSprite->m_lastY;                         break;
-    case RDOFRMPosition::PT_GABARIT: res += pSprite->m_lastY + pSprite->m_lastHeight; break;
-    case RDOFRMPosition::PT_MULT   : res *= pSprite->m_lastY;                         break;
-    case RDOFRMPosition::PT_RULET  : res += pSprite->getRuletY(pRuntime, m_ruletID);  break;
+    case RDOFRMPosition::Type::DELTA  : res += pSprite->m_lastY;                         break;
+    case RDOFRMPosition::Type::GABARIT: res += pSprite->m_lastY + pSprite->m_lastHeight; break;
+    case RDOFRMPosition::Type::MULT   : res *= pSprite->m_lastY;                         break;
+    case RDOFRMPosition::Type::RULET  : res += pSprite->getRuletY(pRuntime, m_ruletID);  break;
     default                        : break;
     }
     return res.getInt();
@@ -342,9 +342,9 @@ int RDOFRMSprite::RDOFRMPosition::getWidth(const LPRDORuntime& pRuntime, const L
     RDOValue res = m_pCalc->calcValue(pRuntime);
     switch (m_type)
     {
-    case RDOFRMPosition::PT_DELTA: res += pSprite->m_lastWidth; break;
-    case RDOFRMPosition::PT_MULT : res *= pSprite->m_lastWidth; break;
-    case RDOFRMPosition::PT_RULET: res += pSprite->getRuletX(pRuntime, m_ruletID); break;
+    case RDOFRMPosition::Type::DELTA: res += pSprite->m_lastWidth; break;
+    case RDOFRMPosition::Type::MULT : res *= pSprite->m_lastWidth; break;
+    case RDOFRMPosition::Type::RULET: res += pSprite->getRuletX(pRuntime, m_ruletID); break;
     default                      : break;
     }
     return res.getInt();
@@ -355,9 +355,9 @@ int RDOFRMSprite::RDOFRMPosition::getHeight(const LPRDORuntime& pRuntime, const 
     RDOValue res = m_pCalc->calcValue(pRuntime);
     switch (m_type)
     {
-    case RDOFRMPosition::PT_DELTA: res += pSprite->m_lastHeight; break;
-    case RDOFRMPosition::PT_MULT : res *= pSprite->m_lastHeight; break;
-    case RDOFRMPosition::PT_RULET: res += pSprite->getRuletY(pRuntime, m_ruletID); break;
+    case RDOFRMPosition::Type::DELTA: res += pSprite->m_lastHeight; break;
+    case RDOFRMPosition::Type::MULT : res *= pSprite->m_lastHeight; break;
+    case RDOFRMPosition::Type::RULET: res += pSprite->getRuletY(pRuntime, m_ruletID); break;
     default                      : break;
     }
     return res.getInt();
@@ -366,14 +366,14 @@ int RDOFRMSprite::RDOFRMPosition::getHeight(const LPRDORuntime& pRuntime, const 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMSprite::RDOFRMColor
 // --------------------------------------------------------------------------------
-RDOFRMSprite::RDOFRMColor::ColorType RDOFRMSprite::RDOFRMColor::getType() const
+RDOFRMSprite::RDOFRMColor::Type RDOFRMSprite::RDOFRMColor::getType() const
 {
     return m_type;
 }
 
-void RDOFRMSprite::RDOFRMColor::setType(ColorType type)
+void RDOFRMSprite::RDOFRMColor::setType(Type type)
 {
-    if (m_type == CT_NONE)
+    if (m_type == Type::NONE)
     {
         m_type = type;
     }
@@ -1038,7 +1038,7 @@ RDOValue RDOFRMFrame::doCalc(const LPRDORuntime& pRuntime)
 
     if (m_pBgColor)
     {
-        if (m_pBgColor->getType() == RDOFRMColor::CT_RGB)
+        if (m_pBgColor->getType() == RDOFRMColor::Type::RGB)
         {
             rdo::animation::Color bgColor = m_pBgColor->getColor(pRuntime, this);
             pFrame->m_bgColor = bgColor;

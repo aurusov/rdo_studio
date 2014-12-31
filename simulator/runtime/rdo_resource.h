@@ -22,14 +22,14 @@ class RDOResource
     , public boost::operators<RDOResource>
 {
 public:
-        enum ConvertStatus
+    enum class ConvertStatus
     {
-        CS_None = 0,
-        CS_Keep,
-        CS_Create,
-        CS_Erase,
-        CS_NonExist,
-        CS_NoChange
+        NONE = 0,
+        KEEP,
+        CREATE,
+        ERASE,
+        NONEXIST,
+        NOCHANGE
     };
 
     typedef  std::vector<RDOValue>      ParamList;

@@ -8,9 +8,9 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-struct SetOperationType
+struct SetOperation
 {
-    enum Type
+    enum class Type
     {
         NOCHANGE,
         SET,

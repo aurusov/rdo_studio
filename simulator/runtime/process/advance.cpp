@@ -48,10 +48,10 @@ bool RDOPROCAdvance::onCheckCondition(const LPRDORuntime& pRuntime)
     return false;
 }
 
-IBaseOperation::BOResult RDOPROCAdvance::onDoOperation(const LPRDORuntime& pRuntime)
+IBaseOperation::ResultCode RDOPROCAdvance::onDoOperation(const LPRDORuntime& pRuntime)
 {
     if (m_transacts.empty())
-        return IBaseOperation::BOR_cant_run;
+        return IBaseOperation::ResultCode::CANNOT_RUN;
 
     //        TRACE1("%7.1f ADVANCE BEGIN\n", pRuntime->getCurrentTime());
     double timeLeave = pDelayCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime();
@@ -67,7 +67,7 @@ IBaseOperation::BOResult RDOPROCAdvance::onDoOperation(const LPRDORuntime& pRunt
     if (m_pStatistics)
         m_pStatistics->setTransCount(m_transacts.size());
 
-    return IBaseOperation::BOR_done;
+    return IBaseOperation::ResultCode::DONE;
 }
 
 void RDOPROCAdvance::onStart(const LPRDORuntime& /*pRuntime*/)
@@ -98,9 +98,9 @@ void RDOPROCAdvance::onMakePlaned(const LPRDORuntime& pRuntime)
     }
 }
 
-IBaseOperation::BOResult RDOPROCAdvance::onContinue(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDOPROCAdvance::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-    return IBaseOperation::BOR_cant_run;
+    return IBaseOperation::ResultCode::CANNOT_RUN;
 }
 
 void RDOPROCAdvance::setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics)

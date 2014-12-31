@@ -106,30 +106,30 @@ Context::LPFindResult LocalVariable::onFindContext(const std::string& method, co
 
         LPRDOCalc operationResult;
 
-        switch (params.get<SetOperationType::Type>(Expression::CONTEXT_PARAM_SET_OPERATION_TYPE))
+        switch (params.get<SetOperation::Type>(Expression::CONTEXT_PARAM_SET_OPERATION_TYPE))
         {
-        case SetOperationType::NOCHANGE:
+        case SetOperation::Type::NOCHANGE:
             RDOParser::s_parser()->error().error(srcInfo, "Недопустимый тип операции: NOCHANGE");
             break;
-        case SetOperationType::SET        :
+        case SetOperation::Type::SET        :
             operationResult = rightValue;
             break;
-        case SetOperationType::ADDITION   :
+        case SetOperation::Type::ADDITION   :
             operationResult =  rdo::Factory<RDOCalcPlus>::create(localVariableValue, rightValue);
             break;
-        case SetOperationType::SUBTRACTION:
+        case SetOperation::Type::SUBTRACTION:
             operationResult =  rdo::Factory<RDOCalcMinus>::create(localVariableValue, rightValue);
             break;
-        case SetOperationType::MULTIPLY   :
+        case SetOperation::Type::MULTIPLY   :
             operationResult =  rdo::Factory<RDOCalcMult>::create(localVariableValue, rightValue);
             break;
-        case SetOperationType::DIVIDE     :
+        case SetOperation::Type::DIVIDE     :
             operationResult =  rdo::Factory<RDOCalcDiv>::create(localVariableValue, rightValue);
             break;
-        case SetOperationType::INCREMENT  :
+        case SetOperation::Type::INCREMENT  :
             operationResult =  rdo::Factory<RDOCalcPlus>::create(localVariableValue, rdo::Factory<RDOCalcConst>::create(1));
             break;
-        case SetOperationType::DECRIMENT  :
+        case SetOperation::Type::DECRIMENT  :
             operationResult =  rdo::Factory<RDOCalcMinus>::create(localVariableValue, rdo::Factory<RDOCalcConst>::create(1));
             break;
         }

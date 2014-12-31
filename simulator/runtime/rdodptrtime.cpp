@@ -10,7 +10,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearchRuntime
 // --------------------------------------------------------------------------------
-RDODPTSearchRuntime::RDODPTSearchRuntime(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent, const LPRDOCalc& _pCondition, const LPRDOCalc& _pTermCondition, const LPRDOCalc& _pEvaluateBy, bool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag)
+RDODPTSearchRuntime::RDODPTSearchRuntime(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent, const LPRDOCalc& _pCondition, const LPRDOCalc& _pTermCondition, const LPRDOCalc& _pEvaluateBy, bool _compTops, RDODPTSearchTrace::TraceFlag _traceFlag)
     : RDODPTSearchTrace(pRuntime, parent)
     , pCondition       (_pCondition     )
     , pTermCondition   (_pTermCondition )

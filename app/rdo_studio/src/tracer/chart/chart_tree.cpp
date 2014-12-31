@@ -33,7 +33,7 @@ ChartTree::ChartTree(QWidget* pParent)
     setHeaderHidden   (true);
     setRootIsDecorated(false);
 
-    m_iconList.reserve(IT_COUNT);
+    m_iconList.reserve(static_cast<std::size_t>(IconType::COUNT));
     m_iconList.push_back(QIcon(QString::fromUtf8(":/images/images/tree_chart_root.png")));
     m_iconList.push_back(QIcon(QString::fromUtf8(":/images/images/tree_chart_sub_root_1.png")));
     m_iconList.push_back(QIcon(QString::fromUtf8(":/images/images/tree_chart_sub_root_2.png")));
@@ -48,11 +48,11 @@ ChartTree::ChartTree(QWidget* pParent)
 
     m_root->setCtrlItem(new QTreeWidgetItem(this));
     m_root->getCtrlItem().setText(0, "Модель");
-    m_root->getCtrlItem().setIcon(0, m_iconList[IT_ROOT]);
+    m_root->getCtrlItem().setIcon(0, m_iconList[static_cast<std::size_t>(IconType::ROOT)]);
 
-    createItem(m_root, m_rootRTP, "Типы ресурсов", IT_SUB_ROOT_1);
-    createItem(m_root, m_rootPAT, "Образцы",       IT_SUB_ROOT_1);
-    createItem(m_root, m_rootPMV, "Результаты",    IT_SUB_ROOT_1);
+    createItem(m_root, m_rootRTP, "Типы ресурсов", IconType::SUB_ROOT_1);
+    createItem(m_root, m_rootPAT, "Образцы",       IconType::SUB_ROOT_1);
+    createItem(m_root, m_rootPMV, "Результаты",    IconType::SUB_ROOT_1);
 
     m_root->getCtrlItem().setExpanded(true);
 
@@ -104,7 +104,7 @@ void ChartTree::createItem(const LPChartTreeItem& parent, const LPChartTreeItem&
 {
     QTreeWidgetItem* pCtrlItem = new QTreeWidgetItem(&parent->getCtrlItem());
     pCtrlItem->setText(0, name);
-    pCtrlItem->setIcon(0, m_iconList[iconType]);
+    pCtrlItem->setIcon(0, m_iconList[static_cast<std::size_t>(iconType)]);
     // TODO smart_ptr
     const ChartTreeItem* pRawItem = item.get();
     pCtrlItem->setData(0, Qt::UserRole, QVariant::fromValue(pRawItem));
@@ -114,7 +114,7 @@ void ChartTree::createItem(const LPChartTreeItem& parent, const LPChartTreeItem&
 void ChartTree::addResourceType(const LPResourceType& pRTP)
 {
     ASSERT(pRTP);
-    createItem(m_rootRTP, pRTP, pRTP->getName(), IT_SUB_ROOT_2);
+    createItem(m_rootRTP, pRTP, pRTP->getName(), IconType::SUB_ROOT_2);
 }
 
 void ChartTree::addResource(const LPResource& pRSS)
@@ -122,44 +122,39 @@ void ChartTree::addResource(const LPResource& pRSS)
     LPResourceType pRTP = pRSS->getType();
     ASSERT(pRTP);
     ASSERT(pRSS);
-    createItem(pRTP, pRSS, pRSS->getName(), IT_SUB_ROOT_3);
+    createItem(pRTP, pRSS, pRSS->getName(), IconType::SUB_ROOT_3);
 
     int count = pRTP->getParamsCount();
     for (int i = 0; i < count; i++)
     {
         LPChartTreeItem pParam = pRSS->getParam(i);
         ASSERT(pParam);
-        createItem(pRSS, pParam, pRTP->getParamInfo(i)->getName(), IT_VALUE);
+        createItem(pRSS, pParam, pRTP->getParamInfo(i)->getName(), IconType::VALUE);
     }
     updateResource(pRSS);
 }
 
 void ChartTree::updateResource(const LPResource& pRSS)
 {
-    if (pRSS->isErased())
-    {
-        pRSS->getCtrlItem().setIcon(0, m_iconList[IT_ERASED]);
-    }
-    else
-    {
-        pRSS->getCtrlItem().setIcon(0, m_iconList[IT_SUB_ROOT_3]);
-    }
+    pRSS->getCtrlItem().setIcon(0, m_iconList[static_cast<std::size_t>(pRSS->isErased()
+        ? IconType::ERASED
+        : IconType::SUB_ROOT_3)]);
 }
 
 void ChartTree::addPattern(const LPPattern& pPAT)
 {
     ASSERT(pPAT);
-    createItem(m_rootPAT, pPAT, pPAT->getName(), IT_SUB_ROOT_2);
+    createItem(m_rootPAT, pPAT, pPAT->getName(), IconType::SUB_ROOT_2);
 }
 
 void ChartTree::addOperation(const LPOperationBase& pOPR)
 {
-    createItem(pOPR->getPattern(), pOPR, pOPR->getName(), IT_VALUE);
+    createItem(pOPR->getPattern(), pOPR, pOPR->getName(), IconType::VALUE);
 }
 
 void ChartTree::addResult(const LPResult& pPMV)
 {
-    createItem(m_rootPMV, pPMV, pPMV->getName(), IT_VALUE);
+    createItem(m_rootPMV, pPMV, pPMV->getName(), IconType::VALUE);
 }
 
 void ChartTree::deleteChildren(const LPChartTreeItem& pParent)
@@ -251,7 +246,7 @@ void ChartTree::onChartExport()
         return;
 
     QFile data(fileName);
-    if (data.open(QIODevice::Text | QFile::WriteOnly | QFile::Truncate)) 
+    if (data.open(QIODevice::Text | QFile::WriteOnly | QFile::Truncate))
     {
         QTextStream stream(&data);
         for (const Serie::ExportData::value_type& exportItem: exportData)
@@ -311,7 +306,7 @@ void ChartTree::mousePressEvent(QMouseEvent* pEvent)
     this->setCurrentItem(item);
     onUpdateActions(isActivated());
     if (pEvent->button() == Qt::LeftButton)
-    { 
+    {
         LPSerie pSerie = getIfItemIsDrawable(getSelected()).object_dynamic_cast<Serie>();
         if(pSerie)
         {

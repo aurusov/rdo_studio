@@ -218,13 +218,13 @@ pat_main
         ASSERT(pPattern);
         switch (pPattern->getType())
         {
-            case RDOPATPattern::PT_IE:
+            case RDOPATPattern::Type::IE:
             {
                 LPDocUpdate pEventMove = rdo::Factory<UpdateMove>::create(
                     @2.m_first_seek,
                     @2.m_last_seek,
                     IDocUpdate::Position::POSITION_END,
-                    IDocument::EVN
+                    IDocument::Type::EVN
                 );
                 ASSERT(pEventMove);
                 CONVERTER->insertDocUpdate(pEventMove);
@@ -232,7 +232,7 @@ pat_main
                 LPDocUpdate pReturnInsert = rdo::Factory<UpdateInsert>::create(
                     IDocUpdate::Position::POSITION_END,
                     "\r\n\r\n",
-                    IDocument::EVN
+                    IDocument::Type::EVN
                 );
                 ASSERT(pReturnInsert);
                 CONVERTER->insertDocUpdate(pReturnInsert);
@@ -428,20 +428,20 @@ pat_rel_res
         ASSERT(pPattern);
         switch (pPattern->getType())
         {
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
                 LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
                 LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
                 pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), (rdo::runtime::RDOResource::ConvertStatus)$4, (rdo::runtime::RDOResource::ConvertStatus)$5, @4, @5);
                 break;
             }
-            case RDOPATPattern::PT_IE:
+            case RDOPATPattern::Type::IE:
             {
                 CONVERTER->error().error(@5, "У нерегулярного события нет события конца, а значит и второго статуса конвертора");
                 break;
             }
-            case RDOPATPattern::PT_Rule:
+            case RDOPATPattern::Type::RULE:
             {
                 CONVERTER->error().error(@5, "У продукционного правила нет события конца, а значит и второго статуса конвертора");
                 break;
@@ -456,20 +456,20 @@ pat_rel_res
         ASSERT(pPattern);
         switch (pPattern->getType())
         {
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
                 LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
                 LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
                 pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), (rdo::runtime::RDOResource::ConvertStatus)$4, (rdo::runtime::RDOResource::ConvertStatus)$5, @4, @5);
                 break;
             }
-            case RDOPATPattern::PT_IE:
+            case RDOPATPattern::Type::IE:
             {
                 CONVERTER->error().error(@5, "У нерегулярного события нет события конца, а значит и второго статуса конвертора");
                 break;
             }
-            case RDOPATPattern::PT_Rule:
+            case RDOPATPattern::Type::RULE:
             {
                 CONVERTER->error().error(@5, "У продукционного правила нет события конца, а значит и второго статуса конвертора");
                 break;
@@ -484,14 +484,14 @@ pat_rel_res
         ASSERT(pPattern);
         switch (pPattern->getType())
         {
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
                 CONVERTER->error().error(@4, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr((rdo::runtime::RDOResource::ConvertStatus)$4).c_str()));
                 break;
             }
-            case RDOPATPattern::PT_IE  :
-            case RDOPATPattern::PT_Rule:
+            case RDOPATPattern::Type::IE  :
+            case RDOPATPattern::Type::RULE:
             {
                 LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
                 LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
@@ -508,14 +508,14 @@ pat_rel_res
         ASSERT(pPattern);
         switch (pPattern->getType())
         {
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
                 CONVERTER->error().error(@4, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr((rdo::runtime::RDOResource::ConvertStatus)$4).c_str()));
                 break;
             }
-            case RDOPATPattern::PT_IE  :
-            case RDOPATPattern::PT_Rule:
+            case RDOPATPattern::Type::IE  :
+            case RDOPATPattern::Type::RULE:
             {
                 LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
                 LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
@@ -532,24 +532,24 @@ pat_rel_res
         ASSERT(pPattern);
         switch (pPattern->getType())
         {
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
                 LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
                 LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
                 YYLTYPE convertor_pos = @3;
                 convertor_pos.m_first_line = convertor_pos.m_last_line;
-                convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::CS_NoChange, (rdo::runtime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
+                convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, (rdo::runtime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
                 break;
             }
-            case RDOPATPattern::PT_IE:
+            case RDOPATPattern::Type::IE:
             {
                 CONVERTER->error().error(@4, "У нерегулярного события нет события конца, а значит и второго статуса конвертора");
                 break;
             }
-            case RDOPATPattern::PT_Rule:
+            case RDOPATPattern::Type::RULE:
             {
                 CONVERTER->error().error(@4, "У продукционного правила нет события конца, а значит и второго статуса конвертора");
                 break;
@@ -564,24 +564,24 @@ pat_rel_res
         ASSERT(pPattern);
         switch (pPattern->getType())
         {
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
                 LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
                 LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
                 YYLTYPE convertor_pos = @3;
                 convertor_pos.m_first_line = convertor_pos.m_last_line;
-                convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::CS_NoChange, (rdo::runtime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
+                convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, (rdo::runtime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
                 break;
             }
-            case RDOPATPattern::PT_IE:
+            case RDOPATPattern::Type::IE:
             {
                 CONVERTER->error().error(@4, "У нерегулярного события нет события конца, а значит и второго статуса конвертора");
                 break;
             }
-            case RDOPATPattern::PT_Rule:
+            case RDOPATPattern::Type::RULE:
             {
                 CONVERTER->error().error(@4, "У продукционного правила нет события конца, а значит и второго статуса конвертора");
                 break;
@@ -596,8 +596,8 @@ pat_rel_res
         ASSERT(pPattern);
         switch (pPattern->getType())
         {
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
                 LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
                 LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
@@ -623,21 +623,21 @@ pat_rel_res
                         break;
                 }
                 convertor_begin_pos.m_last_line = convertor_begin_pos.m_first_line;
-                convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                convertor_begin_pos.m_last_seek = convertor_begin_pos.m_first_seek + RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
+                convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                convertor_begin_pos.m_last_seek = convertor_begin_pos.m_first_seek + RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
                 YYLTYPE convertor_end_pos = @3;
                 convertor_end_pos.m_first_line = convertor_end_pos.m_last_line;
-                convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::CS_NoChange, rdo::runtime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
+                convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, convertor_begin_pos, convertor_end_pos);
                 break;
             }
-            case RDOPATPattern::PT_IE:
+            case RDOPATPattern::Type::IE:
             {
                 CONVERTER->error().error(@3, "У нерегулярного события нет события конца, а значит и второго статуса конвертора");
                 break;
             }
-            case RDOPATPattern::PT_Rule:
+            case RDOPATPattern::Type::RULE:
             {
                 CONVERTER->error().error(@3, "У продукционного правила нет события конца, а значит и второго статуса конвертора");
                 break;
@@ -652,8 +652,8 @@ pat_rel_res
         ASSERT(pPattern);
         switch (pPattern->getType())
         {
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
                 LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
                 LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
@@ -679,21 +679,21 @@ pat_rel_res
                         break;
                 }
                 convertor_begin_pos.m_last_line = convertor_begin_pos.m_first_line;
-                convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                convertor_begin_pos.m_last_seek = convertor_begin_pos.m_first_seek + RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
+                convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                convertor_begin_pos.m_last_seek = convertor_begin_pos.m_first_seek + RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
                 YYLTYPE convertor_end_pos = @3;
                 convertor_end_pos.m_first_line = convertor_end_pos.m_last_line;
-                convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::CS_NoChange, rdo::runtime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
+                convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, convertor_begin_pos, convertor_end_pos);
                 break;
             }
-            case RDOPATPattern::PT_IE:
+            case RDOPATPattern::Type::IE:
             {
                 CONVERTER->error().error(@3, "У нерегулярного события нет события конца, а значит и второго статуса конвертора");
                 break;
             }
-            case RDOPATPattern::PT_Rule:
+            case RDOPATPattern::Type::RULE:
             {
                 CONVERTER->error().error(@3, "У продукционного правила нет события конца, а значит и второго статуса конвертора");
                 break;
@@ -708,22 +708,22 @@ pat_rel_res
         ASSERT(pPattern);
         switch (pPattern->getType())
         {
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
-                CONVERTER->error().error(@3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).c_str()));
+                CONVERTER->error().error(@3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).c_str()));
                 break;
             }
-            case RDOPATPattern::PT_IE  :
-            case RDOPATPattern::PT_Rule:
+            case RDOPATPattern::Type::IE  :
+            case RDOPATPattern::Type::RULE:
             {
                 LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
                 LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
                 YYLTYPE convertor_pos = @3;
                 convertor_pos.m_first_line = convertor_pos.m_last_line;
-                convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                pPattern->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::CS_NoChange, convertor_pos);
+                convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                pPattern->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, convertor_pos);
                 break;
             }
         }
@@ -736,22 +736,22 @@ pat_rel_res
         ASSERT(pPattern);
         switch (pPattern->getType())
         {
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
-                CONVERTER->error().error(@3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).c_str()));
+                CONVERTER->error().error(@3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).c_str()));
                 break;
             }
-            case RDOPATPattern::PT_IE   :
-            case RDOPATPattern::PT_Rule :
+            case RDOPATPattern::Type::IE   :
+            case RDOPATPattern::Type::RULE :
             {
                 LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
                 LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
                 YYLTYPE convertor_pos = @3;
                 convertor_pos.m_first_line = convertor_pos.m_last_line;
-                convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                pPattern->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::CS_NoChange, convertor_pos);
+                convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                pPattern->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, convertor_pos);
                 break;
             }
         }
@@ -764,8 +764,8 @@ pat_rel_res
         ASSERT(pPattern);
         switch (pPattern->getType())
         {
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
                 LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
                 LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
@@ -776,17 +776,17 @@ pat_rel_res
                 convertor_begin_pos.m_last_seek = convertor_begin_pos.m_first_seek + convert_begin.length();
                 YYLTYPE convertor_end_pos = @4;
                 convertor_end_pos.m_first_line = convertor_end_pos.m_last_line;
-                convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdo::runtime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
+                convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, convertor_begin_pos, convertor_end_pos);
                 break;
             }
-            case RDOPATPattern::PT_IE:
+            case RDOPATPattern::Type::IE:
             {
                 CONVERTER->error().error(@4, "У нерегулярного события нет события конца, а значит и второго статуса конвертора");
                 break;
             }
-            case RDOPATPattern::PT_Rule:
+            case RDOPATPattern::Type::RULE:
             {
                 CONVERTER->error().error(@4, "У продукционного правила нет события конца, а значит и второго статуса конвертора");
                 break;
@@ -801,8 +801,8 @@ pat_rel_res
         ASSERT(pPattern);
         switch (pPattern->getType())
         {
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
                 LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
                 LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
@@ -813,17 +813,17 @@ pat_rel_res
                 convertor_begin_pos.m_last_seek = convertor_begin_pos.m_first_seek + convert_begin.length();
                 YYLTYPE convertor_end_pos = @4;
                 convertor_end_pos.m_first_line = convertor_end_pos.m_last_line;
-                convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdo::runtime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
+                convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, convertor_begin_pos, convertor_end_pos);
                 break;
             }
-            case RDOPATPattern::PT_IE:
+            case RDOPATPattern::Type::IE:
             {
                 CONVERTER->error().error(@4, "У нерегулярного события нет события конца, а значит и второго статуса конвертора");
                 break;
             }
-            case RDOPATPattern::PT_Rule:
+            case RDOPATPattern::Type::RULE:
             {
                 CONVERTER->error().error(@4, "У продукционного правила нет события конца, а значит и второго статуса конвертора");
                 break;
@@ -873,18 +873,18 @@ pat_rel_res
     {
         switch (CONVERTER->getLastPATPattern()->getType())
         {
-            case RDOPATPattern::PT_Rule:
+            case RDOPATPattern::Type::RULE:
             {
                 CONVERTER->error().error(@5, "Ожидается способ выбора (first/with_min/with_max) или $Body");
                 break;
             }
-            case RDOPATPattern::PT_IE:
+            case RDOPATPattern::Type::IE:
             {
                 CONVERTER->error().error(@5, "Ожидается способ выбора (first/with_min/with_max) или $Time");
                 break;
             }
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
                 CONVERTER->error().error(@4, @5, rdo::format("Ожидается статус конвертора конца, найдено: %s", LEXER->YYText()));
                 break;
@@ -895,18 +895,18 @@ pat_rel_res
     {
         switch (CONVERTER->getLastPATPattern()->getType())
         {
-            case RDOPATPattern::PT_Rule:
+            case RDOPATPattern::Type::RULE:
             {
                 CONVERTER->error().error(@5, "Ожидается способ выбора (first/with_min/with_max) или $Body");
                 break;
             }
-            case RDOPATPattern::PT_IE:
+            case RDOPATPattern::Type::IE:
             {
                 CONVERTER->error().error(@5, "Ожидается способ выбора (first/with_min/with_max) или $Time");
                 break;
             }
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
                 CONVERTER->error().error(@4, @5, rdo::format("Ожидается статус конвертора конца, найдено: %s", LEXER->YYText()));
                 break;
@@ -917,18 +917,18 @@ pat_rel_res
     {
         switch (CONVERTER->getLastPATPattern()->getType())
         {
-            case RDOPATPattern::PT_Rule:
+            case RDOPATPattern::Type::RULE:
             {
                 CONVERTER->error().error(@4, "Ожидается способ выбора (first/with_min/with_max) или $Body");
                 break;
             }
-            case RDOPATPattern::PT_IE:
+            case RDOPATPattern::Type::IE:
             {
                 CONVERTER->error().error(@4, "Ожидается способ выбора (first/with_min/with_max) или $Time");
                 break;
             }
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
                 CONVERTER->error().error(@3, @4, rdo::format("Ожидается статус конвертора конца, найдено: %s", LEXER->YYText()));
                 break;
@@ -939,18 +939,18 @@ pat_rel_res
     {
         switch (CONVERTER->getLastPATPattern()->getType())
         {
-            case RDOPATPattern::PT_Rule:
+            case RDOPATPattern::Type::RULE:
             {
                 CONVERTER->error().error(@4, "Ожидается способ выбора (first/with_min/with_max) или $Body");
                 break;
             }
-            case RDOPATPattern::PT_IE:
+            case RDOPATPattern::Type::IE:
             {
                 CONVERTER->error().error(@4, "Ожидается способ выбора (first/with_min/with_max) или $Time");
                 break;
             }
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
                 CONVERTER->error().error(@3, @4, rdo::format("Ожидается статус конвертора конца, найдено: %s", LEXER->YYText()));
                 break;
@@ -960,10 +960,10 @@ pat_rel_res
     ;
 
 pat_conv
-    : RDO_Keep            { $$ = rdo::runtime::RDOResource::CS_Keep;     }
-    | RDO_Create        { $$ = rdo::runtime::RDOResource::CS_Create;   }
-    | RDO_Erase            { $$ = rdo::runtime::RDOResource::CS_Erase;    }
-    | RDO_NonExist        { $$ = rdo::runtime::RDOResource::CS_NonExist; }
+    : RDO_Keep     { $$ = static_cast<int>(rdo::runtime::RDOResource::ConvertStatus::KEEP);     }
+    | RDO_Create   { $$ = static_cast<int>(rdo::runtime::RDOResource::ConvertStatus::CREATE);   }
+    | RDO_Erase    { $$ = static_cast<int>(rdo::runtime::RDOResource::ConvertStatus::ERASE);    }
+    | RDO_NonExist { $$ = static_cast<int>(rdo::runtime::RDOResource::ConvertStatus::NONEXIST); }
     ;
 
 pat_common_choice
@@ -971,7 +971,7 @@ pat_common_choice
     | pat_rel_res RDO_first
     {
         LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
-        if (pPattern->getType() == RDOPATPattern::PT_IE)
+        if (pPattern->getType() == RDOPATPattern::Type::IE)
         {
             CONVERTER->error().error(@2, "В событиях не используется способ выбора релевантных ресурсов");
         }
@@ -984,7 +984,7 @@ pat_common_choice
     | pat_rel_res RDO_with_min fun_arithm
     {
         LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
-        if (pPattern->getType() == RDOPATPattern::PT_IE)
+        if (pPattern->getType() == RDOPATPattern::Type::IE)
         {
             CONVERTER->error().error(@2, "В событиях не используется способ выбора релевантных ресурсов");
         }
@@ -1001,7 +1001,7 @@ pat_common_choice
     | pat_rel_res RDO_with_max fun_arithm
     {
         LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
-        if (pPattern->getType() == RDOPATPattern::PT_IE)
+        if (pPattern->getType() == RDOPATPattern::Type::IE)
         {
             CONVERTER->error().error(@2, "В событиях не используется способ выбора релевантных ресурсов");
         }
@@ -1031,9 +1031,9 @@ pat_time
         LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
         switch (pPattern->getType())
         {
-            case RDOPATPattern::PT_IE       :
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::IE       :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
                 CONVERTER->error().error(@2, "Перед $Body пропущено ключевое слово $Time");
                 break;
@@ -1047,7 +1047,7 @@ pat_time
         LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
         switch (pPattern->getType())
         {
-            case RDOPATPattern::PT_Rule:
+            case RDOPATPattern::Type::RULE:
             {
                 CONVERTER->error().error(@2, "Поле $Time не используется в продукционном правиле");
                 break;
@@ -1061,7 +1061,7 @@ pat_time
         pPattern->setTime(pArithm);
         switch (pPattern->getType())
         {
-            case RDOPATPattern::PT_IE:
+            case RDOPATPattern::Type::IE:
             {
                 LPDocUpdate pTimeDelete1 = rdo::Factory<UpdateDelete>::create(@2.m_first_seek, @2.m_last_seek);
                 ASSERT(pTimeDelete1);
@@ -1098,14 +1098,14 @@ pat_time
         LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
         switch (pPattern->getType())
         {
-            case RDOPATPattern::PT_Rule:
+            case RDOPATPattern::Type::RULE:
             {
                 CONVERTER->error().error(@2, rdo::format("Ожидается $Body, найдено: %s", LEXER->YYText()));
                 break;
             }
-            case RDOPATPattern::PT_IE       :
-            case RDOPATPattern::PT_Operation:
-            case RDOPATPattern::PT_Keyboard :
+            case RDOPATPattern::Type::IE       :
+            case RDOPATPattern::Type::OPERATION:
+            case RDOPATPattern::Type::KEYBOARD :
             {
                 CONVERTER->error().error(@2, rdo::format("Ожидается $Time, найдено: %s", LEXER->YYText()));
                 break;
@@ -1172,14 +1172,14 @@ pat_res_usage
 pat_choice
     : /* empty */
     {
-        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceEmpty;
-        LPRDOPATChoiceFrom pChoiceFrom = rdo::Factory<RDOPATChoiceFrom>::create(RDOParserSrcInfo("Choice NoCheck"), RDOPATChoiceFrom::ch_empty);
+        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::State::EMPTY;
+        LPRDOPATChoiceFrom pChoiceFrom = rdo::Factory<RDOPATChoiceFrom>::create(RDOParserSrcInfo("Choice NoCheck"), RDOPATChoiceFrom::Type::EMPTY);
         ASSERT(pChoiceFrom);
         $$ = CONVERTER->stack().push(pChoiceFrom);
     }
     | pat_choice_nocheck
     {
-        LPRDOPATChoiceFrom pChoiceFrom = rdo::Factory<RDOPATChoiceFrom>::create(RDOParserSrcInfo("Choice NoCheck"), RDOPATChoiceFrom::ch_nocheck);
+        LPRDOPATChoiceFrom pChoiceFrom = rdo::Factory<RDOPATChoiceFrom>::create(RDOParserSrcInfo("Choice NoCheck"), RDOPATChoiceFrom::Type::NOCHECK);
         ASSERT(pChoiceFrom);
         $$ = CONVERTER->stack().push(pChoiceFrom);
     }
@@ -1187,7 +1187,7 @@ pat_choice
     {
         LPRDOFUNLogic pLogic = CONVERTER->stack().pop<RDOFUNLogic>($2);
         ASSERT(pLogic);
-        LPRDOPATChoiceFrom pChoiceFrom = rdo::Factory<RDOPATChoiceFrom>::create(RDOParserSrcInfo("Choice from " + pLogic->src_text()), RDOPATChoiceFrom::ch_from, pLogic);
+        LPRDOPATChoiceFrom pChoiceFrom = rdo::Factory<RDOPATChoiceFrom>::create(RDOParserSrcInfo("Choice from " + pLogic->src_text()), RDOPATChoiceFrom::Type::FROM, pLogic);
         ASSERT(pChoiceFrom);
         $$ = CONVERTER->stack().push(pChoiceFrom);
     }
@@ -1200,28 +1200,28 @@ pat_choice
 pat_choice_nocheck
     : RDO_Choice RDO_NoCheck
     {
-        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceNoCheck;
+        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CHOICE_NOCHECK;
     }
     ;
 
 pat_choice_from
     : RDO_Choice RDO_from
     {
-        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceFrom;
+        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CHOICE_FROM;
     }
     ;
 
 pat_order
     : /* empty */
     {
-        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderEmpty;
-        LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo(), rdo::runtime::RDOSelectResourceCalc::order_empty);
+        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CHOICE_ORDER_EMPTY;
+        LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo(), rdo::runtime::RDOSelectResourceCalc::Type::EMPTY);
         ASSERT(pChoiceOrder);
         $$ = CONVERTER->stack().push(pChoiceOrder);
     }
     | pat_choice_first
     {
-        LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo("first"), rdo::runtime::RDOSelectResourceCalc::order_first);
+        LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo("first"), rdo::runtime::RDOSelectResourceCalc::Type::FIRST);
         ASSERT(pChoiceOrder);
         $$ = CONVERTER->stack().push(pChoiceOrder);
     }
@@ -1229,7 +1229,7 @@ pat_order
     {
         LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($2);
         ASSERT(pArithm);
-        LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo("with_min " + pArithm->src_text()), rdo::runtime::RDOSelectResourceCalc::order_with_min, pArithm);
+        LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo("with_min " + pArithm->src_text()), rdo::runtime::RDOSelectResourceCalc::Type::WITH_MIN, pArithm);
         ASSERT(pChoiceOrder);
         $$ = CONVERTER->stack().push(pChoiceOrder);
     }
@@ -1237,7 +1237,7 @@ pat_order
     {
         LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($2);
         ASSERT(pArithm);
-        LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo("with_max " + pArithm->src_text()), rdo::runtime::RDOSelectResourceCalc::order_with_max, pArithm);
+        LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo("with_max " + pArithm->src_text()), rdo::runtime::RDOSelectResourceCalc::Type::WITH_MAX, pArithm);
         ASSERT(pChoiceOrder);
         $$ = CONVERTER->stack().push(pChoiceOrder);
     }
@@ -1254,21 +1254,21 @@ pat_order
 pat_choice_first
     : RDO_first
     {
-        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderFirst;
+        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CHOICE_ORDER_FIRST;
     }
     ;
 
 pat_choice_with_min
     : RDO_with_min
     {
-        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderWithMin;
+        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CHOICE_ORDER_WITH_MIN;
     }
     ;
 
 pat_choice_with_max
     : RDO_with_max
     {
-        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderWithMax;
+        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CHOICE_ORDER_WITH_MAX;
     }
     ;
 
@@ -1279,11 +1279,11 @@ pat_convert
         ASSERT(pPattern);
         LPRDORelevantResource rel_res  = pPattern->m_pCurrRelRes;
         std::string str;
-        if (rel_res->m_pChoiceOrder->m_type != rdo::runtime::RDOSelectResourceCalc::order_empty)
+        if (rel_res->m_pChoiceOrder->m_type != rdo::runtime::RDOSelectResourceCalc::Type::EMPTY)
         {
             str = "Сразу после ключевого слова " + rel_res->m_pChoiceOrder->asString();
         }
-        else if (rel_res->m_pChoiceFrom->m_type != RDOPATChoiceFrom::ch_empty)
+        else if (rel_res->m_pChoiceFrom->m_type != RDOPATChoiceFrom::Type::EMPTY)
         {
             str = "Сразу после условия выбора";
         }
@@ -1291,40 +1291,40 @@ pat_convert
         {
             str = "Сразу после имени";
         }
-        if (rel_res->m_statusBegin != rdo::runtime::RDOResource::CS_NoChange && rel_res->m_statusBegin != rdo::runtime::RDOResource::CS_Erase && rel_res->m_statusBegin != rdo::runtime::RDOResource::CS_NonExist)
+        if (rel_res->m_statusBegin != rdo::runtime::RDOResource::ConvertStatus::NOCHANGE && rel_res->m_statusBegin != rdo::runtime::RDOResource::ConvertStatus::ERASE && rel_res->m_statusBegin != rdo::runtime::RDOResource::ConvertStatus::NONEXIST)
         {
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_IE:
+                case RDOPATPattern::Type::IE:
                 {
                     CONVERTER->error().error(@1, rdo::format("%s ожидается ключевое слово Convert_event для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
                     break;
                 }
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     CONVERTER->error().error(@1, rdo::format("%s ожидается ключевое слово Convert_rule для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
                     break;
                 }
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     CONVERTER->error().error(@1, rdo::format("%s ожидается ключевое слово Convert_begin для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
                     break;
                 }
             }
         }
-        if (rel_res->m_statusEnd != rdo::runtime::RDOResource::CS_NoChange && rel_res->m_statusEnd != rdo::runtime::RDOResource::CS_Erase && rel_res->m_statusEnd != rdo::runtime::RDOResource::CS_NonExist)
+        if (rel_res->m_statusEnd != rdo::runtime::RDOResource::ConvertStatus::NOCHANGE && rel_res->m_statusEnd != rdo::runtime::RDOResource::ConvertStatus::ERASE && rel_res->m_statusEnd != rdo::runtime::RDOResource::ConvertStatus::NONEXIST)
         {
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_IE  :
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::IE  :
+                case RDOPATPattern::Type::RULE:
                 {
                     CONVERTER->error().error(@1, "Внутренняя ошибка");
                     break;
                 }
-                case RDOPATPattern::PT_Operation:
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::OPERATION:
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     CONVERTER->error().error(@1, rdo::format("%s ожидается ключевое слово Convert_end для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s", str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
                     break;
@@ -1337,17 +1337,17 @@ pat_convert
     {
         LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
         ASSERT(pPattern);
-        if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
+        if (pPattern->getType() != RDOPATPattern::Type::OPERATION && pPattern->getType() != RDOPATPattern::Type::KEYBOARD)
         {
             std::string type = "";
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_IE:
+                case RDOPATPattern::Type::IE:
                 {
                     type = "нерегулярном событии";
                     break;
                 }
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     type = "продукционном правиле";
                     break;
@@ -1364,17 +1364,17 @@ pat_convert
     {
         LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
         ASSERT(pPattern);
-        if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
+        if (pPattern->getType() != RDOPATPattern::Type::OPERATION && pPattern->getType() != RDOPATPattern::Type::KEYBOARD)
         {
             std::string type = "";
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_IE:
+                case RDOPATPattern::Type::IE:
                 {
                     type = "нерегулярном событии";
                     break;
                 }
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     type = "продукционном правиле";
                     break;
@@ -1391,17 +1391,17 @@ pat_convert
     {
         LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
         ASSERT(pPattern);
-        if (pPattern->getType() != RDOPATPattern::PT_Operation && pPattern->getType() != RDOPATPattern::PT_Keyboard)
+        if (pPattern->getType() != RDOPATPattern::Type::OPERATION && pPattern->getType() != RDOPATPattern::Type::KEYBOARD)
         {
             std::string type = "";
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_IE:
+                case RDOPATPattern::Type::IE:
                 {
                     type = "нерегулярном событии";
                     break;
                 }
-                case RDOPATPattern::PT_Rule:
+                case RDOPATPattern::Type::RULE:
                 {
                     type = "продукционном правиле";
                     break;
@@ -1419,22 +1419,22 @@ pat_convert
     {
         LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
         ASSERT(pPattern);
-        if (pPattern->getType() != RDOPATPattern::PT_Rule)
+        if (pPattern->getType() != RDOPATPattern::Type::RULE)
         {
             std::string type = "";
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_IE:
+                case RDOPATPattern::Type::IE:
                 {
                     type = "нерегулярном событии";
                     break;
                 }
-                case RDOPATPattern::PT_Operation:
+                case RDOPATPattern::Type::OPERATION:
                 {
                     type = "операции";
                     break;
                 }
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     type = "клавиатурной операции";
                     break;
@@ -1452,22 +1452,22 @@ pat_convert
     {
         LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
         ASSERT(pPattern);
-        if (pPattern->getType() != RDOPATPattern::PT_IE)
+        if (pPattern->getType() != RDOPATPattern::Type::IE)
         {
             std::string type = "";
             switch (pPattern->getType())
             {
-                case RDOPATPattern::PT_Rule     :
+                case RDOPATPattern::Type::RULE     :
                 {
                     type = "продукционном правиле";
                     break;
                 }
-                case RDOPATPattern::PT_Operation:
+                case RDOPATPattern::Type::OPERATION:
                 {
                     type = "операции";
                     break;
                 }
-                case RDOPATPattern::PT_Keyboard :
+                case RDOPATPattern::Type::KEYBOARD :
                 {
                     type = "клавиатурной операции";
                     break;
@@ -1487,28 +1487,28 @@ pat_convert
 convert_rule
     : RDO_Convert_rule
     {
-        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::convertBegin;
+        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CONVERT_BEGIN;
     }
     ;
 
 convert_event
     : RDO_Convert_event
     {
-        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::convertBegin;
+        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CONVERT_BEGIN;
     }
     ;
 
 convert_begin
     : RDO_Convert_begin
     {
-        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::convertBegin;
+        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CONVERT_BEGIN;
     }
     ;
 
 convert_end
     :    RDO_Convert_end
     {
-        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::convertEnd;
+        CONVERTER->getLastPATPattern()->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CONVERT_END;
     }
     ;
 
@@ -1566,7 +1566,7 @@ param_equal_type
         ASSERT(pInsert);
         CONVERTER->insertDocUpdate(pInsert);
 
-        $$ = rdo::runtime::SetOperationType::SET;
+        $$ = static_cast<int>(rdo::runtime::SetOperation::Type::SET);
     }
     ;
 
@@ -1574,7 +1574,7 @@ pat_pattern
     : pat_convert RDO_End
     {
         LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
-        if (pPattern->getType() == RDOPATPattern::PT_IE)
+        if (pPattern->getType() == RDOPATPattern::Type::IE)
         {
             const std::string planning_time = boost::str(boost::format("time_now + %s")
                 % pPattern->time->calc()->srcInfo().src_text());
@@ -2205,10 +2205,10 @@ fun_arithm_func_call_pars
 // -------------------- Групповые выражения
 // --------------------------------------------------------------------------------
 fun_group_keyword
-    : RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
-    | RDO_Not_Exist   { $$ = RDOFUNGroupLogic::fgt_notexist;  }
-    | RDO_For_All     { $$ = RDOFUNGroupLogic::fgt_forall;    }
-    | RDO_Not_For_All { $$ = RDOFUNGroupLogic::fgt_notforall; }
+    : RDO_Exist       { $$ = static_cast<int>(RDOFUNGroupLogic::Type::EXIST);     }
+    | RDO_Not_Exist   { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTEXIST);  }
+    | RDO_For_All     { $$ = static_cast<int>(RDOFUNGroupLogic::Type::FORALL);    }
+    | RDO_Not_For_All { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTFORALL); }
     ;
 
 fun_group_header
@@ -2216,7 +2216,7 @@ fun_group_header
     {
         LPRDOValue pValue = CONVERTER->stack().pop<RDOValue>($3);
         ASSERT(pValue);
-        $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, pValue->src_info()));
+        $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create(static_cast<RDOFUNGroupLogic::Type>($1), pValue->src_info()));
     }
     | fun_group_keyword '(' error
     {
@@ -2326,10 +2326,10 @@ fun_select_body
     ;
 
 fun_select_keyword
-    : RDO_Exist            { $$ = RDOFUNGroupLogic::fgt_exist;     }
-    | RDO_Not_Exist        { $$ = RDOFUNGroupLogic::fgt_notexist;  }
-    | RDO_For_All        { $$ = RDOFUNGroupLogic::fgt_forall;    }
-    | RDO_Not_For_All    { $$ = RDOFUNGroupLogic::fgt_notforall; }
+    : RDO_Exist          { $$ = static_cast<int>(RDOFUNGroupLogic::Type::EXIST);     }
+    | RDO_Not_Exist      { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTEXIST);  }
+    | RDO_For_All        { $$ = static_cast<int>(RDOFUNGroupLogic::Type::FORALL);    }
+    | RDO_Not_For_All    { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTFORALL); }
     ;
 
 fun_select_logic
@@ -2340,7 +2340,7 @@ fun_select_logic
         ASSERT(pSelect);
         ASSERT(pLogic );
         pSelect->setSrcPos(@1, @6);
-        LPRDOFUNLogic pLogicSelect = pSelect->createFunSelectGroup((RDOFUNGroupLogic::FunGroupType)$3, pLogic);
+        LPRDOFUNLogic pLogicSelect = pSelect->createFunSelectGroup(static_cast<RDOFUNGroupLogic::Type>($3), pLogic);
         ASSERT(pLogicSelect);
         $$ = CONVERTER->stack().push(pLogicSelect);
     }

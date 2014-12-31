@@ -17,27 +17,27 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IBaseOperation: public virtual rdo::counter_reference
 {
 public:
-    enum BOResult
+    enum class ResultCode
     {
-        BOR_cant_run = 0,
-        BOR_planned_and_run,
-        BOR_must_continue,
-        BOR_done
+        CANNOT_RUN,
+        PLANNED_AND_RUN,
+        MUST_CONTINUE,
+        DONE
     };
 
     virtual void onStart(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
     virtual void onStop(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
     virtual bool onCheckCondition(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
-    virtual BOResult onDoOperation(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
-    virtual BOResult onContinue(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+    virtual ResultCode onDoOperation(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+    virtual ResultCode onContinue(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
 };
 
 #define DECLARE_IBaseOperation                                                     \
     virtual void     onStart         (const rdo::runtime::LPRDORuntime& pRuntime); \
     virtual void     onStop          (const rdo::runtime::LPRDORuntime& pRuntime); \
     virtual bool     onCheckCondition(const rdo::runtime::LPRDORuntime& pRuntime); \
-    virtual BOResult onDoOperation   (const rdo::runtime::LPRDORuntime& pRuntime); \
-    virtual BOResult onContinue      (const rdo::runtime::LPRDORuntime& pRuntime);
+    virtual ResultCode onDoOperation (const rdo::runtime::LPRDORuntime& pRuntime); \
+    virtual ResultCode onContinue    (const rdo::runtime::LPRDORuntime& pRuntime);
 
 DECLARE_POINTER(IBaseOperation);
 

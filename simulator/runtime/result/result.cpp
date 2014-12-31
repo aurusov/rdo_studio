@@ -116,7 +116,7 @@ RDOPMDWatchPar::RDOPMDWatchPar(const LPRDORuntime& pRuntime, const std::string& 
     , m_paramID      (paramID              )
     , m_wasFinalCalc (false                )
 {
-    pRuntime->notify().connect(this, Notify::RO_BEFOREDELETE);
+    pRuntime->notify().connect(this, Notify::Message::BEFORE_DELETE);
 }
 
 RDOPMDWatchPar::~RDOPMDWatchPar()

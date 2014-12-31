@@ -11,13 +11,13 @@ class Pattern: public ChartTreeItem
 {
 DECLARE_FACTORY(Pattern)
 public:
-    enum Kind
+    enum class Kind
     {
-        PK_UNDEFINED = ~0,
-        PK_OPERATION = 0,
-        PK_EVENT,
-        PK_RULE,
-        PK_KEYBOARD
+        UNDEFINED = ~0,
+        OPERATION = 0,
+        EVENT,
+        RULE,
+        KEYBOARD
     };
 
     const QString& getName() const;

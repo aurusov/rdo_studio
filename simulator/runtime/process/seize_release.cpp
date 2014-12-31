@@ -98,10 +98,10 @@ bool RDOPROCSeize::onCheckCondition(const LPRDORuntime& pRuntime)
     return false;
 }
 
-IBaseOperation::BOResult RDOPROCSeize::onDoOperation(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDOPROCSeize::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
     m_transacts.front()->next();
-    return IBaseOperation::BOR_done;
+    return IBaseOperation::ResultCode::DONE;
 }
 
 void RDOPROCSeize::transactGoIn(const LPTransact& pTransact)
@@ -127,9 +127,9 @@ void RDOPROCSeize::transactGoOut(const LPTransact& pTransact)
 void RDOPROCSeize::onStop(const LPRDORuntime& /*pRuntime*/)
 {}
 
-IBaseOperation::BOResult RDOPROCSeize::onContinue(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDOPROCSeize::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-    return IBaseOperation::BOR_cant_run;
+    return IBaseOperation::ResultCode::CANNOT_RUN;
 }
 
 // --------------------------------------------------------------------------------
@@ -176,7 +176,7 @@ bool RDOPROCRelease::onCheckCondition(const LPRDORuntime& pRuntime)
                     TRACE3("%7.1f RELEASES_Bad-%d, resId = %d\n", pRuntime->getCurrentTime(), index, forRes[i].rss->getTraceID());
                     LPRDOPROCTransact transact = m_transacts.front();
                     ASSERT(transact);
-                    transact->setState(RDOResource::CS_Erase);
+                    transact->setState(RDOResource::ConvertStatus::ERASE);
                     if (!tracer->isNull())
                     {
                         tracer->getOStream() << transact->traceResourceState('\0', pRuntime) << tracer->getEOL();
@@ -192,18 +192,18 @@ bool RDOPROCRelease::onCheckCondition(const LPRDORuntime& pRuntime)
     return false;
 }
 
-IBaseOperation::BOResult RDOPROCRelease::onDoOperation(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDOPROCRelease::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
     m_transacts.front()->next();
-    return IBaseOperation::BOR_done;
+    return IBaseOperation::ResultCode::DONE;
 }
 
 void RDOPROCRelease::onStop(const LPRDORuntime& /*pRuntime*/)
 {}
 
-IBaseOperation::BOResult RDOPROCRelease::onContinue(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDOPROCRelease::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-    return IBaseOperation::BOR_cant_run;
+    return IBaseOperation::ResultCode::CANNOT_RUN;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

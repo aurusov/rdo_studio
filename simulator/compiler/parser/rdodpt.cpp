@@ -173,25 +173,25 @@ void RDODPTActivityHotKey::addHotKey(const std::string& hotKey, const YYLTYPE& h
     ASSERT(pKeyboard);
     switch (pKeyboard->addHotKey(RDOParser::s_parser()->runtime(), hotKey))
     {
-    case rdo::runtime::RDOKeyboard::addhk_ok:
+    case rdo::runtime::RDOKeyboard::AddHotKeyResult::OK:
         break;
 
-    case rdo::runtime::RDOKeyboard::addhk_already:
+    case rdo::runtime::RDOKeyboard::AddHotKeyResult::ALREADY:
         RDOParser::s_parser()->error().error(hotkey_pos, rdo::format("Для активности '%s' клавиша уже назначена", src_text().c_str()));
         break;
 
-    case rdo::runtime::RDOKeyboard::addhk_notfound:
+    case rdo::runtime::RDOKeyboard::AddHotKeyResult::NOTFOUND:
         RDOParser::s_parser()->error().error(hotkey_pos, rdo::format("Неизвестная клавиша: %s", hotKey.c_str()));
         break;
 
-    case rdo::runtime::RDOKeyboard::addhk_dont:
+    case rdo::runtime::RDOKeyboard::AddHotKeyResult::DONT:
         RDOParser::s_parser()->error().push_only(src_info(), rdo::format("Операция '%s' не является клавиатурной", src_text().c_str()));
         RDOParser::s_parser()->error().push_only(pattern()->src_info(), "См. образец");
         RDOParser::s_parser()->error().push_done();
         break;
 
     default:
-        RDOParser::s_parser()->error().error(src_info(), "Внутренная ошибка: RDOOPROperation::addHotKey");
+        RDOParser::s_parser()->error().error(src_info(), "Внутренняя ошибка: RDOOPROperation::addHotKey");
     }
 }
 
@@ -266,7 +266,7 @@ Context::LPFindResult RDODPTPrior::onFindContext(const std::string& /*method*/, 
 // --------------------------------------------------------------------------------
 RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info)
     : RDODPTActivity(src_info, pattern_src_info   )
-    , m_value       (IDPTSearchActivity::vt_before)
+    , m_value       (IDPTSearchActivity::CostTime::BEFORE)
 {
     if (pattern()->getType() != RDOPATPattern::Type::RULE)
     {
@@ -276,7 +276,7 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, const
     }
     for (RDOPATPattern::RelResList::const_iterator it = pattern()->rel_res_begin(); it != pattern()->rel_res_end(); ++it)
     {
-        if (((*it)->m_statusBegin == rdo::runtime::RDOResource::CS_Create) || ((*it)->m_statusBegin == rdo::runtime::RDOResource::CS_Erase))
+        if (((*it)->m_statusBegin == rdo::runtime::RDOResource::ConvertStatus::CREATE) || ((*it)->m_statusBegin == rdo::runtime::RDOResource::ConvertStatus::ERASE))
         {
             RDOParser::s_parser()->error().push_only(this->src_info(), rdo::format("В продукционном правиле '%s' нельзя создавать или удалять ресурсы, т.к. оно используется в точке типа search", src_text().c_str()));
             RDOParser::s_parser()->error().push_only(pattern()->src_info(), "См. образец");
@@ -291,7 +291,7 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, const
 RDODPTSearchActivity::~RDODPTSearchActivity()
 {}
 
-void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, const LPRDOFUNArithm& pRuleCost)
+void RDODPTSearchActivity::setValue(IDPTSearchActivity::CostTime value, const LPRDOFUNArithm& pRuleCost)
 {
     m_value     = value;
     m_pRuleCost = pRuleCost;
@@ -300,7 +300,7 @@ void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, const L
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearch
 // --------------------------------------------------------------------------------
-RDODPTSearch::RDODPTSearch(const RDOParserSrcInfo& src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace, LPILogic pParent)
+RDODPTSearch::RDODPTSearch(const RDOParserSrcInfo& src_info, rdo::runtime::RDODPTSearchTrace::TraceFlag trace, LPILogic pParent)
     : RDOLogic<rdo::runtime::RDODPTSearchRuntime, RDODPTSearchActivity>(src_info)
     , m_pParent(pParent)
     , m_closed (false  )

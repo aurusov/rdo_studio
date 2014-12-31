@@ -1842,10 +1842,10 @@ fun_arithm_func_call_pars
 // -------------------- Групповые выражения
 // --------------------------------------------------------------------------------
 fun_group_keyword
-    : RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
-    | RDO_Not_Exist   { $$ = RDOFUNGroupLogic::fgt_notexist;  }
-    | RDO_For_All     { $$ = RDOFUNGroupLogic::fgt_forall;    }
-    | RDO_Not_For_All { $$ = RDOFUNGroupLogic::fgt_notforall; }
+    : RDO_Exist       { $$ = static_cast<int>(RDOFUNGroupLogic::Type::EXIST);     }
+    | RDO_Not_Exist   { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTEXIST);  }
+    | RDO_For_All     { $$ = static_cast<int>(RDOFUNGroupLogic::Type::FORALL);    }
+    | RDO_Not_For_All { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTFORALL); }
     ;
 
 fun_group_header
@@ -1853,7 +1853,7 @@ fun_group_header
     {
         LPRDOValue pValue = CONVERTER->stack().pop<RDOValue>($3);
         ASSERT(pValue);
-        $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, pValue->src_info()));
+        $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create(static_cast<RDOFUNGroupLogic::Type>($1), pValue->src_info()));
     }
     | fun_group_keyword '(' error
     {
@@ -1963,10 +1963,10 @@ fun_select_body
     ;
 
 fun_select_keyword
-    : RDO_Exist            { $$ = RDOFUNGroupLogic::fgt_exist;     }
-    | RDO_Not_Exist        { $$ = RDOFUNGroupLogic::fgt_notexist;  }
-    | RDO_For_All        { $$ = RDOFUNGroupLogic::fgt_forall;    }
-    | RDO_Not_For_All    { $$ = RDOFUNGroupLogic::fgt_notforall; }
+    : RDO_Exist          { $$ = static_cast<int>(RDOFUNGroupLogic::Type::EXIST);     }
+    | RDO_Not_Exist      { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTEXIST);  }
+    | RDO_For_All        { $$ = static_cast<int>(RDOFUNGroupLogic::Type::FORALL);    }
+    | RDO_Not_For_All    { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTFORALL); }
     ;
 
 fun_select_logic
@@ -1977,7 +1977,7 @@ fun_select_logic
         ASSERT(pSelect);
         ASSERT(pLogic );
         pSelect->setSrcPos(@1, @6);
-        LPRDOFUNLogic pLogicSelect = pSelect->createFunSelectGroup((RDOFUNGroupLogic::FunGroupType)$3, pLogic);
+        LPRDOFUNLogic pLogicSelect = pSelect->createFunSelectGroup(static_cast<RDOFUNGroupLogic::Type>($3), pLogic);
         ASSERT(pLogicSelect);
         $$ = CONVERTER->stack().push(pLogicSelect);
     }

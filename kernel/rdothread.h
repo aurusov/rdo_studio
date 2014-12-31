@@ -113,7 +113,7 @@ public:
         RT_SIMULATOR_GET_MODEL_STRUCTURE,      // param = result:std::stringstream*
         RT_SIMULATOR_GET_MODEL_RESULTS,        // param = result:std::stringstream*
         RT_SIMULATOR_GET_MODEL_RESULTS_INFO,   // param = result:std::stringstream*
-        RT_SIMULATOR_GET_MODEL_EXITCODE,       // param = result:rdo::simulation::report::RDOExitCode*
+        RT_SIMULATOR_GET_MODEL_EXITCODE,       // param = result:rdo::simulation::report::ExitCode*
         RT_SIMULATOR_GET_LIST,                 // param = rdo::service::simulation::RDOThreadSimulator::GetList*
         RT_SIMULATOR_GET_ERRORS,               // param = result:std::vector< RDOSyntaxError >*
         RT_RUNTIME_MODEL_START_BEFORE,

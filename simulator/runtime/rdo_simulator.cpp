@@ -65,12 +65,12 @@ bool RDOSimulator::doOperation()
     if (getMustContinueOpr())
     {
         // Есть действие, которое необходимо продолжить. Используется в DPT
-        IBaseOperation::BOResult result = getMustContinueOpr()->onContinue(pRuntime);
-        if (result != IBaseOperation::BOR_must_continue)
+        IBaseOperation::ResultCode result = getMustContinueOpr()->onContinue(pRuntime);
+        if (result != IBaseOperation::ResultCode::MUST_CONTINUE)
         {
             setMustContinueOpr(NULL);
         }
-        return result != IBaseOperation::BOR_cant_run;
+        return result != IBaseOperation::ResultCode::CANNOT_RUN;
     }
     else
     {
@@ -128,7 +128,7 @@ bool RDOSimulator::doOperation()
             }
             if (res)
             {
-                res = pMetaLogic->onDoOperation(pRuntime) != IBaseOperation::BOR_cant_run;
+                res = pMetaLogic->onDoOperation(pRuntime) != IBaseOperation::ResultCode::CANNOT_RUN;
             }
             if (!res)
             {

@@ -89,7 +89,7 @@ private:
 class RDOTraceableObject: public ITrace
 {
 public:
-    enum { NONE = 0xFFFFFFFF };
+    static const std::size_t NONE = ~0;
 
     bool traceable() const;
     void setTrace(bool trace);
@@ -101,7 +101,7 @@ public:
     std::string& traceId() const;
 
 protected:
-    RDOTraceableObject(bool trace, std::size_t id = NONE, std::string str = "");
+    RDOTraceableObject(bool trace, std::size_t id = NONE, std::string str = std::string());
     virtual ~RDOTraceableObject();
 
 private:

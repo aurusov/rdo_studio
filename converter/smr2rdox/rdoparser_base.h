@@ -30,7 +30,7 @@ class RDOParserItem: public rdo::counter_reference
 {
 DECLARE_FACTORY(RDOParserItem);
 public:
-    rdo::converter::smr2rdox::RDOFileTypeIn m_type;
+    rdo::converter::smr2rdox::FileTypeIn m_type;
 
     t_bison_parse_fun m_parser_fun;
     t_flex_lexer_fun  m_lexer_fun;
@@ -50,7 +50,7 @@ public:
 
 protected:
     RDOParserItem();
-    RDOParserItem(rdo::converter::smr2rdox::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_flex_lexer_fun lexer_fun);
+    RDOParserItem(rdo::converter::smr2rdox::FileTypeIn type, t_bison_parse_fun parser_fun, t_flex_lexer_fun lexer_fun);
     virtual ~RDOParserItem();
 
     bool m_needStream;
@@ -76,13 +76,13 @@ public:
     Iterator end() { return m_list.end(); }
     Iterator find(std::size_t index) { return m_list.find(index); }
 
-    static void getMinMax(rdo::converter::smr2rdox::RDOParseType type, std::size_t& min, std::size_t& max);
+    static void getMinMax(rdo::converter::smr2rdox::ParseType type, std::size_t& min, std::size_t& max);
 
 protected:
     RDOParserContainer();
     virtual ~RDOParserContainer();
 
-    std::size_t insert(rdo::converter::smr2rdox::RDOParseType type, const LPRDOParserItem& pParser);
+    std::size_t insert(rdo::converter::smr2rdox::ParseType type, const LPRDOParserItem& pParser);
 
 private:
     List m_list;

@@ -284,22 +284,27 @@ public:
     const rdo::runtime::RDOResource::ConvertStatus m_statusBegin;
     const rdo::runtime::RDOResource::ConvertStatus m_statusEnd;
 
-    enum
+    enum class State
     {
-        stateNone = 0,
-        choiceEmpty,
-        choiceNoCheck,
-        choiceFrom,
-        choiceOrderEmpty,
-        choiceOrderFirst,
-        choiceOrderWithMin,
-        choiceOrderWithMax,
-        convertBegin,
-        convertEnd
-    } m_currentState;
-    bool isChoiceFromState() const { return m_currentState == choiceEmpty || m_currentState == choiceNoCheck || m_currentState == choiceFrom; }
+        NONE = 0,
+        EMPTY,
+        CHOICE_NOCHECK,
+        CHOICE_FROM,
+        CHOICE_ORDER_EMPTY,
+        CHOICE_ORDER_FIRST,
+        CHOICE_ORDER_WITH_MIN,
+        CHOICE_ORDER_WITH_MAX,
+        CONVERT_BEGIN,
+        CONVERT_END
+    };
+    State m_currentState;
 
-    const std::string& name() const { return src_text(); };
+    bool isChoiceFromState() const
+    {
+        return m_currentState == State::EMPTY || m_currentState == State::CHOICE_NOCHECK || m_currentState == State::CHOICE_FROM;
+    }
+
+    const std::string& name() const { return src_text(); }
     virtual LPRDORTPResType getType() const = 0;
 
     virtual rdo::runtime::LPRDOCalc                  createPreSelectRelResCalc           () = 0; // Предварительный выбор ресурсов в самом списке рел. ресурсов
@@ -332,12 +337,13 @@ class RDOPATChoiceFrom
 {
 DECLARE_FACTORY(RDOPATChoiceFrom)
 public:
-    enum Type
+    enum class Type
     {
-        ch_empty = 0,
-        ch_nocheck,
-        ch_from
-    } m_type;
+        EMPTY = 0,
+        NOCHECK,
+        FROM
+    };
+    Type m_type;
 
     LPRDOFUNLogic m_pLogic;
 
@@ -367,10 +373,10 @@ public:
     {
         switch (m_type)
         {
-        case rdo::runtime::RDOSelectResourceCalc::order_empty   : return "<правило_выбора_не_указано>";
-        case rdo::runtime::RDOSelectResourceCalc::order_first   : return "first";
-        case rdo::runtime::RDOSelectResourceCalc::order_with_min: return "with_min";
-        case rdo::runtime::RDOSelectResourceCalc::order_with_max: return "with_max";
+        case rdo::runtime::RDOSelectResourceCalc::Type::EMPTY   : return "<правило_выбора_не_указано>";
+        case rdo::runtime::RDOSelectResourceCalc::Type::FIRST   : return "first";
+        case rdo::runtime::RDOSelectResourceCalc::Type::WITH_MIN: return "with_min";
+        case rdo::runtime::RDOSelectResourceCalc::Type::WITH_MAX: return "with_max";
         default                                                 : NEVER_REACH_HERE;
         }
         return std::string();
@@ -401,7 +407,7 @@ public:
     virtual bool isDirect() const  { return true; }
 
 private:
-    RDORelevantResourceDirect(const RDOParserSrcInfo& src_info, const int relResID, const LPRDORSSResource& pResource, const rdo::runtime::RDOResource::ConvertStatus statusBegin, const rdo::runtime::RDOResource::ConvertStatus statusEnd = rdo::runtime::RDOResource::CS_NoChange)
+    RDORelevantResourceDirect(const RDOParserSrcInfo& src_info, const int relResID, const LPRDORSSResource& pResource, const rdo::runtime::RDOResource::ConvertStatus statusBegin, const rdo::runtime::RDOResource::ConvertStatus statusEnd = rdo::runtime::RDOResource::ConvertStatus::NOCHANGE)
         : RDORelevantResource(src_info, relResID, statusBegin, statusEnd)
         , m_pResource        (pResource)
     {}
@@ -427,7 +433,7 @@ public:
     virtual bool isDirect() const  { return false; }
 
 private:
-    RDORelevantResourceByType(const RDOParserSrcInfo& src_info, const int relResID, LPRDORTPResType pResType, const rdo::runtime::RDOResource::ConvertStatus statusBegin, const rdo::runtime::RDOResource::ConvertStatus statusEnd = rdo::runtime::RDOResource::CS_NoChange)
+    RDORelevantResourceByType(const RDOParserSrcInfo& src_info, const int relResID, LPRDORTPResType pResType, const rdo::runtime::RDOResource::ConvertStatus statusBegin, const rdo::runtime::RDOResource::ConvertStatus statusEnd = rdo::runtime::RDOResource::ConvertStatus::NOCHANGE)
         : RDORelevantResource(src_info, relResID, statusBegin, statusEnd)
         , m_pResType         (pResType)
     {}

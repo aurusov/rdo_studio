@@ -206,7 +206,7 @@ opr_main
             @1.m_first_seek,
             @1.m_last_seek,
             0,
-            IDocument::DPT
+            IDocument::Type::DPT
         );
         ASSERT(pOperationsMove);
         CONVERTER->insertDocUpdate(pOperationsMove);
@@ -244,7 +244,7 @@ opr_body
         LPRDOOPROperation pOperation = pOperations->addNewActivity(pName->src_info(), pPattern->src_info()).object_dynamic_cast<RDOOPROperation>();
         ASSERT(pOperation);
 
-        if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
+        if (pOperation->pattern()->getType() == RDOPATPattern::Type::IE)
         {
             LPDocUpdate pIEDelete = rdo::Factory<UpdateDelete>::create(
                 @2.m_first_seek,
@@ -269,7 +269,7 @@ opr_body
         pOperation = pOperations->addNewActivity(pName->src_info(), pPattern->src_info());
         ASSERT(pOperation);
 
-        if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
+        if (pOperation->pattern()->getType() == RDOPATPattern::Type::IE)
         {
             LPDocUpdate pIEDelete = rdo::Factory<UpdateDelete>::create(
                 @2.m_first_seek,
@@ -321,7 +321,7 @@ opr_param
         LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
         ASSERT(pOperation);
 
-        if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
+        if (pOperation->pattern()->getType() == RDOPATPattern::Type::IE)
         {
             LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
                 @2.m_first_seek,
@@ -339,7 +339,7 @@ opr_param
         LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
         ASSERT(pOperation);
 
-        if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
+        if (pOperation->pattern()->getType() == RDOPATPattern::Type::IE)
         {
             LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
                 @2.m_first_seek,
@@ -357,7 +357,7 @@ opr_param
         LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
         ASSERT(pOperation);
 
-        if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
+        if (pOperation->pattern()->getType() == RDOPATPattern::Type::IE)
         {
             LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
                 @2.m_first_seek,
@@ -375,7 +375,7 @@ opr_param
         LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
         ASSERT(pOperation);
 
-        if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
+        if (pOperation->pattern()->getType() == RDOPATPattern::Type::IE)
         {
             LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
                 @2.m_first_seek,
@@ -393,7 +393,7 @@ opr_param
         LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
         ASSERT(pOperation);
 
-        if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
+        if (pOperation->pattern()->getType() == RDOPATPattern::Type::IE)
         {
             LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
                 @2.m_first_seek,
@@ -411,7 +411,7 @@ opr_param
         LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
         ASSERT(pOperation);
 
-        if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
+        if (pOperation->pattern()->getType() == RDOPATPattern::Type::IE)
         {
             LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
                 @2.m_first_seek,
@@ -730,10 +730,10 @@ fun_arithm_func_call_pars
 // -------------------- Групповые выражения
 // --------------------------------------------------------------------------------
 fun_group_keyword
-    : RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
-    | RDO_Not_Exist   { $$ = RDOFUNGroupLogic::fgt_notexist;  }
-    | RDO_For_All     { $$ = RDOFUNGroupLogic::fgt_forall;    }
-    | RDO_Not_For_All { $$ = RDOFUNGroupLogic::fgt_notforall; }
+    : RDO_Exist       { $$ = static_cast<int>(RDOFUNGroupLogic::Type::EXIST);     }
+    | RDO_Not_Exist   { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTEXIST);  }
+    | RDO_For_All     { $$ = static_cast<int>(RDOFUNGroupLogic::Type::FORALL);    }
+    | RDO_Not_For_All { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTFORALL); }
     ;
 
 fun_group_header
@@ -741,7 +741,7 @@ fun_group_header
     {
         LPRDOValue pValue = CONVERTER->stack().pop<RDOValue>($3);
         ASSERT(pValue);
-        $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, pValue->src_info()));
+        $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create(static_cast<RDOFUNGroupLogic::Type>($1), pValue->src_info()));
     }
     | fun_group_keyword '(' error
     {
@@ -851,10 +851,10 @@ fun_select_body
     ;
 
 fun_select_keyword
-    : RDO_Exist            { $$ = RDOFUNGroupLogic::fgt_exist;     }
-    | RDO_Not_Exist        { $$ = RDOFUNGroupLogic::fgt_notexist;  }
-    | RDO_For_All        { $$ = RDOFUNGroupLogic::fgt_forall;    }
-    | RDO_Not_For_All    { $$ = RDOFUNGroupLogic::fgt_notforall; }
+    : RDO_Exist          { $$ = static_cast<int>(RDOFUNGroupLogic::Type::EXIST);     }
+    | RDO_Not_Exist      { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTEXIST);  }
+    | RDO_For_All        { $$ = static_cast<int>(RDOFUNGroupLogic::Type::FORALL);    }
+    | RDO_Not_For_All    { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTFORALL); }
     ;
 
 fun_select_logic
@@ -865,7 +865,7 @@ fun_select_logic
         ASSERT(pSelect);
         ASSERT(pLogic );
         pSelect->setSrcPos(@1, @6);
-        LPRDOFUNLogic pLogicSelect = pSelect->createFunSelectGroup((RDOFUNGroupLogic::FunGroupType)$3, pLogic);
+        LPRDOFUNLogic pLogicSelect = pSelect->createFunSelectGroup(static_cast<RDOFUNGroupLogic::Type>($3), pLogic);
         ASSERT(pLogicSelect);
         $$ = CONVERTER->stack().push(pLogicSelect);
     }

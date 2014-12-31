@@ -89,34 +89,34 @@ inline bool RDOLogic<Order>::onCheckCondition(const LPRDORuntime& pRuntime)
 }
 
 template <class Order>
-inline IBaseOperation::BOResult RDOLogic<Order>::onDoOperation(const LPRDORuntime& pRuntime)
+inline IBaseOperation::ResultCode RDOLogic<Order>::onDoOperation(const LPRDORuntime& pRuntime)
 {
     if (m_lastCondition)
     {
         if (!m_pFirst)
-            return IBaseOperation::BOR_cant_run;
+            return IBaseOperation::ResultCode::CANNOT_RUN;
 
-        IBaseOperation::BOResult result = m_pFirst->onDoOperation(pRuntime);
-        if (result == IBaseOperation::BOR_must_continue)
+        IBaseOperation::ResultCode result = m_pFirst->onDoOperation(pRuntime);
+        if (result == IBaseOperation::ResultCode::MUST_CONTINUE)
             pRuntime->setMustContinueOpr(m_pFirst);
 
         return result;
     }
     else
     {
-        return IBaseOperation::BOR_cant_run;
+        return IBaseOperation::ResultCode::CANNOT_RUN;
     }
 }
 
 template <class Order>
-inline IBaseOperation::BOResult RDOLogic<Order>::onContinue(const LPRDORuntime& pRuntime)
+inline IBaseOperation::ResultCode RDOLogic<Order>::onContinue(const LPRDORuntime& pRuntime)
 {
     for(ChildList::iterator it = m_childList.begin(); it != m_childList.end(); ++it)
     {
-        if ((*it)->onContinue(pRuntime) == IBaseOperation::BOR_must_continue)
-            return IBaseOperation::BOR_must_continue;
+        if ((*it)->onContinue(pRuntime) == IBaseOperation::ResultCode::MUST_CONTINUE)
+            return IBaseOperation::ResultCode::MUST_CONTINUE;
     }
-    return IBaseOperation::BOR_cant_run;
+    return IBaseOperation::ResultCode::CANNOT_RUN;
 }
 
 template <class Order>

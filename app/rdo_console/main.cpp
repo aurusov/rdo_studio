@@ -176,7 +176,7 @@ bool run(rdo::ConsoleController* pAppController, Events& container)
 {
     pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN);
 
-    rdo::runtime::RunTimeMode runtimeMode = rdo::runtime::RTM_MaxSpeed;
+    rdo::runtime::RunTimeMode runtimeMode = rdo::runtime::RunTimeMode::MAX_SPEED;
     pAppController->broadcastMessage(RDOThread::RT_RUNTIME_SET_MODE, &runtimeMode);
 
     while (!pAppController->isFinished())

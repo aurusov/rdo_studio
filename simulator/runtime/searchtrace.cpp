@@ -19,16 +19,16 @@ RDODPTSearchTrace::RDODPTSearchTrace(const LPRDORuntime& pRuntime, LPIBaseOperat
     , calc_cnt          (0               )
     , calc_res_found_cnt(0               )
 {
-    traceFlag = DPT_no_trace;
+    traceFlag = TraceFlag::NO_TRACE;
 }
 
 void RDODPTSearchTrace::onSearchBegin(const LPRDORuntime& pRuntime)
 {
-    if (traceFlag != DPT_no_trace)
+    if (traceFlag != TraceFlag::NO_TRACE)
     {
         pRuntime->getTracer()->writeSearchBegin(pRuntime->getCurrentTime(), traceId());
     }
-    if (traceFlag == DPT_trace_tops || traceFlag == DPT_trace_all)
+    if (traceFlag == TraceFlag::TRACE_TOPS || traceFlag == TraceFlag::TRACE_ALL)
     {
         pRuntime->getTracer()->writeString("STN 1 0 0 0 -1 -1 0 0");
     }
@@ -37,7 +37,7 @@ void RDODPTSearchTrace::onSearchBegin(const LPRDORuntime& pRuntime)
 
 void RDODPTSearchTrace::onSearchDecisionHeader(const LPRDORuntime& pRuntime)
 {
-    if (traceFlag != DPT_no_trace)
+    if (traceFlag != TraceFlag::NO_TRACE)
     {
         pRuntime->getTracer()->writeSearchDecisionHeader();
     }
@@ -45,7 +45,7 @@ void RDODPTSearchTrace::onSearchDecisionHeader(const LPRDORuntime& pRuntime)
 
 void RDODPTSearchTrace::onSearchDecision(const LPRDORuntime& pRuntime, TreeNode* node)
 {
-    if (traceFlag != DPT_no_trace)
+    if (traceFlag != TraceFlag::NO_TRACE)
     {
         pRuntime->getTracer()->writeSearchDecision(pRuntime, node);
     }
@@ -53,7 +53,7 @@ void RDODPTSearchTrace::onSearchDecision(const LPRDORuntime& pRuntime, TreeNode*
 
 void RDODPTSearchTrace::onSearchResultSuccess(const LPRDORuntime& pRuntime, TreeRoot* treeRoot)
 {
-    if (traceFlag != DPT_no_trace)
+    if (traceFlag != TraceFlag::NO_TRACE)
     {
         pRuntime->getTracer()->writeSearchResult('S', pRuntime, treeRoot);
     }
@@ -64,7 +64,7 @@ void RDODPTSearchTrace::onSearchResultSuccess(const LPRDORuntime& pRuntime, Tree
 
 void RDODPTSearchTrace::onSearchResultNotFound(const LPRDORuntime& pRuntime, TreeRoot *treeRoot)
 {
-    if (traceFlag != DPT_no_trace)
+    if (traceFlag != TraceFlag::NO_TRACE)
     {
         pRuntime->getTracer()->writeSearchResult('N', pRuntime, treeRoot);
     }
@@ -81,7 +81,7 @@ void TreeNodeTrace::onSearchOpenNode(const LPRDORuntime& pRuntime)
 {
     // TODO использовать явный cast
     RDODPTSearchTrace* dpTrace = (RDODPTSearchTrace *)m_root->m_dp;
-    if (dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_tops || dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all)
+    if (dpTrace->traceFlag == RDODPTSearchTrace::TraceFlag::TRACE_TOPS || dpTrace->traceFlag == RDODPTSearchTrace::TraceFlag::TRACE_ALL)
     {
         pRuntime->getTracer()->writeSearchOpenNode(m_number
                                                  , m_parent ? m_parent->m_number : 0
@@ -179,9 +179,9 @@ void RDODPTSearchTrace::getStatsDOUBLE(Type type, double& min, double& max, doub
 {
     switch (type)
     {
-    case IDPTSearchTraceStatistics::ST_TIMES:
+    case IDPTSearchTraceStatistics::Type::TIMES:
         return __getStats<double>(calc_times, min, max, med);
-    case IDPTSearchTraceStatistics::ST_COST:
+    case IDPTSearchTraceStatistics::Type::COST:
         return __getStats<double>(calc_cost , min, max, med);
     default:
         break;
@@ -193,15 +193,15 @@ void RDODPTSearchTrace::getStatsRUINT(Type type, std::size_t& min, std::size_t& 
 {
     switch (type)
     {
-    case IDPTSearchTraceStatistics::ST_MEMORY:
+    case IDPTSearchTraceStatistics::Type::MEMORY:
         return __getStats<std::size_t>(calc_mems, min, max, med);
-    case IDPTSearchTraceStatistics::ST_NODES:
+    case IDPTSearchTraceStatistics::Type::NODES:
         return __getStats<std::size_t>(calc_nodes, min, max, med);
-    case IDPTSearchTraceStatistics::ST_NODES_FULL:
+    case IDPTSearchTraceStatistics::Type::NODES_FULL:
         return __getStats<std::size_t>(calc_nodes_full, min, max, med);
-    case IDPTSearchTraceStatistics::ST_NODES_EXPENDED:
+    case IDPTSearchTraceStatistics::Type::NODES_EXPENDED:
         return __getStats<std::size_t>(calc_nodes_expended, min, max, med);
-    case IDPTSearchTraceStatistics::ST_NODES_IN_GRAPH:
+    case IDPTSearchTraceStatistics::Type::NODES_IN_GRAPH:
         return __getStats<std::size_t>(calc_nodes_in_graph, min, max, med);
     default:
         break;

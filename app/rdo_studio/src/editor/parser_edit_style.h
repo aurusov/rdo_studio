@@ -47,15 +47,15 @@ public:
     QColor stringColor;
     QColor operatorColor;
 
-    style::StyleFont::style identifierStyle;
-    style::StyleFont::style keywordStyle;
-    style::StyleFont::style functionsStyle;
-    style::StyleFont::style traceStyle;
-    style::StyleFont::style colorStyle;
-    style::StyleFont::style commentStyle;
-    style::StyleFont::style numberStyle;
-    style::StyleFont::style stringStyle;
-    style::StyleFont::style operatorStyle;
+    style::StyleFont::Style identifierStyle;
+    style::StyleFont::Style keywordStyle;
+    style::StyleFont::Style functionsStyle;
+    style::StyleFont::Style traceStyle;
+    style::StyleFont::Style colorStyle;
+    style::StyleFont::Style commentStyle;
+    style::StyleFont::Style numberStyle;
+    style::StyleFont::Style stringStyle;
+    style::StyleFont::Style operatorStyle;
 };
 
 QSettings& operator<< (QSettings& settings, const ParserStyle& style);

@@ -39,23 +39,23 @@ class RDOFRMSprite
 {
 DECLARE_FACTORY(RDOFRMSprite)
 public:
-        PREDECLARE_POINTER(RDOFRMPosition);
+    PREDECLARE_POINTER(RDOFRMPosition);
     class RDOFRMPosition
         : public rdo::counter_reference
         , public RDORuntimeObject
     {
     DECLARE_FACTORY(RDOFRMPosition)
     public:
-                enum PositionType
+        enum class Type
         {
-            PT_ABSOLUTE,
-            PT_DELTA,
-            PT_GABARIT,
-            PT_MULT,
-            PT_RULET
+            ABSOLUTE_POSITION,
+            DELTA,
+            GABARIT,
+            MULT,
+            RULET
         };
 
-        PositionType    getType() const;
+        Type getType() const;
         const LPRDOCalc& getCalc() const;
 
         int getX     (const LPRDORuntime& pRuntime, const LPRDOFRMSprite& pSprite);
@@ -64,46 +64,46 @@ public:
         int getHeight(const LPRDORuntime& pRuntime, const LPRDOFRMSprite& pSprite);
 
     private:
-        RDOFRMPosition(const LPRDOCalc& pCalc, PositionType type = PT_ABSOLUTE, int ruletID = 0);
+        RDOFRMPosition(const LPRDOCalc& pCalc, Type type = Type::ABSOLUTE_POSITION, int ruletID = 0);
         RDOFRMPosition();
         virtual ~RDOFRMPosition();
 
-        LPRDOCalc    m_pCalc;
-        PositionType m_type;
-        int          m_ruletID;
+        LPRDOCalc  m_pCalc;
+        Type       m_type;
+        int        m_ruletID;
     };
     friend class RDOFRMPosition;
 
-        PREDECLARE_POINTER(RDOFRMColor);
+    PREDECLARE_POINTER(RDOFRMColor);
     class RDOFRMColor
         : public rdo::counter_reference
         , public RDORuntimeObject
     {
     DECLARE_FACTORY(RDOFRMColor)
     public:
-        enum ColorType
+        enum class Type
         {
-            CT_NONE,
-            CT_RGB,
-            CT_TRANSPARENT,
-            CT_LAST_BG,
-            CT_LAST_FG,
-            CT_LAST_BG_TEXT,
-            CT_LAST_FG_TEXT
+            NONE,
+            RGB,
+            TRANSPARENT_COLOR,
+            LAST_BG,
+            LAST_FG,
+            LAST_BG_TEXT,
+            LAST_FG_TEXT
         };
 
         rdo::animation::Color getColor(const LPRDORuntime& pRuntime, const LPRDOFRMSprite& pSprite) const;
 
-        ColorType getType() const;
-        void setType(ColorType type);
+        Type getType() const;
+        void setType(Type type);
 
     private:
-        RDOFRMColor(ColorType type = CT_NONE);
+        RDOFRMColor(Type type = Type::NONE);
         RDOFRMColor(unsigned char red, unsigned char green, unsigned char blue, const RDOSrcInfo& srcInfo);
         RDOFRMColor(const LPRDOCalc& pRedCalc, const LPRDOCalc& pGreenCalc, const LPRDOCalc& pBlueCalc);
         virtual ~RDOFRMColor();
 
-        ColorType m_type;
+        Type      m_type;
         LPRDOCalc m_pRedCalc;
         LPRDOCalc m_pGreenCalc;
         LPRDOCalc m_pBlueCalc;
@@ -138,10 +138,10 @@ public:
     void insertItem(const LPRDOCalc& pItem);
     void setSpriteCalc(const LPRDOCalc& pSpriteCalc);
 
-    void setColorLastBG    (RDOFRMColor::ColorType type, const rdo::animation::Color& lastBg);
-    void setColorLastFG    (RDOFRMColor::ColorType type, const rdo::animation::Color& lastFg);
-    void setColorLastBGText(RDOFRMColor::ColorType type, const rdo::animation::Color& lastBgText);
-    void setColorLastFGText(RDOFRMColor::ColorType type, const rdo::animation::Color& lastFgText);
+    void setColorLastBG    (RDOFRMColor::Type type, const rdo::animation::Color& lastBg);
+    void setColorLastFG    (RDOFRMColor::Type type, const rdo::animation::Color& lastFg);
+    void setColorLastBGText(RDOFRMColor::Type type, const rdo::animation::Color& lastBgText);
+    void setColorLastFGText(RDOFRMColor::Type type, const rdo::animation::Color& lastFgText);
     void setLastXY         (double x, double y);
     void setLastXYWH       (double x, double y, double width, double height);
 

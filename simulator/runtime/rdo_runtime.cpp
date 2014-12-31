@@ -26,7 +26,7 @@
 #include "simulator/runtime/calc/resource/calc_relevant.h"
 // --------------------------------------------------------------------------------
 
-typedef rdo::simulation::report::FileMessage RDOSyntaxMessage;
+typedef rdo::simulation::report::FileMessage SyntaxMessage;
 
 #ifdef COMPILER_VISUAL_STUDIO
     #pragma warning(disable : 4786)
@@ -53,15 +53,15 @@ void RDOResults::width(std::size_t w)
 // --------------------------------------------------------------------------------
 RDORuntime::RDORuntime(Error* pError)
     : RDOSimulatorTrace()
-    , m_whyStop        (rdo::simulation::report::EC_OK)
-    , m_funBreakFlag   (FBF_NONE)
-    , m_pStudioThread  (NULL    )
-    , m_pError         (pError  )
-    , m_currFuncTop    (0       )
-    , m_resultList     (NULL    )
-    , m_resultListInfo (NULL    )
-    , m_currentTerm    (0       )
-    , m_pPreparingFrame(NULL    )
+    , m_whyStop(rdo::simulation::report::ExitCode::OK)
+    , m_functionExitStatus(FunctionExitStatus::NONE)
+    , m_pStudioThread(NULL)
+    , m_pError(pError)
+    , m_currFuncTop(0)
+    , m_resultList(NULL)
+    , m_resultListInfo(NULL)
+    , m_currentTerm(0)
+    , m_pPreparingFrame(NULL)
 {
     ASSERT(m_pError);
     m_pTerminateIfCalc = NULL;
@@ -228,22 +228,22 @@ RDOValue RDORuntime::getPatternParameter(std::size_t paramID) const
 
 void RDORuntime::onNothingMoreToDo()
 {
-    m_whyStop = rdo::simulation::report::EC_NoMoreEvents;
+    m_whyStop = rdo::simulation::report::ExitCode::NOMORE_EVENTS;
 }
 
 void RDORuntime::onEndCondition()
 {
-    m_whyStop = rdo::simulation::report::EC_OK;
+    m_whyStop = rdo::simulation::report::ExitCode::OK;
 }
 
 void RDORuntime::onRuntimeError()
 {
-    m_whyStop = rdo::simulation::report::EC_RunTimeError;
+    m_whyStop = rdo::simulation::report::ExitCode::RUNTIME_ERROR;
 }
 
 void RDORuntime::onUserBreak()
 {
-    m_whyStop = rdo::simulation::report::EC_UserBreak;
+    m_whyStop = rdo::simulation::report::ExitCode::USER_BREAK;
 }
 
 void RDORuntime::addResType(const LPRDOResourceTypeList& pResType)
@@ -446,7 +446,7 @@ void RDORuntime::onEraseRes(std::size_t resourceID, const LPRDOEraseResRelCalc& 
         LPIResourceType type(res->getResType());
         // Деструктор ресурса вызывается в std::list::erase, который вызывается из std::list::remove
         type->eraseRes(res);
-        notify().fireMessage(Notify::RO_BEFOREDELETE, reinterpret_cast<void*>(res->getTraceID()));
+        notify().fireMessage(Notify::Message::BEFORE_DELETE, reinterpret_cast<void*>(res->getTraceID()));
         onResourceErase(res);
     }
 }
@@ -467,7 +467,7 @@ void RDORuntime::insertNewResource(const LPRDOResource& pResource)
         }
         else
         {
-            error().push(RDOSyntaxMessage(
+            error().push(SyntaxMessage(
                 "Внутренняя ошибка: insertNewResource",
                 rdo::FileType::PAT,
                 0,
@@ -478,7 +478,7 @@ void RDORuntime::insertNewResource(const LPRDOResource& pResource)
 #ifdef RDO_LIMIT_RES
     if (m_resourceListByID.size() >= 200)
     {
-        error().push(RDOSyntaxMessage(
+        error().push(SyntaxMessage(
             "Сработало лицензионное ограничение на количество ресурсов. Обратитесь за приобритением полной версии",
             rdo::FileType::PAT,
             0,
@@ -679,10 +679,10 @@ void RDORuntime::writeExitCode()
     std::string status;
     switch (m_whyStop)
     {
-    case rdo::simulation::report::EC_OK           : status = "NORMAL_TERMINATION"; break;
-    case rdo::simulation::report::EC_NoMoreEvents : status = "NO_MORE_EVENTS";     break;
-    case rdo::simulation::report::EC_RunTimeError : status = "RUN_TIME_ERROR";     break;
-    case rdo::simulation::report::EC_UserBreak    : status = "USER_BREAK";         break;
+    case rdo::simulation::report::ExitCode::OK           : status = "NORMAL_TERMINATION"; break;
+    case rdo::simulation::report::ExitCode::NOMORE_EVENTS : status = "NO_MORE_EVENTS";     break;
+    case rdo::simulation::report::ExitCode::RUNTIME_ERROR : status = "RUN_TIME_ERROR";     break;
+    case rdo::simulation::report::ExitCode::USER_BREAK    : status = "USER_BREAK";         break;
     default: NEVER_REACH_HERE;
     }
 
@@ -723,14 +723,14 @@ LPRDOMemoryStack RDORuntime::getMemoryStack()
     return m_pMemoryStack;
 }
 
-void RDORuntime::setFunBreakFlag(const FunBreakFlag& flag)
+void RDORuntime::setFunctionExitStatus(const FunctionExitStatus& status)
 {
-    m_funBreakFlag = flag;
+    m_functionExitStatus = status;
 }
 
-const RDORuntime::FunBreakFlag& RDORuntime::getFunBreakFlag() const
+const RDORuntime::FunctionExitStatus& RDORuntime::getFunctionExitStatus() const
 {
-    return m_funBreakFlag;
+    return m_functionExitStatus;
 }
 
 rdo::animation::Frame* RDORuntime::getPreparingFrame() const

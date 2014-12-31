@@ -13,18 +13,18 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class Notify
 {
 public:
-    enum Type
+    enum class Message
     {
-        RO_BEFOREDELETE = 0
+        BEFORE_DELETE = 0
     };
 
-    void connect(INotify* pTo, std::size_t message);
+    void connect(INotify* pTo, Message message);
     void disconnect(INotify* pTo);
-    void disconnect(INotify* pTo, std::size_t message);
-    void fireMessage(std::size_t message, void* pParam) const;
+    void disconnect(INotify* pTo, Message message);
+    void fireMessage(Message message, void* pParam) const;
 
 private:
-    typedef std::multimap<std::size_t, INotify*> Connected;
+    typedef std::multimap<Message, INotify*> Connected;
     Connected m_connected;
 
     void disconnect(Connected::iterator it, INotify* pTo);

@@ -302,7 +302,7 @@ ParserStyle ParserStyle::getTwilightStyle()
     style.identifierStyle = StyleFont::NONE;
     style.keywordStyle    = StyleFont::BOLD;
     style.functionsStyle  = StyleFont::BOLD;
-    style.traceStyle      = static_cast<StyleFont::style>(StyleFont::BOLD | StyleFont::ITALIC);
+    style.traceStyle      = static_cast<StyleFont::Style>(StyleFont::BOLD | StyleFont::ITALIC);
     style.colorStyle      = StyleFont::BOLD;
     style.commentStyle    = StyleFont::ITALIC;
     style.numberStyle     = StyleFont::NONE;
@@ -386,15 +386,15 @@ QSettings& operator>> (QSettings& settings, ParserStyle& style)
     style.stringColor            = QColor(settings.value("string_color", style.stringColor.name()).toString());
     style.operatorColor          = QColor(settings.value("operator_color", style.operatorColor.name()).toString());
 
-    style.identifierStyle        = static_cast<StyleFont::style>(settings.value("identifier_style", style.identifierStyle).toInt());
-    style.keywordStyle           = static_cast<StyleFont::style>(settings.value("keyword_style", style.keywordStyle).toInt());
-    style.functionsStyle         = static_cast<StyleFont::style>(settings.value("functions_style", style.functionsStyle).toInt());
-    style.traceStyle             = static_cast<StyleFont::style>(settings.value("trace_style", style.traceStyle).toInt());
-    style.colorStyle             = static_cast<StyleFont::style>(settings.value("color_style", style.colorStyle).toInt());
-    style.commentStyle           = static_cast<StyleFont::style>(settings.value("comment_style", style.commentStyle).toInt());
-    style.numberStyle            = static_cast<StyleFont::style>(settings.value("number_style", style.numberStyle).toInt());
-    style.stringStyle            = static_cast<StyleFont::style>(settings.value("string_style", style.stringStyle).toInt());
-    style.operatorStyle          = static_cast<StyleFont::style>(settings.value("operator_style", style.operatorStyle).toInt());
+    style.identifierStyle        = static_cast<StyleFont::Style>(settings.value("identifier_style", style.identifierStyle).toInt());
+    style.keywordStyle           = static_cast<StyleFont::Style>(settings.value("keyword_style", style.keywordStyle).toInt());
+    style.functionsStyle         = static_cast<StyleFont::Style>(settings.value("functions_style", style.functionsStyle).toInt());
+    style.traceStyle             = static_cast<StyleFont::Style>(settings.value("trace_style", style.traceStyle).toInt());
+    style.colorStyle             = static_cast<StyleFont::Style>(settings.value("color_style", style.colorStyle).toInt());
+    style.commentStyle           = static_cast<StyleFont::Style>(settings.value("comment_style", style.commentStyle).toInt());
+    style.numberStyle            = static_cast<StyleFont::Style>(settings.value("number_style", style.numberStyle).toInt());
+    style.stringStyle            = static_cast<StyleFont::Style>(settings.value("string_style", style.stringStyle).toInt());
+    style.operatorStyle          = static_cast<StyleFont::Style>(settings.value("operator_style", style.operatorStyle).toInt());
     settings.endGroup();
 
     return settings;

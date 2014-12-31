@@ -134,10 +134,10 @@ private:
     void init(const LPRDOValue& pValue);
     void init(const LPRDOValue& pResName, const LPRDOValue& pParName);
 
-    enum CastResult
+    enum class CastResult
     {
-        CR_DONE,
-        CR_CONTINUE
+        DONE,
+        CONTINUE
     };
     CastResult beforeCastValue(LPRDOFUNArithm        pSecond);
     LPRDOType  getPreType     (const LPRDOFUNArithm& pSecond);
@@ -582,21 +582,21 @@ class RDOFUNGroupLogic
 {
 DECLARE_FACTORY(RDOFUNGroupLogic)
 public:
-    enum FunGroupType
+    enum class Type
     {
-        fgt_unknow    = 0,
-        fgt_exist     = 1,
-        fgt_notexist  = 2,
-        fgt_forall    = 3,
-        fgt_notforall = 4
+        UNKNOW    = 0,
+        EXIST     = 1,
+        NOTEXIST  = 2,
+        FORALL    = 3,
+        NOTFORALL = 4
     };
 
     LPRDOFUNLogic createFunLogic(LPRDOFUNLogic& pCondition);
 
 private:
-    RDOFUNGroupLogic(FunGroupType funType, const RDOParserSrcInfo& res_info);
+    RDOFUNGroupLogic(Type type, const RDOParserSrcInfo& res_info);
 
-    const int m_funType;
+    const Type m_funType;
 };
 DECLARE_POINTER(RDOFUNGroupLogic);
 
@@ -608,7 +608,7 @@ class RDOFUNSelect: public RDOFUNGroup
 DECLARE_FACTORY(RDOFUNSelect)
 public:
     void           initSelect          (LPRDOFUNLogic pCondition = NULL);
-    LPRDOFUNLogic  createFunSelectGroup(RDOFUNGroupLogic::FunGroupType funType, LPRDOFUNLogic& pCondition);
+    LPRDOFUNLogic  createFunSelectGroup(RDOFUNGroupLogic::Type funType, LPRDOFUNLogic& pCondition);
     LPRDOFUNLogic  createFunSelectEmpty(const RDOParserSrcInfo& empty_info);
     LPRDOFUNArithm createFunSelectSize (const RDOParserSrcInfo& size_info );
 

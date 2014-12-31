@@ -18,21 +18,21 @@ class Serie: public ChartTreeItem
 {
 DECLARE_FACTORY(Serie)
 public:
-    enum Kind
+    enum class Kind
     {
-        SK_PARAM = 0,
-        SK_OPERATION,
-        SK_RESULT,
-        SK_PREVIEW
+        PARAM = 0,
+        OPERATION,
+        RESULT,
+        PREVIEW
     };
 
-    enum Marker
+    enum class Marker
     {
-        M_NONE = 0,
-        M_CIRCLE,
-        M_SQUARE,
-        M_TRIANG,
-        M_CROSS
+        NONE = 0,
+        CIRCLE,
+        SQUARE,
+        TRIANG,
+        CROSS
     };
 
     typedef std::list<Value*> ValuesList;
@@ -73,7 +73,7 @@ public:
     ExportData exportData();
 
 protected:
-    Serie(Kind _serieKind = SK_PREVIEW);
+    Serie(Kind kind = Kind::PREVIEW);
     virtual ~Serie();
 
     mutable double m_minValue;

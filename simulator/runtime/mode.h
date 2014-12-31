@@ -7,13 +7,13 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-enum RunTimeMode
+enum class RunTimeMode
 {
-    RTM_MaxSpeed,
-    RTM_Jump,
-    RTM_Sync,
-    RTM_Pause,
-    RTM_BreakPoint
+    MAX_SPEED,
+    JUMP,
+    SYNC,
+    PAUSE,
+    BREAKPOINT
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

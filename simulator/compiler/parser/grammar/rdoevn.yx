@@ -1521,9 +1521,9 @@ pat_rel_res
 
                     YYLTYPE convertor_pos = @3;
                     convertor_pos.m_first_line = convertor_pos.m_last_line;
-                    convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::CS_NoChange, (rdo::runtime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
+                    convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, (rdo::runtime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
                     break;
                 }
                 case RDOPATPattern::Type::EVENT:
@@ -1559,9 +1559,9 @@ pat_rel_res
 
                     YYLTYPE convertor_pos = @3;
                     convertor_pos.m_first_line = convertor_pos.m_last_line;
-                    convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::CS_NoChange, (rdo::runtime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
+                    convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, (rdo::runtime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
                     break;
                 }
                 case RDOPATPattern::Type::EVENT:
@@ -1617,13 +1617,13 @@ pat_rel_res
                             break;
                     }
                     convertor_begin_pos.m_last_line = convertor_begin_pos.m_first_line;
-                    convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    convertor_begin_pos.m_last_seek = convertor_begin_pos.m_first_seek + RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
+                    convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    convertor_begin_pos.m_last_seek = convertor_begin_pos.m_first_seek + RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
                     YYLTYPE convertor_end_pos = @3;
                     convertor_end_pos.m_first_line = convertor_end_pos.m_last_line;
-                    convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::CS_NoChange, rdo::runtime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
+                    convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, convertor_begin_pos, convertor_end_pos);
                     break;
                 }
                 case RDOPATPattern::Type::EVENT:
@@ -1679,13 +1679,13 @@ pat_rel_res
                             break;
                     }
                     convertor_begin_pos.m_last_line = convertor_begin_pos.m_first_line;
-                    convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    convertor_begin_pos.m_last_seek = convertor_begin_pos.m_first_seek + RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
+                    convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    convertor_begin_pos.m_last_seek = convertor_begin_pos.m_first_seek + RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
                     YYLTYPE convertor_end_pos = @3;
                     convertor_end_pos.m_first_line = convertor_end_pos.m_last_line;
-                    convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::CS_NoChange, rdo::runtime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
+                    convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, convertor_begin_pos, convertor_end_pos);
                     break;
                 }
                 case RDOPATPattern::Type::EVENT:
@@ -1714,7 +1714,7 @@ pat_rel_res
                 case RDOPATPattern::Type::OPERATION:
                 case RDOPATPattern::Type::KEYBOARD :
                 {
-                    PARSER->error().error(@3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).c_str()));
+                    PARSER->error().error(@3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).c_str()));
                     break;
                 }
                 case RDOPATPattern::Type::EVENT:
@@ -1727,9 +1727,9 @@ pat_rel_res
 
                     YYLTYPE convertor_pos = @3;
                     convertor_pos.m_first_line = convertor_pos.m_last_line;
-                    convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    pPattern->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::CS_NoChange, convertor_pos);
+                    convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    pPattern->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, convertor_pos);
                     break;
                 }
             }
@@ -1748,7 +1748,7 @@ pat_rel_res
                 case RDOPATPattern::Type::OPERATION:
                 case RDOPATPattern::Type::KEYBOARD :
                 {
-                    PARSER->error().error(@3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).c_str()));
+                    PARSER->error().error(@3, rdo::format("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца", RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).c_str()));
                     break;
                 }
                 case RDOPATPattern::Type::EVENT:
@@ -1761,9 +1761,9 @@ pat_rel_res
 
                     YYLTYPE convertor_pos = @3;
                     convertor_pos.m_first_line = convertor_pos.m_last_line;
-                    convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    pPattern->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::CS_NoChange, convertor_pos);
+                    convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    pPattern->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, convertor_pos);
                     break;
                 }
             }
@@ -1794,9 +1794,9 @@ pat_rel_res
                     convertor_begin_pos.m_last_seek = convertor_begin_pos.m_first_seek + convert_begin.length();
                     YYLTYPE convertor_end_pos = @4;
                     convertor_end_pos.m_first_line = convertor_end_pos.m_last_line;
-                    convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdo::runtime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
+                    convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, convertor_begin_pos, convertor_end_pos);
                     break;
                 }
                 case RDOPATPattern::Type::EVENT:
@@ -1837,9 +1837,9 @@ pat_rel_res
                     convertor_begin_pos.m_last_seek = convertor_begin_pos.m_first_seek + convert_begin.length();
                     YYLTYPE convertor_end_pos = @4;
                     convertor_end_pos.m_first_line = convertor_end_pos.m_last_line;
-                    convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::CS_NoChange).length();
-                    pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdo::runtime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
+                    convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdo::runtime::RDOResource::ConvertStatus::NOCHANGE).length();
+                    pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdo::runtime::RDOResource::ConvertStatus::NOCHANGE, convertor_begin_pos, convertor_end_pos);
                     break;
                 }
                 case RDOPATPattern::Type::EVENT:
@@ -2031,28 +2031,28 @@ pat_conv
     {
         #PASS2
         {
-            $$ = rdo::runtime::RDOResource::CS_Keep;
+            $$ = static_cast<int>(rdo::runtime::RDOResource::ConvertStatus::KEEP);
         }
     }
     | RDO_Create
     {
         #PASS2
         {
-            $$ = rdo::runtime::RDOResource::CS_Create;
+            $$ = static_cast<int>(rdo::runtime::RDOResource::ConvertStatus::CREATE);
         }
     }
     | RDO_Erase
     {
         #PASS2
         {
-            $$ = rdo::runtime::RDOResource::CS_Erase;
+            $$ = static_cast<int>(rdo::runtime::RDOResource::ConvertStatus::ERASE);
         }
     }
     | RDO_NonExist
     {
         #PASS2
         {
-            $$ = rdo::runtime::RDOResource::CS_NonExist;
+            $$ = static_cast<int>(rdo::runtime::RDOResource::ConvertStatus::NONEXIST);
         }
     }
     ;
@@ -2295,8 +2295,8 @@ pat_choice
         {
             LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
             ASSERT(pPattern);
-            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceEmpty;
-            LPRDOPATChoiceFrom pChoiceFrom = rdo::Factory<RDOPATChoiceFrom>::create(RDOParserSrcInfo("Choice NoCheck"), RDOPATChoiceFrom::ch_empty);
+            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::State::EMPTY;
+            LPRDOPATChoiceFrom pChoiceFrom = rdo::Factory<RDOPATChoiceFrom>::create(RDOParserSrcInfo("Choice NoCheck"), RDOPATChoiceFrom::Type::EMPTY);
             ASSERT(pChoiceFrom);
             $$ = PARSER->stack().push(pChoiceFrom);
         }
@@ -2305,7 +2305,7 @@ pat_choice
     {
         #PASS2
         {
-            LPRDOPATChoiceFrom pChoiceFrom = rdo::Factory<RDOPATChoiceFrom>::create(RDOParserSrcInfo("Choice NoCheck"), RDOPATChoiceFrom::ch_nocheck);
+            LPRDOPATChoiceFrom pChoiceFrom = rdo::Factory<RDOPATChoiceFrom>::create(RDOParserSrcInfo("Choice NoCheck"), RDOPATChoiceFrom::Type::NOCHECK);
             ASSERT(pChoiceFrom);
             $$ = PARSER->stack().push(pChoiceFrom);
         }
@@ -2316,7 +2316,7 @@ pat_choice
         {
             LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
             ASSERT(pLogic);
-            LPRDOPATChoiceFrom pChoiceFrom = rdo::Factory<RDOPATChoiceFrom>::create(RDOParserSrcInfo("Choice from " + pLogic->src_text()), RDOPATChoiceFrom::ch_from, pLogic);
+            LPRDOPATChoiceFrom pChoiceFrom = rdo::Factory<RDOPATChoiceFrom>::create(RDOParserSrcInfo("Choice from " + pLogic->src_text()), RDOPATChoiceFrom::Type::FROM, pLogic);
             ASSERT(pChoiceFrom);
             $$ = PARSER->stack().push(pChoiceFrom);
         }
@@ -2337,7 +2337,7 @@ pat_choice_nocheck
         {
             LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
             ASSERT(pPattern);
-            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceNoCheck;
+            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CHOICE_NOCHECK;
         }
     }
     ;
@@ -2349,7 +2349,7 @@ pat_choice_from
         {
             LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
             ASSERT(pPattern);
-            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceFrom;
+            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CHOICE_FROM;
         }
     }
     ;
@@ -2361,8 +2361,8 @@ pat_order
         {
             LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
             ASSERT(pPattern);
-            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderEmpty;
-            LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo(), rdo::runtime::RDOSelectResourceCalc::order_empty);
+            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CHOICE_ORDER_EMPTY;
+            LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo(), rdo::runtime::RDOSelectResourceCalc::Type::EMPTY);
             ASSERT(pChoiceOrder);
             $$ = PARSER->stack().push(pChoiceOrder);
         }
@@ -2371,7 +2371,7 @@ pat_order
     {
         #PASS2
         {
-            LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo("first"), rdo::runtime::RDOSelectResourceCalc::order_first);
+            LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo("first"), rdo::runtime::RDOSelectResourceCalc::Type::FIRST);
             ASSERT(pChoiceOrder);
             $$ = PARSER->stack().push(pChoiceOrder);
         }
@@ -2382,7 +2382,7 @@ pat_order
         {
             LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
             ASSERT(pArithm);
-            LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo("with_min " + pArithm->src_text()), rdo::runtime::RDOSelectResourceCalc::order_with_min, pArithm);
+            LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo("with_min " + pArithm->src_text()), rdo::runtime::RDOSelectResourceCalc::Type::WITH_MIN, pArithm);
             ASSERT(pChoiceOrder);
             $$ = PARSER->stack().push(pChoiceOrder);
         }
@@ -2393,7 +2393,7 @@ pat_order
         {
             LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
             ASSERT(pArithm);
-            LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo("with_max " + pArithm->src_text()), rdo::runtime::RDOSelectResourceCalc::order_with_max, pArithm);
+            LPRDOPATChoiceOrder pChoiceOrder = rdo::Factory<RDOPATChoiceOrder>::create(RDOParserSrcInfo("with_max " + pArithm->src_text()), rdo::runtime::RDOSelectResourceCalc::Type::WITH_MAX, pArithm);
             ASSERT(pChoiceOrder);
             $$ = PARSER->stack().push(pChoiceOrder);
         }
@@ -2421,7 +2421,7 @@ pat_choice_first
         {
             LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
             ASSERT(pPattern);
-            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderFirst;
+            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CHOICE_ORDER_FIRST;
         }
     }
     ;
@@ -2433,7 +2433,7 @@ pat_choice_with_min
         {
             LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
             ASSERT(pPattern);
-            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderWithMin;
+            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CHOICE_ORDER_WITH_MIN;
         }
     }
     ;
@@ -2445,7 +2445,7 @@ pat_choice_with_max
         {
             LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
             ASSERT(pPattern);
-            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::choiceOrderWithMax;
+            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CHOICE_ORDER_WITH_MAX;
         }
     }
     ;
@@ -2459,11 +2459,11 @@ pat_convert
             ASSERT(pPattern);
             LPRDORelevantResource rel_res  = pPattern->m_pCurrRelRes;
             std::string str;
-            if (rel_res->m_pChoiceOrder->m_type != rdo::runtime::RDOSelectResourceCalc::order_empty)
+            if (rel_res->m_pChoiceOrder->m_type != rdo::runtime::RDOSelectResourceCalc::Type::EMPTY)
             {
                 str = "Сразу после ключевого слова " + rel_res->m_pChoiceOrder->asString();
             }
-            else if (rel_res->m_pChoiceFrom->m_type != RDOPATChoiceFrom::ch_empty)
+            else if (rel_res->m_pChoiceFrom->m_type != RDOPATChoiceFrom::Type::EMPTY)
             {
                 str = "Сразу после условия выбора";
             }
@@ -2471,7 +2471,7 @@ pat_convert
             {
                 str = "Сразу после имени";
             }
-            if (rel_res->m_statusBegin != rdo::runtime::RDOResource::CS_NoChange && rel_res->m_statusBegin != rdo::runtime::RDOResource::CS_Erase && rel_res->m_statusBegin != rdo::runtime::RDOResource::CS_NonExist)
+            if (rel_res->m_statusBegin != rdo::runtime::RDOResource::ConvertStatus::NOCHANGE && rel_res->m_statusBegin != rdo::runtime::RDOResource::ConvertStatus::ERASE && rel_res->m_statusBegin != rdo::runtime::RDOResource::ConvertStatus::NONEXIST)
             {
                 switch (pPattern->getType())
                 {
@@ -2493,7 +2493,7 @@ pat_convert
                     }
                 }
             }
-            if (rel_res->m_statusEnd != rdo::runtime::RDOResource::CS_NoChange && rel_res->m_statusEnd != rdo::runtime::RDOResource::CS_Erase && rel_res->m_statusEnd != rdo::runtime::RDOResource::CS_NonExist)
+            if (rel_res->m_statusEnd != rdo::runtime::RDOResource::ConvertStatus::NOCHANGE && rel_res->m_statusEnd != rdo::runtime::RDOResource::ConvertStatus::ERASE && rel_res->m_statusEnd != rdo::runtime::RDOResource::ConvertStatus::NONEXIST)
             {
                 switch (pPattern->getType())
                 {
@@ -2787,7 +2787,7 @@ convert_rule
         {
             LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
             ASSERT(pPattern);
-            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::convertBegin;
+            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CONVERT_BEGIN;
 
             LPContextReturnable pContextReturnable = rdo::Factory<ContextReturnable>::create();
             ASSERT(pContextReturnable);
@@ -2804,7 +2804,7 @@ convert_event
         {
             LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
             ASSERT(pPattern);
-            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::convertBegin;
+            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CONVERT_BEGIN;
 
             LPContextReturnable pContextReturnable = rdo::Factory<ContextReturnable>::create();
             ASSERT(pContextReturnable);
@@ -2821,7 +2821,7 @@ convert_begin
         {
             LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
             ASSERT(pPattern);
-            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::convertBegin;
+            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CONVERT_BEGIN;
 
             LPContextReturnable pContextReturnable = rdo::Factory<ContextReturnable>::create();
             ASSERT(pContextReturnable);
@@ -2838,7 +2838,7 @@ convert_end
         {
             LPRDOPATPattern pPattern = PARSER->context()->cast<RDOPATPattern>();
             ASSERT(pPattern);
-            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::convertEnd;
+            pPattern->m_pCurrRelRes->m_currentState = RDORelevantResource::State::CONVERT_END;
 
             LPContextReturnable pContextReturnable = rdo::Factory<ContextReturnable>::create();
             ASSERT(pContextReturnable);
@@ -3175,14 +3175,14 @@ dpt_search_trace
     {
         #PASS2
         {
-            $$ = rdo::runtime::RDODPTSearchTrace::DPT_no_trace;
+            $$ = static_cast<int>(rdo::runtime::RDODPTSearchTrace::TraceFlag::NO_TRACE);
         }
     }
     | RDO_no_trace
     {
         #PASS2
         {
-            $$ = rdo::runtime::RDODPTSearchTrace::DPT_no_trace;
+            $$ = static_cast<int>(rdo::runtime::RDODPTSearchTrace::TraceFlag::NO_TRACE);
         }
     }
     | RDO_trace
@@ -3196,21 +3196,21 @@ dpt_search_trace
     {
         #PASS2
         {
-            $$ = rdo::runtime::RDODPTSearchTrace::DPT_trace_stat;
+            $$ = static_cast<int>(rdo::runtime::RDODPTSearchTrace::TraceFlag::TRACE_STAT);
         }
     }
     | RDO_trace_tops
     {
         #PASS2
         {
-            $$ = rdo::runtime::RDODPTSearchTrace::DPT_trace_tops;
+            $$ = static_cast<int>(rdo::runtime::RDODPTSearchTrace::TraceFlag::TRACE_TOPS);
         }
     }
     | RDO_trace_all
     {
         #PASS2
         {
-            $$ = rdo::runtime::RDODPTSearchTrace::DPT_trace_all;
+            $$ = static_cast<int>(rdo::runtime::RDODPTSearchTrace::TraceFlag::TRACE_ALL);
         }
     }
     ;
@@ -3266,18 +3266,18 @@ dpt_search_begin
                 {
                     LPILogic pParent = pParentDPTPrior->getLogic();
                     ASSERT(pParent);
-                    pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag*>(&$5), pParent);
+                    pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::TraceFlag*>(&$5), pParent);
                 }
                 else if (pParentDPTSome)
                 {
                     LPILogic pParent = pParentDPTSome->getLogic();
                     ASSERT(pParent);
-                    pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag*>(&$5), pParent);
+                    pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::TraceFlag*>(&$5), pParent);
                 }
             }
             else
             {
-                pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag*>(&$5));
+                pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<rdo::runtime::RDODPTSearchTrace::TraceFlag*>(&$5));
             }
             ASSERT(pDPTSearch);
             $$ = PARSER->stack().push(pDPTSearch);
@@ -3513,7 +3513,7 @@ dpt_search_descr_value
         {
             LPRDODPTSearch pDPTSearch = PARSER->getLastDPTSearch();
             ASSERT(pDPTSearch);
-            pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_before, PARSER->stack().pop<RDOFUNArithm>($2));
+            pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::CostTime::BEFORE, PARSER->stack().pop<RDOFUNArithm>($2));
         }
     }
     | RDO_value_after fun_arithm
@@ -3522,7 +3522,7 @@ dpt_search_descr_value
         {
             LPRDODPTSearch pDPTSearch = PARSER->getLastDPTSearch();
             ASSERT(pDPTSearch);
-            pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::vt_after, PARSER->stack().pop<RDOFUNArithm>($2));
+            pDPTSearch->getLastActivity()->setValue(IDPTSearchActivity::CostTime::AFTER, PARSER->stack().pop<RDOFUNArithm>($2));
         }
     }
     | RDO_value_before error
@@ -4406,7 +4406,7 @@ frm_background
             ASSERT(pFrame);
             LPRDOFRMColor pBgColor = PARSER->stack().pop<RDOFRMColor>($4);
             ASSERT(pBgColor);
-            if (pBgColor->getType() != RDOFRMColor::CT_TRANSPARENT && pBgColor->getType() != RDOFRMColor::CT_RGB)
+            if (pBgColor->getType() != RDOFRMColor::Type::TRANSPARENT_COLOR && pBgColor->getType() != RDOFRMColor::Type::RGB)
             {
                 PARSER->error().error(@4, "Цвет фона не может быть указан ссылкой на последнее значение");
             }
@@ -4770,7 +4770,7 @@ frm_color
     {
         #PASS2
         {
-            LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(RDOFRMColor::CT_TRANSPARENT);
+            LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(RDOFRMColor::Type::TRANSPARENT_COLOR);
             ASSERT(pColor);
             $$ = PARSER->stack().push(pColor);
         }
@@ -4995,37 +4995,37 @@ frm_postype
     {
         #PASS2
         {
-            $$ = RDOFRMPosition::PT_ABSOLUTE;
+            $$ = static_cast<int>(RDOFRMPosition::Type::ABSOLUTE_POSITION);
         }
     }
     | '+'
     {
         #PASS2
         {
-            $$ = RDOFRMPosition::PT_DELTA;
+            $$ = static_cast<int>(RDOFRMPosition::Type::DELTA);
         }
     }
     | '*'
     {
         #PASS2
         {
-            $$ = RDOFRMPosition::PT_MULT;
+            $$ = static_cast<int>(RDOFRMPosition::Type::MULT);
         }
     }
     | '#' RDO_INT_CONST
     {
         #PASS2
         {
-            int rilet_id = PARSER->stack().pop<RDOValue>($2)->value().getInt();
-            if (rilet_id <= 0)
+            int rulet_id = PARSER->stack().pop<RDOValue>($2)->value().getInt();
+            if (rulet_id <= 0)
             {
                 PARSER->error().error(@2, "Номер рулетки должен быть больше нуля");
             }
-            if (!PARSER->getLastFRMCommandList()->list()->findRulet(rilet_id))
+            if (!PARSER->getLastFRMCommandList()->list()->findRulet(rulet_id))
             {
-                PARSER->error().error(@2, rdo::format("Рулетки с номером '%d' не существует", rilet_id));
+                PARSER->error().error(@2, rdo::format("Рулетки с номером '%d' не существует", rulet_id));
             }
-            $$ = RDOFRMPosition::PT_RULET + rilet_id;
+            $$ = static_cast<int>(RDOFRMPosition::Type::RULET) + rulet_id;
         }
     }
     | '#' error
@@ -5043,7 +5043,7 @@ frm_postype_xy
     {
         #PASS2
         {
-            $$ = RDOFRMPosition::PT_GABARIT;
+            $$ = static_cast<int>(RDOFRMPosition::Type::GABARIT);
         }
     }
     ;
@@ -5065,15 +5065,15 @@ frm_position_xy
         #PASS2
         {
             rdo::runtime::LPRDOCalc pCalc = PARSER->stack().pop<RDOFUNArithm>($1)->createCalc();
-            if ($2 >= RDOFRMPosition::PT_RULET)
+            if ($2 >= static_cast<int>(RDOFRMPosition::Type::RULET))
             {
-                LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, RDOFRMPosition::PT_RULET, $2 - RDOFRMPosition::PT_RULET);
+                LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, RDOFRMPosition::Type::RULET, $2 - static_cast<int>(RDOFRMPosition::Type::RULET));
                 ASSERT(pPosition);
                 $$ = PARSER->stack().push(pPosition);
             }
             else
             {
-                LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, (RDOFRMPosition::PositionType)$2);
+                LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, static_cast<RDOFRMPosition::Type>($2));
                 ASSERT(pPosition);
                 $$ = PARSER->stack().push(pPosition);
             }
@@ -5087,15 +5087,15 @@ frm_position_wh
         #PASS2
         {
             rdo::runtime::LPRDOCalc pCalc = PARSER->stack().pop<RDOFUNArithm>($1)->createCalc();
-            if ($2 >= RDOFRMPosition::PT_RULET)
+            if ($2 >= static_cast<int>(RDOFRMPosition::Type::RULET))
             {
-                LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, RDOFRMPosition::PT_RULET, $2 - RDOFRMPosition::PT_RULET);
+                LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, RDOFRMPosition::Type::RULET, $2 - static_cast<int>(RDOFRMPosition::Type::RULET));
                 ASSERT(pPosition);
                 $$ = PARSER->stack().push(pPosition);
             }
             else
             {
-                LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, (RDOFRMPosition::PositionType)$2);
+                LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, static_cast<RDOFRMPosition::Type>($2));
                 ASSERT(pPosition);
                 $$ = PARSER->stack().push(pPosition);
             }
@@ -5108,9 +5108,10 @@ frm_radius
     {
         #PASS2
         {
-            if ($2 != rdo::runtime::RDOFRMFrame::RDOFRMPosition::PT_ABSOLUTE &&
-                $2 != rdo::runtime::RDOFRMFrame::RDOFRMPosition::PT_DELTA    &&
-                $2 != rdo::runtime::RDOFRMFrame::RDOFRMPosition::PT_MULT
+            const auto positionType = static_cast<RDOFRMPosition::Type>($2);
+            if (positionType != rdo::runtime::RDOFRMFrame::RDOFRMPosition::Type::ABSOLUTE_POSITION &&
+                positionType != rdo::runtime::RDOFRMFrame::RDOFRMPosition::Type::DELTA    &&
+                positionType != rdo::runtime::RDOFRMFrame::RDOFRMPosition::Type::MULT
             )
             {
                 PARSER->error().error(@2, "Нельзя использовать данное выравнивание для радиуса");
@@ -5119,7 +5120,7 @@ frm_radius
             rdo::runtime::LPRDOCalc pCalc = PARSER->stack().pop<RDOFUNArithm>($1)->createCalc();
             ASSERT(pCalc);
 
-            LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, (RDOFRMPosition::PositionType)$2);
+            LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, positionType);
             ASSERT(pPosition);
             $$ = PARSER->stack().push(pPosition);
         }
@@ -5143,11 +5144,11 @@ frm_ruler
             LPRDOFRMPosition pY = PARSER->stack().pop<RDOFRMPosition>($7);
             ASSERT(pX);
             ASSERT(pY);
-            if (pX->getType() != RDOFRMPosition::PT_ABSOLUTE)
+            if (pX->getType() != RDOFRMPosition::Type::ABSOLUTE_POSITION)
             {
                 PARSER->error().error(@5, "Координаты рулетки должны быть абсолютными");
             }
-            if (pY->getType() != RDOFRMPosition::PT_ABSOLUTE)
+            if (pY->getType() != RDOFRMPosition::Type::ABSOLUTE_POSITION)
             {
                 PARSER->error().error(@7, "Координаты рулетки должны быть абсолютными");
             }
@@ -5338,8 +5339,8 @@ frm_text_common
             LPRDOFRMColor pFgColor = PARSER->stack().pop<RDOFRMColor>($13);
             ASSERT(pBgColor);
             ASSERT(pFgColor);
-            pBgColor->setType(RDOFRMColor::CT_LAST_BG_TEXT);
-            pFgColor->setType(RDOFRMColor::CT_LAST_FG_TEXT);
+            pBgColor->setType(RDOFRMColor::Type::LAST_BG_TEXT);
+            pFgColor->setType(RDOFRMColor::Type::LAST_FG_TEXT);
             LPRDOFRMText pText = rdo::Factory<RDOFRMText>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
             ASSERT(pText);
             $$ = PARSER->stack().push(pText);
@@ -5719,8 +5720,8 @@ frm_rect
             LPRDOFRMColor pFgColor = PARSER->stack().pop<RDOFRMColor>($13);
             ASSERT(pBgColor);
             ASSERT(pFgColor);
-            pBgColor->setType(RDOFRMColor::CT_LAST_BG);
-            pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+            pBgColor->setType(RDOFRMColor::Type::LAST_BG);
+            pFgColor->setType(RDOFRMColor::Type::LAST_FG);
             LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
             ASSERT(pRect);
             $$ = PARSER->stack().push(pRect);
@@ -5742,8 +5743,8 @@ frm_rect
             LPRDOFRMColor pFgColor = rdo::Factory<RDOFRMColor>::create();
             ASSERT(pBgColor);
             ASSERT(pFgColor);
-            pBgColor->setType(RDOFRMColor::CT_LAST_BG);
-            pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+            pBgColor->setType(RDOFRMColor::Type::LAST_BG);
+            pFgColor->setType(RDOFRMColor::Type::LAST_FG);
             LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
             ASSERT(pRect);
             $$ = PARSER->stack().push(pRect);
@@ -5765,8 +5766,8 @@ frm_rect
             LPRDOFRMColor pFgColor = rdo::Factory<RDOFRMColor>::create();
             ASSERT(pBgColor);
             ASSERT(pFgColor);
-            pBgColor->setType(RDOFRMColor::CT_LAST_BG);
-            pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+            pBgColor->setType(RDOFRMColor::Type::LAST_BG);
+            pFgColor->setType(RDOFRMColor::Type::LAST_FG);
             LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
             ASSERT(pRect);
             $$ = PARSER->stack().push(pRect);
@@ -5779,7 +5780,7 @@ frm_rect
             LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
             LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
             LPRDOFRMPosition pWidth  = PARSER->stack().pop<RDOFRMPosition>($7);
-            LPRDOFRMPosition pHeight = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(0), RDOFRMPosition::PT_DELTA);
+            LPRDOFRMPosition pHeight = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(0), RDOFRMPosition::Type::DELTA);
             ASSERT(pX     );
             ASSERT(pY     );
             ASSERT(pWidth );
@@ -5788,8 +5789,8 @@ frm_rect
             LPRDOFRMColor pFgColor = rdo::Factory<RDOFRMColor>::create();
             ASSERT(pBgColor);
             ASSERT(pFgColor);
-            pBgColor->setType(RDOFRMColor::CT_LAST_BG);
-            pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+            pBgColor->setType(RDOFRMColor::Type::LAST_BG);
+            pFgColor->setType(RDOFRMColor::Type::LAST_FG);
             LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
             ASSERT(pRect);
             $$ = PARSER->stack().push(pRect);
@@ -5801,8 +5802,8 @@ frm_rect
         {
             LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
             LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
-            LPRDOFRMPosition pWidth  = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(0), RDOFRMPosition::PT_DELTA);
-            LPRDOFRMPosition pHeight = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(0), RDOFRMPosition::PT_DELTA);
+            LPRDOFRMPosition pWidth  = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(0), RDOFRMPosition::Type::DELTA);
+            LPRDOFRMPosition pHeight = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(0), RDOFRMPosition::Type::DELTA);
             ASSERT(pX     );
             ASSERT(pY     );
             ASSERT(pWidth );
@@ -5811,8 +5812,8 @@ frm_rect
             LPRDOFRMColor pFgColor = rdo::Factory<RDOFRMColor>::create();
             ASSERT(pBgColor);
             ASSERT(pFgColor);
-            pBgColor->setType(RDOFRMColor::CT_LAST_BG);
-            pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+            pBgColor->setType(RDOFRMColor::Type::LAST_BG);
+            pFgColor->setType(RDOFRMColor::Type::LAST_FG);
             LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
             ASSERT(pRect);
             $$ = PARSER->stack().push(pRect);
@@ -5928,8 +5929,8 @@ frm_r_rect
             LPRDOFRMColor pFgColor = PARSER->stack().pop<RDOFRMColor>($13);
             ASSERT(pBgColor);
             ASSERT(pFgColor);
-            pBgColor->setType(RDOFRMColor::CT_LAST_BG);
-            pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+            pBgColor->setType(RDOFRMColor::Type::LAST_BG);
+            pFgColor->setType(RDOFRMColor::Type::LAST_FG);
             LPRDOFRMRectRound pRoundRect = rdo::Factory<RDOFRMRectRound>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
             ASSERT(pRoundRect);
             $$ = PARSER->stack().push(pRoundRect);
@@ -6043,8 +6044,8 @@ frm_circle
             LPRDOFRMColor pFgColor = PARSER->stack().pop<RDOFRMColor>($11);
             ASSERT(pBgColor);
             ASSERT(pFgColor);
-            pBgColor->setType(RDOFRMColor::CT_LAST_BG);
-            pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+            pBgColor->setType(RDOFRMColor::Type::LAST_BG);
+            pFgColor->setType(RDOFRMColor::Type::LAST_FG);
             LPRDOFRMCircle pCircle = rdo::Factory<RDOFRMCircle>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pRadius, pBgColor, pFgColor);
             ASSERT(pCircle);
             $$ = PARSER->stack().push(pCircle);
@@ -6145,8 +6146,8 @@ frm_ellipse
             LPRDOFRMColor pFgColor = PARSER->stack().pop<RDOFRMColor>($13);
             ASSERT(pBgColor);
             ASSERT(pFgColor);
-            pBgColor->setType(RDOFRMColor::CT_LAST_BG);
-            pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+            pBgColor->setType(RDOFRMColor::Type::LAST_BG);
+            pFgColor->setType(RDOFRMColor::Type::LAST_FG);
             LPRDOFRMEllipse pEllipse = rdo::Factory<RDOFRMEllipse>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
             ASSERT(pEllipse);
             $$ = PARSER->stack().push(pEllipse);
@@ -6260,7 +6261,7 @@ frm_line
             ASSERT(pHeight);
             LPRDOFRMColor pColor = PARSER->stack().pop<RDOFRMColor>($11);
             ASSERT(pColor);
-            pColor->setType(RDOFRMColor::CT_LAST_FG);
+            pColor->setType(RDOFRMColor::Type::LAST_FG);
             LPRDOFRMLine pLine = rdo::Factory<RDOFRMLine>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pColor);
             ASSERT(pLine);
             $$ = PARSER->stack().push(pLine);
@@ -6366,8 +6367,8 @@ frm_triang
             LPRDOFRMColor pFgColor = PARSER->stack().pop<RDOFRMColor>($17);
             ASSERT(pBgColor);
             ASSERT(pFgColor);
-            pBgColor->setType(RDOFRMColor::CT_LAST_BG);
-            pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+            pBgColor->setType(RDOFRMColor::Type::LAST_BG);
+            pFgColor->setType(RDOFRMColor::Type::LAST_FG);
             LPRDOFRMTriang pTriang = rdo::Factory<RDOFRMTriang>::create(PARSER->getLastFRMCommandList()->list(), pX1, pY1, pX2, pY2, pX3, pY3, pBgColor, pFgColor);
             ASSERT(pTriang);
             $$ = PARSER->stack().push(pTriang);
@@ -8360,7 +8361,7 @@ process_begin
                 }
                 LPRDORTPResType pResType = PARSER->findRTPResType(transactName);
                 ASSERT(pResType);
-                pResType->setSubtype(RDORTPResType::RT_PROCESS_TRANSACT);
+                pResType->setSubtype(RDORTPResType::Subtype::PROCESS_TRANSACT);
             }
             else
             {
@@ -8385,7 +8386,7 @@ process_begin
                 }
                 // Тип ресурса подходит в качестве типа транзакта
                 LPRDORTPResType pResType = PARSER->findRTPResType(transactName);
-                pResType->setSubtype(RDORTPResType::RT_PROCESS_TRANSACT);
+                pResType->setSubtype(RDORTPResType::Subtype::PROCESS_TRANSACT);
             }
 
             LPRDORTPResType transactType = PARSER->findRTPResType(transactName);
@@ -9890,7 +9891,7 @@ set_statement
                 srcInfo.setSrcText(name);
             }
 
-            rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
+            rdo::runtime::SetOperation::Type setOperationType = static_cast<rdo::runtime::SetOperation::Type>($2);
 
             params[Expression::CONTEXT_PARAM_SET_EXPRESSION] = rdo::Factory<Expression>::create(
                 rdo::Factory<TypeInfo>::delegate<RDOType__INT>(RDOParserSrcInfo(@2)),
@@ -9900,7 +9901,7 @@ set_statement
             params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = setOperationType;
             Context::LPFindResult result = pParamContext->find(Context::METHOD_SET, params, srcInfo);
             LPExpression pExpression = result->getCreateExpression()();
-            pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format("%s%s", name.c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str())));
+            pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format("%s%s", name.c_str(), rdo::runtime::SetOperation::toString(setOperationType).c_str())));
 
             $$ = PARSER->stack().push(pExpression);
         }
@@ -9924,14 +9925,14 @@ set_statement
                 srcInfo.setSrcText(name);
             }
 
-            rdo::runtime::SetOperationType::Type setOperationType = static_cast<rdo::runtime::SetOperationType::Type>($2);
+            rdo::runtime::SetOperation::Type setOperationType = static_cast<rdo::runtime::SetOperation::Type>($2);
             LPRDOFUNArithm pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 
             params[RDOFUNArithm::CONTEXT_PARAM_SET_ARITHM] = pRightArithm;
             params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = setOperationType;
             Context::LPFindResult result = pParamContext->find(Context::METHOD_SET, params, srcInfo);
             LPExpression pExpression = result->getCreateExpression()();
-            pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format("%s %s %s", name.c_str(), rdo::runtime::SetOperationType::toString(setOperationType).c_str(), pRightArithm->src_text().c_str())));
+            pExpression->calc()->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format("%s %s %s", name.c_str(), rdo::runtime::SetOperation::toString(setOperationType).c_str(), pRightArithm->src_text().c_str())));
             LPRDOFUNArithm pLeftArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
             ASSERT(pLeftArithm);
             pLeftArithm->setEqual(pRightArithm);
@@ -9951,38 +9952,38 @@ set_statement
 set_increment_or_decrement_type
     : RDO_IncrEqual
     {
-        $$ = rdo::runtime::SetOperationType::INCREMENT;
+        $$ = static_cast<int>(rdo::runtime::SetOperation::Type::INCREMENT);
     }
     | RDO_DecrEqual
     {
-        $$ = rdo::runtime::SetOperationType::DECRIMENT;
+        $$ = static_cast<int>(rdo::runtime::SetOperation::Type::DECRIMENT);
     }
     ;
 
 set_operation_type
     : RDO_set
     {
-        $$ = rdo::runtime::SetOperationType::SET;
+        $$ = static_cast<int>(rdo::runtime::SetOperation::Type::SET);
     }
     | '='
     {
-        $$ = rdo::runtime::SetOperationType::SET;
+        $$ = static_cast<int>(rdo::runtime::SetOperation::Type::SET);
     }
     | RDO_PlusEqual
     {
-        $$ = rdo::runtime::SetOperationType::ADDITION;
+        $$ = static_cast<int>(rdo::runtime::SetOperation::Type::ADDITION);
     }
     | RDO_MinusEqual
     {
-        $$ = rdo::runtime::SetOperationType::SUBTRACTION;
+        $$ = static_cast<int>(rdo::runtime::SetOperation::Type::SUBTRACTION);
     }
     | RDO_MultiplyEqual
     {
-        $$ = rdo::runtime::SetOperationType::MULTIPLY;
+        $$ = static_cast<int>(rdo::runtime::SetOperation::Type::MULTIPLY);
     }
     | RDO_DivideEqual
     {
-        $$ = rdo::runtime::SetOperationType::DIVIDE;
+        $$ = static_cast<int>(rdo::runtime::SetOperation::Type::DIVIDE);
     }
     ;
 
@@ -10025,7 +10026,7 @@ set_array_item_statement
             Context::Params params;
             params[Context::Params::IDENTIFIER] = pParamName->value().getIdentificator();
             params[Expression::CONTEXT_PARAM_SET_EXPRESSION] = setExpression;
-            params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = rdo::runtime::SetOperationType::SET;
+            params[Expression::CONTEXT_PARAM_SET_OPERATION_TYPE] = rdo::runtime::SetOperation::Type::SET;
             Context::LPFindResult result = PARSER->context()->find(Context::METHOD_SET, params, pParamName->src_info());
             $$ = PARSER->stack().push(result->getCreateExpression()());
         }
@@ -11101,7 +11102,7 @@ fun_group_header
         {
             LPRDOValue pValue = PARSER->stack().pop<RDOValue>($3);
             ASSERT(pValue);
-            $$ = PARSER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::Type)$1, pValue->src_info()));
+            $$ = PARSER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create(static_cast<RDOFUNGroupLogic::Type>($1), pValue->src_info()));
         }
     }
     | fun_group_keyword '(' error
@@ -11295,7 +11296,7 @@ fun_select_logic
             RDOParserSrcInfo srcInfo(@3, @5, "");
 
             Context::Params params;
-            params["FunGroupType"] = (RDOFUNGroupLogic::Type)$3;
+            params["FunGroupType"] = static_cast<RDOFUNGroupLogic::Type>($3);
             params["GroupLogic"] = pLogic;
             Context::LPFindResult result = PARSER->context()->find("select()", params, srcInfo);
             LPExpression pExpression = result->getCreateExpression()();

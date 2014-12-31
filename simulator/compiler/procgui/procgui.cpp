@@ -18,29 +18,29 @@ ProcGUICalc::ProcGUICalc(const rdo::runtime::LPRDORuntime& pRuntime, const LPRPS
 {
     ASSERT(m_pRuntime);
     ASSERT(m_pParams );
-    switch(pParams->getZakon())
+    switch(pParams->getRandomDistribution())
     {
-        case RPShapeDataBlock::Const: // константа
+        case RPShapeDataBlock::RandomDistribution::CONST:
         {
             m_pCalc = static_cast<rdo::runtime::LPRDOCalc>(getConstCalc(pParams->getExp()));
             break;
         }
-        case RPShapeDataBlock::Normal: // нормальный
+        case RPShapeDataBlock::RandomDistribution::NORMAL:
         {
             m_pCalc = static_cast<rdo::runtime::LPRDOCalc>(getNormalCalc(pParams->getBase(), pParams->getExp(), pParams->getDisp()));
             break;
         }
-        case RPShapeDataBlock::Uniform: // равномерный закон
+        case RPShapeDataBlock::RandomDistribution::UNIFORM:
         {
             m_pCalc = static_cast<rdo::runtime::LPRDOCalc>(getUniformCalc(pParams->getBase(), pParams->getExp(), pParams->getDisp()));
             break;
         }
-        case RPShapeDataBlock::Exp: // экспоненциальный
+        case RPShapeDataBlock::RandomDistribution::EXPONENTIAL:
         {
             m_pCalc = static_cast<rdo::runtime::LPRDOCalc>(getExpCalc(pParams->getBase(), pParams->getExp()));
             break;
         }
-        case RPShapeDataBlock::Triangular: // треугольный закон
+        case RPShapeDataBlock::RandomDistribution::TRIANGULAR:
         {
             m_pCalc = static_cast<rdo::runtime::LPRDOCalc>(getTriangularCalc(pParams->getBase(), pParams->getExp(), pParams->getDisp(), pParams->getMax()));
             break;
@@ -240,7 +240,7 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(const LPProcGUIProcess& pProcess, con
 
     parser::LPRDORTPResType pResType = parser::RDOParser::s_parser()->findRTPResType(rtpName);
     ASSERT(pResType);
-    pResType->setSubtype(parser::RDORTPResType::RT_PROCESS_TRANSACT);
+    pResType->setSubtype(parser::RDORTPResType::Subtype::PROCESS_TRANSACT);
 
     std::vector<rdo::runtime::LPRDOCalc> paramList;
     paramList.push_back(rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(0)));

@@ -59,9 +59,9 @@ bool ConsoleController::isConverted() const
 
 bool ConsoleController::isSimulationSuccessfully()
 {
-    rdo::simulation::report::RDOExitCode exitCode;
+    rdo::simulation::report::ExitCode exitCode;
     sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &exitCode);
-    return exitCode == rdo::simulation::report::EC_OK;
+    return exitCode == rdo::simulation::report::ExitCode::OK;
 }
 
 bool ConsoleController::isBuildError() const

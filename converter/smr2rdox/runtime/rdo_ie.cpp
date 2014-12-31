@@ -53,9 +53,9 @@ bool RDOIrregEvent::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
     return false;
 }
 
-IBaseOperation::BOResult RDOIrregEvent::onDoOperation(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDOIrregEvent::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
-    return IBaseOperation::BOR_cant_run;
+    return IBaseOperation::ResultCode::CANNOT_RUN;
 }
 
 void RDOIrregEvent::convertEvent(const LPRDORuntime& /*pRuntime*/) 
@@ -79,9 +79,9 @@ double RDOIrregEvent::getNextTimeInterval(const LPRDORuntime& pRuntime)
     return m_pPattern->getNextTimeInterval(pRuntime); 
 }
 
-IBaseOperation::BOResult RDOIrregEvent::onContinue(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDOIrregEvent::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-    return IBaseOperation::BOR_cant_run;
+    return IBaseOperation::ResultCode::CANNOT_RUN;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

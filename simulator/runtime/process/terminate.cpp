@@ -23,12 +23,12 @@ bool RDOPROCTerminate::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
     return !m_transacts.empty() ? true : false;
 }
 
-IBaseOperation::BOResult RDOPROCTerminate::onDoOperation(const LPRDORuntime& pRuntime)
+IBaseOperation::ResultCode RDOPROCTerminate::onDoOperation(const LPRDORuntime& pRuntime)
 {
     TRACE1("%7.1f TERMINATE\n", pRuntime->getCurrentTime());
     LPRDOPROCTransact transact = m_transacts.front();
     ASSERT(transact);
-    transact->setState(RDOResource::CS_Erase);
+    transact->setState(RDOResource::ConvertStatus::ERASE);
     RDOTrace* tracer = pRuntime->getTracer();
     if (!tracer->isNull())
     {
@@ -45,7 +45,7 @@ IBaseOperation::BOResult RDOPROCTerminate::onDoOperation(const LPRDORuntime& pRu
 
     termNow += m_pTermCalc->calcValue(pRuntime).getInt();
     pRuntime->setCurrentTerm(termNow);
-    return IBaseOperation::BOR_done;
+    return IBaseOperation::ResultCode::DONE;
 }
 
 void RDOPROCTerminate::onStart(const LPRDORuntime& /*pRuntime*/)
@@ -54,9 +54,9 @@ void RDOPROCTerminate::onStart(const LPRDORuntime& /*pRuntime*/)
 void RDOPROCTerminate::onStop(const LPRDORuntime& /*pRuntime*/)
 {}
 
-IBaseOperation::BOResult RDOPROCTerminate::onContinue(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDOPROCTerminate::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-    return IBaseOperation::BOR_cant_run;
+    return IBaseOperation::ResultCode::CANNOT_RUN;
 }
 
 void RDOPROCTerminate::setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics)

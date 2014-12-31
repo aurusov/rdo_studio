@@ -17,7 +17,7 @@ struct IDocument: public rdo::RefCounter<IDocument>
 {
 DECLARE_FACTORY(IDocument)
 public:
-    enum Type
+    enum class Type
     {
         UNDEFINED = 0,
         PAT, RTP, RSS, OPR, FRM,

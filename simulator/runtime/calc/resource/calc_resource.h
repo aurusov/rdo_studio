@@ -79,7 +79,7 @@ private:
     DECLARE_ICalc;
 };
 
-template <SetOperationType::Type setOperationType>
+template <SetOperation::Type setOperationType>
 class RDOSetResourceParam: public RDOCalc
 {
 public:

@@ -63,7 +63,7 @@ Model::Model()
     , m_GUI_HAS_MODEL  (false                     )
     , m_GUI_CAN_RUN    (true                      )
     , m_GUI_IS_RUNNING (false                     )
-    , m_buildState     (BS_UNDEFINED              )
+    , m_buildState     (BuildState::UNDEFINED)
     , m_openError      (false                     )
     , m_smrEmptyError  (false                     )
     , m_modelClosed    (true                      )
@@ -71,8 +71,8 @@ Model::Model()
     , m_timeNow        (0                         )
     , m_speed          (1                         )
     , m_showRate       (60                        )
-    , m_runtimeMode    (rdo::runtime::RTM_MaxSpeed)
-    , m_exitCode       (rdo::simulation::report::EC_ModelNotFound)
+    , m_runtimeMode    (rdo::runtime::RunTimeMode::MAX_SPEED)
+    , m_exitCode       (rdo::simulation::report::ExitCode::MODEL_NOTFOUND)
     , m_modify         (false                     )
     , m_pView          (NULL                      )
     , m_name           ("")
@@ -360,7 +360,7 @@ void Model::proc(RDOThread::RDOMessageInfo& msg)
             for (const FileMessage& message: errors)
             {
                 g_pApp->getIMainWnd()->getDockBuild().appendString(message);
-                if (message.getType() == FileMessage::MT_WARNING)
+                if (message.getType() == FileMessage::Type::MESSAGE_WARNING)
                 {
                     warnings_cnt++;
                 }
@@ -387,7 +387,7 @@ void Model::proc(RDOThread::RDOMessageInfo& msg)
             for (const FileMessage& message: errors)
             {
                 g_pApp->getIMainWnd()->getDockBuild().appendString(message);
-                if (message.getType() == FileMessage::MT_WARNING)
+                if (message.getType() == FileMessage::Type::MESSAGE_WARNING)
                 {
                     warnings_cnt++;
                 }
@@ -403,7 +403,7 @@ void Model::proc(RDOThread::RDOMessageInfo& msg)
             {
 //                g_pApp->getIMainWnd()->getDockBuild().getContext().showFirstError();
             }
-            m_buildState = BS_COMPLETE;
+            m_buildState = BuildState::COMPLETE;
             m_timeStart = boost::chrono::system_clock::now();
             break;
         }
@@ -418,7 +418,7 @@ void Model::proc(RDOThread::RDOMessageInfo& msg)
             for (const FileMessage& message: errors)
             {
                 g_pApp->getIMainWnd()->getDockBuild().appendString(message);
-                if (message.getType() == FileMessage::MT_WARNING)
+                if (message.getType() == FileMessage::Type::MESSAGE_WARNING)
                 {
                     warnings_cnt++;
                 }
@@ -436,14 +436,14 @@ void Model::proc(RDOThread::RDOMessageInfo& msg)
             }
 
             setCanRun(true);
-            m_buildState  = BS_ERROR;
+            m_buildState  = BuildState::ERROR;
             g_pApp->autoCloseByModel();
             break;
         }
         case RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY:
         {
             m_smrEmptyError = true;
-            m_buildState    = BS_ERROR;
+            m_buildState    = BuildState::ERROR;
             break;
         }
         case RDOThread::RT_SIMULATOR_PARSE_STRING:
@@ -600,9 +600,9 @@ bool Model::buildModel()
         g_pApp->getIMainWnd()->getDockBuild().raise();
         g_pApp->getIMainWnd()->getDockBuild().appendString("Компиляция...");
         g_pApp->getIMainWnd()->getDockBuild().getContext().update();
-        m_buildState = BS_UNDEFINED;
+        m_buildState = BuildState::UNDEFINED;
         g_pApp->broadcastMessage(RDOThread::RT_STUDIO_MODEL_BUILD);
-        return m_buildState == BS_COMPLETE;
+        return m_buildState == BuildState::COMPLETE;
     }
     return false;
 }
@@ -968,7 +968,7 @@ void Model::afterModelStart()
             --initFrameNumber;
         }
         m_frameManager.setLastShowedFrame(initFrameNumber);
-        if (getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && initFrameNumber < m_frameManager.count())
+        if (getRuntimeMode() != rdo::runtime::RunTimeMode::MAX_SPEED && initFrameNumber < m_frameManager.count())
         {
             rdo::gui::frame::View* pView = m_frameManager.createView(initFrameNumber);
             if (pView)
@@ -1013,7 +1013,7 @@ void Model::setRuntimeMode(const rdo::runtime::RunTimeMode value)
         g_pTracer->setRuntimeMode(getRuntimeMode());
         switch (getRuntimeMode())
         {
-            case rdo::runtime::RTM_MaxSpeed: closeAllFrame(); break;
+            case rdo::runtime::RunTimeMode::MAX_SPEED: closeAllFrame(); break;
             default:
             {
                 rdo::gui::frame::View* pView = m_frameManager.getFrameViewFirst();
@@ -1136,12 +1136,12 @@ void Model::updateActions()
     pMainWindow->actModelRuntimeJump->setEnabled    (isRunning());
     pMainWindow->actModelRuntimeSync->setEnabled    (isRunning());
     pMainWindow->actModelRuntimePause->setEnabled   (isRunning());
-    pMainWindow->actModelRuntimeMaxSpeed->setChecked(getRuntimeMode() == rdo::runtime::RTM_MaxSpeed);
-    pMainWindow->actModelRuntimeJump->setChecked    (getRuntimeMode() == rdo::runtime::RTM_Jump);
-    pMainWindow->actModelRuntimeSync->setChecked    (getRuntimeMode() == rdo::runtime::RTM_Sync);
-    pMainWindow->actModelRuntimePause->setChecked   (getRuntimeMode() == rdo::runtime::RTM_Pause || getRuntimeMode() == rdo::runtime::RTM_BreakPoint);
+    pMainWindow->actModelRuntimeMaxSpeed->setChecked(getRuntimeMode() == rdo::runtime::RunTimeMode::MAX_SPEED);
+    pMainWindow->actModelRuntimeJump->setChecked    (getRuntimeMode() == rdo::runtime::RunTimeMode::JUMP);
+    pMainWindow->actModelRuntimeSync->setChecked    (getRuntimeMode() == rdo::runtime::RunTimeMode::SYNC);
+    pMainWindow->actModelRuntimePause->setChecked   (getRuntimeMode() == rdo::runtime::RunTimeMode::PAUSE || getRuntimeMode() == rdo::runtime::RunTimeMode::BREAKPOINT);
 
-    bool canShowRate = isRunning() && getRuntimeMode() == rdo::runtime::RTM_Sync;
+    bool canShowRate = isRunning() && getRuntimeMode() == rdo::runtime::RunTimeMode::SYNC;
     pMainWindow->actModelShowRateInc->setEnabled    (canShowRate && getShowRate() * 1.5 <= boost::numeric::bounds<double>::highest());
     pMainWindow->actModelShowRateIncFour->setEnabled(canShowRate && getShowRate() * 4.0 <= boost::numeric::bounds<double>::highest());
     pMainWindow->actModelShowRateDecFour->setEnabled(canShowRate && getShowRate() / 4.0 >= boost::numeric::bounds<double>::lowest());
@@ -1155,17 +1155,17 @@ void Model::updateActions()
     {
         switch (getRuntimeMode())
         {
-        case rdo::runtime::RTM_MaxSpeed  : runTimeMode = "Без анимации"; break;
-        case rdo::runtime::RTM_Jump      : runTimeMode = "Дискретная имитация"; break;
-        case rdo::runtime::RTM_Sync      : runTimeMode = "Синхронная имитация"; break;
-        case rdo::runtime::RTM_Pause     : runTimeMode = "Пауза"; break;
-        case rdo::runtime::RTM_BreakPoint: runTimeMode = QString("Точка останова: %1").arg(getLastBreakPointName()); break;
+        case rdo::runtime::RunTimeMode::MAX_SPEED  : runTimeMode = "Без анимации"; break;
+        case rdo::runtime::RunTimeMode::JUMP      : runTimeMode = "Дискретная имитация"; break;
+        case rdo::runtime::RunTimeMode::SYNC      : runTimeMode = "Синхронная имитация"; break;
+        case rdo::runtime::RunTimeMode::PAUSE     : runTimeMode = "Пауза"; break;
+        case rdo::runtime::RunTimeMode::BREAKPOINT: runTimeMode = QString("Точка останова: %1").arg(getLastBreakPointName()); break;
         }
     }
     g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_RUNTYPE>(runTimeMode);
 
     g_pApp->getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SPEED>(
-        getRuntimeMode() != rdo::runtime::RTM_MaxSpeed || !isRunning()
+        getRuntimeMode() != rdo::runtime::RunTimeMode::MAX_SPEED || !isRunning()
             ? QString("Скорость: %1%").arg(int(getSpeed() * 100))
             : ""
     );
@@ -1176,17 +1176,17 @@ void Model::updateActions()
         showRateStr = "Масштаб: ";
         switch (getRuntimeMode())
         {
-        case rdo::runtime::RTM_MaxSpeed:
-        case rdo::runtime::RTM_Jump    :
+        case rdo::runtime::RunTimeMode::MAX_SPEED:
+        case rdo::runtime::RunTimeMode::JUMP    :
             showRateStr += "Бесконечность";
             break;
 
-        case rdo::runtime::RTM_Pause     :
-        case rdo::runtime::RTM_BreakPoint:
+        case rdo::runtime::RunTimeMode::PAUSE     :
+        case rdo::runtime::RunTimeMode::BREAKPOINT:
             showRateStr += "0.0";
             break;
 
-        case rdo::runtime::RTM_Sync:
+        case rdo::runtime::RunTimeMode::SYNC:
             {
                 double showRate = g_pModel->getShowRate();
                 if (showRate < 1e-10 || showRate > 1e10)
@@ -1216,13 +1216,13 @@ void Model::update()
     sendMessage(kernel->runtime(), RT_RUNTIME_GET_MODE, &rm);
     if (rm != getRuntimeMode())
     {
-        if (rm == rdo::runtime::RTM_BreakPoint)
+        if (rm == rdo::runtime::RunTimeMode::BREAKPOINT)
         {
             g_pApp->getIMainWnd()->getDockDebug().appendString(QString("Пауза в %1 из-за точки '%2'\n").arg(getTimeNow()).arg(getLastBreakPointName()));
         }
         setRuntimeMode(rm);
     }
-    if (getRuntimeMode() == rdo::runtime::RTM_MaxSpeed)
+    if (getRuntimeMode() == rdo::runtime::RunTimeMode::MAX_SPEED)
     {
         return;
     }
@@ -1339,7 +1339,7 @@ double Model::getTimeNow() const
     return m_timeNow;
 }
 
-rdo::simulation::report::RDOExitCode Model::getExitCode() const
+rdo::simulation::report::ExitCode Model::getExitCode() const
 {
     return m_exitCode;
 }
@@ -1416,22 +1416,22 @@ void Model::onModelStop()
 
 void Model::onModelRuntimeMaxSpeed()
 {
-    setRuntimeMode(rdo::runtime::RTM_MaxSpeed);
+    setRuntimeMode(rdo::runtime::RunTimeMode::MAX_SPEED);
 }
 
 void Model::onModelRuntimeJump()
 {
-    setRuntimeMode(rdo::runtime::RTM_Jump);
+    setRuntimeMode(rdo::runtime::RunTimeMode::JUMP);
 }
 
 void Model::onModelRuntimeSync()
 {
-    setRuntimeMode(rdo::runtime::RTM_Sync);
+    setRuntimeMode(rdo::runtime::RunTimeMode::SYNC);
 }
 
 void Model::onModelRuntimePause()
 {
-    setRuntimeMode(rdo::runtime::RTM_Pause);
+    setRuntimeMode(rdo::runtime::RunTimeMode::PAUSE);
 }
 
 void Model::onModelShowRateInc()

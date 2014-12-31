@@ -38,5 +38,5 @@ private:
 
     PluginInterface*  loadPlugin             (QPluginLoader* pluginLoader) const;
     PluginInfo        generatePluginInfo     (PluginInterface* pluginInterface, QPluginLoader* pluginLoader) const;
-    int               matchPluginInfo        (const PluginInfoList& list, const LPPluginInfo& pluginInfo) const;
+    PluginInfo::State matchPluginInfo        (const PluginInfoList& list, const LPPluginInfo& pluginInfo) const;
 };

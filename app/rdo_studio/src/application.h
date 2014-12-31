@@ -95,7 +95,7 @@ private:
     bool                                   m_showCaptionFullName;
     bool                                   m_autoExitByModel;
     bool                                   m_dontCloseIfError;
-    rdo::simulation::report::RDOExitCode   m_exitCode;
+    rdo::simulation::report::ExitCode   m_exitCode;
     QProcess*                              m_pAssistant;
     MainWindow*                            m_pMainFrame;
     rdo::gui::editor::LPModelStyle         m_pModelStyle;

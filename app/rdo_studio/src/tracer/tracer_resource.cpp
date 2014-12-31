@@ -14,7 +14,7 @@ using namespace rdo::gui::tracer;
 // -------------------- Param
 // --------------------------------------------------------------------------------
 Param::Param(const LPResource& pResource)
-    : Serie(SK_PARAM)
+    : Serie(Kind::PARAM)
     , m_pResource(pResource)
 {}
 

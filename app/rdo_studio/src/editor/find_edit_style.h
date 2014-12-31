@@ -33,7 +33,7 @@ public:
 
     QColor keywordColor;
 
-    style::StyleFont::style keywordStyle;
+    style::StyleFont::Style keywordStyle;
 };
 
 QSettings& operator<< (QSettings& settings, const FindStyle& style);

@@ -22,7 +22,7 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserRDOItem
 // --------------------------------------------------------------------------------
-RDOParserRDOItem::RDOParserRDOItem(rdo::converter::smr2rdox::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_flex_lexer_fun lexer_fun)
+RDOParserRDOItem::RDOParserRDOItem(rdo::converter::smr2rdox::FileTypeIn type, t_bison_parse_fun parser_fun, t_flex_lexer_fun lexer_fun)
     : RDOParserItem(type, parser_fun, lexer_fun)
     , m_pLexer(NULL)
 {}
@@ -80,7 +80,7 @@ std::size_t RDOParserRDOItem::lexer_loc_pos()
 // -------------------- RDOParserRSS
 // --------------------------------------------------------------------------------
 RDOParserRSS::RDOParserRSS()
-    : RDOParserRDOItem(rdo::converter::smr2rdox::RSS_IN, cnv_rssparse, cnv_rsslex)
+    : RDOParserRDOItem(rdo::converter::smr2rdox::FileTypeIn::RSS, cnv_rssparse, cnv_rsslex)
 {}
 
 void RDOParserRSS::parse(Converter* pParser, std::istream& streamIn)
@@ -95,7 +95,7 @@ void RDOParserRSS::parse(Converter* pParser, std::istream& streamIn)
 // -------------------- RDOParserRSSPost
 // --------------------------------------------------------------------------------
 RDOParserRSSPost::RDOParserRSSPost()
-    : RDOParserItem(rdo::converter::smr2rdox::RSS_IN, NULL, NULL)
+    : RDOParserItem(rdo::converter::smr2rdox::FileTypeIn::RSS, NULL, NULL)
 {
     m_needStream = false;
 }
@@ -130,7 +130,7 @@ void RDOParserRSSPost::parse(Converter* pParser)
 // -------------------- RDOParserSTDFUN
 // --------------------------------------------------------------------------------
 RDOParserSTDFUN::RDOParserSTDFUN()
-    : RDOParserItem(rdo::converter::smr2rdox::FUN_IN, NULL, NULL)
+    : RDOParserItem(rdo::converter::smr2rdox::FileTypeIn::FUN, NULL, NULL)
 {
     m_needStream = false;
 }

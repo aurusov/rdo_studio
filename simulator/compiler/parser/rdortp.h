@@ -39,11 +39,11 @@ public:
     typedef std::vector<LPRDORTPParam> ParamList;
     typedef RDORSSResource value_type;
 
-    enum Subtype
+    enum class Subtype
     {
-        RT_SIMPLE,
-        RT_PROCESS_RESOURCE,
-        RT_PROCESS_TRANSACT
+        SIMPLE,
+        PROCESS_RESOURCE,
+        PROCESS_TRANSACT
     };
     static const std::size_t UNDEFINED_PARAM = std::size_t(~0);
 

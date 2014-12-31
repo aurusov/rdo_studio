@@ -39,7 +39,7 @@ std::string BuildEditLineInfo::getMessage() const
     else
     {
         const std::string file = rdo::getFileTypeString(getFileType());
-        const std::string error = (getType() == FileMessage::MT_WARNING) ? WARNING_STRING : ERROR_STRING;
+        const std::string error = (getType() == FileMessage::Type::MESSAGE_WARNING) ? WARNING_STRING : ERROR_STRING;
         const std::string text = rdo::format("%s (%d): %s: %s", file.c_str(), getLineNumber() + 1, error.c_str(), getText().c_str());
         return text;
     }

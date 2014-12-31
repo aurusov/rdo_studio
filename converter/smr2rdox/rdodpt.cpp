@@ -151,7 +151,7 @@ void RDODPTActivity::endParam(const YYLTYPE& param_pos)
         }
         Converter::s_converter()->error().push_done();
     }
-    if (m_pPattern->getType() == RDOPATPattern::PT_Keyboard)
+    if (m_pPattern->getType() == RDOPATPattern::Type::KEYBOARD)
     {
         if (!static_cast<RDODPTActivityHotKey*>(this)->hasHotKey())
         {
@@ -173,7 +173,7 @@ void RDODPTActivity::endParam(const YYLTYPE& param_pos)
 
 void RDODPTActivity::planningInsertIntoSMR() const
 {
-    if (pattern()->getType() != RDOPATPattern::PT_IE)
+    if (pattern()->getType() != RDOPATPattern::Type::IE)
         return;
 
     const std::string planning_time = boost::str(boost::format("time_now + %s")
@@ -190,7 +190,7 @@ void RDODPTActivity::planningInsertIntoSMR() const
     LPDocUpdate pPlanningInsertIntoSMR = rdo::Factory<UpdateInsert>::create(
         IDocUpdate::Position::POSITION_END,
         planning,
-        IDocument::SMR);
+        IDocument::Type::SMR);
     Converter::s_converter()->insertDocUpdate(pPlanningInsertIntoSMR);
 }
 
@@ -207,10 +207,10 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, const
 {
     switch (pattern()->getType())
     {
-    case RDOPATPattern::PT_IE       :
-    case RDOPATPattern::PT_Rule     :
-    case RDOPATPattern::PT_Operation:
-    case RDOPATPattern::PT_Keyboard :
+    case RDOPATPattern::Type::IE       :
+    case RDOPATPattern::Type::RULE     :
+    case RDOPATPattern::Type::OPERATION:
+    case RDOPATPattern::Type::KEYBOARD :
         break;
 
     default:
@@ -225,14 +225,14 @@ IKeyboard::AddHotKeyResult RDODPTActivityHotKey::addHotKey(const std::string& ho
     rdo::runtime::RDOHotKey::KeyCode scanCode = Converter::s_converter()->runtime()->hotkey().toolkit().codeFromString(hotKey);
     if (scanCode == rdo::runtime::RDOHotKey::UNDEFINED_KEY)
     {
-        return IKeyboard::addhk_notfound;
+        return IKeyboard::AddHotKeyResult::NOTFOUND;
     }
     if (std::find(m_scanCodeList.begin(), m_scanCodeList.end(), scanCode) != m_scanCodeList.end())
     {
-        return IKeyboard::addhk_already;
+        return IKeyboard::AddHotKeyResult::ALREADY;
     }
     m_scanCodeList.push_back(scanCode);
-    return IKeyboard::addhk_ok;
+    return IKeyboard::AddHotKeyResult::OK;
 }
 
 bool RDODPTActivityHotKey::hasHotKey() const
@@ -247,7 +247,7 @@ bool RDODPTActivityHotKey::hasHotKey() const
 
 void RDODPTActivityHotKey::addHotKey(const std::string& hotKey, const YYLTYPE& hotkey_pos)
 {
-    if (pattern()->getType() != RDOPATPattern::PT_Keyboard)
+    if (pattern()->getType() != RDOPATPattern::Type::KEYBOARD)
     {
         Converter::s_converter()->error().push_only(hotkey_pos, "Горячие клавиши используются только в клавиатурных операциях");
         Converter::s_converter()->error().push_only(pattern()->src_info(), "См. образец");
@@ -256,10 +256,10 @@ void RDODPTActivityHotKey::addHotKey(const std::string& hotKey, const YYLTYPE& h
 
     switch (addHotKey(hotKey))
     {
-    case rdo::runtime::RDOKeyboard::addhk_ok:
+    case rdo::runtime::RDOKeyboard::AddHotKeyResult::OK:
         break;
 
-    case rdo::runtime::RDOKeyboard::addhk_already:
+    case rdo::runtime::RDOKeyboard::AddHotKeyResult::ALREADY:
         if (dynamic_cast<RDOOPROperation*>(this))
         {
             Converter::s_converter()->error().error(hotkey_pos, rdo::format("Для операции '%s' клавиша уже назначена", src_text().c_str()));
@@ -270,18 +270,18 @@ void RDODPTActivityHotKey::addHotKey(const std::string& hotKey, const YYLTYPE& h
         }
         break;
 
-    case rdo::runtime::RDOKeyboard::addhk_notfound:
+    case rdo::runtime::RDOKeyboard::AddHotKeyResult::NOTFOUND:
         Converter::s_converter()->error().error(hotkey_pos, rdo::format("Неизвестная клавиша: %s", hotKey.c_str()));
         break;
 
-    case rdo::runtime::RDOKeyboard::addhk_dont:
+    case rdo::runtime::RDOKeyboard::AddHotKeyResult::DONT:
         Converter::s_converter()->error().push_only(src_info(), rdo::format("Операция '%s' не является клавиатурной", src_text().c_str()));
         Converter::s_converter()->error().push_only(pattern()->src_info(), "См. образец");
         Converter::s_converter()->error().push_done();
         break;
 
     default:
-        Converter::s_converter()->error().error(src_info(), "Внутренная ошибка: RDODPTActivityHotKey::addHotKey");
+        Converter::s_converter()->error().error(src_info(), "Внутренняя ошибка: RDODPTActivityHotKey::addHotKey");
     }
 }
 
@@ -368,9 +368,9 @@ void RDODPTPrior::end()
 // --------------------------------------------------------------------------------
 RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info)
     : RDODPTActivity(src_info, pattern_src_info   )
-    , m_value       (IDPTSearchActivity::vt_before)
+    , m_value       (IDPTSearchActivity::CostTime::BEFORE)
 {
-    if (pattern()->getType() != RDOPATPattern::PT_Rule)
+    if (pattern()->getType() != RDOPATPattern::Type::RULE)
     {
         Converter::s_converter()->error().push_only(this->src_info(), "Только продукционные правила могут быть использованы в точке принятия решений типа search");
         Converter::s_converter()->error().push_only(pattern()->src_info(), "См. образец");
@@ -378,7 +378,7 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, const
     }
     for (RDOPATPattern::RelResList::const_iterator it = pattern()->rel_res_begin(); it != pattern()->rel_res_end(); ++it)
     {
-        if (((*it)->m_statusBegin == rdo::runtime::RDOResource::CS_Create) || ((*it)->m_statusBegin == rdo::runtime::RDOResource::CS_Erase))
+        if (((*it)->m_statusBegin == rdo::runtime::RDOResource::ConvertStatus::CREATE) || ((*it)->m_statusBegin == rdo::runtime::RDOResource::ConvertStatus::ERASE))
         {
             Converter::s_converter()->error().push_only(this->src_info(), rdo::format("В продукционном правиле '%s' нельзя создавать или удалять ресурсы, т.к. оно используется в точке типа search", src_text().c_str()));
             Converter::s_converter()->error().push_only(pattern()->src_info(), "См. образец");
@@ -388,7 +388,7 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, const
     }
 }
 
-void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, const LPRDOFUNArithm& pRuleCost, const YYLTYPE& param_pos)
+void RDODPTSearchActivity::setValue(IDPTSearchActivity::CostTime value, const LPRDOFUNArithm& pRuleCost, const YYLTYPE& param_pos)
 {
     endParam(param_pos);
     m_value     = value;
@@ -398,7 +398,7 @@ void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, const L
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearch
 // --------------------------------------------------------------------------------
-RDODPTSearch::RDODPTSearch(const RDOParserSrcInfo& src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace, LPILogic pParent)
+RDODPTSearch::RDODPTSearch(const RDOParserSrcInfo& src_info, rdo::runtime::RDODPTSearchTrace::TraceFlag trace, LPILogic pParent)
     : RDOLogicActivity<rdo::runtime::RDODPTSearchRuntime, RDODPTSearchActivity>(src_info)
     , m_pParent(pParent)
     , m_closed (false  )

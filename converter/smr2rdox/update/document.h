@@ -27,10 +27,10 @@ class Document
 {
 DECLARE_FACTORY(Document)
 public:
-    typedef rdo::converter::smr2rdox::RDOFileTypeOut TypeOut;
+    typedef rdo::converter::smr2rdox::FileTypeOut TypeOut;
 
     void  create      (const boost::filesystem::path& filePath, const boost::filesystem::path& modelName);
-    void  init        (rdo::converter::smr2rdox::RDOFileTypeIn type, std::ifstream& stream);
+    void  init        (rdo::converter::smr2rdox::FileTypeIn type, std::ifstream& stream);
     void  insertUpdate(const LPDocUpdate& pUpdate);
     void  convert     ();
     void  close       ();

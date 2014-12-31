@@ -124,11 +124,11 @@ private:
     };
     typedef std::map<rdo::FileType, fileInfo> FileList;
 
-    enum FindModel
+    enum class FindModel
     {
-        fm_ok,
-        fm_smr_error,
-        fm_smr_empty
+        OK,
+        SMR_ERROR,
+        SMR_EMPTY
     };
 
     struct ProjectName

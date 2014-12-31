@@ -7,19 +7,19 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-typedef RDOCalcBinary<BinaryOperatorNonConstP1<RDOValue&, &RDOValue::operator= >, OperatorType::OT_ARITHM> RDOCalcSet;  DECLARE_POINTER(RDOCalcSet);
+typedef RDOCalcBinary<BinaryOperatorNonConstP1<RDOValue&, &RDOValue::operator= >, OperatorType::Type::ARITHM> RDOCalcSet;  DECLARE_POINTER(RDOCalcSet);
 
-typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator+ >, OperatorType::OT_ARITHM> RDOCalcPlus;  DECLARE_POINTER(RDOCalcPlus);
+typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator+ >, OperatorType::Type::ARITHM> RDOCalcPlus;  DECLARE_POINTER(RDOCalcPlus);
 
-typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator- >, OperatorType::OT_ARITHM> RDOCalcMinus; DECLARE_POINTER(RDOCalcMinus);
+typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator- >, OperatorType::Type::ARITHM> RDOCalcMinus; DECLARE_POINTER(RDOCalcMinus);
 
-typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator* >, OperatorType::OT_ARITHM> RDOCalcMult;  DECLARE_POINTER(RDOCalcMult);
+typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator* >, OperatorType::Type::ARITHM> RDOCalcMult;  DECLARE_POINTER(RDOCalcMult);
 
-class RDOCalcDiv: public RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator/ >, OperatorType::OT_ARITHM>
+class RDOCalcDiv: public RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator/ >, OperatorType::Type::ARITHM>
 {
 DECLARE_FACTORY(RDOCalcDiv);
 private:
-    typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator/ >, OperatorType::OT_ARITHM> parent_type;
+    typedef RDOCalcBinary<BinaryOperatorConstP1<RDOValue, &RDOValue::operator/ >, OperatorType::Type::ARITHM> parent_type;
 
     RDOCalcDiv(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
 

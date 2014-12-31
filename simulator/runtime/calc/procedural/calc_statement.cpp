@@ -80,7 +80,7 @@ RDOValue RDOCalcFor::doCalc(const LPRDORuntime& pRuntime)
     while (m_pCondition->calcValue(pRuntime).getAsBool())
     {
         value = m_pStatement->calcValue(pRuntime);
-        if (pRuntime->getFunBreakFlag() != RDORuntime::FBF_NONE)
+        if (pRuntime->getFunctionExitStatus() != RDORuntime::FunctionExitStatus::NONE)
         {
             break;
         }
@@ -102,7 +102,7 @@ RDOValue RDOCalcFunReturn::doCalc(const LPRDORuntime& pRuntime)
     ASSERT(m_pReturn);
 
     RDOValue value = m_pReturn->calcValue(pRuntime);
-    pRuntime->setFunBreakFlag(RDORuntime::FBF_RETURN);
+    pRuntime->setFunctionExitStatus(RDORuntime::FunctionExitStatus::RETURN);
     return value;
 }
 
@@ -114,7 +114,7 @@ RDOCalcFunBreak::RDOCalcFunBreak()
 
 RDOValue RDOCalcFunBreak::doCalc(const LPRDORuntime& pRuntime)
 {
-    pRuntime->setFunBreakFlag(RDORuntime::FBF_BREAK);
+    pRuntime->setFunctionExitStatus(RDORuntime::FunctionExitStatus::BREAK);
     return RDOValue();
 }
 
@@ -162,7 +162,7 @@ RDOValue RDOCalcStatementList::doCalc(const LPRDORuntime& pRuntime)
     {
         value = calc->calcValue(pRuntime);
 
-        if (pRuntime->getFunBreakFlag() != RDORuntime::FBF_NONE)
+        if (pRuntime->getFunctionExitStatus() != RDORuntime::FunctionExitStatus::NONE)
         {
             break;
         }
@@ -188,9 +188,9 @@ RDOValue RDOCalcBreakCatch::doCalc(const LPRDORuntime& pRuntime)
 
     m_pStatementList->calcValue(pRuntime);
 
-    if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_BREAK)
+    if (pRuntime->getFunctionExitStatus() == RDORuntime::FunctionExitStatus::BREAK)
     {
-        pRuntime->setFunBreakFlag(RDORuntime::FBF_NONE);
+        pRuntime->setFunctionExitStatus(RDORuntime::FunctionExitStatus::NONE);
     }
 
     return RDOValue();
@@ -214,9 +214,9 @@ RDOValue RDOCalcReturnCatch::doCalc(const LPRDORuntime& pRuntime)
 
     RDOValue value = m_pTryCalc->calcValue(pRuntime);
 
-    if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_RETURN)
+    if (pRuntime->getFunctionExitStatus() == RDORuntime::FunctionExitStatus::RETURN)
     {
-        pRuntime->setFunBreakFlag(RDORuntime::FBF_NONE);
+        pRuntime->setFunctionExitStatus(RDORuntime::FunctionExitStatus::NONE);
     }
 
     return value;

@@ -418,7 +418,7 @@ QSettings& operator>> (QSettings& settings, LogStyle& style)
     settings >> static_cast<StyleBase&>(style);
 
     settings.beginGroup("theme");
-    style.fontStyle = static_cast<StyleFont::style>(settings.value("style", style.fontStyle).toInt());
+    style.fontStyle = static_cast<StyleFont::Style>(settings.value("style", style.fontStyle).toInt());
     style.defaultColor.load( settings, "defaultColor" );
     style.es.load ( settings, "es"  );
     style.eb.load ( settings, "eb"  );

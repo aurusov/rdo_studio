@@ -13,19 +13,19 @@ namespace report {
 class FileMessage
 {
 public:
-    enum Type
+    enum class Type
     {
-        MT_ERROR = 0,
-        MT_WARNING
+        MESSAGE_ERROR = 0,
+        MESSAGE_WARNING
     };
 
-    FileMessage(const std::string& text, rdo::FileType file, std::size_t line, std::size_t pos, Type type = MT_ERROR);
+    FileMessage(const std::string& text, rdo::FileType file, std::size_t line, std::size_t pos, Type type = Type::MESSAGE_ERROR);
 
     std::string getText() const;
     rdo::FileType getFileType() const;
     std::size_t getLineNumber() const;
     std::size_t getPosInLine() const;
-    Type getType () const;
+    Type getType() const;
 
     void setText(const std::string& text);
 

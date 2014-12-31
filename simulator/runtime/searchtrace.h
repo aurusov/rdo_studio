@@ -15,12 +15,12 @@ class RDODPTSearchTrace: public RDODPTSearch, public RDOTraceableObject, public 
 {
 DECLARE_FACTORY(RDODPTSearchTrace);
 public:
-        enum DPT_TraceFlag
+    enum class TraceFlag
     {
-       DPT_no_trace,
-       DPT_trace_stat,
-       DPT_trace_tops,
-       DPT_trace_all
+       NO_TRACE,
+       TRACE_STAT,
+       TRACE_TOPS,
+       TRACE_ALL
     };
 
     void onSearchBegin         (const LPRDORuntime& pRuntime);
@@ -40,7 +40,7 @@ public:
     std::list<std::size_t> calc_nodes_full;
     std::list<std::size_t> calc_nodes_in_graph;
 
-    DPT_TraceFlag traceFlag;
+    TraceFlag traceFlag;
 
 protected:
     RDODPTSearchTrace(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent);

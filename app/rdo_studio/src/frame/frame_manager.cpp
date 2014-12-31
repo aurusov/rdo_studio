@@ -323,7 +323,7 @@ void Manager::showFrame(const rdo::animation::Frame* const pFrame, std::size_t i
 void Manager::showNextFrame()
 {
     std::size_t cnt = count();
-    if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame < cnt-1)
+    if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RunTimeMode::MAX_SPEED && cnt > 1 && m_currentShowingFrame < cnt-1)
     {
         std::size_t index = m_currentShowingFrame + 1;
         View* pView = getFrameView(index);
@@ -344,7 +344,7 @@ void Manager::showNextFrame()
 void Manager::showPrevFrame()
 {
     std::size_t cnt = count();
-    if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame != std::size_t(~0))
+    if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RunTimeMode::MAX_SPEED && cnt > 1 && m_currentShowingFrame != std::size_t(~0))
     {
         std::size_t index = m_currentShowingFrame - 1;
         View* pView = getFrameView(index);
@@ -365,7 +365,7 @@ void Manager::showPrevFrame()
 void Manager::showFrame(std::size_t index)
 {
     std::size_t cnt = count();
-    if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && index >= 0 && index < cnt)
+    if (g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RunTimeMode::MAX_SPEED && cnt > 1 && index >= 0 && index < cnt)
     {
         View* pView = getFrameView(index);
         if (!pView)
@@ -385,13 +385,13 @@ void Manager::showFrame(std::size_t index)
 bool Manager::canShowNextFrame() const
 {
     std::size_t cnt = count();
-    return g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame == std::size_t(~0) || m_currentShowingFrame < cnt-1);
+    return g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RunTimeMode::MAX_SPEED && cnt > 1 && (m_currentShowingFrame == std::size_t(~0) || m_currentShowingFrame < cnt-1);
 }
 
 bool Manager::canShowPrevFrame() const
 {
     int cnt = count();
-    return g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame != std::size_t(~0) && m_currentShowingFrame > 0);
+    return g_pModel->isRunning() && g_pModel->getRuntimeMode() != rdo::runtime::RunTimeMode::MAX_SPEED && cnt > 1 && (m_currentShowingFrame != std::size_t(~0) && m_currentShowingFrame > 0);
 }
 
 void Manager::updateStyles() const
@@ -423,7 +423,7 @@ void Manager::onSubWindowActivated(QMdiSubWindow* pWindow)
 
 void Manager::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pTreeWidgetItem, int)
 {
-    if (g_pModel->getRuntimeMode() == rdo::runtime::RTM_MaxSpeed)
+    if (g_pModel->getRuntimeMode() == rdo::runtime::RunTimeMode::MAX_SPEED)
         return;
 
     std::size_t index = findFrameIndex(pTreeWidgetItem);

@@ -8,7 +8,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOSetResourceParam
 // --------------------------------------------------------------------------------
-template <SetOperationType::Type setOperationType>
+template <SetOperation::Type setOperationType>
 inline RDOSetResourceParam<setOperationType>::RDOSetResourceParam(const LPRDOCalc& getResource, const std::size_t paramID, const LPRDOCalc& pCalc)
     : m_getResource (getResource)
     , m_paramID     (paramID )
@@ -20,12 +20,12 @@ inline RDOSetResourceParam<setOperationType>::RDOSetResourceParam(const LPRDOCal
     }
 }
 
-template <SetOperationType::Type setOperationType>
+template <SetOperation::Type setOperationType>
 inline RDOSetResourceParam<setOperationType>::~RDOSetResourceParam()
 {}
 
 template <>
-inline RDOValue RDOSetResourceParam<SetOperationType::NOCHANGE>::doCalc(const LPRDORuntime& pRuntime)
+inline RDOValue RDOSetResourceParam<SetOperation::Type::NOCHANGE>::doCalc(const LPRDORuntime& pRuntime)
 {
     LPRDOResource pResource = m_getResource->calcValue(pRuntime).getPointerByInterface<IResourceType>();
     ASSERT(pResource);
@@ -34,7 +34,7 @@ inline RDOValue RDOSetResourceParam<SetOperationType::NOCHANGE>::doCalc(const LP
 }
 
 template <>
-inline RDOValue RDOSetResourceParam<SetOperationType::SET>::doCalc(const LPRDORuntime& pRuntime)
+inline RDOValue RDOSetResourceParam<SetOperation::Type::SET>::doCalc(const LPRDORuntime& pRuntime)
 {
     LPRDOResource pResource = m_getResource->calcValue(pRuntime).getPointerByInterface<IResourceType>();
     ASSERT(pResource);

@@ -16,7 +16,7 @@ class UpdateInsert: public DocUpdate
 {
 DECLARE_FACTORY(UpdateInsert)
 private:
-    UpdateInsert(const Position& pos, const std::string& value, IDocument::Type file = IDocument::UNDEFINED);
+    UpdateInsert(const Position& pos, const std::string& value, IDocument::Type file = IDocument::Type::UNDEFINED);
 
     Position m_pos;
     std::string m_value;
@@ -46,7 +46,7 @@ class UpdateReplace: public DocUpdate
 {
 DECLARE_FACTORY(UpdateReplace)
 private:
-    UpdateReplace(const Position& posFrom, const Position& posTo, const std::string& value, IDocument::Type file = IDocument::UNDEFINED);
+    UpdateReplace(const Position& posFrom, const Position& posTo, const std::string& value, IDocument::Type file = IDocument::Type::UNDEFINED);
 
     LPDocUpdate pDelete;
     LPDocUpdate pInsert;
@@ -64,8 +64,8 @@ private:
     UpdateMove(const Position& posFromBegin,
                const Position& posFromEnd,
                const Position& posTo,
-               IDocument::Type fileTo   = IDocument::UNDEFINED,
-               IDocument::Type fileFrom = IDocument::UNDEFINED);
+               IDocument::Type fileTo   = IDocument::Type::UNDEFINED,
+               IDocument::Type fileFrom = IDocument::Type::UNDEFINED);
 
     Position        m_posFromBegin;
     Position        m_posFromEnd;
@@ -86,7 +86,7 @@ private:
                const Position& pos1End,
                const Position& pos2Begin,
                const Position& pos2End,
-               IDocument::Type file = IDocument::UNDEFINED);
+               IDocument::Type file = IDocument::Type::UNDEFINED);
 
     Position m_pos1Begin;
     Position m_pos1End;

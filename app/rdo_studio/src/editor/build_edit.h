@@ -25,7 +25,7 @@ protected:
 
 private:
     typedef  Log  super;
-    typedef  rdo::simulation::report::FileMessage RDOSyntaxMessage;
+    typedef  rdo::simulation::report::FileMessage SyntaxMessage;
 
     virtual void contextMenuEvent(QContextMenuEvent* pEvent);
     virtual void onHelpContext   ();

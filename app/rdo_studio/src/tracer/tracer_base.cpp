@@ -30,7 +30,7 @@ TracerBase::TracerBase(const std::string& _thread_name, RDOKernelGUI* _kernel_gu
     , m_pLog(NULL)
     , m_pChartTree(NULL)
     , m_eventIndex(0)
-    , m_updateAction(RUA_NONE)
+    , m_updateAction(UpdateAction::NONE)
     , m_drawTrace(true)
 {}
 
@@ -174,23 +174,23 @@ void TracerBase::addPattern(std::string&, std::istream& stream)
     Pattern::Kind kind;
     if (patternType == "A")
     {
-        kind = Pattern::PK_OPERATION;
+        kind = Pattern::Kind::OPERATION;
     }
     else if (patternType == "I")
     {
-        kind = Pattern::PK_EVENT;
+        kind = Pattern::Kind::EVENT;
     }
     else if (patternType == "R")
     {
-        kind = Pattern::PK_RULE;
+        kind = Pattern::Kind::RULE;
     }
     else if (patternType == "K")
     {
-        kind = Pattern::PK_KEYBOARD;
+        kind = Pattern::Kind::KEYBOARD;
     }
     else
     {
-        kind = Pattern::PK_UNDEFINED;
+        kind = Pattern::Kind::UNDEFINED;
     }
 
     LPPattern pPattern = rdo::Factory<Pattern>::create(kind);
@@ -218,7 +218,7 @@ void TracerBase::addOperation(std::string&, std::istream& stream)
     LPOperationBase pOperationBase;
     QString name = QString::fromStdString(operationName);
 
-    if (pPattern->getKind() != Pattern::PK_RULE && pPattern->getKind() != Pattern::PK_EVENT)
+    if (pPattern->getKind() != Pattern::Kind::RULE && pPattern->getKind() != Pattern::Kind::EVENT)
     {
         pOperationBase = rdo::Factory<Operation>::create(pPattern, name);
     }
@@ -227,7 +227,7 @@ void TracerBase::addOperation(std::string&, std::istream& stream)
         pOperationBase = rdo::Factory<Event>::create(pPattern, name);
     }
 
-    if (pPattern->getKind() != Pattern::PK_EVENT)
+    if (pPattern->getKind() != Pattern::Kind::EVENT)
     {
         m_operationList.push_back(pOperationBase);
     }
@@ -250,25 +250,25 @@ void TracerBase::addResult(std::string& s, std::istream& stream)
     Result::Kind kind;
     if (resultKind == "watch_par")
     {
-        kind = Result::RK_WATCHPAR;
+        kind = Result::Kind::WATCHPAR;
     }
     else if (resultKind == "watch_state")
     {
-        kind = Result::RK_WATCHSTATE;
+        kind = Result::Kind::WATCHSTATE;
     }
     else if (resultKind == "watch_quant")
     {
-        kind = Result::RK_WATCHQUANT;
+        kind = Result::Kind::WATCHQUANT;
     }
     else if (resultKind == "watch_value")
     {
-        kind = Result::RK_WATCHVALUE;
+        kind = Result::Kind::WATCHVALUE;
     }
     else
     {
-        kind = Result::RK_UNDEFINED;
+        kind = Result::Kind::UNDEFINED;
     }
-    ASSERT(kind != Result::RK_UNDEFINED);
+    ASSERT(kind != Result::Kind::UNDEFINED);
 
     LPResult pResult = rdo::Factory<Result>::create(QString::fromStdString(s), kind, resultID);
     m_resultList.push_back(pResult);
@@ -313,7 +313,7 @@ void TracerBase::dispatchNextString(std::string& line)
     else if (key == "RC" || key == "SRC")
     {
         m_pResource = resourceCreation(line, pTimeNow);
-        m_updateAction = RUA_ADD;
+        m_updateAction = UpdateAction::ADD;
 #ifdef RDOSIM_COMPATIBLE
     }
     else if (key == "RE" || key == "SRE")
@@ -327,7 +327,7 @@ void TracerBase::dispatchNextString(std::string& line)
             m_pChartTree->addResource(m_pResource);
             m_pResource = resourceElimination(copy2, pTimeNow);
         }
-        m_updateAction = RUA_UPDATE;
+        m_updateAction = UpdateAction::UPDATE;
     }
     else if (key == "RK" || key == "SRK")
     {
@@ -336,7 +336,7 @@ void TracerBase::dispatchNextString(std::string& line)
         if (!res)
         {
             m_pResource = resourceCreation(copy, pTimeNow);
-            m_updateAction = RUA_ADD;
+            m_updateAction = UpdateAction::ADD;
         }
 #else
     }
@@ -354,7 +354,7 @@ void TracerBase::dispatchNextString(std::string& line)
         if (re)
         {
             m_pResource = resourceElimination(copy1, pTimeNow);
-            m_updateAction = RUA_UPDATE;
+            m_updateAction = UpdateAction::UPDATE;
         }
 #endif
     }
@@ -669,18 +669,18 @@ void TracerBase::getTraceString(std::string trace_string)
         m_pLog->view().push_back(trace_string);
     }
 
-    m_updateAction = RUA_NONE;
+    m_updateAction = UpdateAction::NONE;
     m_pResource    = NULL;
 
     dispatchNextString(trace_string);
 
     switch (m_updateAction)
     {
-    case RUA_ADD:
+    case UpdateAction::ADD:
         m_pChartTree->addResource(m_pResource);
         break;
 
-    case RUA_UPDATE:
+    case UpdateAction::UPDATE:
         m_pChartTree->updateResource(m_pResource);
         break;
 

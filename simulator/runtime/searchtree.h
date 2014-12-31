@@ -56,15 +56,13 @@ public:
 
     void ExpandChildren();
 
-        enum NodeFoundInfo
+    enum class NodeFoundInfo
     {
-        nfi_notfound     = 0,
-        nfi_found_better = 1,
-        nfi_found_loser  = 2
+        NOT_FOUND,
+        FOUND_BETTER,
+        FOUND_LOSER
     };
 
-    // TODO задокументировать функцию
-    // return 0 - no such simulator, 1 - exist better, 2 - exist not better
     NodeFoundInfo CheckIfExistBetter(const LPRDORuntime& pChildRuntime, double useCost, TreeNode** better );
     void ReCostSubTree(double cost);
 

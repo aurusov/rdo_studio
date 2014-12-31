@@ -424,11 +424,11 @@ LPTypeInfo RDOFUNArithm::getPreType(const LPRDOFUNArithm& pSecond)
 {
     if (typeID() == rdo::runtime::RDOType::Type::UNKNOW)
     {
-        RDOParser::s_parser()->error().error(src_info(), rdo::format("Внутренная ошибка парсера: неопределенное значение арифметического выражения: %s", src_text().c_str()));
+        RDOParser::s_parser()->error().error(src_info(), rdo::format("Внутренняя ошибка парсера: неопределенное значение арифметического выражения: %s", src_text().c_str()));
     }
     if (pSecond->typeID() == rdo::runtime::RDOType::Type::UNKNOW)
     {
-        RDOParser::s_parser()->error().error(pSecond->src_info(), rdo::format("Внутренная ошибка парсера: неопределенное значение арифметического выражения: %s", pSecond->src_text().c_str()));
+        RDOParser::s_parser()->error().error(pSecond->src_info(), rdo::format("Внутренняя ошибка парсера: неопределенное значение арифметического выражения: %s", pSecond->src_text().c_str()));
     }
     if (typeID() == rdo::runtime::RDOType::Type::IDENTIFICATOR)
     {
@@ -1413,7 +1413,7 @@ RDOFUNFunctionListElementEq::RDOFUNFunctionListElementEq(const YYLTYPE& position
 
 rdo::runtime::LPRDOCalcConst RDOFUNFunctionListElementEq::createResultCalc(const LPTypeInfo& /*pRetType*/, const RDOParserSrcInfo& src_pos) const
 {
-    RDOParser::s_parser()->error().error(src_pos, "Внутренная ошибка парсера: RDOFUNFunctionListElementEq::createResultCalc");
+    RDOParser::s_parser()->error().error(src_pos, "Внутренняя ошибка парсера: RDOFUNFunctionListElementEq::createResultCalc");
     NEVER_REACH_HERE;
     return NULL;
 }
@@ -1751,7 +1751,7 @@ LPRDOFUNLogic RDOFUNGroupLogic::createFunLogic(LPRDOFUNLogic& pCondition)
     case Type::NOTEXIST : setSrcText("NotExist("  + getResType()->name() + ": " + pCondition->src_text() + ")"); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcNotExist >::create(getResType()->getNumber(), pCondition->getCalc()); break;
     case Type::FORALL   : setSrcText("ForAll("    + getResType()->name() + ": " + pCondition->src_text() + ")"); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcForAll   >::create(getResType()->getNumber(), pCondition->getCalc()); break;
     case Type::NOTFORALL: setSrcText("NotForAll(" + getResType()->name() + ": " + pCondition->src_text() + ")"); pCalc = rdo::Factory<rdo::runtime::RDOFunCalcNotForAll>::create(getResType()->getNumber(), pCondition->getCalc()); break;
-    default: RDOParser::s_parser()->error().error(src_info(), "Внутренная ошибка: несуществующий тип функции");
+    default: RDOParser::s_parser()->error().error(src_info(), "Внутренняя ошибка: несуществующий тип функции");
     }
     end();
 
@@ -1871,7 +1871,7 @@ Context::LPFindResult RDOFUNSelect::onFindContext(const std::string& method, con
             break;
         }
         default:
-            RDOParser::s_parser()->error().error(srcInfo, "Внутренная ошибка: неизвестный метод для списка ресурсов");
+            RDOParser::s_parser()->error().error(srcInfo, "Внутренняя ошибка: неизвестный метод для списка ресурсов");
             break;
         }
         ASSERT(selectCalc);

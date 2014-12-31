@@ -43,15 +43,15 @@ public:
 private:
     typedef  QTreeWidget  parent_type;
 
-    enum IconType
+    enum class IconType
     {
-        IT_ROOT       = 0,
-        IT_SUB_ROOT_1,
-        IT_SUB_ROOT_2,
-        IT_SUB_ROOT_3,
-        IT_VALUE,
-        IT_ERASED,
-        IT_COUNT
+        ROOT = 0,
+        SUB_ROOT_1,
+        SUB_ROOT_2,
+        SUB_ROOT_3,
+        VALUE,
+        ERASED,
+        COUNT
     };
     typedef  std::vector<QIcon>  IconList;
 

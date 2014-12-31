@@ -88,7 +88,7 @@ RDOPMDWatchPar::RDOPMDWatchPar(const RDOParserSrcInfo& src_info, bool trace, con
         Converter::s_converter()->error().push_only(pParam->getType()->src_info(), "См. тип параметра");
         Converter::s_converter()->error().push_done();
     }
-    
+
     rdo::runtime::LPRDOCalcConst pResID = rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(pResource->getID()));
     endOfCreation(rdo::Factory<rdo::runtime::RDOPMDWatchPar>::create(Converter::s_converter()->runtime(), src_text(), trace, res_src_info.src_text(), par_src_info.src_text(), pResID, pResource->getType()->getRTPParamNumber(par_src_info.src_text())));
 }
@@ -127,7 +127,7 @@ RDOPMDWatchTemp::RDOPMDWatchTemp(const RDOParserSrcInfo& src_info, const RDOPars
 RDOPMDWatchQuant::RDOPMDWatchQuant(const RDOParserSrcInfo& src_info, bool trace, const RDOParserSrcInfo& res_type_src_info)
     : RDOPMDWatchTemp(src_info, res_type_src_info)
 {
-    LPRDOFUNGroupLogic pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(res_type_src_info.src_text()));
+    LPRDOFUNGroupLogic pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::Type::UNKNOW, RDOParserSrcInfo(res_type_src_info.src_text()));
     ASSERT(pGroupLogic);
     endOfCreation(rdo::Factory<rdo::runtime::RDOPMDWatchQuant>::create(Converter::s_converter()->runtime(), src_text(), trace, res_type_src_info.src_text(), pGroupLogic->getResType()->getNumber()));
 }
@@ -154,7 +154,7 @@ void RDOPMDWatchQuant::setLogicNoCheck()
 RDOPMDWatchValue::RDOPMDWatchValue(const RDOParserSrcInfo& src_info, bool trace, const RDOParserSrcInfo& res_type_src_info)
     : RDOPMDWatchTemp(src_info, res_type_src_info)
 {
-    LPRDOFUNGroupLogic pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(res_type_src_info.src_text()));
+    LPRDOFUNGroupLogic pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::Type::UNKNOW, RDOParserSrcInfo(res_type_src_info.src_text()));
     ASSERT(pGroupLogic);
     endOfCreation(rdo::Factory<rdo::runtime::RDOPMDWatchValue>::create(Converter::s_converter()->runtime(), src_text(), trace, res_type_src_info.src_text(), pGroupLogic->getResType()->getNumber()));
 }

@@ -32,7 +32,7 @@ void Error::warning(const RDOParserSrcInfo& src_info, const std::string& message
     if (blocked())
         return;
 
-    m_errorList.push_back(rdo::simulation::report::FileMessage(message, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, FileMessage::MT_WARNING));
+    m_errorList.push_back(rdo::simulation::report::FileMessage(message, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, FileMessage::Type::MESSAGE_WARNING));
 }
 
 void Error::push_only(const RDOParserSrcInfo& src_info, const std::string& message)

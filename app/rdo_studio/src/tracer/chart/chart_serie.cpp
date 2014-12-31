@@ -12,7 +12,7 @@ using namespace rdo::gui::tracer;
 // --------------------------------------------------------------------------------
 ChartSerie::Options::Options()
     : color            (QColor(0x00, 0x00, 0x00))
-    , markerType       (Serie::M_NONE)
+    , markerType       (Serie::Marker::NONE)
     , markerSize       (4)
     , markerNeedDraw   (true)
     , markerTransparent(true)

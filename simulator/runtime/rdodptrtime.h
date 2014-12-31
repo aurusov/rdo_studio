@@ -15,7 +15,7 @@ class RDODPTSearchRuntime: public RDODPTSearchTrace
 DECLARE_FACTORY(RDODPTSearchRuntime);
 
 private:
-    RDODPTSearchRuntime(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent, const LPRDOCalc& _pCondition, const LPRDOCalc& _pTermCondition, const LPRDOCalc& _pEvaluateBy, bool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag);
+    RDODPTSearchRuntime(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent, const LPRDOCalc& _pCondition, const LPRDOCalc& _pTermCondition, const LPRDOCalc& _pEvaluateBy, bool _compTops, RDODPTSearchTrace::TraceFlag _traceFlag);
 
     LPRDOCalc pCondition;
     LPRDOCalc pTermCondition;

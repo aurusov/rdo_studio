@@ -35,11 +35,11 @@ protected:
     virtual void      onSearchResultNotFound(const LPRDORuntime& pRuntime, TreeRoot* treeRoot ) = 0;
     virtual bool      NeedCompareTops       ()                                                  = 0;
     virtual TreeRoot* createTreeRoot        (const LPRDORuntime& pRuntime)                      = 0;
-    virtual BOResult  onContinue            (const LPRDORuntime& pRuntime);
+    virtual ResultCode  onContinue            (const LPRDORuntime& pRuntime);
 
 private:
     TreeRoot* treeRoot;
-    virtual BOResult onDoOperation(const LPRDORuntime& pRuntime);
+    virtual ResultCode onDoOperation(const LPRDORuntime& pRuntime);
 
     DECLARE_IDPTSearchLogic;
 };

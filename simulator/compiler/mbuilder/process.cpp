@@ -35,7 +35,7 @@ bool BlockForQueue::checkType(RDOResType rtp, const parser::RDOParserSrcInfo& /*
 
     parser::LPRDORTPResType pResType = parser::RDOParser::s_parser()->findRTPResType(rtp.name());
     ASSERT(pResType);
-    pResType->setSubtype(parser::RDORTPResType::RT_PROCESS_RESOURCE);
+    pResType->setSubtype(parser::RDORTPResType::Subtype::PROCESS_RESOURCE);
 
     return true;
 }
@@ -66,7 +66,7 @@ RDOResType BlockForQueue::createType(const std::string& rtp_name, const parser::
     {
         parser::LPRDORTPResType pResType = parser::RDOParser::s_parser()->findRTPResType(rtp_name);
         ASSERT(pResType);
-        pResType->setSubtype(parser::RDORTPResType::RT_PROCESS_RESOURCE);
+        pResType->setSubtype(parser::RDORTPResType::Subtype::PROCESS_RESOURCE);
     }
     return rtp;
 }
@@ -98,7 +98,7 @@ bool BlockForSeize::checkType(RDOResType rtp, const parser::RDOParserSrcInfo& in
 
     parser::LPRDORTPResType pResType = parser::RDOParser::s_parser()->findRTPResType(rtp.name());
     ASSERT(pResType);
-    pResType->setSubtype(parser::RDORTPResType::RT_PROCESS_RESOURCE);
+    pResType->setSubtype(parser::RDORTPResType::Subtype::PROCESS_RESOURCE);
 
     return true;
 }
@@ -158,7 +158,7 @@ RDOResType BlockForSeize::createType(const std::string& rtp_name, const parser::
     {
         parser::LPRDORTPResType pResType = parser::RDOParser::s_parser()->findRTPResType(rtp_name);
         ASSERT(pResType);
-        pResType->setSubtype(parser::RDORTPResType::RT_PROCESS_RESOURCE);
+        pResType->setSubtype(parser::RDORTPResType::Subtype::PROCESS_RESOURCE);
     }
     return rtp;
 }

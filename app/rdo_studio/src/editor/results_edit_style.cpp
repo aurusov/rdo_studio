@@ -150,7 +150,7 @@ ResultsStyle ResultsStyle::getTwilightStyle()
     style.identifierStyle = StyleFont::NONE;
     style.keywordStyle    = StyleFont::BOLD;
     style.functionsStyle  = StyleFont::BOLD;
-    style.traceStyle      = static_cast<StyleFont::style>(StyleFont::BOLD | StyleFont::ITALIC);
+    style.traceStyle      = static_cast<StyleFont::Style>(StyleFont::BOLD | StyleFont::ITALIC);
     style.colorStyle      = StyleFont::BOLD;
     style.commentStyle    = StyleFont::ITALIC;
     style.numberStyle     = StyleFont::NONE;

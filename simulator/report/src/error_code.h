@@ -8,14 +8,14 @@ namespace rdo {
 namespace simulation {
 namespace report {
 
-enum RDOExitCode
+enum class ExitCode
 {
-    EC_OK = 0, // Модель скомпилировалась или завершилась без ошибок
-    EC_ParserError, // Компиляция завершилась с ошибкой
-    EC_RunTimeError, // Прогон модели завершился с ошибкой
-    EC_UserBreak, // Модель остановлена пользователем
-    EC_ModelNotFound, // Файл прогона модели не найден
-    EC_NoMoreEvents // Модель завершилась потому, что больше нечего моделировать
+    OK = 0,
+    PARSER_ERROR,
+    RUNTIME_ERROR,
+    USER_BREAK,
+    MODEL_NOTFOUND,
+    NOMORE_EVENTS
 };
 
 }}} // namespace rdo::simulation::report

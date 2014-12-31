@@ -32,7 +32,7 @@ RDODPTSearch::RDODPTSearch(const LPRDORuntime& pRuntime, LPIBaseOperationContain
 RDODPTSearch::~RDODPTSearch()
 {}
 
-IBaseOperation::BOResult RDODPTSearch::onDoOperation(const LPRDORuntime& pRuntime)
+IBaseOperation::ResultCode RDODPTSearch::onDoOperation(const LPRDORuntime& pRuntime)
 {
     // Начало поиска: вывели трасировку, обновили статистику
     onSearchBegin(pRuntime);
@@ -42,7 +42,7 @@ IBaseOperation::BOResult RDODPTSearch::onDoOperation(const LPRDORuntime& pRuntim
     return onContinue(pRuntime);
 }
 
-IBaseOperation::BOResult RDODPTSearch::onContinue(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDODPTSearch::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
     uint32_t time_begin = ::GetTickCount();
     for (;;)
@@ -55,7 +55,7 @@ IBaseOperation::BOResult RDODPTSearch::onContinue(const LPRDORuntime& /*pRuntime
         uint32_t time_current = ::GetTickCount();
         if (time_current - time_begin > 1000 / 40)
         {
-            return BOR_must_continue;
+            return ResultCode::MUST_CONTINUE;
         }
     }
 
@@ -98,7 +98,7 @@ IBaseOperation::BOResult RDODPTSearch::onContinue(const LPRDORuntime& /*pRuntime
     delete treeRoot->m_rootNode;
     delete treeRoot;
     treeRoot = NULL;
-    return success ? IBaseOperation::BOR_done : IBaseOperation::BOR_cant_run;
+    return success ? IBaseOperation::ResultCode::DONE : IBaseOperation::ResultCode::CANNOT_RUN;
 }
 
 void RDODPTSearch::addActivity(LPIDPTSearchActivity activity)

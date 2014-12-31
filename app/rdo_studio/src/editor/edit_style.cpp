@@ -356,7 +356,7 @@ QSettings& operator>> (QSettings& settings, EditStyle& style)
     style.selectionBgColor = QColor(settings.value("selection_bg_color", style.selectionBgColor.name()).toString());
     style.bookmarkFgColor  = QColor(settings.value("bookmark_fg_color", style.bookmarkFgColor.name()).toString());
     style.bookmarkBgColor  = QColor(settings.value("bookmark_bg_color", style.bookmarkBgColor.name()).toString());
-    style.defaultStyle     = static_cast<StyleFont::style>(settings.value("default_style", style.defaultStyle).toInt());
+    style.defaultStyle     = static_cast<StyleFont::Style>(settings.value("default_style", style.defaultStyle).toInt());
     style.bookmarkStyle    = static_cast<EditStyle::Bookmark>(settings.value("bookmark_style", static_cast<int>(style.bookmarkStyle)).toInt());
     settings.endGroup();
 

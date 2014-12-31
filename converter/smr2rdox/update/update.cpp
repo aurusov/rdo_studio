@@ -14,31 +14,29 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 DocUpdate::DocUpdate(IDocument::Type file)
     : m_file(file)
 {
-    if (m_file == IDocument::UNDEFINED)
-    {
+    if (m_file == IDocument::Type::UNDEFINED)
         m_file = getCurrentType();
-    }
 }
 
 IDocument::Type DocUpdate::getCurrentType() const
 {
     switch (Converter::getFileToParse())
     {
-    case rdo::converter::smr2rdox::PAT_IN: return IDocument::PAT;
-    case rdo::converter::smr2rdox::RTP_IN: return IDocument::RTP;
-    case rdo::converter::smr2rdox::RSS_IN: return IDocument::RSS;
-    case rdo::converter::smr2rdox::OPR_IN: return IDocument::OPR;
-    case rdo::converter::smr2rdox::FRM_IN: return IDocument::FRM;
-    case rdo::converter::smr2rdox::FUN_IN: return IDocument::FUN;
-    case rdo::converter::smr2rdox::DPT_IN: return IDocument::DPT;
-    case rdo::converter::smr2rdox::SMR_IN: return IDocument::SMR;
-    case rdo::converter::smr2rdox::PMD_IN: return IDocument::PMD;
-    case rdo::converter::smr2rdox::PMV_IN: return IDocument::PMV;
-    case rdo::converter::smr2rdox::TRC_IN: return IDocument::TRC;
+    case rdo::converter::smr2rdox::FileTypeIn::PAT: return IDocument::Type::PAT;
+    case rdo::converter::smr2rdox::FileTypeIn::RTP: return IDocument::Type::RTP;
+    case rdo::converter::smr2rdox::FileTypeIn::RSS: return IDocument::Type::RSS;
+    case rdo::converter::smr2rdox::FileTypeIn::OPR: return IDocument::Type::OPR;
+    case rdo::converter::smr2rdox::FileTypeIn::FRM: return IDocument::Type::FRM;
+    case rdo::converter::smr2rdox::FileTypeIn::FUN: return IDocument::Type::FUN;
+    case rdo::converter::smr2rdox::FileTypeIn::DPT: return IDocument::Type::DPT;
+    case rdo::converter::smr2rdox::FileTypeIn::SMR: return IDocument::Type::SMR;
+    case rdo::converter::smr2rdox::FileTypeIn::PMD: return IDocument::Type::PMD;
+    case rdo::converter::smr2rdox::FileTypeIn::PMV: return IDocument::Type::PMV;
+    case rdo::converter::smr2rdox::FileTypeIn::TRC: return IDocument::Type::TRC;
     default: NEVER_REACH_HERE;
     }
     NEVER_REACH_HERE;
-    return IDocument::TRC;
+    return IDocument::Type::TRC;
 }
 
 // --------------------------------------------------------------------------------
@@ -195,10 +193,8 @@ UpdateMove::UpdateMove(const Position& posFromBegin, const Position& posFromEnd,
     , m_posTo       (posTo       )
     , m_fileFrom    (fileFrom    )
 {
-    if (static_cast<int>(m_fileFrom) == static_cast<int>(rdo::converter::smr2rdox::UNDEFINED_OUT))
-    {
+    if (static_cast<int>(m_fileFrom) == static_cast<int>(rdo::converter::smr2rdox::FileTypeOut::UNDEFINED))
         m_fileFrom = getCurrentType();
-    }
 }
 
 void UpdateMove::dump(LPIDocument& pDocument) const

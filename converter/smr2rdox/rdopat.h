@@ -63,18 +63,18 @@ friend class RDOOPROperation;
 friend class RDODPTActivity;
 
 public:
-    enum PatType
+    enum class Type
     {
-        PT_IE,
-        PT_Rule,
-        PT_Operation,
-        PT_Keyboard
+        IE,
+        RULE,
+        OPERATION,
+        KEYBOARD
     };
-    virtual PatType getType() const = 0;
+    virtual Type getType() const = 0;
 
     typedef std::vector<LPRDORelevantResource> RelResList;
 
-    bool isHaveConvertEnd() const { return getType() == PT_Operation || getType() == PT_Keyboard; }
+    bool isHaveConvertEnd() const { return getType() == Type::OPERATION || getType() == Type::KEYBOARD; }
 
     const rdo::runtime::LPRDOPattern& getPatRuntime() const { return m_pPatRuntime; }
     template<class T>
@@ -145,14 +145,14 @@ private:
     LPRDOFUNArithm m_pCommonChoice;
     std::size_t m_currentRelResIndex;
 
-    std::string typeToString(PatType type)
+    std::string typeToString(Type type)
     {
         switch (type)
         {
-        case PT_IE       : return "нерегулярное событие";
-        case PT_Rule     : return "продукционное правило";
-        case PT_Operation: return "операция";
-        case PT_Keyboard : return "клавиатурная операция";
+        case Type::IE       : return "нерегулярное событие";
+        case Type::RULE     : return "продукционное правило";
+        case Type::OPERATION: return "операция";
+        case Type::KEYBOARD : return "клавиатурная операция";
         default          : return "неизвестный";
         }
     }
@@ -173,10 +173,10 @@ public:
     virtual char getModelStructureLetter() const
     {
         return 'I';
-    };
-    virtual PatType getType() const
+    }
+    virtual Type getType() const
     {
-        return PT_IE;
+        return Type::IE;
     }
 
 protected:
@@ -199,10 +199,10 @@ public:
     virtual char getModelStructureLetter() const
     {
         return 'R';
-    };
-    virtual PatType getType() const
+    }
+    virtual Type getType() const
     {
-        return PT_Rule;
+        return Type::RULE;
     }
 
 protected:
@@ -227,10 +227,10 @@ public:
     virtual char getModelStructureLetter() const
     {
         return 'A';
-    };
-    virtual PatType getType() const
+    }
+    virtual Type getType() const
     {
-        return PT_Operation;
+        return Type::OPERATION;
     }
 
 protected:
@@ -246,11 +246,11 @@ protected:
 private:
     RDOPatternOperation(const RDOParserSrcInfo& name_src_info, bool trace);
 
-    enum ConvertorType
+    enum class ConvertorType
     {
-        convert_unknow,
-        convert_begin,
-        convert_end
+        UNKNOWN,
+        CONVERT_BEGIN,
+        CONVERT_END
     };
     ConvertorType m_convertorType;
 };
@@ -265,10 +265,10 @@ public:
     virtual char getModelStructureLetter() const
     {
         return 'K';
-    };
-    virtual PatType getType() const
+    }
+    virtual Type getType() const
     {
-        return PT_Keyboard;
+        return Type::KEYBOARD;
     }
 
 private:
@@ -295,22 +295,27 @@ public:
     const rdo::runtime::RDOResource::ConvertStatus m_statusBegin;
     const rdo::runtime::RDOResource::ConvertStatus m_statusEnd;
 
-    enum
+    enum class State
     {
-        stateNone = 0,
-        choiceEmpty,
-        choiceNoCheck,
-        choiceFrom,
-        choiceOrderEmpty,
-        choiceOrderFirst,
-        choiceOrderWithMin,
-        choiceOrderWithMax,
-        convertBegin,
-        convertEnd
-    } m_currentState;
-    bool isChoiceFromState() const { return m_currentState == choiceEmpty || m_currentState == choiceNoCheck || m_currentState == choiceFrom; }
+        NONE = 0,
+        EMPTY,
+        CHOICE_NOCHECK,
+        CHOICE_FROM,
+        CHOICE_ORDER_EMPTY,
+        CHOICE_ORDER_FIRST,
+        CHOICE_ORDER_WITH_MIN,
+        CHOICE_ORDER_WITH_MAX,
+        CONVERT_BEGIN,
+        CONVERT_END
+    };
+    State m_currentState;
 
-    const std::string& name() const { return src_text(); };
+    bool isChoiceFromState() const
+    {
+        return m_currentState == State::EMPTY || m_currentState == State::CHOICE_NOCHECK || m_currentState == State::CHOICE_FROM;
+    }
+
+    const std::string& name() const { return src_text(); }
     virtual LPRDORTPResType getType() const = 0;
 
     virtual rdo::runtime::LPRDOCalc                  createPreSelectRelResCalc           () = 0; // Предварительный выбор ресурсов в самом списке рел. ресурсов
@@ -360,12 +365,12 @@ public:
 
 protected:
     RDORelevantResource(const RDOParserSrcInfo& src_info, const int relResID, const rdo::runtime::RDOResource::ConvertStatus statusBegin, const rdo::runtime::RDOResource::ConvertStatus statusEnd)
-        : RDOParserSrcInfo      (src_info   )
-        , m_relResID            (relResID   )
-        , m_alreadyHaveConverter(false      )
+        : RDOParserSrcInfo      (src_info)
+        , m_relResID            (relResID)
+        , m_alreadyHaveConverter(false)
         , m_statusBegin         (statusBegin)
-        , m_statusEnd           (statusEnd  )
-        , m_currentState        (stateNone  )
+        , m_statusEnd           (statusEnd)
+        , m_currentState        (State::NONE)
     {}
 
     rdo::runtime::LPRDOCalc                   getChoiceCalc();
@@ -386,12 +391,13 @@ class RDOPATChoiceFrom
 {
 DECLARE_FACTORY(RDOPATChoiceFrom)
 public:
-    enum Type
+    enum class Type
     {
-        ch_empty = 0,
-        ch_nocheck,
-        ch_from
-    } m_type;
+        EMPTY = 0,
+        NOCHECK,
+        FROM
+    };
+    Type m_type;
 
     LPRDOFUNLogic m_pLogic;
 
@@ -421,10 +427,10 @@ public:
     {
         switch (m_type)
         {
-        case rdo::runtime::RDOSelectResourceCalc::order_empty   : return "<правило_выбора_не_указано>";
-        case rdo::runtime::RDOSelectResourceCalc::order_first   : return "first";
-        case rdo::runtime::RDOSelectResourceCalc::order_with_min: return "with_min";
-        case rdo::runtime::RDOSelectResourceCalc::order_with_max: return "with_max";
+        case rdo::runtime::RDOSelectResourceCalc::Type::EMPTY   : return "<правило_выбора_не_указано>";
+        case rdo::runtime::RDOSelectResourceCalc::Type::FIRST   : return "first";
+        case rdo::runtime::RDOSelectResourceCalc::Type::WITH_MIN: return "with_min";
+        case rdo::runtime::RDOSelectResourceCalc::Type::WITH_MAX: return "with_max";
         default                                               : NEVER_REACH_HERE;
         }
         return std::string();
@@ -455,7 +461,7 @@ public:
     virtual bool isDirect() const { return true; }
 
 private:
-    RDORelevantResourceDirect(const RDOParserSrcInfo& src_info, const int relResID, const LPRDORSSResource& pResource, const rdo::runtime::RDOResource::ConvertStatus statusBegin, const rdo::runtime::RDOResource::ConvertStatus statusEnd = rdo::runtime::RDOResource::CS_NoChange)
+    RDORelevantResourceDirect(const RDOParserSrcInfo& src_info, const int relResID, const LPRDORSSResource& pResource, const rdo::runtime::RDOResource::ConvertStatus statusBegin, const rdo::runtime::RDOResource::ConvertStatus statusEnd = rdo::runtime::RDOResource::ConvertStatus::NOCHANGE)
         : RDORelevantResource(src_info, relResID, statusBegin, statusEnd)
         , m_pResource        (pResource)
     {}
@@ -481,7 +487,7 @@ public:
     virtual bool isDirect() const { return false; }
 
 private:
-    RDORelevantResourceByType(const RDOParserSrcInfo& src_info, const int relResID, LPRDORTPResType pResType, const rdo::runtime::RDOResource::ConvertStatus statusBegin, const rdo::runtime::RDOResource::ConvertStatus statusEnd = rdo::runtime::RDOResource::CS_NoChange)
+    RDORelevantResourceByType(const RDOParserSrcInfo& src_info, const int relResID, LPRDORTPResType pResType, const rdo::runtime::RDOResource::ConvertStatus statusBegin, const rdo::runtime::RDOResource::ConvertStatus statusEnd = rdo::runtime::RDOResource::ConvertStatus::NOCHANGE)
         : RDORelevantResource(src_info, relResID, statusBegin, statusEnd)
         , m_pResType         (pResType)
     {}

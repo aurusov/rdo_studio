@@ -199,8 +199,8 @@ class RDODPTSearchActivity: public RDODPTActivity
 {
 DECLARE_FACTORY(RDODPTSearchActivity);
 public:
-    IDPTSearchActivity::ValueTime getValue() const { return m_value; }
-    void                          setValue(IDPTSearchActivity::ValueTime value,
+    IDPTSearchActivity::CostTime getValue() const { return m_value; }
+    void                          setValue(IDPTSearchActivity::CostTime value,
                                            const LPRDOFUNArithm&         pRuleCost,
                                            const YYLTYPE&                param_pos);
 
@@ -209,7 +209,7 @@ public:
 private:
     RDODPTSearchActivity(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info);
 
-    IDPTSearchActivity::ValueTime  m_value;
+    IDPTSearchActivity::CostTime  m_value;
     LPRDOFUNArithm                 m_pRuleCost;
 };
 DECLARE_POINTER(RDODPTSearchActivity);
@@ -233,7 +233,7 @@ public:
     bool closed() const { return m_closed; }
 
 private:
-    RDODPTSearch(const RDOParserSrcInfo& src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace = rdo::runtime::RDODPTSearchTrace::DPT_no_trace, LPILogic pParent = NULL);
+    RDODPTSearch(const RDOParserSrcInfo& src_info, rdo::runtime::RDODPTSearchTrace::TraceFlag trace = rdo::runtime::RDODPTSearchTrace::TraceFlag::NO_TRACE, LPILogic pParent = NULL);
 
     LPRDOFUNLogic m_pConditon;
     LPRDOFUNLogic m_pTermConditon;
@@ -241,7 +241,7 @@ private:
     LPILogic m_pParent;
     bool m_compTops;
     bool m_closed;
-    rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag m_trace;
+    rdo::runtime::RDODPTSearchTrace::TraceFlag m_trace;
 };
 
 // --------------------------------------------------------------------------------

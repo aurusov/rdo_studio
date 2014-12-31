@@ -19,13 +19,13 @@ class RPShapeDataBlock: public rdo::counter_reference
 {
 DECLARE_FACTORY(RPShapeDataBlock);
 public:
-    enum zakonRaspr
+    enum class RandomDistribution
     {
-        Const,
-        Normal,
-        Uniform,
-        Exp,
-        Triangular
+        CONST,
+        NORMAL,
+        UNIFORM,
+        EXPONENTIAL,
+        TRIANGULAR
     };
 
     void setBase(int base);
@@ -33,7 +33,7 @@ public:
     void setExp(double exp);
     void setMax(double max);
 
-    zakonRaspr getZakon() const { return m_zakon; }
+    RandomDistribution getRandomDistribution() const { return m_randomDistribution; }
     const std::string& getName () const { return m_name; }
     int getBase() const { return m_base; }
     double getDisp() const { return m_disp; }
@@ -41,10 +41,10 @@ public:
     double getMax() const { return m_max; }
 
 protected:
-    RPShapeDataBlock(zakonRaspr zakon, const std::string& name);
+    RPShapeDataBlock(RandomDistribution randomDistribution, const std::string& name);
     virtual ~RPShapeDataBlock() {}
 
-    zakonRaspr m_zakon;
+    RandomDistribution m_randomDistribution;
     std::string m_name;
     int m_base;
     double m_exp;
@@ -66,7 +66,7 @@ public:
     void setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics);
 
 private:
-    RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, const std::string& name);
+    RPShapeDataBlockCreate(RPShapeDataBlock::RandomDistribution zakon, const std::string& name);
     virtual ~RPShapeDataBlockCreate();
 
     boost::optional<std::size_t> m_amount;
@@ -117,7 +117,7 @@ public:
 
     void addAction(Action action);
     void addRes(const std::string& res);
-    
+
     const ActionList& getActionList () const;
     const ResNameList& getResNameList() const;
 
@@ -125,7 +125,7 @@ public:
     void setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics);
 
 private:
-    RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, const std::string& name);
+    RPShapeDataBlockProcess(RPShapeDataBlock::RandomDistribution zakon, const std::string& name);
     virtual ~RPShapeDataBlockProcess();
 
     ActionList  m_actionList;

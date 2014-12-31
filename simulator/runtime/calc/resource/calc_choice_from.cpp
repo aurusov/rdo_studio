@@ -89,8 +89,8 @@ RDOValue RDOSelectResourceByTypeCalc::doCalc(const LPRDORuntime& pRuntime)
 
         switch (m_orderType)
         {
-        case order_empty:
-        case order_first:
+        case Type::EMPTY:
+        case Type::FIRST:
             {
                 pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
                 if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
@@ -100,7 +100,7 @@ RDOValue RDOSelectResourceByTypeCalc::doCalc(const LPRDORuntime& pRuntime)
                 }
                 return RDOValue(1);
             }
-        case order_with_min:
+        case Type::WITH_MIN:
             {
                 pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
                 if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
@@ -116,7 +116,7 @@ RDOValue RDOSelectResourceByTypeCalc::doCalc(const LPRDORuntime& pRuntime)
                 }
                 break;
             }
-        case order_with_max:
+        case Type::WITH_MAX:
             {
                 pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
                 if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())

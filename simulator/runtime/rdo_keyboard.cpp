@@ -42,9 +42,9 @@ IKeyboard::AddHotKeyResult RDOKeyboard::addHotKey(const LPRDORuntime& pRuntime, 
 {
     RDOHotKey::KeyCode scanCode = pRuntime->hotkey().toolkit().codeFromString(hotKey);
     if (scanCode   == RDOHotKey::UNDEFINED_KEY)
-        return IKeyboard::addhk_notfound;
+        return IKeyboard::AddHotKeyResult::NOTFOUND;
     if (m_scan_code != RDOHotKey::UNDEFINED_KEY && scanCode != VK_SHIFT && scanCode != VK_CONTROL)
-        return IKeyboard::addhk_already;
+        return IKeyboard::AddHotKeyResult::ALREADY;
     switch (scanCode)
     {
     case VK_SHIFT:
@@ -63,7 +63,7 @@ IKeyboard::AddHotKeyResult RDOKeyboard::addHotKey(const LPRDORuntime& pRuntime, 
         }
         break;
     }
-    return IKeyboard::addhk_ok;
+    return IKeyboard::AddHotKeyResult::OK;
 }
 
 bool RDOKeyboard::choiceFrom(const LPRDORuntime& pRuntime)

@@ -93,7 +93,7 @@ void ChartDoc::incTimeEventsCount(Time* time)
     if (!m_docTimes.empty() && m_docTimes.back() == time)
     {
         m_ticksCount++;
-        updateChartViews(U_TIME_TICKS);
+        updateChartViews(Update::TIME_TICKS);
     }
 }
 
@@ -118,7 +118,7 @@ bool ChartDoc::newValueToSerieAdded(Value* val)
             }
         }
     }
-    updateChartViews(U_NEW_VALUE);
+    updateChartViews(Update::NEW_VALUE);
 
     return true;
 }
@@ -216,7 +216,7 @@ void ChartDoc::addSerie(const LPSerie& pSerie)
             ASSERT(pView);
             pView->setYAxis(pDocSerie);
         }
-        updateChartViews(U_NEW_SERIE);
+        updateChartViews(Update::NEW_SERIE);
     }
 }
 
@@ -282,20 +282,20 @@ Serie::Marker ChartDoc::selectMarker()
     int count = m_serieList.size();
     int mul = count / 4;
     int index = count - mul * 4;
-    Serie::Marker res = Serie::M_CIRCLE;
+    Serie::Marker res = Serie::Marker::CIRCLE;
     switch (index)
     {
     case 0:
-        res = Serie::M_CIRCLE;
+        res = Serie::Marker::CIRCLE;
         break;
     case 1:
-        res = Serie::M_SQUARE;
+        res = Serie::Marker::SQUARE;
         break;
     case 2:
-        res = Serie::M_TRIANG;
+        res = Serie::Marker::TRIANG;
         break;
     case 3:
-        res = Serie::M_CROSS;
+        res = Serie::Marker::CROSS;
         break;
     };
     return res;

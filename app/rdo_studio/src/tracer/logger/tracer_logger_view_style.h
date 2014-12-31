@@ -71,7 +71,7 @@ public:
 
     static LogStyle getDefaultStyle();
 
-    style::StyleFont::style fontStyle;
+    style::StyleFont::Style fontStyle;
 
     LogColorPair defaultColor;
     LogColorPair es;

@@ -91,11 +91,15 @@ private:
     LPResource getResource(std::string& line);
     LPResource resourceCreation(std::string& line, Time* const pTime);
     LPResource resourceElimination(std::string& line, Time* const pTime);
-    enum TracerResUpdateAction
+
+    enum class UpdateAction
     {
-        RUA_NONE, RUA_ADD, RUA_UPDATE
+        NONE,
+        ADD,
+        UPDATE
     };
-    TracerResUpdateAction m_updateAction;
+    UpdateAction m_updateAction;
+
     LPResource m_pResource;
     LPResource resourceChanging(std::string& line, Time* const pTime);
 

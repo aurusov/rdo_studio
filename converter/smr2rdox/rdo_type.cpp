@@ -33,7 +33,7 @@ DECLARE_ATOM_TYPE_PARSER(STRING,        "string"       );
 // RDOType__UNKNOW
 LPRDOType RDOType__UNKNOW::type_cast(const LPRDOType& /*pFrom*/, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& /*to_src_info*/, const RDOParserSrcInfo& src_info) const
 {
-    rdo::converter::smr2rdox::g_error().error(src_info, rdo::format("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к неизвестному типу", from_src_info.src_text().c_str()));
+    rdo::converter::smr2rdox::g_error().error(src_info, rdo::format("Внутренняя ошибка парсера. Невозможно преобразовать тип '%s' к неизвестному типу", from_src_info.src_text().c_str()));
     return NULL;
 }
 
@@ -57,7 +57,7 @@ LPRDOValue RDOType__UNKNOW::get_default() const
 
 void RDOType__UNKNOW::writeModelStructure(std::ostream& /*stream*/) const
 {
-    rdo::converter::smr2rdox::g_error().error(RDOParserSrcInfo(), "Внутренная ошибка парсера. Невозможно записать неизвестный тип в отчет");
+    rdo::converter::smr2rdox::g_error().error(RDOParserSrcInfo(), "Внутренняя ошибка парсера. Невозможно записать неизвестный тип в отчет");
     NEVER_REACH_HERE;
 }
 
@@ -219,7 +219,7 @@ void RDOType__STRING::writeModelStructure(std::ostream& stream) const
 // RDOType__IDENTIFICATOR
 LPRDOType RDOType__IDENTIFICATOR::type_cast(const LPRDOType& /*pFrom*/, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& /*to_src_info*/, const RDOParserSrcInfo& src_info) const
 {
-    rdo::converter::smr2rdox::g_error().error(src_info, rdo::format("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к идентификатору", from_src_info.src_text().c_str()));
+    rdo::converter::smr2rdox::g_error().error(src_info, rdo::format("Внутренняя ошибка парсера. Невозможно преобразовать тип '%s' к идентификатору", from_src_info.src_text().c_str()));
     return NULL;
 }
 
@@ -243,7 +243,7 @@ LPRDOValue RDOType__IDENTIFICATOR::get_default() const
 
 void RDOType__IDENTIFICATOR::writeModelStructure(std::ostream& /*stream*/) const
 {
-    rdo::converter::smr2rdox::g_error().error(RDOParserSrcInfo(), "Внутренная ошибка парсера. Невозможно записать тип идектификатор в отчет");
+    rdo::converter::smr2rdox::g_error().error(RDOParserSrcInfo(), "Внутренняя ошибка парсера. Невозможно записать тип идектификатор в отчет");
     NEVER_REACH_HERE;
 }
 

@@ -69,24 +69,32 @@ DECLARE_PARSER_OBJECT_CONTAINER_NONAME(DPTFree    );
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(PROCProcess);
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(Operations );
 
-rdo::converter::smr2rdox::RDOFileTypeIn Converter::getFileToParse()
+rdo::converter::smr2rdox::FileTypeIn Converter::getFileToParse()
 {
-    return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem ? s_parserStack.back()->m_pParserItem->m_type : rdo::converter::smr2rdox::PAT_IN;
+    return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem
+            ? s_parserStack.back()->m_pParserItem->m_type
+            : rdo::converter::smr2rdox::FileTypeIn::PAT;
 }
 
 std::size_t Converter::lexer_loc_line()
 {
-    return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem ? s_parserStack.back()->m_pParserItem->lexer_loc_line() : ~0;
+    return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem
+            ? s_parserStack.back()->m_pParserItem->lexer_loc_line()
+            : ~0;
 }
 
 std::size_t Converter::lexer_loc_pos()
 {
-    return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem ? s_parserStack.back()->m_pParserItem->lexer_loc_pos() : 0;
+    return !s_parserStack.empty() && s_parserStack.back()->m_pParserItem
+            ? s_parserStack.back()->m_pParserItem->lexer_loc_pos()
+            : 0;
 }
 
 Converter* Converter::s_converter()
 {
-    return !s_parserStack.empty() ? s_parserStack.back() : NULL;
+    return !s_parserStack.empty()
+            ? s_parserStack.back()
+            : NULL;
 }
 
 Converter::Converter()
@@ -243,7 +251,7 @@ const RDOParserSMRInfo::FileList& RDOParserSMRInfo::getFileList() const
     return m_fileList;
 }
 
-void RDOParserSMRInfo::insertFileName(rdo::converter::smr2rdox::RDOFileTypeIn type,
+void RDOParserSMRInfo::insertFileName(rdo::converter::smr2rdox::FileTypeIn type,
                                       const boost::filesystem::path&          modelPath,
                                       const boost::filesystem::path&          modelName,
                                       const boost::filesystem::path&          smrFileName,
@@ -291,24 +299,20 @@ bool RDOParserSMRInfo::parseSMR(const boost::filesystem::path& smrFullFileName, 
 
     modelName = getSMR()->getFile("Model_name");
 
-    insertFileName(rdo::converter::smr2rdox::PAT_IN, smrFilePath, modelName, smrFileName, modelName,                           "pat");
-    insertFileName(rdo::converter::smr2rdox::RTP_IN, smrFilePath, modelName, smrFileName, modelName,                           "rtp");
-    insertFileName(rdo::converter::smr2rdox::RSS_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("Resource_file"),  "rss");
-    insertFileName(rdo::converter::smr2rdox::FRM_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("Frame_file"   ),  "frm");
-    insertFileName(rdo::converter::smr2rdox::FUN_IN, smrFilePath, modelName, smrFileName, modelName,                           "fun");
-    insertFileName(rdo::converter::smr2rdox::PMD_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("Statistic_file"), "pmd");
-    insertFileName(rdo::converter::smr2rdox::SMR_IN, smrFilePath, modelName, smrFileName, smrFileName,                         "smr");
-    insertFileName(rdo::converter::smr2rdox::PMV_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("Results_file"  ), "pmv");
-    insertFileName(rdo::converter::smr2rdox::TRC_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("Trace_file"    ), "trc");
+    insertFileName(rdo::converter::smr2rdox::FileTypeIn::PAT, smrFilePath, modelName, smrFileName, modelName,                           "pat");
+    insertFileName(rdo::converter::smr2rdox::FileTypeIn::RTP, smrFilePath, modelName, smrFileName, modelName,                           "rtp");
+    insertFileName(rdo::converter::smr2rdox::FileTypeIn::RSS, smrFilePath, modelName, smrFileName, getSMR()->getFile("Resource_file"),  "rss");
+    insertFileName(rdo::converter::smr2rdox::FileTypeIn::FRM, smrFilePath, modelName, smrFileName, getSMR()->getFile("Frame_file"   ),  "frm");
+    insertFileName(rdo::converter::smr2rdox::FileTypeIn::FUN, smrFilePath, modelName, smrFileName, modelName,                           "fun");
+    insertFileName(rdo::converter::smr2rdox::FileTypeIn::PMD, smrFilePath, modelName, smrFileName, getSMR()->getFile("Statistic_file"), "pmd");
+    insertFileName(rdo::converter::smr2rdox::FileTypeIn::SMR, smrFilePath, modelName, smrFileName, smrFileName,                         "smr");
+    insertFileName(rdo::converter::smr2rdox::FileTypeIn::PMV, smrFilePath, modelName, smrFileName, getSMR()->getFile("Results_file"  ), "pmv");
+    insertFileName(rdo::converter::smr2rdox::FileTypeIn::TRC, smrFilePath, modelName, smrFileName, getSMR()->getFile("Trace_file"    ), "trc");
 
     if (!getSMR()->getFile("OprIev_file").empty())
-    {
-        insertFileName(rdo::converter::smr2rdox::OPR_IN, smrFilePath, modelName, smrFileName, getSMR()->getFile("OprIev_file"  ),  "opr");
-    }
+        insertFileName(rdo::converter::smr2rdox::FileTypeIn::OPR, smrFilePath, modelName, smrFileName, getSMR()->getFile("OprIev_file"), "opr");
     else
-    {
-        insertFileName(rdo::converter::smr2rdox::DPT_IN, smrFilePath, modelName, smrFileName, modelName,                           "dpt");
-    }
+        insertFileName(rdo::converter::smr2rdox::FileTypeIn::DPT, smrFilePath, modelName, smrFileName, modelName, "dpt");
 
     return true;
 }
@@ -325,7 +329,7 @@ RDOParserModel::Result RDOParserModel::convert(const boost::filesystem::path& sm
         try
         {
             if (!pSMRParser->parseSMR(smrFullFileName, modelName))
-                return CNV_NONE;
+                return Result::NONE;
 
             info.m_modelName     = pSMRParser->getSMR()->getFile("Model_name"    );
             info.m_resourceFile  = pSMRParser->getSMR()->getFile("Resource_file" );
@@ -337,16 +341,16 @@ RDOParserModel::Result RDOParserModel::convert(const boost::filesystem::path& sm
         }
         catch (const RDOSyntaxException&)
         {
-            return CNV_NONE;
+            return Result::NONE;
         }
         catch (const rdo::runtime::RDORuntimeException&)
         {
-            return CNV_NONE;
+            return Result::NONE;
         }
         fileList = pSMRParser->getFileList();
         if (fileList.empty())
         {
-            return CNV_NONE;
+            return Result::NONE;
         }
     }
 
@@ -375,15 +379,15 @@ RDOParserModel::Result RDOParserModel::convert(const boost::filesystem::path& sm
     }
     catch (const rdo::converter::smr2rdox::RDOSyntaxException&)
     {
-        return CNV_NONE;
+        return Result::NONE;
     }
     catch (const rdo::runtime::RDORuntimeException&)
     {
-        return CNV_NONE;
+        return Result::NONE;
     }
     catch (...)
     {
-        return CNV_NONE;
+        return Result::NONE;
     }
 
     error().clear();
@@ -441,15 +445,15 @@ RDOParserModel::Result RDOParserModel::convert(const boost::filesystem::path& sm
     }
     catch (const rdo::converter::smr2rdox::RDOSyntaxException&)
     {
-        return CNV_ERROR;
+        return Result::ERROR;
     }
     catch (const rdo::runtime::RDORuntimeException&)
     {
-        return CNV_ERROR;
+        return Result::ERROR;
     }
     catch (...)
     {
-        return CNV_ERROR;
+        return Result::ERROR;
     }
 
     m_pDocument->create(fullPath, modelName);
@@ -478,15 +482,15 @@ RDOParserModel::Result RDOParserModel::convert(const boost::filesystem::path& sm
     rdoxFile.replace_extension(".rdox");
     if (!repository::RDOThreadRepository::createRDOX(rdoxFile))
     {
-        return CNV_ERROR;
+        return Result::ERROR;
     }
 
-    if (!rdo::File::trimLeft(m_pDocument->getName(rdo::converter::smr2rdox::SMR_OUT)))
+    if (!rdo::File::trimLeft(m_pDocument->getName(rdo::converter::smr2rdox::FileTypeOut::SMR)))
     {
-        return CNV_ERROR;
+        return Result::ERROR;
     }
 
-    return CNV_OK;
+    return Result::OK;
 }
 
 void Converter::checkFunctionName(const RDOParserSrcInfo& src_info)

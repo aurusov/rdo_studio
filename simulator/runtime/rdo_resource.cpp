@@ -15,7 +15,7 @@ RDOResource::RDOResource(const LPRDORuntime& /*pRuntime*/, const ParamList& para
     : RDORuntimeObject   (                                      )
     , RDOTraceableObject (trace, resID, rdo::toString(resID + 1))
     , m_temporary        (temporary                             )
-    , m_state            (RDOResource::CS_None                  )
+    , m_state            (RDOResource::ConvertStatus::NONE                  )
     , m_type             (typeID                                )
     , m_referenceCount   (0                                     )
     , m_resType          (pResType                              )
@@ -116,7 +116,7 @@ std::string RDOResource::traceResourceState(char prefix, const LPRDORuntime& pRu
     std::ostringstream res;
     if (traceable() || (prefix != '\0'))
     {
-        if (m_state == RDOResource::CS_NoChange || m_state == RDOResource::CS_NonExist)
+        if (m_state == RDOResource::ConvertStatus::NOCHANGE || m_state == RDOResource::ConvertStatus::NONEXIST)
             return "";
 
         if (prefix != '\0')
@@ -124,10 +124,10 @@ std::string RDOResource::traceResourceState(char prefix, const LPRDORuntime& pRu
 
         switch (m_state)
         {
-        case RDOResource::CS_Create:
+        case RDOResource::ConvertStatus::CREATE:
             res << "RC ";
             break;
-        case RDOResource::CS_Erase:
+        case RDOResource::ConvertStatus::ERASE:
             res << "RE "
 #ifdef RDOSIM_COMPATIBLE
                 << pRuntime->getCurrentTime() << " "
@@ -206,14 +206,14 @@ const RDOValue& RDOResource::getParam(std::size_t index) const
 RDOValue& RDOResource::getParamRaw(std::size_t index)
 {
     ASSERT(index < m_paramList.size());
-    setState(CS_Keep);
+    setState(ConvertStatus::KEEP);
     return m_paramList[index];
 }
 
 void RDOResource::setParam(std::size_t index, const RDOValue& value)
 {
     ASSERT(index < m_paramList.size());
-    setState(CS_Keep);
+    setState(ConvertStatus::KEEP);
     m_paramList[index] = value;
 }
 

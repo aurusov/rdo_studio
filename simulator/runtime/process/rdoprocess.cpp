@@ -136,7 +136,7 @@ void RDOPROCProcess::next(const LPRDOPROCTransact& pTransact)
 RDOPROCTransact::RDOPROCTransact(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& paramsCalcs, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool temporary)
     : RDOResource(pRuntime, paramsCalcs, pResType, resID, typeID, trace, temporary)
 {
-    m_state = RDOResource::CS_Create;
+    m_state = RDOResource::ConvertStatus::CREATE;
     m_paramList.push_back(pRuntime->getCurrentTime());
 }
 

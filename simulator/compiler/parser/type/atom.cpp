@@ -34,7 +34,7 @@ DECLARE_ATOM_TYPE_PARSER(STRING,        "string"       );
 // --------------------------------------------------------------------------------
 LPIType RDOType__UNKNOW::type_cast(const LPIType& /*pFrom*/, const RDOParserSrcInfo& from_src_info, const RDOParserSrcInfo& /*to_src_info*/, const RDOParserSrcInfo& src_info) const
 {
-    parser::g_error().error(src_info, rdo::format("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к неизвестному типу", from_src_info.src_text().c_str()));
+    parser::g_error().error(src_info, rdo::format("Внутренняя ошибка парсера. Невозможно преобразовать тип '%s' к неизвестному типу", from_src_info.src_text().c_str()));
     return NULL;
 }
 
@@ -60,7 +60,7 @@ rdo::runtime::RDOValue RDOType__UNKNOW::get_default() const
 
 void RDOType__UNKNOW::writeModelStructure(std::ostream& /*stream*/) const
 {
-    parser::g_error().error(RDOParserSrcInfo(), "Внутренная ошибка парсера. Невозможно записать неизвестный тип в отчет");
+    parser::g_error().error(RDOParserSrcInfo(), "Внутренняя ошибка парсера. Невозможно записать неизвестный тип в отчет");
     NEVER_REACH_HERE;
 }
 
@@ -104,7 +104,7 @@ rdo::runtime::RDOValue RDOType__EMPTY::get_default() const
 
 void RDOType__EMPTY::writeModelStructure(std::ostream& /*stream*/) const
 {
-    parser::g_error().error(RDOParserSrcInfo(), "Внутренная ошибка парсера. Невозможно записать void-тип в отчет");
+    parser::g_error().error(RDOParserSrcInfo(), "Внутренняя ошибка парсера. Невозможно записать void-тип в отчет");
     NEVER_REACH_HERE;
 }
 
@@ -307,7 +307,7 @@ LPIType RDOType__IDENTIFICATOR::type_cast(const LPIType& pFrom, const RDOParserS
     case rdo::runtime::RDOType::Type::IDENTIFICATOR:
         return rdo::Factory<RDOType__IDENTIFICATOR>::create();
     default:
-        parser::g_error().error(src_info, rdo::format("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к идентификатору", from_src_info.src_text().c_str()));
+        parser::g_error().error(src_info, rdo::format("Внутренняя ошибка парсера. Невозможно преобразовать тип '%s' к идентификатору", from_src_info.src_text().c_str()));
     }
     return NULL;
 }
@@ -340,7 +340,7 @@ rdo::runtime::RDOValue RDOType__IDENTIFICATOR::get_default() const
 
 void RDOType__IDENTIFICATOR::writeModelStructure(std::ostream& /*stream*/) const
 {
-    parser::g_error().error(RDOParserSrcInfo(), "Внутренная ошибка парсера. Невозможно записать тип идектификатор в отчет");
+    parser::g_error().error(RDOParserSrcInfo(), "Внутренняя ошибка парсера. Невозможно записать тип идектификатор в отчет");
     NEVER_REACH_HERE;
 }
 

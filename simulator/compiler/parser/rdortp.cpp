@@ -293,18 +293,18 @@ void RDORTPResType::setupRuntimeFactory()
 {
     Subtype subtype = m_subtype.is_initialized()
         ? m_subtype.get()
-        : RT_SIMPLE;
+        : Subtype::SIMPLE;
 
     runtime::RDOResourceTypeList::Create create;
     switch (subtype)
     {
-    case RT_SIMPLE:
+    case Subtype::SIMPLE:
         create = boost::bind(&createSimpleResource, _1, _2, _3, _4, _5, _6, _7, _8);
         break;
-    case RT_PROCESS_RESOURCE:
+    case Subtype::PROCESS_RESOURCE:
         create = boost::bind(&createProcessResource, _1, _2, _3, _4, _5, _6, _7);
         break;
-    case RT_PROCESS_TRANSACT:
+    case Subtype::PROCESS_TRANSACT:
         create = boost::bind(&createProcessTransact, _1, _2, _3, _4, _5, _6, _7);
         break;
     default:

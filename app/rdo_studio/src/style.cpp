@@ -121,7 +121,7 @@ StyleBase::StyleBase()
 {
     defaultColor    = QColor( 0x00, 0x00, 0x00 );
     backgroundColor = QColor( 0xFF, 0xFF, 0xFF );
-    defaultStyle = StyleFont::NONE;
+    defaultStyle = StyleFont::Style::NONE;
 }
 
 StyleBase::~StyleBase()
@@ -160,7 +160,7 @@ QSettings& operator<< (QSettings& settings, const StyleBase& style)
     settings.beginGroup("theme");
     settings.setValue("default_color", style.defaultColor.name());
     settings.setValue("background_color", style.backgroundColor.name());
-    settings.setValue("default_style", style.defaultStyle);
+    settings.setValue("default_style", static_cast<int>(style.defaultStyle));
     settings.endGroup();
 
     return settings;
@@ -175,7 +175,7 @@ QSettings& operator>> (QSettings& settings, StyleBase& style)
     settings.beginGroup("theme");
     style.defaultColor    = QColor(settings.value("default_color", style.defaultColor.name()).toString());
     style.backgroundColor = QColor(settings.value("background_color", style.backgroundColor.name()).toString());
-    style.defaultStyle    = static_cast<StyleFont::style>(settings.value("default_style", style.defaultStyle).toInt());
+    style.defaultStyle    = static_cast<StyleFont::Style>(settings.value("default_style", static_cast<int>(style.defaultStyle)).toInt());
     settings.endGroup();
 
     return settings;

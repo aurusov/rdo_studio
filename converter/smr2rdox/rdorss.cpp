@@ -24,7 +24,7 @@ void cnv_rsserror(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource
 // --------------------------------------------------------------------------------
-RDORSSResource::RDORSSResource(Converter* pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, int id)
+RDORSSResource::RDORSSResource(Converter* pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, std::size_t id)
     : RDOParserSrcInfo(src_info                                      )
     , m_pResType      (pResType                                      )
     , m_id            (id == UNDEFINED_ID ? pParser->getRSS_id() : id)

@@ -75,7 +75,7 @@ RETURN_LOGIC();
 #define CAST_ARITHM_VALUE(OPR, ERROR) \
 try \
 { \
-    if (beforeCastValue(pSecond) == CR_CONTINUE) \
+    if (beforeCastValue(pSecond) == CastResult::CONTINUE) \
     { \
         value()->value() OPR pSecond->value()->value(); \
     } \
@@ -295,7 +295,7 @@ void RDOFUNArithm::init(const LPRDOValue& pValue)
     }
 
     // Ищем параметр релевантного ресурса
-    if (Converter::s_converter()->getFileToParse() == rdo::converter::smr2rdox::PAT_IN)
+    if (Converter::s_converter()->getFileToParse() == rdo::converter::smr2rdox::FileTypeIn::PAT)
     {
         LPRDOPATPattern pPattern = Converter::s_converter()->getLastPATPattern();
         if (pPattern && pPattern->m_pCurrRelRes)
@@ -314,18 +314,16 @@ void RDOFUNArithm::init(const LPRDOValue& pValue)
     LPRDOParam pFunctionParam;
     switch (Converter::s_converter()->getFileToParse())
     {
-    case rdo::converter::smr2rdox::PAT_IN: pFunctionParam = Converter::s_converter()->getLastPATPattern ()->findPATPatternParam (pValue->value().getIdentificator()); break;
-    case rdo::converter::smr2rdox::FUN_IN: pFunctionParam = Converter::s_converter()->getLastFUNFunction()->findFUNFunctionParam(pValue->value().getIdentificator()); break;
-    default                              : break;
+    case rdo::converter::smr2rdox::FileTypeIn::PAT: pFunctionParam = Converter::s_converter()->getLastPATPattern ()->findPATPatternParam (pValue->value().getIdentificator()); break;
+    case rdo::converter::smr2rdox::FileTypeIn::FUN: pFunctionParam = Converter::s_converter()->getLastFUNFunction()->findFUNFunctionParam(pValue->value().getIdentificator()); break;
+    default: break;
     }
 
     // Ищем константы по имени
     LPRDOFUNConstant pConstant = Converter::s_converter()->findFUNConstant(pValue->value().getIdentificator());
 
     if (pConstant && pFunctionParam)
-    {
         Converter::s_converter()->error().error(src_info(), rdo::format("Имя параметра образца совпадает с именем константы: %s", pValue->value().getIdentificator().c_str()));
-    }
 
     if (pConstant)
     {
@@ -360,14 +358,14 @@ void RDOFUNArithm::init(const LPRDOValue& pValue)
         m_pValue = rdo::Factory<RDOValue>::create(pFunctionParam->getType()->type());
         switch (Converter::s_converter()->getFileToParse())
         {
-        case rdo::converter::smr2rdox::PAT_IN: m_pCalc = rdo::Factory<rdo::runtime::RDOCalcPatParam> ::create(Converter::s_converter()->getLastPATPattern ()->findPATPatternParamNum (pValue->value().getIdentificator())); break;
-        case rdo::converter::smr2rdox::FUN_IN: m_pCalc = rdo::Factory<rdo::runtime::RDOCalcFuncParam>::create(Converter::s_converter()->getLastFUNFunction()->findFUNFunctionParamNum(pValue->value().getIdentificator()), pFunctionParam->src_info()); break;
-        default                              : break;
+        case rdo::converter::smr2rdox::FileTypeIn::PAT: m_pCalc = rdo::Factory<rdo::runtime::RDOCalcPatParam> ::create(Converter::s_converter()->getLastPATPattern ()->findPATPatternParamNum (pValue->value().getIdentificator())); break;
+        case rdo::converter::smr2rdox::FileTypeIn::FUN: m_pCalc = rdo::Factory<rdo::runtime::RDOCalcFuncParam>::create(Converter::s_converter()->getLastFUNFunction()->findFUNFunctionParamNum(pValue->value().getIdentificator()), pFunctionParam->src_info()); break;
+        default: break;
         }
+
         if (m_pCalc)
-        {
             m_pCalc->setSrcInfo(src_info());
-        }
+
         return;
     }
 
@@ -390,7 +388,7 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
         {
             m_pCalc = rdo::Factory<rdo::runtime::RDOCalcNop>::create();
         }
-        else if (pResource->getType()->isTemporary() && Converter::s_converter()->getFileToParse() == rdo::converter::smr2rdox::FRM_IN)
+        else if (pResource->getType()->isTemporary() && Converter::s_converter()->getFileToParse() == rdo::converter::smr2rdox::FileTypeIn::FRM)
         {
             m_pCalc = rdo::Factory<rdo::runtime::RDOCalcNop>::create();
         }
@@ -422,7 +420,7 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
         // Возможно, это релевантный ресурс
         switch (Converter::s_converter()->getFileToParse())
         {
-        case rdo::converter::smr2rdox::PAT_IN:
+        case rdo::converter::smr2rdox::FileTypeIn::PAT:
             if (Converter::s_converter()->getLastPATPattern() && Converter::s_converter()->getLastPATPattern()->findRelevantResource(pResName->value().getIdentificator()))
             {
                 // Это релевантный ресурс где-то в паттерне (with_min-common-choice, $Time, $Body)
@@ -431,7 +429,7 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
                 if (!pPattern->m_pCurrRelRes)
                 {
                     // Внутри with_min-common-choice или $Time
-                    if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_NonExist || pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Create)
+                    if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::ConvertStatus::NONEXIST || pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::ConvertStatus::CREATE)
                     {
                         Converter::s_converter()->error().error(pResName->src_info(), rdo::format("Релевантный ресурс не может быть использован, т.к. он еще не существует: %s", pRelevantResource->name().c_str()));
                     }
@@ -446,11 +444,11 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
                         {
                             Converter::s_converter()->error().error(pResName->src_info(), rdo::format("Релевантный ресурс не определен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from", pRelevantResource->name().c_str()));
                         }
-                        if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_NonExist)
+                        if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::ConvertStatus::NONEXIST)
                         {
                             Converter::s_converter()->error().error(pResName->src_info(), rdo::format("Релевантный ресурс в начале операции не существует (NonExist): %s", pRelevantResource->name().c_str()));
                         }
-                        if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Create)
+                        if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::ConvertStatus::CREATE)
                         {
                             Converter::s_converter()->error().error(pResName->src_info(), rdo::format("Сразу после создания (Create) релевантный ресурс '%s' можно использовать только в конверторах, но не в условии выбора", pRelevantResource->name().c_str()));
                         }
@@ -459,33 +457,33 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
                     if (pRelevantResource->getType()->isTemporary())
                     {
                         // В конверторе начала
-                        if (pPattern->m_pCurrRelRes->m_currentState == RDORelevantResource::convertBegin)
+                        if (pPattern->m_pCurrRelRes->m_currentState == RDORelevantResource::State::CONVERT_BEGIN)
                         {
-                            if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Create && !pRelevantResource->m_alreadyHaveConverter)
+                            if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::ConvertStatus::CREATE && !pRelevantResource->m_alreadyHaveConverter)
                             {
                                 Converter::s_converter()->error().error(pResName->src_info(), rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", pRelevantResource->name().c_str()));
                             }
-                            if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_Erase && pRelevantResource->m_alreadyHaveConverter)
+                            if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::ConvertStatus::ERASE && pRelevantResource->m_alreadyHaveConverter)
                             {
                                 Converter::s_converter()->error().error(pResName->src_info(), rdo::format("Релевантный ресурс нельзя использовать после удаления (Erase): %s", pRelevantResource->name().c_str()));
                             }
-                            if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::CS_NonExist)
+                            if (pRelevantResource->m_statusBegin == rdo::runtime::RDOResource::ConvertStatus::NONEXIST)
                             {
                                 Converter::s_converter()->error().error(pResName->src_info(), rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", pRelevantResource->name().c_str()));
                             }
                         }
                         // В конверторе конца
-                        if (pPattern->m_pCurrRelRes->m_currentState == RDORelevantResource::convertEnd)
+                        if (pPattern->m_pCurrRelRes->m_currentState == RDORelevantResource::State::CONVERT_END)
                         {
-                            if (pRelevantResource->m_statusEnd == rdo::runtime::RDOResource::CS_Create && !pRelevantResource->m_alreadyHaveConverter)
+                            if (pRelevantResource->m_statusEnd == rdo::runtime::RDOResource::ConvertStatus::CREATE && !pRelevantResource->m_alreadyHaveConverter)
                             {
                                 Converter::s_converter()->error().error(pResName->src_info(), rdo::format("Релевантный ресурс нельзя использовать до его создания (Create): %s", pRelevantResource->name().c_str()));
                             }
-                            if (pRelevantResource->m_statusEnd == rdo::runtime::RDOResource::CS_Erase && pRelevantResource->m_alreadyHaveConverter)
+                            if (pRelevantResource->m_statusEnd == rdo::runtime::RDOResource::ConvertStatus::ERASE && pRelevantResource->m_alreadyHaveConverter)
                             {
                                 Converter::s_converter()->error().error(pResName->src_info(), rdo::format("Релевантный ресурс нельзя использовать после удаления (Erase): %s", pRelevantResource->name().c_str()));
                             }
-                            if (pRelevantResource->m_statusEnd == rdo::runtime::RDOResource::CS_NonExist)
+                            if (pRelevantResource->m_statusEnd == rdo::runtime::RDOResource::ConvertStatus::NONEXIST)
                             {
                                 Converter::s_converter()->error().error(pResName->src_info(), rdo::format("Релевантный ресурс не существует в этом конверторе (NonExist): %s", pRelevantResource->name().c_str()));
                             }
@@ -496,7 +494,7 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
                     if (pParam && pPattern->m_pCurrRelRes->name() == pResName->value().getIdentificator())
                     {
                         // В конверторе начала
-                        if (pPattern->m_pCurrRelRes->m_currentState == RDORelevantResource::convertBegin && pPattern->m_pCurrRelRes->m_statusBegin == rdo::runtime::RDOResource::CS_Create)
+                        if (pPattern->m_pCurrRelRes->m_currentState == RDORelevantResource::State::CONVERT_BEGIN && pPattern->m_pCurrRelRes->m_statusBegin == rdo::runtime::RDOResource::ConvertStatus::CREATE)
                         {
                             if (!pPattern->m_pCurrRelRes->getParamSetList().find(pParName->value().getIdentificator()))
                             {
@@ -507,7 +505,7 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
                             }
                         }
                         // В конверторе конца
-                        if (pPattern->m_pCurrRelRes->m_currentState == RDORelevantResource::convertEnd && pPattern->m_pCurrRelRes->m_statusEnd == rdo::runtime::RDOResource::CS_Create)
+                        if (pPattern->m_pCurrRelRes->m_currentState == RDORelevantResource::State::CONVERT_END && pPattern->m_pCurrRelRes->m_statusEnd == rdo::runtime::RDOResource::ConvertStatus::CREATE)
                         {
                             if (!pPattern->m_pCurrRelRes->getParamSetList().find(pParName->value().getIdentificator()))
                             {
@@ -534,7 +532,7 @@ void RDOFUNArithm::init(const LPRDOValue& pResName, const LPRDOValue& pParName)
             }
             break;
 
-        case rdo::converter::smr2rdox::DPT_IN:
+        case rdo::converter::smr2rdox::FileTypeIn::DPT:
             if (Converter::s_converter()->isCurrentDPTSearch() && Converter::s_converter()->getLastDPTSearch()->getLastActivity())
             {
                 LPRDOPATPattern pPattern = Converter::s_converter()->getLastDPTSearch()->getLastActivity()->pattern();
@@ -593,7 +591,7 @@ RDOFUNArithm::CastResult RDOFUNArithm::beforeCastValue(LPRDOFUNArithm pSecond)
         );
         pSecond->m_pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(pSecond->m_pValue->value());
         pSecond->m_pCalc->setSrcInfo(pSecond->src_info());
-        return CR_DONE;
+        return CastResult::DONE;
     }
     else if (typeID() == rdo::runtime::RDOType::Type::IDENTIFICATOR && pSecond->typeID() == rdo::runtime::RDOType::Type::ENUM)
     {
@@ -608,20 +606,20 @@ RDOFUNArithm::CastResult RDOFUNArithm::beforeCastValue(LPRDOFUNArithm pSecond)
         );
         m_pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(m_pValue->value());
         m_pCalc->setSrcInfo(src_info());
-        return CR_DONE;
+        return CastResult::DONE;
     }
-    return CR_CONTINUE;
+    return CastResult::CONTINUE;
 }
 
 LPRDOType RDOFUNArithm::getPreType(const LPRDOFUNArithm& pSecond)
 {
     if (typeID() == rdo::runtime::RDOType::Type::UNKNOW)
     {
-        Converter::s_converter()->error().error(src_info(), rdo::format("Внутренная ошибка парсера: неопределенное значение арифметического выражения: %s", src_text().c_str()));
+        Converter::s_converter()->error().error(src_info(), rdo::format("Внутренняя ошибка парсера: неопределенное значение арифметического выражения: %s", src_text().c_str()));
     }
     if (pSecond->typeID() == rdo::runtime::RDOType::Type::UNKNOW)
     {
-        Converter::s_converter()->error().error(pSecond->src_info(), rdo::format("Внутренная ошибка парсера: неопределенное значение арифметического выражения: %s", pSecond->src_text().c_str()));
+        Converter::s_converter()->error().error(pSecond->src_info(), rdo::format("Внутренняя ошибка парсера: неопределенное значение арифметического выражения: %s", pSecond->src_text().c_str()));
     }
     if (typeID() == rdo::runtime::RDOType::Type::IDENTIFICATOR)
     {
@@ -1351,7 +1349,7 @@ RDOFUNFunctionListElementEq::RDOFUNFunctionListElementEq(const YYLTYPE& position
 
 rdo::runtime::LPRDOCalcConst RDOFUNFunctionListElementEq::createResultCalc(const LPRDOTypeParam& /*pRetType*/, const RDOParserSrcInfo& src_pos) const
 {
-    Converter::s_converter()->error().error(src_pos, "Внутренная ошибка парсера: RDOFUNFunctionListElementEq::createResultCalc");
+    Converter::s_converter()->error().error(src_pos, "Внутренняя ошибка парсера: RDOFUNFunctionListElementEq::createResultCalc");
     NEVER_REACH_HERE;
     return NULL;
 }
@@ -1702,9 +1700,9 @@ void RDOFUNGroup::init(const RDOParserSrcInfo& res_info)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNGroupLogic
 // --------------------------------------------------------------------------------
-RDOFUNGroupLogic::RDOFUNGroupLogic(FunGroupType funType, const RDOParserSrcInfo& res_info)
+RDOFUNGroupLogic::RDOFUNGroupLogic(Type type, const RDOParserSrcInfo& res_info)
     : RDOFUNGroup(res_info)
-    , m_funType  (funType )
+    , m_funType(type)
 {}
 
 LPRDOFUNLogic RDOFUNGroupLogic::createFunLogic(LPRDOFUNLogic& pCondition)
@@ -1712,11 +1710,11 @@ LPRDOFUNLogic RDOFUNGroupLogic::createFunLogic(LPRDOFUNLogic& pCondition)
     rdo::runtime::LPRDOFunCalcGroup calc;
     switch (m_funType)
     {
-    case fgt_exist    : setSrcText("Exist("     + getResType()->name() + ": " + pCondition->src_text() + ")"); calc = rdo::Factory<rdo::runtime::RDOFunCalcExist    >::create(getResType()->getNumber(), pCondition->getCalc()); break;
-    case fgt_notexist : setSrcText("NotExist("  + getResType()->name() + ": " + pCondition->src_text() + ")"); calc = rdo::Factory<rdo::runtime::RDOFunCalcNotExist >::create(getResType()->getNumber(), pCondition->getCalc()); break;
-    case fgt_forall   : setSrcText("ForAll("    + getResType()->name() + ": " + pCondition->src_text() + ")"); calc = rdo::Factory<rdo::runtime::RDOFunCalcForAll   >::create(getResType()->getNumber(), pCondition->getCalc()); break;
-    case fgt_notforall: setSrcText("NotForAll(" + getResType()->name() + ": " + pCondition->src_text() + ")"); calc = rdo::Factory<rdo::runtime::RDOFunCalcNotForAll>::create(getResType()->getNumber(), pCondition->getCalc()); break;
-    default: Converter::s_converter()->error().error(src_info(), "Внутренная ошибка: несуществующий тип функции");
+    case Type::EXIST    : setSrcText("Exist("     + getResType()->name() + ": " + pCondition->src_text() + ")"); calc = rdo::Factory<rdo::runtime::RDOFunCalcExist    >::create(getResType()->getNumber(), pCondition->getCalc()); break;
+    case Type::NOTEXIST : setSrcText("NotExist("  + getResType()->name() + ": " + pCondition->src_text() + ")"); calc = rdo::Factory<rdo::runtime::RDOFunCalcNotExist >::create(getResType()->getNumber(), pCondition->getCalc()); break;
+    case Type::FORALL   : setSrcText("ForAll("    + getResType()->name() + ": " + pCondition->src_text() + ")"); calc = rdo::Factory<rdo::runtime::RDOFunCalcForAll   >::create(getResType()->getNumber(), pCondition->getCalc()); break;
+    case Type::NOTFORALL: setSrcText("NotForAll(" + getResType()->name() + ": " + pCondition->src_text() + ")"); calc = rdo::Factory<rdo::runtime::RDOFunCalcNotForAll>::create(getResType()->getNumber(), pCondition->getCalc()); break;
+    default: Converter::s_converter()->error().error(src_info(), "Внутренняя ошибка: несуществующий тип функции");
     }
     Converter::s_converter()->getFUNGroupStack().pop_back();
     LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(calc, false);
@@ -1745,17 +1743,17 @@ void RDOFUNSelect::initSelect(LPRDOFUNLogic pCondition)
 }
 
 // Групповая функция над выборкой Select'а
-LPRDOFUNLogic RDOFUNSelect::createFunSelectGroup(RDOFUNGroupLogic::FunGroupType funType, LPRDOFUNLogic& pCondition)
+LPRDOFUNLogic RDOFUNSelect::createFunSelectGroup(RDOFUNGroupLogic::Type funType, LPRDOFUNLogic& pCondition)
 {
     ASSERT(pCondition);
     rdo::runtime::LPRDOFunCalcSelectBase calc;
     switch (funType)
     {
-    case RDOFUNGroupLogic::fgt_exist    : setSrcText(src_text() + ".Exist("     + pCondition->src_text() + ")"); calc = rdo::Factory<rdo::runtime::RDOFunCalcSelectExist    >::create(m_pCalcSelect, pCondition->getCalc()); break;
-    case RDOFUNGroupLogic::fgt_notexist : setSrcText(src_text() + ".NotExist("  + pCondition->src_text() + ")"); calc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotExist >::create(m_pCalcSelect, pCondition->getCalc()); break;
-    case RDOFUNGroupLogic::fgt_forall   : setSrcText(src_text() + ".ForAll("    + pCondition->src_text() + ")"); calc = rdo::Factory<rdo::runtime::RDOFunCalcSelectForAll   >::create(m_pCalcSelect, pCondition->getCalc()); break;
-    case RDOFUNGroupLogic::fgt_notforall: setSrcText(src_text() + ".NotForAll(" + pCondition->src_text() + ")"); calc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotForAll>::create(m_pCalcSelect, pCondition->getCalc()); break;
-    default: Converter::s_converter()->error().error(pCondition->src_info(), "Внутренная ошибка: неизвестный метод для списка ресурсов");
+    case RDOFUNGroupLogic::Type::EXIST    : setSrcText(src_text() + ".Exist("     + pCondition->src_text() + ")"); calc = rdo::Factory<rdo::runtime::RDOFunCalcSelectExist    >::create(m_pCalcSelect, pCondition->getCalc()); break;
+    case RDOFUNGroupLogic::Type::NOTEXIST : setSrcText(src_text() + ".NotExist("  + pCondition->src_text() + ")"); calc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotExist >::create(m_pCalcSelect, pCondition->getCalc()); break;
+    case RDOFUNGroupLogic::Type::FORALL   : setSrcText(src_text() + ".ForAll("    + pCondition->src_text() + ")"); calc = rdo::Factory<rdo::runtime::RDOFunCalcSelectForAll   >::create(m_pCalcSelect, pCondition->getCalc()); break;
+    case RDOFUNGroupLogic::Type::NOTFORALL: setSrcText(src_text() + ".NotForAll(" + pCondition->src_text() + ")"); calc = rdo::Factory<rdo::runtime::RDOFunCalcSelectNotForAll>::create(m_pCalcSelect, pCondition->getCalc()); break;
+    default: Converter::s_converter()->error().error(pCondition->src_info(), "Внутренняя ошибка: неизвестный метод для списка ресурсов");
     }
     Converter::s_converter()->getFUNGroupStack().pop_back();
     LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(calc, false);

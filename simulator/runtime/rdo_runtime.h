@@ -152,7 +152,7 @@ public:
 
     virtual void onPutToTreeNode();
 
-    rdo::simulation::report::RDOExitCode m_whyStop;
+    rdo::simulation::report::ExitCode m_whyStop;
 
     virtual void onNothingMoreToDo();
     virtual void onEndCondition();
@@ -161,15 +161,15 @@ public:
 
     virtual void postProcess();
 
-    enum FunBreakFlag
+    enum class FunctionExitStatus
     {
-        FBF_NONE = 0,
-        FBF_BREAK,
-        FBF_RETURN
+        NONE,
+        BREAK,
+        RETURN
     };
 
-    void                setFunBreakFlag(const FunBreakFlag& flag);
-    const FunBreakFlag& getFunBreakFlag() const;
+    void setFunctionExitStatus(const FunctionExitStatus& status);
+    const FunctionExitStatus& getFunctionExitStatus() const;
 
     LPRDOMemoryStack getMemoryStack();
 
@@ -201,7 +201,7 @@ private:
     ResourceListByID    m_resourceListByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
     CalcList            m_initCalcList;
     LPRDOMemoryStack    m_pMemoryStack;
-    FunBreakFlag        m_funBreakFlag;
+    FunctionExitStatus  m_functionExitStatus;
     LPIThreadProxy      m_pThreadProxy;
     RDOThread*          m_pStudioThread;
     Notify              m_notify;

@@ -140,7 +140,7 @@ void TreeNode::ExpandChildren()
             // Только для статистики
             m_root->m_fullNodesCount++;
             // Расчитать стоимость применения правила (value before)
-            if (m_currAct->valueTime() == IDPTSearchActivity::vt_before)
+            if (m_currAct->costTime() == IDPTSearchActivity::CostTime::BEFORE)
             {
                 m_newCostRule = m_currAct->cost(m_pChildRuntime);
             }
@@ -150,7 +150,7 @@ void TreeNode::ExpandChildren()
             m_currAct->rule()->onAfterRule(m_pChildRuntime, true);
 
             // Расчитать стоимость применения правила (value after)
-            if (m_currAct->valueTime() == IDPTSearchActivity::vt_after)
+            if (m_currAct->costTime() == IDPTSearchActivity::CostTime::AFTER)
             {
                 m_newCostRule = m_currAct->cost(m_pChildRuntime);
             }
@@ -166,7 +166,7 @@ void TreeNode::ExpandChildren()
             {
                 TreeNode* loser = NULL;
                 NodeFoundInfo res = m_root->m_rootNode->CheckIfExistBetter(m_pChildRuntime, m_newCostPath, &loser);
-                if (res == nfi_found_better)
+                if (res == NodeFoundInfo::FOUND_BETTER)
                 {
                     // В графе есть более лучшая вершина, т.е. текущая активность
                     // отработала хуже (дороже) до одного и того же состояния.
@@ -178,7 +178,7 @@ void TreeNode::ExpandChildren()
                     // Переходим к следующей активности
                     continue;
                 }
-                else if (res == nfi_found_loser)
+                else if (res == NodeFoundInfo::FOUND_LOSER)
                 {
 #ifdef _DEBUG
                     if (m_number == 294)
@@ -276,23 +276,23 @@ TreeNode::NodeFoundInfo TreeNode::CheckIfExistBetter(const LPRDORuntime& pChildR
     {
         if (m_costPath <= useCost)
         {
-            return nfi_found_better;
+            return NodeFoundInfo::FOUND_BETTER;
         }
         else
         {
             *loser = this;
-            return nfi_found_loser;
+            return NodeFoundInfo::FOUND_LOSER;
         }
     }
 
-    for (std::vector<TreeNode*>::iterator i = m_children.begin(); i != m_children.end(); ++i)
+    for (std::vector<TreeNode*>::const_iterator it = m_children.begin(); it != m_children.end(); ++it)
     {
-        NodeFoundInfo res = (*i)->CheckIfExistBetter(pChildRuntime, useCost, loser);
-        if (res != nfi_notfound)
+        NodeFoundInfo res = (*it)->CheckIfExistBetter(pChildRuntime, useCost, loser);
+        if (res != NodeFoundInfo::NOT_FOUND)
             return res;
     }
 
-    return nfi_notfound;
+    return NodeFoundInfo::NOT_FOUND;
 }
 
 void TreeNode::ReCostSubTree(double cost)

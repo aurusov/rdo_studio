@@ -12,7 +12,7 @@ using namespace rdo::gui::tracer;
 // -------------------- OperationBase
 // --------------------------------------------------------------------------------
 OperationBase::OperationBase(const LPPattern& pPattern, const QString& name)
-    : Serie(SK_OPERATION)
+    : Serie(Kind::OPERATION)
     , m_pPattern(pPattern)
     , m_name(name)
 {

@@ -13,13 +13,13 @@ class Result: public Serie
 {
 DECLARE_FACTORY(Result)
 public:
-    enum Kind
+    enum class Kind
     {
-        RK_UNDEFINED  = ~0,
-        RK_WATCHPAR   = 0,
-        RK_WATCHSTATE,
-        RK_WATCHQUANT,
-        RK_WATCHVALUE
+        UNDEFINED  = ~0,
+        WATCHPAR   = 0,
+        WATCHSTATE,
+        WATCHQUANT,
+        WATCHVALUE
     };
 
     const QString& getName() const;

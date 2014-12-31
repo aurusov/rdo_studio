@@ -156,7 +156,7 @@ void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace* node)
         return;
 
     RDODPTSearchTrace* dpTrace = static_cast<RDODPTSearchTrace*>(node->m_root->m_dp);
-    if (dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_tops || dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all)
+    if (dpTrace->traceFlag == RDODPTSearchTrace::TraceFlag::TRACE_TOPS || dpTrace->traceFlag == RDODPTSearchTrace::TraceFlag::TRACE_ALL)
     {
         const LPRDORuntime&     pRuntime             = node->m_pRuntime;
         LPIActivityTrace        activityTrace        = node->m_currAct->rule().object_dynamic_cast<IActivityTrace>();
@@ -179,7 +179,7 @@ void RDOTrace::writeSearchNodeInfo(char sign, TreeNodeTrace* node)
                      << std::endl << getEOL();
 
         RDODPTSearchTrace* dpTrace = static_cast<RDODPTSearchTrace*>(node->m_root->m_dp);
-        if (dpTrace->traceFlag == RDODPTSearchTrace::DPT_trace_all)
+        if (dpTrace->traceFlag == RDODPTSearchTrace::TraceFlag::TRACE_ALL)
         {
             getOStream() << activityTrace->traceResourcesList('S', pRuntime) << getEOL();
         }
@@ -407,17 +407,17 @@ void RDOTrace::writeStatus(const LPRDORuntime& pRuntime, const std::string& stat
                 double d_min = 0;
                 double d_max = 0;
                 double d_med = 0;
-                dp_stat->getStatsDOUBLE(IDPTSearchTraceStatistics::ST_TIMES, d_min, d_max, d_med);
+                dp_stat->getStatsDOUBLE(IDPTSearchTraceStatistics::Type::TIMES, d_min, d_max, d_med);
                 getOStream() << boost::format("DPS_TM %0.3f  %0.3f  %0.3f") % d_med % d_min % d_max << std::endl << getEOL();
 
                 // Используемая память
                 std::size_t ui_min = 0;
                 std::size_t ui_max = 0;
-                dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_MEMORY, ui_min, ui_max, d_med);
+                dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::Type::MEMORY, ui_min, ui_max, d_med);
                 getOStream() << rdo::format("DPS_ME %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 
                 // Стоимость решения
-                dp_stat->getStatsDOUBLE(IDPTSearchTraceStatistics::ST_COST, d_min, d_max, d_med);
+                dp_stat->getStatsDOUBLE(IDPTSearchTraceStatistics::Type::COST, d_min, d_max, d_med);
                 getOStream() << "DPS_CO"
                              << " "  << d_med
                              << "  " << d_min
@@ -425,19 +425,19 @@ void RDOTrace::writeStatus(const LPRDORuntime& pRuntime, const std::string& stat
                              << std::endl << getEOL();
 
                 // Количество раскрытых вершин
-                dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_EXPENDED, ui_min, ui_max, d_med);
+                dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::Type::NODES_EXPENDED, ui_min, ui_max, d_med);
                 getOStream() << rdo::format("DPS_TO %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 
                 // Количество вершин в графе
-                dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_IN_GRAPH, ui_min, ui_max, d_med);
+                dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::Type::NODES_IN_GRAPH, ui_min, ui_max, d_med);
                 getOStream() << rdo::format("DPS_TT %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 
                 // Количество включавшихся в граф вершин (вершины, соответствующие одному и тому же состоянию системы, могут включаться в граф неоднократно, если порождается вершина с меньшей стоимостью пути)
-                dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES, ui_min, ui_max, d_med);
+                dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::Type::NODES, ui_min, ui_max, d_med);
                 getOStream() << rdo::format("DPS_TI %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
 
                 // Общее количество порожденных вершин-преемников
-                dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::ST_NODES_FULL, ui_min, ui_max, d_med);
+                dp_stat->getStatsRUINT(IDPTSearchTraceStatistics::Type::NODES_FULL, ui_min, ui_max, d_med);
                 getOStream() << rdo::format("DPS_TG %0.0f  %u  %u", d_med, ui_min, ui_max) << std::endl << getEOL();
             }
         }

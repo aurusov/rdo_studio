@@ -45,7 +45,7 @@ public:
     bool   isFrmDescribed() const;
     double getTimeNow    () const;
 
-    rdo::simulation::report::RDOExitCode getExitCode   () const;
+    rdo::simulation::report::ExitCode getExitCode   () const;
     rdo::runtime::RunTimeMode            getRuntimeMode() const;
     void    setRuntimeMode       (const rdo::runtime::RunTimeMode value);
     QString getLastBreakPointName();
@@ -82,11 +82,11 @@ protected:
     virtual void proc(RDOThread::RDOMessageInfo& msg);
 
 private:
-    enum BuildState
+    enum class BuildState
     {
-        BS_UNDEFINED,
-        BS_COMPLETE,
-        BS_ERROR
+        UNDEFINED,
+        COMPLETE,
+        ERROR
     };
 
     rdo::gui::frame::Manager m_frameManager;
@@ -112,7 +112,7 @@ private:
     double                                  m_speed;
     double                                  m_showRate;
     rdo::runtime::RunTimeMode               m_runtimeMode;
-    rdo::simulation::report::RDOExitCode    m_exitCode;
+    rdo::simulation::report::ExitCode    m_exitCode;
     mutable bool                            m_modify;
     View*                                   m_pView;
     QString                                 m_name;

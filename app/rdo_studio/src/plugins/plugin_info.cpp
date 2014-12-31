@@ -6,7 +6,7 @@
 // --------------------------------------------------------------------------------
 
 PluginInfo::PluginInfo(const QString& name, QPluginLoader* loader, bool  autoload,
-                       const QUuid&   GUID, const QString& author, const QString& version, int state)
+                       const QUuid&   GUID, const QString& author, const QString& version, PluginInfo::State state)
     : pluginName    (name)
     , pluginLoader  (loader)
     , pluginAutoload(autoload)
@@ -40,7 +40,7 @@ const QUuid& PluginInfo::getGUID() const
     return pluginGUID;
 }
 
-int PluginInfo::getState() const
+PluginInfo::State PluginInfo::getState() const
 {
     return pluginState;
 }
@@ -55,7 +55,7 @@ const QString& PluginInfo::getAuthor() const
     return pluginAuthor;
 }
 
-void PluginInfo::setState(int value)
+void PluginInfo::setState(PluginInfo::State value)
 {
     pluginState = value;
 }
@@ -84,8 +84,8 @@ bool PluginInfo::pluginSignInfoIsEqual(const PluginInfo& pluginInfo)
 
 bool PluginInfo::isAvailable() const
 {
-    return !(pluginState == rdo::plugin::Deleted ||
-             pluginState == rdo::plugin::IdOnlyMatched);
+    return !(pluginState == State::DELETED ||
+             pluginState == State::ID_ONLY_MATCHED);
 }
 
 bool PluginInfo::operator==(const PluginInfo& other)

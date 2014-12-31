@@ -29,9 +29,9 @@ bool RDOEvent::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
     return false;
 }
 
-IBaseOperation::BOResult RDOEvent::onDoOperation(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDOEvent::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
-    return IBaseOperation::BOR_cant_run;
+    return IBaseOperation::ResultCode::CANNOT_RUN;
 }
 
 void RDOEvent::onMakePlaned(const LPRDORuntime& pRuntime, const std::vector<RDOValue>& params)
@@ -61,9 +61,9 @@ void RDOEvent::onAfterEvent(const LPRDORuntime& pRuntime)
     updateRelRes(pRuntime);
 }
 
-IBaseOperation::BOResult RDOEvent::onContinue(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDOEvent::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-    return IBaseOperation::BOR_cant_run;
+    return IBaseOperation::ResultCode::CANNOT_RUN;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

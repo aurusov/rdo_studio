@@ -36,9 +36,9 @@ bool RDOPROCGenerate::onCheckCondition(const LPRDORuntime& pRuntime)
     return pRuntime->getCurrentTime() >= timeNext ? true : false;
 }
 
-IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDOPROCGenerate::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
-    return IBaseOperation::BOR_done;
+    return IBaseOperation::ResultCode::DONE;
 }
 
 void RDOPROCGenerate::calcNextTimeInterval(const LPRDORuntime& pRuntime)
@@ -77,9 +77,9 @@ void RDOPROCGenerate::onMakePlaned(const LPRDORuntime& pRuntime)
     calcNextTimeInterval(pRuntime);
 }
 
-IBaseOperation::BOResult RDOPROCGenerate::onContinue(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDOPROCGenerate::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-    return IBaseOperation::BOR_cant_run;
+    return IBaseOperation::ResultCode::CANNOT_RUN;
 }
 
 void RDOPROCGenerate::setStatistics(const LPIInternalStatistics& pStatistics)

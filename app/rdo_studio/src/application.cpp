@@ -125,7 +125,7 @@ Application::Application(int& argc, char** argv)
     , m_showCaptionFullName         (false )
     , m_autoExitByModel             (false )
     , m_dontCloseIfError            (false )
-    , m_exitCode                    (rdo::simulation::report::EC_OK)
+    , m_exitCode                    (rdo::simulation::report::ExitCode::OK)
     , m_pAssistant                  (NULL  )
     , m_pMainFrame                  (NULL  )
     , m_pluginLoader                ()
@@ -205,7 +205,7 @@ Application::~Application()
 {
     m_pMainFrame = NULL;
 
-    if (m_exitCode != rdo::simulation::report::EC_ModelNotFound)
+    if (m_exitCode != rdo::simulation::report::ExitCode::MODEL_NOTFOUND)
     {
         m_exitCode = g_pModel->getExitCode();
     }
@@ -304,7 +304,7 @@ void Application::onInit(int argc, char** argv)
         }
         else
         {
-            m_exitCode = rdo::simulation::report::EC_ModelNotFound;
+            m_exitCode = rdo::simulation::report::ExitCode::MODEL_NOTFOUND;
             return;
         }
     }
@@ -578,7 +578,7 @@ void Application::autoCloseByModel()
 {
     if (m_autoExitByModel)
     {
-        if (!m_dontCloseIfError || !g_pModel || (m_dontCloseIfError && (g_pModel->getExitCode() == rdo::simulation::report::EC_OK || g_pModel->getExitCode() == rdo::simulation::report::EC_NoMoreEvents)))
+        if (!m_dontCloseIfError || !g_pModel || (m_dontCloseIfError && (g_pModel->getExitCode() == rdo::simulation::report::ExitCode::OK || g_pModel->getExitCode() == rdo::simulation::report::ExitCode::NOMORE_EVENTS)))
         {
             m_pMainFrame->close();
         }

@@ -7,15 +7,15 @@
 class IDPTSearchTraceStatistics: public virtual rdo::counter_reference
 {
 public:
-        enum Type
+    enum class Type
     {
-        ST_TIMES,
-        ST_COST,
-        ST_MEMORY,
-        ST_NODES,
-        ST_NODES_EXPENDED,
-        ST_NODES_FULL,
-        ST_NODES_IN_GRAPH
+        TIMES,
+        COST,
+        MEMORY,
+        NODES,
+        NODES_EXPENDED,
+        NODES_FULL,
+        NODES_IN_GRAPH
     };
     virtual std::size_t getCalcCnt() const = 0;
     virtual std::size_t getCalcResFoundCnt() const = 0;

@@ -45,11 +45,11 @@ bool TracerSerieFindValue::operator() (Value* pValue)
 // --------------------------------------------------------------------------------
 // -------------------- TracerSerie
 // --------------------------------------------------------------------------------
-Serie::Serie(Kind _serieKind)
+Serie::Serie(Kind kind)
     : ChartTreeItem(true)
     , m_minValue(0)
     , m_maxValue(0)
-    , m_kind(_serieKind)
+    , m_kind(kind)
     , m_valueCount(0)
 {}
 
@@ -82,7 +82,7 @@ Serie::Kind Serie::getKind() const
 
 bool Serie::isTemporaryResourceParam() const
 {
-    return m_kind == SK_PARAM && ((Param*)this)->getResource()->getType()->getKind() == ResourceType::Kind::TEMPORARY;
+    return m_kind == Kind::PARAM && ((Param*)this)->getResource()->getType()->getKind() == ResourceType::Kind::TEMPORARY;
 }
 
 void Serie::addValue(Value* const pValue)
@@ -130,7 +130,7 @@ void Serie::getCaptions(std::vector<std::string>& captions, const int valueCount
     if (!captions.empty())
         captions.clear();
 
-    if (m_kind == Serie::SK_PREVIEW)
+    if (m_kind == Serie::Kind::PREVIEW)
     {
         double valoffset = (m_maxValue - m_minValue) / (double)(valueCount - 1);
         double valo = m_minValue;
@@ -343,7 +343,7 @@ void Serie::drawSerie(ChartView* const pView,
                 }
             }
 
-            bool tempResourceErased = (m_kind == SK_PARAM && ((Param*)this)->getResource()->isErased());
+            bool tempResourceErased = (m_kind == Kind::PARAM && ((Param*)this)->getResource()->isErased());
             bool needContinue = !pView->doUnwrapTime() ? (m_valueList.size() > 1) : true;
             if (tempResourceErased)
             {
@@ -385,15 +385,15 @@ void Serie::drawMarker(QPainter& painter, const int x, const int y, Marker marke
 
     switch (marker)
     {
-    case M_CIRCLE:
+    case Marker::CIRCLE:
         painter.drawEllipse(rect);
         break;
 
-    case M_SQUARE:
+    case Marker::SQUARE:
         painter.drawRect(rect);
         break;
 
-    case M_TRIANG:
+    case Marker::TRIANG:
     {
         QPolygonF polygon;
         polygon << QPointF(rect.left () + halfMarkerSize, rect.top());
@@ -406,7 +406,7 @@ void Serie::drawMarker(QPainter& painter, const int x, const int y, Marker marke
         painter.drawPath(path);
         break;
     }
-    case M_CROSS:
+    case Marker::CROSS:
     {
         int delta = halfMarkerSize == int(halfMarkerSize)
             ? 1

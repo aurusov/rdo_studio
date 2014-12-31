@@ -23,9 +23,9 @@ protected:
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
 class RDOCalcUnary: public RDOCalcUnaryBase
 {
-friend class rdo::Factory<RDOCalcUnary<ret_type, pOperator, CalcType> >;
+friend class rdo::Factory<RDOCalcUnary<ret_type, pOperator, CalcType>>;
 public:
-    enum { calc_type = CalcType };
+    static const auto calc_type = CalcType;
     typedef ret_type (RDOValue::*value_operator)() const;
 
     static RDOSrcInfo     getStaticSrcInfo(const RDOSrcInfo::Position& position, const LPRDOCalc& pUnaryCalc);
@@ -38,9 +38,9 @@ private:
     DECLARE_ICalc;
 };
 
-typedef RDOCalcUnary<RDOValue, &RDOValue::operator-, OperatorType::OT_ARITHM> RDOCalcUMinus;
+typedef RDOCalcUnary<RDOValue, &RDOValue::operator-, OperatorType::Type::ARITHM> RDOCalcUMinus;
 
-typedef RDOCalcUnary<int, &RDOValue::getInt, OperatorType::OT_ARITHM> RDOCalcDoubleToInt;
+typedef RDOCalcUnary<int, &RDOValue::getInt, OperatorType::Type::ARITHM> RDOCalcDoubleToInt;
 
 PREDECLARE_POINTER(RDOCalcDoubleToIntByResult);
 class RDOCalcDoubleToIntByResult: public RDOCalc

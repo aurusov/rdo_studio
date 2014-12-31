@@ -99,7 +99,7 @@ RDOValue RDOFunAlgorithmicCalc::doCalc(const LPRDORuntime& pRuntime)
     }
 
     // До сюда дело дойти не должно, т.к. последний conditions должен быть значением по молчанию
-    pRuntime->error().push("Внутренная ошибка, RDOFunAlgorithmicCalc", srcInfo());
+    pRuntime->error().push("Внутренняя ошибка, RDOFunAlgorithmicCalc", srcInfo());
     return RDOValue();
 }
 

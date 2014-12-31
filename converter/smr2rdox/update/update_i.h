@@ -66,7 +66,7 @@ class DocUpdate
     , public IDocUpdate
 {
 protected:
-    DocUpdate(IDocument::Type file = IDocument::UNDEFINED);
+    DocUpdate(IDocument::Type file = IDocument::Type::UNDEFINED);
 
     IDocument::Type m_file;
 

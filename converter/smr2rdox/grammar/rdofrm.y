@@ -292,7 +292,7 @@ frm_background
         ASSERT(pFrame);
         LPRDOFRMColor pBgColor = CONVERTER->stack().pop<RDOFRMColor>($4);
         ASSERT(pBgColor);
-        if (pBgColor->getType() != RDOFRMColor::CT_TRANSPARENT && pBgColor->getType() != RDOFRMColor::CT_RGB)
+        if (pBgColor->getType() != RDOFRMColor::Type::TRANSPARENT_COLOR && pBgColor->getType() != RDOFRMColor::Type::RGB)
         {
             CONVERTER->error().error(@4, "Цвет фона не может быть указан ссылкой на последнее значение");
         }
@@ -436,7 +436,7 @@ frm_end
 frm_color
     : RDO_color_transparent
     {
-        LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(RDOFRMColor::CT_TRANSPARENT);
+        LPRDOFRMColor pColor = rdo::Factory<RDOFRMColor>::create(RDOFRMColor::Type::TRANSPARENT_COLOR);
         ASSERT(pColor);
         $$ = CONVERTER->stack().push(pColor);
     }
@@ -573,28 +573,28 @@ frm_color
 frm_postype
     : /* empty */
     {
-        $$ = RDOFRMPosition::PT_ABSOLUTE;
+        $$ = static_cast<int>(RDOFRMPosition::Type::ABSOLUTE_POSITION);
     }
     | '+'
     {
-        $$ = RDOFRMPosition::PT_DELTA;
+        $$ = static_cast<int>(RDOFRMPosition::Type::DELTA);
     }
     | '*'
     {
-        $$ = RDOFRMPosition::PT_MULT;
+        $$ = static_cast<int>(RDOFRMPosition::Type::MULT);
     }
     | '#' RDO_INT_CONST
     {
-        int rilet_id = CONVERTER->stack().pop<RDOValue>($2)->value().getInt();
-        if (rilet_id <= 0)
+        int rulet_id = CONVERTER->stack().pop<RDOValue>($2)->value().getInt();
+        if (rulet_id <= 0)
         {
             CONVERTER->error().error(@2, "Номер рулетки должен быть больше нуля");
         }
-        if (!RUNTIME->lastFrame()->findRulet(rilet_id))
+        if (!RUNTIME->lastFrame()->findRulet(rulet_id))
         {
-            CONVERTER->error().error(@2, rdo::format("Рулетки с номером '%d' не существует", rilet_id));
+            CONVERTER->error().error(@2, rdo::format("Рулетки с номером '%d' не существует", rulet_id));
         }
-        $$ = RDOFRMPosition::PT_RULET + rilet_id;
+        $$ = static_cast<int>(RDOFRMPosition::Type::RULET) + rulet_id;
     }
     | '#' error
     {
@@ -606,7 +606,7 @@ frm_postype_xy
     : frm_postype
     | '='
     {
-        $$ = RDOFRMPosition::PT_GABARIT;
+        $$ = static_cast<int>(RDOFRMPosition::Type::GABARIT);
     }
     ;
 
@@ -622,15 +622,15 @@ frm_position_xy
     : fun_arithm frm_postype_xy
     {
         rdo::runtime::LPRDOCalc pCalc = CONVERTER->stack().pop<RDOFUNArithm>($1)->createCalc();
-        if ($2 >= RDOFRMPosition::PT_RULET)
+        if ($2 >= static_cast<int>(RDOFRMPosition::Type::RULET))
         {
-            LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, RDOFRMPosition::PT_RULET, $2 - RDOFRMPosition::PT_RULET);
+            LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, RDOFRMPosition::Type::RULET, $2 - static_cast<int>(RDOFRMPosition::Type::RULET));
             ASSERT(pPosition);
             $$ = CONVERTER->stack().push(pPosition);
         }
         else
         {
-            LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, (RDOFRMPosition::PositionType)$2);
+            LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, static_cast<RDOFRMPosition::Type>($2));
             ASSERT(pPosition);
             $$ = CONVERTER->stack().push(pPosition);
         }
@@ -641,15 +641,15 @@ frm_position_wh
     : fun_arithm frm_postype_wh
     {
         rdo::runtime::LPRDOCalc pCalc = CONVERTER->stack().pop<RDOFUNArithm>($1)->createCalc();
-        if ($2 >= RDOFRMPosition::PT_RULET)
+        if ($2 >= static_cast<int>(RDOFRMPosition::Type::RULET))
         {
-            LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, RDOFRMPosition::PT_RULET, $2 - RDOFRMPosition::PT_RULET);
+            LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, RDOFRMPosition::Type::RULET, $2 - static_cast<int>(RDOFRMPosition::Type::RULET));
             ASSERT(pPosition);
             $$ = CONVERTER->stack().push(pPosition);
         }
         else
         {
-            LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, (RDOFRMPosition::PositionType)$2);
+            LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, static_cast<RDOFRMPosition::Type>($2));
             ASSERT(pPosition);
             $$ = CONVERTER->stack().push(pPosition);
         }
@@ -670,11 +670,11 @@ frm_ruler
         LPRDOFRMPosition pY = CONVERTER->stack().pop<RDOFRMPosition>($7);
         ASSERT(pX);
         ASSERT(pY);
-        if (pX->getType() != RDOFRMPosition::PT_ABSOLUTE)
+        if (pX->getType() != RDOFRMPosition::Type::ABSOLUTE_POSITION)
         {
             CONVERTER->error().error(@5, "Координаты рулетки должны быть абсолютными");
         }
-        if (pY->getType() != RDOFRMPosition::PT_ABSOLUTE)
+        if (pY->getType() != RDOFRMPosition::Type::ABSOLUTE_POSITION)
         {
             CONVERTER->error().error(@7, "Координаты рулетки должны быть абсолютными");
         }
@@ -795,8 +795,8 @@ frm_text_common
         LPRDOFRMColor pFgColor = CONVERTER->stack().pop<RDOFRMColor>($13);
         ASSERT(pBgColor);
         ASSERT(pFgColor);
-        pBgColor->setType(RDOFRMColor::CT_LAST_BG_TEXT);
-        pFgColor->setType(RDOFRMColor::CT_LAST_FG_TEXT);
+        pBgColor->setType(RDOFRMColor::Type::LAST_BG_TEXT);
+        pFgColor->setType(RDOFRMColor::Type::LAST_FG_TEXT);
         LPRDOFRMText pText = rdo::Factory<RDOFRMText>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
         ASSERT(pText);
         $$ = CONVERTER->stack().push(pText);
@@ -816,8 +816,8 @@ frm_text_common
         LPRDOFRMColor pFgColor = CONVERTER->stack().pop<RDOFRMColor>($11);
         ASSERT(pBgColor);
         ASSERT(pFgColor);
-        pBgColor->setType(RDOFRMColor::CT_LAST_BG_TEXT);
-        pFgColor->setType(RDOFRMColor::CT_LAST_FG_TEXT);
+        pBgColor->setType(RDOFRMColor::Type::LAST_BG_TEXT);
+        pFgColor->setType(RDOFRMColor::Type::LAST_FG_TEXT);
         LPRDOFRMText pText = rdo::Factory<RDOFRMText>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
         ASSERT(pText);
         $$ = CONVERTER->stack().push(pText);
@@ -836,8 +836,8 @@ frm_text_common
         LPRDOFRMColor pFgColor = rdp::Factory<RDOFRMColor>::create();
         ASSERT(pBgColor);
         ASSERT(pFgColor);
-        pBgColor->setType(RDOFRMColor::CT_LAST_BG_TEXT);
-        pFgColor->setType(RDOFRMColor::CT_LAST_FG_TEXT);
+        pBgColor->setType(RDOFRMColor::Type::LAST_BG_TEXT);
+        pFgColor->setType(RDOFRMColor::Type::LAST_FG_TEXT);
         LPRDOFRMText pText = rdo::Factory<RDOFRMText>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
         ASSERT(pText);
         $$ = CONVERTER->stack().push(pText);
@@ -1179,8 +1179,8 @@ frm_rect
         LPRDOFRMColor pFgColor = CONVERTER->stack().pop<RDOFRMColor>($13);
         ASSERT(pBgColor);
         ASSERT(pFgColor);
-        pBgColor->setType(RDOFRMColor::CT_LAST_BG);
-        pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+        pBgColor->setType(RDOFRMColor::Type::LAST_BG);
+        pFgColor->setType(RDOFRMColor::Type::LAST_FG);
         LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
         ASSERT(pRect);
         $$ = CONVERTER->stack().push(pRect);
@@ -1215,8 +1215,8 @@ frm_rect
         LPRDOFRMColor pFgColor = rdo::Factory<RDOFRMColor>::create();
         ASSERT(pBgColor);
         ASSERT(pFgColor);
-        pBgColor->setType(RDOFRMColor::CT_LAST_BG);
-        pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+        pBgColor->setType(RDOFRMColor::Type::LAST_BG);
+        pFgColor->setType(RDOFRMColor::Type::LAST_FG);
         LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
         ASSERT(pRect);
         $$ = CONVERTER->stack().push(pRect);
@@ -1251,8 +1251,8 @@ frm_rect
         LPRDOFRMColor pFgColor = rdo::Factory<RDOFRMColor>::create();
         ASSERT(pBgColor);
         ASSERT(pFgColor);
-        pBgColor->setType(RDOFRMColor::CT_LAST_BG);
-        pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+        pBgColor->setType(RDOFRMColor::Type::LAST_BG);
+        pFgColor->setType(RDOFRMColor::Type::LAST_FG);
         LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
         ASSERT(pRect);
         $$ = CONVERTER->stack().push(pRect);
@@ -1278,7 +1278,7 @@ frm_rect
         LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
         LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
         LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
-        LPRDOFRMPosition pHeight = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(0), RDOFRMPosition::PT_DELTA);
+        LPRDOFRMPosition pHeight = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(0), RDOFRMPosition::Type::DELTA);
         ASSERT(pX     );
         ASSERT(pY     );
         ASSERT(pWidth );
@@ -1287,8 +1287,8 @@ frm_rect
         LPRDOFRMColor pFgColor = rdo::Factory<RDOFRMColor>::create();
         ASSERT(pBgColor);
         ASSERT(pFgColor);
-        pBgColor->setType(RDOFRMColor::CT_LAST_BG);
-        pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+        pBgColor->setType(RDOFRMColor::Type::LAST_BG);
+        pFgColor->setType(RDOFRMColor::Type::LAST_FG);
         LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
         ASSERT(pRect);
         $$ = CONVERTER->stack().push(pRect);
@@ -1313,8 +1313,8 @@ frm_rect
 
         LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
         LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
-        LPRDOFRMPosition pWidth  = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(0), RDOFRMPosition::PT_DELTA);
-        LPRDOFRMPosition pHeight = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(0), RDOFRMPosition::PT_DELTA);
+        LPRDOFRMPosition pWidth  = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(0), RDOFRMPosition::Type::DELTA);
+        LPRDOFRMPosition pHeight = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(0), RDOFRMPosition::Type::DELTA);
         ASSERT(pX     );
         ASSERT(pY     );
         ASSERT(pWidth );
@@ -1323,8 +1323,8 @@ frm_rect
         LPRDOFRMColor pFgColor = rdo::Factory<RDOFRMColor>::create();
         ASSERT(pBgColor);
         ASSERT(pFgColor);
-        pBgColor->setType(RDOFRMColor::CT_LAST_BG);
-        pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+        pBgColor->setType(RDOFRMColor::Type::LAST_BG);
+        pFgColor->setType(RDOFRMColor::Type::LAST_FG);
         LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
         ASSERT(pRect);
         $$ = CONVERTER->stack().push(pRect);
@@ -1414,8 +1414,8 @@ frm_r_rect
         LPRDOFRMColor pFgColor = CONVERTER->stack().pop<RDOFRMColor>($13);
         ASSERT(pBgColor);
         ASSERT(pFgColor);
-        pBgColor->setType(RDOFRMColor::CT_LAST_BG);
-        pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+        pBgColor->setType(RDOFRMColor::Type::LAST_BG);
+        pFgColor->setType(RDOFRMColor::Type::LAST_FG);
         LPRDOFRMRectRound pRoundRect = rdo::Factory<RDOFRMRectRound>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
         ASSERT(pRoundRect);
         $$ = CONVERTER->stack().push(pRoundRect);
@@ -1505,8 +1505,8 @@ frm_ellipse
         LPRDOFRMColor pFgColor = CONVERTER->stack().pop<RDOFRMColor>($13);
         ASSERT(pBgColor);
         ASSERT(pFgColor);
-        pBgColor->setType(RDOFRMColor::CT_LAST_BG);
-        pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+        pBgColor->setType(RDOFRMColor::Type::LAST_BG);
+        pFgColor->setType(RDOFRMColor::Type::LAST_FG);
         LPRDOFRMEllipse pEllipse = rdo::Factory<RDOFRMEllipse>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
         ASSERT(pEllipse);
         $$ = CONVERTER->stack().push(pEllipse);
@@ -1594,7 +1594,7 @@ frm_line
         ASSERT(pHeight);
         LPRDOFRMColor pColor = CONVERTER->stack().pop<RDOFRMColor>($11);
         ASSERT(pColor);
-        pColor->setType(RDOFRMColor::CT_LAST_FG);
+        pColor->setType(RDOFRMColor::Type::LAST_FG);
         LPRDOFRMLine pLine = rdo::Factory<RDOFRMLine>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pColor);
         ASSERT(pLine);
         $$ = CONVERTER->stack().push(pLine);
@@ -1680,8 +1680,8 @@ frm_triang
         LPRDOFRMColor pFgColor = CONVERTER->stack().pop<RDOFRMColor>($17);
         ASSERT(pBgColor);
         ASSERT(pFgColor);
-        pBgColor->setType(RDOFRMColor::CT_LAST_BG);
-        pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+        pBgColor->setType(RDOFRMColor::Type::LAST_BG);
+        pFgColor->setType(RDOFRMColor::Type::LAST_FG);
         LPRDOFRMTriang pTriang = rdo::Factory<RDOFRMTriang>::create(RUNTIME->lastFrame(), pX1, pY1, pX2, pY2, pX3, pY3, pBgColor, pFgColor);
         ASSERT(pTriang);
         $$ = CONVERTER->stack().push(pTriang);
@@ -1786,7 +1786,7 @@ frm_active
             }
             else
             {
-                if (pActivity->pattern()->getType() != RDOPATPattern::PT_Keyboard)
+                if (pActivity->pattern()->getType() != RDOPATPattern::Type::KEYBOARD)
                 {
                     CONVERTER->error().push_only(@2, rdo::format("Активность '%s' должна быть клавиатурной", pActivity->name().c_str()));
                     CONVERTER->error().push_only(pActivity->src_info(), "См. акивность");
@@ -1797,7 +1797,7 @@ frm_active
         }
         else
         {
-            if (pOperation->pattern()->getType() != RDOPATPattern::PT_Keyboard)
+            if (pOperation->pattern()->getType() != RDOPATPattern::Type::KEYBOARD)
             {
                 CONVERTER->error().push_only(@2, rdo::format("Операция '%s' должна быть клавиатурной", pOperation->name().c_str()));
                 CONVERTER->error().push_only(pOperation->src_info(), "См. операцию");
@@ -2152,10 +2152,10 @@ fun_arithm_func_call_pars
 // -------------------- Групповые выражения
 // --------------------------------------------------------------------------------
 fun_group_keyword
-    : RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
-    | RDO_Not_Exist   { $$ = RDOFUNGroupLogic::fgt_notexist;  }
-    | RDO_For_All     { $$ = RDOFUNGroupLogic::fgt_forall;    }
-    | RDO_Not_For_All { $$ = RDOFUNGroupLogic::fgt_notforall; }
+    : RDO_Exist       { $$ = static_cast<int>(RDOFUNGroupLogic::Type::EXIST);     }
+    | RDO_Not_Exist   { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTEXIST);  }
+    | RDO_For_All     { $$ = static_cast<int>(RDOFUNGroupLogic::Type::FORALL);    }
+    | RDO_Not_For_All { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTFORALL); }
     ;
 
 fun_group_header
@@ -2163,7 +2163,7 @@ fun_group_header
     {
         LPRDOValue pValue = CONVERTER->stack().pop<RDOValue>($3);
         ASSERT(pValue);
-        $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, pValue->src_info()));
+        $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create(static_cast<RDOFUNGroupLogic::Type>($1), pValue->src_info()));
     }
     | fun_group_keyword '(' error
     {
@@ -2273,10 +2273,10 @@ fun_select_body
     ;
 
 fun_select_keyword
-    : RDO_Exist            { $$ = RDOFUNGroupLogic::fgt_exist;     }
-    | RDO_Not_Exist        { $$ = RDOFUNGroupLogic::fgt_notexist;  }
-    | RDO_For_All        { $$ = RDOFUNGroupLogic::fgt_forall;    }
-    | RDO_Not_For_All    { $$ = RDOFUNGroupLogic::fgt_notforall; }
+    : RDO_Exist          { $$ = static_cast<int>(RDOFUNGroupLogic::Type::EXIST);     }
+    | RDO_Not_Exist      { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTEXIST);  }
+    | RDO_For_All        { $$ = static_cast<int>(RDOFUNGroupLogic::Type::FORALL);    }
+    | RDO_Not_For_All    { $$ = static_cast<int>(RDOFUNGroupLogic::Type::NOTFORALL); }
     ;
 
 fun_select_logic
@@ -2287,7 +2287,7 @@ fun_select_logic
         ASSERT(pSelect);
         ASSERT(pLogic );
         pSelect->setSrcPos(@1, @6);
-        LPRDOFUNLogic pLogicSelect = pSelect->createFunSelectGroup((RDOFUNGroupLogic::FunGroupType)$3, pLogic);
+        LPRDOFUNLogic pLogicSelect = pSelect->createFunSelectGroup(static_cast<RDOFUNGroupLogic::Type>($3), pLogic);
         ASSERT(pLogicSelect);
         $$ = CONVERTER->stack().push(pLogicSelect);
     }

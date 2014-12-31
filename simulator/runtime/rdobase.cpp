@@ -29,7 +29,7 @@ RDOSimulatorBase::RDOSimulatorBase()
     , m_startTime         (0           )
     , m_currentTime       (0           )
     , m_nextTime          (0           )
-    , m_mode              (RTM_MaxSpeed)
+    , m_mode              (RunTimeMode::MAX_SPEED)
     , m_speed             (1           )
     , m_speed_range_max   (500000      )
     , m_next_delay_count  (0           )
@@ -105,12 +105,12 @@ void RDOSimulatorBase::onNewTimeNow()
 
 std::size_t RDOSimulatorBase::get_cnt_calc_arithm() const
 {
-    return OperatorType::getCalcCounter<OperatorType::OT_ARITHM>();
+    return OperatorType::getCalcCounter<OperatorType::Type::ARITHM>();
 }
 
 std::size_t RDOSimulatorBase::get_cnt_calc_logic() const
 {
-    return OperatorType::getCalcCounter<OperatorType::OT_LOGIC>();
+    return OperatorType::getCalcCounter<OperatorType::Type::LOGIC>();
 }
 
 void RDOSimulatorBase::rdoInit()
@@ -119,8 +119,8 @@ void RDOSimulatorBase::rdoInit()
     m_nextTime       = m_currentTime;
     m_checkOperation = true;
     onInit();
-    OperatorType::getCalcCounter<OperatorType::OT_ARITHM>() = 0;
-    OperatorType::getCalcCounter<OperatorType::OT_LOGIC> () = 0;
+    OperatorType::getCalcCounter<OperatorType::Type::ARITHM>() = 0;
+    OperatorType::getCalcCounter<OperatorType::Type::LOGIC> () = 0;
 
     if (m_timePoints.find(m_currentTime) == m_timePoints.end())
         m_timePoints[m_currentTime] = BOPlannedList();
@@ -137,7 +137,7 @@ void RDOSimulatorBase::rdoInit()
 
 bool RDOSimulatorBase::rdoNext()
 {
-    if (m_mode == RTM_Pause || m_mode == RTM_BreakPoint)
+    if (m_mode == RunTimeMode::PAUSE || m_mode == RunTimeMode::BREAKPOINT)
     {
         boost::this_thread::sleep(boost::posix_time::milliseconds(1));
         return true;
@@ -147,15 +147,15 @@ bool RDOSimulatorBase::rdoNext()
     if (!keyboard)
     {
         // Задержка общей скорости моделирования
-        // Это mode == RTM_Jump || mode == RTM_Sync
-        if (m_mode != RTM_MaxSpeed && m_next_delay_count)
+        // Это mode == RunTimeMode::JUMP || mode == RunTimeMode::SYNC
+        if (m_mode != RunTimeMode::MAX_SPEED && m_next_delay_count)
         {
             ++m_next_delay_current;
             if (m_next_delay_current < m_next_delay_count) return true;
             m_next_delay_current = 0;
         }
         // Задержка синхронной скорости моделирования (длительность операций)
-        // Тут не надо проверять mode == RTM_Sync, т.к. это уже заложено в msec_wait,
+        // Тут не надо проверять mode == RunTimeMode::SYNC, т.к. это уже заложено в msec_wait,
         // который сбрасывается в setMode и не изменяется далее.
         if (m_msec_wait > 1)
         {
@@ -199,7 +199,7 @@ bool RDOSimulatorBase::rdoNext()
     {
         if (breakPoints())
         {
-            setMode(RTM_BreakPoint);
+            setMode(RunTimeMode::BREAKPOINT);
         }
         return true;
     }
@@ -219,7 +219,7 @@ bool RDOSimulatorBase::rdoNext()
             {
                 newTime = m_currentTime;
             }
-            if (m_mode == RTM_Sync)
+            if (m_mode == RunTimeMode::SYNC)
             {
                 m_msec_wait += (newTime - m_nextTime) * 3600.0 * 1000.0 / m_showRate;
                 if (m_msec_wait > 0)
@@ -257,14 +257,14 @@ bool RDOSimulatorBase::rdoNext()
 
 void RDOSimulatorBase::setMode(RunTimeMode _mode)
 {
-    if (m_mode == RTM_Pause)
+    if (m_mode == RunTimeMode::PAUSE)
     {
         // Чтобы сразу перейти к следующей операции после паузы и чтобы 'не бегало'
         m_next_delay_current = m_next_delay_count;
         m_msec_wait          = 0;
     }
     m_mode = _mode;
-    if (m_mode == RTM_MaxSpeed || m_mode == RTM_Jump)
+    if (m_mode == RunTimeMode::MAX_SPEED || m_mode == RunTimeMode::JUMP)
     {
         // Чтобы сразу перейти к следующей операции
         m_next_delay_current = m_next_delay_count;

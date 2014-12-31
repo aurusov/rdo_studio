@@ -180,9 +180,9 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
         {
             if (fileInfo.m_modelName.empty())
             {
-                return fm_smr_empty;
+                return FindModel::SMR_EMPTY;
             }
-            return fm_smr_error;
+            return FindModel::SMR_ERROR;
         }
     }
 
@@ -192,7 +192,7 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
         file.second.m_mustExist     = false;
         file.second.m_deleteIfEmpty = true;
     }
-    return fm_ok;
+    return FindModel::OK;
 }
 
 void RDOThreadRepository::newModel(const NewModel* const data)
@@ -281,9 +281,9 @@ bool RDOThreadRepository::openModel(const boost::filesystem::path& modelFileName
             {
                 switch (updateModelNames())
                 {
-                case fm_ok       : broadcastMessage(RT_REPOSITORY_MODEL_OPEN); return true;
-                case fm_smr_error: broadcastMessage(RT_REPOSITORY_MODEL_OPEN); return false;
-                case fm_smr_empty: return false;
+                case FindModel::OK       : broadcastMessage(RT_REPOSITORY_MODEL_OPEN); return true;
+                case FindModel::SMR_ERROR: broadcastMessage(RT_REPOSITORY_MODEL_OPEN); return false;
+                case FindModel::SMR_EMPTY: return false;
                 }
             }
             else

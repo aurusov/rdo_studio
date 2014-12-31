@@ -10,10 +10,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class OperatorType
 {
 public:
-    enum Type
+    enum class Type
     {
-        OT_ARITHM,
-        OT_LOGIC
+        ARITHM,
+        LOGIC
     };
 
     template <Type>

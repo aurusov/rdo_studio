@@ -143,7 +143,7 @@ QSettings& operator>> (QSettings& settings, FindStyle& style)
 
     settings.beginGroup("theme");
     style.keywordColor = QColor(settings.value("keyword_color", style.keywordColor.name()).toString());
-    style.keywordStyle = static_cast<StyleFont::style>(settings.value("keyword_style", style.keywordStyle).toInt());
+    style.keywordStyle = static_cast<StyleFont::Style>(settings.value("keyword_style", style.keywordStyle).toInt());
     settings.endGroup();
 
     return settings;

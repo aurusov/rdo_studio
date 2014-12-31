@@ -16,11 +16,11 @@ class ChartViewStyle;
 class ChartDoc
 {
 public:
-    enum Update
+    enum class Update
     {
-        U_NEW_SERIE,
-        U_NEW_VALUE,
-        U_TIME_TICKS,
+        NEW_SERIE,
+        NEW_VALUE,
+        TIME_TICKS,
     };
 
     typedef  std::list<Time*>          TimesList;
@@ -34,8 +34,8 @@ public:
 
     const QString& getTitle () const;
     void           setTitle (const QString& title);
-    void          autoTitle();
-    static void   resetTitleIndex();
+    void           autoTitle();
+    static void    resetTitleIndex();
 
     void setStyle(ChartViewStyle* pStyle);
 

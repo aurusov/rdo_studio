@@ -169,7 +169,7 @@ public:
 
     void insertDocUpdate(const LPDocUpdate& pDocUpdate);
 
-    static rdo::converter::smr2rdox::RDOFileTypeIn getFileToParse();
+    static rdo::converter::smr2rdox::FileTypeIn getFileToParse();
     static std::size_t lexer_loc_line();
     static std::size_t lexer_loc_pos();
     static Converter* s_converter();
@@ -269,11 +269,11 @@ private:
 class RDOParserModel: public RDOParserTemplate<RDOParserContainerModel>
 {
 public:
-    enum Result
+    enum class Result
     {
-        CNV_NONE,
-        CNV_OK,
-        CNV_ERROR
+        NONE,
+        OK,
+        ERROR
     };
     Result convert(const boost::filesystem::path& smrFullFileName, rdo::converter::smr2rdox::RDOSMRFileInfo& info);
 };
@@ -284,7 +284,7 @@ public:
 class RDOParserSMRInfo: public RDOParserTemplate<RDOParserContainerSMRInfo>
 {
 public:
-    typedef std::map<rdo::converter::smr2rdox::RDOFileTypeIn, boost::filesystem::path> FileList;
+    typedef std::map<rdo::converter::smr2rdox::FileTypeIn, boost::filesystem::path> FileList;
 
     bool parseSMR(const boost::filesystem::path& smrFullFileName, boost::filesystem::path& modelName);
     const FileList& getFileList() const;
@@ -292,7 +292,7 @@ public:
 private:
     FileList m_fileList;
 
-    void insertFileName(rdo::converter::smr2rdox::RDOFileTypeIn type,
+    void insertFileName(rdo::converter::smr2rdox::FileTypeIn type,
                         const boost::filesystem::path&          modelPath,
                         const boost::filesystem::path&          modelName,
                         const boost::filesystem::path&          smrFileName,

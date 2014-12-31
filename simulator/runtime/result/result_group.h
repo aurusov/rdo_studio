@@ -15,10 +15,10 @@ private:
     RDOPMDResultGroup(const std::string& name);
     virtual ~RDOPMDResultGroup();
 
-        enum State
+    enum class State
     {
-        RGS_STOP,
-        RGS_START
+        STOP,
+        START
     };
 
     typedef std::vector<LPIResult> ResultList;

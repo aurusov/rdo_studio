@@ -11,7 +11,7 @@
 using namespace rdo::gui::tracer;
 
 Result::Result(const QString& name, Kind kind, int id)
-    : Serie(SK_RESULT)
+    : Serie(Serie::Kind::RESULT)
     , m_name(name)
     , m_kind(kind)
     , m_id(id)
@@ -41,16 +41,16 @@ void Result::getCaptions(std::vector<std::string>& captions, const int valueCoun
 {
     switch (m_kind)
     {
-    case RK_WATCHQUANT:
+    case Kind::WATCHQUANT:
         Serie::getCaptionsInt(captions, valueCount);
         break;
 
-    case RK_WATCHSTATE:
+    case Kind::WATCHSTATE:
         Serie::getCaptionsBool(captions, valueCount);
         break;
 
-    case RK_WATCHPAR:
-    case RK_WATCHVALUE:
+    case Kind::WATCHPAR:
+    case Kind::WATCHVALUE:
         Serie::getCaptionsDouble(captions, valueCount);
         break;
 
@@ -64,7 +64,7 @@ void Result::setValue(std::string& line, Time* const pTime, const int eventIndex
 {
     double newValue;
     boost::algorithm::trim(line);
-    if (m_kind != RK_WATCHSTATE)
+    if (m_kind != Kind::WATCHSTATE)
     {
         newValue = boost::lexical_cast<double>(line);
     }

@@ -109,7 +109,7 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
 
 void Tracer::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 {
-    if (value == rdo::runtime::RTM_MaxSpeed)
+    if (value == rdo::runtime::RunTimeMode::MAX_SPEED)
     {
         setDrawTrace(false);
     }

@@ -64,18 +64,18 @@ bool RDOPROCQueue::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
     }
 }
 
-IBaseOperation::BOResult RDOPROCQueue::onDoOperation(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDOPROCQueue::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
     m_transacts.front()->next();
-    return IBaseOperation::BOR_done;
+    return IBaseOperation::ResultCode::DONE;
 }
 
 void RDOPROCQueue::onStop (const LPRDORuntime& /*pRuntime*/)
 {}
 
-IBaseOperation::BOResult RDOPROCQueue::onContinue(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDOPROCQueue::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-    return IBaseOperation::BOR_cant_run;
+    return IBaseOperation::ResultCode::CANNOT_RUN;
 }
 
 // --------------------------------------------------------------------------------
@@ -115,18 +115,18 @@ bool RDOPROCDepart::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
     }
 }
 
-IBaseOperation::BOResult RDOPROCDepart::onDoOperation(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDOPROCDepart::onDoOperation(const LPRDORuntime& /*pRuntime*/)
 {
     m_transacts.front()->next();
-    return IBaseOperation::BOR_done;
+    return IBaseOperation::ResultCode::DONE;
 }
 
 void RDOPROCDepart::onStop(const LPRDORuntime& /*pRuntime*/)
 {}
 
-IBaseOperation::BOResult RDOPROCDepart::onContinue(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDOPROCDepart::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-    return IBaseOperation::BOR_cant_run;
+    return IBaseOperation::ResultCode::CANNOT_RUN;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

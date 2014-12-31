@@ -10,15 +10,16 @@
 
 using namespace rdo::gui::tracer;
 
+Q_DECLARE_METATYPE(Serie::Marker);
+
 ChartPreferences::ChartPreferences(ChartView* pView)
     : QDialog(pView, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
     , traceIndex(0)
     , m_pView(pView)
     , m_pSerie(NULL)
-
 {
     setupUi(this);
-    
+
     m_pSerie = m_pView->getDocument()->getSerieList().at(0);
 
     m_valueCountX = m_pView->getValueCountX();
@@ -31,7 +32,7 @@ ChartPreferences::ChartPreferences(ChartView* pView)
     yValueLineEdit->setText(QString::number(m_valueCountY));
     xValueLineEdit->setValidator(new QIntValidator(2, 100, this));
     xValueLineEdit->setText(QString::number(m_valueCountX));
-    
+
     showLegendCheckBox->setChecked(m_pView->isDrawLegend());
 
     ChartDoc* doc = m_pView->getDocument();
@@ -41,22 +42,22 @@ ChartPreferences::ChartPreferences(ChartView* pView)
         yTraceComboBox->addItem(pSerie->getSerie()->getTitle());
         valueComboBox->addItem(pSerie->getSerie()->getTitle());
     }
-    
+
     markerSizeLineEdit->setValidator(new QIntValidator(2, 6, markerSizeLineEdit));
 
     insertColors(colorComboBox);
 
-    markerComboBox->addItem("Нет",         Serie::M_NONE);
-    markerComboBox->addItem("Круг",        Serie::M_CIRCLE);
-    markerComboBox->addItem("Квадрат",     Serie::M_SQUARE);
-    markerComboBox->addItem("Треугольник", Serie::M_TRIANG);
-    markerComboBox->addItem("Крестик",     Serie::M_CROSS);
+    markerComboBox->addItem("Нет",         QVariant::fromValue(Serie::Marker::NONE));
+    markerComboBox->addItem("Круг",        QVariant::fromValue(Serie::Marker::CIRCLE));
+    markerComboBox->addItem("Квадрат",     QVariant::fromValue(Serie::Marker::SQUARE));
+    markerComboBox->addItem("Треугольник", QVariant::fromValue(Serie::Marker::TRIANG));
+    markerComboBox->addItem("Крестик",     QVariant::fromValue(Serie::Marker::CROSS));
 
     connect(xValueLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onXValue(const QString&)));
     connect(yValueLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onYValue(const QString&)));
     connect(titleLineEdit,  SIGNAL(textEdited(const QString&)), this, SLOT(onTitle (const QString&)));
 
-    connect(markerSizeLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onMarkerSize(const QString&)));    
+    connect(markerSizeLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(onMarkerSize(const QString&)));
 
     connect(colorToolButton, SIGNAL(clicked()),      this, SLOT(onColorDialog()));
     connect(valueComboBox,   SIGNAL(activated(int)), this, SLOT(onValueComboBox(int)));
@@ -103,7 +104,7 @@ void ChartPreferences::insertColors(QComboBox* colorBox)
     insertColor(QColor(0x00, 0x80, 0x80), "Teal",    colorBox);
     insertColor(QColor(0xFF, 0xFF, 0x00), "Yellow",  colorBox);
     insertColor(QColor(0x00, 0x00, 0xFF), "Blue",    colorBox);
-    insertColor(QColor(0xFF, 0x00, 0xFF), "Fushcia", colorBox);
+    insertColor(QColor(0xFF, 0x00, 0xFF), "Fuchsia", colorBox);
     insertColor(QColor(0x00, 0xFF, 0xFF), "Aqua",    colorBox);
 }
 
@@ -187,7 +188,7 @@ void ChartPreferences::onCheckAllData()
     bool markerTransparentFlag = transparentMarker == m_pSerie->options().markerTransparent ? true : false;
     bool titleValueFlag = titleValueLineEdit->text() == m_pSerie->options().title;
     bool colorFlag = colorComboBox->itemData(colorComboBox->currentIndex(), Qt::UserRole).value<QColor>() == m_pSerie->options().color ? true : false;
-    bool markerTypeFlag = markerComboBox->itemData(markerComboBox->currentIndex(), Qt::UserRole).toInt() == m_pSerie->options().markerType ? true : false;
+    bool markerTypeFlag = markerComboBox->itemData(markerComboBox->currentIndex(), Qt::UserRole).value<Serie::Marker>() == m_pSerie->options().markerType ? true : false;
 
     bool valueFlag = traceIndex == yTraceComboBox->currentIndex();
 
@@ -288,10 +289,16 @@ void ChartPreferences::onValueComboBox(int index)
     transparentMarkerCheckBox->setChecked(m_pSerie->options().markerTransparent);
     showInLegendCheckBox->setChecked(m_pSerie->options().showInLegend);
     markerSizeLineEdit->setText(QString::number(m_pSerie->options().markerSize));
-    markerComboBox->setCurrentIndex(markerComboBox->findData(m_pSerie->options().markerType));
+    markerComboBox->setCurrentIndex(markerComboBox->findData(QVariant::fromValue(m_pSerie->options().markerType)));
     if (colorComboBox->findData(m_pSerie->options().color, Qt::UserRole) == -1)
     {
-        insertColor(m_pSerie->options().color, QString("[%1, %2, %3]").arg(m_pSerie->options().color.red()).arg(m_pSerie->options().color.green()).arg(m_pSerie->options().color.blue()), colorComboBox);
+        insertColor(
+                m_pSerie->options().color,
+                QString("[%1, %2, %3]")
+                    .arg(m_pSerie->options().color.red())
+                    .arg(m_pSerie->options().color.green())
+                    .arg(m_pSerie->options().color.blue()),
+                colorComboBox);
     }
     colorComboBox->setCurrentIndex(colorComboBox->findData(m_pSerie->options().color, Qt::UserRole));
     onCheckAllData();

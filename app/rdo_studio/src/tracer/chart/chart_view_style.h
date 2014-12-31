@@ -50,8 +50,8 @@ public:
     QColor chartBgColor;
     QColor timeBgColor;
 
-    style::StyleFont::style titleStyle;
-    style::StyleFont::style legendStyle;
+    style::StyleFont::Style titleStyle;
+    style::StyleFont::Style legendStyle;
 
     static ChartViewStyle getDefaultStyle();
 

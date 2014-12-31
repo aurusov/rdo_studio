@@ -46,7 +46,7 @@ public:
         LPRDOValue m_pValue;
     };
     typedef std::vector<Param> ParamList;
-    enum { UNDEFINED_ID = ~0 };
+    static const std::size_t UNDEFINED_ID = ~0;
 
     virtual rdo::runtime::LPRDOCalc createCalc() const;
 
@@ -65,7 +65,7 @@ public:
     void writeModelStructure(std::ostream& stream) const;
 
 protected:
-    RDORSSResource(Converter* pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, int id = UNDEFINED_ID);
+    RDORSSResource(Converter* pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, std::size_t id = UNDEFINED_ID);
 
     LPRDORTPResType m_pResType;
     const int m_id; // in system
