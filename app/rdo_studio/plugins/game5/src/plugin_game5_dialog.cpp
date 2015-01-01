@@ -45,6 +45,7 @@ PluginGame5GenerateSituationDialog::PluginGame5GenerateSituationDialog(QWidget* 
     connect(buttonSetLineup   , &QPushButton::clicked, this, &PluginGame5GenerateSituationDialog::callTilesOrderDialog);
     connect(buttonRandomLineup, &QPushButton::clicked, this, &PluginGame5GenerateSituationDialog::emitSolvabilityCheck);
     connect(buttonOk          , &QPushButton::clicked, this, &PluginGame5GenerateSituationDialog::onClickOk           );
+    connect(ButtonCheckHeuristic, &QPushButton::clicked, this, &PluginGame5GenerateSituationDialog::CheckHeuristic    );
 
     connect(this     , &PluginGame5GenerateSituationDialog::buttonRandomClicked,
             gameBoard, &Board::buildRandomOrder);
@@ -70,10 +71,26 @@ void PluginGame5GenerateSituationDialog::onClickHide(bool state)
 
 void PluginGame5GenerateSituationDialog::onClickOk()
 {
+    pluginMode = Classic;
     rdo::gui::model::Model* pModel = getCurrentModel();
     generateModel();
     pModel->runModel();
     done(Accepted);
+}
+
+void PluginGame5GenerateSituationDialog::CheckHeuristic()
+{
+    pluginMode = Checker;
+    gameBoard->buildCorrectOrder();
+    rdo::gui::model::Model* pModel = getCurrentModel();
+    generateModel();
+    pModel->runModel();
+    done(Accepted);
+}
+
+PluginGame5GenerateSituationDialog::PluginMode PluginGame5GenerateSituationDialog::GetMode()
+{
+    return pluginMode;
 }
 
 void PluginGame5GenerateSituationDialog::emitSolvabilityCheck()

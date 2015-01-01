@@ -1,0 +1,10 @@
+MESSAGE(STATUS "CREATE  RDO_PLUGIN_GAME5 UTILITY")
+
+SET(UTILITY_SRCS
+    bfs.cpp
+    main.cpp
+)
+
+ADD_EXECUTABLE(game5_gen
+    ${UTILITY_SRCS}
+)

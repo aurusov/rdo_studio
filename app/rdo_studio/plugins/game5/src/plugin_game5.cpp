@@ -299,6 +299,8 @@ void PluginGame5::initToolBar(MainWindow* pParent) const
             m_generateSituationDlg    , &PluginGame5GenerateSituationDialog::onPluginAction);
     connect(pModel, &rdo::gui::model::Model::stopped,
             this    , &PluginGame5::reemitGraphDlgAction);
+    connect(pModel, &rdo::gui::model::Model::need_continue,
+            this    , &PluginGame5::checkHeuristic);
     connect(graphDlgAction, &QAction::triggered,
             this          , &PluginGame5::reemitGraphDlgAction);
     connect(this      , &PluginGame5::onGraphDlgAction,
@@ -319,7 +321,18 @@ void PluginGame5::initDialogs(QWidget* pParent)
 
 void PluginGame5::reemitGraphDlgAction()
 {
-    emit onGraphDlgAction(m_generateSituationDlg->getBoardState());
+    if (m_generateSituationDlg->GetMode() == PluginGame5GenerateSituationDialog::Classic)
+    {
+        emit onGraphDlgAction(m_generateSituationDlg->getBoardState());
+    }
+}
+
+void PluginGame5::checkHeuristic()
+{
+    if (m_generateSituationDlg->GetMode() == PluginGame5GenerateSituationDialog::Checker)
+    {
+        m_heuristChecker.compareSolutions();
+    }
 }
 
 void PluginGame5::enablePluginActions()

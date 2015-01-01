@@ -1,5 +1,7 @@
 MESSAGE(STATUS "CREATE  RDO_PLUGIN_GAME5 LIBRARY")
 
+ADD_SUBDIRECTORY(Utility)
+
 IF(PROJECT_OS_LINUX)
     FIND_LIBRARY(PTHREAD pthread $ENV{LD_LIBRARY_PATH})
 ENDIF(PROJECT_OS_LINUX)
@@ -29,6 +31,8 @@ SET(SRC_FILES
     src/plugin_game5.cpp
     src/plugin_game5_model_generator.h
     src/plugin_game5_model_generator.cpp
+    src/heuristic_checker.h
+    src/heuristic_checker.cpp
 )
 
 SET(COMPLETER_FILES

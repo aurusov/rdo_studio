@@ -181,6 +181,7 @@ private slots:
 
 signals:
     void actionUpdated();
+    void need_continue();
     void stopped();
 };
 

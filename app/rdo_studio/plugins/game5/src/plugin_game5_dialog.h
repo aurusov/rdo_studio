@@ -20,6 +20,9 @@ public:
 
     std::vector<unsigned int> getBoardState() const;
 
+    enum PluginMode {Classic, Checker};
+    PluginMode GetMode();
+
 signals:
     void buttonRandomClicked(bool solvabilityCheck);
 
@@ -50,9 +53,12 @@ private:
 
     QStringList parseModelFUN() const;
 
+    PluginMode pluginMode;
+
 private slots:
     void callTilesOrderDialog();
     void onClickOk();
+    void CheckHeuristic();
     void onClickHide(bool state);
     void emitSolvabilityCheck();
 };

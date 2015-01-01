@@ -206,6 +206,7 @@ Model::Model()
     notifies.push_back(RT_SIMULATOR_PARSE_ERROR             );
     notifies.push_back(RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY   );
     notifies.push_back(RT_SIMULATOR_MODEL_STOP_OK           );
+    notifies.push_back(RT_SIMULATOR_MODEL_NEED_CONTINUE     );
     notifies.push_back(RT_SIMULATOR_MODEL_STOP_BY_USER      );
     notifies.push_back(RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR);
     notifies.push_back(RT_RUNTIME_MODEL_START_BEFORE        );
@@ -322,7 +323,7 @@ void Model::proc(RDOThread::RDOMessageInfo& msg)
             ));
             setCanRun   (true );
             setIsRunning(false);
-            emit stopped();
+	    emit stopped();
             break;
         }
         case RDOThread::RT_SIMULATOR_MODEL_STOP_OK:
@@ -334,6 +335,10 @@ void Model::proc(RDOThread::RDOMessageInfo& msg)
 
             g_pApp->autoCloseByModel();
             break;
+        }
+        case RDOThread::RT_SIMULATOR_MODEL_NEED_CONTINUE:
+        {
+		emit need_continue();
         }
         case RDOThread::RT_SIMULATOR_MODEL_STOP_BY_USER:
         {

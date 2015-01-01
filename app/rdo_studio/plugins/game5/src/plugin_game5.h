@@ -9,6 +9,7 @@
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_graph_dialog.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/plugins/plugin_interface.h"
+#include "app/rdo_studio/plugins/game5/src/heuristic_checker.h"
 // --------------------------------------------------------------------------------
 
 class PluginGame5
@@ -31,6 +32,7 @@ public:
 private:
     PluginGame5GenerateSituationDialog* m_generateSituationDlg;
     PluginGame5GraphDialog*             m_graphDlg;
+    HeuristicChecker                    m_heuristChecker;
     
     void initDialogs(QWidget* pParent);
     void initToolBar(MainWindow* pParent) const;
@@ -39,6 +41,7 @@ private:
 private slots:
     void pluginActivation();
     void reemitGraphDlgAction();
+    void checkHeuristic();
     void enablePluginActions();
 
 signals:
