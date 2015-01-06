@@ -46,7 +46,7 @@ public:
         LPRDOValue m_pValue;
     };
     typedef std::vector<Param> ParamList;
-    static const std::size_t UNDEFINED_ID = ~0;
+    static const std::size_t UNDEFINED_ID = std::size_t(~0);
 
     virtual rdo::runtime::LPRDOCalc createCalc() const;
 

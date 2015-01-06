@@ -2,6 +2,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
+#include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/smart_ptr/intrusive_ptr/intrusive_ptr.h"
 #include "utils/src/common/rdocommon.h"
@@ -21,7 +22,9 @@ typedef int(*t_flex_lexer_fun)(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer);
 PREDECLARE_POINTER(RDOParser);
 
 PREDECLARE_POINTER(RDOParserItem);
-class RDOParserItem: public rdo::counter_reference
+class RDOParserItem
+    : public rdo::counter_reference
+    , private boost::noncopyable
 {
 DECLARE_FACTORY(RDOParserItem);
 public:

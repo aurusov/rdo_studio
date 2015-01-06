@@ -89,7 +89,7 @@ private:
 class RDOTraceableObject: public ITrace
 {
 public:
-    static const std::size_t NONE = ~0;
+    static const std::size_t NONE = std::size_t(~0);
 
     bool traceable() const;
     void setTrace(bool trace);
