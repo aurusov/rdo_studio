@@ -285,7 +285,7 @@ protected:
 public:
     RDOThreadCodeComp();
 
-    struct GetCodeComp: public boost::noncopyable
+    struct GetCodeComp: private boost::noncopyable
     {
         rdo::FileType m_file;
         int m_pos_x;

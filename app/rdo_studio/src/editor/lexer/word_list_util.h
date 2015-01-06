@@ -8,7 +8,7 @@
 #include "thirdparty/scintilla/lexlib/WordList.h"
 // --------------------------------------------------------------------------------
 
-class WordListUtil: public boost::noncopyable
+class WordListUtil: private boost::noncopyable
 {
 public:
     WordListUtil(const WordList& wordlist);

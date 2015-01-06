@@ -22,7 +22,7 @@ class RDOThreadRepository: public RDOThreadMT
 public:
     RDOThreadRepository();
 
-    struct FileData: public boost::noncopyable
+    struct FileData: private boost::noncopyable
     {
         rdo::FileType  m_type;
         std::stringstream&            m_stream;
@@ -32,7 +32,7 @@ public:
             , m_stream(stream)
         {}
     };
-    struct BinaryFile: public boost::noncopyable
+    struct BinaryFile: private boost::noncopyable
     {
         boost::filesystem::path  m_name;
         std::stringstream&       m_stream;
@@ -42,7 +42,7 @@ public:
             , m_stream(stream)
         {}
     };
-    struct CreateFileInfo: public boost::noncopyable
+    struct CreateFileInfo: private boost::noncopyable
     {
         boost::filesystem::path m_name;
         boost::filesystem::ofstream& m_stream;

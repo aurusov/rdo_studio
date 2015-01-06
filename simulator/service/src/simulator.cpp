@@ -442,7 +442,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOSimResultInformer
 // --------------------------------------------------------------------------------
-class RDOSimResultInformer: public rdo::runtime::RDOResults, public boost::noncopyable
+class RDOSimResultInformer: public rdo::runtime::RDOResults, private boost::noncopyable
 {
 public:
     RDOSimResultInformer(std::ostream& stream)

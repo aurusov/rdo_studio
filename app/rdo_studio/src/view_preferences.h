@@ -158,7 +158,7 @@ private:
 
     class StyleItem;
 
-    class StyleProperty: boost::noncopyable
+    class StyleProperty: private boost::noncopyable
     {
     public:
         StyleItem* item;
@@ -184,7 +184,7 @@ private:
 
     typedef std::list<StyleProperty*> PropertyList;
 
-    class StyleItem: boost::noncopyable
+    class StyleItem: private boost::noncopyable
     {
     public:
         ItemType                                type;

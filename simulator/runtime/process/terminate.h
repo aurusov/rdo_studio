@@ -13,7 +13,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-class RDOPROCTerminate: public RDOPROCBlock, public IInternalStatisticsManager, public boost::noncopyable
+class RDOPROCTerminate: public RDOPROCBlock, public IInternalStatisticsManager, private boost::noncopyable
 {
 DECLARE_FACTORY(RDOPROCTerminate);
 private:

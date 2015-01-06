@@ -647,7 +647,7 @@ DECLARE_POINTER(RDOFUNGroup);
 // --------------------------------------------------------------------------------
 class RDOFUNGroupLogic
     : public RDOFUNGroup
-    , public boost::noncopyable
+    , private boost::noncopyable
 {
 DECLARE_FACTORY(RDOFUNGroupLogic)
 public:

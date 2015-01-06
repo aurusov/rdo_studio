@@ -26,7 +26,7 @@ PREDECLARE_POINTER(RDORSSResource);
 class RDORSSResource
     : public rdo::counter_reference
     , public RDOParserSrcInfo
-    , public boost::noncopyable
+    , private boost::noncopyable
 {
 DECLARE_FACTORY(RDORSSResource);
 public:

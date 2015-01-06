@@ -23,7 +23,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 class RDORSSResource
     : public RDOParserSrcInfo
-    , public boost::noncopyable
+    , private boost::noncopyable
     , public Context
     , public IContextFind
     , public rdo::runtime::IAsString

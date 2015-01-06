@@ -28,7 +28,7 @@ PREDECLARE_POINTER(RDORTPResType);
 class RDORTPResType
     : public rdo::counter_reference
     , public RDOParserSrcInfo
-    , public boost::noncopyable
+    , private boost::noncopyable
 {
 DECLARE_FACTORY(RDORTPResType);
 public:

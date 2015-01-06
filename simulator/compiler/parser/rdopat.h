@@ -269,7 +269,7 @@ private:
 // --------------------------------------------------------------------------------
 class RDORelevantResource
     : public RDOParserSrcInfo
-    , public boost::noncopyable
+    , private boost::noncopyable
     , public Context
     , public IContextFind
 {

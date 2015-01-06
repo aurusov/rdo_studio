@@ -26,7 +26,7 @@ PREDECLARE_POINTER(RDORSSResource);
 
 class RDORTPResType
     : public RDOParserSrcInfo
-    , public boost::noncopyable
+    , private boost::noncopyable
     , public rdo::runtime::RDOResourceTypeList
     , public IType
     , public IModelStructure

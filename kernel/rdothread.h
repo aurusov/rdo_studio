@@ -64,7 +64,7 @@
 typedef std::size_t (*RDOThreadFun)(void* pParam);
 #endif
 
-class RDOThread: public boost::noncopyable
+class RDOThread: private boost::noncopyable
 {
 #ifdef RDO_MT
 friend class RDOKernelGUI;
