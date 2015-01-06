@@ -223,14 +223,14 @@ pat_main
                 LPDocUpdate pEventMove = rdo::Factory<UpdateMove>::create(
                     @2.m_first_seek,
                     @2.m_last_seek,
-                    IDocUpdate::Position::POSITION_END,
+                    IDocUpdate::Position::Type::POSITION_END,
                     IDocument::Type::EVN
                 );
                 ASSERT(pEventMove);
                 CONVERTER->insertDocUpdate(pEventMove);
 
                 LPDocUpdate pReturnInsert = rdo::Factory<UpdateInsert>::create(
-                    IDocUpdate::Position::POSITION_END,
+                    IDocUpdate::Position::Type::POSITION_END,
                     "\r\n\r\n",
                     IDocument::Type::EVN
                 );

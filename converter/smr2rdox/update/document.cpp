@@ -251,9 +251,9 @@ void Document::MemoryStream::insert(std::size_t to, const std::string& value)
     Buffer::iterator itTo;
     switch (to)
     {
-    case IDocUpdate::Position::POSITION_BEGIN: itTo = m_buffer.begin();      break;
-    case IDocUpdate::Position::POSITION_END  : itTo = m_buffer.end();        break;
-    default                                  : itTo = m_buffer.begin() + to; break;
+    case IDocUpdate::Position::Type::POSITION_BEGIN: itTo = m_buffer.begin(); break;
+    case IDocUpdate::Position::Type::POSITION_END: itTo = m_buffer.end(); break;
+    default: itTo = m_buffer.begin() + to; break;
     }
 
     for (std::size_t i = 0; i < value.length(); ++i)
@@ -268,17 +268,17 @@ void Document::MemoryStream::remove(std::size_t from, std::size_t to)
     Buffer::iterator itFrom;
     switch (from)
     {
-    case IDocUpdate::Position::POSITION_BEGIN: itFrom = m_buffer.begin();        break;
-    case IDocUpdate::Position::POSITION_END  : itFrom = m_buffer.end();          break;
-    default                                  : itFrom = m_buffer.begin() + from; break;
+    case IDocUpdate::Position::Type::POSITION_BEGIN: itFrom = m_buffer.begin(); break;
+    case IDocUpdate::Position::Type::POSITION_END: itFrom = m_buffer.end(); break;
+    default: itFrom = m_buffer.begin() + from; break;
     }
 
     Buffer::iterator itTo;
     switch (to)
     {
-    case IDocUpdate::Position::POSITION_BEGIN: itTo = m_buffer.begin();      break;
-    case IDocUpdate::Position::POSITION_END  : itTo = m_buffer.end();        break;
-    default                                  : itTo = m_buffer.begin() + to; break;
+    case IDocUpdate::Position::Type::POSITION_BEGIN: itTo = m_buffer.begin(); break;
+    case IDocUpdate::Position::Type::POSITION_END: itTo = m_buffer.end(); break;
+    default: itTo = m_buffer.begin() + to; break;
     }
 
     m_buffer.erase(itFrom, itTo);
@@ -288,14 +288,14 @@ std::string Document::MemoryStream::get(std::size_t from, std::size_t to)
 {
     switch (from)
     {
-    case IDocUpdate::Position::POSITION_BEGIN: from = 0; break;
-    case IDocUpdate::Position::POSITION_END  : from = m_buffer.size(); break;
+    case IDocUpdate::Position::Type::POSITION_BEGIN: from = 0; break;
+    case IDocUpdate::Position::Type::POSITION_END: from = m_buffer.size(); break;
     }
 
     switch (to)
     {
-    case IDocUpdate::Position::POSITION_BEGIN: to = 0; break;
-    case IDocUpdate::Position::POSITION_END  : to = m_buffer.size(); break;
+    case IDocUpdate::Position::Type::POSITION_BEGIN: to = 0; break;
+    case IDocUpdate::Position::Type::POSITION_END: to = m_buffer.size(); break;
     }
 
     Buffer::iterator itFrom = m_buffer.begin() + from;

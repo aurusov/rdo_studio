@@ -19,13 +19,14 @@ public:
     class Position
     {
     public:
-        enum
+        enum class Type: std::size_t
         {
-            POSITION_BEGIN = static_cast<std::size_t>(~0),
-            POSITION_END = static_cast<std::size_t>(~1)
+            POSITION_BEGIN = std::size_t(~0),
+            POSITION_END = std::size_t(~1)
         };
 
         Position(std::size_t pos);
+        Position(Type type);
         Position(const Position& pos);
 
         std::size_t get() const;

@@ -188,7 +188,7 @@ void RDODPTActivity::planningInsertIntoSMR() const
         % boost::algorithm::join(planning_params, ", "));
 
     LPDocUpdate pPlanningInsertIntoSMR = rdo::Factory<UpdateInsert>::create(
-        IDocUpdate::Position::POSITION_END,
+        IDocUpdate::Position::Type::POSITION_END,
         planning,
         IDocument::Type::SMR);
     Converter::s_converter()->insertDocUpdate(pPlanningInsertIntoSMR);

@@ -14,6 +14,10 @@ IDocUpdate::Position::Position(std::size_t pos)
     : m_position(pos)
 {}
 
+IDocUpdate::Position::Position(Type type)
+    : m_position(static_cast<std::size_t>(type))
+{}
+
 IDocUpdate::Position::Position(const Position& pos)
     : m_position(pos.m_position)
 {}
@@ -25,17 +29,17 @@ std::size_t IDocUpdate::Position::get() const
 
 bool IDocUpdate::Position::begin() const
 {
-    return m_position == std::size_t(POSITION_BEGIN);
+    return m_position == std::size_t(Type::POSITION_BEGIN);
 }
 
 bool IDocUpdate::Position::end() const
 {
-    return m_position == std::size_t(POSITION_END);
+    return m_position == std::size_t(Type::POSITION_END);
 }
 
 bool IDocUpdate::Position::real() const
 {
-    return m_position != std::size_t(POSITION_BEGIN) && m_position != std::size_t(POSITION_END);
+    return m_position != std::size_t(Type::POSITION_BEGIN) && m_position != std::size_t(Type::POSITION_END);
 }
 
 void IDocUpdate::Position::operator+= (const Position& pos)
@@ -80,19 +84,24 @@ bool IDocUpdate::Position::operator<= (const Position& pos) const
 {
     switch(get())
     {
-    case POSITION_BEGIN: return true;
-    case POSITION_END  : switch (pos.get())
-                         {
-                         case POSITION_BEGIN: return false;
-                         case POSITION_END  : return true;
-                         default            : return false;
-                         }
-    default            : switch (pos.get())
-                         {
-                         case POSITION_BEGIN: return false;
-                         case POSITION_END  : return true;
-                         default            : return m_position <= pos.m_position;
-                         }
+    case Type::POSITION_BEGIN:
+        return true;
+
+    case Type::POSITION_END:
+        switch (pos.get())
+        {
+        case Type::POSITION_BEGIN: return false;
+        case Type::POSITION_END: return true;
+        default: return false;
+        }
+
+    default:
+        switch (pos.get())
+        {
+        case Type::POSITION_BEGIN: return false;
+        case Type::POSITION_END: return true;
+        default: return m_position <= pos.m_position;
+        }
     }
 }
 
@@ -100,19 +109,24 @@ bool IDocUpdate::Position::operator>= (const Position& pos) const
 {
     switch(get())
     {
-    case POSITION_BEGIN: switch (pos.get())
-                         {
-                         case POSITION_BEGIN: return true;
-                         case POSITION_END  : return false;
-                         default            : return false;
-                         }
-    case POSITION_END  : return true;
-    default            : switch (pos.get())
-                         {
-                         case POSITION_BEGIN: return true;
-                         case POSITION_END  : return false;
-                         default            : return m_position >= pos.m_position;
-                         }
+    case Type::POSITION_BEGIN:
+        switch (pos.get())
+        {
+        case Type::POSITION_BEGIN: return true;
+        case Type::POSITION_END: return false;
+        default: return false;
+        }
+
+    case Type::POSITION_END:
+        return true;
+
+    default:
+        switch (pos.get())
+        {
+        case Type::POSITION_BEGIN: return true;
+        case Type::POSITION_END: return false;
+        default: return m_position >= pos.m_position;
+        }
     }
 }
 
@@ -120,24 +134,29 @@ bool IDocUpdate::Position::operator< (const Position& pos) const
 {
     switch(get())
     {
-    case POSITION_BEGIN: switch (pos.get())
-                         {
-                         case POSITION_BEGIN: NEVER_REACH_HERE; return false;
-                         case POSITION_END  : return true;
-                         default            : return true;
-                         }
-    case POSITION_END  : switch (pos.get())
-                         {
-                         case POSITION_BEGIN: return false;
-                         case POSITION_END  : NEVER_REACH_HERE; return false;
-                         default            : return false;
-                         }
-    default            : switch (pos.get())
-                         {
-                         case POSITION_BEGIN: return false;
-                         case POSITION_END  : return true;
-                         default            : return m_position < pos.m_position;
-                         }
+    case Type::POSITION_BEGIN:
+        switch (pos.get())
+        {
+        case Type::POSITION_BEGIN: NEVER_REACH_HERE; return false;
+        case Type::POSITION_END: return true;
+        default: return true;
+        }
+
+    case Type::POSITION_END:
+        switch (pos.get())
+        {
+        case Type::POSITION_BEGIN: return false;
+        case Type::POSITION_END: NEVER_REACH_HERE; return false;
+        default: return false;
+        }
+
+    default:
+        switch (pos.get())
+        {
+        case Type::POSITION_BEGIN: return false;
+        case Type::POSITION_END: return true;
+        default: return m_position < pos.m_position;
+        }
     }
 }
 
@@ -145,24 +164,29 @@ bool IDocUpdate::Position::operator> (const Position& pos) const
 {
     switch(get())
     {
-    case POSITION_BEGIN: switch (pos.get())
-                         {
-                         case POSITION_BEGIN: NEVER_REACH_HERE; return false;
-                         case POSITION_END  : return false;
-                         default            : return false;
-                         }
-    case POSITION_END  : switch (pos.get())
-                         {
-                         case POSITION_BEGIN: return true;
-                         case POSITION_END  : NEVER_REACH_HERE; return false;
-                         default            : return true;
-                         }
-    default            : switch (pos.get())
-                         {
-                         case POSITION_BEGIN: return true;
-                         case POSITION_END  : return false;
-                         default            : return m_position > pos.m_position;
-                         }
+    case Type::POSITION_BEGIN:
+        switch (pos.get())
+        {
+        case Type::POSITION_BEGIN: NEVER_REACH_HERE; return false;
+        case Type::POSITION_END: return false;
+        default: return false;
+        }
+
+    case Type::POSITION_END:
+        switch (pos.get())
+        {
+        case Type::POSITION_BEGIN: return true;
+        case Type::POSITION_END: NEVER_REACH_HERE; return false;
+        default: return true;
+        }
+
+    default:
+        switch (pos.get())
+        {
+        case Type::POSITION_BEGIN: return true;
+        case Type::POSITION_END: return false;
+        default: return m_position > pos.m_position;
+        }
     }
 }
 
