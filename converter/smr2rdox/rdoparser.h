@@ -273,7 +273,7 @@ public:
     {
         NONE,
         OK,
-        ERROR
+        CONVERTER_ERROR
     };
     Result convert(const boost::filesystem::path& smrFullFileName, rdo::converter::smr2rdox::RDOSMRFileInfo& info);
 };

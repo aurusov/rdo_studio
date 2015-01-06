@@ -445,15 +445,15 @@ RDOParserModel::Result RDOParserModel::convert(const boost::filesystem::path& sm
     }
     catch (const rdo::converter::smr2rdox::RDOSyntaxException&)
     {
-        return Result::ERROR;
+        return Result::CONVERTER_ERROR;
     }
     catch (const rdo::runtime::RDORuntimeException&)
     {
-        return Result::ERROR;
+        return Result::CONVERTER_ERROR;
     }
     catch (...)
     {
-        return Result::ERROR;
+        return Result::CONVERTER_ERROR;
     }
 
     m_pDocument->create(fullPath, modelName);
@@ -482,12 +482,12 @@ RDOParserModel::Result RDOParserModel::convert(const boost::filesystem::path& sm
     rdoxFile.replace_extension(".rdox");
     if (!repository::RDOThreadRepository::createRDOX(rdoxFile))
     {
-        return Result::ERROR;
+        return Result::CONVERTER_ERROR;
     }
 
     if (!rdo::File::trimLeft(m_pDocument->getName(rdo::converter::smr2rdox::FileTypeOut::SMR)))
     {
-        return Result::ERROR;
+        return Result::CONVERTER_ERROR;
     }
 
     return Result::OK;

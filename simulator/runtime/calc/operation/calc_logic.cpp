@@ -20,7 +20,7 @@ RDOCalcAnd::RDOCalcAnd(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
 
 RDOValue RDOCalcAnd::doCalc(const LPRDORuntime& pRuntime)
 {
-    ++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
+    ++OperatorType::getCalcCounter<OperatorType::Type(Type::calc_type)>();
 
     if (!m_pLeft->calcValue(pRuntime).getAsBool())
         return m_value_false;
@@ -43,7 +43,7 @@ RDOCalcOr::RDOCalcOr(const LPRDOCalc& pLeft, const LPRDOCalc& pRight)
 
 RDOValue RDOCalcOr::doCalc(const LPRDORuntime& pRuntime)
 {
-    ++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
+    ++OperatorType::getCalcCounter<OperatorType::Type(Type::calc_type)>();
 
     if (m_pLeft->calcValue(pRuntime).getAsBool())
         return m_value_true;

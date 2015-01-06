@@ -20,7 +20,7 @@ public:
     {
         NEW_SERIE,
         NEW_VALUE,
-        TIME_TICKS,
+        TIMES,
     };
 
     typedef  std::list<Time*>          TimesList;

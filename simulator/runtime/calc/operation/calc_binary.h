@@ -42,7 +42,10 @@ class RDOCalcBinary: public RDOCalcBinaryBase
 {
 friend class rdo::Factory<RDOCalcBinary<F, CalcType>>;
 public:
-    static const auto calc_type = CalcType;
+    enum class Type
+    {
+        calc_type = CalcType
+    };
     typedef F caller_type;
 
     LPRDOCalc      getLeft        () const;

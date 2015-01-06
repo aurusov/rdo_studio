@@ -30,7 +30,7 @@ enum class StyleType
     CURRENT,
     DEFAULT,
     CPP,
-    PASCAL,
+    PASCAL_STYLE,
     HTML,
     CLASSIC,
     TWILIGHT,
@@ -775,7 +775,7 @@ void ViewPreferences::onThemeComboBox(int /*index*/)
             style_editor = ModelStyle::getCppStyle();
             style_editor.font = StyleFont::getDefaultFont();
             break;
-        case StyleType::PASCAL:
+        case StyleType::PASCAL_STYLE:
             style_editor = ModelStyle::getPascalStyle();
             style_editor.font = StyleFont::getDefaultFont();
             break;
@@ -871,7 +871,7 @@ void ViewPreferences::onThemeComboBox(int /*index*/)
             style_results = ResultsStyle::getCppStyle();
             style_results.font = StyleFont::getDefaultFont();
             break;
-        case StyleType::PASCAL:
+        case StyleType::PASCAL_STYLE:
             style_results = ResultsStyle::getPascalStyle();
             style_results.font = StyleFont::getDefaultFont();
             break;
@@ -1316,7 +1316,7 @@ void ViewPreferences::updateThemeComboBox(StyleProperty* prop)
         themeComboBox->addItem("Текущий", QVariant::fromValue(StyleType::CURRENT));
         themeComboBox->addItem("По умолчанию", QVariant::fromValue(StyleType::DEFAULT));
         themeComboBox->addItem("C++", QVariant::fromValue(StyleType::CPP));
-        themeComboBox->addItem("Pascal", QVariant::fromValue(StyleType::PASCAL));
+        themeComboBox->addItem("Pascal", QVariant::fromValue(StyleType::PASCAL_STYLE));
         themeComboBox->addItem("HTML", QVariant::fromValue(StyleType::HTML));
         themeComboBox->addItem("Классический", QVariant::fromValue(StyleType::CLASSIC));
         themeComboBox->addItem("Яркий", QVariant::fromValue(StyleType::TWILIGHT));

@@ -436,14 +436,14 @@ void Model::proc(RDOThread::RDOMessageInfo& msg)
             }
 
             setCanRun(true);
-            m_buildState  = BuildState::ERROR;
+            m_buildState  = BuildState::BUILD_ERROR;
             g_pApp->autoCloseByModel();
             break;
         }
         case RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY:
         {
             m_smrEmptyError = true;
-            m_buildState    = BuildState::ERROR;
+            m_buildState    = BuildState::BUILD_ERROR;
             break;
         }
         case RDOThread::RT_SIMULATOR_PARSE_STRING:

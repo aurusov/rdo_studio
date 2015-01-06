@@ -93,7 +93,7 @@ void ChartDoc::incTimeEventsCount(Time* time)
     if (!m_docTimes.empty() && m_docTimes.back() == time)
     {
         m_ticksCount++;
-        updateChartViews(Update::TIME_TICKS);
+        updateChartViews(Update::TIMES);
     }
 }
 

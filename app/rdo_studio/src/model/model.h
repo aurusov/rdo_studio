@@ -86,7 +86,7 @@ private:
     {
         UNDEFINED,
         COMPLETE,
-        ERROR
+        BUILD_ERROR
     };
 
     rdo::gui::frame::Manager m_frameManager;

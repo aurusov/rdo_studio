@@ -1180,7 +1180,7 @@ void RDOThreadSimulator::parseSMRFileInfo(rdo::converter::smr2rdox::RDOSMRFileIn
             }
             break;
 
-        case rdo::converter::smr2rdox::RDOParserModel::Result::ERROR:
+        case rdo::converter::smr2rdox::RDOParserModel::Result::CONVERTER_ERROR:
             {
                 broadcastMessage(RT_CONVERTOR_ERROR);
 
