@@ -22,7 +22,8 @@
 #include "kernel/rdokernel.h"
 #include "kernel/rdothread.h"
 #include "simulator/runtime/thread_proxy_i.h"
-#include "simulator/compiler/procgui/procgui.h"
+#include "simulator/runtime/rdo_runtime.h"
+#include "simulator/compiler/parser/rdoparser.h"
 #include "converter/smr2rdox/rdo_common/model_objects_convertor.h"
 // --------------------------------------------------------------------------------
 
@@ -162,10 +163,6 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 class RDOTrace;
 
-OPEN_RDO_PARSER_NAMESPACE
-PREDECLARE_POINTER(RDOParser);
-CLOSE_RDO_PARSER_NAMESPACE
-
 namespace rdo {
 namespace service {
 namespace simulation {
@@ -206,8 +203,6 @@ private:
     rdo::compiler::parser::LPRDOParser m_pParser;
     rdo::runtime::LPRDORuntime m_pRuntime;
     bool m_canTrace;
-    rdo::compiler::gui::LPProcGUIProcess m_pGUIProcess;
-    rdo::compiler::gui::LPProcGUIBlock m_pBlock;
     rdo::runtime::LPRDOThreadRunTime m_pThreadRuntime;
     rdo::simulation::report::ExitCode m_exitCode;
 

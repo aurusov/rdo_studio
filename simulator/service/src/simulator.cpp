@@ -28,14 +28,11 @@
 #include "kernel/rdokernel.h"
 #include "repository/rdorepository.h"
 #include "simulator/runtime/rdotrace.h"
-#include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdoframe.h"
-#include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdosmr.h"
 #include "simulator/compiler/parser/src/animation/animation_frame.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/mbuilder/rdo_resources.h"
-#include "simulator/compiler/procgui/procgui_datablock.h"
 #include "simulator/service/src/simulator.h"
 
 #ifndef DISABLE_CONVERTER
@@ -866,9 +863,6 @@ RDOThreadSimulator::RDOThreadSimulator()
     notifies.push_back(RT_CODECOMP_GET_DATA               );
     notifies.push_back(RT_CORBA_PARSER_GET_RTP            );
     notifies.push_back(RT_CORBA_PARSER_GET_RSS            );
-    notifies.push_back(RT_PROCGUI_BLOCK_CREATE            );
-    notifies.push_back(RT_PROCGUI_BLOCK_TERMINATE         );
-    notifies.push_back(RT_PROCGUI_BLOCK_PROCESS           );
     //notifies.push_back(RT_CORBA_PARSER_GET_RTP_COUNT      );
     //notifies.push_back(RT_CORBA_PARSER_GET_RTP_PAR_COUNT  );
     after_constructor();
@@ -932,50 +926,6 @@ void RDOThreadSimulator::proc(RDOMessageInfo& msg)
         case RT_CODECOMP_GET_DATA:
         {
             codeCompletion();
-            break;
-        }
-        case RT_PROCGUI_BLOCK_CREATE:
-        {
-            m_pGUIProcess = rdo::Factory<rdo::compiler::gui::ProcGUIProcess>::create(m_pRuntime);
-            msg.lock();
-            rdo::compiler::gui::RPShapeDataBlockCreate* pRawParams = static_cast<rdo::compiler::gui::RPShapeDataBlockCreate*>(msg.param);
-            rdo::compiler::gui::LPRPShapeDataBlockCreate pParams(pRawParams);
-            m_pBlock = rdo::Factory<rdo::compiler::gui::ProcGUIBlockGenerate>::create(m_pGUIProcess, m_pRuntime, m_pParser, pParams);
-            msg.unlock();
-            ASSERT(m_pBlock);
-            pRawParams = NULL;
-            m_pBlock   = NULL;
-            pParams    = NULL;
-            break;
-        }
-        case RT_PROCGUI_BLOCK_PROCESS:
-        {
-            ASSERT(m_pGUIProcess);
-            msg.lock();
-            rdo::compiler::gui::RPShapeDataBlockProcess* pRawParams = static_cast<rdo::compiler::gui::RPShapeDataBlockProcess*>(msg.param);
-            rdo::compiler::gui::LPRPShapeDataBlockProcess pParams(pRawParams);
-            m_pBlock = rdo::Factory<rdo::compiler::gui::ProcGUIBlockProcess>::create(m_pGUIProcess, m_pRuntime, m_pParser, pParams);
-            msg.unlock();
-            ASSERT(m_pBlock);
-            pRawParams = NULL;
-            m_pBlock   = NULL;
-            pParams    = NULL;
-            break;
-        }
-        case RT_PROCGUI_BLOCK_TERMINATE:
-        {
-            ASSERT(m_pGUIProcess);
-            msg.lock();
-            rdo::compiler::gui::RPShapeDataBlockTerminate* pRawParams = static_cast<rdo::compiler::gui::RPShapeDataBlockTerminate*>(msg.param);
-            rdo::compiler::gui::LPRPShapeDataBlockTerminate pParams(pRawParams);
-            m_pBlock = rdo::Factory<rdo::compiler::gui::ProcGUIBlockTerminate>::create(m_pGUIProcess, pParams);
-            msg.unlock();
-            ASSERT(m_pBlock);
-            m_pGUIProcess->clear();
-            m_pGUIProcess = NULL;
-            pRawParams    = NULL;
-            m_pBlock      = NULL;
-            pParams       = NULL;
             break;
         }
 
