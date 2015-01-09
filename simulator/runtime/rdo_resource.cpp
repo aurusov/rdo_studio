@@ -11,31 +11,37 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOResource
 // --------------------------------------------------------------------------------
-RDOResource::RDOResource(const LPRDORuntime& /*pRuntime*/, const ParamList& paramList, LPIResourceType pResType, std::size_t resID, std::size_t typeID, bool trace, bool temporary, bool isNested)
-    : RDORuntimeObject   (                                      )
-    , RDOTraceableObject (trace, resID, rdo::toString(resID + 1))
-    , m_temporary        (temporary                             )
-    , m_state            (RDOResource::ConvertStatus::NONE                  )
-    , m_type             (typeID                                )
-    , m_referenceCount   (0                                     )
-    , m_resType          (pResType                              )
-    , m_isNested         (isNested                              )
+RDOResource::RDOResource(
+        const LPRDORuntime& /*pRuntime*/,
+        const ParamList& paramList,
+        LPIResourceType pResType,
+        std::size_t resID,
+        std::size_t typeID,
+        bool trace,
+        bool temporary,
+        bool isNested)
+    : RDOTraceableObject(trace, resID, rdo::toString(resID + 1))
+    , m_temporary       (temporary)
+    , m_isNested        (isNested)
+    , m_state           (RDOResource::ConvertStatus::NONE)
+    , m_type            (typeID)
+    , m_referenceCount  (0)
+    , m_resType         (pResType)
 {
     appendParams(paramList.begin(), paramList.end());
 }
 
 // TODO копирующий конструктор не используется - нужен ли он?
 RDOResource::RDOResource(const LPRDORuntime& /*pRuntime*/, const RDOResource& copy)
-    : RDORuntimeObject   (                 )
-    , RDOTraceableObject (copy.traceable(), copy.getTraceID(), copy.traceId())
-    , m_paramList        (copy.m_paramList )
-    , m_temporary        (copy.m_temporary )
-    , m_state            (copy.m_state     )
-    , m_type             (copy.m_type      )
-    , m_referenceCount   (0                )
-    , m_resType          (copy.m_resType   )
-    , m_typeId           (copy.m_typeId    )
-    , m_isNested         (copy.m_isNested    )
+    : RDOTraceableObject(copy.traceable(), copy.getTraceID(), copy.traceId())
+    , m_paramList     (copy.m_paramList)
+    , m_temporary     (copy.m_temporary)
+    , m_isNested      (copy.m_isNested )
+    , m_state         (copy.m_state    )
+    , m_type          (copy.m_type     )
+    , m_referenceCount(0               )
+    , m_resType       (copy.m_resType  )
+    , m_typeId        (copy.m_typeId   )
 {
     appendParams(copy.m_paramList.begin(), copy.m_paramList.end());
 // TODO посмотреть history и принять решение о комментарии
