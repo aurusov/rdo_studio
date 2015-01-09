@@ -20,6 +20,7 @@ private:
     QString getSolutionCost() const;
     void getNextRightSolution();
     bool openRightSolutionFile();
+    void getHeader();
 
     QFile r_solution_file;
     quint32 bufSize;

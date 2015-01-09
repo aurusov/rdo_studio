@@ -998,14 +998,14 @@ void RDOThreadSimulator::proc(RDOMessageInfo& msg)
                 // rdo::simulation::report::ExitCode::PARSER_ERROR   - Не используется в run-time
                 // rdo::simulation::report::ExitCode::MODEL_NOTFOUND - Не используется в run-time
                 // rdo::simulation::report::ExitCode::USER_BREAK     - Устанавливается в m_pSimulator, перехват RT_THREAD_STOP_AFTER не срабатывает
-                bool stopSuccessed = false;
+                bool stopSucceeded = false;
                 m_exitCode = m_pRuntime->m_whyStop;
                 if (!m_pThreadRuntime->runtimeError())
                 {
                     // Остановились сами нормально
                     broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
                     closeModel();
-                    stopSuccessed = true;
+                    stopSucceeded = true;
                 }
                 else
                 {
@@ -1020,7 +1020,7 @@ void RDOThreadSimulator::proc(RDOMessageInfo& msg)
                 m_pThreadRuntime->thread_destroy = NULL;
 #endif
                 m_pThreadRuntime = NULL;
-                if (stopSuccessed)
+                if (stopSucceeded)
                 {
                     broadcastMessage(RT_SIMULATOR_MODEL_NEED_CONTINUE);
                 }

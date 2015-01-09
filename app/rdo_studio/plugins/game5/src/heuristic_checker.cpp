@@ -30,19 +30,23 @@ bool HeuristicChecker::openRightSolutionFile()
                                         QMessageBox::Ok);
         return EXIT_FAILURE;
     }
-    // Get the header
+    getHeader();
+    return EXIT_SUCCESS;
+}
+
+void HeuristicChecker::getHeader()
+{
     std::unique_ptr<char[]> raw_data(new char[sizeof(quint32)]);
     r_solution_file.read(raw_data.get(), sizeof(quint32));
     bufSize = *reinterpret_cast<quint32*>(raw_data.get());
     rightSolution = 0;
-    return EXIT_SUCCESS;
 }
 
 HeuristicChecker::~HeuristicChecker()
 {
     if (r_solution_file.isOpen())
     {
-	    r_solution_file.close();
+        r_solution_file.close();
     }
 }
 
@@ -51,7 +55,7 @@ QString HeuristicChecker::getSolutionCost() const
     rdo::gui::model::Model* pModel = g_pApp->getMainWndUI()->getModel();
     boost::filesystem::path traceFilePath(pModel->getFullName().toStdString());
     traceFilePath.replace_extension(".trc");
-    QFile trcFile(QString(traceFilePath.string().c_str()));
+    QFile trcFile(QString::fromStdString(traceFilePath.string()));
     QString trcString;
     if (trcFile.open(QIODevice::ReadOnly))
     {
