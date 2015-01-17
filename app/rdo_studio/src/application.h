@@ -2,7 +2,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
-#include <fstream>
 #include <QProcess>
 #include <QTimer>
 #include <QApplication>
@@ -47,9 +46,7 @@ public:
 
     // см. описание RDOKernelGUI
     // Главная треда самого приложения, т.е. кернет для win32-gui, но не кернел системы
-    RDOThread*          m_pStudioGUI;
-
-    std::ofstream& log();
+    RDOThread* m_pStudioGUI;
 
     void           broadcastMessage(RDOThread::Message message, void* pParam = NULL);
 
@@ -80,7 +77,6 @@ public:
     rdo::plugin::Loader&                  getPluginLoader();
 
 private:
-    std::ofstream                          m_log;
     bool                                   m_fileAssociationSetup;
     bool                                   m_fileAssociationCheckInFuture;
     bool                                   m_openLastProject;

@@ -61,9 +61,8 @@ void MainWindow::SubWindowToAction::onSubWindowActivated(QMdiSubWindow* pSubWind
     {
         Map::const_iterator it = m_map.find(pSubWindow);
         if (it == m_map.end())
-        {
             it = addNewSubWindow(pSubWindow);
-        }
+
         ASSERT(it != m_map.end());
         it->second->setChecked(true);
     }
@@ -86,9 +85,7 @@ MainWindow::SubWindowToAction::addNewSubWindow(QMdiSubWindow* pSubWindow)
     QList<QMdiSubWindow*> windowList = m_pMainWindow->mdiArea->subWindowList();
 
     if (windowList.count() == 1 && m_pSeparator == NULL)
-    {
         addFirstSubWindow();
-    }
 
     pSubWindow->installEventFilter(m_pMainWindow);
 
@@ -124,9 +121,7 @@ void MainWindow::SubWindowToAction::updateList()
     }
 
     if (windowList.empty() && m_pSeparator)
-    {
         removeLastSubWindow();
-    }
 }
 
 void MainWindow::SubWindowToAction::addFirstSubWindow()
@@ -157,8 +152,8 @@ MainWindow::MainWindow()
     mdiArea->setTabsClosable(true);
     mdiArea->setTabsMovable(true);
 
-    createStatusBar ();
-    createToolBar   ();
+    createStatusBar();
+    createToolBar();
     createInsertMenu();
 
     addAction(actSearchFindNextCurrent);
@@ -257,9 +252,7 @@ void MainWindow::createInsertMenu()
             {
                 QFile file(":/insert_menu_template/insert_menu_template/" + resourceName);
                 if (file.open(QIODevice::ReadOnly) && file.isOpen())
-                {
                     m_textForInsert = file.readAll();
-                }
             }
         }
     };
@@ -416,7 +409,7 @@ void MainWindow::init()
 {
     QSettings settings;
     settings.beginGroup("style");
-    
+
     settings.beginGroup("editor");
     settings >> style_editor;
     settings.endGroup();
@@ -511,29 +504,27 @@ void MainWindow::setVisible(bool visible)
 void MainWindow::closeEvent(QCloseEvent* event)
 {
     if (g_pModel && !g_pModel->closeModel())
-    {
         event->ignore();
-    }
 
     if (event->isAccepted())
     {
         update_stop();
-        
+
         QSettings settings;
         settings.beginGroup("style");
 
         settings.beginGroup("editor");
         settings << style_editor;
         settings.endGroup();
-        
+
         settings.beginGroup("build");
         settings << style_build;
         settings.endGroup();
-        
+
         settings.beginGroup("debug");
         settings << style_debug;
         settings.endGroup();
-        
+
         settings.beginGroup("trace");
         settings << style_trace;
         settings.endGroup();
@@ -633,9 +624,7 @@ void MainWindow::addSubWindow(QWidget* pWidget)
 
     bool maximized = frameList.empty();
     if (!maximized)
-    {
         maximized = frameList.front()->isMaximized();
-    }
 
     QMdiSubWindow* pFrame = mdiArea->addSubWindow(pWidget);
     QObject::connect(pFrame, &QMdiSubWindow::windowStateChanged, this, &MainWindow::onSubWindowStateChanged);
@@ -650,9 +639,7 @@ void MainWindow::addSubWindow(QWidget* pWidget)
     pFrame->resize(size);
 
     if (maximized)
-    {
         pFrame->showMaximized();
-    }
 }
 
 void MainWindow::activateSubWindow(QWidget* pWidget)
@@ -690,9 +677,7 @@ void MainWindow::onDockVisibleChanged(bool visible)
     if (pEditorTab)
     {
         for (int i = 0; i < pEditorTab->count(); ++i)
-        {
             pEditorTab->getItemEdit(i)->setLog(*pLog);
-        }
     }
 }
 
@@ -713,9 +698,8 @@ void MainWindow::onMenuFileReopen(QAction* pAction)
     {
         ReopenList::iterator it = std::find(m_reopenList.begin(), m_reopenList.end(), fileName);
         if (it != m_reopenList.end())
-        {
             m_reopenList.erase(it);
-        }
+
         updateMenuFileReopen();
     }
 }
@@ -726,9 +710,7 @@ void MainWindow::insertMenuFileReopenItem(const QString& item)
     {
         ReopenList::iterator it = boost::range::find(m_reopenList, item);
         if (it != m_reopenList.end())
-        {
             m_reopenList.erase(it);
-        }
 
         m_reopenList.push_front(item);
 
@@ -750,9 +732,8 @@ void MainWindow::updateMenuFileReopen()
     for (ReopenList::size_type reopenIndex = 0; reopenIndex < m_reopenList.size(); ++reopenIndex)
     {
         if (reopenIndex == 4)
-        {
             menuFileReopen->addSeparator();
-        }
+
         menuFileReopen->addAction(QString("%1. %2").arg(reopenIndex+1).arg(m_reopenList[reopenIndex]));
     }
 
@@ -771,18 +752,15 @@ void MainWindow::loadMenuFileReopen()
     QStringList groupList = settings.childKeys();
     std::vector<int> indexList;
     for (const QString& index: groupList)
-    {
         indexList.push_back(index.toInt());
-    }
+
     std::sort(indexList.begin(), indexList.end());
 
     for (int index: indexList)
     {
         QString value = settings.value(QString::number(index), QString()).toString();
         if (!value.isEmpty())
-        {
             m_reopenList.push_back(value);
-        }
     }
 
     settings.endGroup();
@@ -795,9 +773,7 @@ void MainWindow::saveMenuFileReopen() const
 
     std::size_t index = 1;
     for (const QString& fileName: m_reopenList)
-    {
         settings.setValue(QString::number(index++), fileName);
-    }
 
     settings.endGroup();
 }
@@ -812,9 +788,7 @@ void MainWindow::updateInsertMenu(bool enabled)
 
         QList<QAction*> itemList = pMenu->menu()->actions();
         for (QAction* pItem: itemList)
-        {
             pItem->setEnabled(enabled);
-        }
     }
 }
 
@@ -884,9 +858,7 @@ void MainWindow::forAllSubWindows(F functor, QMdiSubWindow* pTopSubWindow)
         for (QMdiSubWindow* pSubWindow: windowList)
         {
             if (pSubWindow != pTopSubWindow)
-            {
                 functor(pSubWindow);
-            }
         }
         if (pTopSubWindow)
         {
@@ -906,9 +878,7 @@ void MainWindow::updateWindowTitle()
         : appName;
 
     if (windowTitle() != normalTitle)
-    {
         setWindowTitle(normalTitle);
-    }
 }
 
 bool MainWindow::eventFilter(QObject* target, QEvent* event)
@@ -916,13 +886,9 @@ bool MainWindow::eventFilter(QObject* target, QEvent* event)
     if (event->type() == QEvent::WindowTitleChange)
     {
         if (dynamic_cast<QMdiSubWindow*>(target))
-        {
             m_subWindowToAction->onTitleChanged(static_cast<QMdiSubWindow*>(target));
-        }
         else
-        {
             updateWindowTitle();
-        }
     }
 
     return parent_type::eventFilter(target, event);

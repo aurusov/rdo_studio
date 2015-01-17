@@ -117,16 +117,14 @@ QSettings& operator>> (QSettings& settings, StyleFont& font)
 // -------------------- StyleBase
 // --------------------------------------------------------------------------------
 StyleBase::StyleBase()
-    : font()
 {
-    defaultColor    = QColor( 0x00, 0x00, 0x00 );
+    defaultColor = QColor( 0x00, 0x00, 0x00 );
     backgroundColor = QColor( 0xFF, 0xFF, 0xFF );
     defaultStyle = StyleFont::Style::NONE;
 }
 
 StyleBase::~StyleBase()
-{
-}
+{}
 
 StyleBase& StyleBase::operator =( const StyleBase& style )
 {

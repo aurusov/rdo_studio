@@ -23,7 +23,6 @@
 #include "app/rdo_studio/src/tracer/tracer.h"
 // --------------------------------------------------------------------------------
 
-
 namespace
 {
     typedef std::map<int, std::string> PluginOptionType;
@@ -33,17 +32,14 @@ namespace
         QRegExp re(QString::fromStdString(prefix) + "(\\d+)");
 
         if (re.indexIn(QString::fromStdString(key), 0) != -1)
-        {
             return re.cap(1).toInt();
-        }
         else
-        {
             return -1;
-        }
     }
 
-    PluginOptionType getPluginsOptions(const boost::program_options::variables_map& vm,
-                                       const std::string& prefix)
+    PluginOptionType getPluginsOptions(
+            const boost::program_options::variables_map& vm,
+            const std::string& prefix)
     {
         PluginOptionType pluginOptions;
         namespace po = boost::program_options;
@@ -52,9 +48,7 @@ namespace
             const std::string& key = pair.first;
             int postfix = validateKeyByPrefix(key, prefix);
             if (postfix != -1)
-            {
                 pluginOptions.insert(std::make_pair(postfix, pair.second.as<std::string>()));
-            }
         }
         return pluginOptions;
     }
@@ -132,8 +126,6 @@ Application::Application(int& argc, char** argv)
     qInstallMessageHandler(g_messageOutput);
 #endif
 
-    m_log.open("log.txt");
-
     qApp->setQuitOnLastWindowClosed(true);
 
     QApplication::setApplicationName("RAO-studio");
@@ -190,9 +182,8 @@ Application::~Application()
     m_pMainFrame = NULL;
 
     if (m_exitCode != rdo::simulation::report::ExitCode::MODEL_NOTFOUND)
-    {
         m_exitCode = g_pModel->getExitCode();
-    }
+
     // Роняем кернел и закрываем все треды
     RDOKernel::close();
 
@@ -208,9 +199,7 @@ Application::~Application()
 void Application::onInit(int argc, char** argv)
 {
     if (getFileAssociationCheckInFuture())
-    {
         setupFileAssociation();
-    }
 
     namespace po = boost::program_options;
 
@@ -241,9 +230,8 @@ void Application::onInit(int argc, char** argv)
         stream << desc;
         rdo::locale::cout(stream.str());
         if (!vm.count("gui_silent_mode"))
-        {
             QMessageBox::information(getMainWndUI(), "Help", QString::fromStdString(stream.str()));
-        }
+
         quit();
     }
 
@@ -256,19 +244,13 @@ void Application::onInit(int argc, char** argv)
 
     bool autoRun = false;
     if (vm.count("autorun"))
-    {
         autoRun = true;
-    }
 
     if (vm.count("autoexit"))
-    {
         m_autoExitByModel = true;
-    }
 
     if (vm.count("dont_close_if_error"))
-    {
         m_dontCloseIfError = true;
-    }
 
     bool autoModel = false;
     if (!openModelName.empty())
@@ -286,9 +268,7 @@ void Application::onInit(int argc, char** argv)
     else
     {
         if (getOpenLastProject() && !getLastProjectName().isEmpty() && QFile::exists(getLastProjectName()))
-        {
             g_pModel->openModel(getLastProjectName());
-        }
     }
 
     if (!autoModel)
@@ -298,9 +278,7 @@ void Application::onInit(int argc, char** argv)
     }
 
     if (autoRun)
-    {
         g_pModel->runModel();
-    }
 
     if (vm.count("plugin_list"))
     {
@@ -349,11 +327,6 @@ MainWindowBase* Application::getIMainWnd()
     return m_pMainFrame;
 }
 
-std::ofstream& Application::log()
-{
-    return m_log;
-}
-
 QString Application::getFullHelpFileName(const QString& helpFileName) const
 {
     QString result = chkHelpExist(helpFileName);
@@ -361,9 +334,7 @@ QString Application::getFullHelpFileName(const QString& helpFileName) const
     {
 #ifdef OST_WINDOWS
         if (chkHelpExist("assistant.exe").isEmpty())
-        {
             result = QString();
-        }
 #endif
     }
     return result;
@@ -387,9 +358,7 @@ QString Application::chkHelpExist(const QString& helpFileName) const
 void Application::chkAndRunQtAssistant()
 {
     if (!m_pAssistant)
-    {
         m_pAssistant = runQtAssistant();
-    }
     else if (m_pAssistant->state() == m_pAssistant->Running)
         return;
     else
@@ -428,9 +397,7 @@ void Application::setFileAssociationSetup(bool value)
     QSettings settings;
     settings.setValue("general/file_association_setup", m_fileAssociationSetup);
     if (m_fileAssociationSetup)
-    {
         setupFileAssociation();
-    }
 }
 
 bool Application::getFileAssociationCheckInFuture() const
@@ -477,8 +444,7 @@ void Application::setLastProjectName(const QString& projectName)
         QSettings settings;
         settings.setValue("general/last_project_full_name", getOpenLastProject()
             ? m_lastProjectName
-            : QString()
-        );
+            : QString());
     }
 }
 
@@ -554,9 +520,7 @@ void Application::autoCloseByModel()
     if (m_autoExitByModel)
     {
         if (!m_dontCloseIfError || !g_pModel || (m_dontCloseIfError && (g_pModel->getExitCode() == rdo::simulation::report::ExitCode::OK || g_pModel->getExitCode() == rdo::simulation::report::ExitCode::NOMORE_EVENTS)))
-        {
             m_pMainFrame->close();
-        }
     }
 }
 
