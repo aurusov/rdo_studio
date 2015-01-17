@@ -72,7 +72,7 @@ rdo::compiler::parser::RDOCorba::GetRTP* RDOCorba_i::getRDORTPlist(::CORBA::Long
     rdo::compiler::parser::RDOCorba::GetRTP_var my_rtpList = new rdo::compiler::parser::RDOCorba::GetRTP;
 
     // Получаем необходимые нам данные о типах ресурсов РДО
-    kernel->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &my_rtpList);
+    kernel->sendMessage(kernel->simulator(), RDOThread::Message::CORBA_PARSER_GET_RTP, &my_rtpList);
 
     return my_rtpList._retn();
 }
@@ -83,7 +83,7 @@ rdo::compiler::parser::RDOCorba::GetRSS* RDOCorba_i::getRDORSSPlist(::CORBA::Lon
     rdo::compiler::parser::RDOCorba::GetRSS_var my_rssList = new rdo::compiler::parser::RDOCorba::GetRSS;
 
     // Получаем необходимые нам данные о ресурсах РДО
-    kernel->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RSS, &my_rssList);
+    kernel->sendMessage(kernel->simulator(), RDOThread::Message::CORBA_PARSER_GET_RSS, &my_rssList);
 
     return my_rssList._retn();
 }
@@ -356,7 +356,7 @@ public:
         {
             std::string::size_type next = trace_str.find('\n', pos);
             std::string str = trace_str.substr(pos, next-pos);
-            m_pSimulator->m_pThreadRuntime->broadcastMessage(RDOThread::RT_RUNTIME_TRACE_STRING, &str, true);
+            m_pSimulator->m_pThreadRuntime->broadcastMessage(RDOThread::Message::RUNTIME_TRACE_STRING, &str, true);
             if (next == std::string::npos)
             {
                 break;
@@ -417,7 +417,7 @@ private:
         {
             std::string::size_type next = bufferStr.find('\n', pos);
             std::string str = bufferStr.substr(pos, next-pos+1);
-            m_pSimulator->m_pThreadRuntime->broadcastMessage(RDOThread::RT_RESULT_STRING, &str, true);
+            m_pSimulator->m_pThreadRuntime->broadcastMessage(RDOThread::Message::RESULT_STRING, &str, true);
             if (next == std::string::npos)
             {
                 break;
@@ -474,18 +474,18 @@ RDOThreadRunTime::RDOThreadRunTime()
 
     m_pSimulator = kernel->simulator();
 
-    notifies.push_back(RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY);
-    notifies.push_back(RT_RUNTIME_GET_MODE                  );
-    notifies.push_back(RT_RUNTIME_SET_MODE                  );
-    notifies.push_back(RT_RUNTIME_GET_SPEED                 );
-    notifies.push_back(RT_RUNTIME_SET_SPEED                 );
-    notifies.push_back(RT_RUNTIME_GET_SHOWRATE              );
-    notifies.push_back(RT_RUNTIME_SET_SHOWRATE              );
-    notifies.push_back(RT_RUNTIME_GET_TIMENOW               );
-    notifies.push_back(RT_RUNTIME_GET_FRAME                 );
-    notifies.push_back(RT_RUNTIME_KEY_DOWN                  );
-    notifies.push_back(RT_RUNTIME_KEY_UP                    );
-    notifies.push_back(RT_RUNTIME_FRAME_AREA_DOWN           );
+    notifies.push_back(Message::SIMULATOR_MODEL_STOP_RUNTIME_DELAY);
+    notifies.push_back(Message::RUNTIME_GET_MODE                  );
+    notifies.push_back(Message::RUNTIME_SET_MODE                  );
+    notifies.push_back(Message::RUNTIME_GET_SPEED                 );
+    notifies.push_back(Message::RUNTIME_SET_SPEED                 );
+    notifies.push_back(Message::RUNTIME_GET_SHOWRATE              );
+    notifies.push_back(Message::RUNTIME_SET_SHOWRATE              );
+    notifies.push_back(Message::RUNTIME_GET_TIMENOW               );
+    notifies.push_back(Message::RUNTIME_GET_FRAME                 );
+    notifies.push_back(Message::RUNTIME_KEY_DOWN                  );
+    notifies.push_back(Message::RUNTIME_KEY_UP                    );
+    notifies.push_back(Message::RUNTIME_FRAME_AREA_DOWN           );
     after_constructor();
 }
 
@@ -493,58 +493,58 @@ void RDOThreadRunTime::proc(RDOMessageInfo& msg)
 {
     switch (msg.message)
     {
-        case RT_THREAD_CLOSE:
+        case Message::THREAD_CLOSE:
         {
-            broadcastMessage(RT_RUNTIME_MODEL_STOP_BEFORE);
+            broadcastMessage(Message::RUNTIME_MODEL_STOP_BEFORE);
             break;
         }
-        case RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY:
+        case Message::SIMULATOR_MODEL_STOP_RUNTIME_DELAY:
         {
             m_runtimeError = true;
             break;
         }
-        case RT_RUNTIME_GET_MODE:
+        case Message::RUNTIME_GET_MODE:
         {
             *static_cast<rdo::runtime::RunTimeMode*>(msg.param) = m_pSimulator->m_pRuntime->getMode();
             break;
         }
-        case RT_RUNTIME_SET_MODE:
+        case Message::RUNTIME_SET_MODE:
         {
             msg.lock();
             m_pSimulator->m_pRuntime->setMode(*static_cast<rdo::runtime::RunTimeMode*>(msg.param));
             msg.unlock();
             break;
         }
-        case RT_RUNTIME_GET_SPEED:
+        case Message::RUNTIME_GET_SPEED:
         {
             *static_cast<double*>(msg.param) = m_pSimulator->m_pRuntime->getSpeed();
             break;
         }
-        case RT_RUNTIME_SET_SPEED:
+        case Message::RUNTIME_SET_SPEED:
         {
             msg.lock();
             m_pSimulator->m_pRuntime->setSpeed(*static_cast<double*>(msg.param));
             msg.unlock();
             break;
         }
-        case RT_RUNTIME_GET_SHOWRATE:
+        case Message::RUNTIME_GET_SHOWRATE:
         {
             *static_cast<double*>(msg.param) = m_pSimulator->m_pRuntime->getShowRate();
             break;
         }
-        case RT_RUNTIME_SET_SHOWRATE:
+        case Message::RUNTIME_SET_SHOWRATE:
         {
             msg.lock();
             m_pSimulator->m_pRuntime->setShowRate(*static_cast<double*>(msg.param));
             msg.unlock();
             break;
         }
-        case RT_RUNTIME_GET_TIMENOW:
+        case Message::RUNTIME_GET_TIMENOW:
         {
             *static_cast<double*>(msg.param) = m_pSimulator->m_pRuntime->getTimeNow();
             break;
         }
-        case RT_RUNTIME_GET_FRAME:
+        case Message::RUNTIME_GET_FRAME:
         {
             msg.lock();
             GetFrame* getframe = static_cast<GetFrame*>(msg.param);
@@ -552,14 +552,14 @@ void RDOThreadRunTime::proc(RDOMessageInfo& msg)
             msg.unlock();
             break;
         }
-        case RT_RUNTIME_GET_LAST_BREAKPOINT:
+        case Message::RUNTIME_GET_LAST_BREAKPOINT:
         {
             msg.lock();
             *static_cast<std::string*>(msg.param) = m_pSimulator->m_pRuntime->getLastBreakPointName();
             msg.unlock();
             break;
         }
-        case RT_RUNTIME_KEY_DOWN:
+        case Message::RUNTIME_KEY_DOWN:
         {
             msg.lock();
             RDOHotKey::KeyCode keyCode = *static_cast<RDOHotKey::KeyCode*>(msg.param);
@@ -574,7 +574,7 @@ void RDOThreadRunTime::proc(RDOMessageInfo& msg)
             }
             break;
         }
-        case RT_RUNTIME_KEY_UP:
+        case Message::RUNTIME_KEY_UP:
         {
             msg.lock();
             RDOHotKey::KeyCode keyCode = *static_cast<RDOHotKey::KeyCode*>(msg.param);
@@ -582,7 +582,7 @@ void RDOThreadRunTime::proc(RDOMessageInfo& msg)
             m_pSimulator->m_pRuntime->hotkey().keyDown().up(keyCode);
             break;
         }
-        case RT_RUNTIME_FRAME_AREA_DOWN:
+        case Message::RUNTIME_FRAME_AREA_DOWN:
         {
             msg.lock();
             std::string areaName = *static_cast<std::string*>(msg.param);
@@ -601,7 +601,7 @@ void RDOThreadRunTime::start()
     trace(thread_name + " start begin");
 #endif
 
-    broadcastMessage(RT_RUNTIME_MODEL_START_BEFORE);
+    broadcastMessage(Message::RUNTIME_MODEL_START_BEFORE);
 
     RDOTrace* pTracer;
     rdo::runtime::RDOResults* pResults;
@@ -648,12 +648,12 @@ void RDOThreadRunTime::start()
         m_runtimeError = true;
         m_pSimulator->m_pRuntime->onRuntimeError();
         std::string mess = ex.getType() + " : " + ex.message();
-        RDOThreadMT::sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
+        RDOThreadMT::sendMessage(kernel, RDOThread::Message::DEBUG_STRING, &mess);
     }
 
     if (!m_runtimeError)
     {
-        broadcastMessage(RT_RUNTIME_MODEL_START_AFTER);
+        broadcastMessage(Message::RUNTIME_MODEL_START_AFTER);
     }
 
 #ifdef TR_TRACE
@@ -669,7 +669,7 @@ void RDOThreadRunTime::idle()
         if (m_runtimeError || !m_pSimulator->m_pRuntime->rdoNext())
         {
             LPRDOThreadRunTime pThis(this); // Увеличим на себя ссылку, чтобы нас не удалил симулятор раньше времени
-            RDOThreadMT::sendMessage(this, RT_THREAD_CLOSE);
+            RDOThreadMT::sendMessage(this, Message::THREAD_CLOSE);
         }
     }
     catch (const rdo::compiler::parser::RDOSyntaxException&)
@@ -682,7 +682,7 @@ void RDOThreadRunTime::idle()
         m_runtimeError = true;
         m_pSimulator->m_pRuntime->onRuntimeError();
         std::string mess = ex.getType() + " : " + ex.message();
-        RDOThreadMT::sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
+        RDOThreadMT::sendMessage(kernel, RDOThread::Message::DEBUG_STRING, &mess);
     }
 //    catch (...) {
 //        m_runtimeError = true;
@@ -789,10 +789,10 @@ void RDOThreadRunTime::stop()
         m_runtimeError = true;
         m_pSimulator->m_pRuntime->onRuntimeError();
         std::string mess = ex.getType() + " : " + ex.message();
-        RDOThreadMT::sendMessage(kernel, RDOThread::RT_DEBUG_STRING, &mess);
+        RDOThreadMT::sendMessage(kernel, RDOThread::Message::DEBUG_STRING, &mess);
     }
 
-    broadcastMessage(RT_RUNTIME_MODEL_STOP_AFTER);
+    broadcastMessage(Message::RUNTIME_MODEL_STOP_AFTER);
 
     RDOThread::stop();
 
@@ -819,7 +819,7 @@ void RDOThreadRunTime::sendMessage(ThreadID threadID, std::size_t messageID, voi
     }
 
     if (pThread)
-        RDOThreadMT::sendMessage(pThread, static_cast<RDOTreadMessage>(messageID), pParam);
+        RDOThreadMT::sendMessage(pThread, static_cast<Message>(messageID), pParam);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
@@ -836,21 +836,21 @@ RDOThreadSimulator::RDOThreadSimulator()
     , m_pThreadRuntime(NULL                          )
     , m_exitCode      (rdo::simulation::report::ExitCode::OK)
 {
-    notifies.push_back(RT_STUDIO_MODEL_BUILD              );
-    notifies.push_back(RT_STUDIO_MODEL_RUN                );
-    notifies.push_back(RT_STUDIO_MODEL_STOP               );
-    notifies.push_back(RT_SIMULATOR_GET_MODEL_STRUCTURE   );
-    notifies.push_back(RT_SIMULATOR_GET_MODEL_RESULTS     );
-    notifies.push_back(RT_SIMULATOR_GET_MODEL_RESULTS_INFO);
-    notifies.push_back(RT_SIMULATOR_GET_MODEL_EXITCODE    );
-    notifies.push_back(RT_SIMULATOR_GET_LIST              );
-    notifies.push_back(RT_SIMULATOR_GET_ERRORS            );
-    notifies.push_back(RT_THREAD_STOP_AFTER               );
-    notifies.push_back(RT_CODECOMP_GET_DATA               );
-    notifies.push_back(RT_CORBA_PARSER_GET_RTP            );
-    notifies.push_back(RT_CORBA_PARSER_GET_RSS            );
-    //notifies.push_back(RT_CORBA_PARSER_GET_RTP_COUNT      );
-    //notifies.push_back(RT_CORBA_PARSER_GET_RTP_PAR_COUNT  );
+    notifies.push_back(Message::STUDIO_MODEL_BUILD              );
+    notifies.push_back(Message::STUDIO_MODEL_RUN                );
+    notifies.push_back(Message::STUDIO_MODEL_STOP               );
+    notifies.push_back(Message::SIMULATOR_GET_MODEL_STRUCTURE   );
+    notifies.push_back(Message::SIMULATOR_GET_MODEL_RESULTS     );
+    notifies.push_back(Message::SIMULATOR_GET_MODEL_RESULTS_INFO);
+    notifies.push_back(Message::SIMULATOR_GET_MODEL_EXITCODE    );
+    notifies.push_back(Message::SIMULATOR_GET_LIST              );
+    notifies.push_back(Message::SIMULATOR_GET_ERRORS            );
+    notifies.push_back(Message::THREAD_STOP_AFTER               );
+    notifies.push_back(Message::CODECOMP_GET_DATA               );
+    notifies.push_back(Message::CORBA_PARSER_GET_RTP            );
+    notifies.push_back(Message::CORBA_PARSER_GET_RSS            );
+    //notifies.push_back(Message::CORBA_PARSER_GET_RTP_COUNT      );
+    //notifies.push_back(Message::CORBA_PARSER_GET_RTP_PAR_COUNT  );
     after_constructor();
 }
 
@@ -864,36 +864,36 @@ void RDOThreadSimulator::proc(RDOMessageInfo& msg)
 {
     switch (msg.message)
     {
-        case RT_STUDIO_MODEL_BUILD:
+        case Message::STUDIO_MODEL_BUILD:
         {
             parseModel();
             break;
         }
-        case RT_STUDIO_MODEL_RUN:
+        case Message::STUDIO_MODEL_RUN:
         {
             runModel();
             break;
         }
-        case RT_STUDIO_MODEL_STOP:
+        case Message::STUDIO_MODEL_STOP:
         {
             stopModel();
             break;
         }
-        case RT_SIMULATOR_GET_MODEL_STRUCTURE:
+        case Message::SIMULATOR_GET_MODEL_STRUCTURE:
         {
             msg.lock();
             *static_cast<std::stringstream*>(msg.param) << m_pParser->getModelStructure();
             msg.unlock();
             break;
         }
-        case RT_SIMULATOR_GET_MODEL_RESULTS:
+        case Message::SIMULATOR_GET_MODEL_RESULTS:
         {
             msg.lock();
             *static_cast<std::stringstream*>(msg.param) << m_resultString.str();
             msg.unlock();
             break;
         }
-        case RT_SIMULATOR_GET_MODEL_RESULTS_INFO:
+        case Message::SIMULATOR_GET_MODEL_RESULTS_INFO:
         {
             msg.lock();
             *static_cast<std::stringstream*>(msg.param) << m_pParser->getChanges();
@@ -902,14 +902,14 @@ void RDOThreadSimulator::proc(RDOMessageInfo& msg)
             msg.unlock();
             break;
         }
-        case RT_SIMULATOR_GET_MODEL_EXITCODE:
+        case Message::SIMULATOR_GET_MODEL_EXITCODE:
         {
             msg.lock();
             *static_cast<rdo::simulation::report::ExitCode*>(msg.param) = m_exitCode;
             msg.unlock();
             break;
         }
-        case RT_CODECOMP_GET_DATA:
+        case Message::CODECOMP_GET_DATA:
         {
             codeCompletion();
             break;
@@ -917,7 +917,7 @@ void RDOThreadSimulator::proc(RDOMessageInfo& msg)
 
 #ifdef CORBA_ENABLE
 
-        case RT_CORBA_PARSER_GET_RTP:
+        case Message::CORBA_PARSER_GET_RTP:
         {
             msg.lock();
             corbaGetRTP(*static_cast<rdo::compiler::parser::RDOCorba::GetRTP_var*>(msg.param));
@@ -925,7 +925,7 @@ void RDOThreadSimulator::proc(RDOMessageInfo& msg)
             break;
         }
 
-        case RT_CORBA_PARSER_GET_RSS:
+        case Message::CORBA_PARSER_GET_RSS:
         {
             msg.lock();
             corbaGetRSS(*static_cast<rdo::compiler::parser::RDOCorba::GetRSS_var*>(msg.param));
@@ -934,7 +934,7 @@ void RDOThreadSimulator::proc(RDOMessageInfo& msg)
         }
 #endif // CORBA_ENABLE
 
-        case RT_SIMULATOR_GET_LIST:
+        case Message::SIMULATOR_GET_LIST:
         {
             msg.lock();
             GetList* getlist = static_cast<GetList*>(msg.param);
@@ -968,7 +968,7 @@ void RDOThreadSimulator::proc(RDOMessageInfo& msg)
             msg.unlock();
             break;
         }
-        case RT_SIMULATOR_GET_ERRORS:
+        case Message::SIMULATOR_GET_ERRORS:
         {
             SyntaxMessageList m_errorList = getErrors();
             msg.lock();
@@ -977,28 +977,28 @@ void RDOThreadSimulator::proc(RDOMessageInfo& msg)
             msg.unlock();
             break;
         }
-        case RT_THREAD_STOP_AFTER:
+        case Message::THREAD_STOP_AFTER:
         {
             if (msg.from == m_pThreadRuntime.get())
             {
                 // rdo::simulation::report::ExitCode::PARSER_ERROR   - Не используется в run-time
                 // rdo::simulation::report::ExitCode::MODEL_NOTFOUND - Не используется в run-time
-                // rdo::simulation::report::ExitCode::USER_BREAK     - Устанавливается в m_pSimulator, перехват RT_THREAD_STOP_AFTER не срабатывает
+                // rdo::simulation::report::ExitCode::USER_BREAK     - Устанавливается в m_pSimulator, перехват Message::THREAD_STOP_AFTER не срабатывает
                 m_exitCode = m_pRuntime->m_whyStop;
                 if (!m_pThreadRuntime->runtimeError())
                 {
                     // Остановились сами нормально
-                    broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
+                    broadcastMessage(Message::SIMULATOR_MODEL_STOP_OK);
                     closeModel();
                 }
                 else
                 {
                     // Остановились сами, но не нормально
-                    broadcastMessage(RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR);
+                    broadcastMessage(Message::SIMULATOR_MODEL_STOP_RUNTIME_ERROR);
                     closeModel();
                 }
                 // Треда удаляется сама, надо удалить её событие
-                // Делается это без мутексов, т.к. thread_destroy не должна использоваться в m_pThreadRuntime пока обрабатывается RT_THREAD_STOP_AFTER
+                // Делается это без мутексов, т.к. thread_destroy не должна использоваться в m_pThreadRuntime пока обрабатывается Message::THREAD_STOP_AFTER
                 m_pThreadRuntime = NULL;
             }
             break;
@@ -1026,16 +1026,16 @@ bool RDOThreadSimulator::parseModel()
     catch (const rdo::compiler::parser::RDOSyntaxException&)
     {
         m_exitCode = rdo::simulation::report::ExitCode::PARSER_ERROR;
-        broadcastMessage(RT_SIMULATOR_PARSE_ERROR);
+        broadcastMessage(Message::SIMULATOR_PARSE_ERROR);
         closeModel();
         return false;
     }
     catch (const rdo::runtime::RDORuntimeException& ex)
     {
         std::string mess = ex.getType() + " : " + ex.message();
-        broadcastMessage(RT_SIMULATOR_PARSE_STRING, &mess);
+        broadcastMessage(Message::SIMULATOR_PARSE_STRING, &mess);
         m_exitCode = rdo::simulation::report::ExitCode::PARSER_ERROR;
-        broadcastMessage(RT_SIMULATOR_PARSE_ERROR);
+        broadcastMessage(Message::SIMULATOR_PARSE_ERROR);
         closeModel();
         return false;
     }
@@ -1043,7 +1043,7 @@ bool RDOThreadSimulator::parseModel()
     m_showMode = getInitialShowMode();
     m_showRate = getInitialShowRate();
 
-    broadcastMessage(RT_SIMULATOR_PARSE_OK);
+    broadcastMessage(Message::SIMULATOR_PARSE_OK);
 
     return true;
 }
@@ -1067,7 +1067,7 @@ void RDOThreadSimulator::stopModel()
     m_exitCode = rdo::simulation::report::ExitCode::USER_BREAK;
     terminateModel();
     m_canTrace = false;
-    broadcastMessage(RT_SIMULATOR_MODEL_STOP_BY_USER);
+    broadcastMessage(Message::SIMULATOR_MODEL_STOP_BY_USER);
     closeModel();
 //    kernel.callback(RDOKernel::modelExit, rdo::simulation::report::ExitCode::USER_BREAK);
 }
@@ -1077,14 +1077,14 @@ void RDOThreadSimulator::terminateModel()
     if (m_pThreadRuntime)
     {
         // Перестали реагировать на остановку run-time-треды, т.к. закрываем её сами
-        notifies.erase(std::find(notifies.begin(), notifies.end(), RT_THREAD_STOP_AFTER));
+        notifies.erase(std::find(notifies.begin(), notifies.end(), Message::THREAD_STOP_AFTER));
 
-        sendMessage(m_pThreadRuntime.get(), RDOThread::RT_THREAD_CLOSE);
+        sendMessage(m_pThreadRuntime.get(), RDOThread::Message::THREAD_CLOSE);
 
         m_pThreadRuntime = NULL;
 
         // Опять начали реагировать на остановку run-time-треды, чтобы обнаружить нормальное завершение модели (или по run-time-error)
-        notifies.push_back(RT_THREAD_STOP_AFTER);
+        notifies.push_back(Message::THREAD_STOP_AFTER);
     }
 }
 
@@ -1129,34 +1129,34 @@ void RDOThreadSimulator::parseSMRFileInfo(rdo::converter::smr2rdox::RDOSMRFileIn
     {
         rdo::converter::smr2rdox::RDOParserModel converter;
         rdo::repository::RDOThreadRepository::FileInfo fileInfo(rdo::FileType::SMR);
-        kernel->sendMessage(kernel->repository(), RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
+        kernel->sendMessage(kernel->repository(), Message::REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
         rdo::converter::smr2rdox::RDOParserModel::Result res = converter.convert(fileInfo.m_fullName, info);
         switch (res)
         {
         case rdo::converter::smr2rdox::RDOParserModel::Result::NONE :
             {
-                broadcastMessage(RT_CONVERTOR_NONE);
+                broadcastMessage(Message::CONVERTOR_NONE);
             }
             break;
 
         case rdo::converter::smr2rdox::RDOParserModel::Result::OK   :
             {
-                broadcastMessage(RT_CONVERTOR_OK);
+                broadcastMessage(Message::CONVERTOR_OK);
             }
             break;
 
         case rdo::converter::smr2rdox::RDOParserModel::Result::CONVERTER_ERROR:
             {
-                broadcastMessage(RT_CONVERTOR_ERROR);
+                broadcastMessage(Message::CONVERTOR_ERROR);
 
                 std::string mess("Ошибка конвертора\n");
-                broadcastMessage(RT_DEBUG_STRING, &mess);
+                broadcastMessage(Message::DEBUG_STRING, &mess);
                 const rdo::converter::smr2rdox::Error::ErrorList& errorList = converter.error().getList();
                 auto it = errorList.begin();
                 while (it != errorList.end())
                 {
                     std::string text = it->getText();
-                    broadcastMessage(RT_DEBUG_STRING, const_cast<std::string*>(&text));
+                    broadcastMessage(Message::DEBUG_STRING, const_cast<std::string*>(&text));
                     ++it;
                 }
             }
@@ -1505,7 +1505,7 @@ RDOThreadCodeComp::RDOThreadCodeComp()
     : RDOThreadMT("RDOThreadCodeComp")
     , m_pParser  (NULL               )
 {
-//    notifies.push_back(RT_CODECOMP_GET_DATA);
+//    notifies.push_back(Message::CODECOMP_GET_DATA);
     after_constructor();
 }
 
@@ -1516,14 +1516,14 @@ void RDOThreadCodeComp::proc(RDOMessageInfo& msg)
 {
     switch (msg.message)
     {
-        case RT_CODECOMP_GET_DATA:
+        case Message::CODECOMP_GET_DATA:
         {
 //            if (rdo::compiler::parser::m_pParser) m_pParser = rdo::compiler::parser::m_pParser;
             if (!m_pParser) break;
             msg.lock();
             GetCodeComp* data = static_cast<GetCodeComp*>(msg.param);
 //            std::stringstream stream(std::ios_base::in | std::ios_base::out | std::ios_base::binary);
-//            sendMessage(kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdo::repository::RDOThreadRepository::FileData(data->file, stream));
+//            sendMessage(kernel->studio(), RDOThread::Message::STUDIO_MODEL_GET_TEXT, &rdo::repository::RDOThreadRepository::FileData(data->file, stream));
 //            data->result = stream.data();
             const rdo::compiler::parser::RDOParser::RTPResTypeList& rtp_list = m_pParser->getRTPResTypes();
             for (const auto& rtp: rtp_list)

@@ -51,7 +51,7 @@ public:
 
     std::ofstream& log();
 
-    void           broadcastMessage(RDOThread::RDOTreadMessage message, void* pParam = NULL);
+    void           broadcastMessage(RDOThread::Message message, void* pParam = NULL);
 
     bool           getFileAssociationSetup() const;
     void           setFileAssociationSetup(bool value);

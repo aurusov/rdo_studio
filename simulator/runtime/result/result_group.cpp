@@ -42,7 +42,7 @@ void RDOPMDResultGroup::resetResult(const LPRDORuntime& pRuntime)
                 rdo::locale::convertToWStr(boost::str(boost::format("- %1% - full.txt") % m_name)),
                 m_streamFull
             );
-            pThreadProxy->sendMessage(IThreadProxy::ThreadID::REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);
+            pThreadProxy->sendMessage(IThreadProxy::ThreadID::REPOSITORY, static_cast<std::size_t>(RDOThread::Message::REPOSITORY_CREATE_FILE), &file);
         }
         if (!m_streamTable.is_open())
         {
@@ -52,7 +52,7 @@ void RDOPMDResultGroup::resetResult(const LPRDORuntime& pRuntime)
                 rdo::locale::convertToWStr(boost::str(boost::format("- %1% - table.txt") % m_name)),
                 m_streamTable
             );
-            pThreadProxy->sendMessage(IThreadProxy::ThreadID::REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);
+            pThreadProxy->sendMessage(IThreadProxy::ThreadID::REPOSITORY, static_cast<std::size_t>(RDOThread::Message::REPOSITORY_CREATE_FILE), &file);
             if (m_streamTable.is_open())
             {
                 for (const LPIResult& pResult: m_resultList)

@@ -22,20 +22,20 @@ RDOThreadRepository::RDOThreadRepository()
     , m_hasModel     (false                )
     , m_realOnlyInDlg(false                )
 {
-    notifies.push_back(RT_STUDIO_MODEL_NEW                  );
-    notifies.push_back(RT_STUDIO_MODEL_OPEN                 );
-    notifies.push_back(RT_STUDIO_MODEL_CLOSE                );
-    notifies.push_back(RT_STUDIO_MODEL_SAVE                 );
-    notifies.push_back(RT_REPOSITORY_MODEL_GET_FILEINFO     );
-    notifies.push_back(RT_REPOSITORY_LOAD                   );
-    notifies.push_back(RT_REPOSITORY_SAVE                   );
-    notifies.push_back(RT_REPOSITORY_LOAD_BINARY            );
-    notifies.push_back(RT_REPOSITORY_CREATE_FILE            );
-    notifies.push_back(RT_SIMULATOR_MODEL_STOP_OK           );
-    notifies.push_back(RT_SIMULATOR_MODEL_STOP_BY_USER      );
-    notifies.push_back(RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR);
-    notifies.push_back(RT_RUNTIME_MODEL_START_BEFORE        );
-    notifies.push_back(RT_RUNTIME_TRACE_STRING              );
+    notifies.push_back(Message::STUDIO_MODEL_NEW                  );
+    notifies.push_back(Message::STUDIO_MODEL_OPEN                 );
+    notifies.push_back(Message::STUDIO_MODEL_CLOSE                );
+    notifies.push_back(Message::STUDIO_MODEL_SAVE                 );
+    notifies.push_back(Message::REPOSITORY_MODEL_GET_FILEINFO     );
+    notifies.push_back(Message::REPOSITORY_LOAD                   );
+    notifies.push_back(Message::REPOSITORY_SAVE                   );
+    notifies.push_back(Message::REPOSITORY_LOAD_BINARY            );
+    notifies.push_back(Message::REPOSITORY_CREATE_FILE            );
+    notifies.push_back(Message::SIMULATOR_MODEL_STOP_OK           );
+    notifies.push_back(Message::SIMULATOR_MODEL_STOP_BY_USER      );
+    notifies.push_back(Message::SIMULATOR_MODEL_STOP_RUNTIME_ERROR);
+    notifies.push_back(Message::RUNTIME_MODEL_START_BEFORE        );
+    notifies.push_back(Message::RUNTIME_TRACE_STRING              );
 
     m_files[rdo::FileType::RDOX].m_extension = "rdox";
     m_files[rdo::FileType::RTP ].m_extension = "rtp";
@@ -69,7 +69,7 @@ void RDOThreadRepository::proc(RDOMessageInfo& msg)
 {
     switch (msg.message)
     {
-        case RT_STUDIO_MODEL_NEW:
+        case Message::STUDIO_MODEL_NEW:
         {
             msg.lock();
             NewModel* data = static_cast<NewModel*>(msg.param);
@@ -77,7 +77,7 @@ void RDOThreadRepository::proc(RDOMessageInfo& msg)
             msg.unlock();
             break;
         }
-        case RT_STUDIO_MODEL_OPEN:
+        case Message::STUDIO_MODEL_OPEN:
         {
             msg.lock();
             OpenFile* data = static_cast<OpenFile*>(msg.param);
@@ -85,12 +85,12 @@ void RDOThreadRepository::proc(RDOMessageInfo& msg)
             msg.unlock();
             break;
         }
-        case RT_STUDIO_MODEL_CLOSE:
+        case Message::STUDIO_MODEL_CLOSE:
         {
             closeModel();
             break;
         }
-        case RT_STUDIO_MODEL_SAVE:
+        case Message::STUDIO_MODEL_SAVE:
         {
             bool res = saveModel();
             msg.lock();
@@ -98,26 +98,26 @@ void RDOThreadRepository::proc(RDOMessageInfo& msg)
             msg.unlock();
             break;
         }
-        case RT_RUNTIME_MODEL_START_BEFORE:
+        case Message::RUNTIME_MODEL_START_BEFORE:
         {
             beforeModelStart();
             break;
         }
-        case RT_SIMULATOR_MODEL_STOP_OK           :
-        case RT_SIMULATOR_MODEL_STOP_BY_USER      :
-        case RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR:
+        case Message::SIMULATOR_MODEL_STOP_OK           :
+        case Message::SIMULATOR_MODEL_STOP_BY_USER      :
+        case Message::SIMULATOR_MODEL_STOP_RUNTIME_ERROR:
         {
             stopModel();
             break;
         }
-        case RT_RUNTIME_TRACE_STRING:
+        case Message::RUNTIME_TRACE_STRING:
         {
             msg.lock();
             trace(*static_cast<std::string*>(msg.param));
             msg.unlock();
             break;
         }
-        case RT_REPOSITORY_MODEL_GET_FILEINFO:
+        case Message::REPOSITORY_MODEL_GET_FILEINFO:
         {
             msg.lock();
             FileInfo* data = static_cast<FileInfo*>(msg.param);
@@ -128,7 +128,7 @@ void RDOThreadRepository::proc(RDOMessageInfo& msg)
             msg.unlock();
             break;
         }
-        case RT_REPOSITORY_LOAD:
+        case Message::REPOSITORY_LOAD:
         {
             msg.lock();
             FileData* fdata = static_cast<FileData*>(msg.param);
@@ -136,7 +136,7 @@ void RDOThreadRepository::proc(RDOMessageInfo& msg)
             msg.unlock();
             break;
         }
-        case RT_REPOSITORY_SAVE:
+        case Message::REPOSITORY_SAVE:
         {
             msg.lock();
             FileData* fdata = static_cast<FileData*>(msg.param);
@@ -144,7 +144,7 @@ void RDOThreadRepository::proc(RDOMessageInfo& msg)
             msg.unlock();
             break;
         }
-        case RT_REPOSITORY_LOAD_BINARY:
+        case Message::REPOSITORY_LOAD_BINARY:
         {
             msg.lock();
             BinaryFile* data = static_cast<BinaryFile*>(msg.param);
@@ -152,7 +152,7 @@ void RDOThreadRepository::proc(RDOMessageInfo& msg)
             msg.unlock();
             break;
         }
-        case RT_REPOSITORY_CREATE_FILE:
+        case Message::REPOSITORY_CREATE_FILE:
         {
             msg.lock();
             CreateFileInfo* data = static_cast<CreateFileInfo*>(msg.param);
@@ -219,11 +219,11 @@ void RDOThreadRepository::newModel(const NewModel* const data)
             file.second.m_fileName = m_modelName;
         }
         m_hasModel = true;
-        broadcastMessage(RT_REPOSITORY_MODEL_NEW);
+        broadcastMessage(Message::REPOSITORY_MODEL_NEW);
     }
     else
     {
-        broadcastMessage(RT_REPOSITORY_MODEL_CLOSE_ERROR);
+        broadcastMessage(Message::REPOSITORY_MODEL_CLOSE_ERROR);
     }
 }
 
@@ -238,7 +238,7 @@ bool RDOThreadRepository::openModel(const boost::filesystem::path& modelFileName
         if (modelFileName.empty())
         {
             OpenFile data;
-            broadcastMessage(RT_REPOSITORY_MODEL_OPEN_GET_NAME, &data, true);
+            broadcastMessage(Message::REPOSITORY_MODEL_OPEN_GET_NAME, &data, true);
             if (data.m_result)
             {
                 m_realOnlyInDlg = data.m_readOnly;
@@ -281,21 +281,21 @@ bool RDOThreadRepository::openModel(const boost::filesystem::path& modelFileName
             {
                 switch (updateModelNames())
                 {
-                case FindModel::OK       : broadcastMessage(RT_REPOSITORY_MODEL_OPEN); return true;
-                case FindModel::SMR_ERROR: broadcastMessage(RT_REPOSITORY_MODEL_OPEN); return false;
+                case FindModel::OK       : broadcastMessage(Message::REPOSITORY_MODEL_OPEN); return true;
+                case FindModel::SMR_ERROR: broadcastMessage(Message::REPOSITORY_MODEL_OPEN); return false;
                 case FindModel::SMR_EMPTY: return false;
                 }
             }
             else
             {
                 setName(boost::filesystem::path());
-                broadcastMessage(RT_REPOSITORY_MODEL_OPEN_ERROR, const_cast<boost::filesystem::path*>(&modelFileName));
+                broadcastMessage(Message::REPOSITORY_MODEL_OPEN_ERROR, const_cast<boost::filesystem::path*>(&modelFileName));
             }
         }
     }
     else
     {
-        broadcastMessage(RT_REPOSITORY_MODEL_CLOSE_ERROR);
+        broadcastMessage(Message::REPOSITORY_MODEL_CLOSE_ERROR);
     }
 
     return false;
@@ -304,7 +304,7 @@ bool RDOThreadRepository::openModel(const boost::filesystem::path& modelFileName
 bool RDOThreadRepository::saveModel()
 {
     ASSERT(!m_modelPath.empty());
-    broadcastMessage(RT_REPOSITORY_MODEL_SAVE);
+    broadcastMessage(Message::REPOSITORY_MODEL_SAVE);
     return true;
 }
 
@@ -313,7 +313,7 @@ bool RDOThreadRepository::canCloseModel()
     if (m_hasModel)
     {
         bool res = true;
-        broadcastMessage(RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE, &res, true);
+        broadcastMessage(Message::REPOSITORY_MODEL_CLOSE_CAN_CLOSE, &res, true);
         return res;
     }
     else
@@ -327,7 +327,7 @@ void RDOThreadRepository::realCloseModel()
     if (m_hasModel)
     {
         m_hasModel = false;
-        broadcastMessage(RT_REPOSITORY_MODEL_CLOSE);
+        broadcastMessage(Message::REPOSITORY_MODEL_CLOSE);
         m_modelName = boost::filesystem::path();
         m_modelPath = boost::filesystem::path();
         resetModelNames();
@@ -342,7 +342,7 @@ void RDOThreadRepository::closeModel()
     }
     else
     {
-        broadcastMessage(RT_REPOSITORY_MODEL_CLOSE_ERROR);
+        broadcastMessage(Message::REPOSITORY_MODEL_CLOSE_ERROR);
     }
 }
 
@@ -513,7 +513,7 @@ void RDOThreadRepository::beforeModelStart()
     {
         writeModelFilesInfo(m_traceFile);
         std::stringstream model_structure;
-        sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure);
+        sendMessage(kernel->simulator(), Message::SIMULATOR_GET_MODEL_STRUCTURE, &model_structure);
         m_traceFile << std::endl << model_structure.str() << std::endl;
         m_traceFile << "$Tracing" << std::endl;
     }
@@ -530,11 +530,11 @@ void RDOThreadRepository::stopModel()
     {
         writeModelFilesInfo(results_file);
         std::stringstream stream;
-        sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS_INFO, &stream);
+        sendMessage(kernel->simulator(), Message::SIMULATOR_GET_MODEL_RESULTS_INFO, &stream);
         results_file << std::endl << stream.str() << std::endl;
         stream.str("");
         stream.clear();
-        sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &stream);
+        sendMessage(kernel->simulator(), Message::SIMULATOR_GET_MODEL_RESULTS, &stream);
         results_file << std::endl << stream.str() << std::endl;
     }
 }

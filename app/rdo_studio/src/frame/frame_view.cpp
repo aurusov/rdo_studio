@@ -590,7 +590,7 @@ bool View::event(QEvent* pEvent)
     {
         QKeyEvent* pKeyEvent = static_cast<QKeyEvent*>(pEvent);
         std::size_t scanCode = pKeyEvent->nativeVirtualKey();
-        g_pModel->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_KEY_DOWN, &scanCode);
+        g_pModel->sendMessage(kernel->runtime(), RDOThread::Message::RUNTIME_KEY_DOWN, &scanCode);
 
         if (pKeyEvent->key() == Qt::Key_F1)
         {
@@ -605,7 +605,7 @@ bool View::event(QEvent* pEvent)
     {
         QKeyEvent* pKeyEvent = static_cast<QKeyEvent*>(pEvent);
         std::size_t scanCode = pKeyEvent->nativeVirtualKey();
-        g_pModel->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_KEY_UP, &scanCode);
+        g_pModel->sendMessage(kernel->runtime(), RDOThread::Message::RUNTIME_KEY_UP, &scanCode);
         return true;
     }
 

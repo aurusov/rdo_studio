@@ -47,14 +47,14 @@ void RDOParserRDOItem::parse(const LPRDOParser& pParser)
     case StreamFrom::REPOSITORY:
         {
             rdo::repository::RDOThreadRepository::FileData fileData(m_type, in_stream);
-            kernel->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
+            kernel->sendMessage(kernel->repository(), RDOThread::Message::REPOSITORY_LOAD, &fileData);
             break;
         }
 
     case StreamFrom::EDITOR:
         {
             rdo::repository::RDOThreadRepository::FileData fileData(m_type, in_stream);
-            kernel->sendMessage(kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &fileData);
+            kernel->sendMessage(kernel->studio(), RDOThread::Message::STUDIO_MODEL_GET_TEXT, &fileData);
             break;
         }
     }

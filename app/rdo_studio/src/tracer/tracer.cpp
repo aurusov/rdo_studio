@@ -30,13 +30,13 @@ Tracer::Tracer()
 
     g_pTracer = this;
 
-    notifies.push_back(RT_REPOSITORY_MODEL_CLOSE);
-    notifies.push_back(RT_SIMULATOR_MODEL_STOP_OK);
-    notifies.push_back(RT_SIMULATOR_MODEL_STOP_BY_USER);
-    notifies.push_back(RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR);
-    notifies.push_back(RT_RUNTIME_MODEL_START_BEFORE);
-    notifies.push_back(RT_RUNTIME_MODEL_START_AFTER);
-    notifies.push_back(RT_RUNTIME_TRACE_STRING);
+    notifies.push_back(Message::REPOSITORY_MODEL_CLOSE);
+    notifies.push_back(Message::SIMULATOR_MODEL_STOP_OK);
+    notifies.push_back(Message::SIMULATOR_MODEL_STOP_BY_USER);
+    notifies.push_back(Message::SIMULATOR_MODEL_STOP_RUNTIME_ERROR);
+    notifies.push_back(Message::RUNTIME_MODEL_START_BEFORE);
+    notifies.push_back(Message::RUNTIME_MODEL_START_AFTER);
+    notifies.push_back(Message::RUNTIME_TRACE_STRING);
 
     after_constructor();
 }
@@ -50,7 +50,7 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
 {
     switch (msg.message)
     {
-    case RDOThread::RT_REPOSITORY_MODEL_CLOSE:
+    case RDOThread::Message::REPOSITORY_MODEL_CLOSE:
         s_clearAfterStop = g_pModel->isRunning();
         if (!s_clearAfterStop)
         {
@@ -58,7 +58,7 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
         }
         break;
 
-    case RDOThread::RT_RUNTIME_MODEL_START_BEFORE:
+    case RDOThread::Message::RUNTIME_MODEL_START_BEFORE:
         clear();
         ChartDoc::resetTitleIndex();
         try
@@ -66,7 +66,7 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
             setModelName(g_pModel->getName());
             g_pApp->getIMainWnd()->getDockDebug().appendString("Получение структуры модели... ");
             std::stringstream model_structure;
-            sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure);
+            sendMessage(kernel->simulator(), Message::SIMULATOR_GET_MODEL_STRUCTURE, &model_structure);
             getModelStructure(model_structure);
             g_pApp->getIMainWnd()->getDockDebug().appendString("ok\n");
         }
@@ -76,17 +76,17 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
         }
         break;
 
-    case RDOThread::RT_RUNTIME_MODEL_START_AFTER:
+    case RDOThread::Message::RUNTIME_MODEL_START_AFTER:
     {
         rdo::runtime::RunTimeMode runtimeMode;
-        sendMessage(kernel->runtime(), RT_RUNTIME_GET_MODE, &runtimeMode);
+        sendMessage(kernel->runtime(), Message::RUNTIME_GET_MODE, &runtimeMode);
         setRuntimeMode(runtimeMode);
         break;
     }
 
-    case RDOThread::RT_SIMULATOR_MODEL_STOP_OK:
-    case RDOThread::RT_SIMULATOR_MODEL_STOP_BY_USER:
-    case RDOThread::RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR:
+    case RDOThread::Message::SIMULATOR_MODEL_STOP_OK:
+    case RDOThread::Message::SIMULATOR_MODEL_STOP_BY_USER:
+    case RDOThread::Message::SIMULATOR_MODEL_STOP_RUNTIME_ERROR:
         if (s_clearAfterStop)
         {
             clear();
@@ -95,7 +95,7 @@ void Tracer::proc(RDOThread::RDOMessageInfo& msg)
         setDrawTrace(true);
         break;
 
-    case RDOThread::RT_RUNTIME_TRACE_STRING:
+    case RDOThread::Message::RUNTIME_TRACE_STRING:
         msg.lock();
         getTraceString(*static_cast<std::string*>(msg.param));
         msg.unlock();

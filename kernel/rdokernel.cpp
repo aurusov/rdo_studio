@@ -15,20 +15,19 @@ RDOKernel* kernel = NULL;
 // --------------------------------------------------------------------------------
 // -------------------- RDOKernel
 // --------------------------------------------------------------------------------
-RDOKernel::RDOKernel():
-    RDOThreadMT( "RDOKernel" ),
-    thread_studio( NULL ),
-    thread_runtime( NULL ),
-    thread_simulator( NULL ),
-    thread_codecomp( NULL ),
+RDOKernel::RDOKernel()
+    : RDOThreadMT("RDOKernel")
+    , thread_studio(NULL)
+    , thread_runtime(NULL)
+    , thread_simulator(NULL)
+    , thread_codecomp(NULL)
 #ifdef CORBA_ENABLE
-    thread_corba( NULL ),
+    , thread_corba(NULL)
 #endif
-    thread_repository( NULL )
-
+    , thread_repository(NULL)
 {
-    notifies.push_back( RT_THREAD_CONNECTION );
-    notifies.push_back( RT_THREAD_DISCONNECTION );
+    notifies.push_back(Message::THREAD_CONNECTION);
+    notifies.push_back(Message::THREAD_DISCONNECTION);
     after_constructor();
     kernel = this;
 }
@@ -49,58 +48,65 @@ void RDOKernel::init()
 
 void RDOKernel::close()
 {
-    kernel->sendMessage( kernel, RDOThread::RT_THREAD_CLOSE );
+    kernel->sendMessage(kernel, RDOThread::Message::THREAD_CLOSE);
 }
 
 void RDOKernel::start()
 {
     RDOThread::start();
 #ifdef TR_TRACE
-    trace( "kernel ready !!!" );
+    trace("kernel ready !!!");
 #endif
 }
 
 void RDOKernel::proc( RDOMessageInfo& msg )
 {
-    switch ( msg.message ) {
-        // Закрыть все треды
-        case RT_THREAD_CLOSE: {
+    switch (msg.message)
+    {
+    // Закрыть все треды
+    case Message::THREAD_CLOSE:
+    {
 #ifdef TR_TRACE
-            trace( thread_name + " stop begin" );
+        trace( thread_name + " stop begin" );
 #endif
-            std::list< RDOThread* >::iterator it = threads.begin();
-            while ( it != threads.end() ) {
-                RDOThread* thread = *it;
-                sendMessage( thread, RDOThread::RT_THREAD_CLOSE );
-                it = threads.begin();
-            }
+        std::list< RDOThread* >::iterator it = threads.begin();
+        while (it != threads.end())
+        {
+            RDOThread* thread = *it;
+            sendMessage(thread, RDOThread::Message::THREAD_CLOSE);
+            it = threads.begin();
+        }
 #ifdef TR_TRACE
-            trace ( thread_name + " stop end" );
+        trace(thread_name + " stop end");
 #endif
-            break;
-        }
-        case RT_THREAD_CONNECTION: {
-            if ( msg.from != this ) {
-                registration( msg.from );
-            }
-            break;
-        }
-        case RT_THREAD_DISCONNECTION: {
-            if ( msg.from != this ) {
-                unregistered( msg.from );
-            }
-            break;
-        }
-        default: break;
+        break;
+    }
+    case Message::THREAD_CONNECTION:
+    {
+        if (msg.from != this)
+            registration(msg.from);
+
+        break;
+    }
+    case Message::THREAD_DISCONNECTION:
+    {
+        if (msg.from != this)
+            unregistered(msg.from);
+
+        break;
+    }
+    default:
+        break;
     }
 }
 
 void RDOKernel::idle()
 {
-    std::list< RDOThread* >::iterator it = threads.begin();
-    while ( it != threads.end() ) {
+    std::list<RDOThread*>::const_iterator it = threads.begin();
+    while (it != threads.end())
+    {
         // it_next используется из-за того, что в RDOThreadRunTime->idle() м.б. удален RDOThreadRunTime и убран из threads
-        std::list< RDOThread* >::iterator it_next = it;
+        std::list<RDOThread*>::const_iterator it_next = it;
         ++it_next;
         (*it)->idle();
         it = it_next;
@@ -110,10 +116,10 @@ void RDOKernel::idle()
 // -autorun -autoexit "C:\rdo\rdo_cdrom_1\RAO-cd-rom-1\bin\RAO-explorer\Data\Russian\Models\Barber\Source\Barber.rdox"
 // -autorun -autoexit "C:\rdo\rdo_cdrom_1\RAO-cd-rom-1\bin\RAO-explorer\Data\Russian\Models\Heidel\Source\Heidel.rdox"
 
-void RDOKernel::registration( RDOThread* thread )
+void RDOKernel::registration(RDOThread* thread)
 {
-    if (thread && std::find( threads.begin(), threads.end(), thread ) == threads.end())
-        threads.push_back( thread );
+    if (thread && std::find(threads.begin(), threads.end(), thread) == threads.end())
+        threads.push_back(thread);
 
     if (!thread_runtime && thread->getName() == "RDOThreadRunTime")
         thread_runtime = static_cast<rdo::runtime::RDOThreadRunTime*>(thread);
@@ -125,19 +131,20 @@ void RDOKernel::registration( RDOThread* thread )
         thread_repository = static_cast<rdo::repository::RDOThreadRepository*>(thread);
 
 #ifdef CORBA_ENABLE
-    if ( !thread_corba      && thread->getName() == "RDOThreadCorba"      ) thread_corba      = static_cast<rdoCorba::RDOThreadCorba*>(thread);
+    if (!thread_corba && thread->getName() == "RDOThreadCorba")
+        thread_corba = static_cast<rdoCorba::RDOThreadCorba*>(thread);
 #endif
 
 #ifdef TR_TRACE
-    trace( getName() + " INFO: " + thread->getName() + " REGISTERED" );
+    trace(getName() + " INFO: " + thread->getName() + " REGISTERED");
 #endif
-    broadcastMessage( RT_THREAD_REGISTERED, thread );
+    broadcastMessage(Message::THREAD_REGISTERED, thread);
 }
 
-void RDOKernel::unregistered( RDOThread* thread )
+void RDOKernel::unregistered(RDOThread* thread)
 {
     if (thread && std::find( threads.begin(), threads.end(), thread ) != threads.end())
-        threads.remove( thread );
+        threads.remove(thread);
     else
         return;
 
@@ -151,11 +158,12 @@ void RDOKernel::unregistered( RDOThread* thread )
         thread_repository = NULL;
 
 #ifdef CORBA_ENABLE
-    if ( thread_corba      && thread->getName() == "RDOThreadCorba"      ) thread_corba      = NULL;
+    if (thread_corba && thread->getName() == "RDOThreadCorba")
+        thread_corba = NULL;
 #endif
 
 #ifdef TR_TRACE
     trace( getName() + " INFO: " + thread->getName() + " UNREGISTERED" );
 #endif
-    broadcastMessage( RT_THREAD_UNREGISTERED, thread );
+    broadcastMessage(Message::THREAD_UNREGISTERED, thread);
 }

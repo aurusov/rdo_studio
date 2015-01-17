@@ -560,7 +560,7 @@ void Application::autoCloseByModel()
     }
 }
 
-void Application::broadcastMessage(RDOThread::RDOTreadMessage message, void* pParam)
+void Application::broadcastMessage(RDOThread::Message message, void* pParam)
 {
     m_pStudioGUI->broadcastMessage(message, pParam);
 }

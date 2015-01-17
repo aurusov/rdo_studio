@@ -37,7 +37,7 @@ class RDOThreadRepository;
 
 class RDOKernel: public RDOThreadMT
 {
-friend void RDOThread::broadcastMessage( RDOTreadMessage message, void* param, bool lock );
+friend void RDOThread::broadcastMessage( Message message, void* param, bool lock );
 friend class Application;
 
 protected:

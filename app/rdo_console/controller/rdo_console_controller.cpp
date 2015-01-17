@@ -23,18 +23,18 @@ ConsoleController::ConsoleController()
     , runtimeError(false)
     , convertorError(false)
 {
-    notifies.push_back(RT_REPOSITORY_MODEL_OPEN_ERROR       );
-    notifies.push_back(RT_RUNTIME_MODEL_START_BEFORE        ); // TODO : wait
-    notifies.push_back(RT_RUNTIME_MODEL_STOP_AFTER          );
-    notifies.push_back(RT_SIMULATOR_PARSE_OK                );
-    notifies.push_back(RT_SIMULATOR_PARSE_ERROR             );
-    notifies.push_back(RT_SIMULATOR_PARSE_ERROR_SMR         );
-    notifies.push_back(RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY   );
-    notifies.push_back(RT_SIMULATOR_MODEL_STOP_OK           );
-    notifies.push_back(RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR);
-    notifies.push_back(RT_CONVERTOR_NONE                    );
-    notifies.push_back(RT_CONVERTOR_OK                      );
-    notifies.push_back(RT_CONVERTOR_ERROR                   );
+    notifies.push_back(Message::REPOSITORY_MODEL_OPEN_ERROR       );
+    notifies.push_back(Message::RUNTIME_MODEL_START_BEFORE        ); // TODO : wait
+    notifies.push_back(Message::RUNTIME_MODEL_STOP_AFTER          );
+    notifies.push_back(Message::SIMULATOR_PARSE_OK                );
+    notifies.push_back(Message::SIMULATOR_PARSE_ERROR             );
+    notifies.push_back(Message::SIMULATOR_PARSE_ERROR_SMR         );
+    notifies.push_back(Message::SIMULATOR_PARSE_ERROR_SMR_EMPTY   );
+    notifies.push_back(Message::SIMULATOR_MODEL_STOP_OK           );
+    notifies.push_back(Message::SIMULATOR_MODEL_STOP_RUNTIME_ERROR);
+    notifies.push_back(Message::CONVERTOR_NONE                    );
+    notifies.push_back(Message::CONVERTOR_OK                      );
+    notifies.push_back(Message::CONVERTOR_ERROR                   );
 
     after_constructor();
 }
@@ -60,7 +60,7 @@ bool ConsoleController::isConverted() const
 bool ConsoleController::isSimulationSuccessfully()
 {
     rdo::simulation::report::ExitCode exitCode;
-    sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &exitCode);
+    sendMessage(kernel->simulator(), Message::SIMULATOR_GET_MODEL_EXITCODE, &exitCode);
     return exitCode == rdo::simulation::report::ExitCode::OK;
 }
 
@@ -88,59 +88,59 @@ void ConsoleController::proc(RDOThread::RDOMessageInfo& msg)
 {
     switch (msg.message)
     {
-    case RDOThread::RT_REPOSITORY_MODEL_OPEN_ERROR:
+    case RDOThread::Message::REPOSITORY_MODEL_OPEN_ERROR:
         break;
 
-    case RDOThread::RT_RUNTIME_MODEL_START_BEFORE:
+    case RDOThread::Message::RUNTIME_MODEL_START_BEFORE:
         {
             MUTEXT_PROTECTION(stateMutex);
             state = SimulatorState::IN_PROGRESS;
         }
         break;
 
-    case RDOThread::RT_RUNTIME_MODEL_STOP_AFTER:
+    case RDOThread::Message::RUNTIME_MODEL_STOP_AFTER:
         {
             MUTEXT_PROTECTION(stateMutex);
             state = SimulatorState::FINISHED;
         }
         break;
 
-    case RDOThread::RT_SIMULATOR_PARSE_OK:
+    case RDOThread::Message::SIMULATOR_PARSE_OK:
         break;
 
-    case RDOThread::RT_SIMULATOR_PARSE_ERROR:
+    case RDOThread::Message::SIMULATOR_PARSE_ERROR:
         {
             buildError = true;
             std::vector<FileMessage> errors;
-            sendMessage(kernel->simulator(), RT_SIMULATOR_GET_ERRORS, &errors);
+            sendMessage(kernel->simulator(), Message::SIMULATOR_GET_ERRORS, &errors);
             appendToBuildLog(errors);
         }
         break;
 
-    case RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR:
+    case RDOThread::Message::SIMULATOR_PARSE_ERROR_SMR:
         break;
 
-    case RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY:
+    case RDOThread::Message::SIMULATOR_PARSE_ERROR_SMR_EMPTY:
         break;
 
-    case RDOThread::RT_SIMULATOR_MODEL_STOP_OK:
+    case RDOThread::Message::SIMULATOR_MODEL_STOP_OK:
         break;
 
-    case RDOThread::RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR:
+    case RDOThread::Message::SIMULATOR_MODEL_STOP_RUNTIME_ERROR:
         runtimeError = true;
         break;
 
-    case RDOThread::RT_CONVERTOR_NONE:
+    case RDOThread::Message::CONVERTOR_NONE:
         converted = true;
         convertorError = false;
         break;
 
-    case RDOThread::RT_CONVERTOR_OK:
+    case RDOThread::Message::CONVERTOR_OK:
         converted = true;
         convertorError = false;
         break;
 
-    case RDOThread::RT_CONVERTOR_ERROR:
+    case RDOThread::Message::CONVERTOR_ERROR:
         converted = true;
         convertorError = true;
         break;

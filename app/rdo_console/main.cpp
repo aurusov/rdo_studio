@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
     rdo::ConsoleController* pAppController = new rdo::ConsoleController();
 
     rdo::repository::RDOThreadRepository::OpenFile data(modelFileName);
-    pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
+    pAppController->broadcastMessage(RDOThread::Message::STUDIO_MODEL_OPEN, &data);
 
     if (optionsController.convertQuery())
     {
@@ -97,7 +97,7 @@ int main(int argc, char* argv[])
         exit(TERMINATION_NORMAL);
     }
 
-    pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_BUILD);
+    pAppController->broadcastMessage(RDOThread::Message::STUDIO_MODEL_BUILD);
 
     bool simulationSuccessfully = false;
 
@@ -174,10 +174,10 @@ void writeBuildLog(std::ostream& stream, const Strings& list)
 
 bool run(rdo::ConsoleController* pAppController, Events& container)
 {
-    pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN);
+    pAppController->broadcastMessage(RDOThread::Message::STUDIO_MODEL_RUN);
 
     rdo::runtime::RunTimeMode runtimeMode = rdo::runtime::RunTimeMode::MAX_SPEED;
-    pAppController->broadcastMessage(RDOThread::RT_RUNTIME_SET_MODE, &runtimeMode);
+    pAppController->broadcastMessage(RDOThread::Message::RUNTIME_SET_MODE, &runtimeMode);
 
     while (!pAppController->isFinished())
     {
@@ -193,12 +193,12 @@ bool run(rdo::ConsoleController* pAppController, Events& container)
     return pAppController->isSimulationSuccessfully();
 }
 
-RDOThread::RDOTreadMessage getMessageType(rdo::KeyEvent::State state)
+RDOThread::Message getMessageType(rdo::KeyEvent::State state)
 {
     switch (state)
     {
-    case rdo::KeyEvent::State::PRESS: return RDOThread::RT_RUNTIME_KEY_DOWN;
-    case rdo::KeyEvent::State::RELEASE: return RDOThread::RT_RUNTIME_KEY_UP;
+    case rdo::KeyEvent::State::PRESS: return RDOThread::Message::RUNTIME_KEY_DOWN;
+    case rdo::KeyEvent::State::RELEASE: return RDOThread::Message::RUNTIME_KEY_UP;
     }
 
     throw std::runtime_error("Unexpected event state");
@@ -207,7 +207,7 @@ RDOThread::RDOTreadMessage getMessageType(rdo::KeyEvent::State state)
 void processEvent(rdo::ConsoleController* pAppController, Events& container)
 {
     double runtime_time = 0;
-    pAppController->broadcastMessage(RDOThread::RT_RUNTIME_GET_TIMENOW, &runtime_time);
+    pAppController->broadcastMessage(RDOThread::Message::RUNTIME_GET_TIMENOW, &runtime_time);
 
     if(!container.empty())
     {
@@ -229,7 +229,7 @@ void processEvent(rdo::ConsoleController* pAppController, Events& container)
                     std::size_t code = static_cast<rdo::KeyEvent*>(it->second.get())->getKeyCode();
                     rdo::KeyEvent::State state = static_cast<rdo::KeyEvent*>(it->second.get())->getState();
 
-                    const rdo::ConsoleController::RDOTreadMessage message_type = getMessageType(state);
+                    const rdo::ConsoleController::Message message_type = getMessageType(state);
                     pAppController->broadcastMessage(message_type, &code);
                 }
                 break;
