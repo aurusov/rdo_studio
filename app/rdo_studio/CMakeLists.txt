@@ -39,8 +39,6 @@ SET(APPLICATION_FILES
     src/status_bar.h
     src/style.cpp
     src/style.h
-    src/thread.cpp
-    src/thread.h
     src/view_preferences.cpp
     src/view_preferences.h
 )

@@ -49,12 +49,6 @@ protected:
 
     typedef std::list<RDOThread*> RDOThreadList;
     RDOThreadList threads;
-#ifdef RDO_MT
-    mutable CMutex threads_mutex;
-#endif
-//    std::list< RDOTreadMethod > methods;
-//    CMutex methods_mutex;
-//    void method_registration( RDOTreadMethod& msg ); // thread-safety
 
     RDOThread*                                     thread_studio;
     rdo::runtime::RDOThreadRunTime*                thread_runtime;
@@ -75,9 +69,7 @@ public:
     static void init();
     static void close();
 
-#ifdef RDO_ST
     virtual void idle();
-#endif
 
     RDOThread*                                     studio    () const { return thread_studio;     }
     rdo::runtime::RDOThreadRunTime*                runtime   () const { return thread_runtime;    }
@@ -90,38 +82,7 @@ public:
 #endif
 };
 
-#ifdef RDO_MT
-// --------------------------------------------------------------------------------
-// -------------------- RDOKernelGUI
-// --------------------------------------------------------------------------------
-// Является фиктивной тредой без своей процедуры.
-// Раздает сообщения прикрепленным к ней тредам (RDOThreadGUI).
-// Можно представить её в виде корня дерева, к которому прикреплены RDOThreadGUI.
-// Обработчик сообщений RDOKernelGUI::processMessages() вызывается из цикла обработки
-// сообщений самого win32-gui приложения, точнее из OnIdle() приложения, т.е. процедуру
-// треды выполняет запущенный екзешник (логически). При этом, именно от имени RDOKernelGUI,
-// приложение посылает сообщения остальным настоящим тредам.
-//
-class RDOKernelGUI: public RDOThread
-{
-friend virtual bool RDOThreadGUI::processMessages();
-
-protected:
-    RDOKernelGUI(const std::string& _thread_name); // Создание и удаление через потомков
-    virtual ~RDOKernelGUI();
-
-    virtual void proc( RDOMessageInfo& msg );
-    virtual void idle();
-
-    std::list< RDOThread* > threads;
-
-    void registration( RDOThread* thread );
-    void unregistered( RDOThread* thread );
-    void update_notifies();
-};
-#else
 typedef RDOKernel RDOKernelGUI;
-#endif
 
 // --------------------------------------------------------------------------------
 extern RDOKernel* kernel;

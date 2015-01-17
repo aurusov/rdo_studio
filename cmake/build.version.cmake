@@ -6,8 +6,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-#ifndef _RDO_BUILD_VERSION_H_
-#define _RDO_BUILD_VERSION_H_
+#pragma once
 
 namespace rdo
 {
@@ -16,12 +15,6 @@ namespace rdo
         static const std::string g_appName("${APP_NAME}");
         static const std::string g_version("${PROJECT_VERSION_LONG}");
         static const std::string g_site   ("${ORG_WEBSITE}");
-
-#ifdef RDO_MT
-        static const std::string g_mt("mt");
-#else
-        static const std::string g_mt("st");
-#endif
 
 #ifdef RDOSIM_COMPATIBLE
         static const std::string g_comp("-comp");
@@ -57,9 +50,8 @@ namespace rdo
         static const std::string g_limitRes("");
 #endif
 
-        static const std::string g_versionName = boost::str(boost::format("%1% %2%%3%-version %4% %5%-%6%%7%")
+        static const std::string g_versionName = boost::str(boost::format("%1% %2%-version %3% %4%-%5%%6%")
             % g_appName
-            % g_mt
             % g_comp
             % g_version
             % g_systemOS
@@ -71,5 +63,3 @@ namespace rdo
         );
     }
 }
-
-#endif // _RDO_BUILD_VERSION_H_

@@ -80,13 +80,6 @@ public:
     rdo::plugin::Loader&                  getPluginLoader();
 
 private:
-#ifdef RDO_MT
-    // Используется для рассылки широковещательных уведомлений из приложения.
-    // При этом, не происходит остановки работы самого приложения, и имеется возможность
-    // обрабатывать новые присылаемые приложению сообщения.
-    ThreadStudio* m_pStudioMT;
-#endif
-
     std::ofstream                          m_log;
     bool                                   m_fileAssociationSetup;
     bool                                   m_fileAssociationCheckInFuture;

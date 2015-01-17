@@ -4,11 +4,7 @@
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
-    #ifdef RDO_MT
-        #include <afxwin.h>
-    #else
-        #include <windows.h>
-    #endif
+    #include <windows.h>
 #endif // COMPILER_VISUAL_STUDIO
 #ifdef COMPILER_GCC
     #include <assert.h>

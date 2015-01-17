@@ -17,7 +17,6 @@
 #include "simulator/runtime/rdo_exception.h"
 #include "app/rdo_studio/src/model/model.h"
 #include "app/rdo_studio/src/model/model_view.h"
-#include "app/rdo_studio/src/thread.h"
 #include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/frame/frame_view.h"
 #include "app/rdo_studio/src/dialog/new_model_dialog.h"

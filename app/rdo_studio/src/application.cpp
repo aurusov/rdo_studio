@@ -19,7 +19,6 @@
 #include "app/rdo_studio/src/application.h"
 #include "app/rdo_studio/src/main_window.h"
 #include "app/rdo_studio/src/model/model.h"
-#include "app/rdo_studio/src/thread.h"
 #include "app/rdo_studio/src/dialog/file_association_dialog.h"
 #include "app/rdo_studio/src/tracer/tracer.h"
 // --------------------------------------------------------------------------------
@@ -116,9 +115,6 @@ void g_messageOutput(QtMsgType type, const QMessageLogContext& context, const QS
 Application::Application(int& argc, char** argv)
     : QApplication(argc, argv)
     , m_pStudioGUI                  (NULL  )
-#ifdef RDO_MT
-    , m_pStudioMT                   (NULL  )
-#endif
     , m_fileAssociationSetup        (false )
     , m_fileAssociationCheckInFuture(false )
     , m_openLastProject             (false )
@@ -158,11 +154,7 @@ Application::Application(int& argc, char** argv)
 
     // Кто-то должен поднять кернел и треды
     RDOKernel::init();
-#ifdef RDO_MT
-    m_pStudioGUI = new ThreadStudioGUI();
-#else
     m_pStudioGUI = kernel;
-#endif
     new rdo::service::simulation::RDOThreadSimulator();
     new rdo::service::simulation::RDOThreadCodeComp();
     new rdo::repository::RDOThreadRepository();
@@ -170,10 +162,6 @@ Application::Application(int& argc, char** argv)
 //#define CORBA_ENABLE
 #ifdef CORBA_ENABLE
     new rdoCorba::RDOThreadCorba();
-#endif
-
-#ifdef RDO_MT
-    m_pStudioMT = new ThreadStudio();
 #endif
 
     g_pTracer = new rdo::gui::tracer::Tracer();
@@ -187,11 +175,7 @@ Application::Application(int& argc, char** argv)
 
     m_pluginLoader.init(m_pMainFrame);
 
-#ifdef RDO_MT
-    kernel->thread_studio = m_pStudioGUI;
-#else
     kernel->thread_studio = g_pModel;
-#endif
 
     QObject::connect(&m_initTimer, &QTimer::timeout, boost::function<void()>(boost::bind(&Application::onInit, this, argc, argv)));
     m_initTimer.setSingleShot(true);
@@ -209,15 +193,6 @@ Application::~Application()
     {
         m_exitCode = g_pModel->getExitCode();
     }
-#ifdef RDO_MT
-    if (m_pStudioGUI)
-    {
-        m_pStudioGUI->sendMessage(m_pStudioGUI, RDOThread::RT_THREAD_CLOSE);
-        delete static_cast<ThreadStudioGUI*>(m_pStudioGUI);
-        m_pStudioGUI = NULL;
-    }
-#endif
-
     // Роняем кернел и закрываем все треды
     RDOKernel::close();
 
@@ -384,7 +359,7 @@ QString Application::getFullHelpFileName(const QString& helpFileName) const
     QString result = chkHelpExist(helpFileName);
     if (!result.isEmpty())
     {
-#ifdef OST_WINDOWS        
+#ifdef OST_WINDOWS
         if (chkHelpExist("assistant.exe").isEmpty())
         {
             result = QString();
@@ -587,30 +562,12 @@ void Application::autoCloseByModel()
 
 void Application::broadcastMessage(RDOThread::RDOTreadMessage message, void* pParam)
 {
-#ifdef RDO_MT
-    CEvent* pEvent = m_pStudioMT->manualMessageFrom(message, pParam);
-    while (::WaitForSingleObject(pEvent->m_hObject, 0) == WAIT_TIMEOUT)
-    {
-        static_cast<ThreadStudioGUI*>(m_pStudioGUI)->processMessages();
-        if (m_pMainFrame) {
-            m_pMainFrame->UpdateWindow();
-        } else {
-            break;
-        }
-    }
-    delete pEvent;
-#else
     m_pStudioGUI->broadcastMessage(message, pParam);
-#endif
 }
 
 void Application::onIdle()
 {
-#ifdef RDO_MT
-    static_cast<ThreadStudioGUI*>(m_pStudioGUI)->processMessages();
-#else
     kernel->idle();
-#endif
 }
 
 const rdo::gui::editor::LPModelStyle& Application::getModelStyle() const

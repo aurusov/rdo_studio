@@ -26,25 +26,6 @@
 //   3. трассировку события выводит после измененного этим события ресурса
 //   4. выводит в трассировку вещественные значения с двумя знаками после экспоненты, а не тремя
 
-// --------------------------------------------------------------------------------
-// Используется для компиляции (одно/много)-тредовой версии РДО
-// Если определена в дефайнах проекта
-#if defined(RDO_ST)
-    #undef RDO_MT
-// Если определена в дефайнах проекта
-#elif defined(RDO_MT)
-    #undef RDO_ST
-// Если НЕ определена в дефайнах проекта
-#else
-    #define RDO_MT
-    #undef RDO_MT // Скомпилить однотредувую версию РДО. Если закомментировать, то получится многотредовая
-
-    // RDO_ST автоматически выставляется для однотредовой версии РДО
-    #ifndef RDO_MT
-        #define RDO_ST
-    #endif
-#endif
-
 // Используется для трассировки сообщений в файл C:\rdo_kernel_mt.log
 // Может быть использовано и в однотредовой версии
 // Если НЕ определена в дефайнах проекта
@@ -53,25 +34,12 @@
     #undef TR_TRACE // Закомментировать для вывода трассировка
 #endif
 
-#ifdef RDO_MT
-#include <afxmt.h>
-#endif
-
 // --------------------------------------------------------------------------------
 // -------------------- RDOThread
 // --------------------------------------------------------------------------------
-#ifdef RDO_MT
-typedef std::size_t (*RDOThreadFun)(void* pParam);
-#endif
-
 class RDOThread: private boost::noncopyable
 {
-#ifdef RDO_MT
-friend class RDOKernelGUI;
-friend class RDOThreadGUI;
-#else
 friend class RDOKernel;
-#endif
 public:
     enum RDOTreadMessage {
         RT_THREAD_CLOSE = 1,
@@ -222,36 +190,10 @@ public:
     class RDOMessageInfo {
     friend class RDOThread;
     friend class RDOKernel;
-#ifdef RDO_MT
-    private:
-        enum Type { post = 0, send, manual } type;
-        CEvent* send_event;
-        CMutex* param_lock;
-#endif
     public:
         RDOThread* from;
         RDOTreadMessage message;
         void* param;
-#ifdef RDO_MT
-        RDOMessageInfo(RDOThread* _from, RDOTreadMessage _message, void* _param, Type _type )
-            : from      (_from   )
-            , message   (_message)
-            , param     (_param  )
-            , type      (_type   )
-            , send_event(NULL    )
-            , param_lock(NULL    )
-        {}
-        RDOMessageInfo(const RDOMessageInfo& copy)
-            : type      (copy.type      )
-            , send_event(copy.send_event)
-            , from      (copy.from      )
-            , message   (copy.message   )
-            , param     (copy.param     )
-            , param_lock(copy.param_lock)
-        {}
-        void lock()   { if ( param_lock ) param_lock->Lock();   }
-        void unlock() { if ( param_lock ) param_lock->Unlock(); }
-#else
         RDOMessageInfo(RDOThread* _from, RDOTreadMessage _message, void* _param)
             : from   (_from   )
             , message(_message)
@@ -264,60 +206,16 @@ public:
         {}
         void lock()   {}
         void unlock() {}
-#endif
     };
 
     std::string getName() const { return thread_name; }
-#ifdef RDO_MT
-    std::size_t getID() const { return thread_id; }
-    bool isGUI() const { return thread_fun ? false : true; }
-    CEvent* getDestroyEvent() const { return thread_destroy; }
-#endif
 
-/*
-    class RDOTreadMethod {
-    public:
-        RDOThread* thread;
-        std::string name;
-        std::size_t index;
-    };
-
-    // POST: отправка сообщений без ожидания выполнения
-    void postMessage( RDOTreadMessage message, void* pParam = NULL ) {
-        postMessageFrom( NULL, message, pParam );
-    }
-    void postMessageFrom( RDOThread* from, RDOTreadMessage message, void* pParam = NULL ) {
-        messages_mutex.Lock();
-        messages.push_back( RDOMessageInfo( from, message, pParam, RDOThread::RDOMessageInfo::post ) );
-        messages_mutex.Unlock();
-    }
-*/
     // SEND: отправка сообщений с ожиданием выполнения
     void sendMessage(RDOThread* to, RDOTreadMessage message, void* pParam = NULL)
     {
-#ifdef RDO_MT
-        RDOMessageInfo msg(this, message, pParam, RDOThread::RDOMessageInfo::send);
-        CEvent event;
-        msg.send_event = &event;
-
-        to->messages_mutex.Lock();
-        if (!to->was_close)
-            to->messages.push_back(msg);
-
-        to->messages_mutex.Unlock();
-
-        while (::WaitForSingleObject(event.m_hObject, 0) == WAIT_TIMEOUT)
-            processMessages();
-#else
         RDOMessageInfo messageInfo(this, message, pParam);
         to->processMessages(messageInfo);
-#endif
     }
-
-#ifdef RDO_MT
-    // MANUAL: отправка сообщений с 'ручным' ожиданием выполнения для this
-    CEvent* manualMessageFrom(RDOTreadMessage message, void* pParam = NULL);
-#endif
 
     // Рассылка уведомлений всем тредам с учетом их notifies
     // Важно: должна вызываться только для this (в собственной треде)
@@ -328,24 +226,6 @@ public:
 #endif
 
 protected:
-#ifdef RDO_MT
-    // Есть два ограничения на использование тред в RDO_MT (с thread-safety всё в порядке, imho):
-    // 1. Каждая треда имеет доступ к стеку сообщений (messages) любой другой треды, чтобы положить туда новое сообщение.
-    // 2. Каждая треда имеет доступ к списку уведомлений (notifies), чтобы понять, а надо ли посылать сообщение треде.
-    // Второе еще можно сделать через дублирование: map< key = thread*, value = notifies > в каджой треде,
-    // а вот как добавить сообщение - не совсем понрятно.
-    static std::size_t threadFun(void* pParam);
-    const RDOThreadFun thread_fun;
-    CWinThread* thread_win;
-    CEvent proc_create; // Вызывается из процедуры треды, конструктор должен его дождаться
-    CEvent thread_create; // Вызывается из конструктора объекта, процедура должна его дождаться
-    CEvent* thread_destroy; // Вызывается из деструктора объекта
-    bool broadcast_waiting; // Без мутекса, т.к. меняется только в одной треде
-    bool was_start; // Без мутекса, т.к. меняется только в одной треде
-    bool was_close;
-    int thread_id;
-    int idle_cnt;
-#endif
     const std::string thread_name;
 
     typedef std::vector<RDOTreadMessage> NotifieList;
@@ -356,90 +236,10 @@ protected:
                           // Если сообщение посылается не из kernel'а, а напрямую, то
                           // то оно не будет проходить через этот фильтр, а сразу попадет в очередь.
 
-#ifdef RDO_MT
-    CMutex notifies_mutex;
-
-    // Очередь сообщений
-    typedef std::list<RDOMessageInfo> MessageList;
-    MessageList messages;
-    CMutex messages_mutex;
-
-    class BroadcastData {
-    public:
-        typedef std::vector<CEvent*> EventList;
-        EventList events;
-        std::size_t cnt;
-        HANDLE* handles;
-
-        BroadcastData()
-            : cnt    (0   )
-            , handles(NULL)
-        {}
-        BroadcastData(std::size_t _cnt)
-            : cnt(_cnt)
-        {
-            for (std::size_t i = 0; i < cnt; i++ )
-                events.push_back(new CEvent());
-            handles = new HANDLE[cnt];
-        }
-        BroadcastData(const BroadcastData& copy)
-            : cnt    (copy.cnt    )
-            , handles(copy.handles)
-        {
-            events.assign(copy.events.begin(), copy.events.end());
-        }
-        ~BroadcastData()
-        {}
-
-        void clear()
-        {
-            for (std::size_t i = 0; i < cnt; i++)
-                delete events[i];
-            delete[] handles;
-        }
-        void resize()
-        {
-            if (cnt)
-            {
-                events.resize(cnt * 2);
-                HANDLE* handles_backup = handles;
-                handles = new HANDLE[cnt * 2];
-                for (std::size_t i = 0; i < cnt; i++)
-                {
-                    events.push_back(new CEvent());
-                    handles[i] = handles_backup[i];
-                    handles[cnt+i] = new HANDLE;
-                }
-                delete[] handles_backup;
-                cnt *= 2;
-            }
-            else
-            {
-                cnt = 10;
-                for (std::size_t i = 0; i < cnt; i++)
-                    events.push_back(new CEvent());
-                handles = new HANDLE[cnt];
-            }
-        }
-    };
-    typedef std::vector<BroadcastData> BroadcastDataList;
-    BroadcastDataList broadcast_data;
-    std::size_t broadcast_cnt;
-
-#endif
-
-#ifdef RDO_MT
-    virtual RDOThread* getKernel();
-#else
     RDOThread* getKernel();
-#endif
 
     // Создавать можно только через потомков
-#ifdef RDO_MT
-    RDOThread(const std::string& _thread_name, RDOThreadFun _thread_fun = NULL);
-#else
     RDOThread(const std::string& _thread_name);
-#endif
     // Удаляет объкты функция треды. kernel удаляется через статический метод
     virtual ~RDOThread();
 
@@ -450,9 +250,6 @@ protected:
     virtual void  idle ();
     virtual void  start();
     virtual void  stop ();
-#ifdef RDO_MT
-    virtual bool processMessages();
-#else
     void          processMessages(RDOMessageInfo& msg)
     {
 #ifdef TR_TRACE
@@ -468,7 +265,6 @@ protected:
             return;
         }
     }
-#endif
 
     virtual void destroy()
     {
@@ -484,15 +280,9 @@ protected:
 class RDOThreadMT: public RDOThread
 {
 protected:
-#ifdef RDO_MT
-    RDOThreadMT(const std::string& _thread_name, RDOThreadFun _thread_fun = RDOThread::threadFun)
-        : RDOThread(_thread_name, _thread_fun)
-    {}
-#else
     RDOThreadMT(const std::string& _thread_name)
         : RDOThread(_thread_name)
     {}
-#endif
 };
 
 // --------------------------------------------------------------------------------
@@ -501,22 +291,6 @@ protected:
 // Базовый класс для треды, которая получает сообщения от kernel_gui, а не от kernel.
 // Используется как логическая вложенная треда в настоящую треду kernel_gui
 //
-#ifdef RDO_MT
-class RDOThreadGUI: public RDOThread
-{
-friend class RDOKernelGUI;
-private:
-    RDOThread* kernel_gui;
-
-protected:
-    RDOThreadGUI(const std::string& _thread_name, RDOThread* _kernel_gui)
-        : RDOThread (_thread_name)
-        , kernel_gui(_kernel_gui )
-    {}
-    virtual RDOThread* getKernel();
-    virtual bool processMessages();
-};
-#else
 class RDOThreadGUI: public RDOThread
 {
 protected:
@@ -524,4 +298,3 @@ protected:
         : RDOThread(_thread_name)
     {}
 };
-#endif

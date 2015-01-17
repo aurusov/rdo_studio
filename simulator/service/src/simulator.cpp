@@ -280,13 +280,6 @@ void RDOThreadCorba::start()
 
 void RDOThreadCorba::idle()
 {
-#ifdef RDO_MT
-    if (broadcast_waiting || !was_start || was_close)
-    {
-        RDOThread::idle();
-        return;
-    }
-#endif
     // Вот тут основная работа корбы
 }
 
@@ -670,13 +663,6 @@ void RDOThreadRunTime::start()
 
 void RDOThreadRunTime::idle()
 {
-#ifdef RDO_MT
-    if (broadcast_waiting || !was_start || was_close)
-    {
-        RDOThread::idle();
-        return;
-    }
-#endif
 //    TRACE("R. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId());
     try
     {
@@ -1013,10 +999,6 @@ void RDOThreadSimulator::proc(RDOMessageInfo& msg)
                 }
                 // Треда удаляется сама, надо удалить её событие
                 // Делается это без мутексов, т.к. thread_destroy не должна использоваться в m_pThreadRuntime пока обрабатывается RT_THREAD_STOP_AFTER
-#ifdef RDO_MT
-                delete m_pThreadRuntime->thread_destroy;
-                m_pThreadRuntime->thread_destroy = NULL;
-#endif
                 m_pThreadRuntime = NULL;
             }
             break;
@@ -1095,31 +1077,14 @@ void RDOThreadSimulator::terminateModel()
     if (m_pThreadRuntime)
     {
         // Перестали реагировать на остановку run-time-треды, т.к. закрываем её сами
-#ifdef RDO_MT
-        notifies_mutex.Lock();
-#endif
         notifies.erase(std::find(notifies.begin(), notifies.end(), RT_THREAD_STOP_AFTER));
-#ifdef RDO_MT
-        notifies_mutex.Unlock();
-        CEvent* thread_destroy = m_pThreadRuntime->thread_destroy;
-#endif
 
         sendMessage(m_pThreadRuntime.get(), RDOThread::RT_THREAD_CLOSE);
 
-#ifdef RDO_MT
-        thread_destroy->Lock();
-        delete thread_destroy;
-#endif
         m_pThreadRuntime = NULL;
 
         // Опять начали реагировать на остановку run-time-треды, чтобы обнаружить нормальное завершение модели (или по run-time-error)
-#ifdef RDO_MT
-        notifies_mutex.Lock();
-#endif
         notifies.push_back(RT_THREAD_STOP_AFTER);
-#ifdef RDO_MT
-        notifies_mutex.Unlock();
-#endif
     }
 }
 

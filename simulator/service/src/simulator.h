@@ -11,11 +11,7 @@
 
 #ifdef COMPILER_VISUAL_STUDIO
     #pragma warning(disable : 4786)
-    #ifdef RDO_MT
-        #include <afxwin.h>
-    #else
-        #include <windows.h>
-    #endif
+    #include <windows.h>
 #endif // COMPILER_VISUAL_STUDIO
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
