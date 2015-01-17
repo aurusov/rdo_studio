@@ -13,10 +13,10 @@ using namespace rdo::gui::style;
 // --------------------------------------------------------------------------------
 FrameStyle::FrameStyle(): StyleBase()
 {
-    defaultColor    = QColor( 0x00, 0x00, 0x00 );
-    backgroundColor = QColor( 0x00, 0x80, 0x80 );
+    defaultColor    = QColor(0x00, 0x00, 0x00);
+    backgroundColor = QColor(0x00, 0x80, 0x80);
 
-    defaultStyle = StyleFont::NONE;
+    defaultStyle = StyleFont::Style::NONE;
     font = StyleFont::getFrameFont();
 }
 

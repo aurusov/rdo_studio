@@ -29,9 +29,9 @@ void OptionsView::setStyle(FrameStyle* style)
 
     QFont font(QString::fromStdString(m_style->font.name), m_style->font.size);
 
-    font.setWeight((m_style->defaultStyle & StyleFont::BOLD) != 0 ? QFont::Bold : QFont::Normal);
-    font.setItalic((m_style->defaultStyle & StyleFont::ITALIC) != 0 ? true : false);
-    font.setUnderline((m_style->defaultStyle & StyleFont::UNDERLINE) != 0 ? true : false);
+    font.setWeight((static_cast<int>(m_style->defaultStyle) & static_cast<int>(StyleFont::Style::BOLD)) != 0 ? QFont::Bold : QFont::Normal);
+    font.setItalic((static_cast<int>(m_style->defaultStyle) & static_cast<int>(StyleFont::Style::ITALIC)) != 0 ? true : false);
+    font.setUnderline((static_cast<int>(m_style->defaultStyle) & static_cast<int>(StyleFont::Style::UNDERLINE)) != 0 ? true : false);
 
     QPalette* fontPalette = new QPalette();
     fontPalette->setColor(QPalette::WindowText, Qt::yellow);

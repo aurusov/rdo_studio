@@ -21,7 +21,7 @@ class RDOSimulatorTrace: public RDOSimulator
 {
 DECLARE_FACTORY(RDOSimulatorTrace)
 public:
-    enum { UNDEFINE_TIME = -1 };
+    static constexpr double UNDEFINE_TIME = -1.0;
 
     virtual void rdoInit();
 

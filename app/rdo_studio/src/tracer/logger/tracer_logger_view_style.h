@@ -19,9 +19,9 @@ public:
     LogColorPair();
     virtual ~LogColorPair();
 
-    LogColorPair& operator =( const LogColorPair& colors );
-    bool operator ==( const LogColorPair& colors ) const;
-    bool operator !=( const LogColorPair& colors ) const;
+    LogColorPair& operator =(const LogColorPair& colors);
+    bool operator ==(const LogColorPair& colors) const;
+    bool operator !=(const LogColorPair& colors) const;
 
     void load(QSettings& settings, QString regParam);
     void save(QSettings& settings, QString regParam) const;
@@ -39,9 +39,9 @@ public:
     LogBorders();
     virtual ~LogBorders();
 
-    LogBorders& operator =( const LogBorders& borders );
-    bool operator ==( const LogBorders& borders ) const;
-    bool operator !=( const LogBorders& borders ) const;
+    LogBorders& operator =(const LogBorders& borders);
+    bool operator ==(const LogBorders& borders) const;
+    bool operator !=(const LogBorders& borders) const;
 
     void load(QSettings& settings);
     void save(QSettings& settings) const;
@@ -65,9 +65,9 @@ public:
     virtual bool getItemColors(int index, LogColorPair &colors) const;
     virtual bool getItemColors(const std::string& item, LogColorPair &colors) const;
 
-    LogStyle& operator =( const LogStyle& style );
-    bool operator ==( const LogStyle& style ) const;
-    bool operator !=( const LogStyle& style ) const;
+    LogStyle& operator =(const LogStyle& style);
+    bool operator ==(const LogStyle& style) const;
+    bool operator !=(const LogStyle& style) const;
 
     static LogStyle getDefaultStyle();
 

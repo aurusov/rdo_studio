@@ -199,12 +199,12 @@ void Edit::setEditorStyle(EditStyle* pStyle)
 
     // ----------
     // Styles
-    sendEditor(SCI_STYLESETBOLD     , STYLE_DEFAULT, style->defaultStyle & StyleFont::BOLD     );
-    sendEditor(SCI_STYLESETITALIC   , STYLE_DEFAULT, style->defaultStyle & StyleFont::ITALIC   );
-    sendEditor(SCI_STYLESETUNDERLINE, STYLE_DEFAULT, style->defaultStyle & StyleFont::UNDERLINE);
-    sendEditor(SCI_STYLESETBOLD     , SCE_TEXT_DEFAULT, style->defaultStyle & StyleFont::BOLD     );
-    sendEditor(SCI_STYLESETITALIC   , SCE_TEXT_DEFAULT, style->defaultStyle & StyleFont::ITALIC   );
-    sendEditor(SCI_STYLESETUNDERLINE, SCE_TEXT_DEFAULT, style->defaultStyle & StyleFont::UNDERLINE);
+    sendEditor(SCI_STYLESETBOLD     , STYLE_DEFAULT, static_cast<int>(style->defaultStyle) & static_cast<int>(StyleFont::Style::BOLD)     );
+    sendEditor(SCI_STYLESETITALIC   , STYLE_DEFAULT, static_cast<int>(style->defaultStyle) & static_cast<int>(StyleFont::Style::ITALIC)   );
+    sendEditor(SCI_STYLESETUNDERLINE, STYLE_DEFAULT, static_cast<int>(style->defaultStyle) & static_cast<int>(StyleFont::Style::UNDERLINE));
+    sendEditor(SCI_STYLESETBOLD     , SCE_TEXT_DEFAULT, static_cast<int>(style->defaultStyle) & static_cast<int>(StyleFont::Style::BOLD)     );
+    sendEditor(SCI_STYLESETITALIC   , SCE_TEXT_DEFAULT, static_cast<int>(style->defaultStyle) & static_cast<int>(StyleFont::Style::ITALIC)   );
+    sendEditor(SCI_STYLESETUNDERLINE, SCE_TEXT_DEFAULT, static_cast<int>(style->defaultStyle) & static_cast<int>(StyleFont::Style::UNDERLINE));
 
     // ----------
     // Font Name

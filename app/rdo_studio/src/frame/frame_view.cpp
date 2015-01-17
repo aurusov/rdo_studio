@@ -88,9 +88,9 @@ void Content::updateFont()
     ASSERT(pStyle);
 
     m_font = QFont(pStyle->font.name.c_str());
-    m_font.setBold     (pStyle->defaultStyle & rdo::gui::style::StyleFont::BOLD      ? true : false);
-    m_font.setItalic   (pStyle->defaultStyle & rdo::gui::style::StyleFont::ITALIC    ? true : false);
-    m_font.setUnderline(pStyle->defaultStyle & rdo::gui::style::StyleFont::UNDERLINE ? true : false);
+    m_font.setBold     (static_cast<int>(pStyle->defaultStyle) & static_cast<int>(rdo::gui::style::StyleFont::Style::BOLD)      ? true : false);
+    m_font.setItalic   (static_cast<int>(pStyle->defaultStyle) & static_cast<int>(rdo::gui::style::StyleFont::Style::ITALIC)    ? true : false);
+    m_font.setUnderline(static_cast<int>(pStyle->defaultStyle) & static_cast<int>(rdo::gui::style::StyleFont::Style::UNDERLINE) ? true : false);
     m_font.setPointSize(pStyle->font.size);
 }
 
@@ -120,9 +120,7 @@ void Content::mousePressEvent(QMouseEvent* pEvent)
     {
         std::size_t index = g_pModel->getFrameManager().findFrameIndex(this);
         if (index != std::size_t(~0))
-        {
             g_pModel->getFrameManager().areaDown(index, pEvent->pos());
-        }
     }
 
     parent_type::mousePressEvent(pEvent);
@@ -159,9 +157,7 @@ void Content::update(
     ASSERT(pFrame);
 
     if (!valid())
-    {
         init(pFrame, bitmapList);
-    }
 
     m_memDC.dc().begin(&m_memDC.buffer());
 
@@ -174,17 +170,17 @@ void Content::update(
         ASSERT(pCurrElement);
         switch (pCurrElement->getType())
         {
-        case rdo::animation::FrameItem::Type::TEXT   : elementText     (static_cast<rdo::animation::TextElement*>(pCurrElement)); break;
-        case rdo::animation::FrameItem::Type::RECT   : elementRect     (static_cast<rdo::animation::RectElement*>(pCurrElement)); break;
-        case rdo::animation::FrameItem::Type::ROUND_RECT : elementRoundRect(static_cast<rdo::animation::RoundRectElement*>(pCurrElement)); break;
-        case rdo::animation::FrameItem::Type::LINE   : elementLine     (static_cast<rdo::animation::LineElement*>(pCurrElement)); break;
-        case rdo::animation::FrameItem::Type::TRIANG : elementTriang   (static_cast<rdo::animation::TriangElement*>(pCurrElement)); break;
-        case rdo::animation::FrameItem::Type::CIRCLE : elementCircle   (static_cast<rdo::animation::CircleElement*>(pCurrElement)); break;
-        case rdo::animation::FrameItem::Type::ELLIPSE: elementEllipse  (static_cast<rdo::animation::EllipseElement*>(pCurrElement)); break;
-        case rdo::animation::FrameItem::Type::BMP    : elementBMP      (static_cast<rdo::animation::BmpElement*>(pCurrElement), bitmapList, bitmapGeneratedList); break;
-        case rdo::animation::FrameItem::Type::S_BMP  : elementSBMP     (static_cast<rdo::animation::ScaledBmpElement*>(pCurrElement), bitmapList, bitmapGeneratedList); break;
-        case rdo::animation::FrameItem::Type::ACTIVE : elementActive   (static_cast<rdo::animation::ActiveElement*>(pCurrElement), areaList); break;
-        case rdo::animation::FrameItem::Type::NONE   : break;
+        case rdo::animation::FrameItem::Type::TEXT      : elementText     (static_cast<rdo::animation::TextElement*>(pCurrElement)); break;
+        case rdo::animation::FrameItem::Type::RECT      : elementRect     (static_cast<rdo::animation::RectElement*>(pCurrElement)); break;
+        case rdo::animation::FrameItem::Type::ROUND_RECT: elementRoundRect(static_cast<rdo::animation::RoundRectElement*>(pCurrElement)); break;
+        case rdo::animation::FrameItem::Type::LINE      : elementLine     (static_cast<rdo::animation::LineElement*>(pCurrElement)); break;
+        case rdo::animation::FrameItem::Type::TRIANG    : elementTriang   (static_cast<rdo::animation::TriangElement*>(pCurrElement)); break;
+        case rdo::animation::FrameItem::Type::CIRCLE    : elementCircle   (static_cast<rdo::animation::CircleElement*>(pCurrElement)); break;
+        case rdo::animation::FrameItem::Type::ELLIPSE   : elementEllipse  (static_cast<rdo::animation::EllipseElement*>(pCurrElement)); break;
+        case rdo::animation::FrameItem::Type::BMP       : elementBMP      (static_cast<rdo::animation::BmpElement*>(pCurrElement), bitmapList, bitmapGeneratedList); break;
+        case rdo::animation::FrameItem::Type::S_BMP     : elementSBMP     (static_cast<rdo::animation::ScaledBmpElement*>(pCurrElement), bitmapList, bitmapGeneratedList); break;
+        case rdo::animation::FrameItem::Type::ACTIVE    : elementActive   (static_cast<rdo::animation::ActiveElement*>(pCurrElement), areaList); break;
+        case rdo::animation::FrameItem::Type::NONE      : break;
         }
     }
 
@@ -325,7 +321,7 @@ void Content::elementRoundRect(rdo::animation::RoundRectElement* pElement)
 {
     ASSERT(pElement);
 
-    double radius = std::min<double>(pElement->m_size.m_width, pElement->m_size.m_height) / 3.0f;
+    const double radius = std::min<double>(pElement->m_size.m_width, pElement->m_size.m_height) / 3.0f;
 
     drawColoredElement(
         pElement,
@@ -441,9 +437,7 @@ void Content::elementBMP(
     );
 
     if (!pixmap.isNull())
-    {
         m_memDC.dc().drawPixmap((int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y), pixmap);
-    }
 }
 
 void Content::elementSBMP(
@@ -482,15 +476,11 @@ QPixmap Content::getBitmap(
 
         rdo::gui::BitmapList::const_iterator generatedIt = bitmapList.find(maskedBitmapName);
         if (generatedIt != bitmapList.end())
-        {
             return generatedIt->second;
-        }
 
         generatedIt = bitmapGeneratedList.find(maskedBitmapName);
         if (generatedIt != bitmapGeneratedList.end())
-        {
             return generatedIt->second;
-        }
 
         rdo::gui::BitmapList::const_iterator maskIt = bitmapList.find(maskName);
         if (maskIt != bitmapList.end())

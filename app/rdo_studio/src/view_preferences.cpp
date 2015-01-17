@@ -481,10 +481,10 @@ void ViewPreferences::onFontBold(int state)
     StyleProperty* prop = getStyleProperty();
     if (prop && &prop->font_style != &null_font_style)
     {
-        prop->font_style = static_cast<StyleFont::Style>(prop->font_style & ~StyleFont::Style::BOLD);
+        prop->font_style = static_cast<StyleFont::Style>(static_cast<int>(prop->font_style) & ~static_cast<int>(StyleFont::Style::BOLD));
         if (state)
         {
-            prop->font_style = static_cast<StyleFont::Style>(prop->font_style | StyleFont::Style::BOLD);
+            prop->font_style = static_cast<StyleFont::Style>(static_cast<int>(prop->font_style) | static_cast<int>(StyleFont::Style::BOLD));
         }
         updatePreview();
     }
@@ -495,10 +495,10 @@ void ViewPreferences::onFontItalic(int state)
     StyleProperty* prop = getStyleProperty();
     if (prop && &prop->font_style != &null_font_style)
     {
-        prop->font_style = static_cast<StyleFont::Style>(prop->font_style & ~StyleFont::Style::ITALIC);
+        prop->font_style = static_cast<StyleFont::Style>(static_cast<int>(prop->font_style) & ~static_cast<int>(StyleFont::Style::ITALIC));
         if (state)
         {
-            prop->font_style = static_cast<StyleFont::Style>(prop->font_style | StyleFont::Style::ITALIC);
+            prop->font_style = static_cast<StyleFont::Style>(static_cast<int>(prop->font_style) | static_cast<int>(StyleFont::Style::ITALIC));
         }
         updatePreview();
     }
@@ -509,10 +509,10 @@ void ViewPreferences::onFontUnderline(int state)
     StyleProperty* prop = getStyleProperty();
     if (prop && &prop->font_style != &null_font_style)
     {
-        prop->font_style = static_cast<StyleFont::Style>(prop->font_style & ~StyleFont::Style::UNDERLINE);
+        prop->font_style = static_cast<StyleFont::Style>(static_cast<int>(prop->font_style) & ~static_cast<int>(StyleFont::Style::UNDERLINE));
         if (state)
         {
-            prop->font_style = static_cast<StyleFont::Style>(prop->font_style | StyleFont::Style::UNDERLINE);
+            prop->font_style = static_cast<StyleFont::Style>(static_cast<int>(prop->font_style) | static_cast<int>(StyleFont::Style::UNDERLINE));
         }
         updatePreview();
     }
@@ -1149,13 +1149,13 @@ void ViewPreferences::updateStyleTab()
     bgColorComboBox->setCurrentIndex(bgColorComboBox->findData(prop->bg_color));
 
     if (boldCheckBox->isEnabled())
-        boldCheckBox->setCheckState((prop->font_style & StyleFont::Style::BOLD) != 0 ? Qt::Checked : Qt::Unchecked);
+        boldCheckBox->setCheckState((static_cast<int>(prop->font_style) & static_cast<int>(StyleFont::Style::BOLD)) != 0 ? Qt::Checked : Qt::Unchecked);
 
     if (italicCheckBox->isEnabled())
-        italicCheckBox->setCheckState((prop->font_style & StyleFont::Style::ITALIC) != 0 ? Qt::Checked : Qt::Unchecked);
+        italicCheckBox->setCheckState((static_cast<int>(prop->font_style) & static_cast<int>(StyleFont::Style::ITALIC)) != 0 ? Qt::Checked : Qt::Unchecked);
 
     if (underlineCheckBox->isEnabled())
-        underlineCheckBox->setCheckState((prop->font_style & StyleFont::Style::UNDERLINE) != 0 ? Qt::Checked : Qt::Unchecked);
+        underlineCheckBox->setCheckState((static_cast<int>(prop->font_style) & static_cast<int>(StyleFont::Style::UNDERLINE)) != 0 ? Qt::Checked : Qt::Unchecked);
 
     switch (prop->item->type)
     {

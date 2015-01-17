@@ -35,7 +35,7 @@ DECLARE_FACTORY(MyClass)
 public:
     int m_a;
 
-    enum { DEFAULT_VALUE = 1 };
+    static constexpr int DEFAULT_VALUE = 1;
 
 protected:
      MyClass(): m_a(DEFAULT_VALUE) { g_pLog->push_back( m_a); }
@@ -45,13 +45,15 @@ protected:
 PREDECLARE_OBJECT_INTERFACE(IMyClass21)
 struct IMyClass21: public rdo::RefCounter<IMyClass21>
 {
-    enum { DEFAULT_VALUE = 21 };
+    static const int DEFAULT_VALUE;
 
     virtual void ifun21() = 0;
 
-             IMyClass21() { g_pLog->push_back( DEFAULT_VALUE); }
-    virtual ~IMyClass21() { g_pLog->push_back(-DEFAULT_VALUE); }
+             IMyClass21() { g_pLog->push_back( IMyClass21::DEFAULT_VALUE); }
+    virtual ~IMyClass21() { g_pLog->push_back(-IMyClass21::DEFAULT_VALUE); }
 };
+
+const int IMyClass21::DEFAULT_VALUE = 21;
 
 #define DECLARE_IMyClass21 \
 public:                    \
@@ -65,7 +67,7 @@ DECLARE_FACTORY(MyClass2)
 public:
     int m_b;
 
-    enum { DEFAULT_VALUE = 2 };
+    static constexpr int DEFAULT_VALUE = 2;
 
     bool operator==(const MyClass2& obj) const
     {
@@ -89,7 +91,7 @@ class MyClass3: public rdo::counter_reference
 public:
     int m_c;
 
-    enum { DEFAULT_VALUE = 3 };
+    static constexpr int DEFAULT_VALUE = 3;
 
      MyClass3(): m_c(DEFAULT_VALUE) { g_pLog->push_back( m_c); }
     ~MyClass3()                     { g_pLog->push_back(-m_c); }
@@ -106,7 +108,7 @@ DECLARE_FACTORY(MyClass4)
 public:
     int m_d;
 
-    enum { DEFAULT_VALUE = 4 };
+    static constexpr int DEFAULT_VALUE = 4;
 
 private:
      MyClass4(): m_d(DEFAULT_VALUE) { g_pLog->push_back( m_d); }

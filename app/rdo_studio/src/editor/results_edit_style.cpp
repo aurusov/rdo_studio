@@ -35,15 +35,15 @@ ResultsStyle ResultsStyle::getCppStyle()
     style.stringColor     = QColor( 0x00, 0x00, 0x00 );
     style.operatorColor   = QColor( 0x00, 0x00, 0x00 );
 
-    style.identifierStyle = StyleFont::NONE;
-    style.keywordStyle    = StyleFont::NONE;
-    style.functionsStyle  = StyleFont::NONE;
-    style.traceStyle      = StyleFont::NONE;
-    style.colorStyle      = StyleFont::NONE;
-    style.commentStyle    = StyleFont::NONE;
-    style.numberStyle     = StyleFont::NONE;
-    style.stringStyle     = StyleFont::NONE;
-    style.operatorStyle   = StyleFont::NONE;
+    style.identifierStyle = StyleFont::Style::NONE;
+    style.keywordStyle    = StyleFont::Style::NONE;
+    style.functionsStyle  = StyleFont::Style::NONE;
+    style.traceStyle      = StyleFont::Style::NONE;
+    style.colorStyle      = StyleFont::Style::NONE;
+    style.commentStyle    = StyleFont::Style::NONE;
+    style.numberStyle     = StyleFont::Style::NONE;
+    style.stringStyle     = StyleFont::Style::NONE;
+    style.operatorStyle   = StyleFont::Style::NONE;
 
     return style;
 }
@@ -63,15 +63,15 @@ ResultsStyle ResultsStyle::getPascalStyle()
     style.stringColor     = QColor( 0x00, 0x00, 0x00 );
     style.operatorColor   = QColor( 0x00, 0x00, 0x00 );
 
-    style.identifierStyle = StyleFont::NONE;
-    style.keywordStyle    = StyleFont::BOLD;
-    style.functionsStyle  = StyleFont::BOLD;
-    style.traceStyle      = StyleFont::BOLD;
-    style.colorStyle      = StyleFont::BOLD;
-    style.commentStyle    = StyleFont::ITALIC;
-    style.numberStyle     = StyleFont::NONE;
-    style.stringStyle     = StyleFont::NONE;
-    style.operatorStyle   = StyleFont::NONE;
+    style.identifierStyle = StyleFont::Style::NONE;
+    style.keywordStyle    = StyleFont::Style::BOLD;
+    style.functionsStyle  = StyleFont::Style::BOLD;
+    style.traceStyle      = StyleFont::Style::BOLD;
+    style.colorStyle      = StyleFont::Style::BOLD;
+    style.commentStyle    = StyleFont::Style::ITALIC;
+    style.numberStyle     = StyleFont::Style::NONE;
+    style.stringStyle     = StyleFont::Style::NONE;
+    style.operatorStyle   = StyleFont::Style::NONE;
 
     return style;
 }
@@ -91,15 +91,15 @@ ResultsStyle ResultsStyle::getHtmlStyle()
     style.stringColor     = QColor( 0x00, 0x00, 0xFF );
     style.operatorColor   = QColor( 0x00, 0x00, 0x00 );
 
-    style.identifierStyle = StyleFont::NONE;
-    style.keywordStyle    = StyleFont::NONE;
-    style.functionsStyle  = StyleFont::NONE;
-    style.traceStyle      = StyleFont::NONE;
-    style.colorStyle      = StyleFont::NONE;
-    style.commentStyle    = StyleFont::NONE;
-    style.numberStyle     = StyleFont::NONE;
-    style.stringStyle     = StyleFont::NONE;
-    style.operatorStyle   = StyleFont::NONE;
+    style.identifierStyle = StyleFont::Style::NONE;
+    style.keywordStyle    = StyleFont::Style::NONE;
+    style.functionsStyle  = StyleFont::Style::NONE;
+    style.traceStyle      = StyleFont::Style::NONE;
+    style.colorStyle      = StyleFont::Style::NONE;
+    style.commentStyle    = StyleFont::Style::NONE;
+    style.numberStyle     = StyleFont::Style::NONE;
+    style.stringStyle     = StyleFont::Style::NONE;
+    style.operatorStyle   = StyleFont::Style::NONE;
 
     return style;
 }
@@ -119,15 +119,15 @@ ResultsStyle ResultsStyle::getClassicStyle()
     style.stringColor     = QColor( 0xFF, 0xFF, 0x00 );
     style.operatorColor   = QColor( 0xFF, 0xFF, 0x00 );
 
-    style.identifierStyle = StyleFont::NONE;
-    style.keywordStyle    = StyleFont::NONE;
-    style.functionsStyle  = StyleFont::NONE;
-    style.traceStyle      = StyleFont::NONE;
-    style.colorStyle      = StyleFont::NONE;
-    style.commentStyle    = StyleFont::NONE;
-    style.numberStyle     = StyleFont::NONE;
-    style.stringStyle     = StyleFont::NONE;
-    style.operatorStyle   = StyleFont::NONE;
+    style.identifierStyle = StyleFont::Style::NONE;
+    style.keywordStyle    = StyleFont::Style::NONE;
+    style.functionsStyle  = StyleFont::Style::NONE;
+    style.traceStyle      = StyleFont::Style::NONE;
+    style.colorStyle      = StyleFont::Style::NONE;
+    style.commentStyle    = StyleFont::Style::NONE;
+    style.numberStyle     = StyleFont::Style::NONE;
+    style.stringStyle     = StyleFont::Style::NONE;
+    style.operatorStyle   = StyleFont::Style::NONE;
 
     return style;
 }
@@ -147,15 +147,15 @@ ResultsStyle ResultsStyle::getTwilightStyle()
     style.stringColor     = QColor( 0xFF, 0xFF, 0xFF );
     style.operatorColor   = QColor( 0xFF, 0xFF, 0xFF );
 
-    style.identifierStyle = StyleFont::NONE;
-    style.keywordStyle    = StyleFont::BOLD;
-    style.functionsStyle  = StyleFont::BOLD;
-    style.traceStyle      = static_cast<StyleFont::Style>(StyleFont::BOLD | StyleFont::ITALIC);
-    style.colorStyle      = StyleFont::BOLD;
-    style.commentStyle    = StyleFont::ITALIC;
-    style.numberStyle     = StyleFont::NONE;
-    style.stringStyle     = StyleFont::NONE;
-    style.operatorStyle   = StyleFont::NONE;
+    style.identifierStyle = StyleFont::Style::NONE;
+    style.keywordStyle    = StyleFont::Style::BOLD;
+    style.functionsStyle  = StyleFont::Style::BOLD;
+    style.traceStyle      = static_cast<StyleFont::Style>(static_cast<int>(StyleFont::Style::BOLD) | static_cast<int>(StyleFont::Style::ITALIC));
+    style.colorStyle      = StyleFont::Style::BOLD;
+    style.commentStyle    = StyleFont::Style::ITALIC;
+    style.numberStyle     = StyleFont::Style::NONE;
+    style.stringStyle     = StyleFont::Style::NONE;
+    style.operatorStyle   = StyleFont::Style::NONE;
 
     return style;
 }
@@ -175,15 +175,15 @@ ResultsStyle ResultsStyle::getOceanStyle()
     style.stringColor     = QColor( 0x00, 0x00, 0xFF );
     style.operatorColor   = QColor( 0x00, 0x00, 0xFF );
 
-    style.identifierStyle = StyleFont::NONE;
-    style.keywordStyle    = StyleFont::BOLD;
-    style.functionsStyle  = StyleFont::BOLD;
-    style.traceStyle      = StyleFont::BOLD;
-    style.colorStyle      = StyleFont::BOLD;
-    style.commentStyle    = StyleFont::ITALIC;
-    style.numberStyle     = StyleFont::NONE;
-    style.stringStyle     = StyleFont::NONE;
-    style.operatorStyle   = StyleFont::NONE;
+    style.identifierStyle = StyleFont::Style::NONE;
+    style.keywordStyle    = StyleFont::Style::BOLD;
+    style.functionsStyle  = StyleFont::Style::BOLD;
+    style.traceStyle      = StyleFont::Style::BOLD;
+    style.colorStyle      = StyleFont::Style::BOLD;
+    style.commentStyle    = StyleFont::Style::ITALIC;
+    style.numberStyle     = StyleFont::Style::NONE;
+    style.stringStyle     = StyleFont::Style::NONE;
+    style.operatorStyle   = StyleFont::Style::NONE;
 
     return style;
 }

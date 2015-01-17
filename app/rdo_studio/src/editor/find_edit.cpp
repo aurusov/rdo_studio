@@ -48,12 +48,12 @@ void Find::setEditorStyle(FindStyle* pStyle)
 
     // ----------
     // Styles
-    sendEditor(SCI_STYLESETBOLD     , SCE_FIND_DEFAULT, style->defaultStyle & StyleFont::BOLD     );
-    sendEditor(SCI_STYLESETITALIC   , SCE_FIND_DEFAULT, style->defaultStyle & StyleFont::ITALIC   );
-    sendEditor(SCI_STYLESETUNDERLINE, SCE_FIND_DEFAULT, style->defaultStyle & StyleFont::UNDERLINE);
-    sendEditor(SCI_STYLESETBOLD     , SCE_FIND_KEYWORD, style->keywordStyle & StyleFont::BOLD     );
-    sendEditor(SCI_STYLESETITALIC   , SCE_FIND_KEYWORD, style->keywordStyle & StyleFont::ITALIC   );
-    sendEditor(SCI_STYLESETUNDERLINE, SCE_FIND_KEYWORD, style->keywordStyle & StyleFont::UNDERLINE);
+    sendEditor(SCI_STYLESETBOLD     , SCE_FIND_DEFAULT, static_cast<int>(style->defaultStyle) & static_cast<int>(StyleFont::Style::BOLD)     );
+    sendEditor(SCI_STYLESETITALIC   , SCE_FIND_DEFAULT, static_cast<int>(style->defaultStyle) & static_cast<int>(StyleFont::Style::ITALIC)   );
+    sendEditor(SCI_STYLESETUNDERLINE, SCE_FIND_DEFAULT, static_cast<int>(style->defaultStyle) & static_cast<int>(StyleFont::Style::UNDERLINE));
+    sendEditor(SCI_STYLESETBOLD     , SCE_FIND_KEYWORD, static_cast<int>(style->keywordStyle) & static_cast<int>(StyleFont::Style::BOLD)     );
+    sendEditor(SCI_STYLESETITALIC   , SCE_FIND_KEYWORD, static_cast<int>(style->keywordStyle) & static_cast<int>(StyleFont::Style::ITALIC)   );
+    sendEditor(SCI_STYLESETUNDERLINE, SCE_FIND_KEYWORD, static_cast<int>(style->keywordStyle) & static_cast<int>(StyleFont::Style::UNDERLINE));
 
     // ----------
     // Font Name

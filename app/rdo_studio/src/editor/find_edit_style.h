@@ -16,15 +16,15 @@ public:
     FindStyle();
     ~FindStyle();
 
-    FindStyle& operator =( const FindStyle& style );
-    bool operator ==( const FindStyle& style ) const;
-    bool operator !=( const FindStyle& style ) const;
+    FindStyle& operator =(const FindStyle& style);
+    bool operator ==(const FindStyle& style) const;
+    bool operator !=(const FindStyle& style) const;
 
-    virtual bool styleDefault( const int styleType ) const;
-    virtual bool styleUsing( const int styleType ) const;
-    virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
-    virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
-    virtual std::string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+    virtual bool styleDefault(const int styleType) const;
+    virtual bool styleUsing(const int styleType) const;
+    virtual bool styleBold(const int styleType = STYLE_DEFAULT) const;
+    virtual bool styleItalic(const int styleType = STYLE_DEFAULT) const;
+    virtual std::string styleFGColorToHEX(const int styleType = STYLE_DEFAULT) const;
 
     static FindStyle getDefaultStyle();
     static FindStyle getClassicStyle();

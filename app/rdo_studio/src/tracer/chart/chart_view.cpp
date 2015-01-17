@@ -56,9 +56,7 @@ ChartView::ChartView(QAbstractScrollArea* pParent, ChartDoc* pDocument, const bo
         m_timeWrapFlag = false;
 
     if (!m_previewMode)
-    {
         setStyle(&g_pApp->getStyle()->style_chart, false);
-    }
 
     if (getDocument())
     {
@@ -87,9 +85,8 @@ ChartView::ChartView(QAbstractScrollArea* pParent, ChartDoc* pDocument, const bo
 ChartView::~ChartView()
 {
     if (getDocument())
-    {
         getDocument()->removeFromViews(this);
-    }
+
     delete m_pDocument;
 }
 
@@ -192,9 +189,7 @@ void ChartView::recalcLayout()
         {
             QRect rect = axisFontMetrics.boundingRect(QString::fromStdString(*it));
             if (rect.width() > sizeMax.width())
-            {
                 sizeMax.setWidth(rect.width());
-            }
         }
     }
     m_chartRect.setLeft(sizeMax.width() + 10);
@@ -219,13 +214,11 @@ void ChartView::recalcLayout()
             if (size.width() && size.height())
             {
                 if (size.width() > sizeMax.width())
-                {
                     sizeMax.setWidth(size.width());
-                }
+
                 if (size.height() > sizeMax.height())
-                {
                     sizeMax.setHeight(size.height());
-                }
+
                 count++;
             }
         }
@@ -250,17 +243,12 @@ void ChartView::recalcLayout()
             long double timeScaleAuto = doUnwrapTime() ? (double)(m_chartRect.width() - m_pStyle->pFontsTicks.tickWidth * pDoc->getTicksCount()) / timeRange : (double)m_chartRect.width() / timeRange;
             m_timeScale = (double)m_pStyle->pFontsTicks.tickWidth / pDoc->getMinTimeOffset();
             m_zoomAuto = double(timeScaleAuto) / double(m_timeScale);
-            /*if (doUnwrapTime() && auto_zoom < 0) {
-             auto_zoom = 1;
-             }*/
+
             if (m_zoomAutoFlag || (m_zoomAuto > 1 /*&& scale_koeff < auto_zoom*/))
-            {
                 m_scaleKoeff = m_zoomAuto;
-            }
+
             if (!m_zoomAutoFlag && m_zoomAuto <= 1)
-            {
                 m_scaleKoeff = m_zoom;
-            }
         }
         else
         {
@@ -314,9 +302,7 @@ void ChartView::updateScrollBars()
 bool ChartView::scrollHorizontally(int inc)
 {
     if (!m_SM_X.applyInc(inc))
-    {
         return false;
-    }
 
     getHorzScrollBar().setValue(m_SM_X.position);
     update();
@@ -326,9 +312,7 @@ bool ChartView::scrollHorizontally(int inc)
 void ChartView::onHorzScrollBarValueChanged(int value)
 {
     if (value < 0)
-    {
         return;
-    }
 
     scrollHorizontally(value - m_SM_X.position);
 }
@@ -345,13 +329,10 @@ void ChartView::keyPressEvent(QKeyEvent* pEvent)
     case Qt::Key_PageDown: position = std::min(m_SM_X.posMax, m_SM_X.position + m_SM_X.pageSize); break;
     case Qt::Key_Home    : position = 0; break;
     case Qt::Key_End     : position = m_SM_X.posMax; break;
-        break;
     }
 
     if (position.is_initialized())
-    {
         getHorzScrollBar().setValue(position.get());
-    }
 }
 
 void ChartView::wheelEvent(QWheelEvent*  pEvent)
@@ -362,9 +343,7 @@ void ChartView::wheelEvent(QWheelEvent*  pEvent)
 void ChartView::contextMenuEvent(QContextMenuEvent* pEvent)
 {
     if (!m_previewMode)
-    {
         m_pPopupMenu->exec(pEvent->globalPos());
-    }
 }
 
 void ChartView::dragEnterEvent(QDragEnterEvent* pEvent)
@@ -373,10 +352,8 @@ void ChartView::dragEnterEvent(QDragEnterEvent* pEvent)
     {
         QByteArray serieData = pEvent->mimeData()->data("ChartSerie");
         m_pddSerie = (Serie*)serieData.toULongLong();
-        if(!getDocument()->serieExists(m_pddSerie))
-        {
+        if (!getDocument()->serieExists(m_pddSerie))
             pEvent->acceptProposedAction();
-        }
     }
 }
 
@@ -487,9 +464,7 @@ void ChartView::setFromTo()
                 {
                     m_drawToEventCount = (it_max_pos - m_chartRect.width()) / m_pStyle->pFontsTicks.tickWidth;
                     if (m_drawToEventCount * m_pStyle->pFontsTicks.tickWidth < m_chartRect.width())
-                    {
                         m_drawToEventCount++;
-                    }
                 }
                 else
                 {
@@ -582,14 +557,11 @@ void ChartView::drawYAxis(QPainter& painter, const QRect& chartRect, const Chart
                     path.lineTo(chartRect.left(), tmprect.top());
                     painter.drawPath(path);
                 }
+
                 if (index == count - 1)
-                {
                     tmprect.setTop(chartRect.top());
-                }
                 else
-                {
                     tmprect.setTop(tmprect.top() - heightoffset);
-                }
             }
         }
     }
@@ -616,9 +588,8 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
             double valoffset = 0;
             int widthoffset = chartRect.width() / (m_valueCountX - 1);
             if (m_drawToX != m_drawFromX)
-            {
                 valoffset = (m_drawToX.time - m_drawFromX.time) / (m_valueCountX - 1);
-            }
+
             double valo = m_drawFromX.time;
             int x = chartRect.left();
             std::string str = rdo::format(formatstr.c_str(), valo);
@@ -659,13 +630,10 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
                 tmprect.setLeft(std::min(tmprect.left(), chartRect.right() - 1));
                 str = rdo::format(formatstr.c_str(), pTime->time);
                 if (*pTime == m_drawFromX)
-                {
                     tmprect.setLeft(tmprect.left() + m_chartShift);
-                }
+
                 if (tmprect.left() > chartRect.right())
-                {
                     tmprect.setLeft(chartRect.right());
-                }
 
                 if (tmprect.left() > lastx)
                 {
@@ -685,9 +653,7 @@ void ChartView::drawXAxis(QPainter& painter, const QRect& chartRect)
 
                 ticks += pTime->eventCount;
                 if (*pTime == m_drawFromX)
-                {
                     ticks -= m_drawFromEventID;
-                }
             }
         }
     }
@@ -712,9 +678,7 @@ void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
         int ticks = 0;
         ChartDoc::TimesList::const_iterator it = m_unwrapTimesList.begin();
         if (m_drawFromX == m_drawToX)
-        {
             ++it;
-        }
 
         for (; it != m_unwrapTimesList.end(); ++it)
         {
@@ -726,13 +690,10 @@ void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
             ));
 
             if (*(*it) == m_drawFromX)
-            {
                 width -= m_drawFromEventID * m_pStyle->pFontsTicks.tickWidth + m_chartShift;
-            }
+
             if (*(*it) == m_drawToX)
-            {
                 width = m_drawToEventCount * m_pStyle->pFontsTicks.tickWidth;
-            }
 
             wrapRect.setRight(std::min(
                 wrapRect.left() + width,
@@ -740,40 +701,27 @@ void ChartView::drawGrid(QPainter& painter, const QRect& chartRect)
             ));
 
             if (wrapRect.left() < wrapRect.right())
-            {
                 painter.drawRect(wrapRect);
-            }
 
             ticks += (*it)->eventCount;
             if (*(*it) == m_drawFromX)
-            {
                 ticks -= m_drawFromEventID;
-            }
         }
     }
 }
 
 void ChartView::setZoom(double new_zoom, const bool /*force_update*/)
 {
-    /*scale_koeff = new_zoom;
-     if (scale_koeff < auto_zoom) {
-     scale_koeff = auto_zoom;
-     }*/
     if (doUnwrapTime() && new_zoom < 1)
-    {
         new_zoom = 1;
-    }
     else if (!doUnwrapTime() && new_zoom < m_zoomAuto)
-    {
         new_zoom = m_zoomAuto;
-    }
-    //if (zoom != new_zoom || scale_koeff != new_zoom || force_update) {
-        m_zoom = new_zoom;
-        m_scaleKoeff = m_zoom;
-        recalcLayout();
-        updateScrollBars();
-        update();
-    //}
+
+    m_zoom = new_zoom;
+    m_scaleKoeff = m_zoom;
+    recalcLayout();
+    updateScrollBars();
+    update();
 }
 
 ChartDoc* ChartView::getDocument()
@@ -806,9 +754,7 @@ void ChartView::onChartTimeWrap()
 void ChartView::onUserUpdateChartView(ChartDoc::Update updateType)
 {
     if (doUnwrapTime() || updateType != ChartDoc::Update::TIMES)
-    {
         updateView();
-    }
 }
 
 void ChartView::onEditCopy()
@@ -819,27 +765,23 @@ void ChartView::onEditCopy()
 void ChartView::onViewZoomIn()
 {
     if (m_zoomAutoFlag)
-    {
         m_zoomAutoFlag = !m_zoomAutoFlag;
-    }
-    double delta = m_zoom < 1 ? 0.1 : 0.5;
+
+    const double delta = m_zoom < 1 ? 0.1 : 0.5;
+
     if (m_zoom + delta > 1 && m_zoom + delta - 1 < delta)
-    {
         setZoom(1);
-    }
     else
-    {
         setZoom(m_zoom + delta);
-    }
+
     onUpdateActions(isActivated());
 }
 
 void ChartView::onViewZoomOut()
 {
     if (m_zoomAutoFlag)
-    {
         m_zoomAutoFlag = !m_zoomAutoFlag;
-    }
+
     double delta = m_zoom > 1 ? -0.5 : -0.1;
     double zoom_new = m_zoom + delta;
     setZoom(zoom_new);
@@ -849,9 +791,8 @@ void ChartView::onViewZoomOut()
 void ChartView::onViewZoomReset()
 {
     if (m_zoomAutoFlag)
-    {
         m_zoomAutoFlag = !m_zoomAutoFlag;
-    }
+
     setZoom(1);
     onUpdateActions(isActivated());
 }
@@ -867,21 +808,21 @@ void ChartView::setFonts(const bool /*needRedraw*/)
         return;
 
     m_fontAxis = QFont(m_pStyle->font.name.c_str());
-    m_fontAxis.setBold     (m_pStyle->defaultStyle & StyleFont::BOLD      ? true : false);
-    m_fontAxis.setItalic   (m_pStyle->defaultStyle & StyleFont::ITALIC    ? true : false);
-    m_fontAxis.setUnderline(m_pStyle->defaultStyle & StyleFont::UNDERLINE ? true : false);
+    m_fontAxis.setBold     (static_cast<int>(m_pStyle->defaultStyle) & static_cast<int>(StyleFont::Style::BOLD)      ? true : false);
+    m_fontAxis.setItalic   (static_cast<int>(m_pStyle->defaultStyle) & static_cast<int>(StyleFont::Style::ITALIC)    ? true : false);
+    m_fontAxis.setUnderline(static_cast<int>(m_pStyle->defaultStyle) & static_cast<int>(StyleFont::Style::UNDERLINE) ? true : false);
     m_fontAxis.setPointSize(m_pStyle->font.size);
 
     m_fontTitle = QFont(m_pStyle->font.name.c_str());
-    m_fontTitle.setBold     (m_pStyle->titleStyle & StyleFont::BOLD      ? true : false);
-    m_fontTitle.setItalic   (m_pStyle->titleStyle & StyleFont::ITALIC    ? true : false);
-    m_fontTitle.setUnderline(m_pStyle->titleStyle & StyleFont::UNDERLINE ? true : false);
+    m_fontTitle.setBold     (static_cast<int>(m_pStyle->titleStyle) & static_cast<int>(StyleFont::Style::BOLD)      ? true : false);
+    m_fontTitle.setItalic   (static_cast<int>(m_pStyle->titleStyle) & static_cast<int>(StyleFont::Style::ITALIC)    ? true : false);
+    m_fontTitle.setUnderline(static_cast<int>(m_pStyle->titleStyle) & static_cast<int>(StyleFont::Style::UNDERLINE) ? true : false);
     m_fontTitle.setPointSize(m_pStyle->pFontsTicks.titleFontSize);
 
     m_fontLegend = QFont(m_pStyle->font.name.c_str());
-    m_fontLegend.setBold     (m_pStyle->legendStyle & StyleFont::BOLD      ? true : false);
-    m_fontLegend.setItalic   (m_pStyle->legendStyle & StyleFont::ITALIC    ? true : false);
-    m_fontLegend.setUnderline(m_pStyle->legendStyle & StyleFont::UNDERLINE ? true : false);
+    m_fontLegend.setBold     (static_cast<int>(m_pStyle->legendStyle) & static_cast<int>(StyleFont::Style::BOLD)      ? true : false);
+    m_fontLegend.setItalic   (static_cast<int>(m_pStyle->legendStyle) & static_cast<int>(StyleFont::Style::ITALIC)    ? true : false);
+    m_fontLegend.setUnderline(static_cast<int>(m_pStyle->legendStyle) & static_cast<int>(StyleFont::Style::UNDERLINE) ? true : false);
     m_fontLegend.setPointSize(m_pStyle->pFontsTicks.legendFontSize);
 }
 
@@ -890,11 +831,6 @@ void ChartView::setStyle(ChartViewStyle* pStyle, const bool needRedraw)
     m_pStyle = pStyle;
 
     setFonts(false);
-
-    /*if (previewMode) {
-     auto_zoom = 1;
-     setZoom(1);
-     }*/
 
     if (needRedraw)
     {
@@ -921,9 +857,8 @@ void ChartView::updateView()
     recalcLayout();
     updateScrollBars();
     if (lastvisible && !maxXVisible())
-    {
         getHorzScrollBar().setValue(m_SM_X.posMax);
-    }
+
     parentWidget()->update();
     updateScrollBars();
     onUpdateActions(isActivated());
@@ -947,9 +882,7 @@ void ChartView::paintEvent(QPaintEvent*)
     if (!m_chartRect.isEmpty())
     {
         if (m_needDrawLegend)
-        {
             drawLegend(painter, m_legendRect);
-        }
 
         painter.setPen(m_pStyle->defaultColor);
 
@@ -959,9 +892,7 @@ void ChartView::paintEvent(QPaintEvent*)
         drawGrid(painter, m_chartRect);
 
         for (const ChartSerie* const pSerie: doc->getSerieList())
-        {
             pSerie->drawSerie(this, painter, m_chartRect);
-        }
     }
 }
 

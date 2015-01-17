@@ -17,9 +17,9 @@ public:
     EditTab();
     virtual ~EditTab();
 
-    EditTab& operator =( const EditTab& tab );
-    bool operator ==( const EditTab& tab ) const;
-    bool operator !=( const EditTab& tab ) const;
+    EditTab& operator =(const EditTab& tab);
+    bool operator ==(const EditTab& tab) const;
+    bool operator !=(const EditTab& tab) const;
 
     void load(QSettings& settings);
     void save(QSettings& settings) const;
@@ -44,9 +44,9 @@ public:
     EditWindow();
     virtual ~EditWindow();
 
-    EditWindow& operator =( const EditWindow& window );
-    bool operator ==( const EditWindow& window ) const;
-    bool operator !=( const EditWindow& window ) const;
+    EditWindow& operator =(const EditWindow& window);
+    bool operator ==(const EditWindow& window) const;
+    bool operator !=(const EditWindow& window) const;
 
     void load(QSettings& settings);
     void save(QSettings& settings) const;
@@ -92,7 +92,7 @@ public:
     static EditStyle getTwilightStyle();
     static EditStyle getOceanStyle();
 
-    static std::string colorToHEX( const QColor color );
+    static std::string colorToHEX(const QColor color);
 
     QColor caretColor;
     QColor selectionBgColor;

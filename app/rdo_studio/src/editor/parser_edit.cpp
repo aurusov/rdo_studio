@@ -112,39 +112,39 @@ void Parser::setEditorStyle(ParserStyle* pStyle)
 
     // ----------
     // Styles
-    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_DEFAULT, static_cast<ModelStyle*>(m_pStyle)->defaultStyle & StyleFont::BOLD     );
-    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_DEFAULT, static_cast<ModelStyle*>(m_pStyle)->defaultStyle & StyleFont::ITALIC   );
-    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_DEFAULT, static_cast<ModelStyle*>(m_pStyle)->defaultStyle & StyleFont::UNDERLINE);
-    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_IDENTIFIER, static_cast<ModelStyle*>(m_pStyle)->identifierStyle & StyleFont::BOLD     );
-    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_IDENTIFIER, static_cast<ModelStyle*>(m_pStyle)->identifierStyle & StyleFont::ITALIC   );
-    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_IDENTIFIER, static_cast<ModelStyle*>(m_pStyle)->identifierStyle & StyleFont::UNDERLINE);
-    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_KEYWORD, static_cast<ModelStyle*>(m_pStyle)->keywordStyle & StyleFont::BOLD     );
-    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_KEYWORD, static_cast<ModelStyle*>(m_pStyle)->keywordStyle & StyleFont::ITALIC   );
-    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_KEYWORD, static_cast<ModelStyle*>(m_pStyle)->keywordStyle & StyleFont::UNDERLINE);
-    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_FUNCTION, static_cast<ModelStyle*>(m_pStyle)->functionsStyle & StyleFont::BOLD     );
-    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_FUNCTION, static_cast<ModelStyle*>(m_pStyle)->functionsStyle & StyleFont::ITALIC   );
-    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_FUNCTION, static_cast<ModelStyle*>(m_pStyle)->functionsStyle & StyleFont::UNDERLINE);
-    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_TRACE, static_cast<ModelStyle*>(m_pStyle)->traceStyle & StyleFont::BOLD     );
-    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_TRACE, static_cast<ModelStyle*>(m_pStyle)->traceStyle & StyleFont::ITALIC   );
-    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_TRACE, static_cast<ModelStyle*>(m_pStyle)->traceStyle & StyleFont::UNDERLINE);
-    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_FRAME_COLOR, static_cast<ModelStyle*>(m_pStyle)->colorStyle & StyleFont::BOLD     );
-    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_FRAME_COLOR, static_cast<ModelStyle*>(m_pStyle)->colorStyle & StyleFont::ITALIC   );
-    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_FRAME_COLOR, static_cast<ModelStyle*>(m_pStyle)->colorStyle & StyleFont::UNDERLINE);
-    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_COMMENT_CPP, static_cast<ModelStyle*>(m_pStyle)->commentStyle & StyleFont::BOLD     );
-    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_COMMENT_CPP, static_cast<ModelStyle*>(m_pStyle)->commentStyle & StyleFont::ITALIC   );
-    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_COMMENT_CPP, static_cast<ModelStyle*>(m_pStyle)->commentStyle & StyleFont::UNDERLINE);
-    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_COMMENT_LINE, static_cast<ModelStyle*>(m_pStyle)->commentStyle & StyleFont::BOLD     );
-    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_COMMENT_LINE, static_cast<ModelStyle*>(m_pStyle)->commentStyle & StyleFont::ITALIC   );
-    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_COMMENT_LINE, static_cast<ModelStyle*>(m_pStyle)->commentStyle & StyleFont::UNDERLINE);
-    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_NUMBER, static_cast<ModelStyle*>(m_pStyle)->numberStyle & StyleFont::BOLD     );
-    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_NUMBER, static_cast<ModelStyle*>(m_pStyle)->numberStyle & StyleFont::ITALIC   );
-    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_NUMBER, static_cast<ModelStyle*>(m_pStyle)->numberStyle & StyleFont::UNDERLINE);
-    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_STRING, static_cast<ModelStyle*>(m_pStyle)->stringStyle & StyleFont::BOLD     );
-    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_STRING, static_cast<ModelStyle*>(m_pStyle)->stringStyle & StyleFont::ITALIC   );
-    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_STRING, static_cast<ModelStyle*>(m_pStyle)->stringStyle & StyleFont::UNDERLINE);
-    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_OPERATOR, static_cast<ModelStyle*>(m_pStyle)->operatorStyle & StyleFont::BOLD     );
-    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_OPERATOR, static_cast<ModelStyle*>(m_pStyle)->operatorStyle & StyleFont::ITALIC   );
-    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_OPERATOR, static_cast<ModelStyle*>(m_pStyle)->operatorStyle & StyleFont::UNDERLINE);
+    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_DEFAULT, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->defaultStyle) & static_cast<int>(StyleFont::Style::BOLD)     );
+    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_DEFAULT, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->defaultStyle) & static_cast<int>(StyleFont::Style::ITALIC)   );
+    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_DEFAULT, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->defaultStyle) & static_cast<int>(StyleFont::Style::UNDERLINE));
+    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_IDENTIFIER, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->identifierStyle) & static_cast<int>(StyleFont::Style::BOLD)     );
+    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_IDENTIFIER, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->identifierStyle) & static_cast<int>(StyleFont::Style::ITALIC)   );
+    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_IDENTIFIER, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->identifierStyle) & static_cast<int>(StyleFont::Style::UNDERLINE));
+    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_KEYWORD, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->keywordStyle) & static_cast<int>(StyleFont::Style::BOLD)     );
+    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_KEYWORD, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->keywordStyle) & static_cast<int>(StyleFont::Style::ITALIC)   );
+    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_KEYWORD, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->keywordStyle) & static_cast<int>(StyleFont::Style::UNDERLINE));
+    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_FUNCTION, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->functionsStyle) & static_cast<int>(StyleFont::Style::BOLD)     );
+    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_FUNCTION, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->functionsStyle) & static_cast<int>(StyleFont::Style::ITALIC)   );
+    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_FUNCTION, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->functionsStyle) & static_cast<int>(StyleFont::Style::UNDERLINE));
+    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_TRACE, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->traceStyle) & static_cast<int>(StyleFont::Style::BOLD)     );
+    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_TRACE, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->traceStyle) & static_cast<int>(StyleFont::Style::ITALIC)   );
+    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_TRACE, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->traceStyle) & static_cast<int>(StyleFont::Style::UNDERLINE));
+    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_FRAME_COLOR, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->colorStyle) & static_cast<int>(StyleFont::Style::BOLD)     );
+    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_FRAME_COLOR, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->colorStyle) & static_cast<int>(StyleFont::Style::ITALIC)   );
+    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_FRAME_COLOR, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->colorStyle) & static_cast<int>(StyleFont::Style::UNDERLINE));
+    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_COMMENT_CPP, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->commentStyle) & static_cast<int>(StyleFont::Style::BOLD)     );
+    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_COMMENT_CPP, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->commentStyle) & static_cast<int>(StyleFont::Style::ITALIC)   );
+    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_COMMENT_CPP, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->commentStyle) & static_cast<int>(StyleFont::Style::UNDERLINE));
+    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_COMMENT_LINE, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->commentStyle) & static_cast<int>(StyleFont::Style::BOLD)     );
+    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_COMMENT_LINE, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->commentStyle) & static_cast<int>(StyleFont::Style::ITALIC)   );
+    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_COMMENT_LINE, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->commentStyle) & static_cast<int>(StyleFont::Style::UNDERLINE));
+    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_NUMBER, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->numberStyle) & static_cast<int>(StyleFont::Style::BOLD)     );
+    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_NUMBER, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->numberStyle) & static_cast<int>(StyleFont::Style::ITALIC)   );
+    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_NUMBER, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->numberStyle) & static_cast<int>(StyleFont::Style::UNDERLINE));
+    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_STRING, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->stringStyle) & static_cast<int>(StyleFont::Style::BOLD)     );
+    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_STRING, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->stringStyle) & static_cast<int>(StyleFont::Style::ITALIC)   );
+    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_STRING, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->stringStyle) & static_cast<int>(StyleFont::Style::UNDERLINE));
+    sendEditor(SCI_STYLESETBOLD     , SCE_RDO_OPERATOR, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->operatorStyle) & static_cast<int>(StyleFont::Style::BOLD)     );
+    sendEditor(SCI_STYLESETITALIC   , SCE_RDO_OPERATOR, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->operatorStyle) & static_cast<int>(StyleFont::Style::ITALIC)   );
+    sendEditor(SCI_STYLESETUNDERLINE, SCE_RDO_OPERATOR, static_cast<int>(static_cast<ModelStyle*>(m_pStyle)->operatorStyle) & static_cast<int>(StyleFont::Style::UNDERLINE));
 
     // ----------
     // Font Name

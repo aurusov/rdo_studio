@@ -88,20 +88,18 @@ ChartViewStyle::ChartViewStyle()
     chartBgColor  = QColor(0xF3, 0xFC, 0xFC);
     timeBgColor   = QColor(0xBA, 0xEB, 0xEB);
 
-    titleStyle  = StyleFont::BOLD;
-    legendStyle = StyleFont::NONE;
+    titleStyle  = StyleFont::Style::BOLD;
+    legendStyle = StyleFont::Style::NONE;
 
     font = StyleFont::getChartViewFont();
 }
 
 ChartViewStyle::~ChartViewStyle()
-{
-}
+{}
 
 ChartViewStyle& ChartViewStyle::operator =(const ChartViewStyle& style)
 {
     StyleBase::operator=(style);
-    //    defaultColor = style.defaultColor;
 
     axisFgColor   = style.axisFgColor;
     titleFGColor  = style.titleFGColor;
@@ -155,8 +153,8 @@ QSettings& operator<< (QSettings& settings, const ChartViewStyle& style)
     settings.setValue("legend_fg_color", style.legendFgColor.name());
     settings.setValue("chart_bg_color", style.chartBgColor.name());
     settings.setValue("time_bg_color", style.timeBgColor.name());
-    settings.setValue("title_style", style.titleStyle);
-    settings.setValue("legend_style", style.legendStyle);
+    settings.setValue("title_style", static_cast<int>(style.titleStyle));
+    settings.setValue("legend_style", static_cast<int>(style.legendStyle));
     settings.endGroup();
 
     settings.beginGroup("fonts_ticks");
@@ -170,14 +168,14 @@ QSettings& operator>> (QSettings& settings, ChartViewStyle& style)
 {
     settings >> static_cast<StyleBase&>(style);
 
-    settings.beginGroup("theme");    
+    settings.beginGroup("theme");
     style.axisFgColor   = QColor(settings.value("axis_fg_color", style.axisFgColor.name()).toString());
     style.titleFGColor  = QColor(settings.value("title_fg_color", style.titleFGColor.name()).toString());
     style.legendFgColor = QColor(settings.value("legend_fg_color", style.legendFgColor.name()).toString());
     style.chartBgColor  = QColor(settings.value("chart_bg_color", style.chartBgColor.name()).toString());
     style.timeBgColor   = QColor(settings.value("time_bg_color", style.timeBgColor.name()).toString());
-    style.titleStyle    = static_cast<StyleFont::Style>(settings.value("title_style", style.titleStyle).toInt());
-    style.legendStyle   = static_cast<StyleFont::Style>(settings.value("legend_style", style.legendStyle).toInt());
+    style.titleStyle    = static_cast<StyleFont::Style>(settings.value("title_style", static_cast<int>(style.titleStyle)).toInt());
+    style.legendStyle   = static_cast<StyleFont::Style>(settings.value("legend_style", static_cast<int>(style.legendStyle)).toInt());
     settings.endGroup();
 
     settings.beginGroup("fonts_ticks");

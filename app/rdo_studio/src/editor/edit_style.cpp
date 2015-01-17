@@ -24,7 +24,7 @@ EditTab::EditTab()
 EditTab::~EditTab()
 {}
 
-EditTab& EditTab::operator =( const EditTab& tab )
+EditTab& EditTab::operator =(const EditTab& tab)
 {
     tabSize         = tab.tabSize;
     indentSize      = tab.indentSize;
@@ -36,7 +36,7 @@ EditTab& EditTab::operator =( const EditTab& tab )
     return *this;
 }
 
-bool EditTab::operator ==( const EditTab& tab ) const
+bool EditTab::operator ==(const EditTab& tab) const
 {
     return tabSize         == tab.tabSize &&
            indentSize      == tab.indentSize &&
@@ -46,7 +46,7 @@ bool EditTab::operator ==( const EditTab& tab ) const
            autoIndent      == tab.autoIndent;
 }
 
-bool EditTab::operator !=( const EditTab& tab ) const
+bool EditTab::operator !=(const EditTab& tab) const
 {
     return !(*this == tab);
 }
@@ -101,7 +101,7 @@ EditWindow::EditWindow()
 EditWindow::~EditWindow()
 {}
 
-EditWindow& EditWindow::operator =( const EditWindow& window )
+EditWindow& EditWindow::operator =(const EditWindow& window)
 {
     wordWrap          = window.wordWrap;
     showHorzScrollBar = window.showHorzScrollBar;
@@ -109,13 +109,13 @@ EditWindow& EditWindow::operator =( const EditWindow& window )
     return *this;
 }
 
-bool EditWindow::operator ==( const EditWindow& window ) const
+bool EditWindow::operator ==(const EditWindow& window) const
 {
     return wordWrap          == window.wordWrap &&
            showHorzScrollBar == window.showHorzScrollBar;
 }
 
-bool EditWindow::operator !=( const EditWindow& window ) const
+bool EditWindow::operator !=(const EditWindow& window) const
 {
     return !(*this == window);
 }
@@ -158,24 +158,24 @@ EditStyle::EditStyle()
     , tab   ()
     , window()
 {
-    defaultColor    = QColor( 0x00, 0x00, 0x00 );
-    backgroundColor = QColor( 0xFF, 0xFF, 0xFF );
+    defaultColor    = QColor(0x00, 0x00, 0x00);
+    backgroundColor = QColor(0xFF, 0xFF, 0xFF);
 
-    caretColor       = QColor( 0x00, 0x00, 0x00 );
-    selectionBgColor = QColor( 0xC0, 0xC0, 0xC0 );
-    bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
-    bookmarkBgColor  = QColor( 0x00, 0xFF, 0xFF );
+    caretColor       = QColor(0x00, 0x00, 0x00);
+    selectionBgColor = QColor(0xC0, 0xC0, 0xC0);
+    bookmarkFgColor  = QColor(0x00, 0x00, 0x00);
+    bookmarkBgColor  = QColor(0x00, 0xFF, 0xFF);
 
-    defaultStyle  = StyleFont::NONE;
+    defaultStyle  = StyleFont::Style::NONE;
     bookmarkStyle = EditStyle::Bookmark::CIRCLE;
 }
 
 EditStyle::~EditStyle()
 {}
 
-EditStyle& EditStyle::operator =( const EditStyle& style )
+EditStyle& EditStyle::operator =(const EditStyle& style)
 {
-    StyleBase::operator=( style );
+    StyleBase::operator=(style);
 
     defaultColor    = style.defaultColor;
     backgroundColor = style.backgroundColor;
@@ -195,7 +195,7 @@ EditStyle& EditStyle::operator =( const EditStyle& style )
     return *this;
 }
 
-bool EditStyle::operator ==( const EditStyle& style ) const
+bool EditStyle::operator ==(const EditStyle& style) const
 {
     return
         StyleBase::operator==(style) &&
@@ -211,39 +211,39 @@ bool EditStyle::operator ==( const EditStyle& style ) const
         bookmarkStyle    == style.bookmarkStyle;
 }
 
-bool EditStyle::operator !=( const EditStyle& style ) const
+bool EditStyle::operator !=(const EditStyle& style) const
 {
     return !(*this == style);
 }
 
-bool EditStyle::styleDefault( const int styleType ) const
+bool EditStyle::styleDefault(const int styleType) const
 {
     return styleType == STYLE_DEFAULT;
 }
 
-bool EditStyle::styleUsing( const int styleType ) const
+bool EditStyle::styleUsing(const int styleType) const
 {
     return styleType == STYLE_DEFAULT;
 }
 
-bool EditStyle::styleBold( const int /*styleType*/ ) const
+bool EditStyle::styleBold(const int /*styleType*/) const
 {
-    return defaultStyle & StyleFont::BOLD ? true : false;
+    return static_cast<int>(defaultStyle) & static_cast<int>(StyleFont::Style::BOLD) ? true : false;
 }
 
-bool EditStyle::styleItalic( const int /*styleType*/ ) const
+bool EditStyle::styleItalic(const int /*styleType*/) const
 {
-    return defaultStyle & StyleFont::ITALIC ? true : false;
+    return static_cast<int>(defaultStyle) & static_cast<int>(StyleFont::Style::ITALIC) ? true : false;
 }
 
-std::string EditStyle::styleFGColorToHEX( const int /*styleType*/ ) const
+std::string EditStyle::styleFGColorToHEX(const int /*styleType*/) const
 {
-    return colorToHEX( defaultColor );
+    return colorToHEX(defaultColor);
 }
 
-std::string EditStyle::styleBGColorToHEX( const int /*styleType*/ ) const
+std::string EditStyle::styleBGColorToHEX(const int /*styleType*/) const
 {
-    return colorToHEX( backgroundColor );
+    return colorToHEX(backgroundColor);
 }
 
 EditStyle EditStyle::getDefaultStyle()
@@ -256,15 +256,15 @@ EditStyle EditStyle::getClassicStyle()
 {
     EditStyle style;
 
-    style.defaultColor    = QColor( 0xFF, 0xFF, 0x00 );
-    style.backgroundColor = QColor( 0x00, 0x00, 0x80 );
+    style.defaultColor    = QColor(0xFF, 0xFF, 0x00);
+    style.backgroundColor = QColor(0x00, 0x00, 0x80);
 
-    style.caretColor       = QColor( 0xFF, 0xFF, 0x00 );
-    style.selectionBgColor = QColor( 0x00, 0x00, 0x40 );
-    style.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
-    style.bookmarkBgColor  = QColor( 0x80, 0x80, 0x00 );
+    style.caretColor       = QColor(0xFF, 0xFF, 0x00);
+    style.selectionBgColor = QColor(0x00, 0x00, 0x40);
+    style.bookmarkFgColor  = QColor(0x00, 0x00, 0x00);
+    style.bookmarkBgColor  = QColor(0x80, 0x80, 0x00);
 
-    style.defaultStyle  = StyleFont::NONE;
+    style.defaultStyle  = StyleFont::Style::NONE;
     style.bookmarkStyle = EditStyle::Bookmark::CIRCLE;
 
     return style;
@@ -274,15 +274,15 @@ EditStyle EditStyle::getTwilightStyle()
 {
     EditStyle style;
 
-    style.defaultColor    = QColor( 0xFF, 0xFF, 0xFF );
-    style.backgroundColor = QColor( 0x00, 0x00, 0x00 );
+    style.defaultColor    = QColor(0xFF, 0xFF, 0xFF);
+    style.backgroundColor = QColor(0x00, 0x00, 0x00);
 
-    style.caretColor       = QColor( 0xFF, 0xFF, 0xFF );
-    style.selectionBgColor = QColor( 0x70, 0x70, 0x70 );
-    style.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
-    style.bookmarkBgColor  = QColor( 0x00, 0x00, 0xFF );
+    style.caretColor       = QColor(0xFF, 0xFF, 0xFF);
+    style.selectionBgColor = QColor(0x70, 0x70, 0x70);
+    style.bookmarkFgColor  = QColor(0x00, 0x00, 0x00);
+    style.bookmarkBgColor  = QColor(0x00, 0x00, 0xFF);
 
-    style.defaultStyle  = StyleFont::NONE;
+    style.defaultStyle  = StyleFont::Style::NONE;
     style.bookmarkStyle = EditStyle::Bookmark::CIRCLE;
 
     return style;
@@ -292,23 +292,23 @@ EditStyle EditStyle::getOceanStyle()
 {
     EditStyle style;
 
-    style.defaultColor    = QColor( 0x00, 0x00, 0xFF );
-    style.backgroundColor = QColor( 0x00, 0xFF, 0xFF );
+    style.defaultColor    = QColor(0x00, 0x00, 0xFF);
+    style.backgroundColor = QColor(0x00, 0xFF, 0xFF);
 
-    style.caretColor       = QColor( 0x00, 0x00, 0x00 );
-    style.selectionBgColor = QColor( 0xC0, 0xC0, 0xD0 );
-    style.bookmarkFgColor  = QColor( 0x00, 0x00, 0x00 );
-    style.bookmarkBgColor  = QColor( 0xBA, 0xCC, 0xFC );
+    style.caretColor       = QColor(0x00, 0x00, 0x00);
+    style.selectionBgColor = QColor(0xC0, 0xC0, 0xD0);
+    style.bookmarkFgColor  = QColor(0x00, 0x00, 0x00);
+    style.bookmarkBgColor  = QColor(0xBA, 0xCC, 0xFC);
 
-    style.defaultStyle  = StyleFont::NONE;
+    style.defaultStyle  = StyleFont::Style::NONE;
     style.bookmarkStyle = EditStyle::Bookmark::CIRCLE;
 
     return style;
 }
 
-std::string EditStyle::colorToHEX( const QColor color )
+std::string EditStyle::colorToHEX(const QColor color)
 {
-    return rdo::format( "#%02X%02X%02X", color.red(), color.green(), color.blue() );
+    return rdo::format("#%02X%02X%02X", color.red(), color.green(), color.blue());
 }
 
 namespace rdo { namespace gui { namespace editor {
@@ -331,7 +331,7 @@ QSettings& operator<< (QSettings& settings, const EditStyle& style)
     settings.setValue("selection_bg_color", style.selectionBgColor.name());
     settings.setValue("bookmark_fg_color", style.bookmarkFgColor.name());
     settings.setValue("bookmark_bg_color", style.bookmarkBgColor.name());
-    settings.setValue("default_style", style.defaultStyle);
+    settings.setValue("default_style", static_cast<int>(style.defaultStyle));
     settings.setValue("bookmark_style", static_cast<int>(style.bookmarkStyle));
     settings.endGroup();
 
@@ -356,7 +356,7 @@ QSettings& operator>> (QSettings& settings, EditStyle& style)
     style.selectionBgColor = QColor(settings.value("selection_bg_color", style.selectionBgColor.name()).toString());
     style.bookmarkFgColor  = QColor(settings.value("bookmark_fg_color", style.bookmarkFgColor.name()).toString());
     style.bookmarkBgColor  = QColor(settings.value("bookmark_bg_color", style.bookmarkBgColor.name()).toString());
-    style.defaultStyle     = static_cast<StyleFont::Style>(settings.value("default_style", style.defaultStyle).toInt());
+    style.defaultStyle     = static_cast<StyleFont::Style>(settings.value("default_style", static_cast<int>(style.defaultStyle)).toInt());
     style.bookmarkStyle    = static_cast<EditStyle::Bookmark>(settings.value("bookmark_style", static_cast<int>(style.bookmarkStyle)).toInt());
     settings.endGroup();
 

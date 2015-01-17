@@ -30,7 +30,7 @@ StyleFont::StyleFont()
 StyleFont::~StyleFont()
 {}
 
-StyleFont& StyleFont::operator =( const StyleFont& font )
+StyleFont& StyleFont::operator =(const StyleFont& font)
 {
     name = font.name;
     size = font.size;
@@ -38,13 +38,13 @@ StyleFont& StyleFont::operator =( const StyleFont& font )
     return *this;
 }
 
-bool StyleFont::operator ==( const StyleFont& font ) const
+bool StyleFont::operator ==(const StyleFont& font) const
 {
     return name == font.name &&
            size == font.size;
 }
 
-bool StyleFont::operator !=( const StyleFont& font ) const
+bool StyleFont::operator !=(const StyleFont& font) const
 {
     return !(*this == font);
 }
@@ -118,15 +118,15 @@ QSettings& operator>> (QSettings& settings, StyleFont& font)
 // --------------------------------------------------------------------------------
 StyleBase::StyleBase()
 {
-    defaultColor = QColor( 0x00, 0x00, 0x00 );
-    backgroundColor = QColor( 0xFF, 0xFF, 0xFF );
+    defaultColor = QColor(0x00, 0x00, 0x00);
+    backgroundColor = QColor(0xFF, 0xFF, 0xFF);
     defaultStyle = StyleFont::Style::NONE;
 }
 
 StyleBase::~StyleBase()
 {}
 
-StyleBase& StyleBase::operator =( const StyleBase& style )
+StyleBase& StyleBase::operator =(const StyleBase& style)
 {
     font            = style.font;
     defaultStyle    = style.defaultStyle;
@@ -135,7 +135,7 @@ StyleBase& StyleBase::operator =( const StyleBase& style )
     return *this;
 }
 
-bool StyleBase::operator ==( const StyleBase& style ) const
+bool StyleBase::operator ==(const StyleBase& style) const
 {
     return
         font            == style.font &&
@@ -144,7 +144,7 @@ bool StyleBase::operator ==( const StyleBase& style ) const
         defaultStyle    == style.defaultStyle;
 }
 
-bool StyleBase::operator !=( const StyleBase& style ) const
+bool StyleBase::operator !=(const StyleBase& style) const
 {
     return !(*this == style);
 }

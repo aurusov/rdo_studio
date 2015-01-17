@@ -28,7 +28,7 @@ public:
     void load(QSettings& settings);
     void save(QSettings& settings) const;
 
-    enum Style
+    enum class Style
     {
         NONE = 0x00,
         BOLD = 0x01,
