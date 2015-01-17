@@ -90,10 +90,10 @@ int main(int argc, char* argv[])
             converted = pAppController->isConverted();
             boost::this_thread::sleep(boost::posix_time::milliseconds(500));
         }
+
         if (pAppController->isConvertorError())
-        {
             exit(TERMINATION_WITH_AN_ERROR_CONVERTOR_ERROR);
-        }
+
         exit(TERMINATION_NORMAL);
     }
 
@@ -143,9 +143,8 @@ void readEvents(std::istream& stream, Events& container)
     container.clear();
 
     if (stream.fail())
-    {
         exit(TERMINATION_WITH_APP_RUNTIME_ERROR);
-    }
+
     rdo::EventXmlParser parser;
     parser.registerParser("key", std::make_shared<rdo::KeyEventXmlReader>());
     parser.registerParser("mouse", std::make_shared<rdo::MouseEventXmlReader>());
@@ -163,13 +162,10 @@ void readEvents(std::istream& stream, Events& container)
 void writeBuildLog(std::ostream& stream, const Strings& list)
 {
     if (stream.fail())
-    {
         exit(TERMINATION_WITH_APP_RUNTIME_ERROR);
-    }
+
     for (const Strings::value_type& line: list)
-    {
         stream << line.c_str() << std::endl;
-    }
 }
 
 bool run(rdo::ConsoleController* pAppController, Events& container)
@@ -214,10 +210,9 @@ void processEvent(rdo::ConsoleController* pAppController, Events& container)
         Events::const_iterator it = container.begin();
         if (it->first < runtime_time)
         {
-            const std::string eventName = boost::str(boost::format("process event : name : %1%  |  time : %2%")
+            const auto eventName = boost::str(boost::format("process event : name : %1%  |  time : %2%")
                 % it->second->getName()
-                % it->second->getTime()
-            );
+                % it->second->getTime());
             rdo::locale::cout(eventName);
 
             rdo::Event::Type type = it->second->getType();
@@ -227,7 +222,7 @@ void processEvent(rdo::ConsoleController* pAppController, Events& container)
             case rdo::Event::Type::KEY:
                 {
                     std::size_t code = static_cast<rdo::KeyEvent*>(it->second.get())->getKeyCode();
-                    rdo::KeyEvent::State state = static_cast<rdo::KeyEvent*>(it->second.get())->getState();
+                    const rdo::KeyEvent::State state = static_cast<rdo::KeyEvent*>(it->second.get())->getState();
 
                     const rdo::ConsoleController::Message message_type = getMessageType(state);
                     pAppController->broadcastMessage(message_type, &code);
