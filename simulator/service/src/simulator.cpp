@@ -264,18 +264,10 @@ void RDOThreadCorba::proc(RDOMessageInfo& msg)
 
 void RDOThreadCorba::start()
 {
-#ifdef TR_TRACE
-    trace(thread_name + " corba begin");
-#endif
-
     // Место для запуска корбы
     thread_corbaRunThreadFun = AfxBeginThread(corbaRunThreadFun, this, THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);
     thread_corbaRunThreadFun->m_bAutoDelete = false;
     thread_corbaRunThreadFun->ResumeThread();
-
-#ifdef TR_TRACE
-    trace(thread_name + " corba end");
-#endif
 }
 
 void RDOThreadCorba::idle()
@@ -285,9 +277,6 @@ void RDOThreadCorba::idle()
 
 void RDOThreadCorba::stop()
 {
-#ifdef TR_TRACE
-    trace(thread_name + " stop begin");
-#endif
     // Место для остановки корбы
     if (g_orb != CORBA::ORB::_nil())
     {
@@ -323,9 +312,6 @@ void RDOThreadCorba::stop()
     }
 
     RDOThread::stop();
-#ifdef TR_TRACE
-    trace(thread_name + " stop end");
-#endif
 }
 
 } // namespace rdoCorba
@@ -597,10 +583,6 @@ void RDOThreadRunTime::proc(RDOMessageInfo& msg)
 
 void RDOThreadRunTime::start()
 {
-#ifdef TR_TRACE
-    trace(thread_name + " start begin");
-#endif
-
     broadcastMessage(Message::RUNTIME_MODEL_START_BEFORE);
 
     RDOTrace* pTracer;
@@ -652,13 +634,7 @@ void RDOThreadRunTime::start()
     }
 
     if (!m_runtimeError)
-    {
         broadcastMessage(Message::RUNTIME_MODEL_START_AFTER);
-    }
-
-#ifdef TR_TRACE
-    trace(thread_name + " start end, runing simulation");
-#endif
 }
 
 void RDOThreadRunTime::idle()
@@ -770,10 +746,6 @@ void RDOThreadRunTime::writeResultsInfo()
 
 void RDOThreadRunTime::stop()
 {
-#ifdef TR_TRACE
-    trace(thread_name + " stop begin");
-#endif
-
     try
     {
         m_pSimulator->m_pRuntime->rdoPostProcess();
@@ -795,10 +767,6 @@ void RDOThreadRunTime::stop()
     broadcastMessage(Message::RUNTIME_MODEL_STOP_AFTER);
 
     RDOThread::stop();
-
-#ifdef TR_TRACE
-    trace(thread_name + " stop end");
-#endif
 }
 
 void RDOThreadRunTime::destroy()

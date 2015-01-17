@@ -26,14 +26,6 @@
 //   3. трассировку события выводит после измененного этим события ресурса
 //   4. выводит в трассировку вещественные значения с двумя знаками после экспоненты, а не тремя
 
-// Используется для трассировки сообщений в файл C:\rdo_kernel_mt.log
-// Может быть использовано и в однотредовой версии
-// Если НЕ определена в дефайнах проекта
-#ifndef TR_TRACE
-    #define TR_TRACE
-    #undef TR_TRACE // Закомментировать для вывода трассировка
-#endif
-
 // --------------------------------------------------------------------------------
 // -------------------- RDOThread
 // --------------------------------------------------------------------------------
@@ -150,10 +142,6 @@ public:
     // Важно: должна вызываться только для this (в собственной треде)
     void broadcastMessage(Message message, void* pParam = NULL, bool lock = false);
 
-#ifdef TR_TRACE
-    static void trace(const std::string& str);
-#endif
-
 protected:
     const std::string thread_name;
 
@@ -175,30 +163,13 @@ protected:
     // Надо обязательно вызвать из конструктора объекта, чтобы настроить правильно this для виртуальных функций,
     void after_constructor();
 
-    virtual void  proc (RDOMessageInfo& msg) = 0;
-    virtual void  idle ();
-    virtual void  start();
-    virtual void  stop ();
-    void          processMessages(RDOMessageInfo& msg)
-    {
-#ifdef TR_TRACE
-        RDOThread::trace("---------------- " + messageToString(msg.message) + ": " + (msg.from ? msg.from->thread_name : "NULL") + " -> " + thread_name);
-#endif
-        proc(msg);
-        if (msg.message == Message::THREAD_CLOSE)
-        {
-            if (this != getKernel())
-                sendMessage(getKernel(), Message::THREAD_DISCONNECTION);
-            stop();
-            destroy();
-            return;
-        }
-    }
+    virtual void proc(RDOMessageInfo& msg) = 0;
+    virtual void idle();
+    virtual void start();
+    virtual void stop();
+    virtual void destroy();
 
-    virtual void destroy()
-    {
-        delete this;
-    }
+    void processMessages(RDOMessageInfo& msg);
 };
 
 // --------------------------------------------------------------------------------

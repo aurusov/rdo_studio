@@ -54,9 +54,6 @@ void RDOKernel::close()
 void RDOKernel::start()
 {
     RDOThread::start();
-#ifdef TR_TRACE
-    trace("kernel ready !!!");
-#endif
 }
 
 void RDOKernel::proc( RDOMessageInfo& msg )
@@ -66,9 +63,6 @@ void RDOKernel::proc( RDOMessageInfo& msg )
     // Закрыть все треды
     case Message::THREAD_CLOSE:
     {
-#ifdef TR_TRACE
-        trace( thread_name + " stop begin" );
-#endif
         std::list< RDOThread* >::iterator it = threads.begin();
         while (it != threads.end())
         {
@@ -76,9 +70,6 @@ void RDOKernel::proc( RDOMessageInfo& msg )
             sendMessage(thread, RDOThread::Message::THREAD_CLOSE);
             it = threads.begin();
         }
-#ifdef TR_TRACE
-        trace(thread_name + " stop end");
-#endif
         break;
     }
     case Message::THREAD_CONNECTION:
@@ -135,9 +126,6 @@ void RDOKernel::registration(RDOThread* thread)
         thread_corba = static_cast<rdoCorba::RDOThreadCorba*>(thread);
 #endif
 
-#ifdef TR_TRACE
-    trace(getName() + " INFO: " + thread->getName() + " REGISTERED");
-#endif
     broadcastMessage(Message::THREAD_REGISTERED, thread);
 }
 
@@ -162,8 +150,5 @@ void RDOKernel::unregistered(RDOThread* thread)
         thread_corba = NULL;
 #endif
 
-#ifdef TR_TRACE
-    trace( getName() + " INFO: " + thread->getName() + " UNREGISTERED" );
-#endif
     broadcastMessage(Message::THREAD_UNREGISTERED, thread);
 }

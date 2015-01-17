@@ -16,36 +16,18 @@
 #include "utils/src/common/rdocommon.h"
 // --------------------------------------------------------------------------------
 
-#ifdef TR_TRACE
-std::fstream file("C:\\rdo_kernel_st.log", std::ios_base::in | std::ios_base::out | std::ios_base::trunc);
-
-void RDOThread::trace(const std::string& str)
-{
-    file << str << std::endl;
-    file.flush();
-}
-#endif // TR_TRACE
-
 // --------------------------------------------------------------------------------
 // -------------------- RDOThread
 // --------------------------------------------------------------------------------
 RDOThread::RDOThread(const std::string& _thread_name)
     : thread_name(_thread_name)
 {
-#ifdef TR_TRACE
-    trace(thread_name + "::" + thread_name);
-#endif
     // Чтобы треда не получала ниодного сообщения. Message::THREAD_CLOSE обрабатывается автоматически
     notifies.push_back(Message::THREAD_CLOSE);
 }
 
 RDOThread::~RDOThread()
-{
-#ifdef TR_TRACE
-    trace(rdo::format("%s (%d)::~%s", thread_name.c_str(), thread_id, thread_name.c_str()));
-//    trace(thread_name + "::~" + thread_name);
-#endif
-}
+{}
 
 std::string RDOThread::messageToString(Message message)
 {
@@ -154,16 +136,28 @@ void RDOThread::idle()
 {}
 
 void RDOThread::start()
-{
-#ifdef TR_TRACE
-    trace( thread_name + " start" );
-#endif
-}
+{}
 
 void RDOThread::stop()
 {
-#ifdef TR_TRACE
-    trace( thread_name + " stop" );
-#endif
     broadcastMessage(Message::THREAD_STOP_AFTER);
+}
+
+void RDOThread::destroy()
+{
+    delete this;
+}
+
+void RDOThread::processMessages(RDOMessageInfo& msg)
+{
+    proc(msg);
+    if (msg.message == Message::THREAD_CLOSE)
+    {
+        if (this != getKernel())
+            sendMessage(getKernel(), Message::THREAD_DISCONNECTION);
+
+        stop();
+        destroy();
+        return;
+    }
 }
