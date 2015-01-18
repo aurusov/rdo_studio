@@ -22,6 +22,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOSimulatorTrace
 // --------------------------------------------------------------------------------
+const double RDOSimulatorTrace::UNDEFINE_TIME = -1.0;
+
 RDOSimulatorTrace::RDOSimulatorTrace()
     : RDOSimulator     (             )
     , m_tracer         (NULL         )

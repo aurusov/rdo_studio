@@ -35,7 +35,7 @@ DECLARE_FACTORY(MyClass)
 public:
     int m_a;
 
-    static constexpr int DEFAULT_VALUE = 1;
+    static const int DEFAULT_VALUE = 1;
 
 protected:
      MyClass(): m_a(DEFAULT_VALUE) { g_pLog->push_back( m_a); }
@@ -67,7 +67,7 @@ DECLARE_FACTORY(MyClass2)
 public:
     int m_b;
 
-    static constexpr int DEFAULT_VALUE = 2;
+    static const int DEFAULT_VALUE = 2;
 
     bool operator==(const MyClass2& obj) const
     {
@@ -91,7 +91,7 @@ class MyClass3: public rdo::counter_reference
 public:
     int m_c;
 
-    static constexpr int DEFAULT_VALUE = 3;
+    static const int DEFAULT_VALUE = 3;
 
      MyClass3(): m_c(DEFAULT_VALUE) { g_pLog->push_back( m_c); }
     ~MyClass3()                     { g_pLog->push_back(-m_c); }
@@ -108,7 +108,7 @@ DECLARE_FACTORY(MyClass4)
 public:
     int m_d;
 
-    static constexpr int DEFAULT_VALUE = 4;
+    static const int DEFAULT_VALUE = 4;
 
 private:
      MyClass4(): m_d(DEFAULT_VALUE) { g_pLog->push_back( m_d); }
