@@ -4,10 +4,11 @@
 #include "utils/src/common/warning_disable.h"
 #include <boost/bind.hpp>
 #include <boost/range/algorithm/find.hpp>
-#include <QProcess>
-#include <QTextCodec>
-#include <QSettings>
 #include <QMdiSubWindow>
+#include <QProcess>
+#include <QSettings>
+#include <QTextCodec>
+#include <vector>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/main_window.h"
@@ -211,17 +212,15 @@ void MainWindow::createInsertMenu()
         typedef  InsertMenuData::Position  Position;
 
         MenuItem(const char* title, const QString& resourceName = QString(), const Position& position = Position())
-            : m_title   (title   )
+            : m_title(title)
             , m_position(position)
         {
-            init(resourceName);
-        }
-
-        MenuItem(const QString& title, const QString& resourceName = QString(), const Position& position = Position())
-            : m_title   (title   )
-            , m_position(position)
-        {
-            init(resourceName);
+            if (!resourceName.isEmpty())
+            {
+                QFile file(":/insert_menu_template/insert_menu_template/" + resourceName);
+                if (file.open(QIODevice::ReadOnly) && file.isOpen())
+                    m_textForInsert = file.readAll();
+            }
         }
 
         const QString& title() const
@@ -245,142 +244,120 @@ void MainWindow::createInsertMenu()
         QString    m_title;
         QString    m_textForInsert;
         Position   m_position;
-
-        void init(const QString& resourceName)
-        {
-            if (!resourceName.isEmpty())
-            {
-                QFile file(":/insert_menu_template/insert_menu_template/" + resourceName);
-                if (file.open(QIODevice::ReadOnly) && file.isOpen())
-                    m_textForInsert = file.readAll();
-            }
-        }
     };
 
-    typedef  rdo::vector<MenuItem>                         MenuItemList;
-    typedef  std::list<std::pair<QString, MenuItemList> >  MenuList;
+    typedef  std::vector<MenuItem>                        MenuItemList;
+    typedef  std::list<std::pair<QString, MenuItemList>>  MenuList;
 
     MenuList menuList;
-    menuList.push_back(
-        std::make_pair(
+    menuList.push_back(std::make_pair(
             "PAT",
-            MenuItemList
-                (MenuItem("PAT operation", "pat_operation.txt", 9))
-                (MenuItem("PAT rule", "pat_rule.txt", 9))
-                (MenuItem("PAT keyboard", "pat_keyboard.txt", 9))
-                ("$Pattern")("operation")("event")("rule")("keyboard")("trace")("no_trace")("$Parameters")
-                ("$Relevant_resources")("Keep")("NoChange")("Create")("Erase")("NonExist")("$Time")("$Body")
-                ("Convert_begin")("Convert_end")("Convert_event")("Convert_rule")("Choice from")
-                ("Choice NoCheck")("first")("with_max")("with_min")("set")("$End")
-        )
-    );
-    menuList.push_back(
-        std::make_pair(
+            MenuItemList({
+                MenuItem("PAT operation", "pat_operation.txt", 9),
+                MenuItem("PAT rule", "pat_rule.txt", 9),
+                MenuItem("PAT keyboard", "pat_keyboard.txt", 9),
+                "$Pattern", "operation", "event", "rule", "keyboard", "trace", "no_trace", "$Parameters",
+                "$Relevant_resources", "Keep", "NoChange", "Create", "Erase", "NonExist", "$Time", "$Body",
+                "Convert_begin", "Convert_end", "Convert_event", "Convert_rule", "Choice from",
+                "Choice NoCheck", "first", "with_max", "with_min", "set", "$End"
+            })));
+
+    menuList.push_back(std::make_pair(
             "EVN",
-            MenuItemList
-                (MenuItem("EVN", "pat_event.txt", 9))
-                ("$Pattern")("trace")("no_trace")("$Parameters")("$Relevant_resources")("Keep")("NoChange")
-                ("Create")("Erase")("NonExist")("$Body")("Convert_event")("$End")
-        )
-    );
-    menuList.push_back(
-        std::make_pair(
+            MenuItemList({
+                MenuItem("EVN", "pat_event.txt", 9),
+                "$Pattern", "trace", "no_trace", "$Parameters", "$Relevant_resources", "Keep", "NoChange",
+                "Create", "Erase", "NonExist", "$Body", "Convert_event", "$End"
+            })));
+
+    menuList.push_back(std::make_pair(
             "PRC",
-            MenuItemList
-                (MenuItem("PRC", "prc.txt", 9))
-                ("$Process")("GENERATE")("SEIZE")("RELEASE")("ADVANCE")("QUEUE")("DEPART")("ASSIGN")("TERMINATE")
-        )
-    );
-    menuList.push_back(
-        std::make_pair(
+            MenuItemList({
+                MenuItem("PRC", "prc.txt", 9),
+                "$Process", "GENERATE", "SEIZE", "RELEASE", "ADVANCE", "QUEUE", "DEPART", "ASSIGN", "TERMINATE"
+            })));
+
+    menuList.push_back(std::make_pair(
             "RTP",
-            MenuItemList
-                (MenuItem("RTP permanent", "rtp_permanent.txt", 15))
-                (MenuItem("RTP temporary", "rtp_temporary.txt", 15))
-                ("$Resource_type")("permanent")("temporary")("$Parameters")("integer")("real")("enum")("string")
-                ("bool")("true")("false")("such_as")("$End")
-        )
-    );
-    menuList.push_back(
-        std::make_pair(
+            MenuItemList({
+                MenuItem("RTP permanent", "rtp_permanent.txt", 15),
+                MenuItem("RTP temporary", "rtp_temporary.txt", 15),
+                "$Resource_type", "permanent", "temporary", "$Parameters", "integer", "real", "enum", "string",
+                "bool", "true", "false", "such_as", "$End"
+            })));
+
+    menuList.push_back(std::make_pair(
             "RSS",
-            MenuItemList
-                (MenuItem("RSS", "rss.txt", 16))
-                ("$Resources")("trace")("no_trace")("$End")
-        )
-    );
-    menuList.push_back(
-        std::make_pair(
+            MenuItemList({
+                MenuItem("RSS", "rss.txt", 16),
+                "$Resources", "trace", "no_trace", "$End"
+            })));
+
+    menuList.push_back(std::make_pair(
             "FRM",
-            MenuItemList
-                (MenuItem("FRM", "frm.txt", 7))
-                ("$Frame")("$Sprite")("$Back_picture")("bitmap")("text")("line")("rect")("circle")("ellipse")("r_rect")
-                ("triang")("s_bmp")("active")("$End")
-        )
-    );
-    menuList.push_back(
-        std::make_pair(
+            MenuItemList({
+                MenuItem("FRM", "frm.txt", 7),
+                "$Frame", "$Sprite", "$Back_picture", "bitmap", "text", "line", "rect", "circle", "ellipse", "r_rect",
+                "triang", "s_bmp", "active", "$End"
+            })));
+
+    menuList.push_back(std::make_pair(
             "FUN",
-            MenuItemList
-                (MenuItem("FUN algorithmic", "fun_algorithmic.txt", 10))
-                (MenuItem("SQN", "fun_sequence.txt", 10))
-                (MenuItem("CNS", "fun_const.txt", 15))
-                ("$Function")("$Type")("algorithmic")("list")("table")("normal")("uniform")("exponential")
-                ("triangular")("by_hist")("enumerative")("$Parameters")("$Body")("$Sequence")("$Constant")
-                ("$End")
-        )
-    );
-    menuList.push_back(
-        std::make_pair(
+            MenuItemList({
+                MenuItem("FUN algorithmic", "fun_algorithmic.txt", 10),
+                MenuItem("SQN", "fun_sequence.txt", 10),
+                MenuItem("CNS", "fun_const.txt", 15),
+                "$Function", "$Type", "algorithmic", "list", "table", "normal", "uniform", "exponential",
+                "triangular", "by_hist", "enumerative", "$Parameters", "$Body", "$Sequence", "$Constant",
+                "$End"
+            })));
+
+    menuList.push_back(std::make_pair(
             "DPT",
-            MenuItemList
-                (MenuItem("DPT some", "dpt_some.txt", 16))
-                (MenuItem("DPT prior", "dpt_prior.txt", 16))
-                (MenuItem("DPT search", "dpt_search.txt", 16))
-                ("$Decision_point")("some")("search")("prior")("no_trace")("trace_stat")("trace_tops")("trace_all")
-                ("$Condition")("$Term_condition")("$Evaluate_by")("$Compare_tops")("YES")("NO")("$Activities")
-                ("value before")("value after")("$End")
-        )
-    );
-    menuList.push_back(
-        std::make_pair(
+            MenuItemList({
+                MenuItem("DPT some", "dpt_some.txt", 16),
+                MenuItem("DPT prior", "dpt_prior.txt", 16),
+                MenuItem("DPT search", "dpt_search.txt", 16),
+                "$Decision_point", "some", "search", "prior", "no_trace", "trace_stat", "trace_tops", "trace_all",
+                "$Condition", "$Term_condition", "$Evaluate_by", "$Compare_tops", "YES", "NO", "$Activities",
+                "value before", "value after", "$End"
+            })));
+
+    menuList.push_back(std::make_pair(
             "SMR",
-            MenuItemList
-                (MenuItem("SMR", "smr.txt", 17))
-                ("Frame_number")("Show_mode")("Animation")("Monitor")("NoShow")("Show_rate")("Run_StartTime")
-                ("Trace_StartTime")("Trace_EndTime")("Terminate_if")("Time_now")("Seconds")("Break_point")
-        )
-    );
-    menuList.push_back(
-        std::make_pair(
+            MenuItemList({
+                MenuItem("SMR", "smr.txt", 17),
+                "Frame_number", "Show_mode", "Animation", "Monitor", "NoShow", "Show_rate", "Run_StartTime",
+                "Trace_StartTime", "Trace_EndTime", "Terminate_if", "Time_now", "Seconds", "Break_point"
+            })));
+
+    menuList.push_back(std::make_pair(
             "PMD",
-            MenuItemList
-                (MenuItem("PMD", "pmd.txt", 14))
-                ("$Results")("watch_par")("watch_state")("watch_quant")("watch_value")("get_value")("trace")
-                ("no_trace")("$End")
-        )
-    );
+            MenuItemList({
+                MenuItem("PMD", "pmd.txt", 14),
+                "$Results", "watch_par", "watch_state", "watch_quant", "watch_value", "get_value", "trace",
+                "no_trace", "$End"
+            })));
+
     menuList.push_back(std::make_pair("", MenuItemList()));
-    menuList.push_back(
-        std::make_pair(
+    menuList.push_back(std::make_pair(
             "Встроенные функции",
-            MenuItemList("Abs")("ArcCos")("ArcSin")("ArcTan")("Cos")("Cotan")("Exist")("Exp")("Floor")("For_All")("Frac")
-                ("IAbs")("IMax")("IMin")("Int")("IntPower")("Ln")("Log10")("Log2")("LogN")("Max")("Min")("Not_Exist")
-                ("Not_For_All")("Power")("Round")("Select")("Sin")("Sqrt")("Tan")
-        )
-    );
-    menuList.push_back(
-        std::make_pair(
+            MenuItemList({
+                "Abs", "ArcCos", "ArcSin", "ArcTan", "Cos", "Cotan", "Exist", "Exp", "Floor", "For_All", "Frac",
+                "IAbs", "IMax", "IMin", "Int", "IntPower", "Ln", "Log10", "Log2", "LogN", "Max", "Min", "Not_Exist",
+                "Not_For_All", "Power", "Round", "Select", "Sin", "Sqrt", "Tan"
+            })));
+
+    menuList.push_back(std::make_pair(
             "Процедурный язык",
-            MenuItemList
-                (MenuItem("if", "algo_if.txt", 4))
-                ("else")
-                (MenuItem("if-else", "algo_if_else.txt", 4))
-                (MenuItem("for", "algo_for.txt", 5))
-                ("return")
-                (MenuItem("Локальная переменная", "algo_local_variable.txt"))
-        )
-    );
+            MenuItemList({
+                MenuItem("if", "algo_if.txt", 4),
+                "else",
+                MenuItem("if-else", "algo_if_else.txt", 4),
+                MenuItem("for", "algo_for.txt", 5),
+                "return",
+                MenuItem("Локальная переменная", "algo_local_variable.txt")
+            })));
 
     for (const MenuList::value_type& menu: menuList)
     {

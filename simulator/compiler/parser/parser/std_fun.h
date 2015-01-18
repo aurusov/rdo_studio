@@ -2,6 +2,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <iostream>
+#include <vector>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdoparser_rdo.h"
 #include "simulator/compiler/parser/param.h"
@@ -23,7 +24,7 @@ private:
 
     virtual void parse(const LPRDOParser& pParser);
 
-    typedef rdo::vector<LPTypeInfo> ParamList;
+    typedef std::vector<LPTypeInfo> ParamList;
     void generate(const std::string& name, const rdo::runtime::LPRDOFunCalc& pCalc, const LPRDOParam& pReturnType, const ParamList& paramList) const;
     void generateReal(const std::string& name, const rdo::runtime::LPRDOFunCalc& pCalc, const LPRDOParam& pReturnType, const ParamList& paramList) const;
 };

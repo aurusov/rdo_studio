@@ -2,9 +2,10 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <stdio.h>
 #include <stdarg.h>
 #include <stdexcept>
+#include <stdio.h>
+#include <vector>
 
 #ifdef COMPILER_VISUAL_STUDIO
 #    include <windows.h>
@@ -23,14 +24,8 @@
 
 namespace rdo {
 
-std::string format(const char* str, ...)
+namespace
 {
-    va_list params;
-    va_start(params, str);
-    std::string res = format(str, params);
-    va_end(params);
-    return res;
-}
 
 std::string format(const char* str, va_list& params)
 {
@@ -49,12 +44,21 @@ std::string format(const char* str, va_list& params)
         size = vsnprintf(&s[0], s.size(), str, params);
 #endif // COMPILER_GCC
         if (size == -1)
-        {
             s.resize(s.size() + 256);
-        }
     }
-    s.resize( size );
+    s.resize(size);
     return std::string(s.begin(), s.end());
+}
+
+} // anonymous namespace
+
+std::string format(const char* str, ...)
+{
+    va_list params;
+    va_start(params, str);
+    std::string res = format(str, params);
+    va_end(params);
+    return res;
 }
 
 int roundDouble(double val)

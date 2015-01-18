@@ -1,8 +1,9 @@
 #pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <string>
+#include <vector>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdocommon.h"
 #include "utils/src/smart_ptr/factory/factory.h"
 #include "simulator/runtime/rdo_type.h"
 // --------------------------------------------------------------------------------
@@ -13,8 +14,7 @@ class RDOEnumType: public RDOType
 {
 DECLARE_FACTORY(RDOEnumType);
 public:
-    typedef std::string EnumItem;
-    typedef rdo::vector<EnumItem> Enums;
+    typedef std::vector<std::string> Enums;
     typedef Enums::const_iterator CIterator;
     typedef Enums::const_iterator const_iterator;
 

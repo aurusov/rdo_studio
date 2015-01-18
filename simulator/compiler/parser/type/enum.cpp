@@ -180,7 +180,7 @@ void RDOEnumType::add(const LPRDOValue& pNext)
 namespace
 {
 
-LPExpression contextUnknownEnum(const RDOEnumType::EnumItem& enumValue, std::size_t /*index*/, const RDOParserSrcInfo& srcInfo)
+LPExpression contextUnknownEnum(const std::string& enumValue, std::size_t /*index*/, const RDOParserSrcInfo& srcInfo)
 {
     LPTypeInfo typeInfo = rdo::Factory<TypeInfo>::delegate<RDOType__IDENTIFICATOR>(srcInfo);
     return rdo::Factory<Expression>::create(
@@ -197,7 +197,7 @@ Context::LPFindResult RDOEnumType::onFindContext(const std::string& method, cons
     if (method == Context::METHOD_GET)
     {
         std::size_t index = findEnum(params.identifier());
-        EnumItem enumValue = getValues()[index];
+        const auto enumValue = getValues()[index];
         return rdo::Factory<FindResult>::create(CreateExpression(boost::bind(&contextUnknownEnum, enumValue, index, srcInfo)));
     }
 

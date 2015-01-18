@@ -185,37 +185,37 @@ void RDOParserSTDFUN::parse(const LPRDOParser& /*pParser*/)
     LPTypeInfo  realType    = rdo::Factory<TypeInfo>::delegate<RDOType__REAL>(RDOParserSrcInfo());
     LPRDOParam  pIntReturn  = rdo::Factory<RDOParam>::create(RDOParserSrcInfo(), intType );
     LPRDOParam  pRealReturn = rdo::Factory<RDOParam>::create(RDOParserSrcInfo(), realType);
-    
-    generate("Abs",      rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(fabs),          pRealReturn, ParamList(realType));
-    generate("ArcCos",   rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(acos),          pRealReturn, ParamList(realType));
-    generate("ArcSin",   rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(asin),          pRealReturn, ParamList(realType));
-    generate("ArcTan",   rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(atan),          pRealReturn, ParamList(realType));
-    generate("Cos",      rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(cos),           pRealReturn, ParamList(realType));
-    generate("Cotan",    rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(cotan),         pRealReturn, ParamList(realType));
-    generate("Exp",      rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(exp),           pRealReturn, ParamList(realType));
-    generate("Floor",    rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(floor),         pIntReturn,  ParamList(realType));
-    generate("Frac",     rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(modf),          pRealReturn, ParamList(realType));
+
+    generate("Abs",      rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(fabs),          pRealReturn, {realType});
+    generate("ArcCos",   rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(acos),          pRealReturn, {realType});
+    generate("ArcSin",   rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(asin),          pRealReturn, {realType});
+    generate("ArcTan",   rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(atan),          pRealReturn, {realType});
+    generate("Cos",      rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(cos),           pRealReturn, {realType});
+    generate("Cotan",    rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(cotan),         pRealReturn, {realType});
+    generate("Exp",      rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(exp),           pRealReturn, {realType});
+    generate("Floor",    rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(floor),         pIntReturn,  {realType});
+    generate("Frac",     rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(modf),          pRealReturn, {realType});
     generate("IAbs",     rdo::Factory<Function_I_I> ::create<Function_I_I ::function_type>(static_cast<Function_I_I::function_type>(abs)),
-                                                                                 pIntReturn,  ParamList(intType));
-    generate("IMax",     rdo::Factory<Function_I_II>::create<Function_I_II::function_type>(maxLocal<int>), pIntReturn,  ParamList(intType)(intType));
-    generate("IMin",     rdo::Factory<Function_I_II>::create<Function_I_II::function_type>(minLocal<int>), pIntReturn,  ParamList(intType)(intType));
-    generate("Int",      rdo::Factory<Function_I_I> ::create<Function_I_I ::function_type>(intLocal),      pIntReturn,  ParamList(realType));
+                                                                                 pIntReturn,  {intType});
+    generate("IMax",     rdo::Factory<Function_I_II>::create<Function_I_II::function_type>(maxLocal<int>), pIntReturn,  {intType, intType});
+    generate("IMin",     rdo::Factory<Function_I_II>::create<Function_I_II::function_type>(minLocal<int>), pIntReturn,  {intType, intType});
+    generate("Int",      rdo::Factory<Function_I_I> ::create<Function_I_I ::function_type>(intLocal),      pIntReturn,  {realType});
     generate("IntPower", rdo::Factory<Function_D_DI>::create<Function_D_DI::function_type>(static_cast<Function_D_DI::function_type>(std::pow)),
-                                                                                 pRealReturn, ParamList(realType)(intType));
-    generate("Ln",       rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(logLocal),      pRealReturn, ParamList(realType));
-    generate("Log10",    rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(log10Local),    pRealReturn, ParamList(realType));
-    generate("Log2",     rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(log2Local),     pRealReturn, ParamList(realType));
-    generate("LogN",     rdo::Factory<Function_D_DD>::create<Function_D_DD::function_type>(logNLocal),     pRealReturn, ParamList(realType)(realType));
+                                                                                 pRealReturn, {realType, intType});
+    generate("Ln",       rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(logLocal),      pRealReturn, {realType});
+    generate("Log10",    rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(log10Local),    pRealReturn, {realType});
+    generate("Log2",     rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(log2Local),     pRealReturn, {realType});
+    generate("LogN",     rdo::Factory<Function_D_DD>::create<Function_D_DD::function_type>(logNLocal),     pRealReturn, {realType, realType});
     generate("Max",      rdo::Factory<Function_D_DD>::create<Function_D_DD::function_type>(maxLocal<double>),
-                                                                                 pRealReturn, ParamList(realType)(realType));
+                                                                                 pRealReturn, {realType, realType});
     generate("Min",      rdo::Factory<Function_D_DD>::create<Function_D_DD::function_type>(minLocal<double>),
-                                                                                 pRealReturn, ParamList(realType)(realType));
+                                                                                 pRealReturn, {realType, realType});
     generate("Power",    rdo::Factory<Function_D_DD>::create<Function_D_DD::function_type>(static_cast<Function_D_DD::function_type>(pow)),
-                                                                                 pRealReturn, ParamList(realType)(realType));
-    generate("Round",    rdo::Factory<Function_I_D> ::create<Function_I_D ::function_type>(roundLocal),    pIntReturn,  ParamList(realType));
-    generate("Sin",      rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(sin),           pRealReturn, ParamList(realType));
-    generate("Sqrt",     rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(sqrt),          pRealReturn, ParamList(realType));
-    generate("Tan",      rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(tan),           pRealReturn, ParamList(realType));
+                                                                                 pRealReturn, {realType, realType});
+    generate("Round",    rdo::Factory<Function_I_D> ::create<Function_I_D ::function_type>(roundLocal),    pIntReturn,  {realType});
+    generate("Sin",      rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(sin),           pRealReturn, {realType});
+    generate("Sqrt",     rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(sqrt),          pRealReturn, {realType});
+    generate("Tan",      rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(tan),           pRealReturn, {realType});
 
 #ifndef SPEED_TEST
 #else

@@ -145,7 +145,7 @@ RDOResType BlockForSeize::createType(const std::string& rtp_name, const parser::
     // Создадим параметр перечислимого типа - "Состояние"
     RDOResType::Param param(
         rtp_param_name,
-        rdo::runtime::RDOEnumType::Enums(rtp_state_free)(rtp_state_buzy),
+        rdo::runtime::RDOEnumType::Enums({rtp_state_free, rtp_state_buzy}),
         pDefaultValue
     );
     rtp.m_params.append(param);
