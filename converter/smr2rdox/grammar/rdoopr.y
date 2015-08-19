@@ -398,7 +398,7 @@ opr_activity
 		{
 			LPDocUpdate pIEDelete = rdo::Factory<UpdateDelete>::create(
 				@1.m_first_seek,
-				@2.m_last_seek + $2
+				@2.m_last_seek
 			);
 			ASSERT(pIEDelete);
 			CONVERTER->insertDocUpdate(pIEDelete);
@@ -431,7 +431,7 @@ opr_activity
 		{
 			LPDocUpdate pIEDelete = rdo::Factory<UpdateDelete>::create(
 				@1.m_first_seek,
-				@3.m_last_seek + $3
+				@3.m_last_seek
 			);
 			ASSERT(pIEDelete);
 			CONVERTER->insertDocUpdate(pIEDelete);
