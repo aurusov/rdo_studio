@@ -23,7 +23,7 @@ function toggle_display(e)
         <P><B>Точки принятия решений</B> описываются в отдельном <A href="../rdo_terms.htm#object">объекте</A> (с расширением <FONT class="syntax">.dpt</FONT>).</P>
         <P>Точки принятия решений в РДО являются строительными блоками Базы Знаний моделей. В точках принятия решений происходит инстанцирование <A href="#dpt_act_desc">активностей</A> из описанных раннее <A href="rdo_obj_pat.htm">образцов</A> путем задания их параметров.</P>
         <P>Описание точек принятия решений имеет следующий формат:</P>
-        <PRE class="syntax"><code class="rdo"><A class="syntax" href="#dpt_desc">&lt;описание_точки_принятия_решений&gt;</A> { &lt;описание_точки_принятия_решений&gt; }</code></PRE>
+        <PRE class="syntax"><code class="rdo"><A class="syntax" href="#dpt_desc">&lt;описание_точки_принятия_решений&gt;</A> {&lt;описание_точки_принятия_решений&gt;}</code></PRE>
         <DL class="syntax">
             <DT class="syntax"><A name="dpt_desc"></A><I>описание_точки_принятия_решений</I></DT>
             <DD class="syntax">Описание каждой точки принятия решений имеет следующий формат:
@@ -32,13 +32,13 @@ function toggle_display(e)
                 <DL class="syntax">
                     <DT class="syntax"><A name="dpt_headline"></A><I>заголовок_точки_принятия_решений</I></DT>
                     <DD class="syntax">Заголовок точки принятия решений в общем случае имеет следующий формат:
-                        <PRE class="syntax"><code class="rdo">$Decision_point <A class="syntax" href="#dpt_name">&lt;имя_точки&gt;</A> : <A class="syntax" href="#dpt_type">&lt;тип_точки&gt;</A> [ <A class="syntax" href="#sign_of_the_trace">&lt;признак_трассировки&gt;</A> ]
-[ $Parent <A class="syntax" href="#dpt_parent_name">&lt;имя_родительской_точки&gt;</A> ]
-[ $Condition <A class="syntax" href="#init_cond">&lt;условие_активизации_точки&gt;</A> ]
-[ $Priority <A class="syntax" href="#dpt_priority">&lt;приоритет_точки&gt;</A> ]
-[ $Term_condition <A class="syntax" href="../rdo_dpt/rdo_dpt_search.htm">&lt;терминальное_условие&gt;</A>
+                        <PRE class="syntax"><code class="rdo">$Decision_point <A class="syntax" href="#dpt_name">&lt;имя_точки&gt;</A>: <A class="syntax" href="#dpt_type">&lt;тип_точки&gt;</A> [<A class="syntax" href="#sign_of_the_trace">&lt;признак_трассировки&gt;</A>]
+[$Parent <A class="syntax" href="#dpt_parent_name">&lt;имя_родительской_точки&gt;</A>]
+[$Condition <A class="syntax" href="#init_cond">&lt;условие_активизации_точки&gt;</A>]
+[$Priority <A class="syntax" href="#dpt_priority">&lt;приоритет_точки&gt;</A>]
+[$Term_condition <A class="syntax" href="../rdo_dpt/rdo_dpt_search.htm">&lt;терминальное_условие&gt;</A>
   $Evaluate_by <A class="syntax" href="../rdo_dpt/rdo_dpt_search.htm">&lt;оценка_стоимости_оставшегося_пути_на_графе&gt;</A>
-  $Compare_tops = <A class="syntax" href="../rdo_dpt/rdo_dpt_search.htm">&lt;признак_сравнения_вершин&gt;</A> ]</code></PRE>
+  $Compare_tops = <A class="syntax" href="../rdo_dpt/rdo_dpt_search.htm">&lt;признак_сравнения_вершин&gt;</A>]</code></PRE>
                         <DL class="syntax">
                             <DT class="syntax"><A name="dpt_name"></A><I>имя_точки</I></DT>
                             <DD class="syntax">Имя точки принятия решений представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех точек принятия решений и не должны совпадать с ранее определенными именами.</DD>
@@ -80,16 +80,17 @@ function toggle_display(e)
                 <DL class="syntax">
                     <DT class="syntax"><A name="act_block"></A><A name="dpt_act_block"></A><A name="dpt_act_block_end"></A><I>блок_активностей</I></DT>
                     <DD class="syntax">Блок активностей имеет следующий формат:
-                        <PRE class="syntax"><code class="rdo">$Activities <A class="syntax" href="#dpt_act_desc">&lt;описание_активности&gt;</A> { &lt;описание_активности&gt; }
+                        <PRE class="syntax"><code class="rdo">$Activities
+    <A class="syntax" href="#dpt_act_desc">&lt;описание_активности&gt;</A> {&lt;описание_активности&gt;}
 $End</code></PRE>
                         <DL class="syntax">
                             <DT>Активности вместе с <A href="rdo_pat_type/rdo_pat_type_event.htm">событиями</A> определяют содержимое базы знаний программы (<A href="../rdo_terms.htm">модели</A>).</DT>
                             <DT class="syntax"><A name="dpt_act_desc"></A><I>описание_активности</I></DT>
                             <DD class="syntax">Описание каждой активности зависит от типа точки и в общем случае 
                                 имеет следующий формат:
-                                <PRE class="syntax"><code class="rdo"><A class="syntax" href="#dpt_act_name">&lt;имя_активности&gt;</A> : <A class="syntax" href="#dpt_act_pat">&lt;имя_образца&gt;</A> [ (<A class="syntax" href="#dpt_act_key">&lt;код_клавиши&gt;</A>, <A class="syntax" href="#dpt_act_params">&lt;значения_параметров_образца&gt;</A>) ]
-[ <A class="syntax" href="../rdo_dpt/rdo_dpt_prior.htm">&lt;приоритет_активности&gt;</A> ]
-[ (value before | value after) <A class="syntax" href="../rdo_dpt/rdo_dpt_search.htm">&lt;стоимость_применения_правила&gt;</A> ] ;</code></PRE>
+                                <PRE class="syntax"><code class="rdo"><A class="syntax" href="#dpt_act_name">&lt;имя_активности&gt;</A>: <A class="syntax" href="#dpt_act_pat">&lt;имя_образца&gt;</A> [(<A class="syntax" href="#dpt_act_key">&lt;код_клавиши&gt;</A>, <A class="syntax" href="#dpt_act_params">&lt;значения_параметров_образца&gt;</A>)]
+[<A class="syntax" href="../rdo_dpt/rdo_dpt_prior.htm">&lt;приоритет_активности&gt;</A>]
+[(value before | value after) <A class="syntax" href="../rdo_dpt/rdo_dpt_search.htm">&lt;стоимость_применения_правила&gt;</A>];</code></PRE>
 Все параметры активности (в том числе и код клавиши вызова) отделяются друг от друга запятыми. В том случае, если параметры отсутствуют, скобки писать не нужно.</DD>
                                 <DL class="syntax">
                                     <DT class="syntax"><A name="dpt_act_name"></A><I>имя_активности</I></DT>
@@ -100,7 +101,6 @@ $End</code></PRE>
                                     <DD class="syntax">Код клавиши указывают для образцов типа <A href="../rdo_obj/rdo_pat_type/rdo_pat_type_keyboard.htm">клавиатурная операция</A> (<FONT class="syntax">keyboard</FONT>).</DD>
                                     <DT class="syntax"><A name="dpt_act_params"></A><I>значения_параметров_образца</I></DT>
                                     <DD class="syntax">Значения <A href="rdo_obj_pat.htm#param_desc">параметров образца</A> задают в позиционном соответствии с порядком следования параметров в описании образца, отделяя друг от друга запятыми. Значения задают целой или вещественной <A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">численной константой</A> либо именем значения в соответствии с типом параметра. Для тех параметров, у которых указано значение по умолчанию, вместо начального значения можно указать символ "*". В этом случае параметр примет значение по умолчанию. Если для параметра задан диапазон возможных значений, то проверяется соответствие начального значения этому диапазону.</DD>
-                                    
                                 </DL>
                             </DD>
                         </DL>
@@ -110,34 +110,32 @@ $End</code></PRE>
         </DL>
         <A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
         <DIV style="display:none" id="v1">
-        <PRE class="syntax"><code class="rdo">$Decision_point Точка_1 : search trace_stat
+        <PRE class="syntax"><code class="rdo">$Decision_point Точка_1: search trace_stat
 $Condition
-  Ресурс_1.Параметр_1=0 and Exist(Тип_1 : Тип_1.Параметр_3 = Значение_2) and
-  Ресурс_5.Параметр_7 &lt;&gt; 0
+    Ресурс_1.Параметр_1 == 0 and Exist(Тип_1: Тип_1.Параметр_3 = Значение_2) and Ресурс_5.Параметр_7 &lt;&gt; 0
 $Term_condition Ресурс_1.Параметр_1 = 1
 $Evaluate_by 0
 $Compare_tops = NO
 $Activities
-  Правило_1 : Образец_12   (6.25,  *)       value after Ресурс_1.Параметр_4;
-  Правило_2 : Образец_8    (Значение_5)     value after Ресурс_1.Параметр_4;
-  Правило_3 : Образец_9    value before  рел_Ресурс_2.Параметр_4 *
-                             IAbs(рел_Ресурс_2.Параметр_5) * 2;
+    Правило_1: Образец_12(6.25,  *)   value after Ресурс_1.Параметр_4;
+    Правило_2: Образец_8 (Значение_5) value after Ресурс_1.Параметр_4;
+    Правило_3: Образец_9              value before Рел_Ресурс_2.Параметр_4 * IAbs(Рел_Ресурс_2.Параметр_5) * 2;
 $End
 
-$Decision_point Точка_2 : prior
+$Decision_point Точка_2: prior
 $Condition NoCheck
 $Activities
-  Операция_обслуживания_1 : Образец_3  (10,  20,  *)    cf = 0.8;
-  Клавиатурная_операция_1 : Образец_6  ('LEFT', 100)    cf = 0.5;
+    Операция_обслуживания_1: Образец_3(10, 20, *) cf = 0.8;
+    Клавиатурная_операция_1: Образец_6('LEFT', 100) cf = 0.5;
 $End
 
-$Decision_point Точка_3 : some
+$Decision_point Точка_3: some
 $Priority 1
 $Parent Точка_2
 $Activities
-  Операция_1 : Образец_14   (25,  *);
-  Операция_2 : Образец_15   (Значение_2);
-  Операция_3 : Образец_16;
+  Операция_1: Образец_14(25, *);
+  Операция_2: Образец_15(Значение_2);
+  Операция_3: Образец_16;
 $End</code></PRE>
         </DIV>
         <H4>См. также</H4>

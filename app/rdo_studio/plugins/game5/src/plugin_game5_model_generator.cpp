@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2014
-  \file      app/rdo_studio/plugins/game5/src/plugin_game5_model_generator.cpp
-  \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
-  \date      19.05.2014
-  \brief
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      update.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      29.10.2010
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -23,31 +14,29 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 DocUpdate::DocUpdate(IDocument::Type file)
     : m_file(file)
 {
-    if (m_file == IDocument::UNDEFINED)
-    {
+    if (m_file == IDocument::Type::UNDEFINED)
         m_file = getCurrentType();
-    }
 }
 
 IDocument::Type DocUpdate::getCurrentType() const
 {
     switch (Converter::getFileToParse())
     {
-    case rdo::converter::smr2rdox::PAT_IN: return IDocument::PAT;
-    case rdo::converter::smr2rdox::RTP_IN: return IDocument::RTP;
-    case rdo::converter::smr2rdox::RSS_IN: return IDocument::RSS;
-    case rdo::converter::smr2rdox::OPR_IN: return IDocument::OPR;
-    case rdo::converter::smr2rdox::FRM_IN: return IDocument::FRM;
-    case rdo::converter::smr2rdox::FUN_IN: return IDocument::FUN;
-    case rdo::converter::smr2rdox::DPT_IN: return IDocument::DPT;
-    case rdo::converter::smr2rdox::SMR_IN: return IDocument::SMR;
-    case rdo::converter::smr2rdox::PMD_IN: return IDocument::PMD;
-    case rdo::converter::smr2rdox::PMV_IN: return IDocument::PMV;
-    case rdo::converter::smr2rdox::TRC_IN: return IDocument::TRC;
+    case rdo::converter::smr2rdox::FileTypeIn::PAT: return IDocument::Type::PAT;
+    case rdo::converter::smr2rdox::FileTypeIn::RTP: return IDocument::Type::RTP;
+    case rdo::converter::smr2rdox::FileTypeIn::RSS: return IDocument::Type::RSS;
+    case rdo::converter::smr2rdox::FileTypeIn::OPR: return IDocument::Type::OPR;
+    case rdo::converter::smr2rdox::FileTypeIn::FRM: return IDocument::Type::FRM;
+    case rdo::converter::smr2rdox::FileTypeIn::FUN: return IDocument::Type::FUN;
+    case rdo::converter::smr2rdox::FileTypeIn::DPT: return IDocument::Type::DPT;
+    case rdo::converter::smr2rdox::FileTypeIn::SMR: return IDocument::Type::SMR;
+    case rdo::converter::smr2rdox::FileTypeIn::PMD: return IDocument::Type::PMD;
+    case rdo::converter::smr2rdox::FileTypeIn::PMV: return IDocument::Type::PMV;
+    case rdo::converter::smr2rdox::FileTypeIn::TRC: return IDocument::Type::TRC;
     default: NEVER_REACH_HERE;
     }
     NEVER_REACH_HERE;
-    return IDocument::TRC;
+    return IDocument::Type::TRC;
 }
 
 // --------------------------------------------------------------------------------
@@ -206,10 +195,8 @@ UpdateMove::UpdateMove(const Position& posFromBegin, const Position& posFromEnd,
     , m_posTo       (posTo       )
     , m_fileFrom    (fileFrom    )
 {
-    if (static_cast<int>(m_fileFrom) == static_cast<int>(rdo::converter::smr2rdox::UNDEFINED_OUT))
-    {
+    if (static_cast<int>(m_fileFrom) == static_cast<int>(rdo::converter::smr2rdox::FileTypeOut::UNDEFINED))
         m_fileFrom = getCurrentType();
-    }
 }
 
 void UpdateMove::dump(LPIDocument& pDocument) const
@@ -235,7 +222,7 @@ void UpdateMove::apply(LPIDocument& pDocument) const
     {
         if (m_posFromEnd < pos)
         {
-            //! Удалили перед собой, сдвинемся к началу
+            // Удалили перед собой, сдвинемся к началу
             pos -= m_posFromEnd - m_posFromBegin;
         }
     }
@@ -251,7 +238,7 @@ void UpdateMove::insert(IDocument::Type type, const Position& to, std::size_t si
     {
         if (to.begin())
         {
-            //! Вставка до, сдвинемся к концу
+            // Вставка до, сдвинемся к концу
             m_posFromBegin += size;
             m_posFromEnd   += size;
         }
@@ -259,23 +246,23 @@ void UpdateMove::insert(IDocument::Type type, const Position& to, std::size_t si
         {
             if (to < m_posFromBegin && m_posFromBegin != m_posFromEnd)
             {
-                //! Вставка до, сдвинемся к концу
+                // Вставка до, сдвинемся к концу
                 m_posFromBegin += size;
                 m_posFromEnd   += size;
             }
             else if (to == m_posFromBegin && to + size <= m_posFromEnd && m_posFromBegin != m_posFromEnd)
             {
-                //! Вставка внутри, расширим конец
+                // Вставка внутри, расширим конец
                 m_posFromEnd += size;
             }
             else if (to == m_posFromBegin && m_posFromBegin == m_posFromEnd)
             {
-                //! Вставка в пустой интервал, расширим конец
+                // Вставка в пустой интервал, расширим конец
                 m_posFromEnd += size;
             }
             else if (to > m_posFromBegin && to <= m_posFromEnd)
             {
-                //! Вставка внутрь, расширим конец
+                // Вставка внутрь, расширим конец
                 m_posFromEnd += size;
             }
         }
@@ -287,7 +274,7 @@ void UpdateMove::insert(IDocument::Type type, const Position& to, std::size_t si
         {
             if (to.begin() || to <= m_posTo)
             {
-                //! Вставка до, сдвинемся к концу
+                // Вставка до, сдвинемся к концу
                 m_posTo += size;
             }
         }
@@ -300,13 +287,13 @@ void UpdateMove::remove(IDocument::Type type, const Position& from, const Positi
     {
         if (to < m_posFromBegin)
         {
-            //! Удаление до, сдвинемся к началу
+            // Удаление до, сдвинемся к началу
             m_posFromBegin -= to - from;
             m_posFromEnd   -= to - from;
         }
         else if (m_posFromBegin <= from && to <= m_posFromEnd)
         {
-            //! Удаление внутри, подрежем конец
+            // Удаление внутри, подрежем конец
             m_posFromEnd -= to - from;
         }
     }
@@ -317,7 +304,7 @@ void UpdateMove::remove(IDocument::Type type, const Position& from, const Positi
         {
             if (to < m_posTo)
             {
-                //! Удаление до, сдвинемся к началу
+                // Удаление до, сдвинемся к началу
                 m_posTo -= to - from;
             }
         }
@@ -351,45 +338,45 @@ void UpdateSwap::dump(LPIDocument& pDocument) const
 
 void UpdateSwap::apply(LPIDocument& pDocument) const
 {
-    //! Запомним значения
+    // Запомним значения
     const std::string cut1 = pDocument->get(m_file, m_pos1Begin.get(), m_pos1End.get());
     const std::string cut2 = pDocument->get(m_file, m_pos2Begin.get(), m_pos2End.get());
 
-    //! Удалим первый интервал
+    // Удалим первый интервал
     pDocument->remove(m_file, m_pos1Begin.get(), m_pos1End.get());
 
     Position pos2Begin = m_pos2Begin;
     Position pos2End   = m_pos2End;
     if (m_pos1End <= pos2Begin)
     {
-        //! Удаление перед вторым интервалом, сдвинемся к началу
+        // Удаление перед вторым интервалом, сдвинемся к началу
         pos2Begin -= m_pos1End - m_pos1Begin;
         pos2End   -= m_pos1End - m_pos1Begin;
     }
 
-    //! Удалим второй интервал
+    // Удалим второй интервал
     pDocument->remove(m_file, pos2Begin.get(), pos2End.get());
 
     Position pos1Begin = m_pos1Begin;
     Position pos1End   = m_pos1End;
     if (pos2End <= pos1Begin)
     {
-        //! Удаление перед первым интервалом, сдвинемся к началу
+        // Удаление перед первым интервалом, сдвинемся к началу
         pos1Begin -= pos2End - pos2Begin;
         pos1End   -= pos2End - pos2Begin;
     }
 
-    //! Вставка первого буффера на место второго
+    // Вставка первого буффера на место второго
     pDocument->insert(m_file, pos2Begin.get(), cut1);
 
     if (pos2Begin <= pos1Begin)
     {
-        //! Вставка перед первым интервалом, сдвинемся к концу
+        // Вставка перед первым интервалом, сдвинемся к концу
         pos1Begin += cut1.length();
         pos1End   += cut1.length();
     }
 
-    //! Вставка второго буффера на место первого
+    // Вставка второго буффера на место первого
     pDocument->insert(m_file, pos1Begin.get(), cut2);
 }
 
