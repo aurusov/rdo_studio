@@ -28,23 +28,25 @@ $Activities
     <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm">&lt;описание_активности&gt;</A> {&lt;описание_активности&gt;}
 $End</code></PRE>
 <DL class="syntax">
-                    <DT class="syntax"><A name="rest_eval"></A><I>оценка_стоимости_оставшегося_пути_на_графе</I></DT>
-                    <DD class="syntax">Эвристическая оценочная функция стоимости оставшегося пути до целевой вершины задается <A href="../rdo_base/rdo_base_equations.htm">арифметическим выражением</A> целого либо вещественного типа.</DD>
-                    <DT class="syntax"><A name="comp_feat"></A><I>признак_сравнения_вершин</I></DT>
-                    <DD class="syntax">Признак сравнения вершин задается зарезервированным словом <FONT class="syntax">YES</FONT>, если необходимо сравнивать каждую вновь порожденную в процессе поиска вершину с вершинами, уже находящимися в графе, и зарезервированным словом <FONT class="syntax">NO</FONT>, если сравнивать не нужно. Необходимость в сравнении вершин зависит от конкретной задачи, решаемой поиском на графе.</DD>
-        <DT class="syntax"><A class="syntax" name="search_act_desc"></A><I>описание активности</I></DT>
+    <DT class="syntax"><A name="rest_eval"></A><I>оценка_стоимости_оставшегося_пути_на_графе</I></DT>
+        <DD class="syntax">Эвристическая оценочная функция стоимости оставшегося пути до целевой вершины задается <A href="../rdo_base/rdo_base_equations.htm">арифметическим выражением</A> целого либо вещественного типа.</DD>
+    <DT class="syntax"><A name="comp_feat"></A><I>признак_сравнения_вершин</I></DT>
+        <DD class="syntax">Признак сравнения вершин задается зарезервированным словом <FONT class="syntax">YES</FONT>, если необходимо сравнивать каждую вновь порожденную в процессе поиска вершину с вершинами, уже находящимися в графе, и зарезервированным словом <FONT class="syntax">NO</FONT>, если сравнивать не нужно. Необходимость в сравнении вершин зависит от конкретной задачи, решаемой поиском на графе.</DD>
+    <DT class="syntax"><A class="syntax" name="search_act_desc"></A><I>описание активности</I></DT>
         <DD class="syntax"><PRE class="syntax"><code class="rdo"><A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_name">&lt;имя_активности&gt;</A>: <A class="syntax" href="#dpt_search_pat">&lt;имя_образца&gt;</A> [(<A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_key">&lt;код_клавиши&gt;</A>, <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_params">&lt;значения_параметров_образца&gt;</A>)]
 [<A class="syntax" href="#dpt_act_prior">&lt;приоритет_активности&gt;</A>];</code></PRE>
-Все параметры активности (в том числе и код клавиши вызова) отделяются друг от друга запятыми. В том случае, если параметры отсутствуют, скобки писать не нужно.</DD>
-        <DT class="syntax"><A name="dpt_some_pat"></A><I>имя_образца</I></DT>
-            <DD class="syntax"><P>При написании активности типа prior допустимо использовать все существующие типы образцов</P></DD>
-        <DT class="syntax"><A name="dpt_act_priot"></A><I>приоритет активности</I>
-            <DD class="syntax"><P>Приоритет активности имеет следующий формат:
-            <PRE class="syntax"><code class="rdo">CF = &lt;<a href="../rdo_base/rdo_base_equations.htm">арифметическое выражение</a>&gt;</code></PRE></P></DD>
+        Все параметры активности (в том числе и код клавиши вызова) отделяются друг от друга запятыми. В том случае, если параметры отсутствуют, скобки писать не нужно.</DD>
+    <DT class="syntax"><A name="dpt_some_pat"></A><I>имя_образца</I></DT>
+        <DD class="syntax"><P>При написании активности типа prior допустимо использовать все существующие типы образцов</P></DD>
+    <DT class="syntax"><A name="dpt_act_priot"></A><I>приоритет активности</I>
+        <DD class="syntax"><P>Приоритет активности имеет следующий формат:
+            <PRE class="syntax"><code class="rdo">CF = &lt;<a href="../rdo_base/rdo_base_equations.htm">арифметическое выражение</a>&gt;</code></PRE></P>
             <DL class="syntax">
                 <DT class="syntax"><I>арифметическое_выражение</I></DT>
-                <DD class="syntax">Арифметическое выражение должно иметь целый или вещественный тип, и его значение должно лежать в диапазоне [0; 1].</DD>
+                <DD class="syntax">Арифметическое выражение должно иметь целый или вещественный тип, и его значение должно лежать в диапазоне [0; 1]</DD>
             </DL>
+        </DD>
+</DL>
         <A href="" class="ref" onclick="return toggle_display(v1);"><H4>Пример</H4></A>
         <DIV style="display:none" id="v1">
         <PRE class="samples"><code class="rdo">$Decision_point Точка_2: prior
