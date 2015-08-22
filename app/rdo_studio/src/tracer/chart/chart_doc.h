@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      chart_doc.h
-  \author    Захаров Павел
-  \date      20.02.2003
-  \brief     
-  \indent    4T
-*/
-
-#ifndef _RDO_STUDIO_TRACER_CHART_DOC_H_
-#define _RDO_STUDIO_TRACER_CHART_DOC_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -26,69 +16,67 @@ class ChartViewStyle;
 class ChartDoc
 {
 public:
-	enum Update
-	{
-		U_NEW_SERIE,
-		U_NEW_VALUE,
-		U_TIME_TICKS,
-	};
+    enum class Update
+    {
+        NEW_SERIE,
+        NEW_VALUE,
+        TIMES,
+    };
 
-	typedef  std::list<Time*>          TimesList;
-	typedef  std::vector<ChartSerie*>  SerieList;
+    typedef  std::list<Time*>          TimesList;
+    typedef  std::vector<ChartSerie*>  SerieList;
 
-	ChartDoc(const bool preview = false);
-	virtual ~ChartDoc();
+    ChartDoc(const bool preview = false);
+    virtual ~ChartDoc();
 
-	void attachView(ChartView* pView);
-	ChartView* getFirstView();
+    void attachView(ChartView* pView);
+    ChartView* getFirstView();
 
-	const QString& getTitle () const;
-	void           setTitle (const QString& title);
-	void          autoTitle();
-	static void   resetTitleIndex();
+    const QString& getTitle () const;
+    void           setTitle (const QString& title);
+    void           autoTitle();
+    static void    resetTitleIndex();
 
-	void setStyle(ChartViewStyle* pStyle);
+    void setStyle(ChartViewStyle* pStyle);
 
-	void updateAllViews();
+    void updateAllViews();
 
-	void addSerie(const LPSerie& pSerie);
-	bool serieExists(const LPSerie& pSerie) const;
+    void addSerie(const LPSerie& pSerie);
+    bool serieExists(const LPSerie& pSerie) const;
 
-	void incTimeEventsCount(Time* time);
-	bool newValueToSerieAdded(Value* val);
+    void incTimeEventsCount(Time* time);
+    bool newValueToSerieAdded(Value* val);
 
-	void addToViews     (ChartView* pWidget);
-	void removeFromViews(ChartView* pWidget);
+    void addToViews     (ChartView* pWidget);
+    void removeFromViews(ChartView* pWidget);
 
-	const TimesList& getTimes    () const;
-	const SerieList& getSerieList() const;
+    const TimesList& getTimes    () const;
+    const SerieList& getSerieList() const;
 
-	int    getMaxMarkerSize() const;
-	int    getTicksCount   () const;
-	double getMinTimeOffset() const;
+    int    getMaxMarkerSize() const;
+    int    getTicksCount   () const;
+    double getMinTimeOffset() const;
 
 private:
-	TimesList m_docTimes;
-	TimesList::iterator m_insertedIt;
-	SerieList m_serieList;
-	double m_minTimeOffset;
-	int m_ticksCount;
-	bool m_previewMode;
+    TimesList m_docTimes;
+    TimesList::iterator m_insertedIt;
+    SerieList m_serieList;
+    double m_minTimeOffset;
+    int m_ticksCount;
+    bool m_previewMode;
 
-	std::vector<ChartView*> m_widgetList;
-	QString m_title;
-	std::vector<ChartView*> m_viewList;
-	static std::size_t s_titleIndex;
+    std::vector<ChartView*> m_widgetList;
+    QString m_title;
+    std::vector<ChartView*> m_viewList;
+    static std::size_t s_titleIndex;
 
-	int getSerieIndex(ChartSerie* serie) const;
-	QColor selectColor() const;
-	Serie::Marker selectMarker();
+    int getSerieIndex(ChartSerie* serie) const;
+    QColor selectColor() const;
+    Serie::Marker selectMarker();
 
-	void updateChartViews(Update updateType) const;
+    void updateChartViews(Update updateType) const;
 
-	void insertValue(Value* pValue);
+    void insertValue(Value* pValue);
 };
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_CHART_DOC_H_

@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      find_edit_style.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      28.02.2003
-  \brief     
-  \indent    4T
-*/
-
-#ifndef _RDO_STUDIO_EDITOR_FIND_EDIT_STYLE_H_
-#define _RDO_STUDIO_EDITOR_FIND_EDIT_STYLE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -23,32 +13,30 @@ namespace rdo { namespace gui { namespace editor {
 class FindStyle: public LogStyle
 {
 public:
-	FindStyle();
-	~FindStyle();
+    FindStyle();
+    ~FindStyle();
 
-	FindStyle& operator =( const FindStyle& style );
-	bool operator ==( const FindStyle& style ) const;
-	bool operator !=( const FindStyle& style ) const;
+    FindStyle& operator =(const FindStyle& style);
+    bool operator ==(const FindStyle& style) const;
+    bool operator !=(const FindStyle& style) const;
 
-	virtual bool styleDefault( const int styleType ) const;
-	virtual bool styleUsing( const int styleType ) const;
-	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
-	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
-	virtual std::string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+    virtual bool styleDefault(const int styleType) const;
+    virtual bool styleUsing(const int styleType) const;
+    virtual bool styleBold(const int styleType = STYLE_DEFAULT) const;
+    virtual bool styleItalic(const int styleType = STYLE_DEFAULT) const;
+    virtual std::string styleFGColorToHEX(const int styleType = STYLE_DEFAULT) const;
 
-	static FindStyle getDefaultStyle();
-	static FindStyle getClassicStyle();
-	static FindStyle getTwilightStyle();
-	static FindStyle getOceanStyle();
+    static FindStyle getDefaultStyle();
+    static FindStyle getClassicStyle();
+    static FindStyle getTwilightStyle();
+    static FindStyle getOceanStyle();
 
-	QColor keywordColor;
+    QColor keywordColor;
 
-	style::StyleFont::style keywordStyle;
+    style::StyleFont::Style keywordStyle;
 };
 
 QSettings& operator<< (QSettings& settings, const FindStyle& style);
 QSettings& operator>> (QSettings& settings,       FindStyle& style);
 
 }}} // namespace rdo::gui::editor
-
-#endif // _RDO_STUDIO_EDITOR_FIND_EDIT_STYLE_H_

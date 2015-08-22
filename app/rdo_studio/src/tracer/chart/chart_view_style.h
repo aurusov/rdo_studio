@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      chart_view_style.h
-  \author    Захаров Павел
-  \date      28.03.2003
-  \brief     
-  \indent    4T
-*/
-
-#ifndef _RDO_STUDIO_TRACER_CHART_VIEW_STYLE_H_
-#define _RDO_STUDIO_TRACER_CHART_VIEW_STYLE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -23,19 +13,19 @@ namespace rdo { namespace gui { namespace tracer {
 class ChartViewFontsTicks
 {
 public:
-	ChartViewFontsTicks();
-	virtual ~ChartViewFontsTicks();
+    ChartViewFontsTicks();
+    virtual ~ChartViewFontsTicks();
 
-	ChartViewFontsTicks& operator =(const ChartViewFontsTicks& fonts_ticks);
-	bool operator ==(const ChartViewFontsTicks& fonts_ticks) const;
-	bool operator !=(const ChartViewFontsTicks& fonts_ticks) const;
+    ChartViewFontsTicks& operator =(const ChartViewFontsTicks& fonts_ticks);
+    bool operator ==(const ChartViewFontsTicks& fonts_ticks) const;
+    bool operator !=(const ChartViewFontsTicks& fonts_ticks) const;
 
-	void load(QSettings& settings);
-	void save(QSettings& settings) const;
+    void load(QSettings& settings);
+    void save(QSettings& settings) const;
 
-	int titleFontSize;
-	int legendFontSize;
-	int tickWidth;
+    int titleFontSize;
+    int legendFontSize;
+    int tickWidth;
 };
 
 QSettings& operator<< (QSettings& settings, const ChartViewFontsTicks& fonts_ticks);
@@ -47,30 +37,28 @@ QSettings& operator>> (QSettings& settings,       ChartViewFontsTicks& fonts_tic
 class ChartViewStyle: public style::StyleBase
 {
 public:
-	ChartViewStyle();
-	~ChartViewStyle();
+    ChartViewStyle();
+    ~ChartViewStyle();
 
-	ChartViewStyle& operator =(const ChartViewStyle& style);
-	bool operator ==(const ChartViewStyle& style) const;
-	bool operator !=(const ChartViewStyle& style) const;
+    ChartViewStyle& operator =(const ChartViewStyle& style);
+    bool operator ==(const ChartViewStyle& style) const;
+    bool operator !=(const ChartViewStyle& style) const;
 
-	QColor axisFgColor;
-	QColor titleFGColor;
-	QColor legendFgColor;
-	QColor chartBgColor;
-	QColor timeBgColor;
+    QColor axisFgColor;
+    QColor titleFGColor;
+    QColor legendFgColor;
+    QColor chartBgColor;
+    QColor timeBgColor;
 
-	style::StyleFont::style titleStyle;
-	style::StyleFont::style legendStyle;
+    style::StyleFont::Style titleStyle;
+    style::StyleFont::Style legendStyle;
 
-	static ChartViewStyle getDefaultStyle();
+    static ChartViewStyle getDefaultStyle();
 
-	ChartViewFontsTicks pFontsTicks;
+    ChartViewFontsTicks pFontsTicks;
 };
 
 QSettings& operator<< (QSettings& settings, const ChartViewStyle& style);
 QSettings& operator>> (QSettings& settings,       ChartViewStyle& style);
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_CHART_VIEW_STYLE_H_

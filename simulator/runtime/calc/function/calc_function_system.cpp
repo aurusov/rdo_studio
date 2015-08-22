@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_function_system.cpp
-  \author    Барс Александр
-  \date      20.12.2011
-  \brief     Системные функции
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -22,7 +13,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 RDOValue RDOCalcGetTimeNow::doCalc(const LPRDORuntime& pRuntime)
 {
-	return pRuntime->getTimeNow();
+    return pRuntime->getTimeNow();
 }
 
 // --------------------------------------------------------------------------------
@@ -30,7 +21,7 @@ RDOValue RDOCalcGetTimeNow::doCalc(const LPRDORuntime& pRuntime)
 // --------------------------------------------------------------------------------
 RDOValue RDOCalcGetSeconds::doCalc(const LPRDORuntime& pRuntime)
 {
-	return pRuntime->getSeconds();
+    return pRuntime->getSeconds();
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

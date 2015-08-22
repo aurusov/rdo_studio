@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      chart_tree.h
-  \author    Захаров Павел
-  \date      12.03.2003
-  \brief     
-  \indent    4T
-*/
-
-#ifndef _RDO_STUDIO_TRACER_CHART_TREE_H_
-#define _RDO_STUDIO_TRACER_CHART_TREE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -31,70 +21,68 @@ PREDECLARE_POINTER(OperationBase);
 PREDECLARE_POINTER(Result);
 
 class ChartTree
-	: public QTreeWidget
-	, public ActionActivator
+    : public QTreeWidget
+    , public ActionActivator
 {
 Q_OBJECT
 
 public:
-	ChartTree(QWidget* pParent);
-	virtual ~ChartTree();
+    ChartTree(QWidget* pParent);
+    virtual ~ChartTree();
 
-	void setModelName   (const QString&    modelName);
-	void addResourceType(const LPResourceType&  pRTP);
-	void addResource    (const LPResource&      pRSS);
-	void updateResource (const LPResource&      pRSS);
-	void addPattern     (const LPPattern&       pPAT);
-	void addOperation   (const LPOperationBase& pOPR);
-	void addResult      (const LPResult&        pPMV);
-	void deleteChildren (const LPChartTreeItem& pParent);
-	void clear();
+    void setModelName   (const QString&    modelName);
+    void addResourceType(const LPResourceType&  pRTP);
+    void addResource    (const LPResource&      pRSS);
+    void updateResource (const LPResource&      pRSS);
+    void addPattern     (const LPPattern&       pPAT);
+    void addOperation   (const LPOperationBase& pOPR);
+    void addResult      (const LPResult&        pPMV);
+    void deleteChildren (const LPChartTreeItem& pParent);
+    void clear();
 
 private:
-	typedef  QTreeWidget  parent_type;
+    typedef  QTreeWidget  parent_type;
 
-	enum IconType
-	{
-		IT_ROOT       = 0,
-		IT_SUB_ROOT_1,
-		IT_SUB_ROOT_2,
-		IT_SUB_ROOT_3,
-		IT_VALUE,
-		IT_ERASED,
-		IT_COUNT
-	};
-	typedef  std::vector<QIcon>  IconList;
+    enum class IconType
+    {
+        ROOT = 0,
+        SUB_ROOT_1,
+        SUB_ROOT_2,
+        SUB_ROOT_3,
+        VALUE,
+        ERASED,
+        COUNT
+    };
+    typedef  std::vector<QIcon>  IconList;
 
-	LPChartTreeItem  m_root;
-	LPChartTreeItem  m_rootRTP;
-	LPChartTreeItem  m_rootPAT;
-	LPChartTreeItem  m_rootPMV;
-	IconList         m_iconList;
-	QMenu*           m_pPopupMenu;
+    LPChartTreeItem  m_root;
+    LPChartTreeItem  m_rootRTP;
+    LPChartTreeItem  m_rootPAT;
+    LPChartTreeItem  m_rootPMV;
+    IconList         m_iconList;
+    QMenu*           m_pPopupMenu;
 
-	void createItem(const LPChartTreeItem& parent, const LPChartTreeItem& item, const QString& name, IconType iconType);
+    void createItem(const LPChartTreeItem& parent, const LPChartTreeItem& item, const QString& name, IconType iconType);
 
-	void  createChart          (QTreeWidgetItem* pCtrlItem) const;
-	bool  activateExistingChart(QTreeWidgetItem* pCtrlItem) const;
+    void  createChart          (QTreeWidgetItem* pCtrlItem) const;
+    bool  activateExistingChart(QTreeWidgetItem* pCtrlItem) const;
 
-	LPChartTreeItem getIfItemIsDrawable(const QTreeWidgetItem* pCtrlItem) const;
-	QTreeWidgetItem* getSelected() const;
+    LPChartTreeItem getIfItemIsDrawable(const QTreeWidgetItem* pCtrlItem) const;
+    QTreeWidgetItem* getSelected() const;
 
-	virtual void focusInEvent    (QFocusEvent* pEvent);
-	virtual void focusOutEvent   (QFocusEvent* pEvent);
-	virtual void mousePressEvent (QMouseEvent* pEvent);
-	virtual void contextMenuEvent(QContextMenuEvent* pEvent);
-	virtual void onUpdateActions (bool activated);
+    virtual void focusInEvent    (QFocusEvent* pEvent);
+    virtual void focusOutEvent   (QFocusEvent* pEvent);
+    virtual void mousePressEvent (QMouseEvent* pEvent);
+    virtual void contextMenuEvent(QContextMenuEvent* pEvent);
+    virtual void onUpdateActions (bool activated);
 
-	void doDragDrop(const LPSerie& pSerie);
+    void doDragDrop(const LPSerie& pSerie);
 
 private slots:
-	void onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int);
-	void onChartCreate();
-	void onChartExport();
-	void onHelpContext();
+    void onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int);
+    void onChartCreate();
+    void onChartExport();
+    void onHelpContext();
 };
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_CHART_TREE_H_

@@ -1,15 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdoopr.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date
-  \brief
-  \indent    4T
-*/
-
-#ifndef _CONVERTOR_RDOOPR_H_
-#define _CONVERTOR_RDOOPR_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -33,7 +22,7 @@ class RDOOPROperation: public RDODPTActivityHotKey
 {
 DECLARE_FACTORY(RDOOPROperation);
 private:
-	RDOOPROperation(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info);
+    RDOOPROperation(LPIBaseOperationContainer pDPT, const RDOParserSrcInfo& src_info, const RDOParserSrcInfo& pattern_src_info);
 };
 DECLARE_POINTER(RDOOPROperation);
 
@@ -42,14 +31,12 @@ DECLARE_POINTER(RDOOPROperation);
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOOperations);
 class RDOOperations
-	: public rdo::counter_reference
-	, public RDOLogicActivity<rdo::runtime::RDOOperations, RDOOPROperation>
+    : public rdo::counter_reference
+    , public RDOLogicActivity<rdo::runtime::RDOOperations, RDOOPROperation>
 {
 DECLARE_FACTORY(RDOOperations);
 private:
-	RDOOperations(const RDOParserSrcInfo& src_info);
+    RDOOperations(const RDOParserSrcInfo& src_info);
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDOOPR_H_

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_event_i.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      23.05.2010
-  \brief     Интерфейс событий
-  \indent    4T
-*/
-
 #pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
@@ -25,9 +16,9 @@ PREDECLARE_POINTER(RDORuntime)
 class IEvent: public virtual rdo::counter_reference
 {
 public:
-	virtual void onMakePlaned(const rdo::runtime::LPRDORuntime& pRuntime, const std::vector<rdo::runtime::RDOValue>& params) = 0;
+    virtual void onMakePlaned(const rdo::runtime::LPRDORuntime& pRuntime, const std::vector<rdo::runtime::RDOValue>& params) = 0;
 
-	virtual ~IEvent()
-	{}
+    virtual ~IEvent()
+    {}
 };
 DECLARE_POINTER(IEvent);

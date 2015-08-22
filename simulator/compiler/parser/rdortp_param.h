@@ -1,15 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdortp_param.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
-  \indent    4T
-*/
-
-#ifndef _RDORTP_PARAM_H_
-#define _RDORTP_PARAM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -26,21 +15,19 @@ OPEN_RDO_PARSER_NAMESPACE
 PREDECLARE_POINTER(RDORTPResType);
 
 class RDORTPParam
-	: public RDOParam
-	, public IModelStructure
-	, public IName
+    : public RDOParam
+    , public IModelStructure
+    , public IName
 {
 DECLARE_FACTORY(RDORTPParam);
 public:
-	DECLARE_IModelStructure;
-	DECLARE_IName;
+    DECLARE_IModelStructure;
+    DECLARE_IName;
 
 private:
-	RDORTPParam(const LPTypeInfo& pType, const LPRDOValue& pDefault, const RDOParserSrcInfo& src_info);
-	virtual ~RDORTPParam();
+    RDORTPParam(const LPTypeInfo& pType, const LPRDOValue& pDefault, const RDOParserSrcInfo& src_info);
+    virtual ~RDORTPParam();
 };
 DECLARE_POINTER(RDORTPParam);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDORTP_PARAM_H_

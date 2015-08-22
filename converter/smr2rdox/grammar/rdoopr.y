@@ -216,6 +216,7 @@ opr_main
         CONVERTER->error().error(@1, "Неизвестная ошибка");
     }
     ;
+<<<<<<< HEAD
 
 opr_keyb
     : RDO_STRING_CONST
@@ -231,10 +232,109 @@ opr_keyb
         ASSERT(pOperation);
         const std::string key = CONVERTER->stack().pop<RDOValue>($3)->value().getString();
         pOperation->addHotKey(key, @3);
+=======
+
+opr_header
+    : RDO_Operations
+    {
+        LPDocUpdate pOperationsReplace = rdo::Factory<UpdateReplace>::create(
+            @1.m_first_seek,
+            @1.m_last_seek,
+            "$Decision_point Operations: some\n$Activities"
+        );
+        ASSERT(pOperationsReplace);
+        CONVERTER->insertDocUpdate(pOperationsReplace);
+
+        LPRDOOperations pOperations = rdo::Factory<RDOOperations>::create(@1);
+        ASSERT(pOperations);
+        $$ = CONVERTER->stack().push(pOperations);
+    }
+    ;
+
+opr_body
+    : opr_header RDO_IDENTIF_COLON RDO_IDENTIF
+    {
+        LPRDOOperations pOperations = CONVERTER->stack().pop<RDOOperations>($1);
+        ASSERT(pOperations);
+        LPRDOValue pName    = CONVERTER->stack().pop<RDOValue>($2);
+        LPRDOValue pPattern = CONVERTER->stack().pop<RDOValue>($3);
+        LPRDOOPROperation pOperation = pOperations->addNewActivity(pName->src_info(), pPattern->src_info()).object_dynamic_cast<RDOOPROperation>();
+        ASSERT(pOperation);
+
+        if (pOperation->pattern()->getType() == RDOPATPattern::Type::IE)
+        {
+            LPDocUpdate pIEDelete = rdo::Factory<UpdateDelete>::create(
+                @2.m_first_seek,
+                @3.m_last_seek
+            );
+            ASSERT(pIEDelete);
+            CONVERTER->insertDocUpdate(pIEDelete);
+        }
+
+        $$ = CONVERTER->stack().push(pOperation);
+    }
+    | opr_param RDO_IDENTIF_COLON RDO_IDENTIF
+    {
+        LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
+        ASSERT(pOperation);
+        pOperation->endParam(@1);
+
+        LPRDOOperations pOperations = CONVERTER->getLastOperations();
+        ASSERT(pOperations);
+        LPRDOValue pName    = CONVERTER->stack().pop<RDOValue>($2);
+        LPRDOValue pPattern = CONVERTER->stack().pop<RDOValue>($3);
+        pOperation = pOperations->addNewActivity(pName->src_info(), pPattern->src_info());
+        ASSERT(pOperation);
+
+        if (pOperation->pattern()->getType() == RDOPATPattern::Type::IE)
+        {
+            LPDocUpdate pIEDelete = rdo::Factory<UpdateDelete>::create(
+                @2.m_first_seek,
+                @3.m_last_seek
+            );
+            ASSERT(pIEDelete);
+            CONVERTER->insertDocUpdate(pIEDelete);
+        }
+
+        $$ = CONVERTER->stack().push(pOperation);
+    }
+    | opr_header RDO_IDENTIF_COLON error
+    {
+        CONVERTER->error().error(@2, @3, "Ожидается имя образца");
+    }
+    | opr_param RDO_IDENTIF_COLON error
+    {
+        CONVERTER->error().error(@2, @3, "Ожидается имя образца");
+    }
+    | opr_header error
+    {
+        CONVERTER->error().error( @2, "Ожидается имя операции");
+    }
+    ;
+
+opr_keyb
+    : opr_body
+    | opr_keyb RDO_STRING_CONST
+    {
+        LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
+        ASSERT(pOperation);
+        const std::string key = CONVERTER->stack().pop<RDOValue>($2)->value().getString();
+        pOperation->addHotKey(key, @2);
+        $$ = CONVERTER->stack().push(pOperation);
+    }
+    | opr_keyb '+' RDO_STRING_CONST
+    {
+        LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
+        ASSERT(pOperation);
+        const std::string key = CONVERTER->stack().pop<RDOValue>($3)->value().getString();
+        pOperation->addHotKey(key, @3);
+        $$ = CONVERTER->stack().push(pOperation);
+>>>>>>> drobus/dev
     }
     ;
 
 opr_param
+<<<<<<< HEAD
     : opr_param_atomic
     {
         $$ = 0;
@@ -320,10 +420,50 @@ opr_name
 
 opr_activity
     : opr_name
+=======
+    : opr_param '*'
     {
         LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
         ASSERT(pOperation);
 
+        if (pOperation->pattern()->getType() == RDOPATPattern::Type::IE)
+        {
+            LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
+                @2.m_first_seek,
+                @2.m_last_seek
+            );
+            ASSERT(pIEParamDelete);
+            CONVERTER->insertDocUpdate(pIEParamDelete);
+        }
+
+        pOperation->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@2, "*")));
+        $$ = CONVERTER->stack().push(pOperation);
+    }
+    | opr_param RDO_INT_CONST
+    {
+        LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
+        ASSERT(pOperation);
+
+        if (pOperation->pattern()->getType() == RDOPATPattern::Type::IE)
+        {
+            LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
+                @2.m_first_seek,
+                @2.m_last_seek
+            );
+            ASSERT(pIEParamDelete);
+            CONVERTER->insertDocUpdate(pIEParamDelete);
+        }
+
+        pOperation->addParam(CONVERTER->stack().pop<RDOValue>($2));
+        $$ = CONVERTER->stack().push(pOperation);
+    }
+    | opr_param RDO_REAL_CONST
+>>>>>>> drobus/dev
+    {
+        LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
+        ASSERT(pOperation);
+
+<<<<<<< HEAD
         if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
         {
             LPDocUpdate pIEDelete = rdo::Factory<UpdateDelete>::create(
@@ -346,10 +486,27 @@ opr_activity
         pOperation->endParam(@1);
     }
     | opr_name opr_keyb
+=======
+        if (pOperation->pattern()->getType() == RDOPATPattern::Type::IE)
+        {
+            LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
+                @2.m_first_seek,
+                @2.m_last_seek
+            );
+            ASSERT(pIEParamDelete);
+            CONVERTER->insertDocUpdate(pIEParamDelete);
+        }
+
+        pOperation->addParam(CONVERTER->stack().pop<RDOValue>($2));
+        $$ = CONVERTER->stack().push(pOperation);
+    }
+    | opr_param RDO_BOOL_CONST
+>>>>>>> drobus/dev
     {
         LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
         ASSERT(pOperation);
 
+<<<<<<< HEAD
         if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
         {
             LPDocUpdate pIEDelete = rdo::Factory<UpdateDelete>::create(
@@ -379,10 +536,27 @@ opr_activity
         pOperation->endParam(@2);
     }
     | opr_name opr_param
+=======
+        if (pOperation->pattern()->getType() == RDOPATPattern::Type::IE)
+        {
+            LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
+                @2.m_first_seek,
+                @2.m_last_seek
+            );
+            ASSERT(pIEParamDelete);
+            CONVERTER->insertDocUpdate(pIEParamDelete);
+        }
+
+        pOperation->addParam(CONVERTER->stack().pop<RDOValue>($2));
+        $$ = CONVERTER->stack().push(pOperation);
+    }
+    | opr_param RDO_STRING_CONST
+>>>>>>> drobus/dev
     {
         LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
         ASSERT(pOperation);
 
+<<<<<<< HEAD
         if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
         {
             LPDocUpdate pIEDelete = rdo::Factory<UpdateDelete>::create(
@@ -412,10 +586,27 @@ opr_activity
         pOperation->endParam(@2);
     }
     | opr_name opr_keyb opr_param
+=======
+        if (pOperation->pattern()->getType() == RDOPATPattern::Type::IE)
+        {
+            LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
+                @2.m_first_seek,
+                @2.m_last_seek
+            );
+            ASSERT(pIEParamDelete);
+            CONVERTER->insertDocUpdate(pIEParamDelete);
+        }
+
+        pOperation->addParam(CONVERTER->stack().pop<RDOValue>($2));
+        $$ = CONVERTER->stack().push(pOperation);
+    }
+    | opr_param RDO_IDENTIF
+>>>>>>> drobus/dev
     {
         LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
         ASSERT(pOperation);
 
+<<<<<<< HEAD
         if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
         {
             LPDocUpdate pIEDelete = rdo::Factory<UpdateDelete>::create(
@@ -471,6 +662,32 @@ opr_header
 
 opr_end
     : opr_header opr_body RDO_End
+=======
+        if (pOperation->pattern()->getType() == RDOPATPattern::Type::IE)
+        {
+            LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
+                @2.m_first_seek,
+                @2.m_last_seek
+            );
+            ASSERT(pIEParamDelete);
+            CONVERTER->insertDocUpdate(pIEParamDelete);
+        }
+
+        pOperation->addParam(CONVERTER->stack().pop<RDOValue>($2));
+        $$ = CONVERTER->stack().push(pOperation);
+    }
+    | opr_keyb
+    ;
+
+opr_end
+    : opr_param RDO_End
+    {
+        LPRDOOPROperation pOperation = CONVERTER->stack().pop<RDOOPROperation>($1);
+        ASSERT(pOperation);
+        pOperation->endParam(@1);
+        $$ = CONVERTER->stack().push(pOperation);
+    }
+>>>>>>> drobus/dev
     ;
 
 // --------------------------------------------------------------------------------

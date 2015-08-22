@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012-2012
-  \file      dock_chart_tree.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      06.10.2012
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/application_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -19,16 +10,16 @@
 // --------------------------------------------------------------------------------
 
 DockChartTree::DockChartTree(QWidget* pParent)
-	: DockFocusable("Графики", pParent)
+    : DockFocusable("Графики", pParent)
 {
-	context_type* pWidget = new context_type(this);
-	pWidget->setMinimumSize(QSize(150, 200));
+    context_type* pWidget = new context_type(this);
+    pWidget->setMinimumSize(QSize(150, 200));
 
-	setWidget(pWidget);
+    setWidget(pWidget);
 
-	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_chart.png")));
+    toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_chart.png")));
 
-	g_pTracer->setTree(pWidget);
+    g_pTracer->setTree(pWidget);
 }
 
 DockChartTree::~DockChartTree()

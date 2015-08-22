@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      rdo_key_event.cpp
-  \author    Пройдаков Евгений (lord.tiran@gmail.com)
-  \date      26.11.2012
-  \brief     Консольная версия RDO
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_console/events/rdo_key_event.h"
@@ -14,33 +5,33 @@
 
 namespace rdo {
 
-key_event::key_event(const std::string& name, double time, states state, int key_code)
-	: event(name, time, event::key)
-	, m_state(state)
-	, m_key_code(key_code)
+KeyEvent::KeyEvent(const std::string& name, Time time, State state, int key_code)
+    : Event(name, time, Event::Type::KEY)
+    , state(state)
+    , keyCode(key_code)
 {}
 
-key_event::~key_event()
+KeyEvent::~KeyEvent()
 {}
 
-void key_event::setState(states state)
+void KeyEvent::setState(State state)
 {
-	m_state = state;
+    this->state = state;
 }
 
-void key_event::setKeyCode(int key_code)
+void KeyEvent::setKeyCode(int keyCode)
 {
-	m_key_code = key_code;
+    this->keyCode = keyCode;
 }
 
-key_event::states key_event::getState() const
+KeyEvent::State KeyEvent::getState() const
 {
-	return m_state;
+    return state;
 }
 
-int key_event::getKeyCode() const
+int KeyEvent::getKeyCode() const
 {
-	return m_key_code;
+    return keyCode;
 }
 
 } // namespace rdo

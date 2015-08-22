@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_dptsearch_activity.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      08.08.2009
-  \brief     Активности точки принятия решения DPTSearch
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -20,30 +11,30 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearchActivity
 // --------------------------------------------------------------------------------
-RDODPTSearchActivity::RDODPTSearchActivity(const LPIRule& rule, ValueTime valueTime, const LPRDOCalc& pCost)
-	: RDOTraceableObject(false    )
-	, m_rule            (rule     )
-	, m_pCost           (pCost    )
-	, m_valueTime       (valueTime)
+RDODPTSearchActivity::RDODPTSearchActivity(const LPIRule& rule, CostTime costTime, const LPRDOCalc& pCost)
+    : RDOTraceableObject(false)
+    , m_rule            (rule)
+    , m_pCost           (pCost)
+    , m_costTime        (costTime)
 {
-	LPITrace trace = m_rule.object_dynamic_cast<ITrace>();
-	ASSERT(trace);
-	setTraceID(trace->getTraceID());
+    LPITrace trace = m_rule.object_dynamic_cast<ITrace>();
+    ASSERT(trace);
+    setTraceID(trace->getTraceID());
 }
 
 LPIRule& RDODPTSearchActivity::rule()
 {
-	return m_rule;
+    return m_rule;
 }
 
 double RDODPTSearchActivity::cost(const LPRDORuntime& pRuntime)
 {
-	return m_pCost->calcValue(pRuntime).getDouble();
+    return m_pCost->calcValue(pRuntime).getDouble();
 }
 
-IDPTSearchActivity::ValueTime RDODPTSearchActivity::valueTime() const
+IDPTSearchActivity::CostTime RDODPTSearchActivity::costTime() const
 {
-	return m_valueTime;
+    return m_costTime;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

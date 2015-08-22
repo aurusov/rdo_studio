@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      tracer_resource_type.h
-  \author    Захаров Павел
-  \date      11.03.2003
-  \brief
-  \indent    4T
-*/
-
-#ifndef _RDO_STUDIO_TRACER_RESOURCE_TYPE_H_
-#define _RDO_STUDIO_TRACER_RESOURCE_TYPE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -23,36 +13,36 @@ namespace rdo { namespace gui { namespace tracer {
 class ParamInfo
 {
 public:
-	enum ParamType
-	{
-		PT_INTEGER = 0,
-		PT_REAL,
-		PT_ENUMERATIVE,
-		PT_BOOL,
-		PT_ARRAY,
-		PT_STRING,
-		PT_RESOURCE
-	};
+    enum class Type
+    {
+        INTEGER = 0,
+        REAL,
+        ENUMERATIVE,
+        BOOL,
+        ARRAY,
+        STRING,
+        RESOURCE
+    };
 
-	ParamInfo(const ParamType type);
-	virtual ~ParamInfo();
+    ParamInfo(const Type type);
+    virtual ~ParamInfo();
 
-	const QString& getName() const;
-	void           setName(const QString& name);
+    const QString& getName() const;
+    void           setName(const QString& name);
 
-	ParamType getParamType() const;
+    Type getParamType() const;
 
-	int addEnumValue(const std::string& value);
-	int addStringValue(const std::string& value);
-	std::string getEnumValue (unsigned int index) const;
-	int getEnumCount() const;
+    int addEnumValue(const std::string& value);
+    int addStringValue(const std::string& value);
+    std::string getEnumValue (unsigned int index) const;
+    int getEnumCount() const;
 
 private:
-	typedef std::vector<std::string> EnumValueList;
+    typedef std::vector<std::string> EnumValueList;
 
-	QString        m_name;
-	EnumValueList* m_enumValueList;
-	ParamType      m_paramType;
+    QString m_name;
+    EnumValueList* m_enumValueList;
+    Type m_paramType;
 };
 
 // --------------------------------------------------------------------------------
@@ -62,33 +52,32 @@ class ResourceType: public ChartTreeItem
 {
 DECLARE_FACTORY(ResourceType)
 public:
-	enum Kind
-	{
-		RDOTK_PERMANENT = 0, RDOTK_TEMPORARY
-	};
+    enum class Kind
+    {
+        PERMANENT = 0,
+        TEMPORARY
+    };
 
-	const QString& getName() const;
-	void           setName(const QString& name);
+    const QString& getName() const;
+    void           setName(const QString& name);
 
-	Kind getKind() const;
+    Kind getKind() const;
 
-	int        addParamInfo(ParamInfo* const value);
-	ParamInfo* getParamInfo(unsigned int index) const;
-	int        getParamsCount() const;
+    int        addParamInfo(ParamInfo* const value);
+    ParamInfo* getParamInfo(unsigned int index) const;
+    int        getParamsCount() const;
 
 private:
-	ResourceType(Kind kind);
-	virtual ~ResourceType();
+    ResourceType(Kind kind);
+    virtual ~ResourceType();
 
-	typedef  std::vector<ParamInfo*>  ParamInfoList;
+    typedef  std::vector<ParamInfo*>  ParamInfoList;
 
-	QString       m_name;
-	Kind          m_kind;
-	ParamInfoList m_paramInfoList;
+    QString       m_name;
+    Kind          m_kind;
+    ParamInfoList m_paramInfoList;
 };
 
 typedef rdo::intrusive_ptr<ResourceType> LPResourceType;
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_RESOURCE_TYPE_H_

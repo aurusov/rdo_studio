@@ -1,14 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_group.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      16.05.2007
-  \brief     Калки для группы ресурсов одного типа
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -24,8 +13,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOFunCalcGroup
 // --------------------------------------------------------------------------------
 RDOFunCalcGroup::RDOFunCalcGroup(int nResType, const LPRDOCalc& pCondition)
-	: m_nResType  (nResType  )
-	, m_pCondition(pCondition)
+    : m_nResType  (nResType  )
+    , m_pCondition(pCondition)
 {}
 
 // --------------------------------------------------------------------------------
@@ -33,19 +22,19 @@ RDOFunCalcGroup::RDOFunCalcGroup(int nResType, const LPRDOCalc& pCondition)
 // --------------------------------------------------------------------------------
 RDOValue RDOFunCalcExist::doCalc(const LPRDORuntime& pRuntime)
 {
-	bool res = false;
-	RDORuntime::ResCIterator end = pRuntime->getResType(m_nResType)->res_end();
-	for (RDORuntime::ResCIterator it = pRuntime->getResType(m_nResType)->res_begin(); it != end && !res; ++it)
-	{
-		if (*it == LPRDOResource(NULL))
-			continue;
+    bool res = false;
+    RDORuntime::ResCIterator end = pRuntime->getResType(m_nResType)->res_end();
+    for (RDORuntime::ResCIterator it = pRuntime->getResType(m_nResType)->res_begin(); it != end && !res; ++it)
+    {
+        if (*it == LPRDOResource(NULL))
+            continue;
 
-		pRuntime->pushGroupFunc(*it);
-		if (m_pCondition->calcValue(pRuntime).getAsBool())
-			res = true;
-		pRuntime->popGroupFunc();
-	}
-	return RDOValue(res);
+        pRuntime->pushGroupFunc(*it);
+        if (m_pCondition->calcValue(pRuntime).getAsBool())
+            res = true;
+        pRuntime->popGroupFunc();
+    }
+    return RDOValue(res);
 }
 
 // --------------------------------------------------------------------------------
@@ -53,19 +42,19 @@ RDOValue RDOFunCalcExist::doCalc(const LPRDORuntime& pRuntime)
 // --------------------------------------------------------------------------------
 RDOValue RDOFunCalcNotExist::doCalc(const LPRDORuntime& pRuntime)
 {
-	bool res = true;
-	RDORuntime::ResCIterator end = pRuntime->getResType(m_nResType)->res_end();
-	for (RDORuntime::ResCIterator it = pRuntime->getResType(m_nResType)->res_begin(); it != end && res; it++)
-	{
-		if (*it == LPRDOResource(NULL))
-			continue;
+    bool res = true;
+    RDORuntime::ResCIterator end = pRuntime->getResType(m_nResType)->res_end();
+    for (RDORuntime::ResCIterator it = pRuntime->getResType(m_nResType)->res_begin(); it != end && res; it++)
+    {
+        if (*it == LPRDOResource(NULL))
+            continue;
 
-		pRuntime->pushGroupFunc(*it);
-		if (m_pCondition->calcValue(pRuntime).getAsBool())
-			res = false;
-		pRuntime->popGroupFunc();
-	}
-	return RDOValue(res);
+        pRuntime->pushGroupFunc(*it);
+        if (m_pCondition->calcValue(pRuntime).getAsBool())
+            res = false;
+        pRuntime->popGroupFunc();
+    }
+    return RDOValue(res);
 }
 
 // --------------------------------------------------------------------------------
@@ -73,26 +62,26 @@ RDOValue RDOFunCalcNotExist::doCalc(const LPRDORuntime& pRuntime)
 // --------------------------------------------------------------------------------
 RDOValue RDOFunCalcForAll::doCalc(const LPRDORuntime& pRuntime)
 {
-	bool first_found = false;
-	bool res = true;
-	RDORuntime::ResCIterator end = pRuntime->getResType(m_nResType)->res_end();
-	for (RDORuntime::ResCIterator it = pRuntime->getResType(m_nResType)->res_begin(); it != end && res; it++)
-	{
-		if (*it == LPRDOResource(NULL))
-			continue;
+    bool first_found = false;
+    bool res = true;
+    RDORuntime::ResCIterator end = pRuntime->getResType(m_nResType)->res_end();
+    for (RDORuntime::ResCIterator it = pRuntime->getResType(m_nResType)->res_begin(); it != end && res; it++)
+    {
+        if (*it == LPRDOResource(NULL))
+            continue;
 
-		pRuntime->pushGroupFunc(*it);
-		if (!m_pCondition->calcValue(pRuntime).getAsBool())
-		{
-			res = false;
-		}
-		else if (!first_found)
-		{
-			first_found = true;
-		}
-		pRuntime->popGroupFunc();
-	}
-	return RDOValue(first_found ? res : false);
+        pRuntime->pushGroupFunc(*it);
+        if (!m_pCondition->calcValue(pRuntime).getAsBool())
+        {
+            res = false;
+        }
+        else if (!first_found)
+        {
+            first_found = true;
+        }
+        pRuntime->popGroupFunc();
+    }
+    return RDOValue(first_found ? res : false);
 }
 
 // --------------------------------------------------------------------------------
@@ -100,19 +89,19 @@ RDOValue RDOFunCalcForAll::doCalc(const LPRDORuntime& pRuntime)
 // --------------------------------------------------------------------------------
 RDOValue RDOFunCalcNotForAll::doCalc(const LPRDORuntime& pRuntime)
 {
-	bool res = false;
-	RDORuntime::ResCIterator end = pRuntime->getResType(m_nResType)->res_end();
-	for (RDORuntime::ResCIterator it = pRuntime->getResType(m_nResType)->res_begin(); it != end && !res; it++)
-	{
-		if (*it == LPRDOResource(NULL))
-			continue;
+    bool res = false;
+    RDORuntime::ResCIterator end = pRuntime->getResType(m_nResType)->res_end();
+    for (RDORuntime::ResCIterator it = pRuntime->getResType(m_nResType)->res_begin(); it != end && !res; it++)
+    {
+        if (*it == LPRDOResource(NULL))
+            continue;
 
-		pRuntime->pushGroupFunc(*it);
-		if (!m_pCondition->calcValue(pRuntime).getAsBool())
-			res = true;
-		pRuntime->popGroupFunc();
-	}
-	return RDOValue(res);
+        pRuntime->pushGroupFunc(*it);
+        if (!m_pCondition->calcValue(pRuntime).getAsBool())
+            res = true;
+        pRuntime->popGroupFunc();
+    }
+    return RDOValue(res);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

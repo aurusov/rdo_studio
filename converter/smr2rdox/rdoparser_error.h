@@ -1,15 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdoparser_error.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      09.02.2010
-  \brief     основан на rdoparser.h/cpp
-  \indent    4T
-*/
-
-#ifndef _CONVERTOR_RDOCONVERTER_ERROR_H_
-#define _CONVERTOR_RDOCONVERTER_ERROR_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -29,7 +18,7 @@ class RDOSyntaxException: public rdo::runtime::RDOException
 {
 public:
    RDOSyntaxException(const std::string& message)
-	   : RDOException(message)
+       : RDOException(message)
    {}
    virtual std::string getType() const { return "RDO Syntax Error"; }
 };
@@ -40,30 +29,30 @@ public:
 class Error
 {
 public:
-	typedef std::vector<rdo::simulation::report::FileMessage> ErrorList;
+    typedef std::vector<rdo::simulation::report::FileMessage> ErrorList;
 
-	Error();
+    Error();
 
-	//! 1
-	void error(const RDOParserSrcInfo& src_info, const std::string& message);
-	void warning(const RDOParserSrcInfo& src_info, const std::string& message);
-	void push_only(const RDOParserSrcInfo& src_info, const std::string& message);
+    // 1
+    void error(const RDOParserSrcInfo& src_info, const std::string& message);
+    void warning(const RDOParserSrcInfo& src_info, const std::string& message);
+    void push_only(const RDOParserSrcInfo& src_info, const std::string& message);
 
-	//! 2
-	void error (const RDOParserSrcInfo& src_info1, const RDOParserSrcInfo& src_info2, const std::string& message);
+    // 2
+    void error (const RDOParserSrcInfo& src_info1, const RDOParserSrcInfo& src_info2, const std::string& message);
 
-	//! misc
-	void push_done();
-	void modify(const std::string& message);
-	void clear();
-	const ErrorList& getList() const;
-	void block();
-	void unblock();
-	bool blocked() const;
+    // misc
+    void push_done();
+    void modify(const std::string& message);
+    void clear();
+    const ErrorList& getList() const;
+    void block();
+    void unblock();
+    bool blocked() const;
 
 private:
-	ErrorList m_errors;
-	bool m_blocked;
+    ErrorList m_errors;
+    bool m_blocked;
 };
 
 Error& g_error();
@@ -71,16 +60,14 @@ Error& g_error();
 class ErrorBlockMonicker
 {
 public:
-	ErrorBlockMonicker()
-	{
-		g_error().block();
-	}
-	~ErrorBlockMonicker()
-	{
-		g_error().unblock();
-	}
+    ErrorBlockMonicker()
+    {
+        g_error().block();
+    }
+    ~ErrorBlockMonicker()
+    {
+        g_error().unblock();
+    }
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDOCONVERTER_ERROR_H_

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      context-inl.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      03.03.2011
-  \brief     
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdo_value.h"
@@ -21,7 +12,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 template <class Function>
 Context::FunctionWrapper<Function>::FunctionWrapper(const Function& function)
-	: function(function)
+    : function(function)
 {}
 
 // --------------------------------------------------------------------------------
@@ -30,9 +21,9 @@ Context::FunctionWrapper<Function>::FunctionWrapper(const Function& function)
 template <class T>
 T Context::Params::get(const std::string& name) const
 {
-	std::map<std::string, boost::any>::const_iterator it = find(name);
-	ASSERT(it != end());
-	return boost::any_cast<T>(it->second);
+    std::map<std::string, boost::any>::const_iterator it = find(name);
+    ASSERT(it != end());
+    return boost::any_cast<T>(it->second);
 }
 
 // --------------------------------------------------------------------------------
@@ -41,27 +32,27 @@ T Context::Params::get(const std::string& name) const
 template <class T>
 inline rdo::intrusive_ptr<T> Context::cast()
 {
-	LPContext pThis = this;
-	rdo::intrusive_ptr<T> pThisResult = pThis.object_dynamic_cast<T>();
-	if (pThisResult)
-	{
-		return pThisResult;
-	}
-	LPContext pPrev = m_pContextStack->prev(pThis);
-	return pPrev ? pPrev->cast<T>() : rdo::intrusive_ptr<T>();
+    LPContext pThis = this;
+    rdo::intrusive_ptr<T> pThisResult = pThis.object_dynamic_cast<T>();
+    if (pThisResult)
+    {
+        return pThisResult;
+    }
+    LPContext pPrev = m_pContextStack->prev(pThis);
+    return pPrev ? pPrev->cast<T>() : rdo::intrusive_ptr<T>();
 }
 
 template <class T>
 inline rdo::interface_ptr<T> Context::interface_cast()
 {
-	LPContext pThis = this;
-	rdo::interface_ptr<T> pThisResult = pThis.interface_dynamic_cast<T>();
-	if (pThisResult)
-	{
-		return pThisResult;
-	}
-	LPContext pPrev = m_pContextStack->prev(pThis);
-	return pPrev ? pPrev->interface_cast<T>() : rdo::interface_ptr<T>();
+    LPContext pThis = this;
+    rdo::interface_ptr<T> pThisResult = pThis.interface_dynamic_cast<T>();
+    if (pThisResult)
+    {
+        return pThisResult;
+    }
+    LPContext pPrev = m_pContextStack->prev(pThis);
+    return pPrev ? pPrev->interface_cast<T>() : rdo::interface_ptr<T>();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

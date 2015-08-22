@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      app/rdo_studio/plugins/game5/src/tiles.h
-  \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
-  \date      22.09.2013
-  \brief     
-  \indent    4T
-*/
-
-#ifndef _RDO_PLUGIN_GAME_5_TILES_H_
-#define _RDO_PLUGIN_GAME_5_TILES_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -21,17 +11,15 @@ class Tile: public QPushButton
 {Q_OBJECT
 
 public:
-	Tile(int number, QWidget* pParent);
-	virtual ~Tile();
+    Tile(int number, QWidget* pParent);
+    virtual ~Tile();
 
 signals:
-	void tileClicked(int number);
+    void tileClicked(int number);
 
 private:
-	int tileNumber;
+    int tileNumber;
 
 private slots:
-	void reemitClicked();
+    void reemitClicked();
 };
-
-#endif // _RDO_PLUGIN_GAME_5_TILES_H_

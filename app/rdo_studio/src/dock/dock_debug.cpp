@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012-2012
-  \file      dock_debug.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      03.10.2012
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/application_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -18,14 +9,14 @@
 // --------------------------------------------------------------------------------
 
 DockDebug::DockDebug(QWidget* pParent)
-	: DockFocusable("Вывод", pParent)
+    : DockFocusable("Вывод", pParent)
 {
-	context_type* pWidget = new context_type(this);
-	pWidget->setMinimumSize(QSize(300, 110));
+    context_type* pWidget = new context_type(this);
+    pWidget->setMinimumSize(QSize(300, 110));
 
-	setWidget(pWidget);
+    setWidget(pWidget);
 
-	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_debug.png")));
+    toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_debug.png")));
 }
 
 DockDebug::~DockDebug()
@@ -33,15 +24,15 @@ DockDebug::~DockDebug()
 
 void DockDebug::appendString(const QString& str)
 {
-	getContext().appendLine(str);
+    getContext().appendLine(str);
 }
 
 void DockDebug::clear()
 {
-	getContext().clearAll();
+    getContext().clearAll();
 }
 
 DockDebug::context_type& DockDebug::getContext()
 {
-	return *static_cast<context_type*>(widget());
+    return *static_cast<context_type*>(widget());
 }

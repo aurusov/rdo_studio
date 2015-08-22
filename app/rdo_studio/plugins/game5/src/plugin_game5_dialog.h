@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      app/rdo_studio/plugins/game5/src/plugin_game5_dialog.h
-  \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
-  \date      22.09.2013
-  \brief     
-  \indent    4T
-*/
-
-#ifndef _RDO_PLUGIN_GAME_5_DIALOG_H_
-#define _RDO_PLUGIN_GAME_5_DIALOG_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -20,43 +10,49 @@
 // --------------------------------------------------------------------------------
 
 class PluginGame5GenerateSituationDialog
-	: public QDialog
-	, public Ui_PluginGame5GenerateSituationDialog
+    : public QDialog
+    , public Ui_PluginGame5GenerateSituationDialog
 {Q_OBJECT
 
 public:
-	PluginGame5GenerateSituationDialog(QWidget* parent);
-	~PluginGame5GenerateSituationDialog();
+    PluginGame5GenerateSituationDialog(QWidget* parent);
+    ~PluginGame5GenerateSituationDialog();
 
-	std::vector<unsigned int> getBoardState() const;
+    std::vector<unsigned int> getBoardState() const;
 
 signals:
-	void buttonRandomClicked(bool solvabilityCheck);
+    void buttonRandomClicked(bool solvabilityCheck);
 
 public slots:
-	void onPluginAction();
+    void onPluginAction();
 
 private:
-	std::string evaluateBy() const;
-	std::string activityValue(int direction) const;
+    std::string evaluateBy() const;
 
-	QString modelRTP() const;
-	QString modelRSS() const;
-	QString modelPAT() const;
-	QString modelDPT() const;
-	QString modelFUN() const;
+    enum class MoveDirection
+    {
+        UP,
+        DOWN,
+        RIGHT,
+        LEFT
+    };
+    std::string activityValue(MoveDirection direction) const;
 
-	void clearAllTabs() const;
-	rdo::gui::model::Model* getCurrentModel() const;
-	void generateModel() const;
+    QString modelRTP() const;
+    QString modelRSS() const;
+    QString modelPAT() const;
+    QString modelDPT() const;
+    QString modelFUN() const;
 
-	QStringList parseModelFUN() const;
+    void clearAllTabs() const;
+    rdo::gui::model::Model* getCurrentModel() const;
+    void generateModel() const;
+
+    QStringList parseModelFUN() const;
 
 private slots:
-	void callTilesOrderDialog();
-	void onClickOk();
-	void onClickHide(bool state);
-	void emitSolvabilityCheck();
+    void callTilesOrderDialog();
+    void onClickOk();
+    void onClickHide(bool state);
+    void emitSolvabilityCheck();
 };
-
-#endif // _RDO_PLUGIN_GAME_5_DIALOG_H_

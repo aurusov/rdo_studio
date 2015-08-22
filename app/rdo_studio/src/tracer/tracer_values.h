@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      tracer_values.h
-  \author    Захаров Павел
-  \date      11.03.2003
-  \brief     
-  \indent    4T
-*/
-
-#ifndef _RDO_STUDIO_TRACER_VALUES_H_
-#define _RDO_STUDIO_TRACER_VALUES_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -22,17 +12,17 @@ namespace rdo { namespace gui { namespace tracer {
 class Time
 {
 public:
-	Time(const double time = 0);
-	Time(const double time, const int eventCount);
+    Time(const double time = 0);
+    Time(const double time, const int eventCount);
 
-	double time;
-	int eventCount;
+    double time;
+    int eventCount;
 
-	Time& operator =(const Time& timeNow);
-	bool  operator ==(const Time& timeNow) const;
-	bool  operator !=(const Time& timeNow) const;
+    Time& operator =(const Time& timeNow);
+    bool  operator ==(const Time& timeNow) const;
+    bool  operator !=(const Time& timeNow) const;
 
-	bool  compareTimes(const Time* pTimeNow);
+    bool  compareTimes(const Time* pTimeNow);
 };
 
 // --------------------------------------------------------------------------------
@@ -41,19 +31,17 @@ public:
 class Value
 {
 public:
-	Value(Time* const pTimeNow, const int eventID, const double value);
-	~Value();
+    Value(Time* const pTimeNow, const int eventID, const double value);
+    ~Value();
 
-	double      getValue    () const;
-	Time* const getModelTime() const;
-	int         getEventID  () const;
+    double      getValue    () const;
+    Time* const getModelTime() const;
+    int         getEventID  () const;
 
 private:
-	double  m_value;
-	Time*   m_pModelTime;
-	int     m_eventID;
+    double  m_value;
+    Time*   m_pModelTime;
+    int     m_eventID;
 };
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_VALUES_H_

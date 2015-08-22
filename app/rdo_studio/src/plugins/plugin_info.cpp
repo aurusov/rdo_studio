@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      app/rdo_studio/src/plugins/plugininfo.cpp
-  \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
-  \date      22.09.2013
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/plugin_loader_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -15,15 +6,15 @@
 // --------------------------------------------------------------------------------
 
 PluginInfo::PluginInfo(const QString& name, QPluginLoader* loader, bool  autoload,
-	                   const QUuid&   GUID, const QString& author, const QString& version, int state)
-	: pluginName    (name)
-	, pluginLoader  (loader)
-	, pluginAutoload(autoload)
-	, pluginGUID    (GUID)
-	, pluginAuthor  (author)
-	, pluginVersion (version)
-	, pluginState   (state)
-	, pluginIsActive(false)
+                       const QUuid&   GUID, const QString& author, const QString& version, PluginInfo::State state)
+    : pluginName    (name)
+    , pluginLoader  (loader)
+    , pluginAutoload(autoload)
+    , pluginGUID    (GUID)
+    , pluginAuthor  (author)
+    , pluginVersion (version)
+    , pluginState   (state)
+    , pluginIsActive(false)
 {}
 
 PluginInfo::~PluginInfo()
@@ -31,80 +22,80 @@ PluginInfo::~PluginInfo()
 
 const QString& PluginInfo::getName() const
 {
-	return pluginName;
+    return pluginName;
 }
 
 QPluginLoader* PluginInfo::getLoader()
 {
-	return pluginLoader;
+    return pluginLoader;
 }
 
 bool PluginInfo::getAutoload() const
 {
-	return pluginAutoload;
+    return pluginAutoload;
 }
 
 const QUuid& PluginInfo::getGUID() const
 {
-	return pluginGUID;
+    return pluginGUID;
 }
 
-int PluginInfo::getState() const
+PluginInfo::State PluginInfo::getState() const
 {
-	return pluginState;
+    return pluginState;
 }
 
 const QString& PluginInfo::getVersion() const
 {
-	return pluginVersion;
+    return pluginVersion;
 }
 
 const QString& PluginInfo::getAuthor() const
 {
-	return pluginAuthor;
+    return pluginAuthor;
 }
 
-void PluginInfo::setState(int value)
+void PluginInfo::setState(PluginInfo::State value)
 {
-	pluginState = value;
+    pluginState = value;
 }
 
 void PluginInfo::setAutoload(bool value)
 {
-	pluginAutoload = value;
+    pluginAutoload = value;
 }
 
 bool PluginInfo::isActive() const
 {
-	return pluginIsActive;
+    return pluginIsActive;
 }
 
 void PluginInfo::setActive(bool value)
 {
-	pluginIsActive = value;
+    pluginIsActive = value;
 }
 
 bool PluginInfo::pluginSignInfoIsEqual(const PluginInfo& pluginInfo)
 {
-	return pluginName    == pluginInfo.getName() &&
-	       pluginAuthor  == pluginInfo.getAuthor() &&
-	       pluginVersion == pluginInfo.getVersion();
+    return pluginName    == pluginInfo.getName() &&
+           pluginAuthor  == pluginInfo.getAuthor() &&
+           pluginVersion == pluginInfo.getVersion();
 }
 
 bool PluginInfo::isAvailable() const
 {
-	return !(pluginState == rdo::plugin::Deleted ||
-	         pluginState == rdo::plugin::IdOnlyMatched);
+    return !(pluginState == State::DELETED ||
+             pluginState == State::ID_ONLY_MATCHED);
 }
 
 bool PluginInfo::operator==(const PluginInfo& other)
 {
-	return pluginName     == other.pluginName     &&
-	       pluginVersion  == other.pluginVersion  &&
-	       pluginAuthor   == other.pluginAuthor   &&
-	       pluginAutoload == other.pluginAutoload &&
-	       pluginIsActive == other.pluginIsActive &&
-	       pluginGUID     == other.pluginGUID     &&
-	       pluginState    == other.pluginState    &&
-	       pluginLoader   == other.pluginLoader;
+    return pluginName     == other.pluginName     &&
+           pluginVersion  == other.pluginVersion  &&
+           pluginAuthor   == other.pluginAuthor   &&
+           pluginAutoload == other.pluginAutoload &&
+           pluginIsActive == other.pluginIsActive &&
+           pluginGUID     == other.pluginGUID     &&
+           pluginState    == other.pluginState    &&
+           pluginLoader   == other.pluginLoader;
 }

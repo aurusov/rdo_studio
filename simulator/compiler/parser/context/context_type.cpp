@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      context_type.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      30.10.2010
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -21,12 +12,12 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- TypeContext
 // --------------------------------------------------------------------------------
 TypeContext::TypeContext(const LPTypeInfo& pType)
-	: m_pType(pType)
+    : m_pType(pType)
 {}
 
 const LPTypeInfo& TypeContext::getTypeInfo() const
 {
-	return m_pType;
+    return m_pType;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

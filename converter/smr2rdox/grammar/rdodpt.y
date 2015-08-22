@@ -453,6 +453,7 @@ dp_searcht_compare
     ;
 
 dpt_search_descr_param
+<<<<<<< HEAD
     : '*'
     {
         CONVERTER->getLastDPTSearch()->getLastActivity()->addParam(
@@ -463,11 +464,15 @@ dpt_search_descr_param
     {
         CONVERTER->getLastDPTSearch()->getLastActivity()->addParam(CONVERTER->stack().pop<RDOFUNArithm>($1)->value());
     }
+=======
+    : /* empty */
+>>>>>>> drobus/dev
     | dpt_search_descr_param '*'
     {
         CONVERTER->getLastDPTSearch()->getLastActivity()->addParam(
             rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@2, "*"))
         );
+<<<<<<< HEAD
 
         LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
             @1.m_last_seek,
@@ -475,10 +480,13 @@ dpt_search_descr_param
         );
         ASSERT(pCommaInsert);
         CONVERTER->insertDocUpdate(pCommaInsert);
+=======
+>>>>>>> drobus/dev
     }
     | dpt_search_descr_param fun_arithm
     {
         CONVERTER->getLastDPTSearch()->getLastActivity()->addParam(CONVERTER->stack().pop<RDOFUNArithm>($2)->value());
+<<<<<<< HEAD
 
         LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
             @1.m_last_seek,
@@ -486,6 +494,8 @@ dpt_search_descr_param
         );
         ASSERT(pCommaInsert);
         CONVERTER->insertDocUpdate(pCommaInsert);
+=======
+>>>>>>> drobus/dev
     }
     | dpt_search_descr_param error
     {
@@ -546,6 +556,7 @@ dpt_searcht_activity
     {
         $$ = CONVERTER->stack().push(LPRDODPTActivity());
     }
+<<<<<<< HEAD
     | dpt_searcht_activity dpt_search_name dpt_search_descr_value
     {
         LPRDODPTActivity pActivity = CONVERTER->stack().pop<RDODPTActivity>($2);
@@ -559,11 +570,14 @@ dpt_searcht_activity
         ASSERT(pSemicolonInsert);
         CONVERTER->insertDocUpdate(pSemicolonInsert);
     }
+=======
+>>>>>>> drobus/dev
     | dpt_searcht_activity dpt_search_name dpt_search_descr_param dpt_search_descr_value
     {
         LPRDODPTActivity pActivity = CONVERTER->stack().pop<RDODPTActivity>($2);
         ASSERT(pActivity)
         pActivity->endParam(@3);
+<<<<<<< HEAD
 
         LPDocUpdate pLeftBracketInsert = rdo::Factory<UpdateInsert>::create(
             @3.m_first_seek,
@@ -585,6 +599,8 @@ dpt_searcht_activity
         );
         ASSERT(pSemicolonInsert);
         CONVERTER->insertDocUpdate(pSemicolonInsert);
+=======
+>>>>>>> drobus/dev
     }
     | dpt_searcht_activity dpt_search_name dpt_search_descr_param error
     {
@@ -778,7 +794,12 @@ dpt_some_name
     ;
 
 dpt_some_descr_keyb
+<<<<<<< HEAD
     : dpt_some_descr_keyb '+' RDO_STRING_CONST
+=======
+    : /* empty */
+    | dpt_some_descr_keyb '+' RDO_STRING_CONST
+>>>>>>> drobus/dev
     {
         LPRDODPTActivityHotKey pActivityHotKey = CONVERTER->getLastDPTSome()->getLastActivity();
         ASSERT(pActivityHotKey);
@@ -795,6 +816,7 @@ dpt_some_descr_keyb
     ;
 
 dpt_some_descr_param
+<<<<<<< HEAD
     : '*'
     {
         CONVERTER->getLastDPTSome()->getLastActivity()->addParam(
@@ -805,11 +827,15 @@ dpt_some_descr_param
     {
         CONVERTER->getLastDPTSome()->getLastActivity()->addParam(CONVERTER->stack().pop<RDOFUNArithm>($1)->value());
     }
+=======
+    : /* empty */
+>>>>>>> drobus/dev
     | dpt_some_descr_param '*'
     {
         CONVERTER->getLastDPTSome()->getLastActivity()->addParam(
             rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@2, "*"))
         );
+<<<<<<< HEAD
 
         LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
             @1.m_last_seek,
@@ -817,10 +843,13 @@ dpt_some_descr_param
         );
         ASSERT(pCommaInsert);
         CONVERTER->insertDocUpdate(pCommaInsert);
+=======
+>>>>>>> drobus/dev
     }
     | dpt_some_descr_param fun_arithm
     {
         CONVERTER->getLastDPTSome()->getLastActivity()->addParam(CONVERTER->stack().pop<RDOFUNArithm>($2)->value());
+<<<<<<< HEAD
 
         LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
             @1.m_last_seek,
@@ -828,6 +857,8 @@ dpt_some_descr_param
         );
         ASSERT(pCommaInsert);
         CONVERTER->insertDocUpdate(pCommaInsert);
+=======
+>>>>>>> drobus/dev
     }
     | dpt_some_descr_param error
     {
@@ -840,6 +871,7 @@ dpt_some_activity
     {
         $$ = CONVERTER->stack().push(LPRDODPTActivity());
     }
+<<<<<<< HEAD
     | dpt_some_activity dpt_some_name
     {
         LPRDODPTActivity pActivity = CONVERTER->stack().pop<RDODPTSomeActivity>($2);
@@ -896,12 +928,15 @@ dpt_some_activity
         ASSERT(pRightBracketAndSemicolonInsert);
         CONVERTER->insertDocUpdate(pRightBracketAndSemicolonInsert);
     }
+=======
+>>>>>>> drobus/dev
     | dpt_some_activity dpt_some_name dpt_some_descr_keyb dpt_some_descr_param
     {
         LPRDODPTActivity pActivity = CONVERTER->stack().pop<RDODPTSomeActivity>($2);
         ASSERT(pActivity);
         pActivity->endParam(@3);
         $$ = CONVERTER->stack().push(pActivity);
+<<<<<<< HEAD
 
         LPDocUpdate pLeftBracketInsert = rdo::Factory<UpdateInsert>::create(
             @3.m_first_seek,
@@ -923,6 +958,8 @@ dpt_some_activity
         );
         ASSERT(pRightBracketAndSemicolonInsert);
         CONVERTER->insertDocUpdate(pRightBracketAndSemicolonInsert);
+=======
+>>>>>>> drobus/dev
     }
     ;
 
@@ -1112,7 +1149,12 @@ dpt_prior_name
     ;
 
 dpt_prior_descr_keyb
+<<<<<<< HEAD
     : dpt_prior_descr_keyb '+' RDO_STRING_CONST
+=======
+    : /* empty */
+    | dpt_prior_descr_keyb '+' RDO_STRING_CONST
+>>>>>>> drobus/dev
     {
         LPRDODPTActivityHotKey pActivityHotKey = CONVERTER->getLastDPTPrior()->getLastActivity();
         ASSERT(pActivityHotKey);
@@ -1129,6 +1171,7 @@ dpt_prior_descr_keyb
     ;
 
 dpt_prior_descr_param
+<<<<<<< HEAD
     : '*'
     {
         CONVERTER->getLastDPTPrior()->getLastActivity()->addParam(
@@ -1139,11 +1182,15 @@ dpt_prior_descr_param
     {
         CONVERTER->getLastDPTPrior()->getLastActivity()->addParam(CONVERTER->stack().pop<RDOFUNArithm>($1)->value());
     }
+=======
+    : /* empty */
+>>>>>>> drobus/dev
     | dpt_prior_descr_param '*'
     {
         CONVERTER->getLastDPTPrior()->getLastActivity()->addParam(
             rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@2, "*"))
         );
+<<<<<<< HEAD
 
         LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
             @1.m_last_seek,
@@ -1151,10 +1198,13 @@ dpt_prior_descr_param
         );
         ASSERT(pCommaInsert);
         CONVERTER->insertDocUpdate(pCommaInsert);
+=======
+>>>>>>> drobus/dev
     }
     | dpt_prior_descr_param fun_arithm
     {
         CONVERTER->getLastDPTPrior()->getLastActivity()->addParam(CONVERTER->stack().pop<RDOFUNArithm>($2)->value());
+<<<<<<< HEAD
 
         LPDocUpdate pCommaInsert = rdo::Factory<UpdateInsert>::create(
             @1.m_last_seek,
@@ -1162,6 +1212,8 @@ dpt_prior_descr_param
         );
         ASSERT(pCommaInsert);
         CONVERTER->insertDocUpdate(pCommaInsert);
+=======
+>>>>>>> drobus/dev
     }
     | dpt_prior_descr_param error
     {
@@ -1195,6 +1247,7 @@ dpt_prior_activity
     {
         $$ = CONVERTER->stack().push(LPRDODPTActivity());
     }
+<<<<<<< HEAD
     | dpt_prior_activity dpt_prior_name dpt_prior_activ_prior
     {
         LPRDODPTActivity pActivity = CONVERTER->stack().pop<RDODPTSomeActivity>($2);
@@ -1265,12 +1318,15 @@ dpt_prior_activity
         ASSERT(pSemicolonInsert);
         CONVERTER->insertDocUpdate(pSemicolonInsert);
     }
+=======
+>>>>>>> drobus/dev
     | dpt_prior_activity dpt_prior_name dpt_prior_descr_keyb dpt_prior_descr_param dpt_prior_activ_prior
     {
         LPRDODPTActivity pActivity = CONVERTER->stack().pop<RDODPTSomeActivity>($2);
         ASSERT(pActivity);
         pActivity->endParam(@3);
         $$ = CONVERTER->stack().push(pActivity);
+<<<<<<< HEAD
 
         LPDocUpdate pLeftBracketInsert = rdo::Factory<UpdateInsert>::create(
             @3.m_first_seek,
@@ -1299,6 +1355,8 @@ dpt_prior_activity
         );
         ASSERT(pSemicolonInsert);
         CONVERTER->insertDocUpdate(pSemicolonInsert);
+=======
+>>>>>>> drobus/dev
     }
     ;
 

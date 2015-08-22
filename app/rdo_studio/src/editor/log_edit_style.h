@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      log_edit_style.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      28.02.2003
-  \brief     
-  \indent    4T
-*/
-
-#ifndef _RDO_STUDIO_EDITOR_LOG_EDIT_STYLE_H_
-#define _RDO_STUDIO_EDITOR_LOG_EDIT_STYLE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -23,24 +13,22 @@ namespace rdo { namespace gui { namespace editor {
 class LogStyle: public EditStyle
 {
 public:
-	LogStyle();
-	~LogStyle();
+    LogStyle();
+    ~LogStyle();
 
-	LogStyle& operator =( const LogStyle& style );
-	bool operator ==( const LogStyle& style ) const;
-	bool operator !=( const LogStyle& style ) const;
+    LogStyle& operator =( const LogStyle& style );
+    bool operator ==( const LogStyle& style ) const;
+    bool operator !=( const LogStyle& style ) const;
 
-	static LogStyle getDefaultStyle();
-	static LogStyle getClassicStyle();
-	static LogStyle getTwilightStyle();
-	static LogStyle getOceanStyle();
+    static LogStyle getDefaultStyle();
+    static LogStyle getClassicStyle();
+    static LogStyle getTwilightStyle();
+    static LogStyle getOceanStyle();
 
-	QColor selectLineBgColor;
+    QColor selectLineBgColor;
 };
 
 QSettings& operator<< (QSettings& settings, const LogStyle& style);
 QSettings& operator>> (QSettings& settings,       LogStyle& style);
 
 }}} // namespace rdo::gui::editor
-
-#endif // _RDO_STUDIO_EDITOR_LOG_EDIT_STYLE_H_

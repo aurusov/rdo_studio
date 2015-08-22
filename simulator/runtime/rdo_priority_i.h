@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_priority_i.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      01.08.2009
-  \brief     Интерфейс IPriority
-  \indent    4T
-*/
-
-#ifndef _LIB_RUNTIME_PRIORITY_I_H_
-#define _LIB_RUNTIME_PRIORITY_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -22,20 +12,14 @@ PREDECLARE_POINTER(RDOCalc)
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \interface IPriority
-  \brief     Интерфейс IPriority
-*/
 class IPriority: public virtual rdo::counter_reference
 {
 public:
-	virtual rdo::runtime::LPRDOCalc getPrior()                   = 0;
-	virtual bool setPrior(const rdo::runtime::LPRDOCalc& pPrior) = 0;
+    virtual rdo::runtime::LPRDOCalc getPrior()                   = 0;
+    virtual bool setPrior(const rdo::runtime::LPRDOCalc& pPrior) = 0;
 };
 DECLARE_POINTER(IPriority)
 
 #define DECLARE_IPriority                       \
-	virtual rdo::runtime::LPRDOCalc getPrior(); \
-	virtual bool setPrior(const rdo::runtime::LPRDOCalc& pPrior);
-
-#endif // _LIB_RUNTIME_PRIORITY_I_H_
+    virtual rdo::runtime::LPRDOCalc getPrior(); \
+    virtual bool setPrior(const rdo::runtime::LPRDOCalc& pPrior);

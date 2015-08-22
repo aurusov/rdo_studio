@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_relevant.cpp
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      16.04.2011
-  \brief     RDOCalc для подбора релевантных ресурсов
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -25,38 +15,38 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOGetResourceByRelevantResourceID
 // --------------------------------------------------------------------------------
 RDOGetResourceByRelevantResourceID::RDOGetResourceByRelevantResourceID(std::size_t relevantResourceID)
-	: m_relevantResourceID(relevantResourceID)
+    : m_relevantResourceID(relevantResourceID)
 {}
 
 RDOValue RDOGetResourceByRelevantResourceID::doCalc(const LPRDORuntime& pRuntime)
 {
-	RDOValue value;
-	if (!RDOCalcGetResourceHelper::getResource(pRuntime, pRuntime->getCurrentActivity()->getResByRelRes(m_relevantResourceID), value))
-	{
-		pRuntime->error().push("Не найден ресурс", srcInfo());
-	}
-	return value;
+    RDOValue value;
+    if (!RDOCalcGetResourceHelper::getResource(pRuntime, pRuntime->getCurrentActivity()->getResByRelRes(m_relevantResourceID), value))
+    {
+        pRuntime->error().push("Не найден ресурс", srcInfo());
+    }
+    return value;
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEraseResRelCalc
 // --------------------------------------------------------------------------------
 RDOEraseResRelCalc::RDOEraseResRelCalc(std::size_t relResID, const std::string& relResName)
-	: m_relResID  (relResID  )
-	, m_relResName(relResName)
+    : m_relResID  (relResID  )
+    , m_relResName(relResName)
 {}
 
 RDOValue RDOEraseResRelCalc::doCalc(const LPRDORuntime& pRuntime)
 {
-	std::size_t resId = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
-	LPRDOResource pResource = pRuntime->getResourceByID(resId);
-	pResource->onDestroy(pRuntime, this);
-	return RDOValue();
+    std::size_t resId = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
+    LPRDOResource pResource = pRuntime->getResourceByID(resId);
+    pResource->onDestroy(pRuntime, this);
+    return RDOValue();
 }
 
 const std::string& RDOEraseResRelCalc::getName() const
 {
-	return m_relResName;
+    return m_relResName;
 }
 
 // --------------------------------------------------------------------------------
@@ -67,13 +57,13 @@ RDOCalcGetGroupFunctionResource::RDOCalcGetGroupFunctionResource()
 
 RDOValue RDOCalcGetGroupFunctionResource::doCalc(const LPRDORuntime& pRuntime)
 {
-	LPRDOResource pResource = pRuntime->getGroupFuncRes();
-	ASSERT(pResource);
+    LPRDOResource pResource = pRuntime->getGroupFuncRes();
+    ASSERT(pResource);
 
-	LPRDOType pType(pResource->getResType());
-	ASSERT(pType);
+    LPRDOType pType(pResource->getResType());
+    ASSERT(pType);
 
-	return RDOValue(pType, pResource);
+    return RDOValue(pType, pResource);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

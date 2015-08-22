@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      tracer_logger_view_style.h
-  \author    Захаров Павел
-  \date      12.03.2003
-  \brief     
-  \indent    4T
-*/
-
-#ifndef _RDO_STUDIO_TRACER_LOGGER_VIEW_STYLE_H_
-#define _RDO_STUDIO_TRACER_LOGGER_VIEW_STYLE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -26,18 +16,18 @@ namespace rdo { namespace gui { namespace tracer {
 class LogColorPair
 {
 public:
-	LogColorPair();
-	virtual ~LogColorPair();
+    LogColorPair();
+    virtual ~LogColorPair();
 
-	LogColorPair& operator =( const LogColorPair& colors );
-	bool operator ==( const LogColorPair& colors ) const;
-	bool operator !=( const LogColorPair& colors ) const;
+    LogColorPair& operator =(const LogColorPair& colors);
+    bool operator ==(const LogColorPair& colors) const;
+    bool operator !=(const LogColorPair& colors) const;
 
-	void load(QSettings& settings, QString regParam);
-	void save(QSettings& settings, QString regParam) const;
+    void load(QSettings& settings, QString regParam);
+    void save(QSettings& settings, QString regParam) const;
 
-	QColor foregroundColor;
-	QColor backgroundColor;
+    QColor foregroundColor;
+    QColor backgroundColor;
 };
 
 // --------------------------------------------------------------------------------
@@ -46,18 +36,18 @@ public:
 class LogBorders
 {
 public:
-	LogBorders();
-	virtual ~LogBorders();
+    LogBorders();
+    virtual ~LogBorders();
 
-	LogBorders& operator =( const LogBorders& borders );
-	bool operator ==( const LogBorders& borders ) const;
-	bool operator !=( const LogBorders& borders ) const;
+    LogBorders& operator =(const LogBorders& borders);
+    bool operator ==(const LogBorders& borders) const;
+    bool operator !=(const LogBorders& borders) const;
 
-	void load(QSettings& settings);
-	void save(QSettings& settings) const;
+    void load(QSettings& settings);
+    void save(QSettings& settings) const;
 
-	int vertBorder;
-	int horzBorder;
+    int vertBorder;
+    int horzBorder;
 };
 
 QSettings& operator<< (QSettings& settings, const LogBorders& border);
@@ -69,56 +59,54 @@ QSettings& operator>> (QSettings& settings,       LogBorders& border);
 class LogStyle: public style::StyleBase
 {
 public:
-	LogStyle();
-	~LogStyle();
+    LogStyle();
+    ~LogStyle();
 
-	virtual bool getItemColors(int index, LogColorPair &colors) const;
-	virtual bool getItemColors(const std::string& item, LogColorPair &colors) const;
+    virtual bool getItemColors(int index, LogColorPair &colors) const;
+    virtual bool getItemColors(const std::string& item, LogColorPair &colors) const;
 
-	LogStyle& operator =( const LogStyle& style );
-	bool operator ==( const LogStyle& style ) const;
-	bool operator !=( const LogStyle& style ) const;
+    LogStyle& operator =(const LogStyle& style);
+    bool operator ==(const LogStyle& style) const;
+    bool operator !=(const LogStyle& style) const;
 
-	static LogStyle getDefaultStyle();
+    static LogStyle getDefaultStyle();
 
-	style::StyleFont::style fontStyle;
+    style::StyleFont::Style fontStyle;
 
-	LogColorPair defaultColor;
-	LogColorPair es;
-	LogColorPair eb;
-	LogColorPair ef;
-	LogColorPair ei;
-	LogColorPair er;
-	LogColorPair rc;
-	LogColorPair re;
-	LogColorPair rk;
-	LogColorPair v;
-	LogColorPair s;
-	LogColorPair dps;
-	LogColorPair sb;
-	LogColorPair so;
-	LogColorPair stn;
-	LogColorPair std;
-	LogColorPair str;
-	LogColorPair src;
-	LogColorPair sre;
-	LogColorPair srk;
-	LogColorPair sd;
-	LogColorPair ses;
-	LogColorPair sen;
-	LogColorPair sem;
-	LogColorPair sef;
-	LogColorPair seu;
+    LogColorPair defaultColor;
+    LogColorPair es;
+    LogColorPair eb;
+    LogColorPair ef;
+    LogColorPair ei;
+    LogColorPair er;
+    LogColorPair rc;
+    LogColorPair re;
+    LogColorPair rk;
+    LogColorPair v;
+    LogColorPair s;
+    LogColorPair dps;
+    LogColorPair sb;
+    LogColorPair so;
+    LogColorPair stn;
+    LogColorPair std;
+    LogColorPair str;
+    LogColorPair src;
+    LogColorPair sre;
+    LogColorPair srk;
+    LogColorPair sd;
+    LogColorPair ses;
+    LogColorPair sen;
+    LogColorPair sem;
+    LogColorPair sef;
+    LogColorPair seu;
 
-	LogBorders borders;
+    LogBorders borders;
 
 private:
-	bool getDefaultColor(LogColorPair &colors) const;
+    bool getDefaultColor(LogColorPair &colors) const;
 };
 
 QSettings& operator<< (QSettings& settings, const LogStyle& style);
 QSettings& operator>> (QSettings& settings,       LogStyle& style);
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_LOGGER_VIEW_STYLE_H_

@@ -1,15 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_choice_from.h
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      13.03.2011
-  \brief     RDOCalc для подбора релевантных ресурсов и создания ресурсов
-  \indent    4T
-*/
-
-#ifndef _LIB_RUNTIME_CALC_RESOURCE_CHOICE_FROM_H_
-#define _LIB_RUNTIME_CALC_RESOURCE_CHOICE_FROM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -19,140 +8,129 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Выбор ресурсов
 PREDECLARE_POINTER(RDOSelectResourceCalc);
 class RDOSelectResourceCalc: public RDOCalc
 {
 public:
-	//! Способ выбора релевантного ресурса
-	enum Type
-	{
-		order_empty = 0, //!< Способ выбора не задан
-		order_first,     //!< Первый попавшийся (без предварительной сортировки)
-		order_with_min,  //!< С минимальным значением выражения
-		order_with_max   //!< С максимальным значением выражения
-	};
+    enum class Type
+    {
+        EMPTY = 0,
+        FIRST,
+        WITH_MIN,
+        WITH_MAX
+    };
 
-	typedef std::size_t ResourceID;
-	typedef std::vector<ResourceID> ResourceIDList;
-	typedef std::vector<ResourceIDList> ResourceIDTable;
+    typedef std::size_t ResourceID;
+    typedef std::vector<ResourceID> ResourceIDList;
+    typedef std::vector<ResourceIDList> ResourceIDTable;
 
 protected:
-	RDOSelectResourceCalc(ResourceID relResID, const LPRDOCalc& pCalcChoiceFrom, const LPRDOCalc& pCalcOrder, Type orderType = order_empty);
+    RDOSelectResourceCalc(ResourceID relResID, const LPRDOCalc& pCalcChoiceFrom, const LPRDOCalc& pCalcOrder, Type orderType = Type::EMPTY);
 
-	ResourceID  m_relResID;
-	LPRDOCalc   m_pCalcChoiceFrom;
-	LPRDOCalc   m_pCalcOrder;
-	Type        m_orderType;
+    ResourceID  m_relResID;
+    LPRDOCalc   m_pCalcChoiceFrom;
+    LPRDOCalc   m_pCalcOrder;
+    Type        m_orderType;
 };
 
-//! RDOCalc для оператора !Exist()
 PREDECLARE_POINTER(RDOSelectResourceNonExistCalc);
 class RDOSelectResourceNonExistCalc: public RDOSelectResourceCalc
 {
 DECLARE_FACTORY(RDOSelectResourceNonExistCalc)
 private:
-	RDOSelectResourceNonExistCalc(ResourceID relResID);
-	DECLARE_ICalc;
+    RDOSelectResourceNonExistCalc(ResourceID relResID);
+    DECLARE_ICalc;
 };
 
-//! Выбор релевантного ресурса по имени ресурса
 PREDECLARE_POINTER(RDOSelectResourceDirectCalc);
 class RDOSelectResourceDirectCalc: public RDOSelectResourceCalc
 {
 DECLARE_FACTORY(RDOSelectResourceDirectCalc)
 protected:
-	RDOSelectResourceDirectCalc(ResourceID relResID, ResourceID resID, const LPRDOCalc& pCalcChoiceFrom = NULL, const LPRDOCalc& pCalcOrder = NULL, Type orderType = order_empty);
+    RDOSelectResourceDirectCalc(ResourceID relResID, ResourceID resID, const LPRDOCalc& pCalcChoiceFrom = NULL, const LPRDOCalc& pCalcOrder = NULL, Type orderType = Type::EMPTY);
 
-	ResourceID m_resID;
+    ResourceID m_resID;
 
-	virtual bool compare(const LPRDOCalc& pCalc) const;
+    virtual bool compare(const LPRDOCalc& pCalc) const;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
-//! Выбор релевантного ресурса по типу
 PREDECLARE_POINTER(RDOSelectResourceByTypeCalc);
 class RDOSelectResourceByTypeCalc: public RDOSelectResourceCalc
 {
 DECLARE_FACTORY(RDOSelectResourceByTypeCalc)
 protected:
-	RDOSelectResourceByTypeCalc(ResourceID relResID, ResourceID resTypeID, const LPRDOCalc& pChoiceCalc = NULL, const LPRDOCalc& pOrderCalc = NULL, Type orderType = order_empty);
+    RDOSelectResourceByTypeCalc(ResourceID relResID, ResourceID resTypeID, const LPRDOCalc& pChoiceCalc = NULL, const LPRDOCalc& pOrderCalc = NULL, Type orderType = Type::EMPTY);
 
-	ResourceID m_resTypeID;
+    ResourceID m_resTypeID;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
-//! Интерфейс для выбора релевантных ресурсов
 PREDECLARE_OBJECT_INTERFACE(IRDOSelectResourceCommon)
 struct IRDOSelectResourceCommon: public rdo::RefCounter<IRDOSelectResourceCommon>
 {
 DECLARE_FACTORY(IRDOSelectResourceCommon)
 public:
-	virtual void getPossibleNumbers(const LPRDORuntime& pRuntime,
-	                                RDOSelectResourceCalc::ResourceIDList& resourceIDList) const = 0;
-	virtual bool callChoice(const LPRDORuntime& pRuntime) const = 0;
+    virtual void getPossibleNumbers(const LPRDORuntime& pRuntime,
+                                    RDOSelectResourceCalc::ResourceIDList& resourceIDList) const = 0;
+    virtual bool callChoice(const LPRDORuntime& pRuntime) const = 0;
 
 protected:
-	IRDOSelectResourceCommon();
-	virtual ~IRDOSelectResourceCommon();
+    IRDOSelectResourceCommon();
+    virtual ~IRDOSelectResourceCommon();
 };
 
-//! Выбор
 PREDECLARE_POINTER(RDOSelectResourceCommonCalc);
 class RDOSelectResourceCommonCalc: public RDOCalc
 {
 DECLARE_FACTORY(RDOSelectResourceCommonCalc)
 private:
-	typedef  std::vector<LPIRDOSelectResourceCommon>  SelectResourceCommonList;
-	typedef  RDOSelectResourceCalc::ResourceIDList    ResourceIDList;
-	typedef  RDOSelectResourceCalc::ResourceIDTable   ResourceIDTable;
+    typedef  std::vector<LPIRDOSelectResourceCommon>  SelectResourceCommonList;
+    typedef  RDOSelectResourceCalc::ResourceIDList    ResourceIDList;
+    typedef  RDOSelectResourceCalc::ResourceIDTable   ResourceIDTable;
 
-	RDOSelectResourceCommonCalc(const SelectResourceCommonList& resSelectorList, bool useCommonWithMax, const LPRDOCalc& pCalcChoiceFrom);
+    RDOSelectResourceCommonCalc(const SelectResourceCommonList& resSelectorList, bool useCommonWithMax, const LPRDOCalc& pCalcChoiceFrom);
 
-	LPRDOCalc m_pCalcChoiceFrom;
-	SelectResourceCommonList m_resSelectorList;
-	bool m_useCommonWithMax;
+    LPRDOCalc m_pCalcChoiceFrom;
+    SelectResourceCommonList m_resSelectorList;
+    bool m_useCommonWithMax;
 
-	void getBest(ResourceIDTable& allNumbs, std::size_t level, ResourceIDList& res, RDOValue& bestVal, const LPRDORuntime& pRuntime, bool& hasBest) const;
-	bool getFirst(ResourceIDTable& allNumbs, std::size_t level, const LPRDORuntime& pRuntime) const;
+    void getBest(ResourceIDTable& allNumbs, std::size_t level, ResourceIDList& res, RDOValue& bestVal, const LPRDORuntime& pRuntime, bool& hasBest) const;
+    bool getFirst(ResourceIDTable& allNumbs, std::size_t level, const LPRDORuntime& pRuntime) const;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
-//! Выбор по имени ресурса
 PREDECLARE_POINTER(RDOSelectResourceDirectCommonCalc);
 class RDOSelectResourceDirectCommonCalc
-	: public RDOSelectResourceDirectCalc
-	, public IRDOSelectResourceCommon
+    : public RDOSelectResourceDirectCalc
+    , public IRDOSelectResourceCommon
 {
 DECLARE_FACTORY(RDOSelectResourceDirectCommonCalc)
 public:
-	virtual void getPossibleNumbers(const LPRDORuntime& pRuntime, ResourceIDList& resourceIDList) const;
-	virtual bool callChoice (const LPRDORuntime& pRuntime) const;
+    virtual void getPossibleNumbers(const LPRDORuntime& pRuntime, ResourceIDList& resourceIDList) const;
+    virtual bool callChoice (const LPRDORuntime& pRuntime) const;
 
 private:
-	RDOSelectResourceDirectCommonCalc(ResourceID relResID, ResourceID resID, const LPRDOCalc& pCalcChoiceFrom = NULL, const LPRDOCalc& pCalcOrder = NULL, Type orderType = order_empty);
-	virtual ~RDOSelectResourceDirectCommonCalc();
+    RDOSelectResourceDirectCommonCalc(ResourceID relResID, ResourceID resID, const LPRDOCalc& pCalcChoiceFrom = NULL, const LPRDOCalc& pCalcOrder = NULL, Type orderType = Type::EMPTY);
+    virtual ~RDOSelectResourceDirectCommonCalc();
 };
 
-//! Выбор по типу
 PREDECLARE_POINTER(RDOSelectResourceByTypeCommonCalc);
 class RDOSelectResourceByTypeCommonCalc
-	: public RDOSelectResourceByTypeCalc
-	, public IRDOSelectResourceCommon
+    : public RDOSelectResourceByTypeCalc
+    , public IRDOSelectResourceCommon
 {
 DECLARE_FACTORY(RDOSelectResourceByTypeCommonCalc)
 public:
-	virtual void getPossibleNumbers(const LPRDORuntime& pRuntime, ResourceIDList& resourceIDList) const;
-	virtual bool callChoice(const LPRDORuntime& pRuntime) const;
+    virtual void getPossibleNumbers(const LPRDORuntime& pRuntime, ResourceIDList& resourceIDList) const;
+    virtual bool callChoice(const LPRDORuntime& pRuntime) const;
 
 private:
-	RDOSelectResourceByTypeCommonCalc(ResourceID relResID, ResourceID resTypeID, const LPRDOCalc& pChoiceCalc = NULL, const LPRDOCalc& pOrderCalc = NULL, Type orderType = order_empty);
-	virtual ~RDOSelectResourceByTypeCommonCalc();
+    RDOSelectResourceByTypeCommonCalc(ResourceID relResID, ResourceID resTypeID, const LPRDOCalc& pChoiceCalc = NULL, const LPRDOCalc& pOrderCalc = NULL, Type orderType = Type::EMPTY);
+    virtual ~RDOSelectResourceByTypeCommonCalc();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_CALC_RESOURCE_CHOICE_FROM_H_

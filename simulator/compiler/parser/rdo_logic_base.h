@@ -1,15 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      simulator/compiler/parser/rdo_logic_base.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Клеванец Игорь (impus@hotbox.ru)
-  \date      5.02.2012
-  \brief     Базовый класс для точек принятия решений
-  \indent    4T
-*/
-
-#ifndef _PARSER_LOGIC_BASE_H_
-#define _PARSER_LOGIC_BASE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -20,29 +9,27 @@ OPEN_RDO_PARSER_NAMESPACE
 
 PREDECLARE_POINTER(RDOLogicBase);
 class RDOLogicBase
-	: public virtual rdo::counter_reference
-	, public RDOParserSrcInfo
+    : public virtual rdo::counter_reference
+    , public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOLogicBase);
 public:
-	const std::string& name () const;
-	bool setPrior(LPRDOFUNArithm& pPrior);
-	bool getMultithreading() const;
-	void setMultithreading(bool multithreading = false);
-	void setCondition(const LPRDOFUNLogic& pConditon = NULL);
-	LPRDOFUNLogic getConditon() const;
-	LPILogic getLogic() const;
-	virtual void end();
+    const std::string& name () const;
+    bool setPrior(LPRDOFUNArithm& pPrior);
+    bool getMultithreading() const;
+    void setMultithreading(bool multithreading = false);
+    void setCondition(const LPRDOFUNLogic& pConditon = NULL);
+    LPRDOFUNLogic getConditon() const;
+    LPILogic getLogic() const;
+    virtual void end();
 
 protected:
-	RDOLogicBase(const RDOParserSrcInfo& src_info);
-	virtual ~RDOLogicBase();
+    RDOLogicBase(const RDOParserSrcInfo& src_info);
+    virtual ~RDOLogicBase();
 
-	LPRDOFUNLogic m_pConditon;
-	LPILogic m_pRuntimeLogic;
-	bool m_multithreading;
+    LPRDOFUNLogic m_pConditon;
+    LPILogic m_pRuntimeLogic;
+    bool m_multithreading;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _PARSER_LOGIC_BASE_H_

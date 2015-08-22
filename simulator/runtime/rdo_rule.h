@@ -1,15 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_rule.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      18.08.2010
-  \brief     Продукционные правила
-  \indent    4T
-*/
-
-#ifndef _LIB_RUNTIME_RULE_H_
-#define _LIB_RUNTIME_RULE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -23,10 +12,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class     RDORule
-  \brief     Продукционное правило
-*/
 class RDORule: public IBaseOperation, public IRule, public RDOActivityPattern<RDOPatternRule>, public RDOPatternPrior
 {
 typedef RDOActivityPattern<RDOPatternRule> pattern_type;
@@ -36,23 +21,21 @@ friend class RDODPTSearch;
 friend class TreeNode;
 
 private:
-	RDORule(const LPRDORuntime& pRuntime, const LPRDOPatternRule& pPattern, bool trace, const std::string& name);
-	RDORule(const LPRDORuntime& pRuntime, const LPRDOPatternRule& pPattern, bool trace, const LPRDOCalc& pCondition, const std::string& name);
+    RDORule(const LPRDORuntime& pRuntime, const LPRDOPatternRule& pPattern, bool trace, const std::string& name);
+    RDORule(const LPRDORuntime& pRuntime, const LPRDOPatternRule& pPattern, bool trace, const LPRDOCalc& pCondition, const std::string& name);
 
-	virtual ~RDORule();
+    virtual ~RDORule();
 
-	void init();
+    void init();
 
-	LPRDORuntime m_pRuntime;
-	LPRDOCalc m_pAdditionalCondition;
-	bool m_traceOFF;
+    LPRDORuntime m_pRuntime;
+    LPRDOCalc m_pAdditionalCondition;
+    bool m_traceOFF;
 
-	void trace();
+    void trace();
 
-	DECLARE_IBaseOperation;
-	DECLARE_IRule;
+    DECLARE_IBaseOperation;
+    DECLARE_IRule;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_RULE_H_

@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      simtrace.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      11.06.2006
-  \brief     Трассировка симулятора
-  \indent    4T
-*/
-
-#ifndef _LIB_RUNTIME_SIM_TRACE_H_
-#define _LIB_RUNTIME_SIM_TRACE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <set>
@@ -27,90 +17,84 @@ class RDOOperation;
 
 PREDECLARE_POINTER(RDOSimulatorTrace);
 
-/*!
-  \class     RDOSimulatorTrace
-  \brief     Трассировщик симулятора
-*/
 class RDOSimulatorTrace: public RDOSimulator
 {
 DECLARE_FACTORY(RDOSimulatorTrace)
 public:
-	enum { UNDEFINE_TIME = -1 };
+    static const double UNDEFINE_TIME;
 
-	virtual void rdoInit();
+    virtual void rdoInit();
 
-	RDOTrace* getTracer() const;
-	bool canTrace() const;
+    RDOTrace* getTracer() const;
+    bool canTrace() const;
 
-	double getTraceStartTime() const;
-	void   setTraceStartTime(double value);
+    double getTraceStartTime() const;
+    void   setTraceStartTime(double value);
 
-	double getTraceEndTime() const;
-	void   setTraceEndTime(double value);
+    double getTraceEndTime() const;
+    void   setTraceEndTime(double value);
 
-	virtual void onNewTimeNow();
+    virtual void onNewTimeNow();
 
-	void memory_insert(std::size_t mem);
-	void memory_remove(std::size_t mem);
-	std::size_t memory_get() const;
+    void memory_insert(std::size_t mem);
+    void memory_remove(std::size_t mem);
+    std::size_t memory_get() const;
 
-	void registerResourceId(std::size_t id);
-	std::size_t getResourceId();
-	void incrementResourceIdReference(int id);
+    void registerResourceId(std::size_t id);
+    std::size_t getResourceId();
+    void incrementResourceIdReference(int id);
 
-	void freeOperationId(int id);
-	int getFreeOperationId();
-	void onResourceErase(const LPRDOResource& pResource);
+    void freeOperationId(int id);
+    int getFreeOperationId();
+    void onResourceErase(const LPRDOResource& pResource);
 
-	int getFreeEventId();
-	int getFreeActivityId();
+    int getFreeEventId();
+    int getFreeActivityId();
 
-	int getFreeDPTId();
+    int getFreeDPTId();
 
 protected:
-	RDOSimulatorTrace();
-	virtual ~RDOSimulatorTrace();
+    RDOSimulatorTrace();
+    virtual ~RDOSimulatorTrace();
 
-	void copyFrom(const LPRDOSimulatorTrace& pOther);
+    void copyFrom(const LPRDOSimulatorTrace& pOther);
 
-	RDOTrace* m_tracer;
+    RDOTrace* m_tracer;
 
-	int maxOperationId;
+    int maxOperationId;
 
-	virtual void preProcess();
-	virtual void postProcess();
-	void checkRSSDefinedResources();
+    virtual void preProcess();
+    virtual void postProcess();
+    void checkRSSDefinedResources();
 
-	virtual std::list<LPRDOResource> getResourcesBeforeSim() const = 0;
+    virtual std::list<LPRDOResource> getResourcesBeforeSim() const = 0;
 
 private:
-	double traceStartTime;
-	double traceEndTime;
+    double traceStartTime;
+    double traceEndTime;
 
-	std::set<std::size_t> registeredResourcesId;
+    std::set<std::size_t> registeredResourcesId;
 
-	typedef std::map<int, int> MAPII;
-	MAPII resourcesIdsRefs;
-	std::list<int> freeOperationsIds;
+    typedef std::map<int, int> MAPII;
+    MAPII resourcesIdsRefs;
+    std::list<int> freeOperationsIds;
 
-	void eraseFreeResourceId(std::size_t id);
+    void eraseFreeResourceId(std::size_t id);
 
-	int m_ieCounter;
-	int m_eventCounter;
-	int m_activityCounter;
-	int m_dptCounter;
+    int m_ieCounter;
+    int m_eventCounter;
+    int m_activityCounter;
+    int m_dptCounter;
 
-	void addTemplateDecisionPoint(RDODPTSearchTrace *dp  );
-	void addTemplateEvent        (RDOEvent          *ev  );
-	void addTemplateRule         (RDORule           *rule);
-	void addTemplateOperation    (RDOOperation      *op  );
+    void addTemplateDecisionPoint(RDODPTSearchTrace *dp  );
+    void addTemplateEvent        (RDOEvent          *ev  );
+    void addTemplateRule         (RDORule           *rule);
+    void addTemplateOperation    (RDOOperation      *op  );
 
-	std::size_t memory_current;
-	std::size_t memory_max;
+    std::size_t memory_current;
+    std::size_t memory_max;
 
-	bool timeForTrace() const;
+    bool timeForTrace() const;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_SIM_TRACE_H_

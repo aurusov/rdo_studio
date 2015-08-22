@@ -1,15 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      queue_depart.h
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      12.02.2012
-  \brief     Процессные операторы QUEUE и DEPART
-  \indent    4T
-*/
-
-#ifndef _LIB_RUNTIME_PROCESS_QUEUE_DEPART_H_
-#define _LIB_RUNTIME_PROCESS_QUEUE_DEPART_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
@@ -23,75 +12,53 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \struct  runtime_for_Queue
-  \brief   Вспомогательный класс для оператора QUEUE в Runtime
-*/
 struct runtime_for_Queue
 {
-	LPRDOResource rss;
-	int           Id_param;
-	RDOValue      defaultValue;
+    LPRDOResource rss;
+    int           Id_param;
+    RDOValue      defaultValue;
 };
 
-/*!
-  \struct  parser_for_Queue
-  \brief   Вспомогательный класс для оператора QUEUE в Parser
-*/
 struct parser_for_Queue
 {
-	int Id_res;
-	int Id_param;
+    int Id_res;
+    int Id_param;
 };
 
-/*!
-  \class   RDOPROCBlockForQueue
-  \brief   Вспомогательный класс для процессного оператора QUEUE
-*/
 class RDOPROCBlockForQueue: public RDOPROCBlock
 {
 protected:
-	RDOPROCBlockForQueue(LPIPROCProcess process, parser_for_Queue From_Par);
+    RDOPROCBlockForQueue(LPIPROCProcess process, parser_for_Queue From_Par);
 
-	parser_for_Queue  fromParser;
-	runtime_for_Queue forRes;
-	void _onStart(const LPRDORuntime& pRuntime);
+    parser_for_Queue  fromParser;
+    runtime_for_Queue forRes;
+    void _onStart(const LPRDORuntime& pRuntime);
 };
 
-/*!
-  \class   RDOPROCQueue
-  \brief   Процессный блок QUEUE
-*/
 class RDOPROCQueue: public RDOPROCBlockForQueue
 {
 DECLARE_FACTORY(RDOPROCQueue);
 public:
-	static std::size_t getDefaultValue();
-	static std::string getQueueParamName();
+    static std::size_t getDefaultValue();
+    static std::string getQueueParamName();
 
 private:
-	RDOPROCQueue(LPIPROCProcess process, parser_for_Queue From_Par);
+    RDOPROCQueue(LPIPROCProcess process, parser_for_Queue From_Par);
 
-	DECLARE_IBaseOperation;
+    DECLARE_IBaseOperation;
 };
 
-/*!
-  \class   RDOPROCDepart
-  \brief   Процессный блок DEPART
-*/
 class RDOPROCDepart: public RDOPROCBlockForQueue
 {
 DECLARE_FACTORY(RDOPROCDepart);
 public:
-	static std::size_t getDefaultValue();
-	static std::string getDepartParamName();
+    static std::size_t getDefaultValue();
+    static std::string getDepartParamName();
 
 private:
-	RDOPROCDepart(LPIPROCProcess process, parser_for_Queue From_Par);
+    RDOPROCDepart(LPIPROCProcess process, parser_for_Queue From_Par);
 
-	DECLARE_IBaseOperation;
+    DECLARE_IBaseOperation;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_PROCESS_QUEUE_DEPART_H_

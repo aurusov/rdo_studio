@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_event.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      26.05.2010
-  \brief     RDOCalc для планирования и остановки событий
-  \indent    4T
-*/
-
-#ifndef _LIB_RUNTIME_CALC_EVENT_H_
-#define _LIB_RUNTIME_CALC_EVENT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -18,43 +8,38 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Базовая калка для управления событиями
 PREDECLARE_POINTER(RDOCalcEvent);
 class RDOCalcEvent: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcEvent)
 
 protected:
-	RDOCalcEvent(const LPIEvent& event);
+    RDOCalcEvent(const LPIEvent& event);
 
-	LPIEvent m_pEvent;
+    LPIEvent m_pEvent;
 };
 
-//! Планирование события
 PREDECLARE_POINTER(RDOCalcEventPlan);
 class RDOCalcEventPlan: public RDOCalcEvent
 {
 DECLARE_FACTORY(RDOCalcEventPlan)
 private:
-	RDOCalcEventPlan(const LPIEvent& event, const LPRDOCalc& pTimeCalc, const std::vector<runtime::LPRDOCalc>& params);
+    RDOCalcEventPlan(const LPIEvent& event, const LPRDOCalc& pTimeCalc, const std::vector<runtime::LPRDOCalc>& params);
 
-	LPRDOCalc              m_pTimeCalc;
-	std::vector<LPRDOCalc> m_params;
+    LPRDOCalc              m_pTimeCalc;
+    std::vector<LPRDOCalc> m_params;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
-//! Остановка события
 PREDECLARE_POINTER(RDOCalcEventStop);
 class RDOCalcEventStop: public RDOCalcEvent
 {
 DECLARE_FACTORY(RDOCalcEventStop)
 private:
-	RDOCalcEventStop(const LPIEvent& event);
+    RDOCalcEventStop(const LPIEvent& event);
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_CALC_EVENT_H_

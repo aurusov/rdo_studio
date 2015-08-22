@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_nop.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      17.12.2011
-  \brief     Пустая операция
-  \indent    4T
-*/
-
-#ifndef _LIB_RUNTIME_CALC_PROCEDURAL_NOP_H_
-#define _LIB_RUNTIME_CALC_PROCEDURAL_NOP_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -17,18 +7,15 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Пустая операция
 PREDECLARE_POINTER(RDOCalcNop);
 class RDOCalcNop: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcNop)
 private:
-	RDOCalcNop();
-	virtual ~RDOCalcNop();
+    RDOCalcNop();
+    virtual ~RDOCalcNop();
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_CALC_PROCEDURAL_NOP_H_

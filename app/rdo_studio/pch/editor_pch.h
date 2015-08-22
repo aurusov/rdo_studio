@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_EDITOR_PCH_H_
-#define _RDO_STUDIO_EDITOR_PCH_H_
+#pragma once
 
 #include "utils/src/common/platform.h"
 #include "utils/src/common/warning_disable.h"
@@ -13,5 +12,3 @@
 
 #include "utils/src/debug/rdodebug.h"
 #include "utils/src/common/rdocommon.h"
-
-#endif // _RDO_STUDIO_EDITOR_PCH_H_

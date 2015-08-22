@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      app/rdo_studio/src/main.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      28.02.2013
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -17,10 +8,10 @@
 
 int main(int argc, char** argv)
 {
-	rdo::locale::init();
+    rdo::locale::init();
 
-	Application app(argc, argv);
-	Q_INIT_RESOURCE(rdo_studio);
+    Application app(argc, argv);
+    Q_INIT_RESOURCE(rdo_studio);
 
-	return app.exec();
+    return app.exec();
 }

@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      animation_sprite.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      14.12.2012
-  \brief     Спрайт анимации в парсере
-  \indent    4T
-*/
-
-#ifndef _SIMULATOR_COMPILER_PARSER_ANIMATION_SPRITE_H_
-#define _SIMULATOR_COMPILER_PARSER_ANIMATION_SPRITE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -21,15 +11,13 @@ class RDOFRMSprite: public RDOFRMCommandList
 {
 DECLARE_FACTORY(RDOFRMSprite);
 private:
-	RDOFRMSprite(const RDOParserSrcInfo& src_info);
-	virtual ~RDOFRMSprite();
+    RDOFRMSprite(const RDOParserSrcInfo& src_info);
+    virtual ~RDOFRMSprite();
 
-	rdo::runtime::LPRDOFRMSprite m_pSprite;
+    rdo::runtime::LPRDOFRMSprite m_pSprite;
 
-	rdo::runtime::LPRDOFRMSprite list() const;
+    rdo::runtime::LPRDOFRMSprite list() const;
 };
 DECLARE_POINTER(RDOFRMSprite);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _SIMULATOR_COMPILER_PARSER_ANIMATION_SPRITE_H_
