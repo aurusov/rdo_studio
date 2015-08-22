@@ -3480,7 +3480,6 @@ dp_searcht_compare
         }
     }
     ;
-<<<<<<< HEAD
 dpt_search_descr_param_arithm
     : fun_arithm
     {
@@ -3501,25 +3500,6 @@ dpt_search_descr_param_arithm
 dpt_search_descr_param
     : dpt_search_descr_param_arithm
     | dpt_search_descr_param ',' dpt_search_descr_param_arithm
-=======
-
-dpt_search_descr_param
-    : /* empty */
-    | dpt_search_descr_param fun_arithm
-    {
-        #PASS2
-        {
-            LPRDOValue pConstant = PARSER->stack().pop<RDOFUNArithm>($2)->expression()->constant();
-            if (!pConstant || !pConstant->defined())
-            {
-                PARSER->error().error(@2, "Параметр может быть только константой");
-            }
-            LPRDOValue pValue = rdo::Factory<RDOValue>::create(pConstant);
-            ASSERT(pValue);
-            PARSER->getLastDPTSearch()->getLastActivity()->addParam(pValue);
-        }
-    }
->>>>>>> drobus/dev
     | dpt_search_descr_param error
     {
         #PASS2
@@ -3602,14 +3582,11 @@ dpt_search_name
         }
     }
     ;
-<<<<<<< HEAD
 
 dpt_searcht_activity_param
     : /* empty */
     | '(' dpt_search_descr_param ')'
     ;
-=======
->>>>>>> drobus/dev
 
 dpt_searcht_activity
     : /* empty */
@@ -3619,11 +3596,7 @@ dpt_searcht_activity
             $$ = PARSER->stack().push(LPRDODPTActivity());
         }
     }
-<<<<<<< HEAD
     | dpt_searcht_activity dpt_search_name dpt_searcht_activity_param dpt_search_descr_value ';'
-=======
-    | dpt_searcht_activity dpt_search_name dpt_search_descr_param dpt_search_descr_value
->>>>>>> drobus/dev
     {
         #PASS2
         {
@@ -3633,7 +3606,6 @@ dpt_searcht_activity
             $$ = PARSER->stack().push(pActivity);
         }
     }
-<<<<<<< HEAD
     | dpt_searcht_activity dpt_search_name error
     {
         #PASS2
@@ -3660,13 +3632,6 @@ dpt_searcht_activity
         #PASS2
         {
             PARSER->error().error(@4, @5, "Ожидается точка с запятой");
-=======
-    | dpt_searcht_activity dpt_search_name dpt_search_descr_param error
-    {
-        #PASS2
-        {
-            PARSER->error().error(@3, @4, "Ожидаются ключевые слова value before или value after и стоимость применения правила");
->>>>>>> drobus/dev
         }
     }
     ;
@@ -3970,12 +3935,7 @@ dpt_some_name
     ;
 
 dpt_some_descr_keyb
-<<<<<<< HEAD
     : dpt_some_descr_keyb '+' RDO_STRING_CONST
-=======
-    : /* empty */
-    | dpt_some_descr_keyb '+' RDO_STRING_CONST
->>>>>>> drobus/dev
     {
         #PASS2
         {
@@ -3996,7 +3956,6 @@ dpt_some_descr_keyb
         }
     }
     ;
-<<<<<<< HEAD
 
 dpt_some_descr_param_arithm
     : fun_arithm
@@ -4032,32 +3991,6 @@ dpt_some_activity_param
     | '(' dpt_some_descr_param ')'
     | '(' dpt_some_descr_keyb ')'
     | '(' dpt_some_descr_keyb ',' dpt_some_descr_param ')'
-=======
-
-dpt_some_descr_param
-    : /* empty */
-    | dpt_some_descr_param fun_arithm
-    {
-        #PASS2
-        {
-            LPRDOValue pConstant = PARSER->stack().pop<RDOFUNArithm>($2)->expression()->constant();
-            if (!pConstant || !pConstant->defined())
-            {
-                PARSER->error().error(@2, "Параметр может быть только константой");
-            }
-            LPRDOValue pValue = rdo::Factory<RDOValue>::create(pConstant);
-            ASSERT(pValue);
-            PARSER->getLastDPTSome()->getLastActivity()->addParam(pValue);
-        }
-    }
-    | dpt_some_descr_param error
-    {
-        #PASS2
-        {
-            PARSER->error().error(@1, @2, "Ошибка описания параметра образца");
-        }
-    }
->>>>>>> drobus/dev
     ;
 
 dpt_some_activity
@@ -4068,11 +4001,7 @@ dpt_some_activity
             $$ = PARSER->stack().push(LPRDODPTActivity());
         }
     }
-<<<<<<< HEAD
     | dpt_some_activity dpt_some_name dpt_some_activity_param ';'
-=======
-    | dpt_some_activity dpt_some_name dpt_some_descr_keyb dpt_some_descr_param
->>>>>>> drobus/dev
     {
         #PASS2
         {
@@ -4082,7 +4011,6 @@ dpt_some_activity
             $$ = PARSER->stack().push(pActivity);
         }
     }
-<<<<<<< HEAD
     | dpt_some_activity dpt_some_name error
     {
         #PASS2
@@ -4104,8 +4032,6 @@ dpt_some_activity
             PARSER->error().error(@3, @4, "Ожидается точка с запятой");
         }
     }
-=======
->>>>>>> drobus/dev
     ;
 
 dpt_some_header
@@ -4368,12 +4294,7 @@ dpt_prior_name
     ;
 
 dpt_prior_descr_keyb
-<<<<<<< HEAD
     : dpt_prior_descr_keyb '+' RDO_STRING_CONST
-=======
-    : /* empty */
-    | dpt_prior_descr_keyb '+' RDO_STRING_CONST
->>>>>>> drobus/dev
     {
         #PASS2
         {
@@ -4394,7 +4315,6 @@ dpt_prior_descr_keyb
         }
     }
     ;
-<<<<<<< HEAD
 
 dpt_prior_descr_param_arithm
     : fun_arithm
@@ -4421,30 +4341,6 @@ dpt_prior_descr_param
         #PASS2
         {
             PARSER->error().error(@2, @3, "Ошибка описания параметра образца");
-=======
-
-dpt_prior_descr_param
-    : /* empty */
-    | dpt_prior_descr_param fun_arithm
-    {
-        #PASS2
-        {
-            LPRDOValue pConstant = PARSER->stack().pop<RDOFUNArithm>($2)->expression()->constant();
-            if (!pConstant || !pConstant->defined())
-            {
-                PARSER->error().error(@2, "Параметр может быть только константой");
-            }
-            LPRDOValue pValue = rdo::Factory<RDOValue>::create(pConstant);
-            ASSERT(pValue);
-            PARSER->getLastDPTPrior()->getLastActivity()->addParam(pValue);
-        }
-    }
-    | dpt_prior_descr_param error
-    {
-        #PASS2
-        {
-            PARSER->error().error(@1, @2, "Ошибка описания параметра образца");
->>>>>>> drobus/dev
         }
     }
     ;
@@ -4478,7 +4374,6 @@ dpt_prior_activ_prior
         }
     }
     ;
-<<<<<<< HEAD
 
 dpt_prior_activity_param
     : /* empty */
@@ -4486,8 +4381,6 @@ dpt_prior_activity_param
     | '(' dpt_prior_descr_param ')'
     | '(' dpt_prior_descr_keyb ',' dpt_prior_descr_param ')'
     ;
-=======
->>>>>>> drobus/dev
 
 dpt_prior_activity
     : /* empty */
@@ -4497,11 +4390,7 @@ dpt_prior_activity
             $$ = PARSER->stack().push(LPRDODPTActivity());
         }
     }
-<<<<<<< HEAD
     | dpt_prior_activity dpt_prior_name dpt_prior_activity_param dpt_prior_activ_prior ';'
-=======
-    | dpt_prior_activity dpt_prior_name dpt_prior_descr_keyb dpt_prior_descr_param dpt_prior_activ_prior
->>>>>>> drobus/dev
     {
         #PASS2
         {
@@ -4511,7 +4400,6 @@ dpt_prior_activity
             $$ = PARSER->stack().push(pActivity);
         }
     }
-<<<<<<< HEAD
     | dpt_prior_activity dpt_prior_name error
     {
         #PASS2
@@ -4533,8 +4421,6 @@ dpt_prior_activity
             PARSER->error().error(@3, @4, "Ожидается точка с запятой или описание приоритета активности");
         }
     }
-=======
->>>>>>> drobus/dev
     ;
 
 dpt_prior_header
