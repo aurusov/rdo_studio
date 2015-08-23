@@ -121,12 +121,14 @@ void UpdateDelete::insert(IDocument::Type type, const Position& to, std::size_t 
     if (m_file != type)
         return;
 
-    ASSERT(to <= m_posFrom || to > m_posTo);
-
     if (to <= m_posFrom)
     {
         m_posFrom += size;
         m_posTo   += size;
+    }
+    else if (to <= m_posTo)
+    {
+        m_posTo += size;
     }
 }
 

@@ -19,7 +19,7 @@ QString PluginGame5ModelGenerator::modelRTP(const Board& gameBoard)
         << std::endl
         << "$Resource_type Дырка_t : permanent" << std::endl
         << "$Parameters" << std::endl
-        << "\t    Место: integer[1.." << gameBoard.getQuantityOfTiles() + 1 << "]" << std::endl
+        << "    Место: integer[1.." << gameBoard.getQuantityOfTiles() + 1 << "]" << std::endl
         << "$End" << std::endl;
     return QString::fromStdString(RTPtabTextStream.str());
 }
@@ -74,10 +74,10 @@ QString PluginGame5ModelGenerator::modelDPT(const Board& gameBoard, const std::s
         << "$Evaluate_by " << evaluateBy << std::endl
         << "$Compare_tops = " << (compareTops ? "YES" : "NO") << std::endl
         << "$Activities" << std::endl
-        << "    Перемещение_вправо: Перемещение_фишки справа  1 value " << activityValueLeft << std::endl
-        << "    Перемещение_влево : Перемещение_фишки слева  -1 value " << activityValueRight << std::endl
-        << "    Перемещение_вверх : Перемещение_фишки сверху -" << gameBoard.m_tilesCountX << " value " << activityValueDown << std::endl
-        << "    Перемещение_вниз  : Перемещение_фишки снизу   " << gameBoard.m_tilesCountX << " value " << activityValueUp << std::endl
+        << "    Перемещение_вправо: Перемещение_фишки (справа,  1) value " << activityValueLeft << ";" << std::endl
+        << "    Перемещение_влево : Перемещение_фишки (слева,  -1) value " << activityValueRight << ";" << std::endl
+        << "    Перемещение_вверх : Перемещение_фишки (сверху, -" << gameBoard.m_tilesCountX << ") value " << activityValueDown << ";" << std::endl
+        << "    Перемещение_вниз  : Перемещение_фишки (снизу,   " << gameBoard.m_tilesCountX << ") value " << activityValueUp << ";" << std::endl
         << "$End";
     return QString::fromStdString(DPTtabTextStream.str());
 }
