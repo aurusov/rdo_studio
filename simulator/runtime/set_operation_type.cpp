@@ -7,20 +7,20 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-std::string SetOperationType::toString(Type type)
+std::string SetOperation::toString(Type type)
 {
-	switch (type)
-	{
-	case NOCHANGE   : return "";
-	case SET        : return "=";
-	case ADDITION   : return "+=";
-	case SUBTRACTION: return "-=";
-	case MULTIPLY   : return "*=";
-	case DIVIDE     : return "/=";
-	case INCREMENT  : return "++";
-	case DECRIMENT  : return "--";
-	default: NEVER_REACH_HERE; return "";
-	}
+    switch (type)
+    {
+    case Type::NOCHANGE   : return std::string();
+    case Type::SET        : return "=";
+    case Type::ADDITION   : return "+=";
+    case Type::SUBTRACTION: return "-=";
+    case Type::MULTIPLY   : return "*=";
+    case Type::DIVIDE     : return "/=";
+    case Type::INCREMENT  : return "++";
+    case Type::DECRIMENT  : return "--";
+    default: NEVER_REACH_HERE; return std::string();
+    }
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

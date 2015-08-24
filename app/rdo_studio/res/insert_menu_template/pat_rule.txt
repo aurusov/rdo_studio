@@ -3,8 +3,8 @@ $Relevant_resources
 
 $Body
 
-	Choice from
-	first
-	Convert_rule
+    Choice from
+    first
+    Convert_rule
 
 $End

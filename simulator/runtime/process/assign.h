@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_PROCESS_ASSIGN_H_
-#define _LIB_RUNTIME_PROCESS_ASSIGN_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
@@ -19,13 +18,11 @@ class RDOPROCAssign: public RDOPROCBlock
 {
 DECLARE_FACTORY(RDOPROCAssign);
 private:
-	RDOPROCAssign(LPIPROCProcess pProcess, const LPRDOCalc& pCalc);
+    RDOPROCAssign(LPIPROCProcess pProcess, const LPRDOCalc& pCalc);
 
-	LPRDOCalc pAssignCalc;
+    LPRDOCalc pAssignCalc;
 
-	DECLARE_IBaseOperation;
+    DECLARE_IBaseOperation;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_PROCESS_ASSIGN_H_

@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_PARAM_I_H_
-#define _LIB_RUNTIME_PARAM_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -16,12 +15,10 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IParam
 {
 public:
-	virtual bool setParam(const rdo::runtime::LPRDOCalc& pParam) = 0;
-	virtual bool endParam() = 0;
+    virtual bool setParam(const rdo::runtime::LPRDOCalc& pParam) = 0;
+    virtual bool endParam() = 0;
 };
 
 #define DECLARE_IParam \
-	virtual bool setParam(const rdo::runtime::LPRDOCalc& pParam); \
-	virtual bool endParam();
-
-#endif // _LIB_RUNTIME_PARAM_I_H_
+    virtual bool setParam(const rdo::runtime::LPRDOCalc& pParam); \
+    virtual bool endParam();

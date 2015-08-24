@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_CALC_OPERATION_BINARY_H_
-#define _LIB_RUNTIME_CALC_OPERATION_BINARY_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -9,66 +8,59 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Базовый класс для бинарных операторов
 class RDOCalcBinaryBase: public RDOCalc
 {
 public:
-	template <class T>
-	static LPRDOCalc generateCalc(const LPRDOCalc& pFirst, const LPRDOCalc& pSecond);
+    template <class T>
+    static LPRDOCalc generateCalc(const LPRDOCalc& pFirst, const LPRDOCalc& pSecond);
 
 protected:
-	RDOCalcBinaryBase(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
+    RDOCalcBinaryBase(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
 
-	LPRDOCalc  m_pLeft;
-	LPRDOCalc  m_pRight;
+    LPRDOCalc  m_pLeft;
+    LPRDOCalc  m_pRight;
 };
 
-//! Константный бинарный оператор RDOValue
 template <typename ret_type, ret_type (RDOValue::*pMethod)(const RDOValue&) const>
 struct BinaryOperatorConstP1
 {
-	typedef ret_type (RDOValue::*method_type)(const RDOValue&) const;
+    typedef ret_type (RDOValue::*method_type)(const RDOValue&) const;
 
-	static method_type method();
+    static method_type method();
 };
 
-//! Неконстантный бинарный оператор RDOValue
 template <typename ret_type, ret_type (RDOValue::*pMethod)(const RDOValue&)>
 struct BinaryOperatorNonConstP1
 {
-	typedef ret_type (RDOValue::*method_type)(const RDOValue&);
+    typedef ret_type (RDOValue::*method_type)(const RDOValue&);
 
-	static method_type method();
+    static method_type method();
 };
 
 template <class F, typename OperatorType::Type CalcType>
 class RDOCalcBinary: public RDOCalcBinaryBase
 {
-friend class rdo::Factory<RDOCalcBinary<F, CalcType> >;
+friend class rdo::Factory<RDOCalcBinary<F, CalcType>>;
 public:
-	enum { calc_type = CalcType };
-	typedef F caller_type;
+    enum class Type
+    {
+        calc_type = CalcType
+    };
+    typedef F caller_type;
 
-	LPRDOCalc      getLeft        () const;
-	LPRDOCalcConst getRightAsConst() const;
-	void           setRight       (const LPRDOCalc& pRight);
+    LPRDOCalc      getLeft        () const;
+    LPRDOCalcConst getRightAsConst() const;
+    void           setRight       (const LPRDOCalc& pRight);
 
-	static RDOSrcInfo getStaticSrcInfo(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
+    static RDOSrcInfo getStaticSrcInfo(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
 
 protected:
-	RDOCalcBinary(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
+    RDOCalcBinary(const LPRDOCalc& pLeft, const LPRDOCalc& pRight);
 
 private:
-	//! Выполняет бинарную операцию \ref value_operator над \ref m_pLeft и \ref m_pRight
-	//! \param pRuntime - указатель на объект runtime'а.
-	//!                   Используется для доступа к БД модели, системному времени, генерации ошибок и др.
-	//! \exception RDORuntimeException
-	//! \result Вычесленное калком значение
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "simulator/runtime/calc/operation/calc_binary-inl.h"
-
-#endif // _LIB_RUNTIME_CALC_OPERATION_BINARY_H_

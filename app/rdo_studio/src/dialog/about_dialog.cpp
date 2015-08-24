@@ -9,21 +9,21 @@
 // --------------------------------------------------------------------------------
 
 AboutDialog::AboutDialog(QWidget* pParent)
-	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
+    : QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 {
-	setupUi(this);
+    setupUi(this);
 
-	version->setText(QString("Система имитационного моделирования\n\n%1")
-		.arg(QString::fromStdString(rdo::version::g_versionName)));
+    version->setText(QString("Система имитационного моделирования\n\n%1")
+        .arg(QString::fromStdString(rdo::version::g_versionName)));
 
-	www->setText(QString::fromStdString(boost::str(
-		boost::format("<A HREF=\"%1%\">%2%</A>")
-		% rdo::version::g_site
-		% boost::algorithm::erase_first_copy(rdo::version::g_site, "http://")
-	)));
+    www->setText(QString::fromStdString(boost::str(
+        boost::format("<A HREF=\"%1%\">%2%</A>")
+        % rdo::version::g_site
+        % boost::algorithm::erase_first_copy(rdo::version::g_site, "http://")
+    )));
 
-	if (pParent)
-	{
-		move(pParent->frameGeometry().center() - frameGeometry().center());
-	}
+    if (pParent)
+    {
+        move(pParent->frameGeometry().center() - frameGeometry().center());
+    }
 }

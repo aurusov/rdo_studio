@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_EDITOR_BUILD_EDIT_H_
-#define _RDO_STUDIO_EDITOR_BUILD_EDIT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
@@ -12,26 +11,24 @@
 namespace rdo { namespace gui { namespace editor {
 
 class Build
-	: public Log
-	, public PopupMenu
+    : public Log
+    , public PopupMenu
 {
 public:
-	Build(QWidget* pParent);
-	virtual ~Build();
+    Build(QWidget* pParent);
+    virtual ~Build();
 
-	virtual void showFirstError();
+    virtual void showFirstError();
 
 protected:
-	virtual void updateEdit(Model* pEdit, const LogEditLineInfo* pLineInfo);
+    virtual void updateEdit(Model* pEdit, const LogEditLineInfo* pLineInfo);
 
 private:
-	typedef  Log  super;
-	typedef  rdo::simulation::report::FileMessage RDOSyntaxMessage;
+    typedef  Log  super;
+    typedef  rdo::simulation::report::FileMessage SyntaxMessage;
 
-	virtual void contextMenuEvent(QContextMenuEvent* pEvent);
-	virtual void onHelpContext   ();
+    virtual void contextMenuEvent(QContextMenuEvent* pEvent);
+    virtual void onHelpContext   ();
 };
 
 }}} // namespace rdo::gui::editor
-
-#endif // _RDO_STUDIO_EDITOR_BUILD_EDIT_H_

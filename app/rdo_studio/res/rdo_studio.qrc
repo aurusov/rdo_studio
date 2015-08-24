@@ -150,9 +150,9 @@
     <file>insert_menu_template/algo_for.txt</file>
     <file>insert_menu_template/algo_if.txt</file>
     <file>insert_menu_template/algo_if_else.txt</file>
-    <file>insert_menu_template/dtp_prior.txt</file>
-    <file>insert_menu_template/dtp_search.txt</file>
-    <file>insert_menu_template/dtp_some.txt</file>
+    <file>insert_menu_template/dpt_prior.txt</file>
+    <file>insert_menu_template/dpt_search.txt</file>
+    <file>insert_menu_template/dpt_some.txt</file>
     <file>insert_menu_template/frm.txt</file>
     <file>insert_menu_template/fun_algorithmic.txt</file>
     <file>insert_menu_template/fun_const.txt</file>

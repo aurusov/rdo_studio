@@ -9,12 +9,12 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 RDOFRMSprite::RDOFRMSprite(const RDOParserSrcInfo& src_info)
-	: RDOFRMCommandList(src_info)
+    : RDOFRMCommandList(src_info)
 {
-	m_pSprite = rdo::Factory<rdo::runtime::RDOFRMSprite>::create(function()->src_info());
-	ASSERT(m_pSprite)
+    m_pSprite = rdo::Factory<rdo::runtime::RDOFRMSprite>::create(function()->src_info());
+    ASSERT(m_pSprite)
 
-	RDOParser::s_parser()->insertFRMSprite(this);
+    RDOParser::s_parser()->insertFRMSprite(this);
 }
 
 RDOFRMSprite::~RDOFRMSprite()
@@ -22,7 +22,7 @@ RDOFRMSprite::~RDOFRMSprite()
 
 rdo::runtime::LPRDOFRMSprite RDOFRMSprite::list() const
 {
-	return m_pSprite;
+    return m_pSprite;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

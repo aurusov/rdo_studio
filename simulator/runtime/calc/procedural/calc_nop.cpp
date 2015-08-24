@@ -18,7 +18,7 @@ RDOCalcNop::~RDOCalcNop()
 
 RDOValue RDOCalcNop::doCalc(const LPRDORuntime& /*pRuntime*/)
 {
-	return RDOValue();
+    return RDOValue();
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

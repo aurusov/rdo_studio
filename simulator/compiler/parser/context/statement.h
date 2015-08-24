@@ -1,5 +1,4 @@
-#ifndef _CONTEXT_STATEMENT_H_
-#define _CONTEXT_STATEMENT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -15,8 +14,8 @@ class ContextBreakable: public Context
 {
 DECLARE_FACTORY(ContextBreakable);
 private:
-	ContextBreakable();
-	virtual ~ContextBreakable();
+    ContextBreakable();
+    virtual ~ContextBreakable();
 };
 DECLARE_POINTER(ContextBreakable);
 
@@ -28,24 +27,22 @@ class ContextReturnable: public Context
 {
 DECLARE_FACTORY(ContextReturnable);
 public:
-	bool getReturnFlag() const;
-	void setReturnFlag();
+    bool getReturnFlag() const;
+    void setReturnFlag();
 
-	void addChildContext();
+    void addChildContext();
 
 protected:
-	ContextReturnable();
-	virtual ~ContextReturnable();
+    ContextReturnable();
+    virtual ~ContextReturnable();
 
 private:
-	typedef std::vector<LPContextReturnable> ContextReturnableList;
+    typedef std::vector<LPContextReturnable> ContextReturnableList;
 
-	ContextReturnableList m_contextReturnableList;
-	bool m_returnFlag;
+    ContextReturnableList m_contextReturnableList;
+    bool m_returnFlag;
 
-	bool getChildFlags() const;
+    bool getChildFlags() const;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _CONTEXT_STATEMENT_H_

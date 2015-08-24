@@ -12,7 +12,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOCalcWatchGroupStart
 // --------------------------------------------------------------------------------
 RDOCalcWatchGroupStart::RDOCalcWatchGroupStart(const LPIResultGroup& pResultGroup)
-	: m_pResultGroup(pResultGroup)
+    : m_pResultGroup(pResultGroup)
 {}
 
 RDOCalcWatchGroupStart::~RDOCalcWatchGroupStart()
@@ -20,16 +20,16 @@ RDOCalcWatchGroupStart::~RDOCalcWatchGroupStart()
 
 RDOValue RDOCalcWatchGroupStart::doCalc(const LPRDORuntime& pRuntime)
 {
-	ASSERT(m_pResultGroup);
-	m_pResultGroup->onStart(pRuntime);
-	return RDOValue();
+    ASSERT(m_pResultGroup);
+    m_pResultGroup->onStart(pRuntime);
+    return RDOValue();
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcWatchGroupStop
 // --------------------------------------------------------------------------------
 RDOCalcWatchGroupStop::RDOCalcWatchGroupStop(const LPIResultGroup& pResultGroup)
-	: m_pResultGroup(pResultGroup)
+    : m_pResultGroup(pResultGroup)
 {}
 
 RDOCalcWatchGroupStop::~RDOCalcWatchGroupStop()
@@ -37,9 +37,9 @@ RDOCalcWatchGroupStop::~RDOCalcWatchGroupStop()
 
 RDOValue RDOCalcWatchGroupStop::doCalc(const LPRDORuntime& pRuntime)
 {
-	ASSERT(m_pResultGroup);
-	m_pResultGroup->onStop(pRuntime);
-	return RDOValue();
+    ASSERT(m_pResultGroup);
+    m_pResultGroup->onStop(pRuntime);
+    return RDOValue();
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

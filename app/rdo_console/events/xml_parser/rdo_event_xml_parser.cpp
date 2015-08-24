@@ -7,46 +7,33 @@
 
 namespace rdo {
 
-bool event_xml_parser::register_parser(const std::string& name, boost::shared_ptr<event_xml_reader> reader)
+bool EventXmlParser::registerParser(const std::string& name, std::shared_ptr<EventXmlReader> reader)
 {
-	if (m_parsers.find(name) == m_parsers.end())
-	{
-		m_parsers[name] = reader;
-		return true;
-	}
-	return false;
+    return parsers.insert(std::make_pair(name, reader)).second;
 }
 
-void event_xml_parser::parse(std::istream& stream, event_container& list) const
+void EventXmlParser::parse(std::istream& stream, Events& events) const
 {
-	list.clear();
+    events.clear();
 
-	boost::property_tree::ptree pt;
-	boost::property_tree::read_xml(stream, pt);
+    boost::property_tree::ptree pt;
+    boost::property_tree::read_xml(stream, pt);
 
-	for (const boost::property_tree::ptree::value_type& v: pt.get_child("rscript.events"))
-	{
-		const boost::property_tree::ptree& node = v.second;
+    for (const boost::property_tree::ptree::value_type& v: pt.get_child("rscript.events"))
+    {
+        const auto& node = v.second;
 
-		const std::string event_type = node.get<std::string>("<xmlattr>.type", "");
-		parsers::const_iterator it = m_parsers.find(event_type);
-		if (it != m_parsers.end())
-		{
-			event* e = it->second->read(node);
-			if (e)
-			{
-				list.insert(std::make_pair(e->getTime(), boost::shared_ptr<event>(e)));
-			}
-			else
-			{
-				throw std::runtime_error("read event from XML");
-			}
-		}
-		else
-		{
-			throw std::runtime_error("read unknown event type from XML");
-		}
-	}
+        const auto event_type = node.get<std::string>("<xmlattr>.type", "");
+        Parsers::const_iterator it = parsers.find(event_type);
+        if (it == parsers.end())
+            throw std::runtime_error("read unknown event type from XML");
+
+        const auto& event = it->second->read(node);
+        if (!event)
+            throw std::runtime_error("read event from XML");
+
+        events.insert(std::make_pair(event->getTime(), event));
+    }
 }
 
 } // namespace rdo

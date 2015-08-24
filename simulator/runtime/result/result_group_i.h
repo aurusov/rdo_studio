@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_RESULT_GROUP_I_H_
-#define _LIB_RUNTIME_RESULT_GROUP_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -10,15 +9,13 @@
 class IResultGroup: public virtual rdo::counter_reference
 {
 public:
-	virtual void onStart (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
-	virtual void onStop  (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
-	virtual void onAppend(const LPIResult&                  pResult ) = 0;
+    virtual void onStart (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+    virtual void onStop  (const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+    virtual void onAppend(const LPIResult&                  pResult ) = 0;
 };
 DECLARE_POINTER(IResultGroup)
 
 #define DECLARE_IResultGroup                                   \
-	void onStart (const rdo::runtime::LPRDORuntime& pRuntime); \
-	void onStop  (const rdo::runtime::LPRDORuntime& pRuntime); \
-	void onAppend(const LPIResult&                  pResult );
-
-#endif // _LIB_RUNTIME_RESULT_GROUP_I_H_
+    void onStart (const rdo::runtime::LPRDORuntime& pRuntime); \
+    void onStop  (const rdo::runtime::LPRDORuntime& pRuntime); \
+    void onAppend(const LPIResult&                  pResult );

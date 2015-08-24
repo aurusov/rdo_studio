@@ -4,4 +4,3 @@
 
 ADD_SUBDIRECTORY(parser)
 ADD_SUBDIRECTORY(mbuilder)
-ADD_SUBDIRECTORY(procgui)

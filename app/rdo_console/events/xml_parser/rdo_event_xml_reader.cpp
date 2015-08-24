@@ -5,7 +5,7 @@
 
 namespace rdo {
 
-event_xml_reader::~event_xml_reader()
+EventXmlReader::~EventXmlReader()
 {}
 
 } // namespace rdo

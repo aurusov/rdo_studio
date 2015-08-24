@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_RES_TYPE_I_H_
-#define _LIB_RUNTIME_RES_TYPE_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
@@ -18,27 +17,25 @@ struct IResourceType: public rdo::RefCounter<IResourceType>
 {
 DECLARE_FACTORY(IResourceType);
 public:
-	virtual rdo::runtime::LPRDOResource createRes(const LPRDORuntime& pRuntime, std::size_t resID, const std::vector<RDOValue>& paramsCalcs, bool traceFlag, bool permanentFlag, bool isNested = 0) = 0;
+    virtual rdo::runtime::LPRDOResource createRes(const LPRDORuntime& pRuntime, std::size_t resID, const std::vector<RDOValue>& paramsCalcs, bool traceFlag, bool permanentFlag, bool isNested = 0) = 0;
 
-	typedef  std::list<rdo::runtime::LPRDOResource>  ResList;
-	typedef  ResList::const_iterator  ResCIterator;
+    typedef  std::list<rdo::runtime::LPRDOResource>  ResList;
+    typedef  ResList::const_iterator  ResCIterator;
 
-	virtual ResCIterator res_begin() const = 0;
-	virtual ResCIterator res_end() const = 0;
+    virtual ResCIterator res_begin() const = 0;
+    virtual ResCIterator res_end() const = 0;
 
-	virtual void eraseRes(const rdo::runtime::LPRDOResource& pResource) = 0;
+    virtual void eraseRes(const rdo::runtime::LPRDOResource& pResource) = 0;
 
-	typedef  RDOResource  value_type;
+    typedef  RDOResource  value_type;
 
 protected:
-	IResourceType()          {}
-	virtual ~IResourceType() {}
+    IResourceType()          {}
+    virtual ~IResourceType() {}
 
 };
 
 #define DECLARE_IResourceType \
-	rdo::runtime::LPRDOResource createRes(const LPRDORuntime& pRuntime, std::size_t resID, const std::vector<RDOValue>& paramsCalcs, bool traceFlag, bool permanentFlag, bool isNested = 0);
+    rdo::runtime::LPRDOResource createRes(const LPRDORuntime& pRuntime, std::size_t resID, const std::vector<RDOValue>& paramsCalcs, bool traceFlag, bool permanentFlag, bool isNested = 0);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_RES_TYPE_I_H_

@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_DPTSEARCH_ACTIVITY_H_
-#define _LIB_RUNTIME_DPTSEARCH_ACTIVITY_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -15,15 +14,13 @@ class RDODPTSearchActivity: public IDPTSearchActivity, public RDOTraceableObject
 {
 DECLARE_FACTORY(RDODPTSearchActivity);
 private:
-	RDODPTSearchActivity(const LPIRule& rule, ValueTime valueTime, const LPRDOCalc& pCost);
+    RDODPTSearchActivity(const LPIRule& rule, CostTime costTime, const LPRDOCalc& pCost);
 
-	LPIRule                        m_rule;
-	LPRDOCalc                      m_pCost;
-	IDPTSearchActivity::ValueTime  m_valueTime;
+    LPIRule                       m_rule;
+    LPRDOCalc                     m_pCost;
+    IDPTSearchActivity::CostTime  m_costTime;
 
-	DECLARE_IDPTSearchActivity;
+    DECLARE_IDPTSearchActivity;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_DPTSEARCH_ACTIVITY_H_

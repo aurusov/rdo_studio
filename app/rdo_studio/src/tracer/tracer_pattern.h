@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_TRACER_PATTERN_H_
-#define _RDO_STUDIO_TRACER_PATTERN_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -12,30 +11,28 @@ class Pattern: public ChartTreeItem
 {
 DECLARE_FACTORY(Pattern)
 public:
-	enum Kind
-	{
-		PK_UNDEFINED = ~0,
-		PK_OPERATION = 0,
-		PK_EVENT,
-		PK_RULE,
-		PK_KEYBOARD
-	};
+    enum class Kind
+    {
+        UNDEFINED = ~0,
+        OPERATION = 0,
+        EVENT,
+        RULE,
+        KEYBOARD
+    };
 
-	const QString& getName() const;
-	void           setName(const QString& name);
+    const QString& getName() const;
+    void           setName(const QString& name);
 
-	Kind getKind() const;
+    Kind getKind() const;
 
 private:
-	Pattern(Kind kind);
-	virtual ~Pattern();
+    Pattern(Kind kind);
+    virtual ~Pattern();
 
-	QString  m_name;
-	Kind     m_kind;
+    QString  m_name;
+    Kind     m_kind;
 };
 
 typedef  rdo::intrusive_ptr<Pattern>  LPPattern;
 
 }}} // namespace rdo::gui::tracer
-
-#endif // _RDO_STUDIO_TRACER_PATTERN_H_

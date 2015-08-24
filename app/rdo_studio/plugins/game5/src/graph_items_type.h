@@ -1,5 +1,4 @@
-#ifndef _RDO_PLUGIN_GAME_5_GRAPH_ITEMS_TYPES_H
-#define _RDO_PLUGIN_GAME_5_GRAPH_ITEMS_TYPES_H
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -12,12 +11,10 @@ namespace rdo {
 namespace plugin {
 namespace game5 {
 
-enum TypeID
+enum class GraphItemType
 {
-	GRAPH_NODE = QGraphicsItem::UserType + 1,
-	GRAPH_EDGE = QGraphicsItem::UserType + 2,
+    NODE = QGraphicsItem::UserType + 1,
+    EDGE = QGraphicsItem::UserType + 2,
 };
 
 }}} // namespace rdo::plugin::game5
-
-#endif // _RDO_PLUGIN_GAME_5_GRAPH_ITEMS_TYPES_H

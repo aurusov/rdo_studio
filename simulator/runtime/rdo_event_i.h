@@ -16,9 +16,9 @@ PREDECLARE_POINTER(RDORuntime)
 class IEvent: public virtual rdo::counter_reference
 {
 public:
-	virtual void onMakePlaned(const rdo::runtime::LPRDORuntime& pRuntime, const std::vector<rdo::runtime::RDOValue>& params) = 0;
+    virtual void onMakePlaned(const rdo::runtime::LPRDORuntime& pRuntime, const std::vector<rdo::runtime::RDOValue>& params) = 0;
 
-	virtual ~IEvent()
-	{}
+    virtual ~IEvent()
+    {}
 };
 DECLARE_POINTER(IEvent);

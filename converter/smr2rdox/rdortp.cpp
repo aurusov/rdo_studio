@@ -13,9 +13,9 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int cnv_rtplex(YYSTYPE* lpval, YYLTYPE* llocp, void* lexer)
 {
-	LEXER->m_lpval = lpval;
-	LEXER->m_lploc = llocp;
-	return LEXER->yylex();
+    LEXER->m_lpval = lpval;
+    LEXER->m_lploc = llocp;
+    return LEXER->yylex();
 }
 
 void cnv_rtperror(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
@@ -25,11 +25,11 @@ void cnv_rtperror(YYLTYPE* /*llocp*/, void* /*lexer*/, const char* /*message*/)
 // -------------------- RDORTPResType
 // --------------------------------------------------------------------------------
 RDORTPResType::RDORTPResType(Converter* pParser, const RDOParserSrcInfo& src_info, bool permanent)
-	: RDOParserSrcInfo(src_info            )
-	, m_number        (pParser->getRTP_id())
-	, m_permanent     (permanent           )
+    : RDOParserSrcInfo(src_info            )
+    , m_number        (pParser->getRTP_id())
+    , m_permanent     (permanent           )
 {
-	pParser->insertRTPResType(LPRDORTPResType(this));
+    pParser->insertRTPResType(LPRDORTPResType(this));
 }
 
 RDORTPResType::~RDORTPResType()
@@ -37,22 +37,22 @@ RDORTPResType::~RDORTPResType()
 
 void RDORTPResType::addParam(const LPRDORTPParam& param)
 {
-	if (findRTPParam(param->name()))
-	{
-		Converter::s_converter()->error().error(param->src_info(), rdo::format("Параметр уже существует: %s", param->name().c_str()));
-	}
-	m_params.push_back(param);
+    if (findRTPParam(param->name()))
+    {
+        Converter::s_converter()->error().error(param->src_info(), rdo::format("Параметр уже существует: %s", param->name().c_str()));
+    }
+    m_params.push_back(param);
 }
 
-void RDORTPResType::addParam(const std::string& /*param_name*/, rdo::runtime::RDOType::TypeID /*param_typeID*/)
+void RDORTPResType::addParam(const std::string& /*param_name*/, rdo::runtime::RDOType::Type /*param_typeID*/)
 {
-	NEVER_REACH_HERE;
+    NEVER_REACH_HERE;
 }
 
 LPRDORTPParam RDORTPResType::findRTPParam(const std::string& paramName) const
 {
-	ParamList::const_iterator it = std::find_if(m_params.begin(), m_params.end(), compareName<RDORTPParam>(paramName));
-	return it != m_params.end() ? *it : LPRDORTPParam();
+    ParamList::const_iterator it = std::find_if(m_params.begin(), m_params.end(), compareName<RDORTPParam>(paramName));
+    return it != m_params.end() ? *it : LPRDORTPParam();
 }
 
 void RDORTPResType::finish()
@@ -60,18 +60,18 @@ void RDORTPResType::finish()
 
 std::size_t RDORTPResType::getRTPParamNumber(const std::string& paramName) const
 {
-	ParamList::const_iterator it = std::find_if(m_params.begin(), m_params.end(), compareName<RDORTPParam>(paramName));
-	return it != m_params.end() ? it - m_params.begin() : UNDEFINED_PARAM;
+    ParamList::const_iterator it = std::find_if(m_params.begin(), m_params.end(), compareName<RDORTPParam>(paramName));
+    return it != m_params.end() ? it - m_params.begin() : UNDEFINED_PARAM;
 }
 
 void RDORTPResType::writeModelStructure(std::ostream& stream) const
 {
-	stream << getNumber() << " " << name() << " " << getParams().size() << std::endl;
-	for (std::size_t i = 0; i < getParams().size(); i++)
-	{
-		stream << "  " << (i+1) << " ";
-		getParams().at(i)->writeModelStructure(stream);
-	}
+    stream << getNumber() << " " << name() << " " << getParams().size() << std::endl;
+    for (std::size_t i = 0; i < getParams().size(); i++)
+    {
+        stream << "  " << (i+1) << " ";
+        getParams().at(i)->writeModelStructure(stream);
+    }
 }
 
 /*
@@ -79,25 +79,25 @@ void RDORTPResType::writeModelStructure(std::ostream& stream) const
 // -------------------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности нечеткого терма
 // --------------------------------------------------------------------------------
 RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(Converter* pParser):
-	RDOParserObject(pParser)
+    RDOParserObject(pParser)
 {
-	for (std::size_t i = 0; i < m_points.size(); i++)
-	{
-//		double x = m_points[i]->getX();
-	}
+    for (std::size_t i = 0; i < m_points.size(); i++)
+    {
+//        double x = m_points[i]->getX();
+    }
 
-	Items::iterator it = m_points.begin();
-	while (it != m_points.end())
-	{
-		double x = (*it)->getX();
-		it++;
-	}
+    Items::iterator it = m_points.begin();
+    while (it != m_points.end())
+    {
+        double x = (*it)->getX();
+        it++;
+    }
 }
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPFuzzyTerm - нечеткий термин
 // --------------------------------------------------------------------------------
 RDORTPFuzzyTerm::RDORTPFuzzyTerm(Converter* pParser, const RDOParserSrcInfo& src_info, RDORTPFuzzyMembershiftFun* pMembersfift_fun):
-	RDOParserObject(pParser)
+    RDOParserObject(pParser)
 {
 
 }*/

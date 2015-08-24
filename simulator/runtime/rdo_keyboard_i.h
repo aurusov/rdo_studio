@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_KEYBOARD_I_H_
-#define _LIB_RUNTIME_KEYBOARD_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -16,21 +15,18 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IKeyboard: public virtual rdo::counter_reference
 {
 public:
-	//! Статуc нажатия клавиши
-	enum AddHotKeyResult
-	{
-		addhk_ok,       //!< клавиша нажата
-		addhk_already,  //!< клавиша уже нажата
-		addhk_notfound, //!< клавиша не найдена
-		addhk_dont	    //!< клавиша не нажата
-	};
-	virtual bool hasHotKey() const = 0;
-	virtual AddHotKeyResult addHotKey(const rdo::runtime::LPRDORuntime& pRuntime, const std::string& hotKey) = 0;
+    enum class AddHotKeyResult
+    {
+        OK,
+        ALREADY,
+        NOTFOUND,
+        DONT
+    };
+    virtual bool hasHotKey() const = 0;
+    virtual AddHotKeyResult addHotKey(const rdo::runtime::LPRDORuntime& pRuntime, const std::string& hotKey) = 0;
 };
 DECLARE_POINTER(IKeyboard)
 
 #define DECLARE_IKeyboard \
-	virtual bool hasHotKey() const; \
-	virtual AddHotKeyResult addHotKey(const rdo::runtime::LPRDORuntime& pRuntime, const std::string& hotKey);
-
-#endif // _LIB_RUNTIME_KEYBOARD_I_H_
+    virtual bool hasHotKey() const; \
+    virtual AddHotKeyResult addHotKey(const rdo::runtime::LPRDORuntime& pRuntime, const std::string& hotKey);

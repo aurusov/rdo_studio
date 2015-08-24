@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDOCONVERTER_LOGIC_H_
-#define _CONVERTOR_RDOCONVERTER_LOGIC_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -18,48 +17,46 @@ template<class RTLogic, class Activity>
 class RDOLogicActivity: public RDOParserSrcInfo
 {
 public:
-	typedef  rdo::intrusive_ptr<Activity> LPActivity;
-	typedef  std::vector<LPActivity>      ActivityList;
+    typedef  rdo::intrusive_ptr<Activity> LPActivity;
+    typedef  std::vector<LPActivity>      ActivityList;
 
-	RDOLogicActivity(const RDOParserSrcInfo& src_info)
-		: RDOParserSrcInfo(src_info)
-	{}
-	virtual ~RDOLogicActivity()
-	{}
+    RDOLogicActivity(const RDOParserSrcInfo& src_info)
+        : RDOParserSrcInfo(src_info)
+    {}
+    virtual ~RDOLogicActivity()
+    {}
 
-	const std::string& name() const { return src_info().src_text(); }
+    const std::string& name() const { return src_info().src_text(); }
 
-	LPActivity addNewActivity(const RDOParserSrcInfo& activity_src_info, const RDOParserSrcInfo& pattern_src_info)
-	{
-		LPActivity pAactivity = rdo::Factory<Activity>::create(m_pRuntimeLogic.object_dynamic_cast<IBaseOperationContainer>(), activity_src_info, pattern_src_info);
-		ASSERT(pAactivity);
-		m_activityList.push_back(pAactivity);
-		return pAactivity;
-	}
+    LPActivity addNewActivity(const RDOParserSrcInfo& activity_src_info, const RDOParserSrcInfo& pattern_src_info)
+    {
+        LPActivity pAactivity = rdo::Factory<Activity>::create(m_pRuntimeLogic.object_dynamic_cast<IBaseOperationContainer>(), activity_src_info, pattern_src_info);
+        ASSERT(pAactivity);
+        m_activityList.push_back(pAactivity);
+        return pAactivity;
+    }
 
-	LPActivity getLastActivity() const
-	{
-		return !m_activityList.empty() ? m_activityList.back() : LPActivity(NULL);
-	}
-	const ActivityList& getActivities() const { return m_activityList; }
+    LPActivity getLastActivity() const
+    {
+        return !m_activityList.empty() ? m_activityList.back() : LPActivity(NULL);
+    }
+    const ActivityList& getActivities() const { return m_activityList; }
 
-	bool setPrior(LPRDOFUNArithm& pPrior)
-	{
-		LPIPriority pPriority = m_pRuntimeLogic.object_dynamic_cast<IPriority>();
-		if (pPriority)
-		{
-			return pPriority->setPrior(pPrior->createCalc());
-		}
-		return false;
-	}
+    bool setPrior(LPRDOFUNArithm& pPrior)
+    {
+        LPIPriority pPriority = m_pRuntimeLogic.object_dynamic_cast<IPriority>();
+        if (pPriority)
+        {
+            return pPriority->setPrior(pPrior->createCalc());
+        }
+        return false;
+    }
 
 protected:
-	LPILogic     m_pRuntimeLogic;
+    LPILogic     m_pRuntimeLogic;
 
 private:
-	ActivityList m_activityList;
+    ActivityList m_activityList;
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDOCONVERTER_LOGIC_H_

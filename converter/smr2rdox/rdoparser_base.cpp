@@ -19,21 +19,21 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // -------------------- RDOParserItem
 // --------------------------------------------------------------------------------
 RDOParserItem::RDOParserItem()
-	: m_type      (rdo::converter::smr2rdox::PAT_IN)
-	, m_parser_fun(NULL                            )
-	, m_lexer_fun (NULL                            )
-	, m_needStream(true                            )
+    : m_type(rdo::converter::smr2rdox::FileTypeIn::PAT)
+    , m_parser_fun(NULL)
+    , m_lexer_fun (NULL)
+    , m_needStream(true)
 {
-	init();
+    init();
 }
 
-RDOParserItem::RDOParserItem(rdo::converter::smr2rdox::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_flex_lexer_fun lexer_fun)
-	: m_type      (type      )
-	, m_parser_fun(parser_fun)
-	, m_lexer_fun (lexer_fun )
-	, m_needStream(true      )
+RDOParserItem::RDOParserItem(rdo::converter::smr2rdox::FileTypeIn type, t_bison_parse_fun parser_fun, t_flex_lexer_fun lexer_fun)
+    : m_type      (type      )
+    , m_parser_fun(parser_fun)
+    , m_lexer_fun (lexer_fun )
+    , m_needStream(true      )
 {
-	init();
+    init();
 }
 
 RDOParserItem::~RDOParserItem()
@@ -51,91 +51,91 @@ RDOParserContainer::RDOParserContainer()
 RDOParserContainer::~RDOParserContainer()
 {}
 
-std::size_t RDOParserContainer::insert(rdo::converter::smr2rdox::RDOParseType type, const LPRDOParserItem& pParser)
+std::size_t RDOParserContainer::insert(rdo::converter::smr2rdox::ParseType type, const LPRDOParserItem& pParser)
 {
-	ASSERT(pParser);
+    ASSERT(pParser);
 
-	std::size_t min, max;
-	RDOParserContainer::getMinMax(type, min, max);
-	if (min != UNDEFINED_ID && max != UNDEFINED_ID)
-	{
-		List::iterator it = m_list.find(min);
-		if (it == m_list.end())
-		{
-			m_list[min] = pParser;
-			return min;
-		}
-		else
-		{
-			std::size_t index = it->first;
-			while (it != m_list.end() && it->first <= max)
-			{
-				index++;
-				++it;
-			}
-			if (index <= max)
-			{
-				m_list[index] = pParser;
-				return index;
-			}
-			else
-			{
-				return 0;
-			}
-		}
-	}
-	return 0;
+    std::size_t min, max;
+    RDOParserContainer::getMinMax(type, min, max);
+    if (min != UNDEFINED_ID && max != UNDEFINED_ID)
+    {
+        List::iterator it = m_list.find(min);
+        if (it == m_list.end())
+        {
+            m_list[min] = pParser;
+            return min;
+        }
+        else
+        {
+            std::size_t index = it->first;
+            while (it != m_list.end() && it->first <= max)
+            {
+                index++;
+                ++it;
+            }
+            if (index <= max)
+            {
+                m_list[index] = pParser;
+                return index;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+    return 0;
 }
 
-void RDOParserContainer::getMinMax(rdo::converter::smr2rdox::RDOParseType type, std::size_t& min, std::size_t& max)
+void RDOParserContainer::getMinMax(rdo::converter::smr2rdox::ParseType type, std::size_t& min, std::size_t& max)
 {
-	switch (type)
-	{
-		case rdo::converter::smr2rdox::obPRE : min = 100;  max = 199;  break;
-		case rdo::converter::smr2rdox::obRTP : min = 200;  max = 299;  break;
-		case rdo::converter::smr2rdox::obRSS : min = 300;  max = 399;  break;
-		case rdo::converter::smr2rdox::obFUN : min = 400;  max = 499;  break;
-		case rdo::converter::smr2rdox::obPAT : min = 500;  max = 599;  break;
-		case rdo::converter::smr2rdox::obOPR : min = 600;  max = 699;  break;
-		case rdo::converter::smr2rdox::obDPT : min = 700;  max = 799;  break;
-		case rdo::converter::smr2rdox::obPMD : min = 800;  max = 899;  break;
-		case rdo::converter::smr2rdox::obFRM : min = 900;  max = 999;  break;
-		case rdo::converter::smr2rdox::obSMR : min = 1000; max = 1099; break;
-		case rdo::converter::smr2rdox::obPOST: min = 1100; max = 1199; break;
-		default                              : min = std::size_t(UNDEFINED_ID); max = std::size_t(UNDEFINED_ID); break;
-	}
+    switch (type)
+    {
+        case rdo::converter::smr2rdox::ParseType::PRE : min = 100;  max = 199;  break;
+        case rdo::converter::smr2rdox::ParseType::RTP : min = 200;  max = 299;  break;
+        case rdo::converter::smr2rdox::ParseType::RSS : min = 300;  max = 399;  break;
+        case rdo::converter::smr2rdox::ParseType::FUN : min = 400;  max = 499;  break;
+        case rdo::converter::smr2rdox::ParseType::PAT : min = 500;  max = 599;  break;
+        case rdo::converter::smr2rdox::ParseType::OPR : min = 600;  max = 699;  break;
+        case rdo::converter::smr2rdox::ParseType::DPT : min = 700;  max = 799;  break;
+        case rdo::converter::smr2rdox::ParseType::PMD : min = 800;  max = 899;  break;
+        case rdo::converter::smr2rdox::ParseType::FRM : min = 900;  max = 999;  break;
+        case rdo::converter::smr2rdox::ParseType::SMR : min = 1000; max = 1099; break;
+        case rdo::converter::smr2rdox::ParseType::POST: min = 1100; max = 1199; break;
+        default: min = std::size_t(UNDEFINED_ID); max = std::size_t(UNDEFINED_ID); break;
+    }
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserContainerModel
 // --------------------------------------------------------------------------------
 RDOParserContainerModel::RDOParserContainerModel()
-	: RDOParserContainer()
+    : RDOParserContainer()
 {
-	insert(rdo::converter::smr2rdox::obPRE, rdo::Factory<RDOParserSTDFUN> ::create());
-	insert(rdo::converter::smr2rdox::obPRE, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::SMR_IN, cnv_smr_file_parse, cnv_smr_file_lex));
-	insert(rdo::converter::smr2rdox::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::RTP_IN, cnv_rtpparse, cnv_rtplex));
-	insert(rdo::converter::smr2rdox::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::DPT_IN, cnv_proc_rtp_parse, cnv_proc_rtp_lex));
-	insert(rdo::converter::smr2rdox::obRSS, rdo::Factory<RDOParserRSS>    ::create());
-	insert(rdo::converter::smr2rdox::obRSS, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::DPT_IN, cnv_proc_rss_parse, cnv_proc_rss_lex));
-	insert(rdo::converter::smr2rdox::obFUN, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::FUN_IN, cnv_funparse, cnv_funlex));
-	insert(rdo::converter::smr2rdox::obPAT, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::PAT_IN, cnv_patparse, cnv_patlex));
-	insert(rdo::converter::smr2rdox::obOPR, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::OPR_IN, cnv_oprparse, cnv_oprlex));
-	insert(rdo::converter::smr2rdox::obDPT, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::DPT_IN, cnv_proc_opr_parse, cnv_proc_opr_lex));
-	insert(rdo::converter::smr2rdox::obDPT, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::DPT_IN, cnv_dptparse, cnv_dptlex));
-	insert(rdo::converter::smr2rdox::obPMD, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::PMD_IN, cnv_pmdparse, cnv_pmdlex));
-	insert(rdo::converter::smr2rdox::obFRM, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::FRM_IN, cnv_frmparse, cnv_frmlex));
-	insert(rdo::converter::smr2rdox::obSMR, rdo::Factory<RDOParserRSSPost>::create());
-	insert(rdo::converter::smr2rdox::obSMR, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::SMR_IN, cnv_smr_sim_parse, cnv_smr_sim_lex));
+    insert(rdo::converter::smr2rdox::ParseType::PRE, rdo::Factory<RDOParserSTDFUN> ::create());
+    insert(rdo::converter::smr2rdox::ParseType::PRE, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::FileTypeIn::SMR, cnv_smr_file_parse, cnv_smr_file_lex));
+    insert(rdo::converter::smr2rdox::ParseType::RTP, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::FileTypeIn::RTP, cnv_rtpparse, cnv_rtplex));
+    insert(rdo::converter::smr2rdox::ParseType::RTP, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::FileTypeIn::DPT, cnv_proc_rtp_parse, cnv_proc_rtp_lex));
+    insert(rdo::converter::smr2rdox::ParseType::RSS, rdo::Factory<RDOParserRSS>    ::create());
+    insert(rdo::converter::smr2rdox::ParseType::RSS, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::FileTypeIn::DPT, cnv_proc_rss_parse, cnv_proc_rss_lex));
+    insert(rdo::converter::smr2rdox::ParseType::FUN, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::FileTypeIn::FUN, cnv_funparse, cnv_funlex));
+    insert(rdo::converter::smr2rdox::ParseType::PAT, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::FileTypeIn::PAT, cnv_patparse, cnv_patlex));
+    insert(rdo::converter::smr2rdox::ParseType::OPR, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::FileTypeIn::OPR, cnv_oprparse, cnv_oprlex));
+    insert(rdo::converter::smr2rdox::ParseType::DPT, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::FileTypeIn::DPT, cnv_proc_opr_parse, cnv_proc_opr_lex));
+    insert(rdo::converter::smr2rdox::ParseType::DPT, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::FileTypeIn::DPT, cnv_dptparse, cnv_dptlex));
+    insert(rdo::converter::smr2rdox::ParseType::PMD, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::FileTypeIn::PMD, cnv_pmdparse, cnv_pmdlex));
+    insert(rdo::converter::smr2rdox::ParseType::FRM, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::FileTypeIn::FRM, cnv_frmparse, cnv_frmlex));
+    insert(rdo::converter::smr2rdox::ParseType::SMR, rdo::Factory<RDOParserRSSPost>::create());
+    insert(rdo::converter::smr2rdox::ParseType::SMR, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::FileTypeIn::SMR, cnv_smr_sim_parse, cnv_smr_sim_lex));
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserContainerSMRInfo
 // --------------------------------------------------------------------------------
 RDOParserContainerSMRInfo::RDOParserContainerSMRInfo()
-	: RDOParserContainer()
+    : RDOParserContainer()
 {
-	insert(rdo::converter::smr2rdox::obPRE, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::SMR_IN, cnv_smr_file_parse, cnv_smr_file_lex));
+    insert(rdo::converter::smr2rdox::ParseType::PRE, rdo::Factory<RDOParserRDOItem>::create(rdo::converter::smr2rdox::FileTypeIn::SMR, cnv_smr_file_parse, cnv_smr_file_lex));
 }
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

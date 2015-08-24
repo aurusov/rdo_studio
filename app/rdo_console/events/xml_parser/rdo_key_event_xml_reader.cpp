@@ -6,20 +6,20 @@
 
 namespace rdo {
 
-key_event_xml_reader::~key_event_xml_reader()
+KeyEventXmlReader::~KeyEventXmlReader()
 {}
 
-event* key_event_xml_reader::read(const boost::property_tree::ptree& pt) const
+std::shared_ptr<Event> KeyEventXmlReader::read(const boost::property_tree::ptree& pt) const
 {
-	const std::string name = pt.get<std::string>("<xmlattr>.name", "");
-	const double time = pt.get<double>("<xmlattr>.time", 0.0);
+    const auto name = pt.get<std::string>("<xmlattr>.name", "");
+    const auto time = pt.get<Event::Time>("<xmlattr>.time", 0.0);
 
-	const boost::property_tree::ptree& param = pt.get_child("param");
+    const auto& param = pt.get_child("param");
 
-	const int state = param.get<int>("<xmlattr>.state");
-	const int key_code = param.get<int>("<xmlattr>.key");
+    const auto state = param.get<int>("<xmlattr>.state");
+    const auto key_code = param.get<int>("<xmlattr>.key");
 
-	return new key_event(name, time, static_cast<key_event::states>(state), key_code);
+    return std::make_shared<KeyEvent>(name, time, static_cast<KeyEvent::State>(state), key_code);
 }
 
 } // namespace rdo

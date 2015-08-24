@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_CALC_WATCH_H_
-#define _LIB_RUNTIME_CALC_WATCH_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -9,34 +8,30 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Начало сбора статистики по группе показателей
 PREDECLARE_POINTER(RDOCalcWatchGroupStart);
 class RDOCalcWatchGroupStart: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStart)
 protected:
-	RDOCalcWatchGroupStart(const LPIResultGroup& pResultGroup);
-	virtual ~RDOCalcWatchGroupStart();
+    RDOCalcWatchGroupStart(const LPIResultGroup& pResultGroup);
+    virtual ~RDOCalcWatchGroupStart();
 
-	LPIResultGroup m_pResultGroup;
+    LPIResultGroup m_pResultGroup;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
-//! Окончание сбора статистики по группе показателей
 PREDECLARE_POINTER(RDOCalcWatchGroupStop);
 class RDOCalcWatchGroupStop: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStop)
 protected:
-	RDOCalcWatchGroupStop(const LPIResultGroup& pResultGroup);
-	virtual ~RDOCalcWatchGroupStop();
+    RDOCalcWatchGroupStop(const LPIResultGroup& pResultGroup);
+    virtual ~RDOCalcWatchGroupStop();
 
-	LPIResultGroup m_pResultGroup;
+    LPIResultGroup m_pResultGroup;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_CALC_WATCH_H_

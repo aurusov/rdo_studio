@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_CALC_PROCEDURAL_NOP_H_
-#define _LIB_RUNTIME_CALC_PROCEDURAL_NOP_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -8,18 +7,15 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Пустая операция
 PREDECLARE_POINTER(RDOCalcNop);
 class RDOCalcNop: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcNop)
 private:
-	RDOCalcNop();
-	virtual ~RDOCalcNop();
+    RDOCalcNop();
+    virtual ~RDOCalcNop();
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_CALC_PROCEDURAL_NOP_H_

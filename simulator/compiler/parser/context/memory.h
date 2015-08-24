@@ -1,5 +1,4 @@
-#ifndef _CONEXT_MEMORY_H_
-#define _CONEXT_MEMORY_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -15,36 +14,34 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 struct IContextMemory
 {
-	virtual LPLocalVariableListStack getLocalMemory() = 0;
+    virtual LPLocalVariableListStack getLocalMemory() = 0;
 };
 #define DECLARE_IContextMemory               \
 public:                                      \
-	LPLocalVariableListStack getLocalMemory();
+    LPLocalVariableListStack getLocalMemory();
 
 // --------------------------------------------------------------------------------
 // -------------------- ContextMemory
 // --------------------------------------------------------------------------------
 class ContextMemory
-	: public Context
-	, public IContextMemory
-	, public IContextFind
+    : public Context
+    , public IContextMemory
+    , public IContextFind
 {
 DECLARE_FACTORY(ContextMemory);
 public:
-	static void push();
-	static void pop ();
+    static void push();
+    static void pop ();
 
 protected:
-	ContextMemory();
+    ContextMemory();
 
 private:
-	LPLocalVariableListStack m_pLocalVariableListStack;
+    LPLocalVariableListStack m_pLocalVariableListStack;
 
-	DECLARE_IContextMemory;
-	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+    DECLARE_IContextMemory;
+    virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(ContextMemory);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _CONEXT_MEMORY_H_

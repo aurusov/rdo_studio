@@ -9,35 +9,35 @@
 
 namespace
 {
-	const QString DEFAULT_TEXT = "1";
+    const QString DEFAULT_TEXT = "1";
 } // end anonymous namespace
 
 CheckableLineEdit::CheckableLineEdit(QWidget* parent)
-	: QWidget(parent)
-	, defaultText(DEFAULT_TEXT)
+    : QWidget(parent)
+    , defaultText(DEFAULT_TEXT)
 {
-	QHBoxLayout* layout = new QHBoxLayout(this);
-	layout->setMargin(0);
+    QHBoxLayout* layout = new QHBoxLayout(this);
+    layout->setMargin(0);
 
-	checkBox = new QCheckBox("", this);
-	lineEdit = new QLineEdit(defaultText, this);
-	lineEdit->setEnabled(false);
+    checkBox = new QCheckBox("", this);
+    lineEdit = new QLineEdit(defaultText, this);
+    lineEdit->setEnabled(false);
 
-	layout->addWidget(checkBox);
-	layout->addWidget(lineEdit);
-	connect(checkBox, &QCheckBox::stateChanged, this, &CheckableLineEdit::setLineEditState);
+    layout->addWidget(checkBox);
+    layout->addWidget(lineEdit);
+    connect(checkBox, &QCheckBox::stateChanged, this, &CheckableLineEdit::setLineEditState);
 }
 
 void CheckableLineEdit::setLineEditState(int state)
 {
-	if (state == Qt::Checked)
-	{
-		lineEdit->setEnabled(true);
-		lineEdit->setFocus();
-	}
-	else
-	{
-		lineEdit->setText(defaultText);
-		lineEdit->setEnabled(false);
-	}
+    if (state == Qt::Checked)
+    {
+        lineEdit->setEnabled(true);
+        lineEdit->setFocus();
+    }
+    else
+    {
+        lineEdit->setText(defaultText);
+        lineEdit->setEnabled(false);
+    }
 }

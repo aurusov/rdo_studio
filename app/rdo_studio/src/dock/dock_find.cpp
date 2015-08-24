@@ -10,41 +10,41 @@
 // --------------------------------------------------------------------------------
 
 DockFind::DockFind(QWidget* pParent)
-	: DockFocusable("Поиск", pParent)
+    : DockFocusable("Поиск", pParent)
 {
-	context_type* pWidget = new context_type(this);
-	pWidget->setMinimumSize(QSize(300, 110));
+    context_type* pWidget = new context_type(this);
+    pWidget->setMinimumSize(QSize(300, 110));
 
-	setWidget(pWidget);
+    setWidget(pWidget);
 
-	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_find.png")));
+    toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_find.png")));
 }
 
 DockFind::~DockFind()
 {}
 
 void DockFind::appendString(
-	const QString& str,
-	rdo::model::FileType fileType,
-	int lineNumber, int posInLine)
+    const QString& str,
+    rdo::FileType fileType,
+    int lineNumber, int posInLine)
 {
-	rdo::simulation::report::LogEditLineInfo* pLine = new rdo::simulation::report::LogEditLineInfo(
-		rdo::simulation::report::FileMessage(
-			str.toStdString(),
-			fileType,
-			lineNumber,
-			posInLine
-		)
-	);
-	getContext().appendLine(pLine);
+    rdo::simulation::report::LogEditLineInfo* pLine = new rdo::simulation::report::LogEditLineInfo(
+        rdo::simulation::report::FileMessage(
+            str.toStdString(),
+            fileType,
+            lineNumber,
+            posInLine
+        )
+    );
+    getContext().appendLine(pLine);
 }
 
 void DockFind::clear()
 {
-	getContext().clearAll();
+    getContext().clearAll();
 }
 
 DockFind::context_type& DockFind::getContext()
 {
-	return *static_cast<context_type*>(widget());
+    return *static_cast<context_type*>(widget());
 }

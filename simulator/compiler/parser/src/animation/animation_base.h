@@ -1,5 +1,4 @@
-#ifndef _SIMULATOR_COMPILER_PARSER_ANIMATION_BASE_H_
-#define _SIMULATOR_COMPILER_PARSER_ANIMATION_BASE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -13,32 +12,30 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 class RDOFRMCommandList
-	: public Context
-	, public IContextFind
+    : public Context
+    , public IContextFind
 {
 DECLARE_FACTORY(RDOFRMCommandList);
 public:
-	const std::string& name() const;
-	LPExpression expression() const;
-	void end();
+    const std::string& name() const;
+    LPExpression expression() const;
+    void end();
 
-	virtual rdo::runtime::LPRDOFRMSprite list() const = 0;
+    virtual rdo::runtime::LPRDOFRMSprite list() const = 0;
 
-	static LPExpression generateExpression(const rdo::runtime::LPRDOCalc& pCalc, const RDOParserSrcInfo& srcInfo);
+    static LPExpression generateExpression(const rdo::runtime::LPRDOCalc& pCalc, const RDOParserSrcInfo& srcInfo);
 
 protected:
-	RDOFRMCommandList(const RDOParserSrcInfo& srcInfo);
-	virtual ~RDOFRMCommandList();
+    RDOFRMCommandList(const RDOParserSrcInfo& srcInfo);
+    virtual ~RDOFRMCommandList();
 
-	const LPFunction& function() const;
+    const LPFunction& function() const;
 
 private:
-	LPFunction m_pFunction;
+    LPFunction m_pFunction;
 
-	DECLARE_IContextFind;
+    DECLARE_IContextFind;
 };
 DECLARE_POINTER(RDOFRMCommandList);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _SIMULATOR_COMPILER_PARSER_ANIMATION_BASE_H_

@@ -146,11 +146,11 @@ def test_console(dirname, model):
     # run rdo_console app on test model
     model_file = '' + dirname + model['name']
     exit_code = int(model['exit_code'])
-    command = (rdo_ex + ' -i ' + utils.wrap_the_string_in_quotes(model_file))
+    command = (rdo_ex + ' -i ' + utils.wrap_the_string_in_quotes(model_file) + ' >' + os.devnull)
     if model['script'] and len(model['script']) > 0:
         command += ' -s ' + utils.wrap_the_string_in_quotes(dirname + model['script'])
     utils.enc_print('Run:', command, '\n')
-    simulation_code = subprocess.call(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    simulation_code = subprocess.call(command, shell=True)
     utils.enc_print ('SIMULATION EXIT CODE :', simulation_code)
 
     # check simulation exit code
@@ -200,9 +200,9 @@ def test_convertor(dirname, model):
         shutil.copytree(dirname, temp_directory_name, ignore=shutil.ignore_patterns(*IGNORE_PATTERNS))
         model_file = '' + temp_directory_name + model['name']
         exit_code = int(model['exit_code'])
-        command = (rdo_ex + ' -i ' + utils.wrap_the_string_in_quotes(model_file) + ' -c')
+        command = (rdo_ex + ' -i ' + utils.wrap_the_string_in_quotes(model_file) + ' >' + os.devnull + ' -c')
         utils.enc_print ('Run:', command, '\n')
-        convertor_exit_code = subprocess.call(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        convertor_exit_code = subprocess.call(command, shell=True)
         utils.enc_print ('CONVERT EXIT CODE :', convertor_exit_code, '\n')
         if convertor_exit_code == exit_code:
             cycle_exit_code = compare_etalons(model['etalons'], temp_directory_name)

@@ -12,8 +12,8 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // -------------------- RDOTypeParamSuchAs
 // --------------------------------------------------------------------------------
 RDOTypeParamSuchAs::RDOTypeParamSuchAs(const LPRDOParam& pParam)
-	: RDOTypeParam(pParam->getType()->type(), pParam->getType()->src_info())
-	, m_pParam(pParam)
+    : RDOTypeParam(pParam->getType()->type(), pParam->getType()->src_info())
+    , m_pParam(pParam)
 {}
 
 RDOTypeParamSuchAs::~RDOTypeParamSuchAs()
@@ -21,7 +21,7 @@ RDOTypeParamSuchAs::~RDOTypeParamSuchAs()
 
 const LPRDOParam& RDOTypeParamSuchAs::getParam() const
 {
-	return m_pParam;
+    return m_pParam;
 }
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

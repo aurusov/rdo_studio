@@ -14,22 +14,22 @@ BOOST_AUTO_TEST_SUITE(RDOParserType_Test)
 
 BOOST_AUTO_TEST_CASE(RDOParserType_Test_int)
 {
-	rdo::compiler::parser::LPIType pType = rdo::Factory<rdo::compiler::parser::RDOType__int>::create();
-	BOOST_CHECK(pType);
+    rdo::compiler::parser::LPIType pType = rdo::Factory<rdo::compiler::parser::RDOType__INT>::create();
+    BOOST_CHECK(pType);
 }
 
 BOOST_AUTO_TEST_CASE(RDOParserType_RTP_RDOValue)
 {
-	using namespace rdo::compiler::parser;
-	const LPRDOParser parser = rdo::Factory<RDOParser>::create();
-	BOOST_CHECK(parser);
-	parser->init();
-	const LPRDORTPResType rtp = rdo::Factory<RDORTPResType>::create(parser, RDOParserSrcInfo(), true);
-	BOOST_CHECK(rtp);
-	const LPRDORSSResource resource = rdo::Factory<RDORSSResource>::create(parser, RDOParserSrcInfo(), rtp);
-	BOOST_CHECK(resource);
-	const rdo::runtime::RDOValue value(rtp, resource);
-	BOOST_CHECK(value.getPointerByType<RDORTPResType>() == resource);
+    using namespace rdo::compiler::parser;
+    const LPRDOParser parser = rdo::Factory<RDOParser>::create();
+    BOOST_CHECK(parser);
+    parser->init();
+    const LPRDORTPResType rtp = rdo::Factory<RDORTPResType>::create(parser, RDOParserSrcInfo(), true);
+    BOOST_CHECK(rtp);
+    const LPRDORSSResource resource = rdo::Factory<RDORSSResource>::create(parser, RDOParserSrcInfo(), rtp);
+    BOOST_CHECK(resource);
+    const rdo::runtime::RDOValue value(rtp, resource);
+    BOOST_CHECK(value.getPointerByType<RDORTPResType>() == resource);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

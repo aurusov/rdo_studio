@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_FRAME_STYLE_H_
-#define _RDO_STUDIO_FRAME_STYLE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -14,16 +13,14 @@ namespace rdo { namespace gui { namespace frame {
 class FrameStyle: public rdo::gui::style::StyleBase
 {
 public:
-	FrameStyle();
-	~FrameStyle();
+    FrameStyle();
+    ~FrameStyle();
 
-	FrameStyle& operator =( const FrameStyle& style );
-	bool operator ==( const FrameStyle& style ) const;
-	bool operator !=( const FrameStyle& style ) const;
+    FrameStyle& operator =( const FrameStyle& style );
+    bool operator ==( const FrameStyle& style ) const;
+    bool operator !=( const FrameStyle& style ) const;
 
-	static FrameStyle getDefaultStyle();
+    static FrameStyle getDefaultStyle();
 };
 
 }}} // namespace rdo::gui::frame
-
-#endif // _RDO_STUDIO_FRAME_STYLE_H_

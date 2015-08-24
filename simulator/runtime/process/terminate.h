@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_PROCESS_TERMINATE_H_
-#define _LIB_RUNTIME_PROCESS_TERMINATE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
@@ -14,20 +13,18 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-class RDOPROCTerminate: public RDOPROCBlock, public IInternalStatisticsManager, public boost::noncopyable
+class RDOPROCTerminate: public RDOPROCBlock, public IInternalStatisticsManager, private boost::noncopyable
 {
 DECLARE_FACTORY(RDOPROCTerminate);
 private:
-	RDOPROCTerminate(const LPIPROCProcess& pProcess, const LPRDOCalc& pCalc);
+    RDOPROCTerminate(const LPIPROCProcess& pProcess, const LPRDOCalc& pCalc);
 
-	std::size_t m_terminatedTransactCount;
-	LPRDOCalc m_pTermCalc;
-	LPIInternalStatistics m_pStatistics;
+    std::size_t m_terminatedTransactCount;
+    LPRDOCalc m_pTermCalc;
+    LPIInternalStatistics m_pStatistics;
 
-	DECLARE_IBaseOperation;
-	DECLARE_IInternalStatisticsManager;
+    DECLARE_IBaseOperation;
+    DECLARE_IInternalStatisticsManager;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_PROCESS_TERMINATE_H_

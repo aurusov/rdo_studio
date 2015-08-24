@@ -11,7 +11,7 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-FILE(GLOB_RECURSE SOURCE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
+FILE(GLOB_RECURSE SOURCE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp *.h)
 ADD_LIBRARY(rdo_mbuilder STATIC ${SOURCE_FILES})
 
 INCLUDE(${PROJECT_SOURCE_DIR}/simulator/compiler/compiler.cmake)
@@ -26,10 +26,10 @@ TARGET_LINK_LIBRARIES(rdo_mbuilder rdo_parser)
 INSTALL(TARGETS rdo_mbuilder DESTINATION lib)
 
 IF(MSVC_IDE)
-	SET(PCH_FILES
-		pch.h
-		pch.cpp
-	)
-	INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
-	ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" simulator/compiler/mbuilder ./ pch)
+    SET(PCH_FILES
+        pch.h
+        pch.cpp
+    )
+    INCLUDE(${PROJECT_SOURCE_DIR}/cmake/pch.cmake)
+    ADD_PCH("${SOURCE_FILES}" "${PCH_FILES}" simulator/compiler/mbuilder ./ pch)
 ENDIF()

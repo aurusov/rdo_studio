@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_CALC_PROCEDURAL_LOCVAR_H_
-#define _LIB_RUNTIME_CALC_PROCEDURAL_LOCVAR_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -9,65 +8,59 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Создание локальной переменной
 PREDECLARE_POINTER(RDOCalcCreateLocalVariable);
 class RDOCalcCreateLocalVariable: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcCreateLocalVariable)
 private:
-	RDOCalcCreateLocalVariable(const std::string& name, const LPRDOCalc& pValueCalc);
+    RDOCalcCreateLocalVariable(const std::string& name, const LPRDOCalc& pValueCalc);
 
-	std::string m_name;
-	LPRDOCalc  m_pValueCalc;
+    std::string m_name;
+    LPRDOCalc  m_pValueCalc;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
-//! Получение значения локальной переменной
 PREDECLARE_POINTER(RDOCalcGetLocalVariable);
 class RDOCalcGetLocalVariable: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcGetLocalVariable)
 private:
-	RDOCalcGetLocalVariable(const std::string& name);
+    RDOCalcGetLocalVariable(const std::string& name);
 
-	std::string m_name;
+    std::string m_name;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
-//! Установка значения локальной переменной
 class RDOCalcSetLocalVariable: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcSetLocalVariable)
 private:
-	RDOCalcSetLocalVariable(const std::string& name, LPRDOCalc pCalc = NULL);
-	virtual ~RDOCalcSetLocalVariable();
+    RDOCalcSetLocalVariable(const std::string& name, LPRDOCalc pCalc = NULL);
+    virtual ~RDOCalcSetLocalVariable();
 
-	std::string m_name;
-	LPRDOCalc m_pCalc;
+    std::string m_name;
+    LPRDOCalc m_pCalc;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
-//! Список локальных переменных
 PREDECLARE_POINTER(RDOCalcLocalVariableList);
 class RDOCalcLocalVariableList: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcLocalVariableList)
 public:
-	typedef std::vector<LPRDOCalc> CalcLocalVariableList;
+    typedef std::vector<LPRDOCalc> CalcLocalVariableList;
 
-	void addCalcLocalVariable(const LPRDOCalc& pCalc);
+    void addCalcLocalVariable(const LPRDOCalc& pCalc);
 
 private:
-	RDOCalcLocalVariableList();
+    RDOCalcLocalVariableList();
 
-	CalcLocalVariableList m_calcLocalVariableList;
+    CalcLocalVariableList m_calcLocalVariableList;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_CALC_PROCEDURAL_LOCVAR_H_

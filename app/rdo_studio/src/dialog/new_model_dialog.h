@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_DIALOG_NEW_MODEL_DIALOG_H_
-#define _RDO_STUDIO_DIALOG_NEW_MODEL_DIALOG_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -10,30 +9,28 @@
 // --------------------------------------------------------------------------------
 
 class NewModelDialog
-	: public  QDialog
-	, private Ui::NewModelDialog
+    : public  QDialog
+    , private Ui::NewModelDialog
 {
 Q_OBJECT
 
 public:
-	NewModelDialog(QWidget* pParent);
-	virtual ~NewModelDialog();
+    NewModelDialog(QWidget* pParent);
+    virtual ~NewModelDialog();
 
-	QString getModelName() const;
-	QString getModelPath() const;
-	std::size_t getTemplateIndex() const;
+    QString getModelName() const;
+    QString getModelPath() const;
+    std::size_t getTemplateIndex() const;
 
 private:
-	QFont    m_font;
-	QFont    m_fontRed;
-	QPalette m_palette;
-	QPalette m_paletteRed;
+    QFont    m_font;
+    QFont    m_fontRed;
+    QPalette m_palette;
+    QPalette m_paletteRed;
 
-	void setPath(const QString& path);
+    void setPath(const QString& path);
 
 private slots:
-	void updateUI();
-	void onPathButtonClicked();
+    void updateUI();
+    void onPathButtonClicked();
 };
-
-#endif // _RDO_STUDIO_DIALOG_NEW_MODEL_DIALOG_H_

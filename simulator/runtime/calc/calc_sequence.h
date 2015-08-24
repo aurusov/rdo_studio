@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_CALC_SEQUENCE_H_
-#define _LIB_RUNTIME_CALC_SEQUENCE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/optional.hpp>
@@ -10,58 +9,55 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Инициализация последовательности псевдослучайных чисел
 PREDECLARE_POINTER(RDOCalcSeqInit);
 class RDOCalcSeqInit: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcSeqInit)
 public:
-	void setBase(int base);
+    void setBase(int base);
 
 private:
-	RDOCalcSeqInit(int base, RandGenerator* gen);
-	virtual ~RDOCalcSeqInit();
+    RDOCalcSeqInit(int base, RandGenerator* gen);
+    virtual ~RDOCalcSeqInit();
 
-	int m_base;
-	RandGenerator* m_gen;
+    int m_base;
+    RandGenerator* m_gen;
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
-//! Вычисляет следующее значение последовательности псевдослучайных чисел
 PREDECLARE_POINTER(RDOCalcSeqNext);
 class RDOCalcSeqNext: public RDOFunCalc
 {
 public:
-	struct Range
-	{
-		double  m_min;
-		double  m_max;
+    struct Range
+    {
+        double  m_min;
+        double  m_max;
 
-		Range();
-		Range(const double& min, const double& max);
-	};
+        Range();
+        Range(const double& min, const double& max);
+    };
 
-	bool m_res_real;
-	boost::optional<Range> m_range;
+    bool m_res_real;
+    boost::optional<Range> m_range;
 
 protected:
-	RDOCalcSeqNext();
+    RDOCalcSeqNext();
 
-	virtual RDOValue getNextValue(const LPRDORuntime& pRuntime) = 0;
+    virtual RDOValue getNextValue(const LPRDORuntime& pRuntime) = 0;
 };
 
-//! Псевдослучайное распределение
 template<class T>
 class RDOCalcRandomDistribution: public RDOCalcSeqNext
 {
 protected:
-	RDOCalcRandomDistribution(T* gen);
-	virtual ~RDOCalcRandomDistribution();
-	T* m_gen;
+    RDOCalcRandomDistribution(T* gen);
+    virtual ~RDOCalcRandomDistribution();
+    T* m_gen;
 
 private:
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 #define DEFINE_RANDON_DISTRIBUTION(CalcName, Distribution)                     \
@@ -70,11 +66,11 @@ class RDOCalcSeqNext##CalcName: public RDOCalcRandomDistribution<Distribution> \
 {                                                                              \
 DECLARE_FACTORY(RDOCalcSeqNext##CalcName)                                      \
 private:                                                                       \
-	RDOCalcSeqNext##CalcName(Distribution* gen)                                \
-		: RDOCalcRandomDistribution<Distribution>(gen)                         \
-	{}                                                                         \
-	                                                                           \
-	virtual RDOValue getNextValue(const LPRDORuntime& pRuntime);               \
+    RDOCalcSeqNext##CalcName(Distribution* gen)                                \
+        : RDOCalcRandomDistribution<Distribution>(gen)                         \
+    {}                                                                         \
+                                                                               \
+    virtual RDOValue getNextValue(const LPRDORuntime& pRuntime);               \
 };
 
 DEFINE_RANDON_DISTRIBUTION(Uniform, RandGeneratorUniform);
@@ -90,5 +86,3 @@ DEFINE_RANDON_DISTRIBUTION(ByHist, RandGeneratorCommonNext);
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "simulator/runtime/calc/calc_sequence-inl.h"
-
-#endif // _LIB_RUNTIME_CALC_SEQUENCE_H_

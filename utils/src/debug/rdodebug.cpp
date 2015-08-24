@@ -10,18 +10,18 @@
 void StdOutput(const std::string& message)
 {
 #ifdef COMPILER_VISUAL_STUDIO
-	std::wcout << rdo::locale::convertToWStr(message) << std::endl;
+    std::wcout << rdo::locale::convertToWStr(message) << std::endl;
 #else
-	std::cout << message << std::endl;
+    std::cout << message << std::endl;
 #endif
 }
 
 void StdError(const std::string& message)
 {
 #ifdef COMPILER_VISUAL_STUDIO
-	std::wcerr << rdo::locale::convertToWStr(message) << std::endl;
+    std::wcerr << rdo::locale::convertToWStr(message) << std::endl;
 #else
-	std::cerr << message << std::endl;
+    std::cerr << message << std::endl;
 #endif
 }
 

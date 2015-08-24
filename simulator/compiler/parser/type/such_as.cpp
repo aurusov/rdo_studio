@@ -12,8 +12,8 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- RDOTypeParamSuchAs
 // --------------------------------------------------------------------------------
 RDOTypeParamSuchAs::RDOTypeParamSuchAs(const LPRDOParam& pParam)
-	: TypeInfo(pParam->getTypeInfo())
-	, m_pParam(pParam               )
+    : TypeInfo(pParam->getTypeInfo())
+    , m_pParam(pParam               )
 {}
 
 RDOTypeParamSuchAs::~RDOTypeParamSuchAs()
@@ -21,7 +21,7 @@ RDOTypeParamSuchAs::~RDOTypeParamSuchAs()
 
 const LPRDOParam& RDOTypeParamSuchAs::getParam() const
 {
-	return m_pParam;
+    return m_pParam;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

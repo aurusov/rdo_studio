@@ -1,5 +1,4 @@
-#ifndef _UI_QT_ANIMATION_AREA_H_
-#define _UI_QT_ANIMATION_AREA_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -12,18 +11,16 @@
 
 namespace rdo
 {
-	namespace gui
-	{
-		namespace animation
-		{
-			struct Area
-			{
-				QRect  m_rect;
-			};
-			typedef  std::map<QString, Area>  AreaList;
+    namespace gui
+    {
+        namespace animation
+        {
+            struct Area
+            {
+                QRect  m_rect;
+            };
+            typedef  std::map<QString, Area>  AreaList;
 
-		} // namespace animation
-	} // namespace gui
+        } // namespace animation
+    } // namespace gui
 } // namespace rdo
-
-#endif // _UI_QT_ANIMATION_AREA_H_
