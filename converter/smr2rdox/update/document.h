@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_DOCUMENT_H_
-#define _CONVERTOR_DOCUMENT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
@@ -23,63 +22,61 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(Document);
 class Document
-	: public rdo::counter_reference
-	, public IDocument
+    : public rdo::counter_reference
+    , public IDocument
 {
 DECLARE_FACTORY(Document)
 public:
-	typedef rdo::converter::smr2rdox::RDOFileTypeOut TypeOut;
+    typedef rdo::converter::smr2rdox::FileTypeOut TypeOut;
 
-	void  create      (const boost::filesystem::path& filePath, const boost::filesystem::path& modelName);
-	void  init        (rdo::converter::smr2rdox::RDOFileTypeIn type, std::ifstream& stream);
-	void  insertUpdate(const LPDocUpdate& pUpdate);
-	void  convert     ();
-	void  close       ();
-	boost::filesystem::path getName(TypeOut typeOut) const;
+    void  create      (const boost::filesystem::path& filePath, const boost::filesystem::path& modelName);
+    void  init        (rdo::converter::smr2rdox::FileTypeIn type, std::ifstream& stream);
+    void  insertUpdate(const LPDocUpdate& pUpdate);
+    void  convert     ();
+    void  close       ();
+    boost::filesystem::path getName(TypeOut typeOut) const;
 
 private:
-	 Document();
-	~Document();
+     Document();
+    ~Document();
 
-	class MemoryStream
-	{
-	public:
-		typedef std::vector<char> Buffer;
+    class MemoryStream
+    {
+    public:
+        typedef std::vector<char> Buffer;
 
-		void init(std::ifstream& stream);
-		void get(std::ofstream& stream) const;
+        void init(std::ifstream& stream);
+        void get(std::ofstream& stream) const;
 
-		void insert(std::size_t to, const std::string& value);
-		void remove(std::size_t from, std::size_t to);
+        void insert(std::size_t to, const std::string& value);
+        void remove(std::size_t from, std::size_t to);
 
-		std::string get(std::size_t from, std::size_t to);
+        std::string get(std::size_t from, std::size_t to);
 
-	private:
-		Buffer m_buffer;
-	};
+    private:
+        Buffer m_buffer;
+    };
 
-	typedef boost::shared_ptr<MemoryStream>  LPMemoryStream;
-	typedef boost::shared_ptr<std::ofstream> LPFileStream;
-	typedef std::map<Type, LPMemoryStream>   MemoryFileList;
-	typedef std::map<TypeOut, LPFileStream>  StreamFileList;
+    typedef boost::shared_ptr<MemoryStream>  LPMemoryStream;
+    typedef boost::shared_ptr<std::ofstream> LPFileStream;
+    typedef std::map<Type, LPMemoryStream>   MemoryFileList;
+    typedef std::map<TypeOut, LPFileStream>  StreamFileList;
 
-	typedef std::pair<LPDocUpdate, bool> Update;
-	typedef std::list<Update> UpdateContainer;
+    typedef std::pair<LPDocUpdate, bool> Update;
+    typedef std::list<Update> UpdateContainer;
 
-	boost::filesystem::path  m_filePath;
-	boost::filesystem::path  m_modelName;
-	MemoryFileList           m_memoryFileList;
-	StreamFileList           m_streamFileList;
-	UpdateContainer          m_updateContainer;
+    boost::filesystem::path  m_filePath;
+    boost::filesystem::path  m_modelName;
+    MemoryFileList           m_memoryFileList;
+    StreamFileList           m_streamFileList;
+    UpdateContainer          m_updateContainer;
 
-	LPMemoryStream getMemoryStream(Type    type);
-	LPFileStream   getFileStream  (TypeOut type);
+    LPMemoryStream getMemoryStream(Type    type);
+    LPFileStream   getFileStream  (TypeOut type);
 
-	TypeOut typeToOut(const Type& typeIn) const;
+    TypeOut typeToOut(const Type& typeIn) const;
 
-	DECLARE_IDocument;
+    DECLARE_IDocument;
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_DOCUMENT_H_

@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_DPTRTIME_H_
-#define _LIB_RUNTIME_DPTRTIME_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <sstream>
@@ -16,19 +15,17 @@ class RDODPTSearchRuntime: public RDODPTSearchTrace
 DECLARE_FACTORY(RDODPTSearchRuntime);
 
 private:
-	RDODPTSearchRuntime(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent, const LPRDOCalc& _pCondition, const LPRDOCalc& _pTermCondition, const LPRDOCalc& _pEvaluateBy, bool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag);
+    RDODPTSearchRuntime(const LPRDORuntime& pRuntime, LPIBaseOperationContainer parent, const LPRDOCalc& _pCondition, const LPRDOCalc& _pTermCondition, const LPRDOCalc& _pEvaluateBy, bool _compTops, RDODPTSearchTrace::TraceFlag _traceFlag);
 
-	LPRDOCalc pCondition;
-	LPRDOCalc pTermCondition;
-	LPRDOCalc pEvaluateBy;
-	bool compTops;
+    LPRDOCalc pCondition;
+    LPRDOCalc pTermCondition;
+    LPRDOCalc pEvaluateBy;
+    bool compTops;
 
-	virtual bool onCheckCondition(const LPRDORuntime& pRuntime);
-	virtual bool TermCondition(const LPRDORuntime& pRuntime);
-	virtual double EvaluateBy(const LPRDORuntime& pRuntime);
-	virtual bool NeedCompareTops();
+    virtual bool onCheckCondition(const LPRDORuntime& pRuntime);
+    virtual bool TermCondition(const LPRDORuntime& pRuntime);
+    virtual double EvaluateBy(const LPRDORuntime& pRuntime);
+    virtual bool NeedCompareTops();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_DPTRTIME_H_

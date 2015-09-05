@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_MODEL_I_H_
-#define _LIB_RUNTIME_MODEL_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -9,21 +8,19 @@
 class IModelStructure: public virtual rdo::counter_reference
 {
 public:
-		virtual void writeModelStructure(std::ostream& stream) const = 0;
+        virtual void writeModelStructure(std::ostream& stream) const = 0;
 };
 DECLARE_POINTER(IModelStructure)
 
 #define DECLARE_IModelStructure \
-	virtual void writeModelStructure(std::ostream& stream) const;
+    virtual void writeModelStructure(std::ostream& stream) const;
 
 class IName: public virtual rdo::counter_reference
 {
 public:
-		virtual const std::string& name() const = 0;
+        virtual const std::string& name() const = 0;
 };
 DECLARE_POINTER(IName)
 
 #define DECLARE_IName \
-	virtual const std::string& name() const;
-
-#endif // _LIB_RUNTIME_MODEL_I_H_
+    virtual const std::string& name() const;

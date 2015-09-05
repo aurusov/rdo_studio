@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDORTP_PARAM_H_
-#define _CONVERTOR_RDORTP_PARAM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -16,22 +15,20 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 PREDECLARE_POINTER(RDORTPResType);
 
 class RDORTPParam
-	: public RDOParam
-	, public IModelStructure
-	, public IName
-	, public virtual rdo::counter_reference
+    : public RDOParam
+    , public IModelStructure
+    , public IName
+    , public virtual rdo::counter_reference
 {
 DECLARE_FACTORY(RDORTPParam);
 public:
-	DECLARE_IModelStructure;
-	DECLARE_IName;
+    DECLARE_IModelStructure;
+    DECLARE_IName;
 
 private:
-	RDORTPParam(const LPRDOTypeParam& pParamType, const LPRDOValue& pDefault, const RDOParserSrcInfo& src_info);
-	virtual ~RDORTPParam();
+    RDORTPParam(const LPRDOTypeParam& pParamType, const LPRDOValue& pDefault, const RDOParserSrcInfo& src_info);
+    virtual ~RDORTPParam();
 };
 DECLARE_POINTER(RDORTPParam);
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDORTP_PARAM_H_

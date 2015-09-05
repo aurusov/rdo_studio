@@ -8,5 +8,5 @@
 // --------------------------------------------------------------------------------
 
 #ifdef COMPILER_VISUAL_STUDIO
-	#pragma warning(disable : 4786)
+    #pragma warning(disable : 4786)
 #endif // COMPILER_VISUAL_STUDIO

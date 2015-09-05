@@ -1,5 +1,4 @@
-#ifndef _UI_QT_BITMAP_H_
-#define _UI_QT_BITMAP_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -12,18 +11,16 @@
 
 namespace rdo
 {
-	namespace gui
-	{
-		class Bitmap
-		{
-		public:
-			static QPixmap transparent(const QPixmap& bitmap, const QPixmap& mask);
-			static QImage  transparent(const QImage&  bitmap, const QImage&  mask);
-		};
+    namespace gui
+    {
+        class Bitmap
+        {
+        public:
+            static QPixmap transparent(const QPixmap& bitmap, const QPixmap& mask);
+            static QImage  transparent(const QImage&  bitmap, const QImage&  mask);
+        };
 
-		typedef  std::map<QString, QPixmap>  BitmapList;
+        typedef  std::map<QString, QPixmap>  BitmapList;
 
-	} // namespace gui
+    } // namespace gui
 } // namespace rdo
-
-#endif // _UI_GDIPLUS_BITMAP_H_

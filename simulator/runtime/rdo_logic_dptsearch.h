@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_LOGIC_DPTSEARCH_H_
-#define _LIB_RUNTIME_LOGIC_DPTSEARCH_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -21,30 +20,28 @@ friend class RDOSimulator;
 friend class TreeNode;
 
 protected:
-	RDODPTSearch(const LPRDORuntime& pRuntime, LPIBaseOperationContainer pParent = NULL);
-	virtual ~RDODPTSearch();
+    RDODPTSearch(const LPRDORuntime& pRuntime, LPIBaseOperationContainer pParent = NULL);
+    virtual ~RDODPTSearch();
 
-	typedef std::list<LPIDPTSearchActivity> ActivityList;
-	ActivityList   m_activityList;
+    typedef std::list<LPIDPTSearchActivity> ActivityList;
+    ActivityList   m_activityList;
 
-	virtual bool      TermCondition         (const LPRDORuntime& pRuntime)                      = 0;
-	virtual double    EvaluateBy            (const LPRDORuntime& pRuntime)                      = 0;
-	virtual void      onSearchBegin         (const LPRDORuntime& pRuntime)                      = 0;
-	virtual void      onSearchDecisionHeader(const LPRDORuntime& pRuntime)                      = 0;
-	virtual void      onSearchDecision      (const LPRDORuntime& pRuntime, TreeNode* node )     = 0;
-	virtual void      onSearchResultSuccess (const LPRDORuntime& pRuntime, TreeRoot* treeRoot ) = 0;
-	virtual void      onSearchResultNotFound(const LPRDORuntime& pRuntime, TreeRoot* treeRoot ) = 0;
-	virtual bool      NeedCompareTops       ()                                                  = 0;
-	virtual TreeRoot* createTreeRoot        (const LPRDORuntime& pRuntime)                      = 0;
-	virtual BOResult  onContinue            (const LPRDORuntime& pRuntime);
+    virtual bool      TermCondition         (const LPRDORuntime& pRuntime)                      = 0;
+    virtual double    EvaluateBy            (const LPRDORuntime& pRuntime)                      = 0;
+    virtual void      onSearchBegin         (const LPRDORuntime& pRuntime)                      = 0;
+    virtual void      onSearchDecisionHeader(const LPRDORuntime& pRuntime)                      = 0;
+    virtual void      onSearchDecision      (const LPRDORuntime& pRuntime, TreeNode* node )     = 0;
+    virtual void      onSearchResultSuccess (const LPRDORuntime& pRuntime, TreeRoot* treeRoot ) = 0;
+    virtual void      onSearchResultNotFound(const LPRDORuntime& pRuntime, TreeRoot* treeRoot ) = 0;
+    virtual bool      NeedCompareTops       ()                                                  = 0;
+    virtual TreeRoot* createTreeRoot        (const LPRDORuntime& pRuntime)                      = 0;
+    virtual ResultCode  onContinue            (const LPRDORuntime& pRuntime);
 
 private:
-	TreeRoot* treeRoot;
-	virtual BOResult onDoOperation(const LPRDORuntime& pRuntime);
+    TreeRoot* treeRoot;
+    virtual ResultCode onDoOperation(const LPRDORuntime& pRuntime);
 
-	DECLARE_IDPTSearchLogic;
+    DECLARE_IDPTSearchLogic;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_LOGIC_DPTSEARCH_H_

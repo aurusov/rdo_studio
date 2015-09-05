@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_DIALOG_GO_TO_NEXT_LINE_DIALOG_H_
-#define _RDO_STUDIO_DIALOG_GO_TO_NEXT_LINE_DIALOG_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -10,22 +9,20 @@
 // --------------------------------------------------------------------------------
 
 class GoToLineDialog
-	: public QDialog
-	, private Ui::GoToLineDialog
+    : public QDialog
+    , private Ui::GoToLineDialog
 {
 Q_OBJECT
 
 public:
-	explicit GoToLineDialog(QWidget* pParent, int line, int lineCount);
+    explicit GoToLineDialog(QWidget* pParent, int line, int lineCount);
 
-	int getLine() const;
+    int getLine() const;
 
 private:
-	int m_line;
+    int m_line;
 
 private slots:
-	void onOkButtonClicked();
-	void onCheckInput(const QString& text);
+    void onOkButtonClicked();
+    void onCheckInput(const QString& text);
 };
-
-#endif // _RDO_STUDIO_DIALOG_GO_TO_NEXT_LINE_DIALOG_H_

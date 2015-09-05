@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_FRAME_OPTIONS_VIEW_H_
-#define _RDO_STUDIO_FRAME_OPTIONS_VIEW_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -13,19 +12,17 @@
 namespace rdo { namespace gui { namespace frame {
 
 class OptionsView 
-	: public  QWidget
-	, private Ui::FrameOptionsWidget
+    : public  QWidget
+    , private Ui::FrameOptionsWidget
 {
 private:
-	QFont       font;
-	FrameStyle* m_style;
+    QFont       font;
+    FrameStyle* m_style;
 
 public:
-	explicit OptionsView(QWidget* pParent);
+    explicit OptionsView(QWidget* pParent);
 
-	void setStyle(FrameStyle* style);
+    void setStyle(FrameStyle* style);
 };
 
 }}} // namespace rdo::gui::frame
-
-#endif // _RDO_STUDIO_FRAME_OPTIONS_VIEW_H_

@@ -1,5 +1,4 @@
-#ifndef _PARSER_PARAM_H_
-#define _PARSER_PARAM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -16,37 +15,35 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- RDOParam
 // --------------------------------------------------------------------------------
 class RDOParam
-	: public virtual rdo::counter_reference
-	, public RDOParserSrcInfo
-	, public Context
-	, public IContextFind
+    : public virtual rdo::counter_reference
+    , public RDOParserSrcInfo
+    , public Context
+    , public IContextFind
 {
 DECLARE_FACTORY(RDOParam)
 public:
-	static const std::string CONTEXT_PARAM_PARAM_ID;
+    static const std::string CONTEXT_PARAM_PARAM_ID;
 
-	const std::string& name() const { return src_info().src_text(); }
-	LPTypeInfo getTypeInfo() const { return m_pType; }
-	const LPRDOValue& getDefault () const { return m_pDefault; }
-	bool getDefined() const { return m_defined; }
-	void setDefined(bool defined) { m_defined = defined; }
+    const std::string& name() const { return src_info().src_text(); }
+    LPTypeInfo getTypeInfo() const { return m_pType; }
+    const LPRDOValue& getDefault () const { return m_pDefault; }
+    bool getDefined() const { return m_defined; }
+    void setDefined(bool defined) { m_defined = defined; }
 
 protected:
-	RDOParam(const std::string& name, const LPTypeInfo& pType, const LPRDOValue& pDefault = LPRDOValue(NULL));
-	RDOParam(const RDOParserSrcInfo& srcInfo, const LPTypeInfo& pType, const LPRDOValue& pDefault = LPRDOValue(NULL));
-	virtual ~RDOParam();
+    RDOParam(const std::string& name, const LPTypeInfo& pType, const LPRDOValue& pDefault = LPRDOValue(NULL));
+    RDOParam(const RDOParserSrcInfo& srcInfo, const LPTypeInfo& pType, const LPRDOValue& pDefault = LPRDOValue(NULL));
+    virtual ~RDOParam();
 
 private:
-	LPTypeInfo m_pType;
-	LPRDOValue m_pDefault;
-	bool m_defined;
+    LPTypeInfo m_pType;
+    LPRDOValue m_pDefault;
+    bool m_defined;
 
-	void checkDefault();
+    void checkDefault();
 
-	virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
+    virtual Context::LPFindResult onFindContext(const std::string& method, const Context::Params& params, const RDOParserSrcInfo& srcInfo) const;
 };
 DECLARE_POINTER(RDOParam);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _PARSER_PARAM_H_

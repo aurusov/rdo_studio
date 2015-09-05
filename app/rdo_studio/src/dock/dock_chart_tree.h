@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_DOCK_TRACE_TREE_H_
-#define _RDO_STUDIO_DOCK_TRACE_TREE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -10,10 +9,8 @@
 class DockChartTree: public DockFocusable
 {
 public:
-	typedef  rdo::gui::tracer::ChartTree  context_type;
+    typedef  rdo::gui::tracer::ChartTree  context_type;
 
-	DockChartTree(QWidget* pParent);
-	virtual ~DockChartTree();
+    DockChartTree(QWidget* pParent);
+    virtual ~DockChartTree();
 };
-
-#endif // _RDO_STUDIO_DOCK_TRACE_TREE_H_

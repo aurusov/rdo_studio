@@ -11,72 +11,72 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOException
 // --------------------------------------------------------------------------------
 RDOException::RDOException(const std::string& message)
-	: m_message(message)
+    : m_message(message)
 {}
 
 const std::string& RDOException::message() const
 {
-	return m_message;
+    return m_message;
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDORuntimeException
 // --------------------------------------------------------------------------------
 RDORuntimeException::RDORuntimeException(const std::string& message)
-	: RDOException(message)
+    : RDOException(message)
 {}
 
 std::string RDORuntimeException::getType() const
 {
-	return "RDO Runtime Error";
+    return "RDO Runtime Error";
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeException
 // --------------------------------------------------------------------------------
 RDOTypeException::RDOTypeException(const std::string& message)
-	: RDORuntimeException(message)
+    : RDORuntimeException(message)
 {}
 
 std::string RDOTypeException::getType() const
 {
-	return "RDOType Error";
+    return "RDOType Error";
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOValueException
 // --------------------------------------------------------------------------------
 RDOValueException::RDOValueException(const std::string& message)
-	: RDORuntimeException(message)
+    : RDORuntimeException(message)
 {}
 
 std::string RDOValueException::getType() const
 {
-	return "RDOValue Error";
+    return "RDOValue Error";
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOUndefinedException
 // --------------------------------------------------------------------------------
 RDOUndefinedException::RDOUndefinedException()
-	: RDORuntimeException("")
+    : RDORuntimeException("")
 {}
 
 std::string RDOUndefinedException::getType() const
 {
-	return "RDOValue Undefined Error";
+    return "RDOValue Undefined Error";
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOInternalException
 // --------------------------------------------------------------------------------
 RDOInternalException::RDOInternalException(const std::string& message)
-	: RDORuntimeException(message)
+    : RDORuntimeException(message)
 {}
 
 std::string RDOInternalException::getType() const
 {
-	return "RDO Internal Error";
+    return "RDO Internal Error";
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_NOTIFY_H_
-#define _LIB_RUNTIME_NOTIFY_H_
+#pragma once
 
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
@@ -11,28 +10,24 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Передача сообщений между объектами
 class Notify
 {
 public:
-	//! Типы сообщений
-	enum Type
-	{
-		RO_BEFOREDELETE = 0
-	};
+    enum class Message
+    {
+        BEFORE_DELETE = 0
+    };
 
-	void connect(INotify* pTo, std::size_t message);
-	void disconnect(INotify* pTo);
-	void disconnect(INotify* pTo, std::size_t message);
-	void fireMessage(std::size_t message, void* pParam) const;
+    void connect(INotify* pTo, Message message);
+    void disconnect(INotify* pTo);
+    void disconnect(INotify* pTo, Message message);
+    void fireMessage(Message message, void* pParam) const;
 
 private:
-	typedef std::multimap<std::size_t, INotify*> Connected;
-	Connected m_connected;
+    typedef std::multimap<Message, INotify*> Connected;
+    Connected m_connected;
 
-	void disconnect(Connected::iterator it, INotify* pTo);
+    void disconnect(Connected::iterator it, INotify* pTo);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_NOTIFY_H_

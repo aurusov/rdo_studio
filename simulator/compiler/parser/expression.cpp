@@ -16,39 +16,39 @@ const std::string Expression::CONTEXT_PARAM_SET_EXPRESSION = "set_expression";
 const std::string Expression::CONTEXT_PARAM_SET_OPERATION_TYPE = "set_operation_type";
 
 Expression::Expression(const LPTypeInfo& pType, const rdo::runtime::LPRDOCalc& pCalc, const RDOParserSrcInfo& src_info)
-	: m_pType(pType)
-	, m_pCalc(pCalc)
+    : m_pType(pType)
+    , m_pCalc(pCalc)
 {
-	ASSERT(m_pType);
-	
-	if (m_pCalc)
-	{
-		rdo::runtime::LPRDOCalcConst pConstCalc = m_pCalc.object_dynamic_cast<rdo::runtime::RDOCalcConst>();
-		if (pConstCalc)
-		{
-			m_pValue = rdo::Factory<RDOValue>::create(pConstCalc->getValue(), src_info, m_pType);
-		}
-	}
-	setSrcInfo(src_info);
+    ASSERT(m_pType);
+    
+    if (m_pCalc)
+    {
+        rdo::runtime::LPRDOCalcConst pConstCalc = m_pCalc.object_dynamic_cast<rdo::runtime::RDOCalcConst>();
+        if (pConstCalc)
+        {
+            m_pValue = rdo::Factory<RDOValue>::create(pConstCalc->getValue(), src_info, m_pType);
+        }
+    }
+    setSrcInfo(src_info);
 }
 
 Expression::Expression(const LPRDOValue& pValue)
-	: m_pType (pValue->typeInfo())
-	, m_pValue(pValue            )
+    : m_pType (pValue->typeInfo())
+    , m_pValue(pValue            )
 {
-	ASSERT(pValue);
-	ASSERT(pValue->constant());
+    ASSERT(pValue);
+    ASSERT(pValue->constant());
 
-	m_pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(pValue->value());
-	ASSERT(m_pCalc);
+    m_pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(pValue->value());
+    ASSERT(m_pCalc);
 
-	setSrcInfo(pValue->src_info());
+    setSrcInfo(pValue->src_info());
 }
 
 Expression::Expression(const LPExpression& pExpression)
-	: m_pType (pExpression->m_pType )
-	, m_pValue(pExpression->m_pValue)
-	, m_pCalc (pExpression->m_pCalc )
+    : m_pType (pExpression->m_pType )
+    , m_pValue(pExpression->m_pValue)
+    , m_pCalc (pExpression->m_pCalc )
 {}
 
 Expression::~Expression()
@@ -56,41 +56,41 @@ Expression::~Expression()
 
 const LPTypeInfo& Expression::typeInfo() const
 {
-	return m_pType;
+    return m_pType;
 }
 
 const rdo::runtime::LPRDOCalc& Expression::calc() const
 {
-	return m_pCalc;
+    return m_pCalc;
 }
 
 void Expression::setSrcInfo(const RDOParserSrcInfo& src_info)
 {
-	RDOParserSrcInfo::setSrcInfo(src_info);
-	if (m_pCalc)
-	{
-		m_pCalc->setSrcInfo(src_info);
-	}
+    RDOParserSrcInfo::setSrcInfo(src_info);
+    if (m_pCalc)
+    {
+        m_pCalc->setSrcInfo(src_info);
+    }
 }
 
 LPRDOValue Expression::constant() const
 {
-	if (m_pValue)
-	{
-		return m_pValue;
-	}
-	return LPRDOValue(NULL);
+    if (m_pValue)
+    {
+        return m_pValue;
+    }
+    return LPRDOValue(NULL);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- ExpressionEmpty
 // --------------------------------------------------------------------------------
 ExpressionEmpty::ExpressionEmpty()
-	: Expression(
-		rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo()),
-		rdo::runtime::LPRDOCalc(),
-		RDOParserSrcInfo()
-	)
+    : Expression(
+        rdo::Factory<TypeInfo>::delegate<RDOType__EMPTY>(RDOParserSrcInfo()),
+        rdo::runtime::LPRDOCalc(),
+        RDOParserSrcInfo()
+    )
 {}
 
 ExpressionEmpty::~ExpressionEmpty()

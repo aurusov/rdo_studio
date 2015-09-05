@@ -6,7 +6,7 @@
 // --------------------------------------------------------------------------------
 
 ActionActivatorWidget::ActionActivatorWidget(QWidget* pParent)
-	: QWidget(pParent)
+    : QWidget(pParent)
 {}
 
 ActionActivatorWidget::~ActionActivatorWidget()
@@ -14,12 +14,12 @@ ActionActivatorWidget::~ActionActivatorWidget()
 
 void ActionActivatorWidget::focusInEvent(QFocusEvent* pEvent)
 {
-	QWidget::focusInEvent(pEvent);
-	activate(pEvent);
+    QWidget::focusInEvent(pEvent);
+    activate(pEvent);
 }
 
 void ActionActivatorWidget::focusOutEvent(QFocusEvent* pEvent)
 {
-	deactivate(pEvent);
-	QWidget::focusOutEvent(pEvent);
+    deactivate(pEvent);
+    QWidget::focusOutEvent(pEvent);
 }

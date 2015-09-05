@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_DPTSEARCH_ACTIVITY_I_H_
-#define _LIB_RUNTIME_DPTSEARCH_ACTIVITY_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -15,22 +14,19 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IDPTSearchActivity: public virtual rdo::counter_reference
 {
 public:
-	//! Время вычисления функции стоимости пути
-	enum ValueTime
-	{
-		vt_before, //!< до выполнения активности
-		vt_after   //!< после выполнения активности
-	};
+    enum class CostTime
+    {
+        BEFORE,
+        AFTER
+    };
 
-	virtual LPIRule& rule() = 0;
-	virtual double cost(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
-	virtual ValueTime valueTime() const = 0;
+    virtual LPIRule& rule() = 0;
+    virtual double cost(const rdo::runtime::LPRDORuntime& pRuntime) = 0;
+    virtual CostTime costTime() const = 0;
 };
 DECLARE_POINTER(IDPTSearchActivity)
 
 #define DECLARE_IDPTSearchActivity                                   \
-	virtual LPIRule& rule();                                         \
-	virtual double cost(const rdo::runtime::LPRDORuntime& pRuntime); \
-	virtual ValueTime valueTime() const;
-
-#endif // _LIB_RUNTIME_DPTSEARCH_ACTIVITY_I_H_
+    virtual LPIRule& rule();                                         \
+    virtual double cost(const rdo::runtime::LPRDORuntime& pRuntime); \
+    virtual CostTime costTime() const;

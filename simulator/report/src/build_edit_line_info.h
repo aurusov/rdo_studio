@@ -1,5 +1,4 @@
-#ifndef _BUILD_EDIT_LINE_INFO_H_
-#define _BUILD_EDIT_LINE_INFO_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -14,14 +13,12 @@ namespace report {
 class BuildEditLineInfo: public LogEditLineInfo
 {
 public:
-	BuildEditLineInfo(const std::string& text, rdo::model::FileType file, std::size_t line, std::size_t pos, Type type);
-	explicit BuildEditLineInfo(const FileMessage& message);
-	explicit BuildEditLineInfo(const std::string& message);
-	virtual ~BuildEditLineInfo();
+    BuildEditLineInfo(const std::string& text, rdo::FileType file, std::size_t line, std::size_t pos, Type type);
+    explicit BuildEditLineInfo(const FileMessage& message);
+    explicit BuildEditLineInfo(const std::string& message);
+    virtual ~BuildEditLineInfo();
 
-	virtual std::string getMessage() const;
+    virtual std::string getMessage() const;
 };
 
 }}} // namespace rdo::simulation::report
-
-#endif // _BUILD_EDIT_LINE_INFO_H_

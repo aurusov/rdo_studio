@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_ARRAY_H_
-#define _LIB_RUNTIME_ARRAY_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
@@ -18,84 +17,79 @@ OPEN_RDO_RUNTIME_NAMESPACE
 PREDECLARE_POINTER(RDOArrayType    );
 PREDECLARE_POINTER(RDOArrayIterator);
 
-//! Элемент массива
 PREDECLARE_POINTER(RDOArrayValue);
 class RDOArrayValue: public IAsString
 {
 DECLARE_FACTORY(RDOArrayValue)
 public:
-	typedef std::vector<RDOValue> Container;
+    typedef std::vector<RDOValue> Container;
 
-	const LPRDOArrayType& type() const;
+    const LPRDOArrayType& type() const;
 
-	void push_back(const RDOValue& item);
-	LPRDOArrayIterator begin();
-	LPRDOArrayIterator end  ();
-	void insert(const LPRDOArrayIterator& pWhere, const LPRDOArrayIterator& pFromFirst, const LPRDOArrayIterator& pFromLast);
-	void  erase(const LPRDOArrayIterator& pFirst, const LPRDOArrayIterator& pLast);
+    void push_back(const RDOValue& item);
+    LPRDOArrayIterator begin();
+    LPRDOArrayIterator end  ();
+    void insert(const LPRDOArrayIterator& pWhere, const LPRDOArrayIterator& pFromFirst, const LPRDOArrayIterator& pFromLast);
+    void  erase(const LPRDOArrayIterator& pFirst, const LPRDOArrayIterator& pLast);
 
-	std::size_t size() const;
+    std::size_t size() const;
 
-	const RDOValue& getItem(const RDOValue& index) const;
-	void            setItem(const RDOValue& index, const RDOValue& item);
+    const RDOValue& getItem(const RDOValue& index) const;
+    void            setItem(const RDOValue& index, const RDOValue& item);
 
-	LPRDOArrayValue clone() const;
+    LPRDOArrayValue clone() const;
 
-	DECLARE_IAsString;
+    DECLARE_IAsString;
 
 private:
-	RDOArrayValue(const LPRDOArrayType&  pType );
-	RDOArrayValue(const LPRDOArrayValue& pValue);
-	virtual ~RDOArrayValue();
+    RDOArrayValue(const LPRDOArrayType&  pType );
+    RDOArrayValue(const LPRDOArrayValue& pValue);
+    virtual ~RDOArrayValue();
 
-	Container       m_container;
-	LPRDOArrayType  m_pArrayType;
+    Container       m_container;
+    LPRDOArrayType  m_pArrayType;
 };
 
-//! Итератор массива
 class RDOArrayIterator: public RDOType, public IAsString
 {
 DECLARE_FACTORY(RDOArrayIterator)
 public:
-	typedef RDOArrayValue::Container::iterator Iterator;
+    typedef RDOArrayValue::Container::iterator Iterator;
 
-	Iterator getIterator() const;
-	const RDOValue& getValue() const;
-	LPRDOArrayIterator preInc(int delta);
-	LPRDOArrayIterator postInc(int delta);
-	LPRDOArrayIterator next();
-	bool equal(const LPRDOArrayIterator& pIterator) const;
-	LPRDOArrayIterator clone() const;
+    Iterator getIterator() const;
+    const RDOValue& getValue() const;
+    LPRDOArrayIterator preInc(int delta);
+    LPRDOArrayIterator postInc(int delta);
+    LPRDOArrayIterator next();
+    bool equal(const LPRDOArrayIterator& pIterator) const;
+    LPRDOArrayIterator clone() const;
 
-	DECLARE_IAsString;
+    DECLARE_IAsString;
 
 private:
-	RDOArrayIterator(const LPRDOArrayIterator& pIterator);
-	RDOArrayIterator(const RDOArrayIterator&   iterator );
-	RDOArrayIterator(const Iterator&           iterator );
-	virtual ~RDOArrayIterator();
+    RDOArrayIterator(const LPRDOArrayIterator& pIterator);
+    RDOArrayIterator(const RDOArrayIterator&   iterator );
+    RDOArrayIterator(const Iterator&           iterator );
+    virtual ~RDOArrayIterator();
 
-	Iterator  m_iterator;
+    Iterator  m_iterator;
 };
 
-//! Тип массив
 class RDOArrayType: public RDOType
 {
 DECLARE_FACTORY(RDOArrayType);
 public:
-	typedef  LPRDOType      LPItemType;
-	typedef  RDOArrayValue  value_type;
+    typedef  LPRDOType      LPItemType;
+    typedef  RDOArrayValue  value_type;
 
-	const LPItemType& getItemType() const;
+    const LPItemType& getItemType() const;
 
 protected:
-	RDOArrayType(const LPItemType& pItemType);
-	virtual ~RDOArrayType();
+    RDOArrayType(const LPItemType& pItemType);
+    virtual ~RDOArrayType();
 
 private:
-	LPItemType  m_pItemType;
+    LPItemType  m_pItemType;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_ARRAY_H_

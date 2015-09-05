@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_VALUE_ARRAY_H_
-#define _RDOPARSER_VALUE_ARRAY_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -14,30 +13,28 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOArrayValue);
 class RDOArrayValue
-	: public rdo::counter_reference
-	, public RDOParserSrcInfo
+    : public rdo::counter_reference
+    , public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOArrayValue);
 public:
-	typedef std::vector<LPRDOValue> Container;
+    typedef std::vector<LPRDOValue> Container;
 
-	void insertItem(const LPRDOValue& pValue);
+    void insertItem(const LPRDOValue& pValue);
 
-	const LPRDOArrayType& getArrayType() const;
-	 LPRDOArrayType& getArrayType();
-	rdo::runtime::RDOValue getRArray() const;
-	rdo::runtime::LPRDOArrayValue createRuntimeValue() const;
-	std::string getAsString() const;
-	const Container& getContainer() const;
+    const LPRDOArrayType& getArrayType() const;
+     LPRDOArrayType& getArrayType();
+    rdo::runtime::RDOValue getRArray() const;
+    rdo::runtime::LPRDOArrayValue createRuntimeValue() const;
+    std::string getAsString() const;
+    const Container& getContainer() const;
 
 private:
-	RDOArrayValue(const LPRDOArrayType& pArrayType);
-	virtual ~RDOArrayValue();
+    RDOArrayValue(const LPRDOArrayType& pArrayType);
+    virtual ~RDOArrayValue();
 
-	Container      m_container;
-	LPRDOArrayType m_pArrayType;
+    Container      m_container;
+    LPRDOArrayType m_pArrayType;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_VALUE_ARRAY_H_

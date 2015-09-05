@@ -10,16 +10,16 @@
 // --------------------------------------------------------------------------------
 
 DockTrace::DockTrace(QWidget* pParent)
-	: DockFocusable("Трассировка", pParent)
+    : DockFocusable("Трассировка", pParent)
 {
-	context_type* pWidget = new context_type(this);
-	pWidget->setMinimumSize(QSize(300, 110));
+    context_type* pWidget = new context_type(this);
+    pWidget->setMinimumSize(QSize(300, 110));
 
-	setWidget(pWidget);
+    setWidget(pWidget);
 
-	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_trace.png")));
+    toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_trace.png")));
 
-	g_pTracer->setLog(&getContext());
+    g_pTracer->setLog(&getContext());
 }
 
 DockTrace::~DockTrace()
@@ -27,5 +27,5 @@ DockTrace::~DockTrace()
 
 DockTrace::context_type& DockTrace::getContext()
 {
-	return *static_cast<context_type*>(widget());
+    return *static_cast<context_type*>(widget());
 }

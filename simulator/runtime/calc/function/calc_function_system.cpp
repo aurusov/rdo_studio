@@ -13,7 +13,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 RDOValue RDOCalcGetTimeNow::doCalc(const LPRDORuntime& pRuntime)
 {
-	return pRuntime->getTimeNow();
+    return pRuntime->getTimeNow();
 }
 
 // --------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ RDOValue RDOCalcGetTimeNow::doCalc(const LPRDORuntime& pRuntime)
 // --------------------------------------------------------------------------------
 RDOValue RDOCalcGetSeconds::doCalc(const LPRDORuntime& pRuntime)
 {
-	return pRuntime->getSeconds();
+    return pRuntime->getSeconds();
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

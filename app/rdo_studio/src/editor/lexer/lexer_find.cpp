@@ -23,58 +23,58 @@
 
 static void lexerRDOFindColor( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
 {
-	WordList& keywords = *keywordlists[ SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX ];
-	if ( !keywords ) return;
-	const char* findKeyword = *keywords.words;
-	const int findKeywordLen = strlen( findKeyword );
-	bool matchCase = styler.GetPropertyInt( "find_matchcase", 0 ) ? true : false;
+    WordList& keywords = *keywordlists[ SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX ];
+    if ( !keywords ) return;
+    const char* findKeyword = *keywords.words;
+    const int findKeywordLen = strlen( findKeyword );
+    bool matchCase = styler.GetPropertyInt( "find_matchcase", 0 ) ? true : false;
 
-	styler.StartAt( startPos );
-	styler.StartSegment( startPos );
-	int state = initStyle;
-	unsigned int lengthDoc = startPos + length;
-	for ( unsigned int i = startPos; i < lengthDoc; i++ ) {
+    styler.StartAt( startPos );
+    styler.StartSegment( startPos );
+    int state = initStyle;
+    unsigned int lengthDoc = startPos + length;
+    for ( unsigned int i = startPos; i < lengthDoc; i++ ) {
 
-		char ch = styler.SafeGetCharAt( i );
+        char ch = styler.SafeGetCharAt( i );
 
-		if ( styler.IsLeadByte( ch ) ) {
-			i += 1;
-			continue;
-		}
+        if ( styler.IsLeadByte( ch ) ) {
+            i += 1;
+            continue;
+        }
 
-		if ( state == SCE_FIND_DEFAULT ) {
-			if ( (matchCase && ch == findKeyword[0]) || (!matchCase && boost::locale::to_lower(std::string(1, ch)) == boost::locale::to_lower(std::string(1, findKeyword[0]))) ) {
-				bool flag = true;
-				for ( int j = 0; j < findKeywordLen; j++ ) {
-					char c1 = styler.SafeGetCharAt( i + j );
-					char c2 = findKeyword[j];
-					if ( (matchCase && c1 != c2) || (!matchCase && boost::locale::to_lower(std::string(1, c1)) != boost::locale::to_lower(std::string(1, c2))) ) {
-						flag = false;
-						break;
-					}
-				}
-				if ( flag ) {
-					int lineCurrent = styler.GetLine( i );
-					int posInLine   = i - styler.LineStart( lineCurrent );
-					if ( posInLine < 3 ) {
-						flag = false;
-					}
-				}
+        if ( state == SCE_FIND_DEFAULT ) {
+            if ( (matchCase && ch == findKeyword[0]) || (!matchCase && boost::locale::to_lower(std::string(1, ch)) == boost::locale::to_lower(std::string(1, findKeyword[0]))) ) {
+                bool flag = true;
+                for ( int j = 0; j < findKeywordLen; j++ ) {
+                    char c1 = styler.SafeGetCharAt( i + j );
+                    char c2 = findKeyword[j];
+                    if ( (matchCase && c1 != c2) || (!matchCase && boost::locale::to_lower(std::string(1, c1)) != boost::locale::to_lower(std::string(1, c2))) ) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if ( flag ) {
+                    int lineCurrent = styler.GetLine( i );
+                    int posInLine   = i - styler.LineStart( lineCurrent );
+                    if ( posInLine < 3 ) {
+                        flag = false;
+                    }
+                }
 
-				styler.ColourTo( i - 1, state );
-				if ( flag ) {
-					styler.ColourTo( i + findKeywordLen - 1, SCE_FIND_KEYWORD );
-					i += findKeywordLen - 1;
-				}
-				state = SCE_FIND_DEFAULT;
-			} else {
-				styler.ColourTo( i - 1, state );
-				state = SCE_FIND_DEFAULT;
-			}
-		}
+                styler.ColourTo( i - 1, state );
+                if ( flag ) {
+                    styler.ColourTo( i + findKeywordLen - 1, SCE_FIND_KEYWORD );
+                    i += findKeywordLen - 1;
+                }
+                state = SCE_FIND_DEFAULT;
+            } else {
+                styler.ColourTo( i - 1, state );
+                state = SCE_FIND_DEFAULT;
+            }
+        }
 
-	}
-	styler.ColourTo( lengthDoc - 1, state );
+    }
+    styler.ColourTo( lengthDoc - 1, state );
 }
 
 LexerModule lexerRDOFind(SCLEX_FIND, lexerRDOFindColor, "find");

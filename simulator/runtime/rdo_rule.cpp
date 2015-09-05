@@ -11,20 +11,20 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDORule
 // --------------------------------------------------------------------------------
 RDORule::RDORule(const LPRDORuntime& pRuntime, const LPRDOPatternRule& pPattern, bool trace, const std::string& name)
-	: RDOActivityPattern<RDOPatternRule>(pPattern, trace, name)
-	, RDOPatternPrior                   (                     )
-	, m_pRuntime                        (pRuntime             )
+    : RDOActivityPattern<RDOPatternRule>(pPattern, trace, name)
+    , RDOPatternPrior                   (                     )
+    , m_pRuntime                        (pRuntime             )
 {
-	init();
+    init();
 }
 
 RDORule::RDORule(const LPRDORuntime& pRuntime, const LPRDOPatternRule& pPattern, bool trace, const LPRDOCalc& pCondition, const std::string& name)
-	: RDOActivityPattern<RDOPatternRule>(pPattern, trace, name)
-	, RDOPatternPrior                   (                     )
-	, m_pRuntime                        (pRuntime             )
-	, m_pAdditionalCondition            (pCondition           )
+    : RDOActivityPattern<RDOPatternRule>(pPattern, trace, name)
+    , RDOPatternPrior                   (                     )
+    , m_pRuntime                        (pRuntime             )
+    , m_pAdditionalCondition            (pCondition           )
 {
-	init();
+    init();
 }
 
 RDORule::~RDORule()
@@ -32,23 +32,23 @@ RDORule::~RDORule()
 
 void RDORule::init()
 {
-	setTraceID(m_pRuntime->getFreeActivityId());
-	m_traceOFF = false;
+    setTraceID(m_pRuntime->getFreeActivityId());
+    m_traceOFF = false;
 }
 
 void RDORule::onBeforeChoiceFrom(const LPRDORuntime& pRuntime)
 {
-	setPatternParameters(pRuntime, m_paramsCalcs);
+    setPatternParameters(pRuntime, m_paramsCalcs);
 }
 
 bool RDORule::choiceFrom(const LPRDORuntime& pRuntime)
 {
-	pRuntime->setCurrentActivity(this);
-	if (m_pAdditionalCondition && !m_pAdditionalCondition->calcValue(pRuntime).getAsBool())
-	{
-		return false;
-	}
-	return m_pPattern->choiceFrom(pRuntime);
+    pRuntime->setCurrentActivity(this);
+    if (m_pAdditionalCondition && !m_pAdditionalCondition->calcValue(pRuntime).getAsBool())
+    {
+        return false;
+    }
+    return m_pPattern->choiceFrom(pRuntime);
 }
 
 void RDORule::onBeforeRule(const LPRDORuntime& /*pRuntime*/)
@@ -56,63 +56,63 @@ void RDORule::onBeforeRule(const LPRDORuntime& /*pRuntime*/)
 
 void RDORule::convertRule(const LPRDORuntime& pRuntime)
 { 
-	pRuntime->setCurrentActivity(this);
-	m_pPattern->convertRule(pRuntime);
+    pRuntime->setCurrentActivity(this);
+    m_pPattern->convertRule(pRuntime);
 }
 
 void RDORule::onAfterRule(const LPRDORuntime& pRuntime, bool inSearch)
 {
-	updateConvertStatus(pRuntime, m_pPattern->m_convertorStatus);
-	if (!inSearch)
-	{
-		trace();
-	}
-	m_pPattern->convertErase(pRuntime);
-	updateRelRes(pRuntime);
+    updateConvertStatus(pRuntime, m_pPattern->m_convertorStatus);
+    if (!inSearch)
+    {
+        trace();
+    }
+    m_pPattern->convertErase(pRuntime);
+    updateRelRes(pRuntime);
 }
 
 void RDORule::trace()
 {
-	if (!m_traceOFF)
-	{
-		m_pRuntime->getTracer()->writeRule(this, m_pRuntime);
-	}
+    if (!m_traceOFF)
+    {
+        m_pRuntime->getTracer()->writeRule(this, m_pRuntime);
+    }
 }
 
 bool RDORule::onCheckCondition(const LPRDORuntime& pRuntime)
 {
-	onBeforeChoiceFrom(pRuntime);
-	pRuntime->inc_cnt_choice_from();
-	bool result = choiceFrom(pRuntime);
-	if (result)
-	{
-		m_traceOFF = true;
-		LPRDORuntime pClone = pRuntime->clone();
-		ASSERT(pClone);
-		if (onDoOperation(pClone) != IBaseOperation::BOR_done)
-		{
-			/// @todo Реакция на плохой onDoOperation - это вообще-то спортный вопрос
-			return false;
-		}
-		if (pClone->equal(pRuntime))
-		{
-			result = false;
-		}
-		m_traceOFF = false;
-	}
-	return result;
+    onBeforeChoiceFrom(pRuntime);
+    pRuntime->inc_cnt_choice_from();
+    bool result = choiceFrom(pRuntime);
+    if (result)
+    {
+        m_traceOFF = true;
+        LPRDORuntime pClone = pRuntime->clone();
+        ASSERT(pClone);
+        if (onDoOperation(pClone) != IBaseOperation::ResultCode::DONE)
+        {
+            // TODO Реакция на плохой onDoOperation - это вообще-то спортный вопрос
+            return false;
+        }
+        if (pClone->equal(pRuntime))
+        {
+            result = false;
+        }
+        m_traceOFF = false;
+    }
+    return result;
 }
 
-IBaseOperation::BOResult RDORule::onDoOperation(const LPRDORuntime& pRuntime)
+IBaseOperation::ResultCode RDORule::onDoOperation(const LPRDORuntime& pRuntime)
 {
-	onBeforeRule(pRuntime);
-	convertRule (pRuntime);
-	onAfterRule (pRuntime, false);
-	return IBaseOperation::BOR_done;
+    onBeforeRule(pRuntime);
+    convertRule (pRuntime);
+    onAfterRule (pRuntime, false);
+    return IBaseOperation::ResultCode::DONE;
 }
 
 void                     RDORule::onStart   (const LPRDORuntime& /*pRuntime*/) {}
 void                     RDORule::onStop    (const LPRDORuntime& /*pRuntime*/) {}
-IBaseOperation::BOResult RDORule::onContinue(const LPRDORuntime& /*pRuntime*/) { return IBaseOperation::BOR_cant_run; }
+IBaseOperation::ResultCode RDORule::onContinue(const LPRDORuntime& /*pRuntime*/) { return IBaseOperation::ResultCode::CANNOT_RUN; }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -1,5 +1,4 @@
-#ifndef _LIB_SERVICE_SIMULATOR_H_
-#define _LIB_SERVICE_SIMULATOR_H_
+#pragma once
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
@@ -11,19 +10,16 @@
 #include <boost/noncopyable.hpp>
 
 #ifdef COMPILER_VISUAL_STUDIO
-	#pragma warning(disable : 4786)
-	#ifdef RDO_MT
-		#include <afxwin.h>
-	#else
-		#include <windows.h>
-	#endif
+    #pragma warning(disable : 4786)
+    #include <windows.h>
 #endif // COMPILER_VISUAL_STUDIO
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/src/common/rdocommon.h"
 #include "kernel/rdokernel.h"
 #include "kernel/rdothread.h"
 #include "simulator/runtime/thread_proxy_i.h"
-#include "simulator/compiler/procgui/procgui.h"
+#include "simulator/runtime/rdo_runtime.h"
+#include "simulator/compiler/parser/rdoparser.h"
 #include "converter/smr2rdox/rdo_common/model_objects_convertor.h"
 // --------------------------------------------------------------------------------
 
@@ -74,20 +70,21 @@ namespace rdoCorba {
 class RDOThreadCorba: public RDOThreadMT
 {
 public:
-	RDOThreadCorba();
+    RDOThreadCorba();
 
 private:
-	virtual ~RDOThreadCorba() {}; //! Чтобы нельзя было удалить через delete
-	virtual void proc(RDOMessageInfo& msg);
-	virtual void idle();
-	virtual void start();
-	virtual void stop();
+    virtual ~RDOThreadCorba()
+    {}
+    virtual void proc(RDOMessageInfo& msg);
+    virtual void idle();
+    virtual void start();
+    virtual void stop();
 
-	CWinThread* thread_corbaRunThreadFun;
-	static std::size_t corbaRunThreadFun(void* pParam);
+    CWinThread* thread_corbaRunThreadFun;
+    static std::size_t corbaRunThreadFun(void* pParam);
 };
 
-} //! namespace rdoCorba
+} // namespace rdoCorba
 
 #endif // CORBA_ENABLE
 
@@ -108,63 +105,59 @@ class RDOResult;
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOThreadRunTime);
 class RDOThreadRunTime
-	: public rdo::counter_reference
-	, public RDOThreadMT
-	, public IThreadProxy
+    : public rdo::counter_reference
+    , public RDOThreadMT
+    , public IThreadProxy
 {
 DECLARE_FACTORY(RDOThreadRunTime);
 public:
-	bool runtimeError() const;
+    bool runtimeError() const;
 
-	struct GetFrame
-	{
-		rdo::animation::Frame* m_pFrame;
-		std::size_t m_number;
+    struct GetFrame
+    {
+        rdo::animation::Frame* m_pFrame;
+        std::size_t m_number;
 
-		GetFrame(rdo::animation::Frame* pFrame, std::size_t number)
-			: m_pFrame(pFrame)
-			, m_number(number)
-		{}
-	};
+        GetFrame(rdo::animation::Frame* pFrame, std::size_t number)
+            : m_pFrame(pFrame)
+            , m_number(number)
+        {}
+    };
 
-	struct FrameAreaDown
-	{
-		std::size_t m_number;
-		std::string m_name;
+    struct FrameAreaDown
+    {
+        std::size_t m_number;
+        std::string m_name;
 
-		FrameAreaDown(std::size_t number, const std::string& name)
-			: m_number(number)
-			, m_name  (name  )
-		{}
-	};
+        FrameAreaDown(std::size_t number, const std::string& name)
+            : m_number(number)
+            , m_name  (name  )
+        {}
+    };
 
 private:
-	rdo::service::simulation::RDOThreadSimulator* m_pSimulator;
-	bool m_runtimeError;
-	uint64_t m_timeStart;
+    rdo::service::simulation::RDOThreadSimulator* m_pSimulator;
+    bool m_runtimeError;
+    uint64_t m_timeStart;
 
-	RDOThreadRunTime();
-	virtual ~RDOThreadRunTime() //! Чтобы нельзя было удалить через delete
-	{};
+    RDOThreadRunTime();
+    virtual ~RDOThreadRunTime()
+    {};
 
-	virtual void proc   (RDOMessageInfo& msg);
-	virtual void idle   ();
-	virtual void start  ();
-	virtual void stop   ();
-	virtual void destroy();
+    virtual void proc   (RDOMessageInfo& msg);
+    virtual void idle   ();
+    virtual void start  ();
+    virtual void stop   ();
+    virtual void destroy();
 
-	void writeResultsInfo();
+    void writeResultsInfo();
 
-	void sendMessage(ThreadID threadID, std::size_t messageID, void* pParam);
+    void sendMessage(ThreadID threadID, std::size_t messageID, void* pParam);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 class RDOTrace;
-
-OPEN_RDO_PARSER_NAMESPACE
-PREDECLARE_POINTER(RDOParser);
-CLOSE_RDO_PARSER_NAMESPACE
 
 namespace rdo {
 namespace service {
@@ -180,100 +173,98 @@ friend class RDORuntimeTracer;
 friend class RDOSimResulter;
 
 public:
-	struct RTP
-	{
-		struct Param
-		{
-			std::string m_name;
-		};
-		typedef std::vector<Param> ParamList;
+    struct RTP
+    {
+        struct Param
+        {
+            std::string m_name;
+        };
+        typedef std::vector<Param> ParamList;
 
-		std::string m_name;
-		ParamList m_params;
-	};
+        std::string m_name;
+        ParamList m_params;
+    };
 
-	struct RSS
-	{
-		std::string m_name;
-	};
+    struct RSS
+    {
+        std::string m_name;
+    };
 
-	struct GetRTP: public std::vector<RTP>
-	{};
-	struct GetRSS: public std::vector<RSS>
-	{};
+    struct GetRTP: public std::vector<RTP>
+    {};
+    struct GetRSS: public std::vector<RSS>
+    {};
 
 private:
-	rdo::compiler::parser::LPRDOParser m_pParser;
-	rdo::runtime::LPRDORuntime m_pRuntime;
-	bool m_canTrace;
-	rdo::compiler::gui::LPProcGUIProcess m_pGUIProcess;
-	rdo::compiler::gui::LPProcGUIBlock m_pBlock;
-	rdo::runtime::LPRDOThreadRunTime m_pThreadRuntime;
-	rdo::simulation::report::RDOExitCode m_exitCode;
+    rdo::compiler::parser::LPRDOParser m_pParser;
+    rdo::runtime::LPRDORuntime m_pRuntime;
+    bool m_canTrace;
+    rdo::runtime::LPRDOThreadRunTime m_pThreadRuntime;
+    rdo::simulation::report::ExitCode m_exitCode;
 
-	void terminateModel();
-	void closeModel    ();
+    void terminateModel();
+    void closeModel    ();
 
-	ShowMode m_showMode; //! current show mode
-	double   m_showRate; //! current show mode
+    ShowMode m_showMode;
+    double   m_showRate;
 
-	std::stringstream m_resultString;
-	std::stringstream m_resultInfoString;
+    std::stringstream m_resultString;
+    std::stringstream m_resultInfoString;
 
 
 #ifdef CORBA_ENABLE
 
-//	void corbaGetRTPcount(::CORBA::Long& rtp_count);
-//	void corbaGetRTPParamscount(rdo::compiler::parser::RDOCorba::PARAM_count& params_count);
-	void corbaGetRTP(rdo::compiler::parser::RDOCorba::GetRTP_var& my_rtpList);
-	void corbaGetRSS(rdo::compiler::parser::RDOCorba::GetRSS_var& my_rssList);
+//    void corbaGetRTPcount(::CORBA::Long& rtp_count);
+//    void corbaGetRTPParamscount(rdo::compiler::parser::RDOCorba::PARAM_count& params_count);
+    void corbaGetRTP(rdo::compiler::parser::RDOCorba::GetRTP_var& my_rtpList);
+    void corbaGetRSS(rdo::compiler::parser::RDOCorba::GetRSS_var& my_rssList);
 
 #endif // CORBA_ENABLE
 
 protected:
-	virtual ~RDOThreadSimulator(); //! Чтобы нельзя было удалить через delete помещаем его в protected
+    virtual ~RDOThreadSimulator();
 
-	virtual void proc(RDOMessageInfo& msg);
+    virtual void proc(RDOMessageInfo& msg);
 
-	bool parseModel();
-	void runModel();
-	void stopModel();
+    bool parseModel();
+    void runModel();
+    void stopModel();
 
-	typedef std::vector<rdo::simulation::report::FileMessage> SyntaxMessageList;
-	SyntaxMessageList getErrors();
+    typedef std::vector<rdo::simulation::report::FileMessage> SyntaxMessageList;
+    SyntaxMessageList getErrors();
 
-	void codeCompletion();
+    void codeCompletion();
 
-	void corbaGetRTP(GetRTP* RTPList);
-	void corbaGetRSS(GetRSS* RSSList);
+    void corbaGetRTP(GetRTP* RTPList);
+    void corbaGetRSS(GetRSS* RSSList);
 
 public:
-	RDOThreadSimulator();
+    RDOThreadSimulator();
 
-	void parseSMRFileInfo(rdo::converter::smr2rdox::RDOSMRFileInfo& info);
+    void parseSMRFileInfo(rdo::converter::smr2rdox::RDOSMRFileInfo& info);
 
-	ShowMode getInitialShowMode   () const;
-	int      getInitialFrameNumber() const;
-	double   getInitialShowRate   () const;
+    ShowMode getInitialShowMode   () const;
+    int      getInitialFrameNumber() const;
+    double   getInitialShowRate   () const;
 
-	struct GetList
-	{
-		enum Type
-		{
-			frames,
-			bitmaps
-		};
+    struct GetList
+    {
+        enum class Type
+        {
+            FRAMES,
+            BITMAPS
+        };
 
-		typedef std::list<std::string> StringList;
+        typedef std::list<std::string> StringList;
 
-		Type m_type;
-		StringList* m_list;
+        Type m_type;
+        StringList* m_list;
 
-		GetList(Type type, StringList* list)
-			: m_type(type)
-			, m_list(list)
-		{}
-	};
+        GetList(Type type, StringList* list)
+            : m_type(type)
+            , m_list(list)
+        {}
+    };
 };
 
 // --------------------------------------------------------------------------------
@@ -282,30 +273,28 @@ public:
 class RDOThreadCodeComp: public RDOThreadMT
 {
 protected:
-	rdo::compiler::parser::LPRDOParser m_pParser;
+    rdo::compiler::parser::LPRDOParser m_pParser;
 
-	virtual ~RDOThreadCodeComp(); //! Чтобы нельзя было удалить через delete помещаем его в protected
-	virtual void proc(RDOMessageInfo& msg);
+    virtual ~RDOThreadCodeComp();
+    virtual void proc(RDOMessageInfo& msg);
 
 public:
-	RDOThreadCodeComp();
+    RDOThreadCodeComp();
 
-	struct GetCodeComp: public boost::noncopyable
-	{
-		rdo::model::FileType m_file;
-		int m_pos_x;
-		int m_pos_y;
-		std::string& m_result;
+    struct GetCodeComp: private boost::noncopyable
+    {
+        rdo::FileType m_file;
+        int m_pos_x;
+        int m_pos_y;
+        std::string& m_result;
 
-		GetCodeComp(rdo::model::FileType file, int pos_x, int pos_y, std::string& result)
-			: m_file  (file  )
-			, m_pos_x (pos_x )
-			, m_pos_y (pos_y )
-			, m_result(result)
-		{}
-	};
+        GetCodeComp(rdo::FileType file, int pos_x, int pos_y, std::string& result)
+            : m_file  (file  )
+            , m_pos_x (pos_x )
+            , m_pos_y (pos_y )
+            , m_result(result)
+        {}
+    };
 };
 
 }}} // namespace rdo::service::simulation
-
-#endif // _LIB_SERVICE_SIMULATOR_H_

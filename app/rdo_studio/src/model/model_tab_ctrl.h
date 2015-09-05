@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_MODEL_TAB_CTRL_H_
-#define _RDO_STUDIO_MODEL_TAB_CTRL_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -14,28 +13,26 @@ namespace rdo { namespace gui { namespace model {
 class TabCtrl: public QTabWidget
 {
 public:
-	typedef editor::Model context_type;
+    typedef editor::Model context_type;
 
-	TabCtrl(QWidget* pParent, QWidget* pView);
-	virtual ~TabCtrl();
+    TabCtrl(QWidget* pParent, QWidget* pView);
+    virtual ~TabCtrl();
 
-	rdo::model::FileType indexToType(int index) const;
-	int typeToIndex(rdo::model::FileType type) const;
-	bool typeSupported(rdo::model::FileType type) const { return typeToIndex(type) != -1; }
+    rdo::FileType indexToType(int index) const;
+    int typeToIndex(rdo::FileType type) const;
+    bool typeSupported(rdo::FileType type) const { return typeToIndex(type) != -1; }
 
-	rdo::model::FileType getCurrentRDOItem() const { return indexToType(currentIndex()); }
-	void setCurrentRDOItem(rdo::model::FileType type);
+    rdo::FileType getCurrentRDOItem() const { return indexToType(currentIndex()); }
+    void setCurrentRDOItem(rdo::FileType type);
 
-	context_type* getCurrentEdit() const;
-	context_type* getItemEdit(int index) const;
-	context_type* getItemEdit(rdo::model::FileType type) const;
+    context_type* getCurrentEdit() const;
+    context_type* getItemEdit(int index) const;
+    context_type* getItemEdit(rdo::FileType type) const;
 
 private:
-	editor::Edit::Group m_group;
+    editor::Edit::Group m_group;
 
-	void createPage(QWidget* pView, const QString& name);
+    void createPage(QWidget* pView, const QString& name);
 };
 
 }}} // namespace rdo::gui::model
-
-#endif // _RDO_STUDIO_MODEL_TAB_CTRL_H_

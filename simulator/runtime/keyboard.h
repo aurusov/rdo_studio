@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_KEYBOARD_REDEFINE_H_
-#define _LIB_RUNTIME_KEYBOARD_REDEFINE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
@@ -56,5 +55,3 @@
 #define VK_NUMPAD9          0x69
 
 #endif // not COMPILER_VISUAL_STUDIO
-
-#endif // _LIB_RUNTIME_KEYBOARD_REDEFINE_H_

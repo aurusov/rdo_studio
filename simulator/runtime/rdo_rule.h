@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_RULE_H_
-#define _LIB_RUNTIME_RULE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -22,23 +21,21 @@ friend class RDODPTSearch;
 friend class TreeNode;
 
 private:
-	RDORule(const LPRDORuntime& pRuntime, const LPRDOPatternRule& pPattern, bool trace, const std::string& name);
-	RDORule(const LPRDORuntime& pRuntime, const LPRDOPatternRule& pPattern, bool trace, const LPRDOCalc& pCondition, const std::string& name);
+    RDORule(const LPRDORuntime& pRuntime, const LPRDOPatternRule& pPattern, bool trace, const std::string& name);
+    RDORule(const LPRDORuntime& pRuntime, const LPRDOPatternRule& pPattern, bool trace, const LPRDOCalc& pCondition, const std::string& name);
 
-	virtual ~RDORule();
+    virtual ~RDORule();
 
-	void init();
+    void init();
 
-	LPRDORuntime m_pRuntime;
-	LPRDOCalc m_pAdditionalCondition;
-	bool m_traceOFF;
+    LPRDORuntime m_pRuntime;
+    LPRDOCalc m_pAdditionalCondition;
+    bool m_traceOFF;
 
-	void trace();
+    void trace();
 
-	DECLARE_IBaseOperation;
-	DECLARE_IRule;
+    DECLARE_IBaseOperation;
+    DECLARE_IRule;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_RULE_H_

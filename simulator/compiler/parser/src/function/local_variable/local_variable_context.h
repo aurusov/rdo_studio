@@ -1,5 +1,4 @@
-#ifndef _SIMULATOR_COMPILER_PARSER_FUNCTION_LOCAL_VARIABLE_CONTEXT_H_
-#define _SIMULATOR_COMPILER_PARSER_FUNCTION_LOCAL_VARIABLE_CONTEXT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/function.hpp>
@@ -15,20 +14,18 @@ class ContextLocalVariable: public Context
 {
 DECLARE_FACTORY(ContextLocalVariable)
 public:
-	void pushLocalVariable(const LPLocalVariable& pLocalVariable);
-	const rdo::runtime::LPRDOCalcLocalVariableList& calc() const;
+    void pushLocalVariable(const LPLocalVariable& pLocalVariable);
+    const rdo::runtime::LPRDOCalcLocalVariableList& calc() const;
 
 private:
-	typedef  boost::function<void (const LPLocalVariable&)>  OnPushLocalVariable;
+    typedef  boost::function<void (const LPLocalVariable&)>  OnPushLocalVariable;
 
-	ContextLocalVariable(const OnPushLocalVariable& onPushLocalVariable);
-	virtual ~ContextLocalVariable();
+    ContextLocalVariable(const OnPushLocalVariable& onPushLocalVariable);
+    virtual ~ContextLocalVariable();
 
-	OnPushLocalVariable                       m_onPushLocalVariable;
-	rdo::runtime::LPRDOCalcLocalVariableList  m_pCalcLocalVariableList;
+    OnPushLocalVariable                       m_onPushLocalVariable;
+    rdo::runtime::LPRDOCalcLocalVariableList  m_pCalcLocalVariableList;
 };
 DECLARE_POINTER(ContextLocalVariable);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _SIMULATOR_COMPILER_PARSER_FUNCTION_LOCAL_VARIABLE_CONTEXT_H_

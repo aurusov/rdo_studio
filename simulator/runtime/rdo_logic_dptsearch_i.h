@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_LOGIC_DPTSEARCH_I_H_
-#define _LIB_RUNTIME_LOGIC_DPTSEARCH_I_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -9,11 +8,9 @@
 class IDPTSearchLogic: public virtual rdo::counter_reference
 {
 public:
-	virtual void addActivity(LPIDPTSearchActivity activity) = 0;
+    virtual void addActivity(LPIDPTSearchActivity activity) = 0;
 };
 DECLARE_POINTER(IDPTSearchLogic)
 
 #define DECLARE_IDPTSearchLogic \
-	virtual void addActivity(LPIDPTSearchActivity activity);
-
-#endif // _LIB_RUNTIME_LOGIC_DPTSEARCH_I_H_
+    virtual void addActivity(LPIDPTSearchActivity activity);

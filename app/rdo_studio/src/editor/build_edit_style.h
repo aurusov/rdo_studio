@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_EDITOR_BUILD_EDIT_STYLE_H_
-#define _RDO_STUDIO_EDITOR_BUILD_EDIT_STYLE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -14,24 +13,22 @@ namespace rdo { namespace gui { namespace editor {
 class BuildStyle: public LogStyle
 {
 public:
-	BuildStyle();
-	~BuildStyle();
+    BuildStyle();
+    ~BuildStyle();
 
-	BuildStyle& operator =( const BuildStyle& style );
-	bool operator ==( const BuildStyle& style ) const;
-	bool operator !=( const BuildStyle& style ) const;
+    BuildStyle& operator =( const BuildStyle& style );
+    bool operator ==( const BuildStyle& style ) const;
+    bool operator !=( const BuildStyle& style ) const;
 
-	bool warning;
+    bool warning;
 
-	static BuildStyle getDefaultStyle();
-	static BuildStyle getClassicStyle();
-	static BuildStyle getTwilightStyle();
-	static BuildStyle getOceanStyle();
+    static BuildStyle getDefaultStyle();
+    static BuildStyle getClassicStyle();
+    static BuildStyle getTwilightStyle();
+    static BuildStyle getOceanStyle();
 };
 
 QSettings& operator<< (QSettings& settings, const BuildStyle& style);
 QSettings& operator>> (QSettings& settings,       BuildStyle& style);
 
 }}} // namespace rdo::gui::editor
-
-#endif // _RDO_STUDIO_EDITOR_BUILD_EDIT_STYLE_H_

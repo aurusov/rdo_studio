@@ -1,5 +1,4 @@
-#ifndef _UTILS_RDOINDEXEDSTACK_H_
-#define _UTILS_RDOINDEXEDSTACK_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
@@ -15,34 +14,32 @@ template<class T>
 class IndexedStack
 {
 public:
-	typedef IDGenerator::ID ID;
+    typedef IDGenerator::ID ID;
 
-	IndexedStack()
-	{}
+    IndexedStack()
+    {}
 
-	ID push(const T& object)
-	{
-		std::pair<typename Stack::iterator, bool> result = m_stack.insert(
-			std::pair<typename Stack::key_type, typename Stack::mapped_type>(m_generator.get(), object)
-		);
-		ASSERT(result.second);
-		return result.first->first;
-	}
-	T pop(ID index)
-	{
-		typename Stack::iterator it = m_stack.find(index);
-		ASSERT(it != m_stack.end());
-		T object = it->second;
-		m_stack.erase(it);
-		return object;
-	}
+    ID push(const T& object)
+    {
+        std::pair<typename Stack::iterator, bool> result = m_stack.insert(
+            std::pair<typename Stack::key_type, typename Stack::mapped_type>(m_generator.get(), object)
+        );
+        ASSERT(result.second);
+        return result.first->first;
+    }
+    T pop(ID index)
+    {
+        typename Stack::iterator it = m_stack.find(index);
+        ASSERT(it != m_stack.end());
+        T object = it->second;
+        m_stack.erase(it);
+        return object;
+    }
 
 protected:
-	typedef std::map<IDGenerator::ID, T> Stack;
-	Stack       m_stack;
-	IDGenerator m_generator;
+    typedef std::map<IDGenerator::ID, T> Stack;
+    Stack       m_stack;
+    IDGenerator m_generator;
 };
 
 } // namespace rdo
-
-#endif // _UTILS_RDOINDEXEDSTACK_H_

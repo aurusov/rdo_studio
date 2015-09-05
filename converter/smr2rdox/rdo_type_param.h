@@ -1,5 +1,4 @@
-#ifndef _CONVERTOR_RDOCONVERTER_TYPE_PARAM_H_
-#define _CONVERTOR_RDOCONVERTER_TYPE_PARAM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -17,25 +16,23 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOTypeParam);
 class RDOTypeParam
-	: public virtual rdo::counter_reference
-	, public RDOParserSrcInfo
-	, public IModelStructure
+    : public virtual rdo::counter_reference
+    , public RDOParserSrcInfo
+    , public IModelStructure
 {
 DECLARE_FACTORY(RDOTypeParam);
 public:
-	LPRDOType   type      ()                         const;
-	LPRDOValue  value_cast(const LPRDOValue& pValue) const;
+    LPRDOType   type      ()                         const;
+    LPRDOValue  value_cast(const LPRDOValue& pValue) const;
 
-	DECLARE_IModelStructure;
+    DECLARE_IModelStructure;
 
 protected:
-	RDOTypeParam(const LPRDOType& pType, const RDOParserSrcInfo& src_info);
-	virtual ~RDOTypeParam();
+    RDOTypeParam(const LPRDOType& pType, const RDOParserSrcInfo& src_info);
+    virtual ~RDOTypeParam();
 
 private:
-	LPRDOType m_pType;
+    LPRDOType m_pType;
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_RDOCONVERTER_TYPE_PARAM_H_

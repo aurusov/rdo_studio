@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_DOCK_RESULTS_H_
-#define _RDO_STUDIO_DOCK_RESULTS_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -10,15 +9,13 @@
 class DockResults: public DockFocusable
 {
 public:
-	typedef rdo::gui::editor::Results context_type;
+    typedef rdo::gui::editor::Results context_type;
 
-	DockResults(QWidget* pParent);
-	virtual ~DockResults();
+    DockResults(QWidget* pParent);
+    virtual ~DockResults();
 
-	void appendString(const QString& str);
-	void clear();
+    void appendString(const QString& str);
+    void clear();
 
-	context_type& getContext();
+    context_type& getContext();
 };
-
-#endif // _RDO_STUDIO_DOCK_RESULTS_H_

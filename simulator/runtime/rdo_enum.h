@@ -1,9 +1,9 @@
-#ifndef _LIB_RUNTIME_ENUM_H_
-#define _LIB_RUNTIME_ENUM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <string>
+#include <vector>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/src/common/rdocommon.h"
 #include "utils/src/smart_ptr/factory/factory.h"
 #include "simulator/runtime/rdo_type.h"
 // --------------------------------------------------------------------------------
@@ -14,30 +14,27 @@ class RDOEnumType: public RDOType
 {
 DECLARE_FACTORY(RDOEnumType);
 public:
-	typedef std::string EnumItem;
-	typedef rdo::vector<EnumItem> Enums;
-	typedef Enums::const_iterator CIterator;
-	typedef Enums::const_iterator const_iterator;
+    typedef std::vector<std::string> Enums;
+    typedef Enums::const_iterator CIterator;
+    typedef Enums::const_iterator const_iterator;
 
-	static const std::size_t END = std::size_t(~0);
+    static const std::size_t END = std::size_t(~0);
 
-	void add(const std::string& next);
-	std::size_t findEnum(const std::string& val) const;
-	bool exist(const std::string& val) const;
+    void add(const std::string& next);
+    std::size_t findEnum(const std::string& val) const;
+    bool exist(const std::string& val) const;
 
-	bool empty() const;
-	const CIterator begin() const;
-	const CIterator end() const;
-	const Enums& getValues() const;
+    bool empty() const;
+    const CIterator begin() const;
+    const CIterator end() const;
+    const Enums& getValues() const;
 
 protected:
-	RDOEnumType();
-	RDOEnumType(const Enums& enums);
+    RDOEnumType();
+    RDOEnumType(const Enums& enums);
 
-	Enums m_enum;
+    Enums m_enum;
 };
 DECLARE_POINTER(RDOEnumType);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_ENUM_H_

@@ -1,5 +1,4 @@
-#ifndef _UTILS_RDOIDGENERATOR_H_
-#define _UTILS_RDOIDGENERATOR_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -11,21 +10,19 @@ namespace rdo {
 class IDGenerator
 {
 public:
-	typedef std::size_t ID;
+    typedef std::size_t ID;
 
-	IDGenerator()
-		: m_id(0)
-	{}
+    IDGenerator()
+        : m_id(0)
+    {}
 
-	ID get()
-	{
-		return m_id++;
-	}
+    ID get()
+    {
+        return m_id++;
+    }
 
 private:
-	ID m_id;
+    ID m_id;
 };
 
 } // namespace rdo
-
-#endif // _UTILS_RDOIDGENERATOR_H_

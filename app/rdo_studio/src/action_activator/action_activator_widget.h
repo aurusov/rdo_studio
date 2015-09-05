@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_ACTION_ACTIVATOR_WIDGET_H_
-#define _RDO_STUDIO_ACTION_ACTIVATOR_WIDGET_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -10,15 +9,13 @@
 // --------------------------------------------------------------------------------
 
 class ActionActivatorWidget
-	: public QWidget
-	, public ActionActivator
+    : public QWidget
+    , public ActionActivator
 {
 protected:
-	ActionActivatorWidget(QWidget* pParent);
-	virtual ~ActionActivatorWidget();
+    ActionActivatorWidget(QWidget* pParent);
+    virtual ~ActionActivatorWidget();
 
-	virtual void focusInEvent (QFocusEvent* pEvent);
-	virtual void focusOutEvent(QFocusEvent* pEvent);
+    virtual void focusInEvent (QFocusEvent* pEvent);
+    virtual void focusOutEvent(QFocusEvent* pEvent);
 };
-
-#endif // _RDO_STUDIO_ACTION_ACTIVATOR_WIDGET_H_

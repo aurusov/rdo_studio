@@ -1,5 +1,4 @@
-#ifndef _RDO_STUDIO_EDITOR_LEXER_WORD_LIST_UTIL_H_
-#define _RDO_STUDIO_EDITOR_LEXER_WORD_LIST_UTIL_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
@@ -9,14 +8,12 @@
 #include "thirdparty/scintilla/lexlib/WordList.h"
 // --------------------------------------------------------------------------------
 
-class WordListUtil: public boost::noncopyable
+class WordListUtil: private boost::noncopyable
 {
 public:
-	WordListUtil(const WordList& wordlist);
-	std::vector<std::string> getNearestWords(const std::string& userPattern) const;
+    WordListUtil(const WordList& wordlist);
+    std::vector<std::string> getNearestWords(const std::string& userPattern) const;
 
 private:
-	const WordList& wl;
+    const WordList& wl;
 };
-
-#endif // _RDO_STUDIO_EDITOR_LEXER_WORD_LIST_UTIL_H_

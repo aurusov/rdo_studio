@@ -1,5 +1,4 @@
-#ifndef _RDO_KEY_EVENT_H_
-#define _RDO_KEY_EVENT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -8,30 +7,27 @@
 
 namespace rdo {
 
-/// base event class
-class key_event: public event
+class KeyEvent: public Event
 {
 public:
-	enum states
-	{
-		press = 0,
-		release
-	};
+    enum class State
+    {
+        PRESS = 0,
+        RELEASE
+    };
 
-	key_event(const std::string& name, double time, states state, int key_code);
-	virtual ~key_event();
+    KeyEvent(const std::string& name, Time time, State state, int key_code);
+    virtual ~KeyEvent();
 
-	void setState(states state);
-	void setKeyCode(int key_code);
+    void setState(State state);
+    void setKeyCode(int keyCode);
 
-	states getState() const;
-	int  getKeyCode() const;
+    State getState() const;
+    int  getKeyCode() const;
 
 private:
-	states m_state;
-	int m_key_code;
+    State state;
+    int keyCode;
 };
 
 } // namespace rdo
-
-#endif // _RDO_KEY_EVENT_H_

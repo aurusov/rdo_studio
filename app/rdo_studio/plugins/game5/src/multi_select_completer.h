@@ -1,5 +1,4 @@
-#ifndef _RDO_PLUGIN_GAME_5_MULTI_SELECT_COMPLETER_H_
-#define _RDO_PLUGIN_GAME_5_MULTI_SELECT_COMPLETER_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -12,22 +11,20 @@ class MultiSelectCompleter : public QCompleter
 {Q_OBJECT
 
 public:
-	MultiSelectCompleter(const QStringList& items, QObject* parent);
-	~MultiSelectCompleter();
+    MultiSelectCompleter(const QStringList& items, QObject* parent);
+    ~MultiSelectCompleter();
 
-	virtual QString pathFromIndex(const QModelIndex& index) const;
-	virtual QStringList splitPath(const QString& path) const;
+    virtual QString pathFromIndex(const QModelIndex& index) const;
+    virtual QStringList splitPath(const QString& path) const;
 
 signals:
-	void changeSelection(int cursorPos, int selectionLen) const;
+    void changeSelection(int cursorPos, int selectionLen) const;
 
 public slots:
-	void onLineEditTextChanged();
-	void setSelection(int cursorPos, int selectionLen);
+    void onLineEditTextChanged();
+    void setSelection(int cursorPos, int selectionLen);
 
 private:
-	int m_cursorPos;
-	int m_selectionLen;
+    int m_cursorPos;
+    int m_selectionLen;
 };
-
-#endif // _RDO_PLUGIN_GAME_5_MULTI_SELECT_COMPLETER_H_

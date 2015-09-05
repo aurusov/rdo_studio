@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_CORBA_H_
-#define _RDOPARSER_CORBA_H_
+#pragma once
 
 #ifdef CORBA_ENABLE
 
@@ -17,10 +16,10 @@ class RDOParserCorbaRTP: public RDOParserRDOItem
 {
 DECLARE_FACTORY(RDOParserCorbaRTP);
 private:
-	RDOParserCorbaRTP()
-		: RDOParserRDOItem(rdo::model::RTP, NULL, NULL, NULL)
-	{}
-	virtual void parse(const LPRDOParser& pParser);
+    RDOParserCorbaRTP()
+        : RDOParserRDOItem(rdo::FileType::RTP, NULL, NULL, NULL)
+    {}
+    virtual void parse(const LPRDOParser& pParser);
 };
 
 // --------------------------------------------------------------------------------
@@ -30,14 +29,12 @@ class RDOParserCorbaRSS: public RDOParserRDOItem
 {
 DECLARE_FACTORY(RDOParserCorbaRSS);
 private:
-	RDOParserCorbaRSS()
-		: RDOParserRDOItem(rdo::model::RSS, NULL, NULL, NULL)
-	{}
-	virtual void parse(const LPRDOParser& pParser);
+    RDOParserCorbaRSS()
+        : RDOParserRDOItem(rdo::FileType::RSS, NULL, NULL, NULL)
+    {}
+    virtual void parse(const LPRDOParser& pParser);
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // CORBA_ENABLE
-
-#endif // _RDOPARSER_CORBA_H_

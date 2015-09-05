@@ -7,25 +7,25 @@
 
 namespace rdo
 {
-	namespace gui
-	{
-		MemDCBase::MemDCBase()
-			: m_width (0)
-			, m_height(0)
-		{}
+    namespace gui
+    {
+        MemDCBase::MemDCBase()
+            : m_width (0)
+            , m_height(0)
+        {}
 
-		MemDCBase::~MemDCBase()
-		{}
+        MemDCBase::~MemDCBase()
+        {}
 
-		std::size_t MemDCBase::width() const
-		{
-			return m_width;
-		}
+        std::size_t MemDCBase::width() const
+        {
+            return m_width;
+        }
 
-		std::size_t MemDCBase::height() const
-		{
-			return m_height;
-		}
+        std::size_t MemDCBase::height() const
+        {
+            return m_height;
+        }
 
-	} // namespace gui
+    } // namespace gui
 } // namespace rdo

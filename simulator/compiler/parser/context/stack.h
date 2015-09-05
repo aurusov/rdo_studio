@@ -1,5 +1,4 @@
-#ifndef _RDOPARSER_CONTEXT_STACK_H_
-#define _RDOPARSER_CONTEXT_STACK_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
@@ -20,28 +19,26 @@ class ContextStack: public rdo::counter_reference
 {
 DECLARE_FACTORY(ContextStack);
 public:
-	void                     push(LPContext pContext);
-	template <class T> void  pop ()
-	{
-		ASSERT(top().object_dynamic_cast<T>());
-		pop_not_safed();
-	}
+    void                     push(LPContext pContext);
+    template <class T> void  pop ()
+    {
+        ASSERT(top().object_dynamic_cast<T>());
+        pop_not_safed();
+    }
 
-	LPContext top   () const;
-	LPContext global() const;
-	LPContext prev  (const LPContext& pContext) const;
+    LPContext top   () const;
+    LPContext global() const;
+    LPContext prev  (const LPContext& pContext) const;
 
-	void pop_not_safed();
+    void pop_not_safed();
 
 private:
-	ContextStack();
-	virtual ~ContextStack();
+    ContextStack();
+    virtual ~ContextStack();
 
-	typedef std::list<LPContext> Container;
+    typedef std::list<LPContext> Container;
 
-	Container m_container;
+    Container m_container;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_CONTEXT_STACK_H_

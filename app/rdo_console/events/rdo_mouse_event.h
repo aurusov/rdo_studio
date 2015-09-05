@@ -1,5 +1,4 @@
-#ifndef _RDO_MOUSE_EVENT_H_
-#define _RDO_MOUSE_EVENT_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -8,35 +7,32 @@
 
 namespace rdo {
 
-class mouse_event: public event
+class MouseEvent: public Event
 {
 public:
-	enum buttons
-	{
-		none,
-		left,
-		right,
-		middle
-	};
+    enum class Button
+    {
+        NONE,
+        LEFT,
+        RIGHT,
+        MIDDLE
+    };
 
-	mouse_event(const std::string& name, double time, buttons button, int x, int y);
-	virtual ~mouse_event();
+    MouseEvent(const std::string& name, Time time, Button button, int x, int y);
+    virtual ~MouseEvent();
 
-	void setButton(buttons button);
-	void setX(int x);
-	void sety(int y);
+    void setButton(Button button);
+    void setX(int x);
+    void sety(int y);
 
-	buttons getButton() const;
-	int getX() const;
-	int getY() const;
+    Button getButton() const;
+    int getX() const;
+    int getY() const;
 
 private:
-	buttons m_button;
-
-	int m_x;
-	int m_y;
+    Button button;
+    int x;
+    int y;
 };
 
 } // namespace rdo
-
-#endif // _RDO_MOUSE_EVENT_H_

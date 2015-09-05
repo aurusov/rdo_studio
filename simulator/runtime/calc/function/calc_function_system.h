@@ -1,5 +1,4 @@
-#ifndef _LIB_RUNTIME_CALC_FUNCTION_SYSTEM_H_
-#define _LIB_RUNTIME_CALC_FUNCTION_SYSTEM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -8,7 +7,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Получение текущего модельного времени
 PREDECLARE_POINTER(RDOCalcGetTimeNow);
 class RDOCalcGetTimeNow: public RDOCalc
 {
@@ -16,7 +14,6 @@ DECLARE_FACTORY(RDOCalcGetTimeNow)
 DECLARE_ICalc;
 };
 
-//! Получение реального времени работы модели
 PREDECLARE_POINTER(RDOCalcGetSeconds);
 class RDOCalcGetSeconds: public RDOCalc
 {
@@ -25,5 +22,3 @@ DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_CALC_FUNCTION_SYSTEM_H_
