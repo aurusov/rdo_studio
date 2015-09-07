@@ -167,7 +167,7 @@ void PluginGame5::pluginStopAction(QWidget* pParent)
     if (pluginGame5ToolBar)
         delete pluginGame5ToolBar;
 
-    if (g_pApp->getMainWndUI())
+    if (g_pApp && g_pApp->getMainWndUI())
     {
         rdo::gui::model::Model* pModel = g_pApp->getMainWndUI()->getModel();
         if (pModel)
