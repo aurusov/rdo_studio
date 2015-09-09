@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      rdo_mouse_event.cpp
-  \author    Пройдаков Евгений (lord.tiran@gmail.com)
-  \date      26.11.2012
-  \brief     Консольная версия RDO
-  \indent    4T
-*/
-
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_console/events/rdo_mouse_event.h"
@@ -14,44 +5,44 @@
 
 namespace rdo {
 
-mouse_event::mouse_event(const std::string& name, double time, buttons button, int x, int y)
-	: event(name, time, event::mouse)
-	, m_button(button)
-	, m_x(x)
-	, m_y(y)
+MouseEvent::MouseEvent(const std::string& name, Time time, Button button, int x, int y)
+    : Event(name, time, Event::Type::MOUSE)
+    , button(button)
+    , x(x)
+    , y(y)
 {}
 
-mouse_event::~mouse_event()
+MouseEvent::~MouseEvent()
 {}
 
-void mouse_event::setButton(buttons button)
+void MouseEvent::setButton(Button button)
 {
-	m_button = button;
+    this->button = button;
 }
 
-void mouse_event::setX(int x)
+void MouseEvent::setX(int x)
 {
-	m_x = x;
+    this->x = x;
 }
 
-void mouse_event::sety(int y)
+void MouseEvent::sety(int y)
 {
-	m_y = y;
+    this->y = y;
 }
 
-mouse_event::buttons mouse_event::getButton() const
+MouseEvent::Button MouseEvent::getButton() const
 {
-	return m_button;
+    return button;
 }
 
-int mouse_event::getX() const
+int MouseEvent::getX() const
 {
-	return m_x;
+    return x;
 }
 
-int mouse_event::getY() const
+int MouseEvent::getY() const
 {
-	return m_y;
+    return y;
 }
 
 } // namespace rdo

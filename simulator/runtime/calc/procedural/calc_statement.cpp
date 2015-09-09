@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_statement.cpp
-  \authors   Чирков Михаил
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      16.04.2011
-  \brief     Инструкции
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -25,95 +15,95 @@ RDOCalcNoChange::RDOCalcNoChange()
 
 RDOValue RDOCalcNoChange::doCalc(const LPRDORuntime& /*pRuntime*/)
 {
-	return RDOValue();
+    return RDOValue();
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcIf
 // --------------------------------------------------------------------------------
 RDOCalcIf::RDOCalcIf(const LPRDOCalc& pCondition)
-	: m_pCondition(pCondition)
+    : m_pCondition(pCondition)
 {
-	ASSERT(m_pCondition);
+    ASSERT(m_pCondition);
 }
 
 void RDOCalcIf::setThenStatement(const LPRDOCalc& pStatement)
 {
-	ASSERT(pStatement);
-	m_statements.first = pStatement;
+    ASSERT(pStatement);
+    m_statements.first = pStatement;
 }
 
 void RDOCalcIf::setElseStatement(const LPRDOCalc& pStatement)
 {
-	ASSERT(pStatement);
-	m_statements.second = pStatement;
+    ASSERT(pStatement);
+    m_statements.second = pStatement;
 }
 
 bool RDOCalcIf::hasElse() const
 {
-	return m_statements.second;
+    return m_statements.second;
 }
 
 RDOValue RDOCalcIf::doCalc(const LPRDORuntime& pRuntime)
 {
-	return m_pCondition->calcValue(pRuntime).getAsBool()
-		? m_statements.first->calcValue(pRuntime)
-		: hasElse()
-			? m_statements.second->calcValue(pRuntime)
-			: RDOValue(false);
+    return m_pCondition->calcValue(pRuntime).getAsBool()
+        ? m_statements.first->calcValue(pRuntime)
+        : hasElse()
+            ? m_statements.second->calcValue(pRuntime)
+            : RDOValue(false);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcFor
 // --------------------------------------------------------------------------------
 RDOCalcFor::RDOCalcFor(const LPRDOCalc& pDeclaration, const LPRDOCalc& pCondition, const LPRDOCalc& pExpression)
-	: m_pDeclaration(pDeclaration)
-	, m_pCondition  (pCondition  )
-	, m_pExpression (pExpression )
+    : m_pDeclaration(pDeclaration)
+    , m_pCondition  (pCondition  )
+    , m_pExpression (pExpression )
 {
-	ASSERT(m_pDeclaration);
-	ASSERT(m_pCondition  );
-	ASSERT(m_pExpression );
+    ASSERT(m_pDeclaration);
+    ASSERT(m_pCondition  );
+    ASSERT(m_pExpression );
 }
 
 void RDOCalcFor::setStatement(const LPRDOCalc& pStatement)
 {
-	ASSERT(pStatement);
-	m_pStatement = pStatement;
+    ASSERT(pStatement);
+    m_pStatement = pStatement;
 }
 
 RDOValue RDOCalcFor::doCalc(const LPRDORuntime& pRuntime)
 {
-	RDOValue value = RDOValue(0);
+    RDOValue value = RDOValue(0);
 
-	m_pDeclaration->calcValue(pRuntime);
-	while (m_pCondition->calcValue(pRuntime).getAsBool())
-	{
-		value = m_pStatement->calcValue(pRuntime);
-		if (pRuntime->getFunBreakFlag() != RDORuntime::FBF_NONE)
-		{
-			break;
-		}
-		m_pExpression->calcValue(pRuntime);
-	}
+    m_pDeclaration->calcValue(pRuntime);
+    while (m_pCondition->calcValue(pRuntime).getAsBool())
+    {
+        value = m_pStatement->calcValue(pRuntime);
+        if (pRuntime->getFunctionExitStatus() != RDORuntime::FunctionExitStatus::NONE)
+        {
+            break;
+        }
+        m_pExpression->calcValue(pRuntime);
+    }
 
-	return value;
+    return value;
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcFunReturn
 // --------------------------------------------------------------------------------
 RDOCalcFunReturn::RDOCalcFunReturn(const LPRDOCalc& pReturn)
-	: m_pReturn(pReturn)
+    : m_pReturn(pReturn)
 {}
 
 RDOValue RDOCalcFunReturn::doCalc(const LPRDORuntime& pRuntime)
 {
-	ASSERT(m_pReturn);
+    ASSERT(m_pReturn);
 
-	RDOValue value = m_pReturn->calcValue(pRuntime);
-	pRuntime->setFunBreakFlag(RDORuntime::FBF_RETURN);
-	return value;
+    RDOValue value = m_pReturn->calcValue(pRuntime);
+    pRuntime->setFunctionExitStatus(RDORuntime::FunctionExitStatus::RETURN);
+    return value;
 }
 
 // --------------------------------------------------------------------------------
@@ -124,8 +114,8 @@ RDOCalcFunBreak::RDOCalcFunBreak()
 
 RDOValue RDOCalcFunBreak::doCalc(const LPRDORuntime& pRuntime)
 {
-	pRuntime->setFunBreakFlag(RDORuntime::FBF_BREAK);
-	return RDOValue();
+    pRuntime->setFunctionExitStatus(RDORuntime::FunctionExitStatus::BREAK);
+    return RDOValue();
 }
 
 // --------------------------------------------------------------------------------
@@ -136,27 +126,27 @@ RDOCalcBaseStatementList::RDOCalcBaseStatementList()
 
 void RDOCalcBaseStatementList::addCalcStatement(const LPRDOCalc& pStatement)
 {
-	ASSERT(pStatement);
-	m_calcStatementList.push_back(pStatement);
+    ASSERT(pStatement);
+    m_calcStatementList.push_back(pStatement);
 }
 
 RDOCalc::RDOCalcList RDOCalcBaseStatementList::statementList()
 {
-	return m_calcStatementList;
+    return m_calcStatementList;
 }
 
 RDOValue RDOCalcBaseStatementList::doCalc(const LPRDORuntime& pRuntime)
 {
-	RDOValue value;
-	for (const auto& calc: m_calcStatementList)
-	{
-		RDOValue tempValue = calc->calcValue(pRuntime);
-		if (tempValue.typeID() != RDOType::t_unknow)
-		{
-			value = tempValue;
-		}
-	}
-	return value;
+    RDOValue value;
+    for (const auto& calc: m_calcStatementList)
+    {
+        RDOValue tempValue = calc->calcValue(pRuntime);
+        if (tempValue.typeID() != RDOType::Type::UNKNOW)
+        {
+            value = tempValue;
+        }
+    }
+    return value;
 }
 
 // --------------------------------------------------------------------------------
@@ -167,17 +157,17 @@ RDOCalcStatementList::RDOCalcStatementList()
 
 RDOValue RDOCalcStatementList::doCalc(const LPRDORuntime& pRuntime)
 {
-	RDOValue value;
-	for (const auto& calc: m_calcStatementList)
-	{
-		value = calc->calcValue(pRuntime);
+    RDOValue value;
+    for (const auto& calc: m_calcStatementList)
+    {
+        value = calc->calcValue(pRuntime);
 
-		if (pRuntime->getFunBreakFlag() != RDORuntime::FBF_NONE)
-		{
-			break;
-		}
-	}
-	return value;
+        if (pRuntime->getFunctionExitStatus() != RDORuntime::FunctionExitStatus::NONE)
+        {
+            break;
+        }
+    }
+    return value;
 }
 
 // --------------------------------------------------------------------------------
@@ -188,22 +178,22 @@ RDOCalcBreakCatch::RDOCalcBreakCatch()
 
 void RDOCalcBreakCatch::addStatementList(const LPRDOCalc& pStatementList)
 {
-	ASSERT(pStatementList);
-	m_pStatementList = pStatementList;
+    ASSERT(pStatementList);
+    m_pStatementList = pStatementList;
 }
 
 RDOValue RDOCalcBreakCatch::doCalc(const LPRDORuntime& pRuntime)
 {
-	ASSERT(m_pStatementList);
+    ASSERT(m_pStatementList);
 
-	m_pStatementList->calcValue(pRuntime);
+    m_pStatementList->calcValue(pRuntime);
 
-	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_BREAK)
-	{
-		pRuntime->setFunBreakFlag(RDORuntime::FBF_NONE);
-	}
+    if (pRuntime->getFunctionExitStatus() == RDORuntime::FunctionExitStatus::BREAK)
+    {
+        pRuntime->setFunctionExitStatus(RDORuntime::FunctionExitStatus::NONE);
+    }
 
-	return RDOValue();
+    return RDOValue();
 }
 
 // --------------------------------------------------------------------------------
@@ -214,22 +204,22 @@ RDOCalcReturnCatch::RDOCalcReturnCatch()
 
 void RDOCalcReturnCatch::setTryCalc(const LPRDOCalc& pTryCalc)
 {
-	ASSERT(pTryCalc);
-	m_pTryCalc = pTryCalc;
+    ASSERT(pTryCalc);
+    m_pTryCalc = pTryCalc;
 }
 
 RDOValue RDOCalcReturnCatch::doCalc(const LPRDORuntime& pRuntime)
 {
-	ASSERT(m_pTryCalc);
+    ASSERT(m_pTryCalc);
 
-	RDOValue value = m_pTryCalc->calcValue(pRuntime);
+    RDOValue value = m_pTryCalc->calcValue(pRuntime);
 
-	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_RETURN)
-	{
-		pRuntime->setFunBreakFlag(RDORuntime::FBF_NONE);
-	}
+    if (pRuntime->getFunctionExitStatus() == RDORuntime::FunctionExitStatus::RETURN)
+    {
+        pRuntime->setFunctionExitStatus(RDORuntime::FunctionExitStatus::NONE);
+    }
 
-	return value;
+    return value;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

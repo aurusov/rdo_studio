@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      controller_console_options_config.h
-  \author    Пройдаков Евгений (lord.tiran@gmail.com)
-  \date      26.10.2011
-  \brief     Консольная версия RDO
-  \indent    4T
-*/
-
-#ifndef _RDO_CONTROLLER_CONSOLE_OPTIONS_CONFIG_H_
-#define _RDO_CONTROLLER_CONSOLE_OPTIONS_CONFIG_H_
+#pragma once
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/src/common/platform.h"
@@ -58,5 +48,3 @@ const std::string RDO_LANGUAGE_VERSION          = "2.0";
 
 const std::string NOP_STRING   = " ";
 const std::string COMMA_STRING = ",";
-
-#endif // _RDO_CONTROLLER_CONSOLE_OPTIONS_CONFIG_H_

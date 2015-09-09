@@ -6,6 +6,6 @@ $Term_condition
 $Evaluate_by
 $Compare_tops = YES
 $Activities
-	: value before
-	: value after
+    : value before
+    : value after
 $End

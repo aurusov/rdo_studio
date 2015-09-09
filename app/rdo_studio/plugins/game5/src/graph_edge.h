@@ -1,21 +1,11 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      app/rdo_studio/plugins/game5/src/graph_edge.h
-  \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
-  \date      22.09.2013
-  \brief
-  \indent    4T
-*/
-
-#ifndef _RDO_PLUGIN_GAME_5_GRAPH_EDGE_H_
-#define _RDO_PLUGIN_GAME_5_GRAPH_EDGE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <QGraphicsObject>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio/plugins/game5/src/graph_items_types.h"
+#include "app/rdo_studio/plugins/game5/src/graph_items_type.h"
 // --------------------------------------------------------------------------------
 
 class GraphNode;
@@ -24,27 +14,24 @@ class GraphEdge : public QGraphicsObject
 {Q_OBJECT
 
 public:
-	 GraphEdge(GraphNode& sourceNode, GraphNode& destNode);
-	~GraphEdge();
+     GraphEdge(GraphNode& sourceNode, GraphNode& destNode);
+    ~GraphEdge();
 
-	enum { Type = rdo::plugin::game5::TypeID::GRAPH_EDGE };
-	virtual int type() const { return Type; }
+    virtual int type() const { return static_cast<int>(rdo::plugin::game5::GraphItemType::EDGE); }
 
 private:
-	GraphNode& source;
-	GraphNode& dest;
+    GraphNode& source;
+    GraphNode& dest;
 
-	QPointF sourcePoint;
-	QPointF destPoint;
-	const double arrowSize;
-	const double pointSize;
-	const double penWidth;
+    QPointF sourcePoint;
+    QPointF destPoint;
+    const double arrowSize;
+    const double pointSize;
+    const double penWidth;
 
-	virtual QRectF boundingRect() const;
-	virtual void   paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    virtual QRectF boundingRect() const;
+    virtual void   paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 private slots:
-	void adjust();
+    void adjust();
 };
-
-#endif // _RDO_PLUGIN_GAME_5_GRAPH_EDGE_H_

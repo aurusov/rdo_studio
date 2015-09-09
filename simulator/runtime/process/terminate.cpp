@@ -1,13 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      terminate.cpp
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      12.02.2012
-  \brief     Процессный оператор TERMINATE
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -23,39 +13,39 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOPROCTerminate
 // --------------------------------------------------------------------------------
 RDOPROCTerminate::RDOPROCTerminate(const LPIPROCProcess& pProcess, const LPRDOCalc& pCalc)
-	: RDOPROCBlock             (pProcess)
-	, m_terminatedTransactCount(0       )
-	, m_pTermCalc              (pCalc   )
+    : RDOPROCBlock             (pProcess)
+    , m_terminatedTransactCount(0       )
+    , m_pTermCalc              (pCalc   )
 {}
 
 bool RDOPROCTerminate::onCheckCondition(const LPRDORuntime& /*pRuntime*/)
 {
-	return !m_transacts.empty() ? true : false;
+    return !m_transacts.empty() ? true : false;
 }
 
-IBaseOperation::BOResult RDOPROCTerminate::onDoOperation(const LPRDORuntime& pRuntime)
+IBaseOperation::ResultCode RDOPROCTerminate::onDoOperation(const LPRDORuntime& pRuntime)
 {
-	TRACE1("%7.1f TERMINATE\n", pRuntime->getCurrentTime());
-	LPRDOPROCTransact transact = m_transacts.front();
-	ASSERT(transact);
-	transact->setState(RDOResource::CS_Erase);
-	RDOTrace* tracer = pRuntime->getTracer();
-	if (!tracer->isNull())
-	{
-		tracer->getOStream() << transact->traceResourceState('\0', pRuntime) << tracer->getEOL();
-	}
-	pRuntime->onEraseRes(transact->getTraceID(), NULL);
-	m_transacts.erase(m_transacts.begin());
-	std::size_t termNow = pRuntime->getCurrentTerm();
+    TRACE1("%7.1f TERMINATE\n", pRuntime->getCurrentTime());
+    LPRDOPROCTransact transact = m_transacts.front();
+    ASSERT(transact);
+    transact->setState(RDOResource::ConvertStatus::ERASE);
+    RDOTrace* tracer = pRuntime->getTracer();
+    if (!tracer->isNull())
+    {
+        tracer->getOStream() << transact->traceResourceState('\0', pRuntime) << tracer->getEOL();
+    }
+    pRuntime->onEraseRes(transact->getTraceID(), NULL);
+    m_transacts.erase(m_transacts.begin());
+    std::size_t termNow = pRuntime->getCurrentTerm();
 
-	++m_terminatedTransactCount;
+    ++m_terminatedTransactCount;
 
-	if (m_pStatistics)
-		m_pStatistics->setTransCount(m_terminatedTransactCount);
+    if (m_pStatistics)
+        m_pStatistics->setTransCount(m_terminatedTransactCount);
 
-	termNow += m_pTermCalc->calcValue(pRuntime).getInt();
-	pRuntime->setCurrentTerm(termNow);
-	return IBaseOperation::BOR_done;
+    termNow += m_pTermCalc->calcValue(pRuntime).getInt();
+    pRuntime->setCurrentTerm(termNow);
+    return IBaseOperation::ResultCode::DONE;
 }
 
 void RDOPROCTerminate::onStart(const LPRDORuntime& /*pRuntime*/)
@@ -64,14 +54,14 @@ void RDOPROCTerminate::onStart(const LPRDORuntime& /*pRuntime*/)
 void RDOPROCTerminate::onStop(const LPRDORuntime& /*pRuntime*/)
 {}
 
-IBaseOperation::BOResult RDOPROCTerminate::onContinue(const LPRDORuntime& /*pRuntime*/)
+IBaseOperation::ResultCode RDOPROCTerminate::onContinue(const LPRDORuntime& /*pRuntime*/)
 {
-	return IBaseOperation::BOR_cant_run;
+    return IBaseOperation::ResultCode::CANNOT_RUN;
 }
 
 void RDOPROCTerminate::setStatistics(const rdo::runtime::LPIInternalStatistics& pStatistics)
 {
-	m_pStatistics = pStatistics;
+    m_pStatistics = pStatistics;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

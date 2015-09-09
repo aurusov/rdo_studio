@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      file_association_dialog.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      10.02.2012
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/application_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -15,9 +6,9 @@
 // --------------------------------------------------------------------------------
 
 FileAssociationDialog::FileAssociationDialog(QWidget* pParent)
-	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
+    : QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 {
-	setupUi(this);
+    setupUi(this);
 }
 
 FileAssociationDialog::~FileAssociationDialog()

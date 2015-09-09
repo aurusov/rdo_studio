@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2012
-  \file      context_function_body.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      08.12.2012
-  \brief     Контекст тела функции
-  \indent    4T
-*/
-
-#ifndef _SIMULATOR_COMPILER_PARSER_CONTEXT_FUNCTION_BODY_H_
-#define _SIMULATOR_COMPILER_PARSER_CONTEXT_FUNCTION_BODY_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/function.hpp>
@@ -30,19 +20,19 @@ struct IContextFunctionBodyManager: public rdo::RefCounter<IContextFunctionBodyM
 {
 DECLARE_FACTORY(IContextFunctionBodyManager)
 public:
-	virtual void pushFunctionBodyContext() = 0;
-	virtual void popFunctionBodyContext () = 0;
+    virtual void pushFunctionBodyContext() = 0;
+    virtual void popFunctionBodyContext () = 0;
 
 protected:
-	IContextFunctionBodyManager()
-	{}
-	virtual ~IContextFunctionBodyManager()
-	{}
+    IContextFunctionBodyManager()
+    {}
+    virtual ~IContextFunctionBodyManager()
+    {}
 };
 
 #define DECLARE_IContextFunctionBodyManager \
-	void pushFunctionBodyContext();         \
-	void popFunctionBodyContext ();
+    void pushFunctionBodyContext();         \
+    void popFunctionBodyContext ();
 
 // --------------------------------------------------------------------------------
 // -------------------- ContextFunctionBody
@@ -51,21 +41,19 @@ class ContextFunctionBody: public ContextReturnable
 {
 DECLARE_FACTORY(ContextFunctionBody)
 public:
-	void setBody(const rdo::runtime::LPRDOCalc& pBody);
+    void setBody(const rdo::runtime::LPRDOCalc& pBody);
 
-	void pushContext();
-	void popContext ();
+    void pushContext();
+    void popContext ();
 
 private:
-	typedef  boost::function<void (const rdo::runtime::LPRDOCalc&)>  OnBody;
+    typedef  boost::function<void (const rdo::runtime::LPRDOCalc&)>  OnBody;
 
-	ContextFunctionBody(const OnBody& onBody);
-	virtual ~ContextFunctionBody();
+    ContextFunctionBody(const OnBody& onBody);
+    virtual ~ContextFunctionBody();
 
-	OnBody m_onBody;
+    OnBody m_onBody;
 };
 DECLARE_POINTER(ContextFunctionBody);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _SIMULATOR_COMPILER_PARSER_CONTEXT_FUNCTION_BODY_H_

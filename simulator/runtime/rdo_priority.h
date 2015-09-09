@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdo_priority.h
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      04.11.2009
-  \brief     Описание приоритета активностей. Используется при сортировке БЗ.
-  \indent    4T
-*/
-
-#ifndef _LIB_RUNTIME_PRIORITY_H_
-#define _LIB_RUNTIME_PRIORITY_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -20,37 +10,27 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class     RDOPatternPrior
-  \brief     Приоритет паттерна
-*/
 class RDOPatternPrior: public IPriority
 {
 protected:
-	RDOPatternPrior();
-	virtual ~RDOPatternPrior();
+    RDOPatternPrior();
+    virtual ~RDOPatternPrior();
 
 private:
-	virtual LPRDOCalc getPrior();
-	virtual bool setPrior(const LPRDOCalc& pPrior);
+    virtual LPRDOCalc getPrior();
+    virtual bool setPrior(const LPRDOCalc& pPrior);
 
-	LPRDOCalc m_pPrior;
+    LPRDOCalc m_pPrior;
 };
 
-/*!
-  \class     RDODPTActivityCompare
-  \brief     Компаратор приоритетов активностей
-*/
 class RDODPTActivityCompare
 {
 public:
-	RDODPTActivityCompare(const LPRDORuntime& pRuntime);
-	bool operator()(const LPIBaseOperation& pOpr1, const LPIBaseOperation& pOpr2);
+    RDODPTActivityCompare(const LPRDORuntime& pRuntime);
+    bool operator()(const LPIBaseOperation& pOpr1, const LPIBaseOperation& pOpr2);
 
 private:
-	LPRDORuntime m_pRuntime;
+    LPRDORuntime m_pRuntime;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_PRIORITY_H_

@@ -11,7 +11,7 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-FILE(GLOB_RECURSE SOURCE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} src/*.cpp)
+FILE(GLOB_RECURSE SOURCE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} src/*.cpp src/*.h)
 ADD_LIBRARY(rdo_simulator STATIC ${SOURCE_FILES})
 
 INCLUDE(${PROJECT_SOURCE_DIR}/simulator/simulator.cmake)
@@ -21,7 +21,6 @@ ADD_DEPENDENCIES(rdo_simulator rdo_utils)
 ADD_DEPENDENCIES(rdo_simulator rdo_runtime)
 ADD_DEPENDENCIES(rdo_simulator rdo_parser)
 ADD_DEPENDENCIES(rdo_simulator rdo_mbuilder)
-ADD_DEPENDENCIES(rdo_simulator rdo_procgui)
 ADD_DEPENDENCIES(rdo_simulator rdo_simulator_report)
 ADD_DEPENDENCIES(rdo_simulator rdo_converter_smr2rdox)
 
@@ -30,7 +29,6 @@ TARGET_LINK_LIBRARIES(rdo_simulator rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_simulator rdo_runtime)
 TARGET_LINK_LIBRARIES(rdo_simulator rdo_parser)
 TARGET_LINK_LIBRARIES(rdo_simulator rdo_mbuilder)
-TARGET_LINK_LIBRARIES(rdo_simulator rdo_procgui)
 TARGET_LINK_LIBRARIES(rdo_simulator rdo_simulator_report)
 TARGET_LINK_LIBRARIES(rdo_simulator rdo_converter_smr2rdox)
 

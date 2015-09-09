@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      app/rdo_studio/src/view_preferences.h
-  \author    Романов Ярослав (robot.xet@gmail.com)
-  \date      27.11.2012
-  \brief     
-  \indent    4T
-*/
-
-#ifndef _RDO_STUDIO_VIEW_PREFERENCES_H_
-#define _RDO_STUDIO_VIEW_PREFERENCES_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -37,379 +27,365 @@
 // --------------------------------------------------------------------------------
 
 class ViewPreferences
-	: public QDialog
-	, private Ui::ViewPreferencesDialog
+    : public QDialog
+    , private Ui::ViewPreferencesDialog
 {
 Q_OBJECT
 public:
-	explicit ViewPreferences(QWidget* pParent = NULL);
+    explicit ViewPreferences(QWidget* pParent = NULL);
 
 private slots:
-	void onOkButton();
-	void onCancelButton();
-	void onApplyButton();
+    void onOkButton();
+    void onCancelButton();
+    void onApplyButton();
 
-	void onCheckInput(const QString& text);
+    void onCheckInput(const QString& text);
 
-	void onSetup(int state);
-	void onCheckInFuture(int state);
-	void onOpenLastProject(int state);
-	void onShowFullName(int state);
+    void onSetup(int state);
+    void onCheckInFuture(int state);
+    void onOpenLastProject(int state);
+    void onShowFullName(int state);
 
-	void onCodeCompUse(int state);
-	void onCodeCompShowFullList(bool state);
-	void onMarginFold(int state);
-	void onMarginBookmark(int state);
-	void onMarginLineNumber(int state);
+    void onCodeCompUse(int state);
+    void onCodeCompShowFullList(bool state);
+    void onMarginFold(int state);
+    void onMarginBookmark(int state);
+    void onMarginLineNumber(int state);
 
-	void onUseTabSymbol(int state);
-	void onIndentAsTab(int state);
-	void onAutoIndent(int state);
-	void onEraseWithTab(bool state);
-	void onTabSize(const QString& text);
-	void onIndentSize(const QString& text);
+    void onUseTabSymbol(int state);
+    void onIndentAsTab(int state);
+    void onAutoIndent(int state);
+    void onEraseWithTab(bool state);
+    void onTabSize(const QString& text);
+    void onIndentSize(const QString& text);
 
-	void onTreeWidgetItemActivated(QTreeWidgetItem* item, int column);
-	void onSwitchPreviewComboBox(int index);
-	void onFontSize(int index);
-	void onFontType(int index);
-	void onFontBold(int state);
-	void onFontItalic(int state);
-	void onFontUnderline(int state);
-	void onHorzScroll(int state);
-	void onWordWrap(int state);
-	void onBookmark(int index);
-	void onFold(int index);
-	void onComment(int state);
-	void onWarning(int state);
-	void onHorzIndent(const QString& text);
-	void onVertIndent(const QString& text);
-	void onFgColor(int index);
-	void onBgColor(int index);
-	void onFgColorDialog();
-	void onBgColorDialog();
-	void onFgColorSelected(const QColor& color);
-	void onBgColorSelected(const QColor& color);
-	void onTitleSize(int index);
-	void onLegendSize(int index);
-	void onTickWidth(const QString& text);
-	void onThemeComboBox(int index);
+    void onTreeWidgetItemActivated(QTreeWidgetItem* item, int column);
+    void onSwitchPreviewComboBox(int index);
+    void onFontSize(int index);
+    void onFontType(int index);
+    void onFontBold(int state);
+    void onFontItalic(int state);
+    void onFontUnderline(int state);
+    void onHorzScroll(int state);
+    void onWordWrap(int state);
+    void onBookmark(int index);
+    void onFold(int index);
+    void onComment(int state);
+    void onWarning(int state);
+    void onHorzIndent(const QString& text);
+    void onVertIndent(const QString& text);
+    void onFgColor(int index);
+    void onBgColor(int index);
+    void onFgColorDialog();
+    void onBgColorDialog();
+    void onFgColorSelected(const QColor& color);
+    void onBgColorSelected(const QColor& color);
+    void onTitleSize(int index);
+    void onLegendSize(int index);
+    void onTickWidth(const QString& text);
+    void onThemeComboBox(int index);
 
-	void onHelpContext();
+    void onHelpContext();
 
-	void deletePlugin       ();
-	void onStartPlugin      ();
-	void onStopPlugin       ();
-	void updateButtonsState ();
+    void deletePlugin       ();
+    void onStartPlugin      ();
+    void onStopPlugin       ();
+    void updateButtonsState ();
 
 private:
-	enum StyleType
-	{
-		ST_CURRENT = 0,
-		ST_DEFAULT,
-		ST_CPP,
-		ST_PASCAL,
-		ST_HTML,
-		ST_CLASSIC,
-		ST_TWILIGHT,
-		ST_OCEAN
-	};
+    enum class ItemType
+    {
+        ROOT = 0,
+        EDITOR,
+        BUILD,
+        DEBUG,
+        LOG,
+        RESULT,
+        FIND,
+        CHART,
+        FRAME,
+        EDITOR_PLAINTEXT,
+        EDITOR_IDENTIFICATOR,
+        EDITOR_KEYWORD,
+        EDITOR_FUNCTION,
+        EDITOR_TRACE,
+        EDITOR_COLOR,
+        EDITOR_COMMENT,
+        EDITOR_NUMBER,
+        EDITOR_STRING,
+        EDITOR_OPERATOR,
+        EDITOR_CARET,
+        EDITOR_TEXTSELECTION,
+        EDITOR_BOOKMARK,
+        EDITOR_FOLD,
+        EDITOR_ERROR,
+        BUILD_TEXT,
+        BUILD_SELECTEDLINE,
+        LOG_ES,
+        LOG_EB,
+        LOG_EF,
+        LOG_EI,
+        LOG_ER,
+        LOG_RC,
+        LOG_RE,
+        LOG_RK,
+        LOG_V,
+        LOG_STATUS,
+        LOG_DPS,
+        LOG_SB,
+        LOG_SO,
+        LOG_STN,
+        LOG_STD,
+        LOG_STR,
+        LOG_SRC,
+        LOG_SRE,
+        LOG_SRK,
+        LOG_SD,
+        LOG_SES,
+        LOG_SEN,
+        LOG_SEM,
+        LOG_SEF,
+        LOG_SEU,
+        FIND_SEARCHTEXT,
+        CHART_AXIS,
+        CHART_TITLE,
+        CHART_LEGEND,
+        CHART_CHART,
+        CHART_TIME,
+        FRAME_BORDER,
+        FRAME_BACKGROUND
+    };
 
-	enum ItemType
-	{
-		IT_ROOT = 0,
-		IT_EDITOR,
-		IT_BUILD,
-		IT_DEBUG,
-		IT_LOG,
-		IT_RESULT,
-		IT_FIND,
-		IT_CHART,
-		IT_FRAME,
-		IT_EDITOR_PLAINTEXT,
-		IT_EDITOR_IDENTIFICATOR,
-		IT_EDITOR_KEYWORD,
-		IT_EDITOR_FUNCTION,
-		IT_EDITOR_TRACE,
-		IT_EDITOR_COLOR,
-		IT_EDITOR_COMMENT,
-		IT_EDITOR_NUMBER,
-		IT_EDITOR_STRING,
-		IT_EDITOR_OPERATOR,
-		IT_EDITOR_CARET,
-		IT_EDITOR_TEXTSELECTION,
-		IT_EDITOR_BOOKMARK,
-		IT_EDITOR_FOLD,
-		IT_EDITOR_ERROR,
-		IT_BUILD_TEXT,
-		IT_BUILD_SELECTEDLINE,
-		IT_LOG_ES,
-		IT_LOG_EB,
-		IT_LOG_EF,
-		IT_LOG_EI,
-		IT_LOG_ER,
-		IT_LOG_RC,
-		IT_LOG_RE,
-		IT_LOG_RK,
-		IT_LOG_V,
-		IT_LOG_STATUS,
-		IT_LOG_DPS,
-		IT_LOG_SB,
-		IT_LOG_SO,
-		IT_LOG_STN,
-		IT_LOG_STD,
-		IT_LOG_STR,
-		IT_LOG_SRC,
-		IT_LOG_SRE,
-		IT_LOG_SRK,
-		IT_LOG_SD,
-		IT_LOG_SES,
-		IT_LOG_SEN,
-		IT_LOG_SEM,
-		IT_LOG_SEF,
-		IT_LOG_SEU,
-		IT_FIND_SEARCHTEXT,
-		IT_CHART_AXIS,
-		IT_CHART_TITLE,
-		IT_CHART_LEGEND,
-		IT_CHART_CHART,
-		IT_CHART_TIME,
-		IT_FRAME_BORDER,
-		IT_FRAME_BACKGROUND
-	};
+    class StyleItem;
 
-	class StyleItem;
+    class StyleProperty: private boost::noncopyable
+    {
+    public:
+        StyleItem* item;
+        ItemType identificator;
 
-	class StyleProperty: boost::noncopyable
-	{
-	public:
-		StyleItem* item;
-		int identificator;
+        rdo::gui::style::StyleFont::Style& font_style;
 
-		rdo::gui::style::StyleFont::style& font_style;
+        QColor& fg_color;
+        QColor& bg_color;
+        QColor& fg_disable_color;
+        QColor& bg_disable_color;
 
-		QColor& fg_color;
-		QColor& bg_color;
-		QColor& fg_disable_color;
-		QColor& bg_disable_color;
+        StyleProperty(StyleItem* item, ItemType identificator, rdo::gui::style::StyleFont::Style& font_style, QColor& fg_color, QColor& bg_color, QColor& fg_disable_color = null_fg_color, QColor& bg_disable_color = null_bg_color)
+            : item(item)
+            , identificator(identificator)
+            , font_style(font_style)
+            , fg_color(fg_color)
+            , bg_color(bg_color)
+            , fg_disable_color(fg_disable_color)
+            , bg_disable_color(bg_disable_color)
+        {}
+    };
 
-		StyleProperty(StyleItem* item, int identificator, rdo::gui::style::StyleFont::style& font_style, QColor& fg_color, QColor& bg_color, QColor& fg_disable_color = null_fg_color, QColor& bg_disable_color = null_bg_color)
-			: item(item)
-			, identificator(identificator)
-			, font_style(font_style)
-			, fg_color(fg_color)
-			, bg_color(bg_color)
-			, fg_disable_color(fg_disable_color)
-			, bg_disable_color(bg_disable_color)
-		{}
-	};
+    typedef std::list<StyleProperty*> PropertyList;
 
-	typedef std::list<StyleProperty*> PropertyList;
+    class StyleItem: private boost::noncopyable
+    {
+    public:
+        ItemType                                type;
+        int&                                    font_size;
+        std::string&                            font_name;
+        bool&                                   wordwrap;
+        bool&                                   horzscrollbar;
+        bool&                                   warning;
+        rdo::gui::editor::EditStyle::Bookmark&  bookmarkstyle;
+        rdo::gui::editor::ModelStyle::Fold&     foldstyle;
+        bool&                                   commentfold;
 
-	class StyleItem: boost::noncopyable
-	{
-	public:
-		ItemType                                type;
-		int&                                    font_size;
-		std::string&                            font_name;
-		bool&                                   wordwrap;
-		bool&                                   horzscrollbar;
-		bool&                                   warning;
-		rdo::gui::editor::EditStyle::Bookmark&  bookmarkstyle;
-		rdo::gui::editor::ModelStyle::Fold&     foldstyle;
-		bool&                                   commentfold;
+        PropertyList properties;
 
-		PropertyList properties;
+        StyleItem(ItemType type, int& font_size, std::string& font_name, bool& wordwrap = null_wordwrap, bool& horzscrollbar = null_horzscrollbar, rdo::gui::editor::EditStyle::Bookmark& bookmarkstyle = null_bookmarkstyle, rdo::gui::editor::ModelStyle::Fold& foldstyle = null_foldstyle, bool& commentfold = null_commentfold, bool& warning = null_warning)
+            : type(type)
+            , font_size(font_size)
+            , font_name(font_name)
+            , wordwrap(wordwrap)
+            , horzscrollbar(horzscrollbar)
+            , warning(warning)
+            , bookmarkstyle(bookmarkstyle)
+            , foldstyle(foldstyle)
+            , commentfold(commentfold)
+        {}
+    };
 
-		StyleItem(ItemType type, int& font_size, std::string& font_name, bool& wordwrap = null_wordwrap, bool& horzscrollbar = null_horzscrollbar, rdo::gui::editor::EditStyle::Bookmark& bookmarkstyle = null_bookmarkstyle, rdo::gui::editor::ModelStyle::Fold& foldstyle = null_foldstyle, bool& commentfold = null_commentfold, bool& warning = null_warning)
-			: type(type)
-			, font_size(font_size)
-			, font_name(font_name)
-			, wordwrap(wordwrap)
-			, horzscrollbar(horzscrollbar)
-			, warning(warning)
-			, bookmarkstyle(bookmarkstyle)
-			, foldstyle(foldstyle)
-			, commentfold(commentfold)
-		{}
-	};
+    typedef std::list<StyleItem*> StyleItemList;
 
-	typedef std::list<StyleItem*> StyleItemList;
+    StyleItemList style_list;
 
-	StyleItemList style_list;
+    int         all_font_size;
+    std::string all_font_name;
+    QColor      all_fg_color;
+    QColor      all_bg_color;
 
-	int         all_font_size;
-	std::string all_font_name;
-	QColor      all_fg_color;
-	QColor      all_bg_color;
+    rdo::gui::style::StyleFont::Style             null_font_style;
+    static bool                                   null_wordwrap;
+    static bool                                   null_horzscrollbar;
+    static bool                                   null_warning;
+    static bool                                   null_commentfold;
+    static rdo::gui::editor::EditStyle::Bookmark  null_bookmarkstyle;
+    static rdo::gui::editor::ModelStyle::Fold     null_foldstyle;
+    static QColor                                 null_fg_color;
+    static QColor                                 null_bg_color;
 
-	rdo::gui::style::StyleFont::style             null_font_style;
-	static bool                                   null_wordwrap;
-	static bool                                   null_horzscrollbar;
-	static bool                                   null_warning;
-	static bool                                   null_commentfold;
-	static rdo::gui::editor::EditStyle::Bookmark  null_bookmarkstyle;
-	static rdo::gui::editor::ModelStyle::Fold     null_foldstyle;
-	static QColor                                 null_fg_color;
-	static QColor                                 null_bg_color;
+    bool m_setup;
+    bool m_checkInFuture;
+    bool m_openLastProject;
+    bool m_showFullName;
 
-	bool m_setup;
-	bool m_checkInFuture;
-	bool m_openLastProject;
-	bool m_showFullName;
+    rdo::gui::editor::ModelStyle      style_editor;
+    rdo::gui::editor::BuildStyle      style_build;
+    rdo::gui::editor::EditStyle       style_debug;
+    rdo::gui::editor::ResultsStyle    style_results;
+    rdo::gui::editor::FindStyle       style_find;
+    rdo::gui::tracer::LogStyle        style_trace;
+    rdo::gui::tracer::ChartViewStyle  style_chart;
+    rdo::gui::frame::FrameStyle       style_frame;
 
-	rdo::gui::editor::ModelStyle      style_editor;
-	rdo::gui::editor::BuildStyle      style_build;
-	rdo::gui::editor::EditStyle       style_debug;
-	rdo::gui::editor::ResultsStyle    style_results;
-	rdo::gui::editor::FindStyle       style_find;
-	rdo::gui::tracer::LogStyle        style_trace;
-	rdo::gui::tracer::ChartViewStyle  style_chart;
-	rdo::gui::frame::FrameStyle       style_frame;
+    rdo::gui::editor::Model*             preview_editor;
+    rdo::gui::editor::Build*             preview_build;
+    rdo::gui::editor::Debug*             preview_debug;
+    rdo::gui::editor::Results*           preview_results;
+    rdo::gui::editor::Find*              preview_find;
+    rdo::gui::tracer::LogMainWnd*        preview_trace;
+    rdo::gui::tracer::ChartDoc*          preview_chart_doc;
+    rdo::gui::tracer::ChartView*         preview_chart;
+    std::vector<rdo::gui::tracer::Time>  preview_times;
+    rdo::gui::tracer::LPSerie            preview_serie;
+    rdo::gui::frame::OptionsView*        preview_frame;
 
-	rdo::gui::editor::Model*             preview_editor;
-	rdo::gui::editor::Build*             preview_build;
-	rdo::gui::editor::Debug*             preview_debug;
-	rdo::gui::editor::Results*           preview_results;
-	rdo::gui::editor::Find*              preview_find;
-	rdo::gui::tracer::LogMainWnd*        preview_trace;
-	rdo::gui::tracer::ChartDoc*          preview_chart_doc;
-	rdo::gui::tracer::ChartView*         preview_chart;
-	std::vector<rdo::gui::tracer::Time>  preview_times;
-	rdo::gui::tracer::LPSerie            preview_serie;
-	rdo::gui::frame::OptionsView*        preview_frame;
+    typedef QTreeWidgetItem* treeItem;
 
-	typedef QTreeWidgetItem* treeItem;
+    //Все окна
+    treeItem m_pRoot;
+    treeItem m_pText;
+    treeItem m_pCompile;
+    treeItem m_pDebug;
+    treeItem m_pTrace;
+    treeItem m_pResult;
+    treeItem m_pSearch;
+    treeItem m_pChart;
+    treeItem m_pAnimation;
 
-	//Все окна
-	treeItem m_pRoot;
-	treeItem m_pText;
-	treeItem m_pCompile;
-	treeItem m_pDebug;
-	treeItem m_pTrace;
-	treeItem m_pResult;
-	treeItem m_pSearch;
-	treeItem m_pChart;
-	treeItem m_pAnimation;
+    //Исходный текст
+    treeItem m_pPlainText;
+    treeItem m_pVariable;
+    treeItem m_pKeyword;
+    treeItem m_pFunction;
+    treeItem m_pTraceText;
+    treeItem m_pColor;
+    treeItem m_pComment;
+    treeItem m_pNumber;
+    treeItem m_pString;
+    treeItem m_pOperator;
+    treeItem m_pCaret;
+    treeItem m_pSelection;
+    treeItem m_pBookmark;
+    treeItem m_pGroup;
+    treeItem m_pError;
 
-	//Исходный текст
-	treeItem m_pPlainText;
-	treeItem m_pVariable;
-	treeItem m_pKeyword;
-	treeItem m_pFunction;
-	treeItem m_pTraceText;
-	treeItem m_pColor;
-	treeItem m_pComment;
-	treeItem m_pNumber;
-	treeItem m_pString;
-	treeItem m_pOperator;
-	treeItem m_pCaret;
-	treeItem m_pSelection;
-	treeItem m_pBookmark;
-	treeItem m_pGroup;
-	treeItem m_pError;
+    //Окно компиляции
+    treeItem m_pTextCompile;
+    treeItem m_pSelectedString;
+    treeItem m_pCaretCompile;
+    treeItem m_pSelectionCompile;
+    treeItem m_pBookmarkCompile;
 
-	//Окно компиляции
-	treeItem m_pTextCompile;
-	treeItem m_pSelectedString;
-	treeItem m_pCaretCompile;
-	treeItem m_pSelectionCompile;
-	treeItem m_pBookmarkCompile;
+    //Окно отладки
+    treeItem m_pTextDebug;
+    treeItem m_pCaretDebug;
+    treeItem m_pSelectionDebug;
+    treeItem m_pBookmarkDebug;
 
-	//Окно отладки
-	treeItem m_pTextDebug;
-	treeItem m_pCaretDebug;
-	treeItem m_pSelectionDebug;
-	treeItem m_pBookmarkDebug;
+    //Окно трассировки
+    treeItem m_pES;
+    treeItem m_pEB;
+    treeItem m_pEF;
+    treeItem m_pEI;
+    treeItem m_pER;
+    treeItem m_pRC;
+    treeItem m_pRE;
+    treeItem m_pRK;
+    treeItem m_pV;
+    treeItem m_pStatus;
+    treeItem m_pDPS;
+    treeItem m_pSB;
+    treeItem m_pSO;
+    treeItem m_pSTN;
+    treeItem m_pSTD;
+    treeItem m_pSTR;
+    treeItem m_pSRC;
+    treeItem m_pSRE;
+    treeItem m_pSRK;
+    treeItem m_pSD;
+    treeItem m_pSES;
+    treeItem m_pSEN;
+    treeItem m_pSEM;
+    treeItem m_pSEF;
+    treeItem m_pSEU;
 
-	//Окно трассировки
-	treeItem m_pES;
-	treeItem m_pEB;
-	treeItem m_pEF;
-	treeItem m_pEI;
-	treeItem m_pER;
-	treeItem m_pRC;
-	treeItem m_pRE;
-	treeItem m_pRK;
-	treeItem m_pV;
-	treeItem m_pStatus;
-	treeItem m_pDPS;
-	treeItem m_pSB;
-	treeItem m_pSO;
-	treeItem m_pSTN;
-	treeItem m_pSTD;
-	treeItem m_pSTR;
-	treeItem m_pSRC;
-	treeItem m_pSRE;
-	treeItem m_pSRK;
-	treeItem m_pSD;
-	treeItem m_pSES;
-	treeItem m_pSEN;
-	treeItem m_pSEM;
-	treeItem m_pSEF;
-	treeItem m_pSEU;
+    //Окно результатов
+    treeItem m_pPlainTextResult;
+    treeItem m_pVariableResult;
+    treeItem m_pKeywordResult;
+    treeItem m_pNumberResult;
+    treeItem m_pStringResult;
+    treeItem m_pOperatorResult;
+    treeItem m_pCaretResult;
+    treeItem m_pSelectionResult;
+    treeItem m_pBookmarkResult;
 
-	//Окно результатов
-	treeItem m_pPlainTextResult;
-	treeItem m_pVariableResult;
-	treeItem m_pKeywordResult;
-	treeItem m_pNumberResult;
-	treeItem m_pStringResult;
-	treeItem m_pOperatorResult;
-	treeItem m_pCaretResult;
-	treeItem m_pSelectionResult;
-	treeItem m_pBookmarkResult;
+    //Окно поиска
+    treeItem m_pTextSearch;
+    treeItem m_pStringSearch;
+    treeItem m_pSelectedStringSearch;
+    treeItem m_pCaretSearch;
+    treeItem m_pSelectionSearch;
+    treeItem m_pBookmarkSearch;
 
-	//Окно поиска
-	treeItem m_pTextSearch;
-	treeItem m_pStringSearch;
-	treeItem m_pSelectedStringSearch;
-	treeItem m_pCaretSearch;
-	treeItem m_pSelectionSearch;
-	treeItem m_pBookmarkSearch;
+    //Окно графиков
+    treeItem m_pAxis;
+    treeItem m_pTitle;
+    treeItem m_pLegend;
+    treeItem m_pGraph;
+    treeItem m_pTime;
 
-	//Окно графиков
-	treeItem m_pAxis;
-	treeItem m_pTitle;
-	treeItem m_pLegend;
-	treeItem m_pGraph;
-	treeItem m_pTime;
+    //Окно анимации
+    treeItem m_pEdgingColor;
+    treeItem m_pBackgroundColor;
 
-	//Окно анимации
-	treeItem m_pEdgingColor;
-	treeItem m_pBackgroundColor;
+    QColorDialog* fgColorDlg;
+    QColorDialog* bgColorDlg;
 
-	QColorDialog* fgColorDlg;
-	QColorDialog* bgColorDlg;
+    void createStyles();
+    void createPreview();
+    void createTree();
+    void insertColors(QComboBox* colorBox);
+    void insertColor (const QColor& color, const QString& colorName, QComboBox* colorBox);
+    StyleProperty* getStyleProperty();
+    StyleItem* getStyleItem();
+    QTreeWidgetItem* createTreeItem (QTreeWidgetItem* parent, const QString& name, ItemType itemType);
 
-	void createStyles();
-	void createPreview();
-	void createTree();
-	void insertColors(QComboBox* colorBox);
-	void insertColor (const QColor& color, const QString& colorName, QComboBox* colorBox);
-	StyleProperty* getStyleProperty();
-	StyleItem* getStyleItem();
-	QTreeWidgetItem* createTreeItem (QTreeWidgetItem* parent, const QString& name, ItemType itemType);
-	
-	void apply();
-	void checkAllData();
+    void apply();
+    void checkAllData();
 
-	void keyPressEvent(QKeyEvent* pEvent);
+    void keyPressEvent(QKeyEvent* pEvent);
 
-	void updateDialog();
-	void updatePreview();
-	void updateStyleTab();
-	void updateThemeComboBox(StyleProperty* prop);
-	void updateTheme();
+    void updateDialog();
+    void updatePreview();
+    void updateStyleTab();
+    void updateThemeComboBox(StyleProperty* prop);
+    void updateTheme();
 
-	typedef std::vector<int> IntVector;
-	LPPluginInfoList m_pPluginInfoList;
+    typedef std::vector<int> IntVector;
+    LPPluginInfoList m_pPluginInfoList;
 
-	void         fillPluginInfoTable    ();
-	void         populateRow            (const LPPluginInfo& plgInfo);
-	LPPluginInfo getPluginInfoFromTable (int pluginRow) const;
-	IntVector    selectedRows           () const;
-	void         updatePluginList       ();
+    void         fillPluginInfoTable    ();
+    void         populateRow            (const LPPluginInfo& plgInfo);
+    LPPluginInfo getPluginInfoFromTable (int pluginRow) const;
+    IntVector    selectedRows           () const;
+    void         updatePluginList       ();
 };
-
-#endif // _RDO_STUDIO_VIEW_PREFERENCES_H_

@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      app/rdo_studio/plugins/game5/src/graph_edge.cpp
-  \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
-  \date      22.09.2013
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -20,20 +11,20 @@
 
 namespace
 {
-	const double Pi = boost::math::constants::pi<double>();
+    const double Pi = boost::math::constants::pi<double>();
 } // end anonymous namespace
 
 GraphEdge::GraphEdge(GraphNode& sourceNode, GraphNode& destNode)
-	: source   (sourceNode)
-	, dest     (destNode  )
-	, arrowSize(10        )
-	, pointSize(2         )
-	, penWidth (2         )
+    : source   (sourceNode)
+    , dest     (destNode  )
+    , arrowSize(10        )
+    , pointSize(2         )
+    , penWidth (2         )
 {
-	setAcceptedMouseButtons(Qt::NoButton);
-	adjust();
-	connect(&source, &GraphNode::positionChanged, this, &GraphEdge::adjust);
-	connect(&dest  , &GraphNode::positionChanged, this, &GraphEdge::adjust);
+    setAcceptedMouseButtons(Qt::NoButton);
+    adjust();
+    connect(&source, &GraphNode::positionChanged, this, &GraphEdge::adjust);
+    connect(&dest  , &GraphNode::positionChanged, this, &GraphEdge::adjust);
 }
 
 GraphEdge::~GraphEdge()
@@ -41,44 +32,44 @@ GraphEdge::~GraphEdge()
 
 void GraphEdge::adjust()
 {
-	prepareGeometryChange();
-	const double angle = -QLineF(source.pos(), dest.pos()).angle() * Pi / 180.;
+    prepareGeometryChange();
+    const double angle = -QLineF(source.pos(), dest.pos()).angle() * Pi / 180.;
 
-	sourcePoint = mapFromItem(&source, source.getBorderPointByAngle(angle));
-	destPoint   = mapFromItem(&dest, dest.getBorderPointByAngle(angle + Pi));
+    sourcePoint = mapFromItem(&source, source.getBorderPointByAngle(angle));
+    destPoint   = mapFromItem(&dest, dest.getBorderPointByAngle(angle + Pi));
 }
 
 QRectF GraphEdge::boundingRect() const
 {
-	const double extra = (penWidth + arrowSize) / 2.0;
+    const double extra = (penWidth + arrowSize) / 2.0;
 
-	return QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
-	                                  destPoint.y() - sourcePoint.y()))
-	    .normalized()
-	    .adjusted(-extra, -extra, extra, extra);
+    return QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
+                                      destPoint.y() - sourcePoint.y()))
+        .normalized()
+        .adjusted(-extra, -extra, extra, extra);
 }
 
 void GraphEdge::paint(QPainter* painter, const QStyleOptionGraphicsItem* /*option*/, QWidget* /*widget*/)
 {
-	QLineF line(sourcePoint, destPoint);
+    QLineF line(sourcePoint, destPoint);
 
-	painter->setPen(QPen(Qt::black, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-	painter->drawLine(line);
+    painter->setPen(QPen(Qt::black, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter->drawLine(line);
 
-	painter->setBrush(Qt::black);
-	if (line.length() > 2 * arrowSize)
-	{
-		const double angle = -line.angle() * Pi / 180.;
+    painter->setBrush(Qt::black);
+    if (line.length() > 2 * arrowSize)
+    {
+        const double angle = -line.angle() * Pi / 180.;
 
-		const QPointF destArrowP1 = destPoint - QPointF(cos(angle - Pi / 12.) * arrowSize,
-		                                                sin(angle - Pi / 12.) * arrowSize);
-		const QPointF destArrowP2 = destPoint - QPointF(cos(angle + Pi / 12.) * arrowSize,
-		                                                sin(angle + Pi / 12.) * arrowSize);
+        const QPointF destArrowP1 = destPoint - QPointF(cos(angle - Pi / 12.) * arrowSize,
+                                                        sin(angle - Pi / 12.) * arrowSize);
+        const QPointF destArrowP2 = destPoint - QPointF(cos(angle + Pi / 12.) * arrowSize,
+                                                        sin(angle + Pi / 12.) * arrowSize);
 
-		painter->drawPolygon(QPolygonF() << line.p2() << destArrowP1 << destArrowP2);
-	}
-	else
-	{
-		painter->drawEllipse(destPoint, pointSize, pointSize);
-	}
+        painter->drawPolygon(QPolygonF() << line.p2() << destArrowP1 << destArrowP2);
+    }
+    else
+    {
+        painter->drawEllipse(destPoint, pointSize, pointSize);
+    }
 }

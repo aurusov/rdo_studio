@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      param.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      09.01.2011
-  \brief
-  \indent    4T
-*/
-
-#ifndef _CONVERTOR_PARAM_H_
-#define _CONVERTOR_PARAM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -24,27 +14,25 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOParam);
 class RDOParam
-	: public virtual rdo::counter_reference
-	, public RDOParserSrcInfo
+    : public virtual rdo::counter_reference
+    , public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOParam)
 public:
-	const std::string& name() const { return src_info().src_text(); }
-	LPRDOTypeParam getType() const { return m_pType; }
-	const LPRDOValue& getDefault() const { return m_pDefault; }
+    const std::string& name() const { return src_info().src_text(); }
+    LPRDOTypeParam getType() const { return m_pType; }
+    const LPRDOValue& getDefault() const { return m_pDefault; }
 
 protected:
-	RDOParam(const std::string& name, const LPRDOTypeParam& pType, const LPRDOValue& pDefault = LPRDOValue(NULL));
-	RDOParam(const RDOParserSrcInfo& src_info, const LPRDOTypeParam& pType, const LPRDOValue& pDefault = LPRDOValue(NULL));
-	virtual ~RDOParam();
+    RDOParam(const std::string& name, const LPRDOTypeParam& pType, const LPRDOValue& pDefault = LPRDOValue(NULL));
+    RDOParam(const RDOParserSrcInfo& src_info, const LPRDOTypeParam& pType, const LPRDOValue& pDefault = LPRDOValue(NULL));
+    virtual ~RDOParam();
 
 private:
-	LPRDOTypeParam m_pType;
-	LPRDOValue     m_pDefault;
+    LPRDOTypeParam m_pType;
+    LPRDOValue     m_pDefault;
 
-	void checkDefault();
+    void checkDefault();
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
-
-#endif // _CONVERTOR_PARAM_H_

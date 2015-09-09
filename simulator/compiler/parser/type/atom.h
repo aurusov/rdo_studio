@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      atom.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      09.04.2011
-  \brief
-  \indent    4T
-*/
-
-#ifndef _RDOPARSER_TYPE_ATOM_H_
-#define _RDOPARSER_TYPE_ATOM_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -24,24 +14,22 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 #define DEFINE_ATOM_TYPE_PARSER(Type)      \
 class RDOType__##Type                      \
-	: public rdo::runtime::RDOType__##Type \
-	, public IType                         \
-	, public IModelStructure               \
+    : public rdo::runtime::RDOType__##Type \
+    , public IType                         \
+    , public IModelStructure               \
 {                                          \
 public:                                    \
-	DECLARE_IType;                         \
-	DECLARE_IModelStructure;               \
+    DECLARE_IType;                         \
+    DECLARE_IModelStructure;               \
 };                                         \
 DECLARE_POINTER(RDOType__##Type);
 
-DEFINE_ATOM_TYPE_PARSER(unknow       );
-DEFINE_ATOM_TYPE_PARSER(identificator);
-DEFINE_ATOM_TYPE_PARSER(int          );
-DEFINE_ATOM_TYPE_PARSER(real         );
-DEFINE_ATOM_TYPE_PARSER(bool         );
-DEFINE_ATOM_TYPE_PARSER(string       );
-DEFINE_ATOM_TYPE_PARSER(void         );
+DEFINE_ATOM_TYPE_PARSER(UNKNOW);
+DEFINE_ATOM_TYPE_PARSER(IDENTIFICATOR);
+DEFINE_ATOM_TYPE_PARSER(INT);
+DEFINE_ATOM_TYPE_PARSER(REAL);
+DEFINE_ATOM_TYPE_PARSER(BOOL);
+DEFINE_ATOM_TYPE_PARSER(STRING);
+DEFINE_ATOM_TYPE_PARSER(EMPTY);
 
 CLOSE_RDO_PARSER_NAMESPACE
-
-#endif // _RDOPARSER_TYPE_ATOM_H_

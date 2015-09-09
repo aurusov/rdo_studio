@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_braces.cpp
-  \author    Чирков Михаил
-  \date      16.04.2011
-  \brief     Список инструкций в стиле C++
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -26,9 +17,9 @@ RDOCalcOpenBrace::RDOCalcOpenBrace()
 
 RDOValue RDOCalcOpenBrace::doCalc(const LPRDORuntime& pRuntime)
 {
-	LPRDOMemory pLocalMemory = rdo::Factory<RDOMemory>::create();
-	pRuntime->getMemoryStack()->push(pLocalMemory);
-	return RDOValue();
+    LPRDOMemory pLocalMemory = rdo::Factory<RDOMemory>::create();
+    pRuntime->getMemoryStack()->push(pLocalMemory);
+    return RDOValue();
 }
 
 // --------------------------------------------------------------------------------
@@ -39,8 +30,8 @@ RDOCalcCloseBrace::RDOCalcCloseBrace()
 
 RDOValue RDOCalcCloseBrace::doCalc(const LPRDORuntime& pRuntime)
 {
-	pRuntime->getMemoryStack()->pop();
-	return RDOValue();
+    pRuntime->getMemoryStack()->pop();
+    return RDOValue();
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

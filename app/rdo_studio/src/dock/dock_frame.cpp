@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2012-2012
-  \file      dock_frame.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      07.10.2012
-  \brief     
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio/pch/application_pch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -18,14 +9,14 @@
 // --------------------------------------------------------------------------------
 
 DockFrame::DockFrame(QWidget* pParent)
-	: DockFocusable("Анимация", pParent)
+    : DockFocusable("Анимация", pParent)
 {
-	context_type* pWidget = new context_type(this);
-	pWidget->setMinimumSize(QSize(150, 200));
+    context_type* pWidget = new context_type(this);
+    pWidget->setMinimumSize(QSize(150, 200));
 
-	setWidget(pWidget);
+    setWidget(pWidget);
 
-	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_frame.png")));
+    toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_frame.png")));
 }
 
 DockFrame::~DockFrame()
@@ -33,5 +24,5 @@ DockFrame::~DockFrame()
 
 DockFrame::context_type& DockFrame::getContext()
 {
-	return *static_cast<context_type*>(widget());
+    return *static_cast<context_type*>(widget());
 }

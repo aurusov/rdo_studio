@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2013
-  \file      app/rdo_studio/src/plugins/plugininterface.cpp
-  \author    Чернов Алексей (ChernovAlexeyOlegovich@gmail.com)
-  \date      22.09.2013
-  \brief     
-  \indent    4T
-*/
-
-#ifndef _RDO_STUDIO_PLUGIN_INTERFACE_H_
-#define _RDO_STUDIO_PLUGIN_INTERFACE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
@@ -22,16 +12,14 @@
 class PluginInterface
 {
 public:
-	virtual ~PluginInterface() {}
-	virtual QUuid   getGUID      () const = 0;
-	virtual QString getPluginName() const = 0;
-	virtual QString getAuthor    () const = 0;
-	virtual QString getVersion   () const = 0;
+    virtual ~PluginInterface() {}
+    virtual QUuid   getGUID      () const = 0;
+    virtual QString getPluginName() const = 0;
+    virtual QString getAuthor    () const = 0;
+    virtual QString getVersion   () const = 0;
 
-	virtual void pluginStartAction(QWidget* parent,  const std::string& commandLine) = 0;
-	virtual void pluginStopAction (QWidget* parent) = 0;
+    virtual void pluginStartAction(QWidget* parent,  const std::string& commandLine) = 0;
+    virtual void pluginStopAction (QWidget* parent) = 0;
 };
 
 Q_DECLARE_INTERFACE(PluginInterface, "RDO_PLUGIN_INTERFACE");
-
-#endif // _RDO_STUDIO_PLUGIN_INTERFACE_H_

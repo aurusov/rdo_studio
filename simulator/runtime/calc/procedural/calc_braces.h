@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_braces.h
-  \author    Чирков Михаил
-  \date      16.04.2011
-  \brief     Список инструкций в стиле C++
-  \indent    4T
-*/
-
-#ifndef _LIB_RUNTIME_CALC_PROCEDURAL_BRACES_H_
-#define _LIB_RUNTIME_CALC_PROCEDURAL_BRACES_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -17,39 +7,34 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Открывающая скобка
 PREDECLARE_POINTER(RDOCalcOpenBrace);
 class RDOCalcOpenBrace: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcOpenBrace)
 private:
-	RDOCalcOpenBrace();
+    RDOCalcOpenBrace();
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
-//! Закрывающая скобка
 PREDECLARE_POINTER(RDOCalcCloseBrace);
 class RDOCalcCloseBrace: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcCloseBrace)
 private:
-	RDOCalcCloseBrace();
+    RDOCalcCloseBrace();
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
-//! Окончание функции
 PREDECLARE_POINTER(RDOCalcFunEnd);
 class RDOCalcFunEnd: public RDOCalc
 {
 DECLARE_FACTORY(RDOCalcFunEnd)
 private:
-	RDOCalcFunEnd();
+    RDOCalcFunEnd();
 
-	DECLARE_ICalc;
+    DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
-
-#endif // _LIB_RUNTIME_CALC_PROCEDURAL_BRACES_H_

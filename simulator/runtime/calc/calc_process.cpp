@@ -1,12 +1,3 @@
-/*!
-  \copyright (c) RDO-Team, 2011
-  \file      calc_process.cpp
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      10.03.2011
-  \brief     RDOCalc для передачи управления в процесс из БЗ и событий
-  \indent    4T
-*/
-
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -23,50 +14,50 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOCalcProcessControl
 // --------------------------------------------------------------------------------
 RDOCalcProcessControl::RDOCalcProcessControl(LPIPROCBlock pBlock, int relResNum)
-	: m_Block    (pBlock   )
-	, m_relResNum(relResNum)
+    : m_Block    (pBlock   )
+    , m_relResNum(relResNum)
 {}
 
 RDOValue RDOCalcProcessControl::doCalc(const LPRDORuntime& pRuntime)
 {
-	//по m_relResNum нужно найти ресурс (m_Transact) и передать его в процесс
-	const std::size_t resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResNum);
-	LPRDOResource pResource = pRuntime->getResourceByID(resID);
-	/// @todo проверить, можно ли перенести проверку в парсер, чтобы сделать object_static_cast вместо object_dynamic_cast
-	LPRDOPROCTransact pTransact = pResource.object_dynamic_cast<RDOPROCTransact>();
-	if (pTransact)
-	{
-		pTransact->setBlock(m_Block);
-		// Записываем в конец списка этого блока перемещаемый транзакт
-		m_Block.object_dynamic_cast<IPROCBlock>()->transactGoIn(pTransact);
-	}
+    //по m_relResNum нужно найти ресурс (m_Transact) и передать его в процесс
+    const std::size_t resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResNum);
+    LPRDOResource pResource = pRuntime->getResourceByID(resID);
+    // TODO проверить, можно ли перенести проверку в парсер, чтобы сделать object_static_cast вместо object_dynamic_cast
+    LPRDOPROCTransact pTransact = pResource.object_dynamic_cast<RDOPROCTransact>();
+    if (pTransact)
+    {
+        pTransact->setBlock(m_Block);
+        // Записываем в конец списка этого блока перемещаемый транзакт
+        m_Block.object_dynamic_cast<IPROCBlock>()->transactGoIn(pTransact);
+    }
 
-	return RDOValue();
+    return RDOValue();
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcProcAssign
 // --------------------------------------------------------------------------------
 RDOCalcProcAssign::RDOCalcProcAssign(const LPRDOCalc& pCalc, std::size_t res, std::size_t param)
-	: m_pCalc(pCalc)
-	, m_res  (res  )
-	, m_param(param)
+    : m_pCalc(pCalc)
+    , m_res  (res  )
+    , m_param(param)
 {
-	ASSERT(m_pCalc);
-	ASSERT(m_res   != ~0);
-	ASSERT(m_param != ~0);
+    ASSERT(m_pCalc);
+    ASSERT(m_res   != ~0);
+    ASSERT(m_param != ~0);
 }
 
 RDOValue RDOCalcProcAssign::doCalc(const LPRDORuntime& pRuntime)
 {
-	LPRDOResource pRes = pRuntime->getResourceByID(m_res);
-	ASSERT(pRes);
+    LPRDOResource pRes = pRuntime->getResourceByID(m_res);
+    ASSERT(pRes);
 
-	RDOValue value = m_pCalc->calcValue(pRuntime);
+    RDOValue value = m_pCalc->calcValue(pRuntime);
 
-	pRes->setParam(m_param, value);
+    pRes->setParam(m_param, value);
 
-	return value;
+    return value;
 }
 
 // --------------------------------------------------------------------------------
@@ -74,7 +65,7 @@ RDOValue RDOCalcProcAssign::doCalc(const LPRDORuntime& pRuntime)
 // --------------------------------------------------------------------------------
 RDOValue RDOCalcGetTermNow::doCalc(const LPRDORuntime& pRuntime)
 {
-	return pRuntime->getCurrentTerm();
+    return pRuntime->getCurrentTerm();
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

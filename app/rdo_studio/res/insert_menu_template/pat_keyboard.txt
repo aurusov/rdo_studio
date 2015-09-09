@@ -4,10 +4,10 @@ $Relevant_resources
 $Time =
 $Body
 
-	Choice from
-	first
-	Convert_begin
+    Choice from
+    first
+    Convert_begin
 
-	Convert_end
+    Convert_end
 
 $End

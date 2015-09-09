@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2003-2012
-  \file      main_window_base.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      01.09.2003
-  \brief     
-  \indent    4T
-*/
-
-#ifndef _RDO_STUDIO_MAIN_WINDOW_BASE_H_
-#define _RDO_STUDIO_MAIN_WINDOW_BASE_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -33,41 +23,39 @@
 class MainWindowBase
 {
 public:
-	rdo::gui::editor::ModelStyle      style_editor;
-	rdo::gui::editor::BuildStyle      style_build;
-	rdo::gui::editor::EditStyle       style_debug;
-	rdo::gui::tracer::LogStyle        style_trace;
-	rdo::gui::editor::ResultsStyle    style_results;
-	rdo::gui::editor::FindStyle       style_find;
-	rdo::gui::frame::FrameStyle       style_frame;
-	rdo::gui::tracer::ChartViewStyle  style_chart;
+    rdo::gui::editor::ModelStyle      style_editor;
+    rdo::gui::editor::BuildStyle      style_build;
+    rdo::gui::editor::EditStyle       style_debug;
+    rdo::gui::tracer::LogStyle        style_trace;
+    rdo::gui::editor::ResultsStyle    style_results;
+    rdo::gui::editor::FindStyle       style_find;
+    rdo::gui::frame::FrameStyle       style_frame;
+    rdo::gui::tracer::ChartViewStyle  style_chart;
 
-	bool isMDIMaximazed() const { return true; }
+    bool isMDIMaximazed() const { return true; }
 
-	DockBuild&      getDockBuild    () { ASSERT(m_pDockBuild    ); return *m_pDockBuild;     }
-	DockDebug&      getDockDebug    () { ASSERT(m_pDockDebug    ); return *m_pDockDebug;     }
-	DockTrace&      getDockTrace    () { ASSERT(m_pDockTrace    ); return *m_pDockTrace;     }
-	DockResults&    getDockResults  () { ASSERT(m_pDockResults  ); return *m_pDockResults;   }
-	DockFind&       getDockFind     () { ASSERT(m_pDockFind     ); return *m_pDockFind;      }
-	DockChartTree&  getDockChartTree() { ASSERT(m_pDockChartTree); return *m_pDockChartTree; }
-	DockFrame&      getDockFrame    () { ASSERT(m_pDockFrame    ); return *m_pDockFrame;     }
+    DockBuild&      getDockBuild    () { ASSERT(m_pDockBuild    ); return *m_pDockBuild;     }
+    DockDebug&      getDockDebug    () { ASSERT(m_pDockDebug    ); return *m_pDockDebug;     }
+    DockTrace&      getDockTrace    () { ASSERT(m_pDockTrace    ); return *m_pDockTrace;     }
+    DockResults&    getDockResults  () { ASSERT(m_pDockResults  ); return *m_pDockResults;   }
+    DockFind&       getDockFind     () { ASSERT(m_pDockFind     ); return *m_pDockFind;      }
+    DockChartTree&  getDockChartTree() { ASSERT(m_pDockChartTree); return *m_pDockChartTree; }
+    DockFrame&      getDockFrame    () { ASSERT(m_pDockFrame    ); return *m_pDockFrame;     }
 
-	virtual void updateAllStyles() = 0;
+    virtual void updateAllStyles() = 0;
 
-	virtual void update_start() = 0;
-	virtual void update_stop () = 0;
+    virtual void update_start() = 0;
+    virtual void update_stop () = 0;
 
-	virtual void addSubWindow     (QWidget* pWidget) = 0;
-	virtual void activateSubWindow(QWidget* pWidget) = 0;
+    virtual void addSubWindow     (QWidget* pWidget) = 0;
+    virtual void activateSubWindow(QWidget* pWidget) = 0;
 
 protected:
-	DockBuild*      m_pDockBuild;
-	DockDebug*      m_pDockDebug;
-	DockTrace*      m_pDockTrace;
-	DockResults*    m_pDockResults;
-	DockFind*       m_pDockFind;
-	DockChartTree*  m_pDockChartTree;
-	DockFrame*      m_pDockFrame;
+    DockBuild*      m_pDockBuild;
+    DockDebug*      m_pDockDebug;
+    DockTrace*      m_pDockTrace;
+    DockResults*    m_pDockResults;
+    DockFind*       m_pDockFind;
+    DockChartTree*  m_pDockChartTree;
+    DockFrame*      m_pDockFrame;
 };
-
-#endif // _RDO_STUDIO_MAIN_WINDOW_BASE_H_

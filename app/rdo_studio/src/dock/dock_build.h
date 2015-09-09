@@ -1,14 +1,4 @@
-/*!
-  \copyright (c) RDO-Team, 2012-2012
-  \file      dock_build.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      30.09.2012
-  \brief     
-  \indent    4T
-*/
-
-#ifndef _RDO_STUDIO_DOCK_BUILD_H_
-#define _RDO_STUDIO_DOCK_BUILD_H_
+#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -19,16 +9,14 @@
 class DockBuild: public DockFocusable
 {
 public:
-	typedef rdo::gui::editor::Build context_type;
+    typedef rdo::gui::editor::Build context_type;
 
-	DockBuild(QWidget* pParent);
-	virtual ~DockBuild();
+    DockBuild(QWidget* pParent);
+    virtual ~DockBuild();
 
-	void appendString(const QString& str);
-	void appendString(const rdo::simulation::report::FileMessage& message);
-	void clear();
+    void appendString(const QString& str);
+    void appendString(const rdo::simulation::report::FileMessage& message);
+    void clear();
 
-	context_type& getContext();
+    context_type& getContext();
 };
-
-#endif // _RDO_STUDIO_DOCK_BUILD_H_
