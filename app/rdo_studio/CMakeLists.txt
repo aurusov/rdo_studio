@@ -270,109 +270,12 @@ SET(RESOURCES_FILES
     ${QRC_FILES}
 )
 
-SET(RESOURCES_IMAGE_FILES
-    res/images/about.png
-    res/images/dock_build.png
-    res/images/dock_chart.png
-    res/images/dock_debug.png
-    res/images/dock_find.png
-    res/images/dock_frame.png
-    res/images/dock_process.png
-    res/images/dock_results.png
-    res/images/dock_trace.png
-    res/images/edit_copy.png
-    res/images/edit_copy_d.png
-    res/images/edit_cut.png
-    res/images/edit_cut_d.png
-    res/images/edit_paste.png
-    res/images/edit_paste_d.png
-    res/images/edit_redo.png
-    res/images/edit_redo_d.png
-    res/images/edit_undo.png
-    res/images/edit_undo_d.png
-    res/images/file_new.png
-    res/images/file_new_d.png
-    res/images/file_open.png
-    res/images/file_open_d.png
-    res/images/file_save.png
-    res/images/file_save_all.png
-    res/images/file_save_all_d.png
-    res/images/file_save_d.png
-    res/images/frameoptionsctrl.png
-    res/images/help_context.png
-    res/images/logo.png
-    res/images/mdi_chart.png
-    res/images/mdi_flowchart.png
-    res/images/mdi_frame.png
-    res/images/mdi_model.png
-    res/images/model_frame_next.png
-    res/images/model_frame_next_d.png
-    res/images/model_frame_prev.png
-    res/images/model_frame_prev_d.png
-    res/images/model_run.png
-    res/images/model_run_d.png
-    res/images/model_runtime_jump.png
-    res/images/model_runtime_jump_d.png
-    res/images/model_runtime_max_speed.png
-    res/images/model_runtime_max_speed_d.png
-    res/images/model_runtime_pause.png
-    res/images/model_runtime_pause_d.png
-    res/images/model_runtime_sync.png
-    res/images/model_runtime_sync_d.png
-    res/images/model_show_rate_dec.png
-    res/images/model_show_rate_dec_d.png
-    res/images/model_show_rate_dec_four.png
-    res/images/model_show_rate_dec_four_d.png
-    res/images/model_show_rate_inc.png
-    res/images/model_show_rate_inc_d.png
-    res/images/model_show_rate_inc_four.png
-    res/images/model_show_rate_inc_four_d.png
-    res/images/model_stop.png
-    res/images/model_stop_d.png
-    res/images/search_bookmark_next.png
-    res/images/search_bookmark_next_d.png
-    res/images/search_bookmark_prev.png
-    res/images/search_bookmark_prev_d.png
-    res/images/search_find.png
-    res/images/search_find_d.png
-    res/images/search_replace.png
-    res/images/search_replace_d.png
-    res/images/tree_chart_erased.png
-    res/images/tree_chart_root.png
-    res/images/tree_chart_sub_root_1.png
-    res/images/tree_chart_sub_root_2.png
-    res/images/tree_chart_sub_root_3.png
-    res/images/tree_chart_value.png
-    res/images/tree_frame_item.png
-    res/images/tree_frame_root.png
-    res/images/view_zoom_auto.png
-    res/images/view_zoom_auto_d.png
-    res/images/view_zoom_dec.png
-    res/images/view_zoom_dec_d.png
-    res/images/view_zoom_inc.png
-    res/images/view_zoom_inc_d.png
-    res/images/view_zoom_reset.png
-    res/images/view_zoom_reset_d.png
-)
+FILE(GLOB RESOURCES_IMAGE_FILES res/images/*.png)
+FILE(GLOB RESOURCES_INSERT_MENU_TEMPLATE_FILES res/insert_menu_template/*.txt)
+FILE(GLOB_RECURSE RESOURCES_NEW_MODEL_TEMPLATE_FILES res/new_model_template/*.*)
+FILE(GLOB RESOURCES_SCINTILLA_FILES res/scintilla/*.xpm)
 
-SET(RESOURCES_SCINTILLA_FILES
-    res/scintilla/ac_data.xpm
-    res/scintilla/ac_function.xpm
-    res/scintilla/ac_trace.xpm
-)
-
-SET(RESOURCES_UI_FILES
-    res/ui/about_dialog.ui
-    res/ui/chart_preferences.ui
-    res/ui/file_association_dialog.ui
-    res/ui/find_dialog.ui
-    res/ui/find_replace_dialog.ui
-    res/ui/frame_options_widget.ui
-    res/ui/goto_line_dialog.ui
-    res/ui/main_window.ui
-    res/ui/new_model_dialog.ui
-    res/ui/view_preferenses.ui
-)
+FILE(GLOB RESOURCES_UI_FILES res/ui/*.ui)
 QT5_WRAP_UI(GENERATED_RESOURCES_UI_FILES ${RESOURCES_UI_FILES})
 
 SET(RESOURCES_WIN32_FILES
@@ -466,6 +369,8 @@ SET(APP_SOURCE_FILES
     ${RESOURCES_IMAGE_FILES}
     ${RESOURCES_SCINTILLA_FILES}
     ${RESOURCES_UI_FILES}
+    ${RESOURCES_INSERT_MENU_TEMPLATE_FILES}
+    ${RESOURCES_NEW_MODEL_TEMPLATE_FILES}
     ${APPLICATION_PCH_FILES}
     ${GENERATED_APP_MOC_FILES}
 )
@@ -718,6 +623,14 @@ IF(MSVC_IDE) # options for windows #
 
     SOURCE_GROUP("rdo_application\\.resources\\.images" FILES
         ${RESOURCES_IMAGE_FILES}
+    )
+
+    SOURCE_GROUP("rdo_application\\.resources\\.insert_menu_template" FILES
+        ${RESOURCES_INSERT_MENU_TEMPLATE_FILES}
+    )
+
+    SOURCE_GROUP("rdo_application\\.resources\\.new_model_template" FILES
+        ${RESOURCES_NEW_MODEL_TEMPLATE_FILES}
     )
 
     SOURCE_GROUP("rdo_application\\.resources\\.scintilla" FILES
