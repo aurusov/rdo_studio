@@ -17,7 +17,7 @@ namespace rdo
         static const std::string g_site   ("${ORG_WEBSITE}");
 
 #ifdef RDOSIM_COMPATIBLE
-        static const std::string g_comp("-comp");
+        static const std::string g_comp("comp-");
 #else
         static const std::string g_comp("");
 #endif
@@ -50,7 +50,7 @@ namespace rdo
         static const std::string g_limitRes("");
 #endif
 
-        static const std::string g_versionName = boost::str(boost::format("%1% %2%-version %3% %4%-%5%%6%")
+        static const std::string g_versionName = boost::str(boost::format("%1% %2%version %3% %4%-%5%%6%")
             % g_appName
             % g_comp
             % g_version
