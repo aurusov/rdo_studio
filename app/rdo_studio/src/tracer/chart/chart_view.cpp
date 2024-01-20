@@ -3,6 +3,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <algorithm>
+#include <QPainterPath>
 #include <QProcess>
 #include <QEvent>
 #include <QClipboard>
