@@ -3,6 +3,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <QDialog>
+#include <QtGui/QIntValidator>
 #include "ui_goto_line_dialog.h"
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS

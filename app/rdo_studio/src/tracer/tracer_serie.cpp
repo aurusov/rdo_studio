@@ -3,6 +3,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <algorithm>
 #include <boost/bind.hpp>
+#include <QPainterPath>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/tracer_serie.h"
 #include "app/rdo_studio/src/tracer/tracer_values.h"
