@@ -296,11 +296,10 @@ BOOST_AUTO_TEST_CASE(RDOCalc_SpeedTest)
 
     {
         using namespace boost::unit_test;
-        log_level logLevelBackup = runtime_config::log_level();
+        log_level logLevelBackup = runtime_config::get<log_level>(runtime_config::btrt_log_level);
         unit_test_log.set_threshold_level(log_messages);
 
         BOOST_TEST_MESSAGE("RDOCalc_SpeedTest: " << seconds);
-
         unit_test_log.set_threshold_level(logLevelBackup);
     }
 }

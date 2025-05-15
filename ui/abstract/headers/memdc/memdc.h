@@ -40,13 +40,10 @@ namespace rdo
             TBMP& buffer();
 
         private:
-#ifdef BOOST_NO_CXX11_SMART_PTR
-            std::auto_ptr<TDC> m_pDC;
-            std::auto_ptr<TBMP> m_pBitmap;
-#else
             std::unique_ptr<TDC> m_pDC;
             std::unique_ptr<TBMP> m_pBitmap;
-#endif
+
+        private:
             bool onCreate();
 
             void clear();

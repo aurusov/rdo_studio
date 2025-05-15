@@ -44,7 +44,7 @@ friend class rdo::Factory<RDOCalcBinary<F, CalcType>>;
 public:
     enum class Type
     {
-        calc_type = CalcType
+        calc_type = static_cast<int>(CalcType)
     };
     typedef F caller_type;
 

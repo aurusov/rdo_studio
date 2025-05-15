@@ -99,7 +99,7 @@ rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCResource
 // --------------------------------------------------------------------------------
-RDOPROCResource::RDOPROCResource(Converter* pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, int id)
+RDOPROCResource::RDOPROCResource(Converter* pParser, const RDOParserSrcInfo& src_info, const LPRDORTPResType& pResType, std::size_t id)
     : RDORSSResource(pParser, src_info, pResType, id)
 {}
 

@@ -3,6 +3,7 @@
 #include "utils/src/common/warning_disable.h"
 #include <vector>
 #include "utils/src/common/warning_enable.h"
+#include <QRegExpValidator>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_tiles_order_dialog.h"
 // --------------------------------------------------------------------------------
