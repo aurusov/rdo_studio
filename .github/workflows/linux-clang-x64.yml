@@ -1,0 +1,33 @@
+name: linux-clang-x64
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  cloud-ci:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: set up clang
+      uses: egor-tensin/setup-clang@v1
+      with:
+       version: 18
+       platform: x64
+    - name: install-tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install cmake ninja-build clang-18 clang++-18 lld-18 libc++-18-dev libc++abi-18-dev libunwind-18-dev libclang-rt-18-dev qt5-default qttools5-dev qttools5-dev-tools libgl1-mesa-dev libboost-all-dev bison flex
+    - name: build
+      env:
+        CC: clang-18
+        CXX: clang++-18
+        TYPE: Release
+      run: |
+        $CC --version
+        $CXX --version
+        mkdir build && cd build
+        cmake -GNinja -DCMAKE_BUILD_TYPE=${TYPE} ..
+        cmake --build .
+    - name: test
+      run: cd build && ctest
