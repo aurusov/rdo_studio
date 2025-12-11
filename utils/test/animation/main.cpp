@@ -242,7 +242,7 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationActiveElement)
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationNullElement)
 {
-    std::auto_ptr<rdo::animation::NullElement> nullElem(new rdo::animation::NullElement);
+    std::unique_ptr<rdo::animation::NullElement> nullElem(new rdo::animation::NullElement);
     BOOST_CHECK(nullElem.get());
 }
 

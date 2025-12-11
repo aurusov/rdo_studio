@@ -33,11 +33,8 @@ namespace rdo
             if (width == m_width && height == m_height)
                 return true;
 
-#ifdef BOOST_NO_CXX11_SMART_PTR
-            typedef std::auto_ptr<QPixmap> QPixmapPointer;
-#else
             typedef std::unique_ptr<QPixmap> QPixmapPointer;
-#endif
+
             QPixmapPointer pPrevBitmap;
             std::swap(pPrevBitmap, m_pBitmap);
 

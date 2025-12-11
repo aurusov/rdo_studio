@@ -2,6 +2,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include "utils/src/common/warning_enable.h"
+#include <QStyle>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/plugins/game5/src/plugin_game5_graph_node_info_dialog.h"
 // --------------------------------------------------------------------------------

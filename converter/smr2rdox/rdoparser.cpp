@@ -324,7 +324,7 @@ RDOParserModel::Result RDOParserModel::convert(const boost::filesystem::path& sm
     RDOParserSMRInfo::FileList fileList;
     boost::filesystem::path    modelName;
     {
-        std::auto_ptr<RDOParserSMRInfo> pSMRParser(new RDOParserSMRInfo());
+        std::unique_ptr<RDOParserSMRInfo> pSMRParser(new RDOParserSMRInfo());
 
         try
         {

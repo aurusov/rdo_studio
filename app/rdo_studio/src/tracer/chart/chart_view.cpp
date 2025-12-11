@@ -6,6 +6,7 @@
 #include <QProcess>
 #include <QEvent>
 #include <QClipboard>
+#include <QPainterPath>
 #include "utils/src/common/warning_enable.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio/src/tracer/chart/chart_view.h"

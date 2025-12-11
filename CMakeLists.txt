@@ -1,13 +1,14 @@
 #==============================================================================
 # Copyright (c) 2011-2013 Evgeny Proydakov <lord.tiran@gmail.com>
 # Copyright (c) 2013-2014 Andrey Urusov <rdo@rk9.bmstu.ru>
+# Copyright (c) 2025-2025 Evgeny Proydakov <e.proydakov@gmail.com>
 #==============================================================================
 # Welcome to the CMake build system for RDO STUDIO.
 # This is the main file where we prepare the general build environment
 # and provide build configuration options.
 #==============================================================================
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.7)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.17.0)
 CMAKE_POLICY(SET CMP0020 NEW)
 PROJECT(rdo)
 
@@ -24,6 +25,12 @@ SET(ORG_WEBSITE          "http://rdo.rk9.bmstu.ru")
 
 #==============================================================================
 
+SET(CMAKE_CXX_STANDARD 17)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+SET(CMAKE_CXX_EXTENSIONS OFF)
+
+#==============================================================================
+
 MESSAGE(STATUS "Create RDO")
 STRING(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
@@ -31,11 +38,22 @@ IF(NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE Debug)
 ENDIF()
 
+IF(POLICY CMP0167)
+    CMAKE_POLICY(SET CMP0167 NEW)
+ENDIF()
+
+set(CMAKE_THREAD_LIBS_INIT "-lpthread")
+set(CMAKE_HAVE_THREADS_LIBRARY 1)
+set(CMAKE_USE_WIN32_THREADS_INIT 0)
+set(CMAKE_USE_PTHREADS_INIT 1)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+
 ADD_DEFINITIONS(-DRDO_ST)
 ADD_DEFINITIONS(-DRDO_LIMIT_RES)
 ADD_DEFINITIONS(-DRDO_LICENSE_ACADEMIC)
 ADD_DEFINITIONS(-DNOMINMAX)
 ADD_DEFINITIONS(-DBOOST_SIGNALS_NO_DEPRECATION_WARNING)
+ADD_DEFINITIONS(-DBOOST_BIND_GLOBAL_PLACEHOLDERS)
 
 # work with cmake
 SET(CMAKE_PREFIX_PATH $ENV{QTDIR}/lib/cmake)
@@ -53,7 +71,7 @@ IF(MSVC)
     SET(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /LTCG")
     SET(CMAKE_STATIC_LINKER_FLAGS_RELEASE "${CMAKE_STATIC_LINKER_FLAGS_RELEASE} /LTCG")
 ELSE()
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++0x")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
     IF(MINGW)
         ADD_DEFINITIONS(-Wno-unused-local-typedefs)
     ELSE()
@@ -153,7 +171,7 @@ STRING(REPLACE "\n" "" GIT_VERSION_LONG ${READ_DATA_LONG})
 FILE(READ ${GIT_FILE_VERSION_SHORT} READ_DATA_SHORT)
 STRING(REPLACE "\n" "" GIT_VERSION_SHORT ${READ_DATA_SHORT})
 
-MESSAGE(STATUS "rdo version : ${GIT_VERSION_LONG}")
+MESSAGE(STATUS "rdo git version : ${GIT_VERSION_SHORT} (${GIT_VERSION_LONG})")
 
 STRING(LENGTH "${GIT_VERSION_LONG}" TEMP_LENGTH)
 STRING(SUBSTRING "${GIT_VERSION_LONG}" 1 -1 GIT_VERSION_LONG_NUM)
@@ -164,9 +182,10 @@ STRING(SUBSTRING "${GIT_VERSION_SHORT}" 1 -1 GIT_VERSION_SHORT_NUM)
 SET(GIT_VERSION ${GIT_VERSION_SHORT})
 
 #==============================================================================
-
 SET(PROJECT_VERSION      ${GIT_VERSION_SHORT})
 SET(PROJECT_VERSION_LONG ${GIT_VERSION_LONG} )
+
+MESSAGE(STATUS "project version : ${GIT_VERSION_SHORT} (${GIT_VERSION_LONG})")
 
 #==============================================================================
 
@@ -192,6 +211,9 @@ ELSE()
 ENDIF()
 
 #==============================================================================
+
+SET(BUILD_RDO_CONSOLE TRUE)
+SET(BUILD_RDO_STUDIO  TRUE)
 
 # Compile the rdo_common
 SET(UTILS_PATH ${RDO_BASE_DIRECTORY}/utils)
@@ -225,9 +247,6 @@ ADD_SUBDIRECTORY(${UI_QT_PATH})
 
 SET(APLICATIONS_DIRECTORY ${RDO_BASE_DIRECTORY}/app)
 ADD_SUBDIRECTORY(${APLICATIONS_DIRECTORY})
-
-SET(BUILD_RDO_CONSOLE TRUE)
-SET(BUILD_RDO_STUDIO  TRUE)
 
 #==============================================================================
 #---------------------------------- info --------------------------------------
