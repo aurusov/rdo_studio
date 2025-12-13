@@ -2,6 +2,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include "utils/src/common/warning_disable.h"
 #include <vector>
+#include <QRegExpValidator>
 #include "utils/src/common/warning_enable.h"
 #include <QRegExpValidator>
 // ----------------------------------------------------------------------- SYNOPSIS
