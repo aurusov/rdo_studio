@@ -37,7 +37,7 @@
     #define ARCHITECTURE_AMD64
 #elif defined( __i386__ ) || defined( _M_IX86 )
     #define ARCHITECTURE_X86
-#elif defined( __arm__ ) || defined( __thumb__ ) || defined ( __TARGET_ARCH_ARM ) || defined ( __TARGET_ARCH_THUMB )
+#elif defined( __arm__ ) || defined( __thumb__ ) || defined ( __TARGET_ARCH_ARM ) || defined ( __TARGET_ARCH_THUMB ) || defined ( __ARM_ARCH )
     #define ARCHITECTURE_ARM
 #else
     #error Unknown architecture!
