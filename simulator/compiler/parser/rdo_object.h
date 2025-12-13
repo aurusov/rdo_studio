@@ -87,11 +87,6 @@ public:
     compareName(const std::string& name)
         : m_name(name)
     {}
-    compareName<T>& operator= (const compareName<T>& obj)
-    {
-        m_name = obj.m_name;
-        return *this;
-    }
     bool operator()(const T* pObj)
     {
         return pObj->name() == m_name;
@@ -115,11 +110,6 @@ public:
     compareNameRef(const std::string& name)
         : m_name(name)
     {}
-    compareNameRef<T>& operator= (const compareNameRef<T>& obj)
-    {
-        m_name = obj.m_name;
-        return *this;
-    }
     bool operator() (const T& obj)
     {
         return obj.name() == m_name;

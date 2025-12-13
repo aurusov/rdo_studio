@@ -32,7 +32,7 @@ namespace
     void backUpModel(rdo::gui::model::Model* pModel)
     {
         boost::filesystem::path modelFolder(pModel->getFullName().toStdWString());
-        modelFolder.remove_leaf();
+        modelFolder.remove_filename();
         const QString backupFolderName = "backup" + QDateTime::currentDateTime().toString("_yyyy-MM-dd_HH.mm.ss");
         const boost::filesystem::path backupFolder = modelFolder / backupFolderName.toStdString();
         try
